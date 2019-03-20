@@ -19,7 +19,7 @@ class GlobalStacksModel(ListModel):
     MetaDataRole = Qt.UserRole + 5
     SectionNameRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
         self._catalog = i18nCatalog("cura")
@@ -44,12 +44,12 @@ class GlobalStacksModel(ListModel):
         self._updateDelayed()
 
     ##  Handler for container added/removed events from registry
-    def _onContainerChanged(self, container):
+    def _onContainerChanged(self, container) -> None:
         # We only need to update when the added / removed container GlobalStack
         if isinstance(container, GlobalStack):
             self._updateDelayed()
 
-    def _updateDelayed(self):
+    def _updateDelayed(self) -> None:
         self._change_timer.start()
 
     def _update(self) -> None:
@@ -61,7 +61,8 @@ class GlobalStacksModel(ListModel):
             has_remote_connection = False
 
             for connection_type in container_stack.configuredConnectionTypes:
-                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value, ConnectionType.CloudConnection.value]
+                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                             ConnectionType.CloudConnection.value]
 
             if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
                 continue
@@ -74,5 +75,5 @@ class GlobalStacksModel(ListModel):
                           "hasRemoteConnection": has_remote_connection,
                           "metadata": container_stack.getMetaData().copy(),
                           "sectionName": section_name})
-        items.sort(key=lambda i: not i["hasRemoteConnection"])
+        items.sort(key = lambda i: not i["hasRemoteConnection"])
         self.setItems(items)
