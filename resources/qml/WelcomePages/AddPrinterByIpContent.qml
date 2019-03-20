@@ -79,7 +79,7 @@ Item
 
                     validator: RegExpValidator
                     {
-                        regExp: /[0-9\.\-\_]*/
+                        regExp: /[a-fA-F0-9\.\:]*/
                     }
 
                     onAccepted: addPrinterButton.clicked()
