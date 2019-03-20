@@ -95,9 +95,8 @@ from . import CameraAnimation
 from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
-from cura.UI import CuraSplashScreen
+from cura.UI import CuraSplashScreen, MachineActionManager
 from . import PrintJobPreviewImageProvider
-from . import MachineActionManager
 
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
 
