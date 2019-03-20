@@ -12,17 +12,20 @@ from UM.Qt.ListModel import ListModel
 # This model holds all first-start machine actions for the currently active machine. It has 2 roles:
 #   - title   : the title/name of the action
 #   - content : the QObject of the QML content of the action
+#   - action  : the MachineAction object itself
 #
 class FirstStartMachineActionsModel(ListModel):
 
     TitleRole = Qt.UserRole + 1
     ContentRole = Qt.UserRole + 2
+    ActionRole = Qt.UserRole + 3
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.TitleRole, "title")
         self.addRoleName(self.ContentRole, "content")
+        self.addRoleName(self.ActionRole, "action")
 
         from cura.CuraApplication import CuraApplication
         self._application = CuraApplication.getInstance()
@@ -46,6 +49,7 @@ class FirstStartMachineActionsModel(ListModel):
         for item in first_start_actions:
             item_list.append({"title": item.label,
                               "content": item.displayItem,
+                              "action": item,
                               })
 
         self.setItems(item_list)

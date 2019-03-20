@@ -84,6 +84,9 @@ Item
                 return
             }
 
+            // notify the current MachineAction that it has finished
+            currentActionItem.action.setFinished()
+            // move on to the next MachineAction
             currentActionIndex++
         }
     }

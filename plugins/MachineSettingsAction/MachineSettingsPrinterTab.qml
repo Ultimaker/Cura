@@ -26,11 +26,11 @@ Item
 
     property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
     property int columnSpacing: 3
-    property int propertyStoreIndex: 5  // definition_changes
+    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
 
     property string machineStackId: Cura.MachineManager.activeMachineId
 
-    property var forceUpdateFunction: CuraApplication.getMachineSettingsManager().forceUpdate
+    property var forceUpdateFunction: manager.forceUpdate
 
     Item
     {
@@ -153,7 +153,7 @@ Item
                 // FIXME(Lipu): better document this.
                 // This has something to do with UM2 and UM2+ regarding "has_material" and the gcode flavor settings.
                 // I don't remember exactly what.
-                afterOnEditingFinishedFunction: CuraApplication.getMachineSettingsManager().updateHasMaterialsMetadata
+                afterOnEditingFinishedFunction: manager.updateHasMaterialsMetadata
             }
         }
 
@@ -277,8 +277,8 @@ Item
                 // FIXME(Lipu): better document this.
                 // This has something to do with UM2 and UM2+ regarding "has_material" and the gcode flavor settings.
                 // I don't remember exactly what.
-                afterOnEditingFinishedFunction: CuraApplication.getMachineSettingsManager().updateHasMaterialsMetadata
-                setValueFunction: CuraApplication.getMachineSettingsManager().setMachineExtruderCount
+                afterOnEditingFinishedFunction: manager.updateHasMaterialsMetadata
+                setValueFunction: manager.setMachineExtruderCount
 
                 optionModel: ListModel
                 {

@@ -26,15 +26,15 @@ Item
 
     property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
     property int columnSpacing: 3
-    property int propertyStoreIndex: 5  // definition_changes
+    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
 
     property string extruderStackId: ""
     property int extruderPosition: 0
-    property var forceUpdateFunction: CuraApplication.getMachineSettingsManager().forceUpdate
+    property var forceUpdateFunction: manager.forceUpdate
 
     function updateMaterialDiameter()
     {
-        CuraApplication.getMachineSettingsManager().updateMaterialForDiameter(extruderPosition)
+        manager.updateMaterialForDiameter(extruderPosition)
     }
 
     Item
