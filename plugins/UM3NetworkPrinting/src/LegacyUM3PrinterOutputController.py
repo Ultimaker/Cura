@@ -7,7 +7,7 @@ from UM.Version import Version
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 

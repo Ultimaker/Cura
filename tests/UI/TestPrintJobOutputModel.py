@@ -3,7 +3,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.UI.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 
 test_validate_data_get_set = [

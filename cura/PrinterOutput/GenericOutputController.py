@@ -7,7 +7,7 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from PyQt5.QtCore import QTimer
 
 if TYPE_CHECKING:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
     from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel

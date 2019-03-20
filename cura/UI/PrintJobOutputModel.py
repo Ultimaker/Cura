@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 from typing import Optional, TYPE_CHECKING, List
 
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
 from PyQt5.QtGui import QImage
 
 if TYPE_CHECKING:
@@ -25,7 +24,7 @@ class PrintJobOutputModel(QObject):
     previewImageChanged = pyqtSignal()
     compatibleMachineFamiliesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent = None) -> None:
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""
@@ -142,13 +141,13 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(bool, notify=stateChanged)
     def isActive(self) -> bool:
-        inactiveStates = [
+        inactive_states = [
             "pausing",
             "paused",
             "resuming",
             "wait_cleanup"
         ]
-        if self.state in inactiveStates and self.timeRemaining > 0:
+        if self.state in inactive_states and self.timeRemaining > 0:
             return False
         return True
 
