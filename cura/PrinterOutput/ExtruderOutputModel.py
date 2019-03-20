@@ -7,7 +7,7 @@ from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationM
 from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 
 

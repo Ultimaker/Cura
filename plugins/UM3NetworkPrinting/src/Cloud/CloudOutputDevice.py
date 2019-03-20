@@ -18,7 +18,7 @@ from UM.Scene.SceneNode import SceneNode
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.UI.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudOutputController import CloudOutputController

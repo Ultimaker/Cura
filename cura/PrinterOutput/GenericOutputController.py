@@ -9,7 +9,7 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 if TYPE_CHECKING:
     from cura.UI.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
     from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
 

@@ -8,7 +8,7 @@ MYPY = False
 if MYPY:
     from cura.UI.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 

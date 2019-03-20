@@ -22,7 +22,7 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
 from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.UI.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
