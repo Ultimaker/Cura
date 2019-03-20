@@ -26,7 +26,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: 40
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Add printer by IP address")
@@ -35,14 +35,14 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Rectangle
+    Item
     {
         anchors.top: titleLabel.bottom
         anchors.bottom: connectButton.top
-        anchors.topMargin: 40
-        anchors.bottomMargin: 40
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width * 3 / 4
+        width: (parent.width * 3 / 4) | 0
 
         Item
         {
@@ -54,7 +54,7 @@ Item
                 height: contentHeight
                 width: parent.width
                 anchors.top: parent.top
-                anchors.margins: 20
+                anchors.margins: UM.Theme.getSize("default_margin").width
                 font: UM.Theme.getFont("default")
 
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
@@ -74,14 +74,12 @@ Item
                     anchors.left: parent.left
                     height: addPrinterButton.height
                     anchors.right: addPrinterButton.left
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
-
-                    text: ""
 
                     validator: RegExpValidator
                     {
-                        regExp: /[a-zA-Z0-9\.\-\_]*/
+                        regExp: /[0-9\.\-\_]*/
                     }
 
                     onAccepted: addPrinterButton.clicked()
@@ -92,8 +90,8 @@ Item
                     id: addPrinterButton
                     anchors.top: parent.top
                     anchors.right: parent.right
-                    anchors.margins: 20
-                    width: 140
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+                    width: UM.Theme.getSize("action_button").width
                     fixedWidthMode: true
 
                     text: catalog.i18nc("@button", "Add")
@@ -124,13 +122,13 @@ Item
             {
                 width: parent.width
                 anchors.top: userInputFields.bottom
-                anchors.margins: 20
+                anchors.margins: UM.Theme.getSize("default_margin").width
 
                 Label
                 {
                     id: waitResponseLabel
                     anchors.top: parent.top
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
 
                     visible: { addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection }
@@ -141,7 +139,7 @@ Item
                 {
                     id: printerInfoLabels
                     anchors.top: parent.top
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
 
                     visible: addPrinterByIpScreen.haveConnection
 
@@ -158,9 +156,9 @@ Item
                     {
                         id: printerInfoGrid
                         anchors.top: printerNameLabel.bottom
-                        anchors.margins: 20
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                         columns: 2
-                        columnSpacing: 20
+                        columnSpacing: UM.Theme.getSize("default_margin").width
 
                         Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type") }
                         Label { id: typeText; font: UM.Theme.getFont("default"); text: "?" }
@@ -202,9 +200,9 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("default_margin").width
         text: catalog.i18nc("@button", "Cancel")
-        width: 140
+        width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
         onClicked: base.gotoPage("add_printer_by_selection")
 
@@ -216,9 +214,9 @@ Item
         id: connectButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("default_margin").width
         text: catalog.i18nc("@button", "Connect")
-        width: 140
+        width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
         onClicked:
         {
