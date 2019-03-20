@@ -10,20 +10,17 @@ from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
 from UM.Backend.Backend import Backend, BackendState
-from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
-from UM.Mesh.MeshData import MeshData #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -33,7 +30,7 @@ from .StartSliceJob import StartSliceJob, StartJobResult
 import Arcus
 
 if TYPE_CHECKING:
-    from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
+    from cura.UI.Models.MultiBuildPlateModel import MultiBuildPlateModel
     from cura.Machines.MachineErrorChecker import MachineErrorChecker
     from UM.Scene.Scene import Scene
     from UM.Settings.ContainerStack import ContainerStack

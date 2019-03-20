@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Logger import Logger
-from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
+from cura.UI.Models.BaseMaterialsModel import BaseMaterialsModel
 
-class GenericMaterialsModel(BaseMaterialsModel):
-
+##  Model that shows the list of favorite materials.
+class FavoriteMaterialsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
         self._update()
@@ -26,14 +25,14 @@ class GenericMaterialsModel(BaseMaterialsModel):
             if bool(metadata.get("removed", False)):
                 continue
 
-            # Only add results for generic materials
-            if metadata["brand"].lower() != "generic":
+            # Only add results for favorite materials
+            if root_material_id not in self._favorite_ids:
                 continue
 
             item = self._createMaterialItem(root_material_id, container_node)
             item_list.append(item)
 
         # Sort the item list alphabetically by name
-        item_list = sorted(item_list, key = lambda d: d["name"].upper())
+        item_list = sorted(item_list, key = lambda d: d["brand"].upper())
 
         self.setItems(item_list)
