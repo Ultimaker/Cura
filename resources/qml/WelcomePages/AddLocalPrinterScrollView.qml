@@ -161,7 +161,8 @@ ScrollView
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: radioButton.hovered ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("small_button_text_hover")
 
-                Rectangle {
+                Rectangle
+                {
                     width: parent.width / 2
                     height: width
                     anchors.centerIn: parent
