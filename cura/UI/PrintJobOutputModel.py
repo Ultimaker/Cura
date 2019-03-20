@@ -9,7 +9,7 @@ from PyQt5.QtGui import QImage
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
     from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+    from cura.UI.ConfigurationModel import ConfigurationModel
 
 
 class PrintJobOutputModel(QObject):

@@ -17,7 +17,7 @@ from UM.FlameProfiler import pyqtSlot
 MYPY = False
 if MYPY:
     from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+    from cura.UI.ConfigurationModel import ConfigurationModel
     from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
     from UM.FileHandler.FileHandler import FileHandler
     from UM.Scene.SceneNode import SceneNode

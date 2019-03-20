@@ -23,7 +23,7 @@ from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.UI.ConfigurationModel import ConfigurationModel
 from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.UI.MaterialOutputModel import MaterialOutputModel
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
