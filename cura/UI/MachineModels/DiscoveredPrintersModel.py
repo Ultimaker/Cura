@@ -129,8 +129,8 @@ class DiscoveredPrintersModel(QObject):
 
     @pyqtSlot(str)
     def createMachineFromDiscoveredPrinterAddress(self, ip_address: str) -> None:
-        if ip_address not in self._discovered_printer_dict:
+        if ip_address not in self._discovered_printer_by_ip_dict:
             Logger.log("i", "Key [%s] does not exist in the discovered printers list.", ip_address)
             return
 
-        self.createMachineFromDiscoveredPrinter(self._discovered_printer_dict[ip_address])
+        self.createMachineFromDiscoveredPrinter(self._discovered_printer_by_ip_dict[ip_address])

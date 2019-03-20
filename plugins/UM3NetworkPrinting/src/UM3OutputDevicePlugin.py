@@ -14,7 +14,6 @@ from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 from UM.i18n import i18nCatalog
