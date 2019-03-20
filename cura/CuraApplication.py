@@ -101,7 +101,7 @@ from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
 
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.UserChangesModel import UserChangesModel
+from cura.UI.UserChangesModel import UserChangesModel
 from cura.UI.ExtrudersModel import ExtrudersModel
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.ContainerManager import ContainerManager
