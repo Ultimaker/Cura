@@ -100,7 +100,6 @@ ScrollView
                 {
                     id: arrow
                     anchors.left: parent.left
-                    //anchors.verticalCenter: label.verticalCenter
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
