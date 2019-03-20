@@ -92,10 +92,9 @@ from .AutoSave import AutoSave
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
-from . import PrintInformation
 from . import CuraActions
 from cura.Scene import ZOffsetDecorator
-from cura.UI import CuraSplashScreen, MachineActionManager
+from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
 from . import PrintJobPreviewImageProvider
 
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
