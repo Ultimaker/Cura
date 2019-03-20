@@ -1,6 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from collections import defaultdict
+
 from PyQt5.QtCore import QTimer
 
 from UM.Application import Application
@@ -10,7 +12,6 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.i18n import i18nCatalog
-from collections import defaultdict
 
 catalog = i18nCatalog("cura")
 
@@ -30,19 +31,19 @@ class ObjectsModel(ListModel):
 
         self._build_plate_number = -1
 
-    def setActiveBuildPlate(self, nr):
+    def setActiveBuildPlate(self, nr: int) -> None:
         if self._build_plate_number != nr:
             self._build_plate_number = nr
             self._update()
 
-    def _updateSceneDelayed(self, source):
+    def _updateSceneDelayed(self, source) -> None:
         if not isinstance(source, Camera):
             self._update_timer.start()
 
-    def _updateDelayed(self, *args):
+    def _updateDelayed(self, *args) -> None:
         self._update_timer.start()
 
-    def _update(self, *args):
+    def _update(self, *args) -> None:
         nodes = []
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number

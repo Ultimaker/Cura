@@ -110,7 +110,7 @@ from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsMode
 import cura.Settings.cura_empty_instance_containers
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
-from cura.ObjectsModel import ObjectsModel
+from cura.UI.ObjectsModel import ObjectsModel
 
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
 
