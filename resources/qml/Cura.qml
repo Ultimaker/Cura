@@ -58,16 +58,6 @@ UM.MainWindow
         z: stageMenu.z + 1
     }
 
-    Connections
-    {
-        target: Cura.Actions.showOnBoarding
-        onTriggered:
-        {
-            welcomeDialog.currentStep = 0
-            welcomeDialog.show()
-        }
-    }
-
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))

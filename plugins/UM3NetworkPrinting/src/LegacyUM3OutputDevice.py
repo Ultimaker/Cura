@@ -2,10 +2,10 @@ from typing import List, Optional
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.UI.PrinterOutputModel import PrinterOutputModel
+from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+from cura.UI.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager

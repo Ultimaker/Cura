@@ -18,7 +18,7 @@ from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
 
 if TYPE_CHECKING:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 catalog = i18nCatalog("cura")
 

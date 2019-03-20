@@ -5,8 +5,7 @@ import json
 import math
 import os
 import unicodedata
-import re  # To create abbreviations for printer names.
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
@@ -15,8 +14,6 @@ from UM.Qt.Duration import Duration
 from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
-
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication

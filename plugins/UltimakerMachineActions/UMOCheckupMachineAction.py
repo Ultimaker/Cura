@@ -1,5 +1,5 @@
 from cura.MachineAction import MachineAction
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from UM.Application import Application
 from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
 

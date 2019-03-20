@@ -56,7 +56,7 @@ Item
             anchors.right: parent.right
 
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
@@ -165,16 +165,16 @@ Item
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.verticalCenter: parent.verticalCenter
-            height: troubleshoortingLinkIcon.height
-            width: troubleshoortingLinkIcon.width + troubleshoortingLabel.width + UM.Theme.getSize("default_margin").width
+            height: troubleshootingLinkIcon.height
+            width: troubleshootingLinkIcon.width + troubleshootingLabel.width + UM.Theme.getSize("default_margin").width
 
             UM.RecolorImage
             {
-                id: troubleshoortingLinkIcon
-                anchors.right: troubleshoortingLabel.left
+                id: troubleshootingLinkIcon
+                anchors.right: troubleshootingLabel.left
                 anchors.rightMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: parent.verticalCenter
-                height: troubleshoortingLabel.height
+                height: troubleshootingLabel.height
                 width: height
                 sourceSize.height: width
                 color: UM.Theme.getColor("text_link")
@@ -183,7 +183,7 @@ Item
 
             Label
             {
-                id: troubleshoortingLabel
+                id: troubleshootingLabel
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
                 text: catalog.i18nc("@label", "Troubleshooting")
@@ -199,17 +199,17 @@ Item
                 hoverEnabled: true
                 onClicked:
                 {
-                    // open the throubleshooting URL with web browser
+                    // open the troubleshooting URL with web browser
                     var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty" // TODO
                     Qt.openUrlExternally(url)
                 }
                 onEntered:
                 {
-                    troubleshoortingLabel.font.underline = true
+                    troubleshootingLabel.font.underline = true
                 }
                 onExited:
                 {
-                    troubleshoortingLabel.font.underline = false
+                    troubleshootingLabel.font.underline = false
                 }
             }
         }

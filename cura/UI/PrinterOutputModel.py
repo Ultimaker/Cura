@@ -4,12 +4,12 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
 from typing import List, Dict, Optional
 from UM.Math.Vector import Vector
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.UI.ExtruderOutputModel import ExtruderOutputModel
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 
@@ -37,7 +37,7 @@ class PrinterOutputModel(QObject):
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
-        self._printer_configuration = ConfigurationModel()  # Indicates the current configuration setup in this printer
+        self._printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
@@ -291,7 +291,7 @@ class PrinterOutputModel(QObject):
 
     # Returns the configuration (material, variant and buildplate) of the current printer
     @pyqtProperty(QObject, notify = configurationChanged)
-    def printerConfiguration(self) -> Optional[ConfigurationModel]:
+    def printerConfiguration(self) -> Optional[PrinterConfigurationModel]:
         if self._printer_configuration.isValid():
             return self._printer_configuration
         return None

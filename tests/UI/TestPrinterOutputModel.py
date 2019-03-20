@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+from cura.UI.PrinterOutputModel import PrinterOutputModel
 
 test_validate_data_get_set = [
     {"attribute": "name", "value": "YAY"},

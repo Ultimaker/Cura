@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 test_validate_data_get_set = [
     {"attribute": "extruderConfigurations", "value": [ExtruderConfigurationModel()]},
@@ -16,7 +16,7 @@ test_validate_data_get_set = [
 
 @pytest.mark.parametrize("data", test_validate_data_get_set)
 def test_getAndSet(data):
-    model = ConfigurationModel()
+    model = PrinterConfigurationModel()
 
     # Convert the first letter into a capital
     attribute = list(data["attribute"])

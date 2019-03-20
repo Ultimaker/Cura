@@ -23,7 +23,7 @@ ScrollView
     property string preferredCategory: "Ultimaker"
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
     property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
     height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
@@ -100,7 +100,6 @@ ScrollView
                 {
                     id: arrow
                     anchors.left: parent.left
-                    //anchors.verticalCenter: label.verticalCenter
                     width: UM.Theme.getSize("standard_arrow").width
                     height: UM.Theme.getSize("standard_arrow").height
                     sourceSize.width: width
@@ -162,7 +161,8 @@ ScrollView
                 border.width: UM.Theme.getSize("default_lining").width
                 border.color: radioButton.hovered ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("small_button_text_hover")
 
-                Rectangle {
+                Rectangle
+                {
                     width: parent.width / 2
                     height: width
                     anchors.centerIn: parent

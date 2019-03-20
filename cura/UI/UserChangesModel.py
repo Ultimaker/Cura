@@ -10,7 +10,6 @@ from UM.Application import Application
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Settings.SettingFunction import SettingFunction
-
 from UM.Qt.ListModel import ListModel
 
 

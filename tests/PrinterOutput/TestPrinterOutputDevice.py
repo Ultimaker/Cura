@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock
 
 import pytest
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 test_validate_data_get_set = [
     {"attribute": "connectionText", "value": "yay"},

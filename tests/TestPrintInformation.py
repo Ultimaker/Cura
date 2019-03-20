@@ -1,7 +1,7 @@
 import functools
 
 from UM.Qt.Duration import Duration
-from cura import PrintInformation
+from cura.UI import PrintInformation
 from cura.Settings.MachineManager import MachineManager
 
 from unittest.mock import MagicMock, patch

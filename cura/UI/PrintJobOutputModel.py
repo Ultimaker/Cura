@@ -1,16 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 from typing import Optional, TYPE_CHECKING, List
 
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot, QUrl
 from PyQt5.QtGui import QImage
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+    from cura.UI.PrinterOutputModel import PrinterOutputModel
+    from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
 
 
 class PrintJobOutputModel(QObject):
@@ -25,7 +24,7 @@ class PrintJobOutputModel(QObject):
     previewImageChanged = pyqtSignal()
     compatibleMachineFamiliesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
+    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent = None) -> None:
         super().__init__(parent)
         self._output_controller = output_controller
         self._state = ""
@@ -36,7 +35,7 @@ class PrintJobOutputModel(QObject):
         self._assigned_printer = None  # type: Optional[PrinterOutputModel]
         self._owner = ""  # Who started/owns the print job?
 
-        self._configuration = None  # type: Optional[ConfigurationModel]
+        self._configuration = None  # type: Optional[PrinterConfigurationModel]
         self._compatible_machine_families = []  # type: List[str]
         self._preview_image_id = 0
 
@@ -70,10 +69,10 @@ class PrintJobOutputModel(QObject):
             self.previewImageChanged.emit()
 
     @pyqtProperty(QObject, notify=configurationChanged)
-    def configuration(self) -> Optional["ConfigurationModel"]:
+    def configuration(self) -> Optional["PrinterConfigurationModel"]:
         return self._configuration
 
-    def updateConfiguration(self, configuration: Optional["ConfigurationModel"]) -> None:
+    def updateConfiguration(self, configuration: Optional["PrinterConfigurationModel"]) -> None:
         if self._configuration != configuration:
             self._configuration = configuration
             self.configurationChanged.emit()
@@ -142,13 +141,13 @@ class PrintJobOutputModel(QObject):
 
     @pyqtProperty(bool, notify=stateChanged)
     def isActive(self) -> bool:
-        inactiveStates = [
+        inactive_states = [
             "pausing",
             "paused",
             "resuming",
             "wait_cleanup"
         ]
-        if self.state in inactiveStates and self.timeRemaining > 0:
+        if self.state in inactive_states and self.timeRemaining > 0:
             return False
         return True
 

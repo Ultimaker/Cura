@@ -8,11 +8,11 @@ import os
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.GlobalStack import GlobalStack # typing
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
