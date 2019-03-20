@@ -18,7 +18,6 @@ Item
 
     id: addPrinterByIpScreen
 
-    property bool hasPushedAdd: false
     property bool hasSentRequest: false
     property bool haveConnection: false
 
@@ -42,7 +41,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottomMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
-        width: (parent.width * 3 / 4) | 0
+        width: Math.floor(parent.width * 3 / 4)
 
         Item
         {
@@ -99,12 +98,11 @@ Item
                     {
                         if (hostnameField.text.trim() != "")
                         {
-                            addPrinterByIpScreen.hasPushedAdd = true
-                            UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text)
+                            enabled = false;
+                            UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
                         }
                     }
 
-                    enabled: ! addPrinterByIpScreen.hasPushedAdd
                     BusyIndicator
                     {
                         anchors.fill: parent
