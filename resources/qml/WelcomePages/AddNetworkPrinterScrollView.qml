@@ -56,7 +56,7 @@ Item
             anchors.right: parent.right
 
             ScrollBar.horizontal.policy: ScrollBar.AsNeeded
-            ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+            ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
             height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
