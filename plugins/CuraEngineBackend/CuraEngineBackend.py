@@ -30,7 +30,7 @@ from .StartSliceJob import StartSliceJob, StartJobResult
 import Arcus
 
 if TYPE_CHECKING:
-    from cura.UI.Models.MultiBuildPlateModel import MultiBuildPlateModel
+    from cura.UI.MachineModels.MultiBuildPlateModel import MultiBuildPlateModel
     from cura.Machines.MachineErrorChecker import MachineErrorChecker
     from UM.Scene.Scene import Scene
     from UM.Settings.ContainerStack import ContainerStack

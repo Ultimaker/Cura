@@ -66,19 +66,19 @@ from UM.Settings.SettingFunction import SettingFunction
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.MachineNameValidator import MachineNameValidator
 
-from cura.UI.Models.BuildPlateModel import BuildPlateModel
-from cura.UI.Models.NozzleModel import NozzleModel
-from cura.UI.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
-from cura.UI.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
-from cura.UI.Models.MultiBuildPlateModel import MultiBuildPlateModel
-from cura.UI.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
-from cura.UI.Models.GenericMaterialsModel import GenericMaterialsModel
-from cura.UI.Models.MaterialBrandsModel import MaterialBrandsModel
-from cura.UI.Models import QualityManagementModel
-from cura.UI.Models.QualitySettingsModel import QualitySettingsModel
-from cura.UI.Models.MachineManagementModel import MachineManagementModel
+from cura.UI.MachineModels.BuildPlateModel import BuildPlateModel
+from cura.UI.MachineModels.NozzleModel import NozzleModel
+from cura.UI.MachineModels.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.UI.MachineModels.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
+from cura.UI.MachineModels.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.UI.MachineModels.FavoriteMaterialsModel import FavoriteMaterialsModel
+from cura.UI.MachineModels.GenericMaterialsModel import GenericMaterialsModel
+from cura.UI.MachineModels.MaterialBrandsModel import MaterialBrandsModel
+from cura.UI.MachineModels.QualityManagementModel import QualityManagementModel
+from cura.UI.MachineModels.QualitySettingsModel import QualitySettingsModel
+from cura.UI.MachineModels.MachineManagementModel import MachineManagementModel
 
-from cura.UI.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+from cura.UI.MachineModels.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
@@ -111,7 +111,7 @@ from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.UI.ObjectsModel import ObjectsModel
 
-from cura.UI.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
+from cura.UI.MachineModels.DiscoveredPrintersModel import DiscoveredPrintersModel
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
