@@ -17,7 +17,7 @@ class GlobalStacksModel(ListModel):
     HasRemoteConnectionRole = Qt.UserRole + 3
     ConnectionTypeRole = Qt.UserRole + 4
     MetaDataRole = Qt.UserRole + 5
-    SectionNameRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
+    DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -28,7 +28,7 @@ class GlobalStacksModel(ListModel):
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
         self.addRoleName(self.MetaDataRole, "metadata")
-        self.addRoleName(self.SectionNameRole, "sectionName")
+        self.addRoleName(self.DiscoverySourceRole, "discoverySource")
         self._container_stacks = []
 
         self._change_timer = QTimer()
@@ -74,6 +74,6 @@ class GlobalStacksModel(ListModel):
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
                           "metadata": container_stack.getMetaData().copy(),
-                          "sectionName": section_name})
+                          "discoverySource": section_name})
         items.sort(key = lambda i: not i["hasRemoteConnection"])
         self.setItems(items)
