@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 from typing import Optional, TYPE_CHECKING
 
