@@ -23,7 +23,7 @@ ScrollView
     property string preferredCategory: "Ultimaker"
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-    ScrollBar.vertical.policy: ScrollBar.AlwaysOn
+    ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
     property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
     height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
