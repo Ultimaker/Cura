@@ -7,7 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.UI.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController

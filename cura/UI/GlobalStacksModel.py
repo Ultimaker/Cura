@@ -1,12 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
 
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 

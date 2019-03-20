@@ -5,15 +5,13 @@ import threading
 import time
 import serial.tools.list_ports
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
 
-from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
 
-from cura.PrinterOutputDevice import ConnectionState
-from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 from . import USBPrinterOutputDevice
 

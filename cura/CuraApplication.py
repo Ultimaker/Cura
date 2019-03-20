@@ -113,7 +113,7 @@ from cura.UI.ObjectsModel import ObjectsModel
 
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
 
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from cura import ApplicationMetadata, UltimakerCloudAuthentication

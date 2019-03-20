@@ -5,7 +5,7 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutp
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
 from cura.UI.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager

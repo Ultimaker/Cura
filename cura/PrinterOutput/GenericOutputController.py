@@ -3,8 +3,9 @@
 
 from typing import TYPE_CHECKING, Set, Union, Optional
 
-from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from PyQt5.QtCore import QTimer
+
+from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 if TYPE_CHECKING:
     from cura.UI.PrintJobOutputModel import PrintJobOutputModel
