@@ -7,7 +7,7 @@ from UM.Signal import Signal
 MYPY = False
 if MYPY:
     from cura.UI.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+    from cura.UI.ExtruderOutputModel import ExtruderOutputModel
     from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 

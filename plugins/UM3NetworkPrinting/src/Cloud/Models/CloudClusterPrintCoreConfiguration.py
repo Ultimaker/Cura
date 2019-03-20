@@ -3,7 +3,7 @@
 from typing import Union, Dict, Optional, Any
 
 from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+from cura.UI.ExtruderOutputModel import ExtruderOutputModel
 from .CloudClusterPrinterConfigurationMaterial import CloudClusterPrinterConfigurationMaterial
 from .BaseCloudModel import BaseCloudModel
 

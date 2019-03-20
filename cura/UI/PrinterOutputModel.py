@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, 
 from typing import List, Dict, Optional
 from UM.Math.Vector import Vector
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+from cura.UI.ExtruderOutputModel import ExtruderOutputModel
 
 MYPY = False
 if MYPY:

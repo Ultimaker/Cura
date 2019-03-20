@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from cura.UI.PrintJobOutputModel import PrintJobOutputModel
     from cura.UI.PrinterOutputModel import PrinterOutputModel
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
-    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+    from cura.UI.ExtruderOutputModel import ExtruderOutputModel
 
 
 class GenericOutputController(PrinterOutputController):
