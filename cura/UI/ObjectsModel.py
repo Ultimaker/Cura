@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
+from typing import Dict
 
 from PyQt5.QtCore import QTimer
 
@@ -18,7 +19,7 @@ catalog = i18nCatalog("cura")
 
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
@@ -48,7 +49,7 @@ class ObjectsModel(ListModel):
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
         group_nr = 1
-        name_count_dict = defaultdict(int)
+        name_count_dict = defaultdict(int)  # type: Dict[str, int]
 
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
