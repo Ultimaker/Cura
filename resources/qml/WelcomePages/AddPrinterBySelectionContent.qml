@@ -127,7 +127,7 @@ Item
         }
 
         text: catalog.i18nc("@button", "Next")
-        width: 140
+        width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
         onClicked:
         {

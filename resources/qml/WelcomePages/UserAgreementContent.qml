@@ -60,7 +60,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: 40
         text: catalog.i18nc("@button", "Agree")
-        width: 140
+        width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
         onClicked:
         {
@@ -77,7 +77,7 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: 40
         text: catalog.i18nc("@button", "Decline and close")
-        width: 140
+        width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
         onClicked:
         {
