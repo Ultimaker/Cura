@@ -113,6 +113,12 @@ Item
                             ! addPrinterByIpScreen.haveConnection
                         }
                     }
+
+                    Connections
+                    {
+                        target: UM.OutputDeviceManager
+                        onManualDeviceChanged: { addPrinterButton.enabled = ! UM.OutputDeviceManager.hasManualDevice }
+                    }
                 }
             }
 
@@ -172,9 +178,18 @@ Item
                             target: UM.OutputDeviceManager
                             onManualDeviceChanged:
                             {
-                                typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
-                                firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
-                                addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                                if (UM.OutputDeviceManager.hasManualDevice)
+                                {
+                                    typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
+                                    addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                                }
+                                else
+                                {
+                                    typeText.text = ""
+                                    firmwareText.text = ""
+                                    addressText.text = ""
+                                }
                             }
                         }
                     }
@@ -184,8 +199,17 @@ Item
                         target: UM.OutputDeviceManager
                         onManualDeviceChanged:
                         {
-                            printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
-                            addPrinterByIpScreen.haveConnection = true
+                            if (UM.OutputDeviceManager.hasManualDevice)
+                            {
+                                printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
+                                addPrinterByIpScreen.haveConnection = true
+                            }
+                            else
+                            {
+                                printerNameLabel.text = catalog.i18nc("@label", "Could not connect to device.")
+                                addPrinterByIpScreen.hasSentRequest = false
+                                addPrinterByIpScreen.haveConnection = false
+                            }
                         }
                     }
                 }
