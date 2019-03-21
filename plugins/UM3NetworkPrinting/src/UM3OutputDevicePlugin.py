@@ -25,7 +25,11 @@ from UM.Version import Version
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cura.Settings.GlobalStack import GlobalStack
+
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -431,7 +435,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine  # type: Optional[GlobalStack]
         if active_machine:
             
             # Check 1A: Printer isn't already configured for cloud
@@ -519,7 +523,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine # type: Optional[GlobalStack]
         if active_machine:
             active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
             if checked:
