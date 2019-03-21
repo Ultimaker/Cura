@@ -124,7 +124,7 @@ class AuthorizationService:
             self._storeAuthData(response)
             self.onAuthStateChanged.emit(logged_in = True)
         else:
-            self.onAuthStateChanged(logged_in = False)
+            self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:

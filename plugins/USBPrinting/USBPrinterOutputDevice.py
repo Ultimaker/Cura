@@ -1,9 +1,12 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import os
 
-from UM.Logger import Logger
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
+from UM.Mesh.MeshWriter import MeshWriter #To get the g-code output.
+from UM.PluginRegistry import PluginRegistry #To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
@@ -15,10 +18,11 @@ from cura.PrinterOutput.GenericOutputController import GenericOutputController
 from .AutoDetectBaudJob import AutoDetectBaudJob
 from .AvrFirmwareUpdater import AvrFirmwareUpdater
 
+from io import StringIO #To write the g-code output.
+from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time
-from queue import Queue
 from typing import Union, Optional, List, cast
 
 import re
@@ -114,28 +118,29 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._is_printing:
-            return  # Aleady printing
+            return  # Already printing
         self.writeStarted.emit(self)
         # cancel any ongoing preheat timer before starting a print
         self._printers[0].getController().stopPreheatTimers()
 
         CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
-        # find the G-code for the active build plate to print
-        active_build_plate_id = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        gcode_dict = getattr(CuraApplication.getInstance().getController().getScene(), "gcode_dict")
-        gcode_list = gcode_dict[active_build_plate_id]
+        #Find the g-code to print.
+        gcode_textio = StringIO()
+        gcode_writer = cast(MeshWriter, PluginRegistry.getInstance().getPluginObject("GCodeWriter"))
+        success = gcode_writer.write(gcode_textio, None)
+        if not success:
+            return
 
-        self._printGCode(gcode_list)
+        self._printGCode(gcode_textio.getvalue())
 
     ##  Start a print based on a g-code.
-    #   \param gcode_list List with gcode (strings).
-    def _printGCode(self, gcode_list: List[str]):
+    #   \param gcode The g-code to print.
+    def _printGCode(self, gcode: str):
         self._gcode.clear()
         self._paused = False
 
-        for layer in gcode_list:
-            self._gcode.extend(layer.split("\n"))
+        self._gcode.extend(gcode.split("\n"))
 
         # Reset line number. If this is not done, first line is sometimes ignored
         self._gcode.insert(0, "M110")

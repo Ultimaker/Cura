@@ -219,7 +219,7 @@ class MaterialManager(QObject):
 
         root_material_id = material_metadata["base_file"]
         definition = material_metadata["definition"]
-        approximate_diameter = material_metadata["approximate_diameter"]
+        approximate_diameter = str(material_metadata["approximate_diameter"])
 
         if approximate_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
             self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter] = {}
@@ -332,7 +332,6 @@ class MaterialManager(QObject):
                 buildplate_node = nozzle_node.getChildNode(buildplate_name)
 
         nodes_to_check = [buildplate_node, nozzle_node, machine_node, default_machine_node]
-
         # Fallback mechanism of finding materials:
         #  1. buildplate-specific material
         #  2. nozzle-specific material
@@ -553,10 +552,24 @@ class MaterialManager(QObject):
     #
     # Methods for GUI
     #
+    @pyqtSlot("QVariant", result=bool)
+    def canMaterialBeRemoved(self, material_node: "MaterialNode"):
+        # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
+        # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
+        # corrupts the configuration)
+        root_material_id = material_node.getMetaDataEntry("base_file")
+        material_group = self.getMaterialGroup(root_material_id)
+        if not material_group:
+            return False
 
-    #
-    # Sets the new name for the given material.
-    #
+        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
+        ids_to_remove = [node.getMetaDataEntry("id", "") for node in nodes_to_remove]
+
+        for extruder_stack in self._container_registry.findContainerStacks(type="extruder_train"):
+            if extruder_stack.material.getId() in ids_to_remove:
+                return False
+        return True
+
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
         root_material_id = material_node.getMetaDataEntry("base_file")

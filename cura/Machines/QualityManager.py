@@ -209,6 +209,7 @@ class QualityManager(QObject):
         #   (1) the machine-specific node
         #   (2) the generic node
         machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(machine_definition_id)
+
         # Check if this machine has specific quality profiles for its extruders, if so, when looking up extruder
         # qualities, we should not fall back to use the global qualities.
         has_extruder_specific_qualities = False

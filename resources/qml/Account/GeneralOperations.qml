@@ -26,7 +26,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Ultimaker Cloud")
+        text: "Ultimaker Cloud"
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }

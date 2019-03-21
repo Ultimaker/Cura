@@ -125,7 +125,12 @@ class CuraStackBuilder:
 
         extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
         extruder_definition_id = extruder_definition_dict[str(extruder_position)]
-        extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
+        try:
+            extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
+        except IndexError as e:
+            # It still needs to break, but we want to know what extruder ID made it break.
+            Logger.log("e", "Unable to find extruder with the id %s", extruder_definition_id)
+            raise e
 
         # get material container for extruders
         material_container = application.empty_material_container
