@@ -118,23 +118,24 @@ Item
         }
     }
 
-    Cura.RoundedRectangle
+    Item
     {
         id: controlsRectangle
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.top: networkPrinterInfo.bottom
-        // Make sure that the left, right, and bottom borders do not show up, otherwise you see double
-        // borders.
-        anchors.bottomMargin: -border.width
-        anchors.leftMargin: -border.width
-        anchors.rightMargin: -border.width
+
+        // Horizontal line separating the buttons (below) and the discovered network printers (above)
+        Rectangle
+        {
+            anchors.left: parent.left
+            anchors.top: parent.top
+            anchors.right: parent.right
+            height: UM.Theme.getSize("default_lining").width
+            color: UM.Theme.getColor("lining")
+        }
 
         height: UM.Theme.getSize("message_action_button").height + UM.Theme.getSize("default_margin").height
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: UM.Theme.getColor("lining")
-        color: "white"
-        cornerSide: Cura.RoundedRectangle.Direction.Down
 
         Cura.SecondaryButton
         {
