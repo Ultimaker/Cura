@@ -91,7 +91,7 @@ Item
 
                     anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     outputDevice: modelData.device
 
                     enabled: !modelData.is_unknown_machine_type
