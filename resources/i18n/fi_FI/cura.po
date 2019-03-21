@@ -4963,7 +4963,7 @@ msgstr ""
 
 #~ msgctxt "@label:textbox"
 #~ msgid "Search..."
-#~ msgstr "Haku…"
+#~ msgstr "Haku..."
 
 #~ msgctxt "@label:listbox"
 #~ msgid "Print Setup"
@@ -5419,7 +5419,7 @@ msgstr ""
 
 #~ msgctxt "@title:menu menubar:file"
 #~ msgid "Save &As..."
-#~ msgstr "Tallenna &nimellä…"
+#~ msgstr "Tallenna &nimellä..."
 
 #~ msgctxt "description"
 #~ msgid "Accepts G-Code and sends them over WiFi to a Doodle3D WiFi-Box."

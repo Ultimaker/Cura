@@ -58,7 +58,7 @@ Column
         width: parent.width
         visible: widget.backendState == UM.Backend.Error
 
-        text: catalog.i18nc("@label:PrintjobStatus", "Unable to Slice")
+        text: catalog.i18nc("@label:PrintjobStatus", "Unable to slice")
         source: UM.Theme.getIcon("warning")
         iconColor: UM.Theme.getColor("warning")
     }
