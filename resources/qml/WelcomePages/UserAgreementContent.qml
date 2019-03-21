@@ -62,7 +62,12 @@ Item
         text: catalog.i18nc("@button", "Agree")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showNextPage()
+        onClicked:
+        {
+            CuraApplication.writeToLog("i", "User accepted the User-Agreement.")
+            CuraApplication.setNeedToShowUserAgreement(false)
+            base.showNextPage()
+        }
     }
 
     Cura.SecondaryButton
@@ -74,6 +79,11 @@ Item
         text: catalog.i18nc("@button", "Decline and close")
         width: 140
         fixedWidthMode: true
-        onClicked: base.showNextPage() // TODO: quit
+        onClicked:
+        {
+            CuraApplication.writeToLog("i", "User declined the User Agreement.")
+            base.passLastPage()
+            CuraApplication.closeApplication() // NOTE: Hard exit, don't use if anything needs to be saved!
+        }
     }
 }

@@ -18,72 +18,30 @@ Item
 
     id: addPrinterByIpScreen
 
-    property bool hasPushedAdd: false
     property bool hasSentRequest: false
     property bool haveConnection: false
-
-    Timer
-    {
-        id: tempTimerButton
-
-        interval: 1200
-        running: false
-        repeat: false
-        onTriggered:
-        {
-            hasPushedAdd = true
-            tempTimerRequest.running = true
-        }
-    }
-    // TODO: Remove timers after review interface!
-
-    Timer
-    {
-        id: tempTimerRequest
-
-        interval: 1200
-        running: false
-        repeat: false
-        onTriggered:
-        {
-            hasSentRequest = true
-            tempTimerConnection.running = true
-        }
-    }
-    // TODO: Remove timers after review interface!
-
-    Timer
-    {
-        id: tempTimerConnection
-
-        interval: 1200
-        running: false
-        repeat: false
-        onTriggered: haveConnection = true
-    }
-    // TODO: Remove timers after review interface!
 
     Label
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: 40
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Add printer by IP adress")
+        text: catalog.i18nc("@label", "Add printer by IP address")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("large_bold")
         renderType: Text.NativeRendering
     }
 
-    Rectangle
+    Item
     {
         anchors.top: titleLabel.bottom
         anchors.bottom: connectButton.top
-        anchors.topMargin: 40
-        anchors.bottomMargin: 40
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width * 3 / 4
+        width: Math.floor(parent.width * 3 / 4)
 
         Item
         {
@@ -95,8 +53,7 @@ Item
                 height: contentHeight
                 width: parent.width
                 anchors.top: parent.top
-                anchors.margins: 20
-                //anchors.bottomMargin: 20
+                anchors.margins: UM.Theme.getSize("default_margin").width
                 font: UM.Theme.getFont("default")
 
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
@@ -116,14 +73,12 @@ Item
                     anchors.left: parent.left
                     height: addPrinterButton.height
                     anchors.right: addPrinterButton.left
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
-
-                    text: ""
 
                     validator: RegExpValidator
                     {
-                        regExp: /[a-zA-Z0-9\.\-\_]*/
+                        regExp: /[a-fA-F0-9\.\:]*/
                     }
 
                     onAccepted: addPrinterButton.clicked()
@@ -134,28 +89,29 @@ Item
                     id: addPrinterButton
                     anchors.top: parent.top
                     anchors.right: parent.right
-                    anchors.margins: 20
-                    width: 140
+                    anchors.margins: UM.Theme.getSize("default_margin").width
+                    width: UM.Theme.getSize("action_button").width
                     fixedWidthMode: true
 
                     text: catalog.i18nc("@button", "Add")
                     onClicked:
                     {
-                        // TEMP: Simulate successfull connection to printer with 127.0.0.1 or unsuccessful with anything else
-                        // TODO, alter after review interface, now it just starts the timers.
-
                         if (hostnameField.text.trim() != "")
                         {
-                            addPrinterByIpScreen.hasPushedAdd = true
-                            tempTimerRequest.running = true
+                            enabled = false;
+                            UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
                         }
                     }
 
-                    enabled: ! addPrinterByIpScreen.hasPushedAdd
                     BusyIndicator
                     {
                         anchors.fill: parent
-                        running: { ! parent.enabled && ! addPrinterByIpScreen.hasSentRequest }
+                        running:
+                        {
+                            ! parent.enabled &&
+                            ! addPrinterByIpScreen.hasSentRequest &&
+                            ! addPrinterByIpScreen.haveConnection
+                        }
                     }
                 }
             }
@@ -164,13 +120,13 @@ Item
             {
                 width: parent.width
                 anchors.top: userInputFields.bottom
-                anchors.margins: 20
+                anchors.margins: UM.Theme.getSize("default_margin").width
 
                 Label
                 {
                     id: waitResponseLabel
                     anchors.top: parent.top
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
 
                     visible: { addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection }
@@ -181,7 +137,7 @@ Item
                 {
                     id: printerInfoLabels
                     anchors.top: parent.top
-                    anchors.margins: 20
+                    anchors.margins: UM.Theme.getSize("default_margin").width
 
                     visible: addPrinterByIpScreen.haveConnection
 
@@ -191,23 +147,46 @@ Item
                         anchors.top: parent.top
                         font: UM.Theme.getFont("large")
 
-                        text: "Davids-desktop"  // TODO: placeholder, alter after interface review.
+                        text: "???"
                     }
 
                     GridLayout
                     {
+                        id: printerInfoGrid
                         anchors.top: printerNameLabel.bottom
+                        anchors.margins: UM.Theme.getSize("default_margin").width
                         columns: 2
-                        columnSpacing: 20
+                        columnSpacing: UM.Theme.getSize("default_margin").width
 
-                        Text { font: UM.Theme.getFont("default"); text: "Type" }
-                        Text { font: UM.Theme.getFont("default"); text: "Ultimaker S5" }  // TODO: placeholder, alter after interface review.
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type") }
+                        Label { id: typeText; font: UM.Theme.getFont("default"); text: "?" }
 
-                        Text { font: UM.Theme.getFont("default"); text: "Firmware version" }
-                        Text { font: UM.Theme.getFont("default"); text: "4.3.3.20180529" }  // TODO: placeholder, alter after interface review.
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Firmware version") }
+                        Label { id: firmwareText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
 
-                        Text { font: UM.Theme.getFont("default"); text: "Address" }
-                        Text { font: UM.Theme.getFont("default"); text: "10.183.1.115" }  // TODO: placeholder, alter after interface review.
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Address") }
+                        Label { id: addressText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
+
+                        Connections
+                        {
+                            target: UM.OutputDeviceManager
+                            onManualDeviceChanged:
+                            {
+                                typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
+                                addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                            }
+                        }
+                    }
+
+                    Connections
+                    {
+                        target: UM.OutputDeviceManager
+                        onManualDeviceChanged:
+                        {
+                            printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
+                            addPrinterByIpScreen.haveConnection = true
+                        }
                     }
                 }
             }
@@ -219,9 +198,9 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: 40
-        text: catalog.i18nc("@button", "Back")
-        width: 140
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        text: catalog.i18nc("@button", "Cancel")
+        width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
         onClicked: base.gotoPage("add_printer_by_selection")
 
@@ -233,11 +212,17 @@ Item
         id: connectButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("default_margin").width
         text: catalog.i18nc("@button", "Connect")
-        width: 140
+        width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
-        onClicked: base.showNextPage()
+        onClicked:
+        {
+            CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinterAddress(
+                UM.OutputDeviceManager.manualDeviceProperty("address"))
+            UM.OutputDeviceManager.setActiveDevice(UM.OutputDeviceManager.manualDeviceProperty("device_id"))
+            base.showNextPage()
+        }
 
         enabled: addPrinterByIpScreen.haveConnection
     }

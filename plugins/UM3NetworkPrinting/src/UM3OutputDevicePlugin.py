@@ -13,6 +13,9 @@ from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from cura.Settings.GlobalStack import GlobalStack # typing
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -38,8 +41,8 @@ i18n_catalog = i18nCatalog("cura")
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
 class UM3OutputDevicePlugin(OutputDevicePlugin):
-    addDeviceSignal = Signal()
-    removeDeviceSignal = Signal()
+    addDeviceSignal = Signal()     # Called '...Signal' to avoid confusion with function-names.
+    removeDeviceSignal = Signal()  # Ditto ^^^.
     discoveredDevicesChanged = Signal()
     cloudFlowIsPossible = Signal()
 
@@ -179,12 +182,18 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.checkCloudFlowIsPossible()
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
+            if key.startswith("manual:"):
+                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address)
 
     def stop(self):
         if self._zero_conf is not None:
             Logger.log("d", "zeroconf close...")
             self._zero_conf.close()
         self._cloud_output_device_manager.stop()
+
+    def canAddManualDevice(self, address: str = "") -> ManualDeviceAdditionAttempt:
+        # This plugin should always be the fallback option (at least try it):
+        return ManualDeviceAdditionAttempt.POSSIBLE
 
     def removeManualDevice(self, key, address = None):
         if key in self._discovered_devices:
@@ -196,6 +205,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if address in self._manual_instances:
             self._manual_instances.remove(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+
+        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)
 
     def addManualDevice(self, address):
         if address not in self._manual_instances:
@@ -219,8 +230,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._checkManualDevice(address)
 
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        # TODO: This needs to be implemented. It's supposed to create a machine given a unique key as already discovered
-        # by this plugin.
         discovered_device = self._discovered_devices.get(key)
         if discovered_device is None:
             Logger.log("e", "Could not find discovered device with key [%s]", key)
@@ -248,6 +257,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def _onNetworkRequestFinished(self, reply):
         reply_url = reply.url().toString()
+
+        address = ""
+        device = None
+        properties = {}  # type: Dict[bytes, bytes]
 
         if "system" in reply_url:
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
@@ -307,6 +320,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 properties[b"cluster_size"] = len(cluster_printers_list)
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
+
+        if device and address in self._manual_instances:
+            self.getOutputDeviceManager().addOutputDevice(device)
+            self.addManualDeviceSignal.emit(self.getPluginId(), device.getId(), address, properties)
 
     def _onRemoveDevice(self, device_id):
         device = self._discovered_devices.pop(device_id, None)

@@ -242,8 +242,6 @@ class CuraApplication(QtApplication):
 
         self._update_platform_activity_timer = None
 
-        self._need_to_show_user_agreement = True
-
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
 
         self._plugins_loaded = False
@@ -455,7 +453,6 @@ class CuraApplication(QtApplication):
             # Misc.:
             "ConsoleLogger", #You want to be able to read the log if something goes wrong.
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "UserAgreement", #Our lawyers want every user to see this at least once.
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
@@ -527,7 +524,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/expanded_brands", "")
         preferences.addPreference("cura/expanded_types", "")
 
-        self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
+        preferences.addPreference("general/accepted_user_agreement", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -550,13 +547,20 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
-        return self._need_to_show_user_agreement
+        return not self.getPreferences().getValue("general/accepted_user_agreement")
 
+    @pyqtSlot(bool)
     def setNeedToShowUserAgreement(self, set_value = True) -> None:
-        self._need_to_show_user_agreement = set_value
+        self.getPreferences().setValue("general/accepted_user_agreement", not set_value)
+
+    @pyqtSlot(str, str)
+    def writeToLog(self, severity: str, message: str) -> None:
+        Logger.log(severity, message)
 
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.
+    # Except for the 'Decline and close' in the 'User Agreement'-step in the Welcome-pages, that should be a hard exit.
+    @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()

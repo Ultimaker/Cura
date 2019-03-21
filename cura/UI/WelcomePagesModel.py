@@ -18,6 +18,7 @@ class WelcomePagesModel(ListModel):
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
 
+
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 

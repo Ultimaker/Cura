@@ -560,23 +560,6 @@
             }
         }
     },
-    "UserAgreement": {
-        "package_info": {
-            "package_id": "UserAgreement",
-            "package_type": "plugin",
-            "display_name": "User Agreement",
-            "description": "Ask the user once if he/she agrees with our license.",
-            "package_version": "1.0.1",
-            "sdk_version": "6.0",
-            "website": "https://ultimaker.com",
-            "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
-                "email": "plugins@ultimaker.com",
-                "website": "https://ultimaker.com"
-            }
-        }
-    },
     "VersionUpgrade21to22": {
         "package_info": {
             "package_id": "VersionUpgrade21to22",
