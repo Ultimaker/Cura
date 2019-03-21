@@ -49,12 +49,6 @@ ScrollView
         updateCurrentItemUponSectionChange()
     }
 
-    background: Rectangle
-    {
-        anchors.fill: parent
-        color: "white"
-    }
-
     ListView
     {
         id: machineList
