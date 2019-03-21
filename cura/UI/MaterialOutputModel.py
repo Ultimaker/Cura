@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtProperty, QObject
 
 
 class MaterialOutputModel(QObject):
-    def __init__(self, guid: str, type: str, color: str, brand: str, name: str, parent = None):
+    def __init__(self, guid: str, type: str, color: str, brand: str, name: str, parent = None) -> None:
         super().__init__(parent)
         self._guid = guid
         self._type = type

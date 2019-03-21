@@ -29,7 +29,6 @@ class GlobalStacksModel(ListModel):
         self.addRoleName(self.HasRemoteConnectionRole, "hasRemoteConnection")
         self.addRoleName(self.MetaDataRole, "metadata")
         self.addRoleName(self.DiscoverySourceRole, "discoverySource")
-        self._container_stacks = []
 
         self._change_timer = QTimer()
         self._change_timer.setInterval(200)
@@ -40,7 +39,6 @@ class GlobalStacksModel(ListModel):
         CuraContainerRegistry.getInstance().containerAdded.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerMetaDataChanged.connect(self._onContainerChanged)
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
-        self._filter_dict = {}
         self._updateDelayed()
 
     ##  Handler for container added/removed events from registry
