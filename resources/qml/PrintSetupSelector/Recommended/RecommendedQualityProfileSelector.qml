@@ -137,7 +137,7 @@ Item
             if (availableMin == -1 || (availableMin == 0 && availableMax == 0))
             {
                 // Do not use Math.round otherwise the tickmarks won't be aligned
-                qualityModel.qualitySliderMarginRight = settingsColumnWidth
+                qualityModel.qualitySliderMarginRight = settingsColumnWidth / 2
             }
             else if (availableMin == availableMax)
             {
