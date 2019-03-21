@@ -3730,7 +3730,7 @@ msgstr "&Widok"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:13
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
-msgstr "&Opcje"
+msgstr "Opcje"
 
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:55
 msgctxt "@title:menu menubar:toplevel"
