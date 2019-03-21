@@ -27,17 +27,10 @@ from UM.Version import Version
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
-<<<<<<< HEAD
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
     from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-=======
-from typing import Optional, TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from cura.Settings.GlobalStack import GlobalStack
-
->>>>>>> origin/WIP_onboarding
 
 i18n_catalog = i18nCatalog("cura")
 
