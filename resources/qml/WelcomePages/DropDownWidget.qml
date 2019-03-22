@@ -21,14 +21,14 @@ Item
 
     id: base
 
-    implicitWidth: 200
-    height: header.contentShown ? (header.height + contentRectangle.height + 30) : header.height
+    implicitWidth: 200 * screenScaleFactor
+    height: header.contentShown ? (header.height + contentRectangle.height) : header.height
 
     property var contentComponent: null
     property alias contentItem: contentLoader.item
 
     property alias title: header.title
-    property bool contentShown: false
+    property bool contentShown: false  // indicates if this dropdown widget is expanded to show its content
 
     signal clicked()
 
@@ -59,7 +59,7 @@ Item
         anchors.top: header.bottom
         anchors.left: header.left
         anchors.right: header.right
-        height: contentLoader.height + 2
+        height: contentLoader.height
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
