@@ -30,10 +30,10 @@ class ImageReaderUI(QObject):
         self._width = self.default_width
         self._depth = self.default_depth
 
-        self.base_height = 1
-        self.peak_height = 10
+        self.base_height = 0.4
+        self.peak_height = 2.5
         self.smoothing = 1
-        self.image_color_invert = False;
+        self.image_color_invert = True;
 
         self._ui_lock = threading.Lock()
         self._cancelled = False

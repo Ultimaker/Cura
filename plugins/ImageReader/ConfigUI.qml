@@ -123,7 +123,7 @@ UM.Dialog
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh.")
+            text: catalog.i18nc("@info:tooltip","By default, black pixels represent high points on the mesh and white pixels represent low points on the mesh. Change this option to reverse the behavior such that white pixels represent high points on the mesh and black pixels represent low points on the mesh. ")
             Row {
                 width: parent.width
 
@@ -136,7 +136,7 @@ UM.Dialog
                 ComboBox {
                     id: image_color_invert
                     objectName: "Image_Color_Invert"
-                    model: [ catalog.i18nc("@item:inlistbox","Lighter is higher"), catalog.i18nc("@item:inlistbox","Darker is higher") ]
+                    model: [ catalog.i18nc("@item:inlistbox","Darker is higher"), catalog.i18nc("@item:inlistbox","Lighter is higher") ]
                     width: 180 * screenScaleFactor
                     onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
                 }
