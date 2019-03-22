@@ -1,25 +1,25 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+import os
 from queue import Queue
 from threading import Event, Thread
 from time import time
-import os
+from typing import Optional, TYPE_CHECKING, Dict
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
+
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from cura.Settings.GlobalStack import GlobalStack # typing
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.PluginRegistry import PluginRegistry
 from UM.Signal import Signal, signalemitter
@@ -28,9 +28,9 @@ from UM.Version import Version
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
-from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from PyQt5.QtNetwork import QNetworkReply
     from cura.Settings.GlobalStack import GlobalStack
 
 
@@ -255,7 +255,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         name_request = QNetworkRequest(url)
         self._network_manager.get(name_request)
 
-    def _onNetworkRequestFinished(self, reply):
+    def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
         address = ""
