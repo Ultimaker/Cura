@@ -134,8 +134,8 @@ UM.Dialog
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ComboBox {
-                    id: image_color_invert
-                    objectName: "Image_Color_Invert"
+                    id: lighter_is_higher
+                    objectName: "Lighter_Is_Higher"
                     model: [ catalog.i18nc("@item:inlistbox","Darker is higher"), catalog.i18nc("@item:inlistbox","Lighter is higher") ]
                     width: 180 * screenScaleFactor
                     onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
