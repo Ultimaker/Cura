@@ -18,7 +18,9 @@ Item
 
     id: addPrinterByIpScreen
 
+    // Whether an IP address is currently being resolved.
     property bool hasSentRequest: false
+    // Whether the IP address user entered can be resolved as a recognizable printer.
     property bool haveConnection: false
 
     Label
