@@ -5,10 +5,7 @@ from . import XmlMaterialProfile
 from . import XmlMaterialUpgrader
 
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
-from UM.i18n import i18nCatalog
 
-
-catalog = i18nCatalog("cura")
 upgrader = XmlMaterialUpgrader.XmlMaterialUpgrader()
 
 
@@ -19,7 +16,7 @@ def getMetaData():
             "mimetype": "application/x-ultimaker-material-profile"
         },
         "version_upgrade": {
-            ("materials", 1000000): ("materials", 1000004, upgrader.upgradeMaterial),
+            ("materials", 1000000): ("materials", 1000007, upgrader.upgradeMaterial),
         },
         "sources": {
             "materials": {

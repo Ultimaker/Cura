@@ -13,6 +13,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility");
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
+
     property int scrollToIndex: 0
 
     signal scrollToSection( string key )
@@ -23,12 +25,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
-
-        // After calling this function update Setting visibility preset combobox.
-        // Reset should set "Basic" setting preset
-        visibilityPreset.setBasicPreset()
-
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
@@ -53,7 +50,7 @@ UM.PreferencesPage
                 {
                     return Qt.Unchecked
                 }
-                else if(definitionsModel.visibleCount == definitionsModel.rowCount(null))
+                else if(definitionsModel.visibleCount == definitionsModel.count)
                 {
                     return Qt.Checked
                 }
@@ -71,20 +68,11 @@ UM.PreferencesPage
                 {
                     if(parent.checkedState == Qt.Unchecked || parent.checkedState == Qt.PartiallyChecked)
                     {
-                        definitionsModel.setAllVisible(true)
+                        definitionsModel.setAllExpandedVisible(true)
                     }
                     else
                     {
-                        definitionsModel.setAllVisible(false)
-                    }
-
-                    // After change set "Custom" option
-
-                    // If already "Custom" then don't do nothing
-                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
-                    {
-                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
+                        definitionsModel.setAllExpandedVisible(false)
                     }
                 }
             }
@@ -110,83 +98,35 @@ UM.PreferencesPage
 
         ComboBox
         {
-            property int customOptionValue: 100
-
-            function setBasicPreset()
-            {
-                var index = 0
-                for(var i = 0; i < presetNamesList.count; ++i)
-                {
-                    if(model.get(i).text == "Basic")
-                    {
-                        index = i;
-                        break;
-                    }
-                }
-
-                visibilityPreset.currentIndex = index
-            }
-
             id: visibilityPreset
-            width: 150
+            width: 150 * screenScaleFactor
             anchors
             {
                 top: parent.top
                 right: parent.right
             }
 
-            model: ListModel
-            {
-                id: presetNamesList
-                Component.onCompleted:
-                {
-                    // returned value is Dictionary  (Ex: {1:"Basic"}, The number 1 is the weight and sort by weight)
-                    var itemsDict = UM.Preferences.getValue("general/visible_settings_preset")
-                    var sorted = [];
-                    for(var key in itemsDict) {
-                        sorted[sorted.length] = key;
-                    }
-
-                    sorted.sort();
-                    for(var i = 0; i < sorted.length; i++) {
-                        presetNamesList.append({text: itemsDict[sorted[i]], value: i});
-                    }
-
-                    // By agreement lets "Custom" option will have value 100
-                    presetNamesList.append({text: "Custom", value: visibilityPreset.customOptionValue});
-                }
-            }
+            model: settingVisibilityPresetsModel.items
+            textRole: "name"
 
             currentIndex:
             {
-                // Load previously selected preset.
-                var text = UM.Preferences.getValue("general/preset_setting_visibility_choice");
-
-
-
-                var index = 0;
-                for(var i = 0; i < presetNamesList.count; ++i)
+                var idx = -1;
+                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
                 {
-                    if(model.get(i).text == text)
+                    if(settingVisibilityPresetsModel.items[i].presetId == settingVisibilityPresetsModel.activePreset)
                     {
-                        index = i;
+                        idx = i;
                         break;
                     }
                 }
-                return index;
+                return idx;
             }
 
             onActivated:
             {
-                // TODO What to do if user is selected "Custom from Combobox" ?
-                if (model.get(index).text == "Custom"){
-                    UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
-                    return
-                }
-
-                var newVisibleSettings = CuraApplication.getVisibilitySettingPreset(model.get(index).text)
-                UM.Preferences.setValue("general/visible_settings", newVisibleSettings)
-                UM.Preferences.setValue("general/preset_setting_visibility_choice", model.get(index).text)
+                var preset_id = settingVisibilityPresetsModel.items[index].presetId
+                settingVisibilityPresetsModel.setActivePreset(preset_id)
             }
         }
 
@@ -216,7 +156,7 @@ UM.PreferencesPage
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
 
                 delegate: Loader
@@ -259,19 +199,7 @@ UM.PreferencesPage
         {
             id: settingVisibilityItem;
 
-            UM.SettingVisibilityItem {
-
-                // after changing any visibility of settings, set the preset to the "Custom" option
-                visibilityChangeCallback : function()
-                {
-                    // If already "Custom" then don't do nothing
-                    if (visibilityPreset.currentIndex != visibilityPreset.model.count - 1)
-                    {
-                        visibilityPreset.currentIndex = visibilityPreset.model.count - 1
-                        UM.Preferences.setValue("general/preset_setting_visibility_choice", visibilityPreset.model.get(visibilityPreset.currentIndex).text)
-                    }
-                }
-            }
+            UM.SettingVisibilityItem { }
         }
     }
 }

@@ -1,0 +1,8 @@
+{
+    "name": "Model Checker",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.1",
+    "api": "6.0",
+    "description": "Checks models and print configuration for possible printing issues and give suggestions.",
+    "i18n-catalog": "cura"
+}

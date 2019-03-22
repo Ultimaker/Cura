@@ -9,13 +9,18 @@
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
-        "preferred_variant": "*0.4*",
+        "preferred_variant_name": "0.4 mm",
         "has_variants": true,
         "has_materials": true,
         "has_machine_materials": true,
         "has_machine_quality": true,
         "first_start_actions": [],
-        "supported_actions":["UpgradeFirmware"]
+        "supported_actions": [],
+        "machine_extruder_trains":
+        {
+            "0": "ultimaker2_plus_extruder_0"
+        },
+        "firmware_file": "MarlinUltimaker2plus.hex"
     },
 
     "overrides": {

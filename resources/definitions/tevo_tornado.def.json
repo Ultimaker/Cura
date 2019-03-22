@@ -1,0 +1,97 @@
+{
+    "name": "Tevo Tornado",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "nean",
+        "manufacturer": "Tevo",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains": {
+            "0": "tevo_tornado_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { 
+            "default_value": "Tevo Tornado"
+        },
+        "machine_width": {
+            "default_value": 300
+        },
+        "machine_height": {
+            "default_value": 400
+        },
+        "machine_depth": {
+            "default_value": 300
+        },
+        "machine_center_is_zero": { 
+            "default_value": false 
+        },
+        "machine_head_polygon": {
+            "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ]
+        },
+        "top_bottom_thickness": {
+            "default_value": 1.2
+        },
+        "top_bottom_pattern": {
+            "default_value": "lines"
+        },
+        "infill_pattern": {
+            "value": "'triangles'"
+        },
+        "retraction_enable": {
+            "default_value": true
+        },
+        "retraction_amount": {
+            "default_value": 6.8
+        },
+        "retraction_speed": {
+            "default_value": 40
+        },
+        "cool_min_layer_time": {
+            "default_value": 10
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "skirt_line_count": {
+            "default_value": 4
+        },
+        "skirt_gap": {
+            "default_value": 10
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "gantry_height": {
+            "default_value": 30
+        },
+        "acceleration_enabled": {
+            "default_value": false
+        },
+        "machine_acceleration": { 
+            "default_value": 1500 
+        },
+        "jerk_enabled": {
+            "default_value": false
+        },
+        "machine_max_jerk_xy": { 
+            "default_value": 6 
+        },
+        "machine_gcode_flavor": { 
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "; start_gcode\nM117 Start Clean        ; Indicate nozzle clean in progress on LCD\n;\nM104 S{material_print_temperature_layer_0} \nM109 S{material_print_temperature_layer_0} \nM109 R{material_print_temperature_layer_0} \n;\nM107                    ; Turn layer fan off\nG21                     ; Set to metric [change to G20 if you want Imperial]\nG90                     ; Force coordinates to be absolute relative to the origin\nG28                     ; Home X/Y/Z axis\n;\nG1 X3 Y1 Z15 F9000      ; Move safe Z height to shear strings\nG0 X1 Y1 Z0.2 F9000     ; Move in 1mm from edge and up [z] 0.2mm\nG92 E0                  ; Set extruder to [0] zero\nG1 X100 E12 F500        ; Extrude 30mm filiment along X axis 100mm long to prime and clean the nozzle\nG92 E0                  ; Reset extruder to [0] zero end of cleaning run\nG1 E-1 F500             ; Retract filiment by 1 mm to reduce string effect\nG1 X180 F4000           ; quick wipe away from the filament line / purge\nM117 End Clean          ; Indicate nozzle clean in progress on LCD\n;\nM117 Printing...\n; Begin printing with sliced GCode after here\n;"
+        },
+        "machine_end_gcode": {
+            "default_value": ";\n; end_gcode\nG92 E0                          ; zero the extruded length\nG1 E-5 F9000                    ; retract\nM104 S0                         ; turn off temperature\nM140 S0                         ; turn off bed\nG91                             ; relative positioning\nG1 E-1 F300                     ; retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+20 E-5 X-20 Y-20 F7200     ; move Z up a bit and retract filament even more\nG1 X320 Y150 F10000             ; move right mid\nM107                            ; turn off layer fan\nM84                             ; disable motors\nG90                             ; absolute positioning\n;\n;EOF"
+        }
+    }
+}

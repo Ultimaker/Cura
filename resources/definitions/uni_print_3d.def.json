@@ -1,0 +1,38 @@
+{
+    "id": "uni_print_3d",
+    "name": "UNI-PRINT-3D",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "Alexander Rössler",
+        "category": "Other",
+        "manufacturer": "TheCoolTool",
+        "file_formats": "text/x-ngc;text/x-gcode",
+        "platform": "uni_print_3d_platform.stl",
+        "platform_offset": [0, 0, 0],
+        "machine_extruder_trains": {
+            "0": "uni_print_3d_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "UNI-PRINT-3D" },
+        "machine_heated_bed": { "default_value": true },
+        "machine_width": { "default_value": 186 },
+        "machine_height": { "default_value": 230 },
+        "machine_depth": { "default_value": 220 },
+        "machine_center_is_zero": { "default_value": true },
+        "machine_nozzle_heat_up_speed": { "default_value": 2.0 },
+        "machine_nozzle_cool_down_speed": { "default_value": 2.0 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+
+        "machine_start_gcode": {
+            "default_value": "M53; enable feed-hold\nG0 Z2.0; always start from the same height to compensate backlash\nG28; move extruder to 0\nM420 R0.0 E0.0 D0.0 P0.1 ; turn the lights on\nM107; turn off fan\nG64 P0.05 Q0.05; path blending settings\nG23; unretract"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 P0 ; turn off hotend\nG0 X-80 Y100; move the extruder out of the way\nM420 R0.0 E0.1 D0.0 P0.6 ; signalize end of print\nM140 P0 ; turn off heatbed\nM65 P16 ; turn off external fan\nM65 P15 ; turn off power"
+        }
+    }
+}

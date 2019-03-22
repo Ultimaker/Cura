@@ -10,7 +10,10 @@
         "platform": "tam_series1.stl",
         "platform_offset": [-580.0, -6.23, 253.5],
         "has_materials": false,
-        "supported_actions":["UpgradeFirmware"]
+        "machine_extruder_trains":
+        {
+            "0": "tam_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "TypeAMachines" },
@@ -43,7 +46,6 @@
 
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
 
-        "material_diameter": { "default_value": 1.75 },
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_nozzle_head_distance": { "default_value": 3 },
         "machine_nozzle_expansion_angle": { "default_value": 45 },

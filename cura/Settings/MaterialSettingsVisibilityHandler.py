@@ -3,6 +3,7 @@
 
 import UM.Settings.Models.SettingVisibilityHandler
 
+
 class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)

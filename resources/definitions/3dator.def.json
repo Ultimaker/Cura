@@ -7,14 +7,16 @@
         "author": "3Dator GmbH",
         "manufacturer": "3Dator GmbH",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "supports_usb_connection": true,
-        "platform": "3dator_platform.stl"
+        "platform": "3dator_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "3dator_extruder_0"
+        }
     },
 
     "overrides": {
         "machine_name": { "default_value": "3Dator" },
-        "machine_nozzle_size": { "default_value": 0.5 },
         "speed_travel": { "default_value": 120 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "infill_sparse_density": { "default_value": 20 },
@@ -30,7 +32,6 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_depth": { "default_value": 170 },
         "machine_width": { "default_value": 180 },
-        "material_diameter": { "default_value": 1.75 },
         "retraction_speed": {"default_value":100},
         "cool_fan_speed_min": {"default_value": 20},
         "cool_fan_speed_max": {"default_value": 70},

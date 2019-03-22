@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.1
 
 import UM 1.3 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 import "Menus"
 
@@ -31,7 +31,9 @@ Rectangle
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
 
-    property bool collapsed: true;
+    property bool collapsed: true
+
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     SystemPalette { id: palette }
 
@@ -53,7 +55,6 @@ Rectangle
             {
                 width: control.width
                 height: control.height
-                sourceSize.width: width
                 sourceSize.height: width
                 color:  UM.Theme.getColor("setting_control_text")
                 source: collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
@@ -67,7 +68,7 @@ Rectangle
         Rectangle
             {
                 height: childrenRect.height
-                color: Cura.BuildPlateModel.getItem(index).buildPlateNumber == Cura.BuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
+                color: multiBuildPlateModel.getItem(index).buildPlateNumber == multiBuildPlateModel.activeBuildPlate ? palette.highlight : index % 2 ? palette.base : palette.alternateBase
                 width: parent.width
                 Label
                 {
@@ -75,8 +76,8 @@ Rectangle
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     width: parent.width - 2 * UM.Theme.getSize("default_margin").width - 30
-                    text: Cura.BuildPlateModel.getItem(index) ? Cura.BuildPlateModel.getItem(index).name : "";
-                    color: Cura.BuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
+                    text: multiBuildPlateModel.getItem(index) ? multiBuildPlateModel.getItem(index).name : "";
+                    color: multiBuildPlateModel.activeBuildPlate == index ? palette.highlightedText : palette.text
                     elide: Text.ElideRight
                 }
 
@@ -118,12 +119,11 @@ Rectangle
         ListView
         {
             id: buildPlateListView
-            model: Cura.BuildPlateModel
+            model: multiBuildPlateModel
             width: parent.width
             delegate: buildPlateDelegate
         }
     }
-
 
     Component {
         id: objectDelegate
@@ -200,7 +200,6 @@ Rectangle
         }
     }
 
-
     CheckBox
     {
         id: filterBuildPlateCheckbox
@@ -225,7 +224,7 @@ Rectangle
     {
         id: arrangeAllBuildPlatesButton;
         text: catalog.i18nc("@action:button","Arrange to all build plates");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
@@ -245,7 +244,7 @@ Rectangle
     {
         id: arrangeBuildPlateButton;
         text: catalog.i18nc("@action:button","Arrange current build plate");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
@@ -260,6 +259,4 @@ Rectangle
         }
         action: Cura.Actions.arrangeAll;
     }
-
-
 }

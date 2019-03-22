@@ -7,6 +7,8 @@ import QtQuick.Controls 1.1
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
+import "../Dialogs"
+
 Menu
 {
     id: menu
@@ -61,7 +63,7 @@ Menu
                 }
                 else if (toOpenAsModel)
                 {
-                    CuraApplication.readLocalFile(modelData);
+                    CuraApplication.readLocalFile(modelData, true);
                 }
                 var meshName = backgroundItem.getMeshName(modelData.toString())
                 backgroundItem.hasMesh(decodeURIComponent(meshName))

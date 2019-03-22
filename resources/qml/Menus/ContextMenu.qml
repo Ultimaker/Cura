@@ -7,13 +7,15 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Window 2.1
 
 import UM 1.2 as UM
-import Cura 1.2 as Cura
+import Cura 1.0 as Cura
 
 Menu
 {
     id: base
 
     property bool shouldShowExtruders: machineExtruderCount.properties.value > 1;
+
+    property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
     // Selection-related actions.
     MenuItem { action: Cura.Actions.centerSelection; }
@@ -25,11 +27,11 @@ Menu
     MenuItem { id: extruderHeader; text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount); enabled: false; visible: base.shouldShowExtruders }
     Instantiator
     {
-        model: Cura.ExtrudersModel { id: extrudersModel }
+        model: CuraApplication.getExtrudersModel()
         MenuItem {
             text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
             visible: base.shouldShowExtruders
-            enabled: UM.Selection.hasSelection
+            enabled: UM.Selection.hasSelection && model.enabled
             checkable: true
             checked: Cura.ExtruderManager.selectedObjectExtruders.indexOf(model.id) != -1
             onTriggered: CuraActions.setExtruderForSelection(model.id)
@@ -45,13 +47,13 @@ Menu
 
     Instantiator
     {
-        model: Cura.BuildPlateModel
+        model: base.multiBuildPlateModel
         MenuItem {
             enabled: UM.Selection.hasSelection
-            text: Cura.BuildPlateModel.getItem(index).name;
-            onTriggered: CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.getItem(index).buildPlateNumber);
+            text: base.multiBuildPlateModel.getItem(index).name;
+            onTriggered: CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.getItem(index).buildPlateNumber);
             checkable: true
-            checked: Cura.BuildPlateModel.selectionBuildPlates.indexOf(Cura.BuildPlateModel.getItem(index).buildPlateNumber) != -1;
+            checked: base.multiBuildPlateModel.selectionBuildPlates.indexOf(base.multiBuildPlateModel.getItem(index).buildPlateNumber) != -1;
             visible: UM.Preferences.getValue("cura/use_multi_build_plate")
         }
         onObjectAdded: base.insertItem(index, object);
@@ -62,7 +64,7 @@ Menu
         enabled: UM.Selection.hasSelection
         text: "New build plate";
         onTriggered: {
-            CuraActions.setBuildPlateForSelection(Cura.BuildPlateModel.maxBuildPlate + 1);
+            CuraActions.setBuildPlateForSelection(base.multiBuildPlateModel.maxBuildPlate + 1);
             checked = false;
         }
         checkable: true
@@ -101,7 +103,7 @@ Menu
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
     }

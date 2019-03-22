@@ -154,7 +154,7 @@ geometry41core =
         if ((u_show_travel_moves == 0) && ((v_line_type[0] == 8) || (v_line_type[0] == 9))) {
             return;
         }
-        if ((u_show_helpers == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 5) || (v_line_type[0] == 7) || (v_line_type[0] == 10))) {
+        if ((u_show_helpers == 0) && ((v_line_type[0] == 4) || (v_line_type[0] == 5) || (v_line_type[0] == 7) || (v_line_type[0] == 10) || v_line_type[0] == 11)) {
             return;
         }
         if ((u_show_skin == 0) && ((v_line_type[0] == 1) || (v_line_type[0] == 2) || (v_line_type[0] == 3))) {
@@ -256,6 +256,7 @@ fragment41core =
     out vec4 frag_color;
 
     uniform mediump vec4 u_ambientColor;
+    uniform mediump vec4 u_minimumAlbedo;
     uniform highp vec3 u_lightPosition;
 
     void main()
@@ -263,7 +264,7 @@ fragment41core =
         mediump vec4 finalColor = vec4(0.0);
         float alpha = f_color.a;
 
-        finalColor.rgb += f_color.rgb * 0.3;
+        finalColor.rgb += f_color.rgb * 0.2 + u_minimumAlbedo.rgb;
 
         highp vec3 normal = normalize(f_normal);
         highp vec3 light_dir = normalize(u_lightPosition - f_vertex);
@@ -285,6 +286,7 @@ u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
+u_minimumAlbedo = [0.1, 0.1, 0.1, 1.0]
 u_shininess = 20.0
 
 u_show_travel_moves = 0

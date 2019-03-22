@@ -17,9 +17,9 @@ Cura.MachineAction
         property int rightRow: (checkupMachineAction.width * 0.60) | 0
         property bool heatupHotendStarted: false
         property bool heatupBedStarted: false
-        property bool usbConnected: Cura.USBPrinterManager.connectedPrinterList.rowCount() > 0
+        property bool printerConnected: Cura.MachineManager.printerConnected
 
-        UM.I18nCatalog { id: catalog; name:"cura"}
+        UM.I18nCatalog { id: catalog; name: "cura"}
         Label
         {
             id: pageTitle
@@ -86,7 +86,7 @@ Cura.MachineAction
                 anchors.left: connectionLabel.right
                 anchors.top: parent.top
                 wrapMode: Text.WordWrap
-                text: checkupMachineAction.usbConnected ? catalog.i18nc("@info:status","Connected"): catalog.i18nc("@info:status","Not connected")
+                text: checkupMachineAction.printerConnected ? catalog.i18nc("@info:status","Connected"): catalog.i18nc("@info:status","Not connected")
             }
             //////////////////////////////////////////////////////////
             Label
@@ -97,7 +97,7 @@ Cura.MachineAction
                 anchors.top: connectionLabel.bottom
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label","Min endstop X: ")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             Label
             {
@@ -107,7 +107,7 @@ Cura.MachineAction
                 anchors.top: connectionLabel.bottom
                 wrapMode: Text.WordWrap
                 text: manager.xMinEndstopTestCompleted ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             //////////////////////////////////////////////////////////////
             Label
@@ -118,7 +118,7 @@ Cura.MachineAction
                 anchors.top: endstopXLabel.bottom
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label","Min endstop Y: ")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             Label
             {
@@ -128,7 +128,7 @@ Cura.MachineAction
                 anchors.top: endstopXLabel.bottom
                 wrapMode: Text.WordWrap
                 text: manager.yMinEndstopTestCompleted ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             /////////////////////////////////////////////////////////////////////
             Label
@@ -139,7 +139,7 @@ Cura.MachineAction
                 anchors.top: endstopYLabel.bottom
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label","Min endstop Z: ")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             Label
             {
@@ -149,7 +149,7 @@ Cura.MachineAction
                 anchors.top: endstopYLabel.bottom
                 wrapMode: Text.WordWrap
                 text: manager.zMinEndstopTestCompleted ? catalog.i18nc("@info:status","Works") : catalog.i18nc("@info:status","Not checked")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             ////////////////////////////////////////////////////////////
             Label
@@ -161,7 +161,7 @@ Cura.MachineAction
                 anchors.top: endstopZLabel.bottom
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label","Nozzle temperature check: ")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             Label
             {
@@ -171,7 +171,7 @@ Cura.MachineAction
                 anchors.left: nozzleTempLabel.right
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@info:status","Not checked")
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             Item
             {
@@ -181,7 +181,7 @@ Cura.MachineAction
                 anchors.top: nozzleTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").width/2)
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
                 Button
                 {
                     text: checkupMachineAction.heatupHotendStarted ? catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
@@ -209,7 +209,7 @@ Cura.MachineAction
                 wrapMode: Text.WordWrap
                 text: manager.hotendTemperature + "°C"
                 font.bold: true
-                visible: checkupMachineAction.usbConnected
+                visible: checkupMachineAction.printerConnected
             }
             /////////////////////////////////////////////////////////////////////////////
             Label
@@ -221,7 +221,7 @@ Cura.MachineAction
                 anchors.top: nozzleTempLabel.bottom
                 wrapMode: Text.WordWrap
                 text: catalog.i18nc("@label","Build plate temperature check:")
-                visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
+                visible: checkupMachineAction.printerConnected && manager.hasHeatedBed
             }
 
             Label
@@ -232,7 +232,7 @@ Cura.MachineAction
                 anchors.left: bedTempLabel.right
                 wrapMode: Text.WordWrap
                 text: manager.bedTestCompleted ? catalog.i18nc("@info:status","Not checked"): catalog.i18nc("@info:status","Checked")
-                visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
+                visible: checkupMachineAction.printerConnected && manager.hasHeatedBed
             }
             Item
             {
@@ -242,7 +242,7 @@ Cura.MachineAction
                 anchors.top: bedTempLabel.top
                 anchors.left: bedTempStatus.right
                 anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").width/2)
-                visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
+                visible: checkupMachineAction.printerConnected && manager.hasHeatedBed
                 Button
                 {
                     text: checkupMachineAction.heatupBedStarted ?catalog.i18nc("@action:button","Stop Heating") : catalog.i18nc("@action:button","Start Heating")
@@ -270,7 +270,7 @@ Cura.MachineAction
                 wrapMode: Text.WordWrap
                 text: manager.bedTemperature + "°C"
                 font.bold: true
-                visible: checkupMachineAction.usbConnected && manager.hasHeatedBed
+                visible: checkupMachineAction.printerConnected && manager.hasHeatedBed
             }
             Label
             {
