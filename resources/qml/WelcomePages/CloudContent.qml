@@ -56,7 +56,7 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text: catalog.i18nc("@text", "The next generation 3D printing workflow")
                 textFormat: Text.RichText
-                color: UM.Theme.getColor("text_light_blue")
+                color: UM.Theme.getColor("primary")
                 font: UM.Theme.getFont("medium")
                 renderType: Text.NativeRendering
             }
@@ -112,7 +112,7 @@ Item
         shadowEnabled: false
         color: "transparent"
         hoverColor: "transparent"
-        textHoverColor: UM.Theme.getColor("text_light_blue")
+        textHoverColor: UM.Theme.getColor("primary")
         fixedWidthMode: true
         onClicked: Cura.API.account.login()
     }
