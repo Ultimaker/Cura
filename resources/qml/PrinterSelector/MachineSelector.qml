@@ -159,6 +159,7 @@ Cura.ExpandablePopup
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Add printer")
+                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - 2.5 * UM.Theme.getSize("default_margin").width
                 onClicked:
                 {
                     toggleContent()
@@ -171,6 +172,7 @@ Cura.ExpandablePopup
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Manage printers")
+                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - 2.5 * UM.Theme.getSize("default_margin").width
                 onClicked:
                 {
                     toggleContent()
