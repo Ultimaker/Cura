@@ -31,7 +31,7 @@ Item
     // Area where the cloud contents can be put. Pictures, texts and such.
     Item
     {
-        id: cloudContentsArea
+        id: contentsArea
         anchors.top: titleLabel.bottom
         anchors.bottom: getStartedButton.top
         anchors.left: parent.left
