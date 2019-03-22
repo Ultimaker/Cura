@@ -19,7 +19,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: 40
+        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Ultimaker Cloud")
@@ -101,7 +101,7 @@ Item
         id: finishButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Finish")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
@@ -113,7 +113,7 @@ Item
         id: createAccountButton
         anchors.left: parent.left
         anchors.verticalCenter: finishButton.verticalCenter
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Create an account")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true

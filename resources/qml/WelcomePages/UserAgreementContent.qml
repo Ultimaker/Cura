@@ -58,7 +58,7 @@ Item
         id: agreeButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Agree")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
@@ -75,7 +75,7 @@ Item
         id: declineButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Decline and close")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
