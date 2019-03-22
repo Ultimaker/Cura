@@ -88,7 +88,7 @@ class DiscoveredPrintersModel(QObject):
     discoveredPrintersChanged = pyqtSignal()
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
-    def discovered_printers(self) -> "List[DiscoveredPrinter]":
+    def discovered_printers(self) -> List["DiscoveredPrinter"]:
         item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
         item_list.sort(key = lambda x: x.name)
         return item_list
