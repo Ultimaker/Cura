@@ -110,7 +110,6 @@ Item
         source: parent
         horizontalOffset: base.shadowOffset
         verticalOffset: base.shadowOffset
-        visible: true
         color: UM.Theme.getColor("monitor_shadow")
         transparentBorder: true
         // Should always be drawn behind the background.
