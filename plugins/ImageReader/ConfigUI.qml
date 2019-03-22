@@ -123,7 +123,7 @@ UM.Dialog
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","By default, black pixels represent high points on the mesh and white pixels represent low points on the mesh. Change this option to reverse the behavior such that white pixels represent high points on the mesh and black pixels represent low points on the mesh. ")
+            text: catalog.i18nc("@info:tooltip","For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model.")
             Row {
                 width: parent.width
 
