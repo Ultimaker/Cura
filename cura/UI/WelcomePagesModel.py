@@ -49,8 +49,8 @@ class WelcomePagesModel(ListModel):
         self._pages.append({"id": "data_collections",
                             "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
                             })
-        self._pages.append({"id": "add_printer_by_selection",
-                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterBySelectionContent.qml"),
+        self._pages.append({"id": "add_network_or_local_printer",
+                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
                             })
         self._pages.append({"id": "add_printer_by_ip",
                             "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
