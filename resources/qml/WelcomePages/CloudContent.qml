@@ -28,28 +28,34 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Column
+    // Area where the cloud contents can be put. Pictures, texts and such.
+    Item
     {
+        id: cloudContentsArea
         anchors.top: titleLabel.bottom
-        anchors.topMargin: 80
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: finishButton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
 
-        spacing: 60
-
-        Image
-        {
-            id: cloudImage
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: UM.Theme.getImage("first_run_ultimaker_cloud")
-        }
-
+        // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
+        // the cloud contents area.
         Column
         {
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.centerIn: parent
+            width: childrenRect.width
+            height: childrenRect.height
 
-            spacing: 30
+            spacing: 20 * screenScaleFactor
 
-            Label
+            Image  // Cloud image
+            {
+                id: cloudImage
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: UM.Theme.getImage("first_run_ultimaker_cloud")
+            }
+
+            Label  // A title-ish text
             {
                 id: highlightTextLabel
                 anchors.horizontalCenter: parent.horizontalCenter
@@ -61,15 +67,26 @@ Item
                 renderType: Text.NativeRendering
             }
 
-            Label
+            Label  // A number of text items
             {
                 id: textLabel
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: {
-                    var t = "<p>- Send print jobs to Ultimaker printers outside your local network<p>"
-                    t += "<p>- Store your Ultimaker Cura settings in the cloud for use anywhere</p>"
-                    t += "<p>- Get exclusive access to material profiles from leading brands</p>"
-                    catalog.i18nc("@text", t)
+                text:
+                {
+                    // There are 3 text items, each of which is translated separately as a single piece of text.
+                    var full_text = ""
+                    var t = ""
+
+                    t = catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside your local network")
+                    full_text += "<p>" + t + "</p>"
+
+                    t = catalog.i18nc("@text", "- Store your Ultimaker Cura settings in the cloud for use anywhere")
+                    full_text += "<p>" + t + "</p>"
+
+                    t = catalog.i18nc("@text", "- Get exclusive access to material profiles from leading brands")
+                    full_text += "<p>" + t + "</p>"
+
+                    return full_text
                 }
                 textFormat: Text.RichText
                 font: UM.Theme.getFont("medium")
@@ -78,6 +95,7 @@ Item
         }
     }
 
+    // Bottom buttons go here
     Cura.PrimaryButton
     {
         id: finishButton
