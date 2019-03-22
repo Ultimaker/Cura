@@ -41,7 +41,8 @@ Item
         {
             currentStep++
         }
-        else {
+        else
+        {
             passLastPage()
         }
     }
