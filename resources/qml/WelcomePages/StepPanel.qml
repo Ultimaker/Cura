@@ -72,10 +72,6 @@ Item
         {
             currentStep = page_index
         }
-        else
-        {
-            console.log("Error: cannot find page with page_id = [", page_id, "]")
-        }
     }
 
     onVisibleChanged:
