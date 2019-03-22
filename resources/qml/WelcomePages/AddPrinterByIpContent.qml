@@ -18,9 +18,9 @@ Item
 
     id: addPrinterByIpScreen
 
-    property bool hasSentRequest: false
-    property bool haveConnection: false
-    property bool deviceUnresponsive: false
+    property bool hasSentRequest: false      // True when a request has been sent to the device at the typed address.
+    property bool haveConnection: false      // True when there is a connection with a machine, it can then be added.
+    property bool deviceUnresponsive: false  // True when a request comes back, but the device hasn't responded.
 
     Label
     {
@@ -126,7 +126,7 @@ Item
                 }
             }
 
-            Rectangle
+            Item
             {
                 width: parent.width
                 anchors.top: userInputFields.bottom
@@ -157,7 +157,7 @@ Item
                     }
                 }
 
-                Rectangle
+                Item
                 {
                     id: printerInfoLabels
                     anchors.top: parent.top
