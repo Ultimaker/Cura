@@ -116,7 +116,7 @@ Item
                 }
             }
 
-            Rectangle
+            Item
             {
                 width: parent.width
                 anchors.top: userInputFields.bottom
@@ -133,7 +133,7 @@ Item
                     text: catalog.i18nc("@label", "The printer at this address has not responded yet.")
                 }
 
-                Rectangle
+                Item
                 {
                     id: printerInfoLabels
                     anchors.top: parent.top
@@ -203,8 +203,6 @@ Item
         width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
         onClicked: base.gotoPage("add_printer_by_selection")
-
-        enabled: true
     }
 
     Cura.PrimaryButton
