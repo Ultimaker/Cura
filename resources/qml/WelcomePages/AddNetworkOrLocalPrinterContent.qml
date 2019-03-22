@@ -19,7 +19,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: 40
+        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Add a printer")
@@ -67,7 +67,7 @@ Item
 
                 onAddByIpButtonClicked:
                 {
-                    base.gotoPage("add_printer_by_ip")
+                    base.goToPage("add_printer_by_ip")
                 }
             }
         }
@@ -101,8 +101,6 @@ Item
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
-
-                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
             }
         }
     }
@@ -112,7 +110,7 @@ Item
         id: nextButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 40
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         enabled:
         {
             // If the network printer dropdown is expanded, make sure that there is a selected item
@@ -148,7 +146,7 @@ Item
             // TODO: implement machine actions
 
             // If we have created a machine, go to the last page, which is the "cloud" page.
-            base.gotoPage("cloud")
+            base.goToPage("cloud")
         }
     }
 }

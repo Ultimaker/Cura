@@ -193,8 +193,6 @@
 
         "window_disabled_background": [0, 0, 0, 255],
 
-        "text_light_blue": [50, 130, 255, 255],
-
         "text": [25, 25, 25, 255],
         "text_detail": [174, 174, 174, 128],
         "text_link": [50, 130, 255, 255],
@@ -508,6 +506,8 @@
         "button": [4, 4],
         "button_icon": [2.5, 2.5],
         "button_lining": [0, 0],
+
+        "welcome_pages_default_margin": [2.5, 2.5],
 
         "action_button": [15.0, 2.5],
         "action_button_icon": [1.0, 1.0],

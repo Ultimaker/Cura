@@ -73,10 +73,9 @@ Item
 
                 Component.onCompleted:
                 {
-                    // select the first one that's not "unknown" by default.
+                    // Select the first one that's not "unknown" by default.
                     for (var i = 0; i < count; i++)
                     {
-
                         if (!model[i].is_unknown_machine_type)
                         {
                             currentIndex = i

@@ -18,15 +18,18 @@ Item
 
     id: addPrinterByIpScreen
 
-    property bool hasSentRequest: false      // True when a request has been sent to the device at the typed address.
-    property bool haveConnection: false      // True when there is a connection with a machine, it can then be added.
-    property bool deviceUnresponsive: false  // True when a request comes back, but the device hasn't responded.
+    // Whether an IP address is currently being resolved.
+    property bool hasSentRequest: false
+    // Whether the IP address user entered can be resolved as a recognizable printer.
+    property bool haveConnection: false
+    // True when a request comes back, but the device hasn't responded.
+    property bool deviceUnresponsive: false
 
     Label
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
+        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Add printer by IP address")
@@ -240,13 +243,11 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Cancel")
         width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
-        onClicked: base.gotoPage("add_printer_by_selection")
-
-        enabled: true
+        onClicked: base.goToPage("add_printer_by_selection")
     }
 
     Cura.PrimaryButton
@@ -254,7 +255,7 @@ Item
         id: connectButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Connect")
         width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
