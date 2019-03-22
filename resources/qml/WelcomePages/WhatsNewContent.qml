@@ -35,7 +35,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.bottomMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
-        width: parent.width * 3 / 4
+        width: (parent.width * 3 / 4) | 0
 
         border.color: "#dfdfdf"
         border.width: 1
