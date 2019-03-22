@@ -125,6 +125,8 @@ class DiscoveredPrintersModel(QObject):
         del self._discovered_printer_by_ip_dict[ip_address]
         self.discoveredPrintersChanged.emit()
 
+    # A convenience function for QML to create a machine (GlobalStack) out of the given discovered printer.
+    # This function invokes the given discovered printer's "create_callback" to do this.
     @pyqtSlot("QVariant")
     def createMachineFromDiscoveredPrinter(self, discovered_printer: "DiscoveredPrinter") -> None:
         discovered_printer.create_callback(discovered_printer.getKey())
