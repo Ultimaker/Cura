@@ -18,7 +18,9 @@ Item
 
     id: addPrinterByIpScreen
 
+    // Whether an IP address is currently being resolved.
     property bool hasSentRequest: false
+    // Whether the IP address user entered can be resolved as a recognizable printer.
     property bool haveConnection: false
 
     Label
@@ -116,7 +118,7 @@ Item
                 }
             }
 
-            Rectangle
+            Item
             {
                 width: parent.width
                 anchors.top: userInputFields.bottom
@@ -133,7 +135,7 @@ Item
                     text: catalog.i18nc("@label", "The printer at this address has not responded yet.")
                 }
 
-                Rectangle
+                Item
                 {
                     id: printerInfoLabels
                     anchors.top: parent.top
@@ -202,9 +204,7 @@ Item
         text: catalog.i18nc("@button", "Cancel")
         width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
-        onClicked: base.gotoPage("add_printer_by_selection")
-
-        enabled: true
+        onClicked: base.goToPage("add_printer_by_selection")
     }
 
     Cura.PrimaryButton

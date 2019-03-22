@@ -31,7 +31,7 @@ Item
     signal showNextPage()
     signal showPreviousPage()
     signal passLastPage()  // Emitted when there is no more page to show
-    signal gotoPage(string page_id)  // Go to a specific page by the given page_id.
+    signal goToPage(string page_id)  // Go to a specific page by the given page_id.
 
     onShowNextPage:
     {
@@ -52,7 +52,7 @@ Item
         }
     }
 
-    onGotoPage:
+    onGoToPage:
     {
         // find the page index
         var page_index = -1
@@ -108,7 +108,6 @@ Item
         source: parent
         horizontalOffset: base.shadowOffset
         verticalOffset: base.shadowOffset
-        visible: true
         color: UM.Theme.getColor("monitor_shadow")
         transparentBorder: true
         // Should always be drawn behind the background.
