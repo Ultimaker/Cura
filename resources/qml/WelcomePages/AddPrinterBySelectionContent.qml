@@ -67,7 +67,7 @@ Item
 
                 onAddByIpButtonClicked:
                 {
-                    base.gotoPage("add_printer_by_ip")
+                    base.goToPage("add_printer_by_ip")
                 }
             }
         }
@@ -148,7 +148,7 @@ Item
             // TODO: implement machine actions
 
             // If we have created a machine, go to the last page, which is the "cloud" page.
-            base.gotoPage("cloud")
+            base.goToPage("cloud")
         }
     }
 }
