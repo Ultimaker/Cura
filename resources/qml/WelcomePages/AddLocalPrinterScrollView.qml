@@ -16,10 +16,13 @@ ScrollView
 {
     id: base
 
+    // The currently selected machine item in the local machine list.
     property var currentItem: (machineList.currentIndex >= 0)
                               ? machineList.model.getItem(machineList.currentIndex)
                               : null
+    // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
     property string currentSection: preferredCategory
+    // By default (when this list shows up) we always expand the "Ultimaker" section.
     property string preferredCategory: "Ultimaker"
 
     ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
