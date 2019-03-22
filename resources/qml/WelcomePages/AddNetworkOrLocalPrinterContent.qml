@@ -101,8 +101,6 @@ Item
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
-
-                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
             }
         }
     }
