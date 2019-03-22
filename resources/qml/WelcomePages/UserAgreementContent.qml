@@ -12,36 +12,37 @@ import Cura 1.1 as Cura
 //
 Item
 {
-    Column
+    UM.I18nCatalog { id: catalog; name: "cura" }
+
+    Label
     {
+        id: titleLabel
         anchors.top: parent.top
+        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.horizontalCenter: parent.horizontalCenter
+        horizontalAlignment: Text.AlignHCenter
+        text: catalog.i18nc("@label", "User Agreement")
+        color: UM.Theme.getColor("primary_button")
+        font: UM.Theme.getFont("large_bold")
+        renderType: Text.NativeRendering
+    }
+
+    Item  // Area for pictures and texts
+    {
+        anchors.top: titleLabel.bottom
+        anchors.bottom: agreeButton.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 20
-
-        UM.I18nCatalog { id: catalog; name: "cura" }
-
-        spacing: 40
-
-        // Placeholder
-        Label { text: " " }
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
 
         Label
         {
-            id: titleLabel
-            anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@label", "User Agreement")
-            color: UM.Theme.getColor("primary_button")
-            font: UM.Theme.getFont("large_bold")
-            renderType: Text.NativeRendering
-        }
-
-        Label
-        {
-            width: parent.width * 2 / 3
             id: disclaimerLineLabel
-            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.centerIn: parent
+            anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+
+            width: (parent.width * 2 / 3) | 0
+
             text: "<p><b>Disclaimer by Ultimaker</b></p>"
                 + "<p>Please read this disclaimer carefully.</p>"
                 + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and perfoemance of Ultimaker software is with you.</p>"

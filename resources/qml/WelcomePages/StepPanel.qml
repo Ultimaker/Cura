@@ -39,7 +39,8 @@ Item
         {
             currentStep++
         }
-        else {
+        else
+        {
             passLastPage()
         }
     }
@@ -68,10 +69,6 @@ Item
         if (page_index >= 0)
         {
             currentStep = page_index
-        }
-        else
-        {
-            console.log("Error: cannot find page with page_id = [", page_id, "]")
         }
     }
 

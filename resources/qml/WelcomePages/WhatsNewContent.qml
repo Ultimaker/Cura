@@ -32,8 +32,8 @@ Item
     {
         anchors.top: titleLabel.bottom
         anchors.bottom: getStartedButton.top
-        anchors.topMargin: 40
-        anchors.bottomMargin: 40
+        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.bottomMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width * 3 / 4
 

@@ -74,7 +74,9 @@ Item
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.margins: 1
+            // Keep a small margin with the Rectangle container so its content will not overlap with the Rectangle
+            // border.
+            anchors.margins: UM.Theme.getSize("default_lining").width
             sourceComponent: base.contentComponent != null ? base.contentComponent : emptyComponent
         }
 

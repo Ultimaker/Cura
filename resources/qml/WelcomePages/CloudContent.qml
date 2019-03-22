@@ -120,18 +120,24 @@ Item
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
     }
 
-    Cura.SecondaryButton
+    Label
     {
         id: signInButton
         anchors.left: createAccountButton.right
         anchors.verticalCenter: finishButton.verticalCenter
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Sign in")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        shadowEnabled: false
-        color: "transparent"
-        hoverColor: "transparent"
-        textHoverColor: UM.Theme.getColor("primary")
-        fixedWidthMode: true
-        onClicked: Cura.API.account.login()
+        color: UM.Theme.getColor("secondary_button_text")
+        font: UM.Theme.getFont("medium")
+        renderType: Text.NativeRendering
+
+        MouseArea
+        {
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: Cura.API.account.login()
+            onEntered: parent.font.underline = true
+            onExited: parent.font.underline = false
+        }
     }
 }

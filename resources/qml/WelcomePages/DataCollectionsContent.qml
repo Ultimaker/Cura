@@ -28,30 +28,39 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Column
+    // Area where the cloud contents can be put. Pictures, texts and such.
+    Item
     {
+        id: contentsArea
         anchors.top: titleLabel.bottom
-        anchors.topMargin: 80
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: getStartedButton.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: UM.Theme.getSize("default_margin").width
 
-        spacing: 60
-
-        Image
+        Column
         {
-            id: curaImage
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: UM.Theme.getImage("first_run_share_data")
-        }
+            anchors.centerIn: parent
 
-        Label
-        {
-            id: textLabel
-            anchors.horizontalCenter: parent.horizontalCenter
-            horizontalAlignment: Text.AlignHCenter
-            text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality<br/>and user experience. <a href=\"TODO\">More information</a>")
-            textFormat: Text.RichText
-            font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
+            spacing: UM.Theme.getSize("welcome_pages_default_margin").height
+
+            Image
+            {
+                id: curaImage
+                anchors.horizontalCenter: parent.horizontalCenter
+                source: UM.Theme.getImage("first_run_share_data")
+            }
+
+            Label
+            {
+                id: textLabel
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality<br/>and user experience. <a href=\"TODO\">More information</a>")
+                textFormat: Text.RichText
+                font: UM.Theme.getFont("medium")
+                renderType: Text.NativeRendering
+            }
         }
     }
 

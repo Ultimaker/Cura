@@ -11,30 +11,28 @@ import Cura 1.1 as Cura
 //
 // This component contains the content for the "Welcome" page of the welcome on-boarding process.
 //
-Column
+Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    spacing: 60
+    anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
 
-    // Placeholder
-    Label { text: " " }
-
-    Label
+    Column  // Arrange the items vertically and put everything in the center
     {
-        id: titleLabel
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
-        color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("large_bold")
-        renderType: Text.NativeRendering
-    }
+        anchors.centerIn: parent
+        width: parent.width
+        spacing: UM.Theme.getSize("welcome_pages_default_margin").height
 
-    Column
-    {
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: 40
+        Label
+        {
+            id: titleLabel
+            anchors.horizontalCenter: parent.horizontalCenter
+            horizontalAlignment: Text.AlignHCenter
+            text: catalog.i18nc("@label", "Welcome to Ultimaker Cura")
+            color: UM.Theme.getColor("primary_button")
+            font: UM.Theme.getFont("large_bold")
+            renderType: Text.NativeRendering
+        }
 
         Image
         {
@@ -52,15 +50,16 @@ Column
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
         }
-    }
 
-    Cura.PrimaryButton
-    {
-        id: getStartedButton
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: catalog.i18nc("@button", "Get started")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
-        onClicked: base.showNextPage()
+        Cura.PrimaryButton
+        {
+            id: getStartedButton
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+            text: catalog.i18nc("@button", "Get started")
+            width: UM.Theme.getSize("welcome_pages_button").width
+            fixedWidthMode: true
+            onClicked: base.showNextPage()
+        }
     }
 }

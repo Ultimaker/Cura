@@ -259,22 +259,26 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
-        address = ""
+        address = reply.url().host()
         device = None
         properties = {}  # type: Dict[bytes, bytes]
 
-        if "system" in reply_url:
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                # Something went wrong with checking the firmware version!
-                return
+        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+            # Either:
+            #  - Something went wrong with checking the firmware version!
+            #  - Something went wrong with checking the amount of printers the cluster has!
+            #  - Couldn't find printer at the address when trying to add it manually.
+            if address in self._manual_instances:
+                self.removeManualDeviceSignal.emit(self.getPluginId(), "", address)
+            return
 
+        if "system" in reply_url:
             try:
                 system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
             except:
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
 
-            address = reply.url().host()
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
             properties = {
@@ -302,16 +306,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._network_manager.get(cluster_request)
 
         elif "printers" in reply_url:
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                # Something went wrong with checking the amount of printers the cluster has!
-                return
             # So we confirmed that the device is in fact a cluster printer, and we should now know how big it is.
             try:
                 cluster_printers_list = json.loads(bytes(reply.readAll()).decode("utf-8"))
             except:
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
-            address = reply.url().host()
             instance_name = "manual:%s" % address
             if instance_name in self._discovered_devices:
                 device = self._discovered_devices[instance_name]

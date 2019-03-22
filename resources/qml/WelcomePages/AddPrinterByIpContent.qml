@@ -22,6 +22,8 @@ Item
     property bool hasSentRequest: false
     // Whether the IP address user entered can be resolved as a recognizable printer.
     property bool haveConnection: false
+    // True when a request comes back, but the device hasn't responded.
+    property bool deviceUnresponsive: false
 
     Label
     {
@@ -77,12 +79,14 @@ Item
                     anchors.right: addPrinterButton.left
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
+                    selectByMouse: true
 
                     validator: RegExpValidator
                     {
                         regExp: /[a-fA-F0-9\.\:]*/
                     }
 
+                    enabled: { ! (addPrinterByIpScreen.hasSentRequest || addPrinterByIpScreen.haveConnection) }
                     onAccepted: addPrinterButton.clicked()
                 }
 
@@ -101,6 +105,7 @@ Item
                         if (hostnameField.text.trim() != "")
                         {
                             enabled = false;
+                            addPrinterByIpScreen.deviceUnresponsive = false;
                             UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
                         }
                     }
@@ -114,6 +119,12 @@ Item
                             ! addPrinterByIpScreen.hasSentRequest &&
                             ! addPrinterByIpScreen.haveConnection
                         }
+                    }
+
+                    Connections
+                    {
+                        target: UM.OutputDeviceManager
+                        onManualDeviceChanged: { addPrinterButton.enabled = ! UM.OutputDeviceManager.hasManualDevice }
                     }
                 }
             }
@@ -131,8 +142,22 @@ Item
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
 
-                    visible: { addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection }
-                    text: catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                    visible:
+                    {
+                        (addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection)
+                            || addPrinterByIpScreen.deviceUnresponsive
+                    }
+                    text:
+                    {
+                        if (addPrinterByIpScreen.deviceUnresponsive)
+                        {
+                            catalog.i18nc("@label", "Could not connect to device.")
+                        }
+                        else
+                        {
+                            catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                        }
+                    }
                 }
 
                 Item
@@ -141,7 +166,7 @@ Item
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
-                    visible: addPrinterByIpScreen.haveConnection
+                    visible: addPrinterByIpScreen.haveConnection && ! addPrinterByIpScreen.deviceUnresponsive
 
                     Label
                     {
@@ -174,9 +199,18 @@ Item
                             target: UM.OutputDeviceManager
                             onManualDeviceChanged:
                             {
-                                typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
-                                firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
-                                addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                                if (UM.OutputDeviceManager.hasManualDevice)
+                                {
+                                    typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
+                                    addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
+                                }
+                                else
+                                {
+                                    typeText.text = ""
+                                    firmwareText.text = ""
+                                    addressText.text = ""
+                                }
                             }
                         }
                     }
@@ -186,8 +220,17 @@ Item
                         target: UM.OutputDeviceManager
                         onManualDeviceChanged:
                         {
-                            printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
-                            addPrinterByIpScreen.haveConnection = true
+                            if (UM.OutputDeviceManager.hasManualDevice)
+                            {
+                                printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
+                                addPrinterByIpScreen.haveConnection = true
+                            }
+                            else
+                            {
+                                addPrinterByIpScreen.hasSentRequest = false
+                                addPrinterByIpScreen.haveConnection = false
+                                addPrinterByIpScreen.deviceUnresponsive = true
+                            }
                         }
                     }
                 }
