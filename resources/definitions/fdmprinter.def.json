@@ -6677,6 +6677,7 @@
                     "default_value": 0.01,
                     "unit": "mm",
                     "settable_per_mesh": false,
+                    "minimum_value": "0.0001",
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
