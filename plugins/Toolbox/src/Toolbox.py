@@ -190,8 +190,10 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
-    @pyqtSlot()
-    def browsePackages(self) -> None:
+        # Request the latest and greatest!
+        self._fetchPackageData()
+
+    def _fetchPackageData(self):
         # Create the network manager:
         # This was formerly its own function but really had no reason to be as
         # it was never called more than once ever.
@@ -208,6 +210,10 @@ class Toolbox(QObject, Extension):
 
         # Gather installed packages:
         self._updateInstalledModels()
+
+    @pyqtSlot()
+    def browsePackages(self) -> None:
+        self._fetchPackageData()
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
