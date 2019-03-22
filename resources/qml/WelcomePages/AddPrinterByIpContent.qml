@@ -20,6 +20,7 @@ Item
 
     property bool hasSentRequest: false
     property bool haveConnection: false
+    property bool deviceUnresponsive: false
 
     Label
     {
@@ -75,12 +76,14 @@ Item
                     anchors.right: addPrinterButton.left
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
+                    selectByMouse: true
 
                     validator: RegExpValidator
                     {
                         regExp: /[a-fA-F0-9\.\:]*/
                     }
 
+                    enabled: { ! (addPrinterByIpScreen.hasSentRequest || addPrinterByIpScreen.haveConnection) }
                     onAccepted: addPrinterButton.clicked()
                 }
 
@@ -99,6 +102,7 @@ Item
                         if (hostnameField.text.trim() != "")
                         {
                             enabled = false;
+                            addPrinterByIpScreen.deviceUnresponsive = false;
                             UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
                         }
                     }
@@ -135,8 +139,22 @@ Item
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
 
-                    visible: { addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection }
-                    text: catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                    visible:
+                    {
+                        (addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection)
+                            || addPrinterByIpScreen.deviceUnresponsive
+                    }
+                    text:
+                    {
+                        if (addPrinterByIpScreen.deviceUnresponsive)
+                        {
+                            catalog.i18nc("@label", "Could not connect to device.")
+                        }
+                        else
+                        {
+                            catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                        }
+                    }
                 }
 
                 Rectangle
@@ -145,7 +163,7 @@ Item
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
-                    visible: addPrinterByIpScreen.haveConnection
+                    visible: addPrinterByIpScreen.haveConnection && ! addPrinterByIpScreen.deviceUnresponsive
 
                     Label
                     {
@@ -206,9 +224,9 @@ Item
                             }
                             else
                             {
-                                printerNameLabel.text = catalog.i18nc("@label", "Could not connect to device.")
                                 addPrinterByIpScreen.hasSentRequest = false
                                 addPrinterByIpScreen.haveConnection = false
+                                addPrinterByIpScreen.deviceUnresponsive = true
                             }
                         }
                     }
