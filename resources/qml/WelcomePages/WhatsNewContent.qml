@@ -38,12 +38,12 @@ Item
         width: (parent.width * 3 / 4) | 0
 
         border.color: "#dfdfdf"
-        border.width: 1
+        border.width: UM.Theme.getSize("default_lining").width
 
         ScrollView
         {
             anchors.fill: parent
-            anchors.margins: 1
+            anchors.margins: UM.Theme.getSize("default_lining").width
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
