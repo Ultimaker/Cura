@@ -29,7 +29,7 @@ Item
             }
             else
             {
-                return "transparent"
+                return UM.Theme.getColor("favorites_subheader_hover")
             }
         }
         width: parent.width
