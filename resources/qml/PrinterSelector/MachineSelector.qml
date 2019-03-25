@@ -114,6 +114,7 @@ Cura.ExpandablePopup
 
             MachineSelectorList
             {
+                id: machineSelectorList
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
                 width: scroll.width - scroll.leftPadding - scroll.rightPadding
                 property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
