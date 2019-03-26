@@ -36,11 +36,12 @@ Item
         anchors.bottom: getStartedButton.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
 
         Column
         {
             anchors.centerIn: parent
+            width: parent.width
 
             spacing: UM.Theme.getSize("welcome_pages_default_margin").height
 
@@ -54,12 +55,29 @@ Item
             Label
             {
                 id: textLabel
+                width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality<br/>and user experience. <a href=\"TODO\">More information</a>")
+                text:
+                {
+                    var t = catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience.")
+                    var t2 = catalog.i18nc("@text", "More information")
+                    t += " <span style=\"color: rgb(0,0,255)\">" + t2 + "</span>"
+                    return t
+                }
                 textFormat: Text.RichText
+                wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
                 renderType: Text.NativeRendering
+
+                MouseArea
+                {
+                    anchors.fill: parent
+                    onClicked:
+                    {
+                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
+                    }
+                }
             }
         }
     }
