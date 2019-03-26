@@ -10,6 +10,10 @@ import Cura 1.1 as Cura
 import "../Widgets"
 
 
+//
+// This item is a wizard panel that contains a progress bar at the top and a content area that's beneath the progress
+// bar.
+//
 Item
 {
     id: base

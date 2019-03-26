@@ -26,7 +26,7 @@ Window
 
     property alias currentStep: stepPanel.currentStep
 
-    StepPanel
+    WizardPanel
     {
         id: stepPanel
         anchors.fill: parent
