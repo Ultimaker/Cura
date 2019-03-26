@@ -11,8 +11,8 @@ from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
-from cura.UI.PrinterOutputModel import PrinterOutputModel
-from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController
 
 from .AutoDetectBaudJob import AutoDetectBaudJob

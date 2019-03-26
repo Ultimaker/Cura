@@ -6,7 +6,7 @@ from typing import List
 
 MYPY = False
 if MYPY:
-    from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
+    from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 
 class PrinterConfigurationModel(QObject):

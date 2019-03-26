@@ -3,7 +3,7 @@
 
 from UM.Logger import Logger
 
-from cura.UI.MachineModels.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 
 
 #

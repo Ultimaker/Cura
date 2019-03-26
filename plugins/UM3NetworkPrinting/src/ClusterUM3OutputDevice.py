@@ -19,10 +19,10 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
-from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.UI.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.UI.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 

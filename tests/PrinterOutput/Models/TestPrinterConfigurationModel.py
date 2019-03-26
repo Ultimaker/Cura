@@ -4,8 +4,8 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
-from cura.UI.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 
 test_validate_data_get_set = [
     {"attribute": "extruderConfigurations", "value": [ExtruderConfigurationModel()]},

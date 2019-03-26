@@ -4,12 +4,12 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
 from typing import List, Dict, Optional
 from UM.Math.Vector import Vector
-from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
-from cura.UI.ExtruderOutputModel import ExtruderOutputModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
 
 MYPY = False
 if MYPY:
-    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 

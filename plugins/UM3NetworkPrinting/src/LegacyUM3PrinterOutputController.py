@@ -7,8 +7,8 @@ from UM.Version import Version
 
 MYPY = False
 if MYPY:
-    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
-    from cura.UI.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 
 
 class LegacyUM3PrinterOutputController(PrinterOutputController):

@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
-from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from ...UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from ...ConfigurationChangeModel import ConfigurationChangeModel
 from ..CloudOutputController import CloudOutputController

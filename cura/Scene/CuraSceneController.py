@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import QApplication
 
 from UM.Scene.Camera import Camera
 from cura.UI.ObjectsModel import ObjectsModel
-from cura.UI.MachineModels.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator

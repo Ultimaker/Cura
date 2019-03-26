@@ -3,9 +3,6 @@
 from enum import IntEnum
 from typing import Callable, List, Optional, Union
 
-from UM.Decorators import deprecated
-from UM.i18n import i18nCatalog
-from UM.OutputDevice.OutputDevice import OutputDevice
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
@@ -13,14 +10,17 @@ from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
+from UM.Decorators import deprecated
+from UM.i18n import i18nCatalog
+from UM.OutputDevice.OutputDevice import OutputDevice
 
 MYPY = False
 if MYPY:
-    from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
-    from cura.PrinterOutput.FirmwareUpdater import FirmwareUpdater
     from UM.FileHandler.FileHandler import FileHandler
     from UM.Scene.SceneNode import SceneNode
+    from .Models.PrinterOutputModel import PrinterOutputModel
+    from .Models.PrinterConfigurationModel import PrinterConfigurationModel
+    from .FirmwareUpdater import FirmwareUpdater
 
 i18n_catalog = i18nCatalog("cura")
 
