@@ -247,7 +247,7 @@ Item
         text: catalog.i18nc("@button", "Cancel")
         width: UM.Theme.getSize("action_button").width
         fixedWidthMode: true
-        onClicked: base.goToPage("add_network_or_local_printer")
+        onClicked: base.showPreviousPage()
     }
 
     Cura.PrimaryButton

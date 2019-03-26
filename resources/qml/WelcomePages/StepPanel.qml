@@ -21,70 +21,30 @@ Item
     property int stepBarHeight: 12
     property int contentMargins: 1
 
-    property int currentStep: 0
-    property int totalStepCount: (model == null) ? 0 : model.count
-    property real progressValue: (totalStepCount == 0) ? 0 : (currentStep / totalStepCount)
-
-    property var currentItem: (model == null) ? null : model.getItem(currentStep)
+    property var currentItem: (model == null) ? null : model.getItem(model.currentPageIndex)
     property var model: null
+
+    property var progressValue: model == null ? 0 : model.currentProgress
+    property string pageUrl: currentItem == null ? null : currentItem.page_url
 
     signal showNextPage()
     signal showPreviousPage()
-    signal passLastPage()  // Emitted when there is no more page to show
     signal goToPage(string page_id)  // Go to a specific page by the given page_id.
 
-    onShowNextPage:
-    {
-        if (currentStep < totalStepCount - 1)
-        {
-            currentStep++
-        }
-        else
-        {
-            passLastPage()
-        }
-    }
-
-    onShowPreviousPage:
-    {
-        if (currentStep > 0)
-        {
-            currentStep--
-        }
-    }
-
-    onGoToPage:
-    {
-        // find the page index
-        var page_index = -1
-        for (var i = 0; i < base.model.count; i++)
-        {
-            const item = base.model.getItem(i)
-            if (item.id == page_id)
-            {
-                page_index = i
-                break
-            }
-        }
-        if (page_index >= 0)
-        {
-            currentStep = page_index
-        }
-    }
+    // Call the corresponding functions in the model
+    onShowNextPage: model.goToNextPage()
+    onShowPreviousPage: model.goToPreviousPage()
+    onGoToPage: model.goToPage(page_id)
 
     onVisibleChanged:
     {
         if (visible)
         {
-            base.currentStep = 0
-            base.currentItem = base.model.getItem(base.currentStep)
+            model.resetState()
         }
     }
 
-    onModelChanged:
-    {
-        base.currentStep = 0
-    }
+    onModelChanged: model.resetState()
 
     // Panel background
     Rectangle
@@ -137,6 +97,6 @@ Item
             left: parent.left
             right: parent.right
         }
-        source: base.currentItem.page_url
+        source: base.pageUrl
     }
 }

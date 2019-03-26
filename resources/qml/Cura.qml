@@ -77,7 +77,6 @@ UM.MainWindow
         if (CuraApplication.needToShowUserAgreement)
         {
             welcomeDialog.visible = true;
-            welcomeDialog.currentStep = 0;
         }
         else
         {

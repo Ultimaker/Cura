@@ -33,6 +33,7 @@ Item
     {
         if (visible)
         {
+            // Reset the action to start from the beginning when it is shown.
             currentActionIndex = 0
             if (!hasActions)
             {
@@ -48,7 +49,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: currentActionItem.title
+        text: currentActionItem == null ? "" : currentActionItem.title
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("large_bold")
         renderType: Text.NativeRendering

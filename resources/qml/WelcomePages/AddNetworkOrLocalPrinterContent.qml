@@ -145,7 +145,7 @@ Item
                 const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
                 Cura.MachineManager.addMachine(localPrinterItem.id)
 
-                base.goToPage("machine_actions")
+                base.showNextPage()
             }
         }
     }

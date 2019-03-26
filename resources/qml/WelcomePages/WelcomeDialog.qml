@@ -9,8 +9,12 @@ import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
+//
+// This is a no-frame dialog that shows the welcome process.
+//
 Window
 {
+    id: dialog
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     title: catalog.i18nc("@title", "Welcome to Ultimaker Cura")
@@ -21,19 +25,18 @@ Window
     height: 600  // TODO
     color: "transparent"
 
-    property alias currentStep: stepPanel.currentStep
+    property var model: CuraApplication.getWelcomePagesModel()
 
     StepPanel
     {
         id: stepPanel
-        currentStep: 0
-        model: CuraApplication.getWelcomePagesModel()
+        model: dialog.model
     }
 
     // Close this dialog when there's no more page to show
     Connections
     {
-        target: stepPanel
-        onPassLastPage: close()
+        target: model
+        onAllFinished: close()
     }
 }
