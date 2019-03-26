@@ -8,8 +8,8 @@ from PyQt5.QtGui import QImage
 
 if TYPE_CHECKING:
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-    from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
+    from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 
 
 class PrintJobOutputModel(QObject):

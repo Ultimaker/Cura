@@ -1,32 +1,35 @@
+
+
 from unittest.mock import MagicMock
 
 import pytest
 
-from cura.UI.PrinterConfigurationModel import PrinterConfigurationModel
-from cura.UI.PrintJobOutputModel import PrintJobOutputModel
-from cura.UI.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 
 test_validate_data_get_set = [
-    {"attribute": "compatibleMachineFamilies", "value": ["yay"]},
+    {"attribute": "name", "value": "YAY"},
+    {"attribute": "targetBedTemperature", "value": 192},
 ]
 
 test_validate_data_get_update = [
-    {"attribute": "configuration", "value": PrinterConfigurationModel()},
-    {"attribute": "owner", "value": "WHOO"},
-    {"attribute": "assignedPrinter", "value": PrinterOutputModel(MagicMock())},
+    {"attribute": "isPreheating", "value": True},
+    {"attribute": "type", "value": "WHOO"},
+    {"attribute": "buildplate", "value": "NFHA"},
     {"attribute": "key", "value": "YAY"},
     {"attribute": "name", "value": "Turtles"},
-    {"attribute": "timeTotal", "value": 10},
-    {"attribute": "timeElapsed", "value": 20},
-    {"attribute": "state", "value": "BANANNA!"},
+    {"attribute": "bedTemperature", "value": 200},
+    {"attribute": "targetBedTemperature", "value": 9001},
+    {"attribute": "activePrintJob", "value": PrintJobOutputModel(MagicMock())},
+    {"attribute": "state", "value": "BEEPBOOP"},
 ]
 
 
 @pytest.mark.parametrize("data", test_validate_data_get_set)
 def test_getAndSet(data):
-    model = PrintJobOutputModel(MagicMock())
+    model = PrinterOutputModel(MagicMock())
 
-    # Convert the first letter into a capital   
+    # Convert the first letter into a capital
     attribute = list(data["attribute"])
     attribute[0] = attribute[0].capitalize()
     attribute = "".join(attribute)
@@ -52,7 +55,7 @@ def test_getAndSet(data):
 
 @pytest.mark.parametrize("data", test_validate_data_get_update)
 def test_getAndUpdate(data):
-    model = PrintJobOutputModel(MagicMock())
+    model = PrinterOutputModel(MagicMock())
 
     # Convert the first letter into a capital
     attribute = list(data["attribute"])

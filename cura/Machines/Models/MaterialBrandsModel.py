@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import Qt, pyqtSignal
 from UM.Qt.ListModel import ListModel
-from cura.UI.MachineModels.BaseMaterialsModel import BaseMaterialsModel
+from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 class MaterialTypesModel(ListModel):
 

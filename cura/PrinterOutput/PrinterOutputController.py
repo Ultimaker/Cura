@@ -6,10 +6,10 @@ from UM.Signal import Signal
 
 MYPY = False
 if MYPY:
-    from cura.UI.PrintJobOutputModel import PrintJobOutputModel
-    from cura.UI.ExtruderOutputModel import ExtruderOutputModel
-    from cura.UI.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+    from .Models.PrintJobOutputModel import PrintJobOutputModel
+    from .Models.ExtruderOutputModel import ExtruderOutputModel
+    from .Models.PrinterOutputModel import PrinterOutputModel
+    from .PrinterOutputDevice import PrinterOutputDevice
 
 
 class PrinterOutputController:
