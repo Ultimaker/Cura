@@ -25,7 +25,7 @@ Item
 
     // Convenience properties
     property var progressValue: model == null ? 0 : model.currentProgress
-    property string pageUrl: currentItem == null ? null : currentItem.page_url
+    property string pageUrl: currentItem == null ? "" : currentItem.page_url
 
     signal showNextPage()
     signal showPreviousPage()

@@ -76,6 +76,7 @@ class WelcomePagesModel(ListModel):
         if next_page_index == len(self._items):
             self.allFinished.emit()
             self.resetState()
+            return
 
         # Move to the next page
         self._setCurrentPageIndex(next_page_index)
