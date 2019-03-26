@@ -76,11 +76,11 @@ UM.MainWindow
 
         if (CuraApplication.needToShowUserAgreement)
         {
-            welcomeDialog.visible = true;
+            welcomeDialog.show()
         }
         else
         {
-            welcomeDialog.visible = false;
+            welcomeDialog.close()
         }
         // TODO: While the new onboarding process contains the user-agreement,
         //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.

@@ -76,6 +76,7 @@ class WelcomePagesModel(ListModel):
         if next_page_index == len(self._items):
             self.allFinished.emit()
             self.resetState()
+            return
 
         # Move to the next page
         self._setCurrentPageIndex(next_page_index)
@@ -152,6 +153,7 @@ class WelcomePagesModel(ListModel):
                             })
         self._pages.append({"id": "machine_actions",
                             "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
+                            "next_page_id": "cloud",
                             })
         self._pages.append({"id": "cloud",
                             "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
