@@ -54,7 +54,6 @@ Item
         Cura.PrimaryButton
         {
             id: getStartedButton
-            anchors.top: contentArea.bottom
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
             text: catalog.i18nc("@button", "Get started")

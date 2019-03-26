@@ -3,7 +3,6 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
-import QtGraphicalEffects 1.0 // For the dropshadow
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -15,13 +14,7 @@ Item
 {
     id: base
 
-    anchors.fill: parent
     clip: true
-
-    property int roundCornerRadius: 4
-    property int shadowOffset: 1
-    property int stepBarHeight: 12
-    property int contentMargins: 1
 
     property int currentStep: 0
     property int totalStepCount: (model == null) ? 0 : model.count
@@ -88,57 +81,36 @@ Item
         base.currentStep = 0
     }
 
-    // Panel background
-    Rectangle
+    Rectangle  // Panel background
     {
         id: panelBackground
         anchors.fill: parent
-        anchors.margins: 2
-        color: "white"  // TODO
-        radius: base.roundCornerRadius  // TODO
-    }
+        radius: UM.Theme.getSize("default_radius").width
 
-    // Drop shadow around the panel
-    DropShadow
-    {
-        id: shadow
-        radius: UM.Theme.getSize("monitor_shadow_radius").width
-        anchors.fill: parent
-        source: parent
-        horizontalOffset: base.shadowOffset
-        verticalOffset: base.shadowOffset
-        color: UM.Theme.getColor("monitor_shadow")
-        transparentBorder: true
-        // Should always be drawn behind the background.
-        z: panelBackground.z - 1
-    }
-
-    CuraProgressBar
-    {
-        id: progressBar
-
-        value: base.progressValue
-
-        anchors
+        CuraProgressBar
         {
-            left: panelBackground.left
-            right: panelBackground.right
-            top: panelBackground.top
-        }
-        height: base.stepBarHeight
-    }
+            id: progressBar
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
 
-    Loader
-    {
-        id: contentLoader
-        anchors
-        {
-            margins: base.contentMargins
-            top: progressBar.bottom
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
+            height: UM.Theme.getSize("progressbar").height
+
+            value: base.progressValue
         }
-        source: base.currentItem.page_url
+
+        Loader
+        {
+            id: contentLoader
+            anchors
+            {
+                margins: base.contentMargins
+                top: progressBar.bottom
+                bottom: parent.bottom
+                left: parent.left
+                right: parent.right
+            }
+            source: base.currentItem.page_url
+        }
     }
 }
