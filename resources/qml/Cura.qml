@@ -74,13 +74,13 @@ UM.MainWindow
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
 
-        if (CuraApplication.needToShowUserAgreement)
+        if (CuraApplication.needToShowUserAgreement || Cura.MachineManager.activeMachine == null)
         {
-            welcomeDialog.show()
+            welcomeDialog.visible = true
         }
         else
         {
-            welcomeDialog.close()
+            welcomeDialog.visible = false
         }
         // TODO: While the new onboarding process contains the user-agreement,
         //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.

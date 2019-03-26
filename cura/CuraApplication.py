@@ -38,6 +38,7 @@ from UM.Settings.Validator import Validator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Workspace.WorkspaceReader import WorkspaceReader
+import UM.Util
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
@@ -548,11 +549,11 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
-        return not self.getPreferences().getValue("general/accepted_user_agreement")
+        return not UM.Util.parseBool(self.getPreferences().getValue("general/accepted_user_agreement"))
 
     @pyqtSlot(bool)
-    def setNeedToShowUserAgreement(self, set_value = True) -> None:
-        self.getPreferences().setValue("general/accepted_user_agreement", not set_value)
+    def setNeedToShowUserAgreement(self, set_value: bool = True) -> None:
+        self.getPreferences().setValue("general/accepted_user_agreement", str(not set_value))
 
     @pyqtSlot(str, str)
     def writeToLog(self, severity: str, message: str) -> None:
