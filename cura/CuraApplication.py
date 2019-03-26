@@ -109,6 +109,7 @@ import cura.Settings.cura_empty_instance_containers
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 
 from cura.UI.ObjectsModel import ObjectsModel
+from cura.UI.TextManager import TextManager
 
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
 
@@ -211,6 +212,7 @@ class CuraApplication(QtApplication):
         self._discovered_printer_model = DiscoveredPrintersModel(self)
 
         self._welcome_pages_model = WelcomePagesModel(self)
+        self._text_manager = TextManager(self)
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
@@ -862,6 +864,10 @@ class CuraApplication(QtApplication):
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
         return self._welcome_pages_model
 
+    @pyqtSlot(result = QObject)
+    def getTextManager(self, *args) -> "TextManager":
+        return self._text_manager
+
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
             self._cura_formula_functions = CuraFormulaFunctions(self)
@@ -995,6 +1001,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 

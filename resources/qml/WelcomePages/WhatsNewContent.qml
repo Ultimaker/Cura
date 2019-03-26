@@ -50,18 +50,7 @@ Item
             TextArea
             {
                 id: whatsNewTextArea
-                text: catalog.i18nc("@text", "<p><b>Ultimaker Cura 4.0</b></p>
-
-    <p>New features</p>
-
-    <p><b>Brand new user interface.</b> Ultimaker Cura is a very powerful tool with many features to support users’ needs. In the new UI, we present these features in a better, more intuitive way based on the workflow of our users. The Marketplace and user account control have been integrated into the main interface to easily access material profiles and plugins. Within the UI, three stages are shown in the header to give a clear guidance of the flow. The stage menu is populated with collapsible panels that allow users to focus on the 3D view when needed, while still showing important information at the same time, such as slicing configuration and settings. Users can now easily go to the preview stage to examine the layer view after slicing the model, which previously was less obvious or hidden. The new UI also creates more distinction between recommended and custom mode. Novice users or users who are not interested in all the settings can easily prepare a file without diving into details. Expert users can use custom mode with a resizable settings panel to make more settings visible, and the set position will persist between sessions.</p>
-
-    <p><b>Cloud printing.</b> Pair your Ultimaker printer with an Ultimaker account so you can send and monitor print jobs from outside your local network.</p>
-
-    <p><b>Redesigned &quot;Add Printer&quot; dialog.</b> Updated one of the first dialogs a new user is presented with. The layout is loosely modeled on the layout of the Ultimaker 3/Ultimaker S5 &quot;Connect to Network&quot; dialog, and adds some instructions and intention to the dialog. Contributed by fieldOfView.</p>
-
-    <p><b>Integrated backups.</b> Cura backups has been integrated into Ultimaker Cura and can be found in the 'extensions' menu. With this feature, users can backup their Ultimaker Cura configurations to the cloud.</p>
-    ")
+                text: CuraApplication.getTextManager().getChangeLogText()
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
                 readOnly: true
