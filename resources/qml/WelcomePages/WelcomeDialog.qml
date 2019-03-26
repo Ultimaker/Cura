@@ -14,6 +14,7 @@ Window
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
+    id: dialog
     title: catalog.i18nc("@title", "Welcome to Ultimaker Cura")
     modality: Qt.ApplicationModal
     flags: Qt.Window | Qt.FramelessWindowHint
@@ -24,14 +25,21 @@ Window
 
     property int shadowOffset: 1 * screenScaleFactor
 
-    property alias currentStep: stepPanel.currentStep
+    property var model: CuraApplication.getWelcomePagesModel()
+
+    onVisibleChanged:
+    {
+        if (visible)
+        {
+            model.resetState()
+        }
+    }
 
     WizardPanel
     {
         id: stepPanel
         anchors.fill: parent
-        currentStep: 0
-        model: CuraApplication.getWelcomePagesModel()
+        model: dialog.model
     }
 
     // Drop shadow around the panel
@@ -50,7 +58,7 @@ Window
     // Close this dialog when there's no more page to show
     Connections
     {
-        target: stepPanel
-        onPassLastPage: close()
+        target: model
+        onAllFinished: close()
     }
 }
