@@ -22,8 +22,8 @@ Window
     modality: Qt.ApplicationModal
     flags: Qt.Window | Qt.FramelessWindowHint
 
-    width: 580  // TODO
-    height: 600  // TODO
+    width: 580 * screenScaleFactor
+    height: 600 * screenScaleFactor
     color: "transparent"
 
     property int shadowOffset: 1 * screenScaleFactor

@@ -35,7 +35,7 @@ Item
         anchors.top: titleLabel.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 20
+        anchors.margins: UM.Theme.getSize("wide_margin").width
 
         title: catalog.i18nc("@label", "Add a networked printer")
         contentShown: true  // by default expand the network printer list
@@ -80,7 +80,7 @@ Item
         anchors.top: addNetworkPrinterDropDown.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: 20
+        anchors.margins: UM.Theme.getSize("wide_margin").width
 
         title: catalog.i18nc("@label", "Add a non-networked printer")
 
