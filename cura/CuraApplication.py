@@ -24,6 +24,7 @@ from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
+import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
 
 from UM.Math.AxisAlignedBox import AxisAlignedBox
@@ -552,11 +553,11 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
-        return not self.getPreferences().getValue("general/accepted_user_agreement")
+        return not UM.Util.parseBool(self.getPreferences().getValue("general/accepted_user_agreement"))
 
     @pyqtSlot(bool)
-    def setNeedToShowUserAgreement(self, set_value = True) -> None:
-        self.getPreferences().setValue("general/accepted_user_agreement", not set_value)
+    def setNeedToShowUserAgreement(self, set_value: bool = True) -> None:
+        self.getPreferences().setValue("general/accepted_user_agreement", str(not set_value))
 
     @pyqtSlot(str, str)
     def writeToLog(self, severity: str, message: str) -> None:

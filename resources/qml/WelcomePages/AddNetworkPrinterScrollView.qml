@@ -200,7 +200,7 @@ Item
                 onClicked:
                 {
                     // open the troubleshooting URL with web browser
-                    var url = "https://ultimaker.com/incoming-links/cura/material-compatibilty" // TODO
+                    const url = "https://ultimaker.com/en/resources/39129-network-troubleshooting-cura"
                     Qt.openUrlExternally(url)
                 }
                 onEntered:
