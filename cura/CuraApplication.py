@@ -110,6 +110,7 @@ from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
 from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
+from cura.UI.TextManager import TextManager
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 
 from .SingleInstance import SingleInstance
@@ -215,6 +216,7 @@ class CuraApplication(QtApplication):
         self._discovered_printer_model = DiscoveredPrintersModel(self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
         self._welcome_pages_model = WelcomePagesModel(self)
+        self._text_manager = TextManager(self)
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
@@ -874,6 +876,10 @@ class CuraApplication(QtApplication):
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
         return self._machine_settings_manager
 
+    @pyqtSlot(result = QObject)
+    def getTextManager(self, *args) -> "TextManager":
+        return self._text_manager
+
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
             self._cura_formula_functions = CuraFormulaFunctions(self)
@@ -1007,6 +1013,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
