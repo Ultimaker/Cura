@@ -43,7 +43,7 @@ Item
         Column
         {
             anchors.centerIn: parent
-            width: childrenRect.width
+            width: parent.width
             height: childrenRect.height
 
             spacing: 20 * screenScaleFactor
