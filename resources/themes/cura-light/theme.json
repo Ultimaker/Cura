@@ -189,6 +189,8 @@
 
         "toolbar_background": [255, 255, 255, 255],
 
+        "notification_icon": [255, 0, 0, 255],
+
         "printer_type_label_background": [228, 228, 242, 255],
 
         "text": [25, 25, 25, 255],

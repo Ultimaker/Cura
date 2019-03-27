@@ -117,6 +117,42 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
+
+        Rectangle
+        {
+            id: marketplaceNotificationIcon
+            color: UM.Theme.getColor("notification_icon")
+            width: marketplaceButton.height / 1.5
+            height: width
+            radius: 0.5 * width
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+                rightMargin: -0.5 * width
+                topMargin: -0.5 * height
+            }
+            visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
+
+            Label
+            {
+                id: marketplaceNotificationText
+                anchors.centerIn: parent
+                anchors.fill: parent
+                text:
+                {
+                    if(CuraApplication.getPackageManager().packagesWithUpdate.length > 9)
+                    {
+                        return "9+"  // More than 2 characters don't fit.
+                    }
+                    return CuraApplication.getPackageManager().packagesWithUpdate.length
+                }
+                color: UM.Theme.getColor("primary_text")
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                font: UM.Theme.getFont("small")
+            }
+        }
     }
 
     AccountWidget
