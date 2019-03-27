@@ -461,24 +461,6 @@ class Toolbox(QObject, Extension):
                 break
         return remote_package
 
-    # Give a list of package ids that have an update available.
-    @pyqtProperty(bool, notify=metadataChanged)
-    def packagesWithUpdateAvailable(self) -> List[str]:
-        all_installed_packages = self._package_manager.getAllInstalledPackageIDs()
-
-        packages_with_update_available = []
-        for package_id in all_installed_packages:
-            if self.canUpdate(package_id):
-                packages_with_update_available.append(package_id)
-
-        return packages_with_update_available
-
-    # Checks
-    # --------------------------------------------------------------------------
-    @pyqtSlot(str, result = bool)
-    def canUpdate(self, package_id: str) -> bool:
-        return package_id in self._package_manager.packagesWithUpdate
-
     @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
         # If the currently installed version is higher than the bundled version (if present), the we can downgrade
