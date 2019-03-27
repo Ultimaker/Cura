@@ -40,7 +40,9 @@ class ConfigurationModel(QObject):
         return self._extruder_configurations
 
     def setBuildplateConfiguration(self, buildplate_configuration: str) -> None:
-        self._buildplate_configuration = buildplate_configuration
+        if self._buildplate_configuration !=  buildplate_configuration:
+            self._buildplate_configuration = buildplate_configuration
+            self.configurationChanged.emit()
 
     @pyqtProperty(str, fset = setBuildplateConfiguration, notify = configurationChanged)
     def buildplateConfiguration(self) -> str:

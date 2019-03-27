@@ -107,6 +107,8 @@ class FlavorParser:
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer_number, layer_thickness)
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
+            if not this_layer:
+                return False
         except ValueError:
             return False
         count = len(path)

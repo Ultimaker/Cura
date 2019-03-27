@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.6
@@ -190,11 +190,22 @@ Item
 
             readonly property real paddedWidth: parent.width - padding * 2
             property real textWidth: Math.round(paddedWidth * 0.3)
-            property real controlWidth: paddedWidth - textWidth
+            property real controlWidth:
+            {
+                if(instructionLink == "")
+                {
+                    return paddedWidth - textWidth
+                }
+                else
+                {
+                    return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
+                }
+            }
+            property string instructionLink: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", "")
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_item").height
+                height: visible ? childrenRect.height : 0
                 visible: extrudersModel.count > 1  // If there is only one extruder, there is no point to enable/disable that.
 
                 Label
@@ -231,7 +242,7 @@ Item
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height: 0
                 visible: Cura.MachineManager.hasMaterials
 
                 Label
@@ -255,8 +266,8 @@ Item
                     text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
 
-                    height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
+                    height: UM.Theme.getSize("print_setup_big_item").height
 
                     style: UM.Theme.styles.print_setup_header_button
                     activeFocusOnPress: true
@@ -266,11 +277,32 @@ Item
                         updateModels: materialSelection.visible
                     }
                 }
+                Item
+                {
+                    width: instructionButton.width + 2 * UM.Theme.getSize("default_margin").width
+                    height: instructionButton.visible ? materialSelection.height: 0
+                    Button
+                    {
+                        id: instructionButton
+                        hoverEnabled: true
+                        contentItem: Item {}
+                        height: 0.5 * materialSelection.height
+                        width: height
+                        anchors.centerIn: parent
+                        background: UM.RecolorImage
+                        {
+                            source: UM.Theme.getIcon("printing_guideline")
+                            color: instructionButton.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("icon")
+                        }
+                        visible: selectors.instructionLink != ""
+                        onClicked:Qt.openUrlExternally(selectors.instructionLink)
+                    }
+                }
             }
 
             Row
             {
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height: 0
                 visible: Cura.MachineManager.hasVariants
 
                 Label
@@ -289,7 +321,6 @@ Item
                     id: variantSelection
                     text: Cura.MachineManager.activeVariantName
                     tooltip: Cura.MachineManager.activeVariantName
-
                     height: UM.Theme.getSize("print_setup_big_item").height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button
@@ -302,7 +333,7 @@ Item
             Row
             {
                 id: warnings
-                height: UM.Theme.getSize("print_setup_big_item").height
+                height: visible ? childrenRect.height : 0
                 visible: buildplateCompatibilityError || buildplateCompatibilityWarning
 
                 property bool buildplateCompatibilityError: !Cura.MachineManager.variantBuildplateCompatible && !Cura.MachineManager.variantBuildplateUsable
@@ -319,7 +350,7 @@ Item
                 Item
                 {
                     width: selectors.controlWidth
-                    height: parent.height
+                    height: childrenRect.height
 
                     UM.RecolorImage
                     {

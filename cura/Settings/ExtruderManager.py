@@ -264,7 +264,9 @@ class ExtruderManager(QObject):
                 used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))])
 
         # The platform adhesion extruder. Not used if using none.
-        if global_stack.getProperty("adhesion_type", "value") != "none":
+        if global_stack.getProperty("adhesion_type", "value") != "none" or (
+                global_stack.getProperty("prime_tower_brim_enable", "value") and
+                global_stack.getProperty("adhesion_type", "value") != 'raft'):
             extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
@@ -301,12 +303,7 @@ class ExtruderManager(QObject):
         global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return []
-
-        result_tuple_list = sorted(list(global_stack.extruders.items()), key = lambda x: int(x[0]))
-        result_list = [item[1] for item in result_tuple_list]
-
-        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-        return result_list[:machine_extruder_count]
+        return global_stack.extruderList
 
     def _globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
@@ -341,7 +338,7 @@ class ExtruderManager(QObject):
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
-            self._fixSingleExtrusionMachineExtruderDefinition(global_stack)
+            self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
@@ -349,7 +346,7 @@ class ExtruderManager(QObject):
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
-    def _fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
+    def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
         extruder_stack_0 = global_stack.extruders.get("0")

@@ -17,6 +17,8 @@ except ImportError:
 
 try:
     from cura.CuraVersion import CuraCloudAPIVersion  # type: ignore
+    if CuraCloudAPIVersion == "":
+        CuraCloudAPIVersion = DEFAULT_CLOUD_API_VERSION
 except ImportError:
     CuraCloudAPIVersion = DEFAULT_CLOUD_API_VERSION
 

@@ -12,8 +12,10 @@ from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
@@ -82,8 +84,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._account = api_client.account
 
         # We use the Cura Connect monitor tab to get most functionality right away.
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                   "../../resources/qml/MonitorStage.qml")
+        if PluginRegistry.getInstance() is not None:
+            self._monitor_view_qml_path = os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "qml", "MonitorStage.qml"
+            )
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)

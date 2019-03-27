@@ -242,7 +242,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
                 vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
                     numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                _, idx = numpy.unique(vertex_byte_view, return_index=True)
+                _, idx = numpy.unique(vertex_byte_view, return_index = True)
                 vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
                 hull = Polygon(vertex_data)

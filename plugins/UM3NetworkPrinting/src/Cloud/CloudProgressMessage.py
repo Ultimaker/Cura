@@ -11,8 +11,8 @@ I18N_CATALOG = i18nCatalog("cura")
 class CloudProgressMessage(Message):
     def __init__(self):
         super().__init__(
-            text = I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
-            title = I18N_CATALOG.i18nc("@info:status", "Sending data to remote cluster"),
+            title = I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
+            text = I18N_CATALOG.i18nc("@info:status", "Uploading via Ultimaker Cloud"),
             progress = -1,
             lifetime = 0,
             dismissable = False,

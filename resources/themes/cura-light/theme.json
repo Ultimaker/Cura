@@ -373,6 +373,7 @@
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 128, 255, 255],
         "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
         "tab_status_connected": [50, 130, 255, 255],
@@ -442,7 +443,6 @@
 
         "print_setup_widget": [38.0, 30.0],
         "print_setup_mode_toggle": [0.0, 2.0],
-        "print_setup_item": [0.0, 2.0],
         "print_setup_extruder_box": [0.0, 6.0],
         "print_setup_slider_groove": [0.16, 0.16],
         "print_setup_slider_handle": [1.0, 1.0],

@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 1,
+        "setting_version": 7,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -876,7 +876,7 @@
                             "default_value": 0.4,
                             "type": "float",
                             "value": "line_width",
-                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -2750,7 +2750,7 @@
                     "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                     "maximum_value_warning": "300",
                     "value": "speed_layer_0",
-                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
@@ -2901,7 +2901,6 @@
                             "default_value": 3000,
                             "value": "acceleration_topbottom",
                             "enabled": "resolveOrValue('acceleration_enabled') and roofing_layer_count > 0 and top_layers > 0",
-                            "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "roofing_extruder_nr",
                             "settable_per_mesh": true
                         },
@@ -3093,7 +3092,7 @@
                     "minimum_value": "0.1",
                     "minimum_value_warning": "100",
                     "maximum_value_warning": "10000",
-                    "enabled": "resolveOrValue('acceleration_enabled')",
+                    "enabled": "resolveOrValue('acceleration_enabled') and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled'))",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
@@ -3368,7 +3367,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_layer_0",
-                    "enabled": "resolveOrValue('jerk_enabled')",
+                    "enabled": "resolveOrValue('jerk_enabled') and (resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('draft_shield_enabled') or resolveOrValue('ooze_shield_enabled'))",
                     "settable_per_mesh": false,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 }
@@ -3395,7 +3394,7 @@
                         "infill": "Within Infill"
                     },
                     "default_value": "all",
-                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off')",
+                    "resolve": "'noskin' if 'noskin' in extruderValues('retraction_combing') else ('infill' if 'infill' in extruderValues('retraction_combing') else ('all' if 'all' in extruderValues('retraction_combing') else 'off'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -3811,7 +3810,8 @@
                         "triangles": "Triangles",
                         "concentric": "Concentric",
                         "zigzag": "Zig Zag",
-                        "cross": "Cross"
+                        "cross": "Cross",
+                        "gyroid": "Gyroid"
                     },
                     "default_value": "zigzag",
                     "enabled": "support_enable or support_tree_enable",
@@ -3840,8 +3840,8 @@
                     "description": "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material.",
                     "type": "bool",
                     "default_value": false,
-                    "value": "support_pattern == 'cross'",
-                    "enabled": "support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross'",
+                    "value": "support_pattern == 'cross' or support_pattern == 'gyroid'",
+                    "enabled": "support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'cross' or support_pattern == 'gyroid'",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -4149,9 +4149,7 @@
                     "minimum_value": "0",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
-                    "settable_per_mesh": true,
-                    "fabricate_enabled": true,
-                    "intermediate_enabled": true
+                    "settable_per_mesh": true
                 },
                 "support_interface_enable":
                 {
@@ -4581,7 +4579,7 @@
                     "description": "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time.",
                     "type": "bool",
                     "resolve": "any(extruderValues('prime_blob_enable'))",
-                    "default_value": true,
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false
@@ -4636,7 +4634,7 @@
                     "type": "extruder",
                     "default_value": "0",
                     "value": "defaultExtruderPosition()",
-                    "enabled": "extruders_enabled_count > 1 and resolveOrValue('adhesion_type') != 'none'",
+                    "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -4677,7 +4675,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "25",
                     "maximum_value_warning": "2500",
-                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -4691,7 +4689,7 @@
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
                     "maximum_value": "0.5 * min(machine_width, machine_depth)",
-                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr",
@@ -4707,7 +4705,7 @@
                             "maximum_value_warning": "50 / skirt_brim_line_width",
                             "maximum_value": "0.5 * min(machine_width, machine_depth) / skirt_brim_line_width",
                             "value": "math.ceil(brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
-                            "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                            "enabled": "resolveOrValue('adhesion_type') == 'brim' or resolveOrValue('prime_tower_brim_enable')",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "adhesion_extruder_nr"
@@ -5274,7 +5272,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
+                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enable') else 0) - 1",
                     "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
@@ -5288,7 +5286,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enable') else 0) - 1",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -5318,6 +5316,16 @@
                     "default_value": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "prime_tower_brim_enable":
+                {
+                    "label": "Prime Tower Brim",
+                    "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type.",
+                    "type": "bool",
+                    "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') != 'raft')",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
                 },
                 "ooze_shield_enabled":
                 {
@@ -6669,6 +6677,7 @@
                     "default_value": 0.01,
                     "unit": "mm",
                     "settable_per_mesh": false,
+                    "minimum_value": "0.0001",
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },

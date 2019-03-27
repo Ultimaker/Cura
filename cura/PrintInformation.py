@@ -69,10 +69,8 @@ class PrintInformation(QObject):
         self._application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
 
         self._multi_build_plate_model.activeBuildPlateChanged.connect(self._onActiveBuildPlateChanged)
-
-        self._onActiveMaterialsChanged()
-
         self._material_amounts = []  # type: List[float]
+        self._onActiveMaterialsChanged()
 
     def initializeCuraMessagePrintTimeProperties(self) -> None:
         self._current_print_time = {}  # type: Dict[int, Duration]
@@ -220,6 +218,7 @@ class PrintInformation(QObject):
 
             material_guid = material.getMetaDataEntry("GUID")
             material_name = material.getName()
+
             if material_guid in material_preference_values:
                 material_values = material_preference_values[material_guid]
 

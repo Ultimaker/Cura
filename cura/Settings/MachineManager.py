@@ -1,11 +1,10 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import collections
 import time
 import re
 import unicodedata
-from typing import Any, Callable, List, Dict, TYPE_CHECKING, Optional, cast
+from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -63,8 +62,6 @@ class MachineManager(QObject):
         self._current_quality_changes_group = None  # type: Optional[QualityChangesGroup]
 
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
-
-        self.machine_extruder_material_update_dict = collections.defaultdict(list) #type: Dict[str, List[Callable[[], None]]]
 
         self._instance_container_timer = QTimer()  # type: QTimer
         self._instance_container_timer.setInterval(250)
@@ -272,11 +269,6 @@ class MachineManager(QObject):
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
                 extruder_stack.containersChanged.connect(self._onContainersChanged)
 
-            if self._global_container_stack.getId() in self.machine_extruder_material_update_dict:
-                for func in self.machine_extruder_material_update_dict[self._global_container_stack.getId()]:
-                    self._application.callLater(func)
-                del self.machine_extruder_material_update_dict[self._global_container_stack.getId()]
-
         self.activeQualityGroupChanged.emit()
 
     def _onActiveExtruderStackChanged(self) -> None:
@@ -365,12 +357,13 @@ class MachineManager(QObject):
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
 
-        ExtruderManager.getInstance()._fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
         ExtruderManager.getInstance().setActiveExtruderIndex(0)  # Switch to first extruder
+
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
@@ -433,12 +426,12 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return False
 
-        if self._global_container_stack.getTop().findInstances():
+        if self._global_container_stack.getTop().getNumInstances() != 0:
             return True
 
         stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
         for stack in stacks:
-            if stack.getTop().findInstances():
+            if stack.getTop().getNumInstances() != 0:
                 return True
 
         return False
@@ -448,10 +441,10 @@ class MachineManager(QObject):
         if not self._global_container_stack:
             return 0
         num_user_settings = 0
-        num_user_settings += len(self._global_container_stack.getTop().findInstances())
-        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        num_user_settings += self._global_container_stack.getTop().getNumInstances()
+        stacks = self._global_container_stack.extruderList
         for stack in stacks:
-            num_user_settings += len(stack.getTop().findInstances())
+            num_user_settings += stack.getTop().getNumInstances()
         return num_user_settings
 
     ##  Delete a user setting from the global stack and all extruder stacks.
@@ -1381,7 +1374,6 @@ class MachineManager(QObject):
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
-            used_extruder_stack_list = ExtruderManager.getInstance().getUsedExtruderStacks()
             disabled_used_extruder_position_set = set()
             extruders_to_disable = set()
 
@@ -1390,8 +1382,9 @@ class MachineManager(QObject):
             need_to_show_message = False
 
             for extruder_configuration in configuration.extruderConfigurations:
-                extruder_has_hotend = extruder_configuration.hotendID != ""
-                extruder_has_material = extruder_configuration.material.guid != ""
+                # We support "" or None, since the cloud uses None instead of empty strings
+                extruder_has_hotend = extruder_configuration.hotendID and extruder_configuration.hotendID != ""
+                extruder_has_material = extruder_configuration.material.guid and extruder_configuration.material.guid != ""
 
                 # If the machine doesn't have a hotend or material, disable this extruder
                 if not extruder_has_hotend or not extruder_has_material:

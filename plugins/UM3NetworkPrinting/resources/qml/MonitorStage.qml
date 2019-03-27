@@ -50,7 +50,17 @@ Component
             MonitorCarousel
             {
                 id: carousel
-                printers: OutputDevice.receivedPrintJobs ? OutputDevice.printers : [null]
+                printers:
+                {
+                    // When printing over the cloud we don't recieve print jobs until there is one, so
+                    // unless there's at least one print job we'll be stuck with skeleton loading
+                    // indefinitely.
+                    if (Cura.MachineManager.activeMachineIsUsingCloudConnection || OutputDevice.receivedPrintJobs)
+                    {
+                        return OutputDevice.printers
+                    }
+                    return [null]
+                }
             }
         }
 

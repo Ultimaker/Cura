@@ -67,6 +67,8 @@ Item
 
                 property color overlayColor: "transparent"
                 property string overlayIconSource: ""
+                // This id is required to find the stage buttons through Squish
+                property string stageId: model.id
 
                 // This is a trick to assure the activeStage is correctly changed. It doesn't work propertly if done in the onClicked (see CURA-6028)
                 MouseArea

@@ -28,6 +28,7 @@ Item
     property var showLinkedSettingIcon: true
     property var doDepthIndentation: true
     property var doQualityUserSettingEmphasis: true
+    property var settingKey: definition.key //Used to detect each individual setting more easily in Squish GUI tests.
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state

@@ -54,7 +54,7 @@ Item
         anchors.top: tile.top
         width: childrenRect.width
         height: childrenRect.height
-
+        packageData: model
     }
 
     ToolboxCompatibilityChart

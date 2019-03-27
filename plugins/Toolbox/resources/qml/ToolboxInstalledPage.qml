@@ -42,6 +42,7 @@ ScrollView
         }
         Rectangle
         {
+            id: installedPlugins
             color: "transparent"
             width: parent.width
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
@@ -74,6 +75,7 @@ ScrollView
 
         Rectangle
         {
+            id: installedMaterials
             color: "transparent"
             width: parent.width
             height: childrenRect.height + UM.Theme.getSize("default_margin").width

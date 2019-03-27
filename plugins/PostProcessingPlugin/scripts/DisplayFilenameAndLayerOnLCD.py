@@ -36,7 +36,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
             name = self.getSettingValueByKey("name")
         else:
             name = Application.getInstance().getPrintInformation().jobName       
-        lcd_text = "M117 " + name + " layer: "
+        lcd_text = "M117 " + name + " layer "
         i = 0
         for layer in data:
             display_text = lcd_text + str(i)

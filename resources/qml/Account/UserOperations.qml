@@ -20,7 +20,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Hi " + profile.username)
+        text: catalog.i18nc("@label The argument is a username.", "Hi %1").format(profile.username)
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }

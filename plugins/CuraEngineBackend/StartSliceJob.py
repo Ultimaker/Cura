@@ -323,9 +323,10 @@ class StartSliceJob(Job):
             value = stack.getProperty(key, "value")
             result[key] = value
             Job.yieldThread()
-        
+
         result["print_bed_temperature"] = result["material_bed_temperature"] # Renamed settings.
         result["print_temperature"] = result["material_print_temperature"]
+        result["travel_speed"] = result["speed_travel"]
         result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]

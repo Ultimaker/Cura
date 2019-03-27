@@ -18,7 +18,7 @@ class AutoDetectBaudJob(Job):
     def __init__(self, serial_port: int) -> None:
         super().__init__()
         self._serial_port = serial_port
-        self._all_baud_rates = [115200, 250000, 230400, 57600, 38400, 19200, 9600]
+        self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
 
     def run(self) -> None:
         Logger.log("d", "Auto detect baud rate started.")
@@ -72,9 +72,9 @@ class AutoDetectBaudJob(Job):
 
                 while timeout_time > time():
                     line = serial.readline()
-                    if b"ok " in line and b"T:" in line:
+                    if b"ok" in line and b"T:" in line:
                         successful_responses += 1
-                        if successful_responses >= 3:
+                        if successful_responses >= 1:
                             self.setResult(baud_rate)
                             Logger.log("d", "Detected baud rate {baud_rate} on serial {serial} on retry {retry} with after {time_elapsed:0.2f} seconds.".format(
                                 serial = self._serial_port, baud_rate = baud_rate, retry = retry, time_elapsed = time() - start_timeout_time))

@@ -1,9 +1,10 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 2.3 as Controls2
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -73,7 +74,7 @@ Item
             }
         }
 
-        ComboBox
+        Controls2.ComboBox
         {
             id: supportExtruderCombobox
 
@@ -87,82 +88,222 @@ Item
                 verticalCenter: parent.verticalCenter
             }
 
-            style: UM.Theme.styles.combobox_color
             enabled: recommendedPrintSetup.settingsEnabled
             visible: enableSupportCheckBox.visible && (supportEnabled.properties.value == "True") && (extrudersEnabledCount.properties.value > 1)
-            textRole: "text"  // this solves that the combobox isn't populated in the first time Cura is started
+            textRole: "name"  // this solves that the combobox isn't populated in the first time Cura is started
 
             model: extruderModel
 
-            property alias _hovered: supportExtruderMouseArea.containsMouse
-            property string color_override: ""  // for manually setting values
-            property string color:  // is evaluated automatically, but the first time is before extruderModel being filled
+            // knowing the extruder position, try to find the item index in the model
+            function getIndexByPosition(position)
             {
-                var current_extruder = extruderModel.get(currentIndex)
-                color_override = ""
-                if (current_extruder === undefined) return ""
-                return (current_extruder.color) ? current_extruder.color : ""
-            }
-
-            currentIndex:
-            {
-                if (supportExtruderNr.properties == null)
+                var itemIndex = -1  // if position is not found, return -1
+                for (var item_index in model.items)
                 {
-                    return Cura.MachineManager.defaultExtruderPosition
-                }
-                else
-                {
-                    var extruder = parseInt(supportExtruderNr.properties.value)
-                    if ( extruder === -1)
+                    var item = model.getItem(item_index)
+                    if (item.index == position)
                     {
-                        return Cura.MachineManager.defaultExtruderPosition
+                        itemIndex = item_index
+                        break
                     }
-                    return extruder;
+                }
+                return itemIndex
+            }
+
+            onActivated:
+            {
+                if (model.getItem(index).enabled)
+                {
+                    forceActiveFocus();
+                    supportExtruderNr.setPropertyValue("value", model.getItem(index).index);
+                } else
+                {
+                    currentIndex = supportExtruderNr.properties.value;  // keep the old value
                 }
             }
 
-            onActivated: supportExtruderNr.setPropertyValue("value", String(index))
+            currentIndex: supportExtruderNr.properties.value
 
-            MouseArea
+            property string color: "#fff"
+            Connections
             {
-                id: supportExtruderMouseArea
-                anchors.fill: parent
-                hoverEnabled: true
-                enabled: recommendedPrintSetup.settingsEnabled
-                acceptedButtons: Qt.NoButton
-                onEntered:
+                target: extruderModel
+                onModelChanged:
                 {
-                    base.showTooltip(supportExtruderCombobox, Qt.point(-enableSupportContainer.x - supportExtruderCombobox.x - UM.Theme.getSize("thick_margin").width, 0),
-                        catalog.i18nc("@label", "Select which extruder to use for support. This will build up supporting structures below the model to prevent the model from sagging or printing in mid air."));
+                    supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
                 }
-                onExited: base.hideTooltip()
+            }
+            onCurrentIndexChanged: supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
 
+            Binding
+            {
+                target: supportExtruderCombobox
+                property: "currentIndex"
+                value: supportExtruderCombobox.getIndexByPosition(supportExtruderNr.properties.value)
+                // Sometimes when the value is already changed, the model is still being built.
+                // The when clause ensures that the current index is not updated when this happens.
+                when: supportExtruderCombobox.model.count > 0
             }
 
-            function updateCurrentColor()
+            indicator: UM.RecolorImage
             {
-                var current_extruder = extruderModel.get(currentIndex)
-                if (current_extruder !== undefined)
+                id: downArrow
+                x: supportExtruderCombobox.width - width - supportExtruderCombobox.rightPadding
+                y: supportExtruderCombobox.topPadding + Math.round((supportExtruderCombobox.availableHeight - height) / 2)
+
+                source: UM.Theme.getIcon("arrow_bottom")
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+                sourceSize.width: width + 5 * screenScaleFactor
+                sourceSize.height: width + 5 * screenScaleFactor
+
+                color: UM.Theme.getColor("setting_control_button")
+            }
+
+            background: Rectangle
+            {
+                color:
                 {
-                    supportExtruderCombobox.color_override = current_extruder.color
+                    if (!enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled")
+                    }
+                    if (supportExtruderCombobox.hovered || base.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control")
+                }
+                radius: UM.Theme.getSize("setting_control_radius").width
+                border.width: UM.Theme.getSize("default_lining").width
+                border.color:
+                {
+                    if (!enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border")
+                    }
+                    if (supportExtruderCombobox.hovered || supportExtruderCombobox.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
+                }
+            }
+
+            contentItem: Controls2.Label
+            {
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.right: downArrow.left
+                rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
+
+                text: supportExtruderCombobox.currentText
+                textFormat: Text.PlainText
+                renderType: Text.NativeRendering
+                font: UM.Theme.getFont("default")
+                color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
+
+                elide: Text.ElideLeft
+                verticalAlignment: Text.AlignVCenter
+
+                background: UM.RecolorImage
+                {
+                    id: swatch
+                    height: Math.round(parent.height / 2)
+                    width: height
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.rightMargin: UM.Theme.getSize("thin_margin").width
+
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    source: UM.Theme.getIcon("extruder_button")
+                    color: supportExtruderCombobox.color
+                }
+            }
+
+            popup: Controls2.Popup
+            {
+                y: supportExtruderCombobox.height - UM.Theme.getSize("default_lining").height
+                width: supportExtruderCombobox.width
+                implicitHeight: contentItem.implicitHeight + 2 * UM.Theme.getSize("default_lining").width
+                padding: UM.Theme.getSize("default_lining").width
+
+                contentItem: ListView
+                {
+                    clip: true
+                    implicitHeight: contentHeight
+                    model: supportExtruderCombobox.popup.visible ? supportExtruderCombobox.delegateModel : null
+                    currentIndex: supportExtruderCombobox.highlightedIndex
+
+                    Controls2.ScrollIndicator.vertical: Controls2.ScrollIndicator { }
+                }
+
+                background: Rectangle
+                {
+                    color: UM.Theme.getColor("setting_control")
+                    border.color: UM.Theme.getColor("setting_control_border")
+                }
+            }
+
+            delegate: Controls2.ItemDelegate
+            {
+                width: supportExtruderCombobox.width - 2 * UM.Theme.getSize("default_lining").width
+                height: supportExtruderCombobox.height
+                highlighted: supportExtruderCombobox.highlightedIndex == index
+
+                contentItem: Controls2.Label
+                {
+                    anchors.fill: parent
+                    anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
+                    anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+
+                    text: model.name
+                    renderType: Text.NativeRendering
+                    color:
+                    {
+                        if (model.enabled)
+                        {
+                            UM.Theme.getColor("setting_control_text")
+                        }
+                        else
+                        {
+                            UM.Theme.getColor("action_button_disabled_text");
+                        }
+                    }
+                    font: UM.Theme.getFont("default")
+                    elide: Text.ElideRight
+                    verticalAlignment: Text.AlignVCenter
+                    rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
+
+                    background: UM.RecolorImage
+                    {
+                        id: swatch
+                        height: Math.round(parent.height / 2)
+                        width: height
+                        anchors.right: parent.right
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.rightMargin: UM.Theme.getSize("thin_margin").width
+
+                        sourceSize.width: width
+                        sourceSize.height: height
+                        source: UM.Theme.getIcon("extruder_button")
+                        color: supportExtruderCombobox.model.getItem(index).color
+                    }
+                }
+
+                background: Rectangle
+                {
+                    color: parent.highlighted ? UM.Theme.getColor("setting_control_highlight") : "transparent"
+                    border.color: parent.highlighted ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
                 }
             }
         }
     }
 
-    ListModel
-    {
-        id: extruderModel
-        Component.onCompleted: populateExtruderModel()
-    }
+    property var extruderModel: CuraApplication.getExtrudersModel()
 
-    //: Model used to populate the extrudelModel
-    property var extruders: CuraApplication.getExtrudersModel()
-    Connections
-    {
-        target: extruders
-        onModelChanged: populateExtruderModel()
-    }
 
     UM.SettingPropertyProvider
     {
@@ -189,18 +330,5 @@ Item
         key: "machine_extruder_count"
         watchedProperties: ["value"]
         storeIndex: 0
-    }
-
-    function populateExtruderModel()
-    {
-        extruderModel.clear()
-        for (var extruderNumber = 0; extruderNumber < extruders.rowCount(); extruderNumber++)
-        {
-            extruderModel.append({
-                text: extruders.getItem(extruderNumber).name,
-                color: extruders.getItem(extruderNumber).color
-            })
-        }
-        supportExtruderCombobox.updateCurrentColor()
     }
 }

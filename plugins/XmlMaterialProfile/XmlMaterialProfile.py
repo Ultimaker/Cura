@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, Tuple, cast
+from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -60,6 +60,7 @@ class XmlMaterialProfile(InstanceContainer):
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
+            Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
 
         # Prevent recursion
@@ -119,7 +120,7 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
-    def serialize(self, ignored_metadata_keys: Optional[set] = None):
+    def serialize(self, ignored_metadata_keys: Optional[Set[str]] = None):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -944,11 +945,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
-            for entry in machine.iterfind("./um:setting", cls.__namespaces):
-                key = entry.get("key")
-                if key == "hardware compatible":
-                    if entry.text is not None:
-                        machine_compatibility = cls._parseCompatibleValue(entry.text)
+            for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                if entry.text is not None:
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
@@ -1019,11 +1018,9 @@ class XmlMaterialProfile(InstanceContainer):
                             continue
 
                         hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        for entry in hotend.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                            if entry.text is not None:
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 

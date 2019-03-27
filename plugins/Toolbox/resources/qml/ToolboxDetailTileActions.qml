@@ -12,6 +12,7 @@ Column
     property bool installed: toolbox.isInstalled(model.id)
     property bool canUpdate: toolbox.canUpdate(model.id)
     property bool loginRequired: model.login_required && !Cura.API.account.isLoggedIn
+    property var packageData
 
     width: UM.Theme.getSize("toolbox_action_button").width
     spacing: UM.Theme.getSize("narrow_margin").height
@@ -63,6 +64,27 @@ Column
         {
             anchors.fill: parent
             onClicked: Cura.API.account.login()
+        }
+    }
+
+    Label
+    {
+        property var whereToBuyUrl:
+        {
+            var pg_name = "whereToBuy"
+            return (pg_name in packageData.links) ? packageData.links[pg_name] : undefined
+        }
+
+        renderType: Text.NativeRendering
+        text: catalog.i18nc("@label:The string between <a href=> and </a> is the highlighted link", "<a href='%1'>Buy material spools</a>")
+        linkColor: UM.Theme.getColor("text_link")
+        visible: whereToBuyUrl != undefined
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        MouseArea
+        {
+            anchors.fill: parent
+            onClicked: Qt.openUrlExternally(parent.whereToBuyUrl)
         }
     }
 

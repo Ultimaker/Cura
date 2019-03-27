@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Tuple, Union, Optional, Dict, List
@@ -10,13 +10,13 @@ import os
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob  # To call the file writer asynchronously.
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
-from UM.Qt.Duration import Duration, DurationFormat
-
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode  # For typing.
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
@@ -65,7 +65,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._print_jobs = [] # type: List[UM3PrintJobOutputModel]
         self._received_print_jobs = False # type: bool
 
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/MonitorStage.qml")
+        if PluginRegistry.getInstance() is not None:
+            self._monitor_view_qml_path = os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "qml", "MonitorStage.qml"
+            )
 
         # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -126,8 +130,12 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
-            path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/PrintWindow.qml")
-            self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
+            if PluginRegistry.getInstance() is not None:
+                path = os.path.join(
+                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                    "resources", "qml", "PrintWindow.qml"
+                )
+                self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()
 
@@ -197,7 +205,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._progress_message = Message(i18n_catalog.i18nc("@info:status", "Sending data to printer"), lifetime = 0,
                                          dismissable = False, progress = -1,
                                          title = i18n_catalog.i18nc("@info:title", "Sending Data"))
-        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = None,
+        self._progress_message.addAction("Abort", i18n_catalog.i18nc("@action:button", "Cancel"), icon = "",
                                          description = "")
         self._progress_message.actionTriggered.connect(self._progressMessageActionTriggered)
         self._progress_message.show()
@@ -263,7 +271,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             # Treat upload progress as response. Uploading can take more than 10 seconds, so if we don't, we can get
             # timeout responses if this happens.
             self._last_response_time = time()
-            if self._progress_message is not None and new_progress > self._progress_message.getProgress():
+            if self._progress_message is not None and new_progress != self._progress_message.getProgress():
                 self._progress_message.show()  # Ensure that the message is visible.
                 self._progress_message.setProgress(bytes_sent / bytes_total * 100)
 
@@ -275,7 +283,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                     i18n_catalog.i18nc("@info:status", "Print job was successfully sent to the printer."),
                     lifetime=5, dismissable=True,
                     title=i18n_catalog.i18nc("@info:title", "Data Sent"))
-                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Monitor"), icon=None,
+                self._success_message.addAction("View", i18n_catalog.i18nc("@action:button", "View in Monitor"), icon = "",
                                                 description="")
                 self._success_message.actionTriggered.connect(self._successMessageActionTriggered)
                 self._success_message.show()
@@ -387,9 +395,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
         for job in newly_finished_jobs:
             if job.assignedPrinter:
-                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.").format(printer_name=job.assignedPrinter.name, job_name = job.name)
             else:
-                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.".format(job_name = job.name))
+                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.").format(job_name = job.name)
             job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
             job_completed_message.show()
 
@@ -567,8 +575,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         if material_guid:
             material_group_list = material_manager.getMaterialGroupListByGUID(material_guid)
 
-        # This can happen if the connected machine has no material in one or more extruders (if GUID is empty), or the		
-        # material is unknown to Cura, so we should return an "empty" or "unknown" material model.		
+        # This can happen if the connected machine has no material in one or more extruders (if GUID is empty), or the
+        # material is unknown to Cura, so we should return an "empty" or "unknown" material model.
         if material_group_list is None:
             material_name = i18n_catalog.i18nc("@label:material", "Empty") if len(material_data.get("guid", "")) == 0 \
                         else i18n_catalog.i18nc("@label:material", "Unknown")

@@ -10,7 +10,7 @@ class GCodeListDecorator(SceneNodeDecorator):
     def getGCodeList(self) -> List[str]:
         return self._gcode_list
 
-    def setGCodeList(self, list: List[str]):
+    def setGCodeList(self, list: List[str]) -> None:
         self._gcode_list = list
 
     def __deepcopy__(self, memo) -> "GCodeListDecorator":

@@ -12,9 +12,6 @@ catalog = i18nCatalog("cura")
 from . import MarlinFlavorParser, RepRapFlavorParser
 
 
-
-
-
 # Class for loading and parsing G-code files
 class GCodeReader(MeshReader):
     _flavor_default = "Marlin"
