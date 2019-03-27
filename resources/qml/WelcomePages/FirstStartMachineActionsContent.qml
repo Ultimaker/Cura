@@ -17,25 +17,19 @@ Item
 
     property var machineActionsModel: CuraApplication.getFirstStartMachineActionsModel()
 
-    property int currentActionIndex: 0
-    property var currentActionItem: currentActionIndex >= machineActionsModel.count
-                                    ? null : machineActionsModel.getItem(currentActionIndex)
-    property bool hasActions: machineActionsModel.count > 0
+    Component.onCompleted:
+    {
+        // Reset the action to start from the beginning when it is shown.
+        machineActionsModel.reset()
+    }
 
-    // Reset to the first page if the model gets changed.
+    // Go to the next page when all machine actions have been finished
     Connections
     {
         target: machineActionsModel
-        onItemsChanged: currentActionIndex = 0
-    }
-
-    onVisibleChanged:
-    {
-        if (visible)
+        onAllFinished:
         {
-            // Reset the action to start from the beginning when it is shown.
-            currentActionIndex = 0
-            if (!hasActions)
+            if (visible)
             {
                 base.showNextPage()
             }
@@ -49,7 +43,7 @@ Item
         anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: currentActionItem == null ? "" : currentActionItem.title
+        text: machineActionsModel.currentItem.title == undefined ? "" : machineActionsModel.currentItem.title
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("large_bold")
         renderType: Text.NativeRendering
@@ -63,7 +57,13 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
 
-        data: currentActionItem == undefined ? null : currentActionItem.content
+        data: machineActionsModel.currentItem.content == undefined ? emptyItem : machineActionsModel.currentItem.content
+    }
+
+    // An empty item in case there's no currentItem.content to show
+    Item
+    {
+        id: emptyItem
     }
 
     Cura.PrimaryButton
@@ -75,20 +75,6 @@ Item
         text: catalog.i18nc("@button", "Next")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
-        onClicked:
-        {
-            // If no more first-start actions to show, go to the next page.
-            if (currentActionIndex + 1 >= machineActionsModel.count)
-            {
-                currentActionIndex = 0
-                base.showNextPage()
-                return
-            }
-
-            // notify the current MachineAction that it has finished
-            currentActionItem.action.setFinished()
-            // move on to the next MachineAction
-            currentActionIndex++
-        }
+        onClicked: machineActionsModel.goToNextAction()
     }
 }
