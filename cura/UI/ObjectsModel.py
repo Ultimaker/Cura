@@ -51,12 +51,14 @@ class ObjectsModel(ListModel):
         group_nr = 1
         name_count_dict = defaultdict(int)  # type: Dict[str, int]
 
-        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):
+        for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
             if not isinstance(node, SceneNode):
                 continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue
-            if node.getParent() and node.getParent().callDecoration("isGroup"):
+
+            parent = node.getParent()
+            if parent and parent.callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
             if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
                 continue
@@ -72,7 +74,7 @@ class ObjectsModel(ListModel):
                 group_nr += 1
 
             if hasattr(node, "isOutsideBuildArea"):
-                is_outside_build_area = node.isOutsideBuildArea()
+                is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
             else:
                 is_outside_build_area = False
                 

@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import collections
-from typing import Optional
+from typing import Optional, Dict, List, cast
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
@@ -29,9 +29,9 @@ class TextManager(QObject):
     def _loadChangeLogText(self) -> str:
         # Load change log texts and organize them with a dict
         file_path = Resources.getPath(Resources.Texts, "change_log.txt")
-        change_logs_dict = {}
+        change_logs_dict = {}  # type: Dict[Version, Dict[str, List[str]]]
         with open(file_path, "r", encoding = "utf-8") as f:
-            open_version = None
+            open_version = None  # type: Optional[Version]
             open_header = ""  # Initialise to an empty header in case there is no "*" in the first line of the changelog
             for line in f:
                 line = line.replace("\n", "")
@@ -43,11 +43,11 @@ class TextManager(QObject):
                     change_logs_dict[open_version] = collections.OrderedDict()
                 elif line.startswith("*"):
                     open_header = line.replace("*", "")
-                    change_logs_dict[open_version][open_header] = []
+                    change_logs_dict[cast(Version, open_version)][open_header] = []
                 elif line != "":
-                    if open_header not in change_logs_dict[open_version]:
-                        change_logs_dict[open_version][open_header] = []
-                    change_logs_dict[open_version][open_header].append(line)
+                    if open_header not in change_logs_dict[cast(Version, open_version)]:
+                        change_logs_dict[cast(Version, open_version)][open_header] = []
+                    change_logs_dict[cast(Version, open_version)][open_header].append(line)
 
         # Format changelog text
         content = ""
