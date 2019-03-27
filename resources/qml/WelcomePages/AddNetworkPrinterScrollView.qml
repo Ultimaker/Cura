@@ -200,7 +200,7 @@ Item
                 onClicked:
                 {
                     // open the troubleshooting URL with web browser
-                    const url = "https://ultimaker.com/en/resources/39129-network-troubleshooting-cura"
+                    const url = "https://ultimaker.com/in/cura/troubleshooting/network"
                     Qt.openUrlExternally(url)
                 }
                 onEntered:
