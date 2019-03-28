@@ -42,9 +42,12 @@ class MachineSettingsManager(QObject):
         # it was moved to the machine manager instead. Now this method just calls the machine manager.
         self._application.getMachineManager().setActiveMachineExtruderCount(extruder_count)
 
-    # FIXME(Lipu): Better document what this function does, especially the fuzzy gcode flavor and has_materials logic
-    #              regarding UM2 and UM2+
     # Function for the Machine Settings panel (QML) to update after the usre changes "Number of Extruders".
+    #
+    # fieldOfView: The Ultimaker 2 family (not 2+) does not have materials in Cura by default, because the material is
+    # to be set on the printer. But when switching to Marlin flavor, the printer firmware can not change/insert material
+    # settings on the fly so they need to be configured in Cura. So when switching between gcode flavors, materials may
+    # need to be enabled/disabled.
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
         machine_manager = self._application.getMachineManager()
