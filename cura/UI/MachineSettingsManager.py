@@ -1,11 +1,14 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
 from UM.i18n import i18nCatalog
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 
 #
@@ -13,12 +16,11 @@ from UM.i18n import i18nCatalog
 #
 class MachineSettingsManager(QObject):
 
-    def __init__(self, parent: Optional["QObject"] = None) -> None:
+    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
         self._i18n_catalog = i18nCatalog("cura")
 
-        from cura.CuraApplication import CuraApplication
-        self._application = CuraApplication.getInstance()
+        self._application = application
 
     # Force rebuilding the build volume by reloading the global container stack. This is a bit of a hack, but it seems
     # quite enough.

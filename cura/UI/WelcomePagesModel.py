@@ -12,6 +12,8 @@ from UM.Resources import Resources
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from cura.CuraApplication import CuraApplication
+
 
 #
 # This is the Qt ListModel that contains all welcome pages data. Each page is a page that can be shown as a step in the
@@ -33,12 +35,14 @@ class WelcomePagesModel(ListModel):
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
 
-    def __init__(self, parent: Optional["QObject"] = None) -> None:
+    def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.PageUrlRole, "page_url")
         self.addRoleName(self.NextPageIdRole, "next_page_id")
+
+        self._application = application
 
         self._pages = []  # type: List[Dict[str, Any]]
 
@@ -206,14 +210,12 @@ class WelcomePagesModel(ListModel):
     # Indicates if the machine action panel should be shown by checking if there's any first start machine actions
     # available.
     def shouldShowMachineActions(self) -> bool:
-        from cura.CuraApplication import CuraApplication
-        application = CuraApplication.getInstance()
-        global_stack = application.getMachineManager().activeMachine
+        global_stack = self._application.getMachineManager().activeMachine
         if global_stack is None:
             return False
 
         definition_id = global_stack.definition.getId()
-        first_start_actions = application.getMachineActionManager().getFirstStartActions(definition_id)
+        first_start_actions = self._application.getMachineActionManager().getFirstStartActions(definition_id)
         return len(first_start_actions) > 0
 
     def addPage(self) -> None:

@@ -1,11 +1,14 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, Qt, pyqtProperty, pyqtSignal, pyqtSlot
 
 from UM.Qt.ListModel import ListModel
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 
 #
@@ -20,7 +23,7 @@ class FirstStartMachineActionsModel(ListModel):
     ContentRole = Qt.UserRole + 2
     ActionRole = Qt.UserRole + 3
 
-    def __init__(self, parent: Optional[QObject] = None) -> None:
+    def __init__(self, application: "CuraApplication", parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.TitleRole, "title")
@@ -29,9 +32,7 @@ class FirstStartMachineActionsModel(ListModel):
 
         self._current_action_index = 0
 
-        from cura.CuraApplication import CuraApplication
-        self._application = CuraApplication.getInstance()
-
+        self._application = application
         self._application.initializationFinished.connect(self._initialize)
 
     def _initialize(self) -> None:
