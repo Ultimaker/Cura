@@ -386,7 +386,6 @@
 
         "toolbox_header_button_text_active": [0, 0, 0, 255],
         "toolbox_header_button_text_inactive": [0, 0, 0, 255],
-        "toolbox_header_button_text_hovered": [0, 0, 0, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
         "favorites_header_hover": [245, 245, 245, 255],

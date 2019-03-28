@@ -50,6 +50,7 @@ Item
             }
         }
     }
+
     ToolboxTabButton
     {
         id: installedTabButton
@@ -62,7 +63,43 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         onClicked: toolbox.viewCategory = "installed"
+        width: UM.Theme.getSize("toolbox_header_tab").width + marketplaceNotificationIcon.width - UM.Theme.getSize("default_margin").width
     }
+
+    Rectangle
+    {
+        id: marketplaceNotificationIcon
+        color: UM.Theme.getColor("notification_icon")
+        width: installedTabButton.height / 3
+        height: width
+        radius: 0.5 * width
+
+        visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
+
+        anchors.right: installedTabButton.right
+        anchors.verticalCenter: installedTabButton.verticalCenter
+
+        Label
+        {
+            id: marketplaceNotificationText
+            anchors.centerIn: parent
+            anchors.fill: parent
+            text:
+            {
+                if(CuraApplication.getPackageManager().packagesWithUpdate.length > 9)
+                {
+                    return "9+"  // More than 2 characters don't fit.
+                }
+
+                return CuraApplication.getPackageManager().packagesWithUpdate.length
+            }
+            color: UM.Theme.getColor("primary_text")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            font: UM.Theme.getFont("small")
+        }
+    }
+
     ToolboxShadow
     {
         anchors.top: bar.bottom
