@@ -56,7 +56,10 @@ class WelcomePagesModel(ListModel):
     # Returns a float number in [0, 1] which indicates the current progress.
     @pyqtProperty(float, notify = currentPageIndexChanged)
     def currentProgress(self) -> float:
-        return self._current_page_index / len(self._items)
+        if len(self._items) == 0:
+            return 0
+        else:
+            return self._current_page_index / len(self._items)
 
     # Indicates if the current page is the last page.
     @pyqtProperty(bool, notify = currentPageIndexChanged)
