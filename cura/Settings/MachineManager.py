@@ -6,13 +6,13 @@ import re
 import unicodedata
 from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
-
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
 from UM import Util
 from UM.Logger import Logger
@@ -25,7 +25,7 @@ from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.UI.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack

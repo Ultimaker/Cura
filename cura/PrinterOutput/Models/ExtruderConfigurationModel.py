@@ -4,7 +4,7 @@ from typing import Optional
 
 from PyQt5.QtCore import pyqtProperty, QObject, pyqtSignal
 
-from cura.UI.MaterialOutputModel import MaterialOutputModel
+from .MaterialOutputModel import MaterialOutputModel
 
 
 class ExtruderConfigurationModel(QObject):

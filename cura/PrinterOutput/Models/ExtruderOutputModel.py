@@ -1,14 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
-from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
-
 from typing import Optional, TYPE_CHECKING
 
+from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
+
+from .ExtruderConfigurationModel import ExtruderConfigurationModel
+
 if TYPE_CHECKING:
-    from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
-    from cura.UI.MaterialOutputModel import MaterialOutputModel
+    from .MaterialOutputModel import MaterialOutputModel
+    from .PrinterOutputModel import PrinterOutputModel
 
 
 class ExtruderOutputModel(QObject):

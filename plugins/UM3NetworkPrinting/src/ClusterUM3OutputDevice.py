@@ -23,7 +23,7 @@ from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigura
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
-from cura.UI.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .Cloud.Utils import formatTimeCompleted, formatDateCompleted

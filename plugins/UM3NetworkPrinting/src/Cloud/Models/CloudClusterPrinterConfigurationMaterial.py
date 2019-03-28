@@ -2,7 +2,7 @@ from typing import Optional
 
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
-from cura.UI.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 from .BaseCloudModel import BaseCloudModel
 
 
