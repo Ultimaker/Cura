@@ -47,7 +47,7 @@ class DiscoveredPrinter(QObject):
     machineTypeChanged = pyqtSignal()
 
     @pyqtProperty(str, notify = machineTypeChanged)
-    def machine_type(self) -> str:
+    def machineType(self) -> str:
         return self._machine_type
 
     def setMachineType(self, machine_type: str) -> None:
@@ -57,7 +57,7 @@ class DiscoveredPrinter(QObject):
 
     # Human readable machine type string
     @pyqtProperty(str, notify = machineTypeChanged)
-    def readable_machine_type(self) -> str:
+    def readableMachineType(self) -> str:
         from cura.CuraApplication import CuraApplication
         readable_type = CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
         if not readable_type:
@@ -65,8 +65,8 @@ class DiscoveredPrinter(QObject):
         return readable_type
 
     @pyqtProperty(bool, notify = machineTypeChanged)
-    def is_unknown_machine_type(self) -> bool:
-        return self.readable_machine_type.lower() == "unknown"
+    def isUnknownMachineType(self) -> bool:
+        return self.readableMachineType.lower() == "unknown"
 
     @pyqtProperty(QObject, constant = True)
     def device(self) -> "NetworkedPrinterOutputDevice":
@@ -88,7 +88,7 @@ class DiscoveredPrintersModel(QObject):
     discoveredPrintersChanged = pyqtSignal()
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
-    def discovered_printers(self) -> List["DiscoveredPrinter"]:
+    def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
         item_list.sort(key = lambda x: x.name)
         return item_list

@@ -69,14 +69,14 @@ Item
             {
                 id: networkPrinterListView
                 anchors.fill: parent
-                model: CuraApplication.getDiscoveredPrintersModel().discovered_printers
+                model: CuraApplication.getDiscoveredPrintersModel().discoveredPrinters
 
                 Component.onCompleted:
                 {
                     // Select the first one that's not "unknown" by default.
                     for (var i = 0; i < count; i++)
                     {
-                        if (!model[i].is_unknown_machine_type)
+                        if (!model[i].isUnknownMachineType)
                         {
                             currentIndex = i
                             break
@@ -93,7 +93,7 @@ Item
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     outputDevice: modelData.device
 
-                    enabled: !modelData.is_unknown_machine_type
+                    enabled: !modelData.isUnknownMachineType
 
                     printerTypeLabelAutoFit: true
 
@@ -103,7 +103,7 @@ Item
 
                     function updateMachineTypes()
                     {
-                        printerTypesList = [ modelData.readable_machine_type ]
+                        printerTypesList = [ modelData.readableMachineType ]
                     }
 
                     checkable: false
