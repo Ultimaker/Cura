@@ -119,7 +119,7 @@ class DiscoveredPrintersModel(QObject):
 
     def removeDiscoveredPrinter(self, ip_address: str) -> None:
         if ip_address not in self._discovered_printer_by_ip_dict:
-            Logger.log("i", "Key [%s] does not exist in the discovered printers list.", ip_address)
+            Logger.log("w", "Key [%s] does not exist in the discovered printers list.", ip_address)
             return
 
         del self._discovered_printer_by_ip_dict[ip_address]
