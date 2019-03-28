@@ -15,6 +15,27 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
+    property var machineActionsModel: CuraApplication.getFirstStartMachineActionsModel()
+
+    Component.onCompleted:
+    {
+        // Reset the action to start from the beginning when it is shown.
+        machineActionsModel.reset()
+    }
+
+    // Go to the next page when all machine actions have been finished
+    Connections
+    {
+        target: machineActionsModel
+        onAllFinished:
+        {
+            if (visible)
+            {
+                base.showNextPage()
+            }
+        }
+    }
+
     Label
     {
         id: titleLabel
@@ -22,53 +43,38 @@ Item
         anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "What's new in Ultimaker Cura")
+        text: machineActionsModel.currentItem.title == undefined ? "" : machineActionsModel.currentItem.title
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("large_bold")
         renderType: Text.NativeRendering
     }
 
-    Rectangle
+    Item
     {
         anchors.top: titleLabel.bottom
-        anchors.bottom: getStartedButton.top
-        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
-        anchors.bottomMargin: UM.Theme.getSize("welcome_pages_default_margin").height
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: (parent.width * 3 / 4) | 0
+        anchors.bottom: nextButton.top
+        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.left: parent.left
+        anchors.right: parent.right
 
-        border.color: "#dfdfdf"
-        border.width: UM.Theme.getSize("default_lining").width
+        data: machineActionsModel.currentItem.content == undefined ? emptyItem : machineActionsModel.currentItem.content
+    }
 
-        ScrollView
-        {
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_lining").width
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            TextArea
-            {
-                id: whatsNewTextArea
-                text: CuraApplication.getTextManager().getChangeLogText()
-                textFormat: Text.RichText
-                wrapMode: Text.WordWrap
-                readOnly: true
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
-            }
-        }
+    // An empty item in case there's no currentItem.content to show
+    Item
+    {
+        id: emptyItem
     }
 
     Cura.PrimaryButton
     {
-        id: getStartedButton
+        id: nextButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Next")
         width: UM.Theme.getSize("welcome_pages_button").width
         fixedWidthMode: true
-        onClicked: base.showNextPage()
+        onClicked: machineActionsModel.goToNextAction()
     }
 }

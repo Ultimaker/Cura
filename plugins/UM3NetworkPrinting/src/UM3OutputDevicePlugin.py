@@ -28,13 +28,14 @@ from UM.Version import Version
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
-
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
     from cura.Settings.GlobalStack import GlobalStack
+    from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
 
 i18n_catalog = i18nCatalog("cura")
+
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
@@ -454,7 +455,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
         active_machine = self._application.getMachineManager().activeMachine  # type: Optional[GlobalStack]
         if active_machine:
-            
             # Check 1A: Printer isn't already configured for cloud
             if ConnectionType.CloudConnection.value in active_machine.configuredConnectionTypes:
                 Logger.log("d", "Active machine was already configured for cloud.")

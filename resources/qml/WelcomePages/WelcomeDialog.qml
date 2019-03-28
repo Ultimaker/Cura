@@ -10,6 +10,9 @@ import UM 1.3 as UM
 import Cura 1.1 as Cura
 
 
+//
+// This is a no-frame dialog that shows the welcome process.
+//
 Window
 {
     UM.I18nCatalog { id: catalog; name: "cura" }

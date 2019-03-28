@@ -17,3 +17,21 @@ SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
 CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml
+
+
+# Cura/Widgets
+
+CheckBox    1.0 CheckBox.qml
+ComboBox    1.0 ComboBox.qml
+ProgressBar 1.0 ProgressBar.qml
+RadioButton 1.0 RadioButton.qml
+TabButton   1.0 TabButton.qml
+
+
+# Cura/MachineSettings
+
+ComboBoxWithOptions         1.0 ComboBoxWithOptions.qml
+GcodeTextArea               1.0 GcodeTextArea.qml
+NumericTextFieldWithUnit    1.0 NumericTextFieldWithUnit.qml
+PrintHeadMinMaxTextField    1.0 PrintHeadMinMaxTextField.qml
+SimpleCheckBox              1.0 SimpleCheckBox.qml

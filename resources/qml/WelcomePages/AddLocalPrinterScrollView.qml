@@ -129,7 +129,7 @@ ScrollView
     {
         id: machineButton
 
-        RadioButton
+        Cura.RadioButton
         {
             id: radioButton
             anchors.left: parent.left
@@ -140,47 +140,7 @@ ScrollView
 
             checked: ListView.view.currentIndex == index
             text: name
-            font: UM.Theme.getFont("default")
             visible: base.currentSection == section
-
-            background: Item
-            {
-                anchors.fill: parent
-            }
-
-            indicator: Rectangle
-            {
-                implicitWidth: UM.Theme.getSize("radio_button").width
-                implicitHeight: UM.Theme.getSize("radio_button").height
-                anchors.verticalCenter: parent.verticalCenter
-                radius: (width / 2) | 0
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: radioButton.hovered ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("small_button_text_hover")
-
-                Rectangle
-                {
-                    width: (parent.width / 2) | 0
-                    height: width
-                    anchors.centerIn: parent
-                    radius: (width / 2) | 0
-                    color: radioButton.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
-                    visible: radioButton.checked
-                }
-            }
-
-            contentItem: Label
-            {
-                verticalAlignment: Text.AlignVCenter
-                leftPadding: radioButton.indicator.width + radioButton.spacing
-                text: radioButton.text
-                font: radioButton.font
-                renderType: Text.NativeRendering
-            }
-
-            onClicked:
-            {
-                ListView.view.currentIndex = index
-            }
         }
     }
 }

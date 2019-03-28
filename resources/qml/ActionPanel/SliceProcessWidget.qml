@@ -9,8 +9,6 @@ import QtQuick.Controls 1.4 as Controls1
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
-import "../Widgets"
-
 
 // This element contains all the elements the user needs to create a printjob from the
 // model(s) that is(are) on the buildplate. Mainly the button to start/stop the slicing
@@ -66,7 +64,7 @@ Column
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
-    CuraProgressBar
+    Cura.ProgressBar
     {
         id: progressBar
         width: parent.width

@@ -50,7 +50,6 @@ class Toolbox(QObject, Extension):
         self._request_headers = [] # type: List[Tuple[bytes, bytes]]
         self._updateRequestHeader()
 
-
         self._request_urls = {}  # type: Dict[str, QUrl]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
         self._old_plugin_ids = set()  # type: Set[str]

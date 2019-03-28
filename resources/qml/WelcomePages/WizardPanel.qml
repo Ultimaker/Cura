@@ -7,8 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../Widgets"
-
 
 //
 // This item is a wizard panel that contains a progress bar at the top and a content area that's beneath the progress
@@ -42,7 +40,7 @@ Item
         anchors.fill: parent
         radius: UM.Theme.getSize("default_radius").width
 
-        CuraProgressBar
+        Cura.ProgressBar
         {
             id: progressBar
             anchors.top: parent.top

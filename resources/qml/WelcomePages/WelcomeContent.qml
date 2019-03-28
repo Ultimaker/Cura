@@ -57,7 +57,7 @@ Item
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
             text: catalog.i18nc("@button", "Get started")
-            width: 140
+            width: UM.Theme.getSize("welcome_pages_button").width
             fixedWidthMode: true
             onClicked: base.showNextPage()
         }

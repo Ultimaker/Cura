@@ -136,7 +136,7 @@ class MachineActionManager(QObject):
     #   action multiple times).
     #   \param definition_id The ID of the definition that you want to get the "on added" actions for.
     #   \returns List of actions.
-    @pyqtSlot(str, result="QVariantList")
+    @pyqtSlot(str, result = "QVariantList")
     def getFirstStartActions(self, definition_id: str) -> List["MachineAction"]:
         if definition_id in self._first_start_actions:
             return self._first_start_actions[definition_id]
