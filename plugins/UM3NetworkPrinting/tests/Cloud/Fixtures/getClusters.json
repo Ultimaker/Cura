@@ -4,6 +4,7 @@
         "host_guid": "e90ae0ac-1257-4403-91ee-a44c9b7e8050",
         "host_name": "ultimakersystem-ccbdd30044ec",
         "host_version": "5.0.0.20170101",
+        "host_internal_ip": "",
         "is_online": true,
         "status": "active"
     }, {
@@ -11,6 +12,7 @@
         "host_guid": "e0ace90a-91ee-1257-4403-e8050a44c9b7",
         "host_name": "ultimakersystem-30044ecccbdd",
         "host_version": "5.1.2.20180807",
+        "host_internal_ip": "",
         "is_online": true,
         "status": "active"
     }]

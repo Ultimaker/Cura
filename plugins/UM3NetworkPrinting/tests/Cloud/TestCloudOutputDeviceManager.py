@@ -97,7 +97,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self.assertTrue(self.device_manager.getOutputDevice(cluster1["cluster_id"]).isConnected())
         self.assertIsNone(self.device_manager.getOutputDevice(cluster2["cluster_id"]))
-        self.assertEquals([], active_machine_mock.setMetaDataEntry.mock_calls)
+        self.assertEqual([], active_machine_mock.setMetaDataEntry.mock_calls)
 
     def test_device_connects_by_network_key(self):
         active_machine_mock = self.app.getGlobalContainerStack.return_value
