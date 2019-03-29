@@ -57,11 +57,6 @@ Item
                 font: UM.Theme.getFont("default")
                 renderType: Text.NativeRendering
             }
-
-            Component.onCompleted:
-            {
-                Scrollbar.vertical.position = 0;
-            }
         }
     }
 
