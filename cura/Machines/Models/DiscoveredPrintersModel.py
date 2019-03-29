@@ -107,7 +107,7 @@ class DiscoveredPrintersModel(QObject):
                                 name: Optional[str] = None,
                                 machine_type: Optional[str] = None) -> None:
         if ip_address not in self._discovered_printer_by_ip_dict:
-            Logger.log("e", "Printer with ip [%s] is not known", ip_address)
+            Logger.log("w", "Printer with ip [%s] is not known", ip_address)
             return
 
         item = self._discovered_printer_by_ip_dict[ip_address]

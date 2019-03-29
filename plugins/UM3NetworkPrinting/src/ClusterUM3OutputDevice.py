@@ -632,7 +632,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
-        self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(data["ip_address"],
+
+        if data["status"] != "unreachable":
+            self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(data["ip_address"],
                                                                                name = data["friendly_name"],
                                                                                machine_type = data["machine_variant"])
 
