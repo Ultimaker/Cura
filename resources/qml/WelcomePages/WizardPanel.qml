@@ -25,6 +25,8 @@ Item
     property var progressValue: model == null ? 0 : model.currentProgress
     property string pageUrl: currentItem == null ? "" : currentItem.page_url
 
+    property alias backgroundColor: panelBackground.color
+
     signal showNextPage()
     signal showPreviousPage()
     signal goToPage(string page_id)  // Go to a specific page by the given page_id.
@@ -41,7 +43,7 @@ Item
         id: panelBackground
         anchors.fill: parent
         radius: UM.Theme.getSize("default_radius").width
-
+        color: UM.Theme.getColor("main_background")
         Cura.ProgressBar
         {
             id: progressBar

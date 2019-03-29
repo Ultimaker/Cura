@@ -42,12 +42,6 @@ UM.MainWindow
         tooltip.hide();
     }
 
-    WelcomeDialog
-    {
-        id: welcomeDialog
-        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
-    }
-
     Rectangle
     {
         id: greyOutBackground
@@ -56,6 +50,22 @@ UM.MainWindow
         color: UM.Theme.getColor("window_disabled_background")
         opacity: 0.7
         z: stageMenu.z + 1
+
+        MouseArea
+        {
+            // Prevent all mouse events from passing through.
+            enabled: parent.visible
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+        }
+    }
+
+    WelcomeDialog
+    {
+        id: welcomeDialog
+        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        z: greyOutBackground.z + 1
     }
 
     Component.onCompleted:

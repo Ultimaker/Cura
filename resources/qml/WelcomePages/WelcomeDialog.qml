@@ -13,18 +13,16 @@ import Cura 1.1 as Cura
 //
 // This is a no-frame dialog that shows the welcome process.
 //
-Window
+Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     id: dialog
-    title: catalog.i18nc("@title", "Welcome to Ultimaker Cura")
-    modality: Qt.ApplicationModal
-    flags: Qt.Dialog | Qt.FramelessWindowHint
+
+    anchors.centerIn: parent
 
     width: 580 * screenScaleFactor
     height: 600 * screenScaleFactor
-    color: "transparent"
 
     property int shadowOffset: 1 * screenScaleFactor
 
