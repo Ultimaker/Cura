@@ -27,7 +27,7 @@ RadioButton
         implicitWidth: UM.Theme.getSize("radio_button").width
         implicitHeight: UM.Theme.getSize("radio_button").height
         anchors.verticalCenter: parent.verticalCenter
-        radius: (width / 2) | 0
+        radius: width / 2
         border.width: UM.Theme.getSize("default_lining").width
         border.color: radioButton.hovered ? UM.Theme.getColor("small_button_text") : UM.Theme.getColor("small_button_text_hover")
 
@@ -36,7 +36,7 @@ RadioButton
             width: (parent.width / 2) | 0
             height: width
             anchors.centerIn: parent
-            radius: (width / 2) | 0
+            radius: width / 2
             color: radioButton.hovered ? UM.Theme.getColor("primary_button_hover") : UM.Theme.getColor("primary_button")
             visible: radioButton.checked
         }
