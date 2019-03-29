@@ -59,11 +59,12 @@ Item
         anchors.top: header.bottom
         anchors.left: header.left
         anchors.right: header.right
-        height: contentLoader.height
+        // Add 2x lining, because it needs a bit of space on the top and the bottom.
+        height: contentLoader.height + 2 * UM.Theme.getSize("thick_lining").height
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
-        color: "white"
+        color: UM.Theme.getColor("main_background")
         radius: UM.Theme.getSize("default_radius").width
         visible: base.contentShown
         cornerSide: Cura.RoundedRectangle.Direction.Down
