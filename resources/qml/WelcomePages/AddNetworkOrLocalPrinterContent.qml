@@ -125,8 +125,6 @@ Item
         }
 
         text: catalog.i18nc("@button", "Next")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked:
         {
             // Create a network printer or a local printer according to the selection

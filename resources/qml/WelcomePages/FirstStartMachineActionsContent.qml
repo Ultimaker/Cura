@@ -73,8 +73,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Next")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked: machineActionsModel.goToNextAction()
     }
 }

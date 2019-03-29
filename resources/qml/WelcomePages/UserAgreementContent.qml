@@ -61,8 +61,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Agree")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked:
         {
             CuraApplication.writeToLog("i", "User accepted the User-Agreement.")
@@ -78,8 +76,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Decline and close")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked:
         {
             CuraApplication.writeToLog("i", "User declined the User Agreement.")

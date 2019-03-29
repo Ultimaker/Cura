@@ -96,8 +96,6 @@ Item
                     anchors.top: parent.top
                     anchors.right: parent.right
                     anchors.margins: UM.Theme.getSize("default_margin").width
-                    width: UM.Theme.getSize("action_button").width
-                    fixedWidthMode: true
 
                     text: catalog.i18nc("@button", "Add")
                     onClicked:
@@ -245,8 +243,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Cancel")
-        width: UM.Theme.getSize("action_button").width
-        fixedWidthMode: true
         onClicked: base.showPreviousPage()
     }
 
@@ -257,8 +253,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Connect")
-        width: UM.Theme.getSize("action_button").width
-        fixedWidthMode: true
         onClicked:
         {
             CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinterAddress(

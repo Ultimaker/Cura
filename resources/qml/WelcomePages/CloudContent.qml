@@ -103,8 +103,6 @@ Item
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Finish")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked: base.showNextPage()
     }
 
@@ -115,8 +113,6 @@ Item
         anchors.verticalCenter: finishButton.verticalCenter
         anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
         text: catalog.i18nc("@button", "Create an account")
-        width: UM.Theme.getSize("welcome_pages_button").width
-        fixedWidthMode: true
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
     }
 
