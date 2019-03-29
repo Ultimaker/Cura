@@ -16,7 +16,7 @@ class CloudClusterResponse(BaseCloudModel):
     #  \param status: The status of the cluster authentication (active or inactive).
     #  \param host_version: The firmware version of the cluster host. This is where the Stardust client is running on.
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
-                 host_internal_ip: Optional[str] = "", host_version: Optional[str] = None, **kwargs) -> None:
+                 host_internal_ip: Optional[str] = None, host_version: Optional[str] = None, **kwargs) -> None:
         self.cluster_id = cluster_id
         self.host_guid = host_guid
         self.host_name = host_name
