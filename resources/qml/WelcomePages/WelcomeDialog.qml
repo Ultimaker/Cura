@@ -20,7 +20,7 @@ Window
     id: dialog
     title: catalog.i18nc("@title", "Welcome to Ultimaker Cura")
     modality: Qt.ApplicationModal
-    flags: Qt.Window | Qt.FramelessWindowHint
+    flags: Qt.Dialog | Qt.FramelessWindowHint
 
     width: 580 * screenScaleFactor
     height: 600 * screenScaleFactor
