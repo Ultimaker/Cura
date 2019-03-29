@@ -15,13 +15,13 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+    anchors.margins: UM.Theme.getSize("wide_margin").width
 
     Column  // Arrange the items vertically and put everything in the center
     {
         anchors.centerIn: parent
         width: parent.width
-        spacing: UM.Theme.getSize("welcome_pages_default_margin").height
+        spacing: UM.Theme.getSize("wide_margin").height
 
         Label
         {
@@ -55,7 +55,7 @@ Item
         {
             id: getStartedButton
             anchors.horizontalCenter: parent.horizontalCenter
-            anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+            anchors.margins: UM.Theme.getSize("wide_margin").width
             text: catalog.i18nc("@button", "Get started")
             onClicked: base.showNextPage()
         }

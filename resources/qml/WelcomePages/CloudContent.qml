@@ -19,7 +19,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Ultimaker Cloud")
@@ -101,7 +101,7 @@ Item
         id: finishButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Finish")
         onClicked: base.showNextPage()
     }
@@ -111,7 +111,7 @@ Item
         id: createAccountButton
         anchors.left: parent.left
         anchors.verticalCenter: finishButton.verticalCenter
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Create an account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
     }
@@ -121,7 +121,7 @@ Item
         id: signInButton
         anchors.left: createAccountButton.right
         anchors.verticalCenter: finishButton.verticalCenter
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Sign in")
         color: UM.Theme.getColor("secondary_button_text")
         font: UM.Theme.getFont("medium")

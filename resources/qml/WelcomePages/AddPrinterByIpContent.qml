@@ -29,7 +29,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Add printer by IP address")
@@ -241,7 +241,7 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Cancel")
         onClicked: base.showPreviousPage()
     }
@@ -251,7 +251,7 @@ Item
         id: connectButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Connect")
         onClicked:
         {

@@ -18,7 +18,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "User Agreement")
@@ -33,13 +33,13 @@ Item
         anchors.bottom: agreeButton.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
 
         Label
         {
             id: disclaimerLineLabel
             anchors.centerIn: parent
-            anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+            anchors.margins: UM.Theme.getSize("wide_margin").width
 
             width: (parent.width * 2 / 3) | 0
 
@@ -59,7 +59,7 @@ Item
         id: agreeButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Agree")
         onClicked:
         {
@@ -74,7 +74,7 @@ Item
         id: declineButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Decline and close")
         onClicked:
         {

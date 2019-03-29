@@ -19,7 +19,7 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("welcome_pages_default_margin").height
+        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Help us to improve Ultimaker Cura")
@@ -36,14 +36,14 @@ Item
         anchors.bottom: getStartedButton.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
 
         Column
         {
             anchors.centerIn: parent
             width: parent.width
 
-            spacing: UM.Theme.getSize("welcome_pages_default_margin").height
+            spacing: UM.Theme.getSize("wide_margin").height
 
             Image
             {
@@ -87,7 +87,7 @@ Item
         id: getStartedButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("welcome_pages_default_margin").width
+        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Next")
         onClicked: base.showNextPage()
     }
