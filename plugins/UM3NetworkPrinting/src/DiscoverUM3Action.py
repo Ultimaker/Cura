@@ -41,6 +41,11 @@ class DiscoverUM3Action(MachineAction):
         # Time to wait after a zero-conf service change before allowing a zeroconf reset
         self._zero_conf_change_grace_period = 0.25 #type: float
 
+    # Overrides the one in MachineAction.
+    # This requires not attention from the user (any more), so we don't need to show any 'upgrade screens'.
+    def needsUserInteraction(self) -> bool:
+        return False
+
     @pyqtSlot()
     def startDiscovery(self):
         if not self._network_plugin:

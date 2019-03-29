@@ -221,7 +221,7 @@ class WelcomePagesModel(ListModel):
 
         definition_id = global_stack.definition.getId()
         first_start_actions = self._application.getMachineActionManager().getFirstStartActions(definition_id)
-        return len(first_start_actions) > 0
+        return len([action for action in first_start_actions if action.needsUserInteraction()]) > 0
 
     def addPage(self) -> None:
         pass

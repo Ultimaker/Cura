@@ -33,6 +33,12 @@ class MachineAction(QObject, PluginObject):
     def getKey(self) -> str:
         return self._key
 
+    ## Whether this action needs to ask the user anything.
+    #  If not, we shouldn't present the user with certain screens which otherwise show up.
+    #  Defaults to true to be in line with the old behaviour.
+    def needsUserInteraction(self) -> bool:
+        return True
+
     @pyqtProperty(str, notify = labelChanged)
     def label(self) -> str:
         return self._label
