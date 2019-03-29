@@ -187,6 +187,8 @@
 
         "action_panel_secondary": [27, 95, 202, 255],
 
+        "first_run_shadow": [50, 50, 50, 255],
+
         "toolbar_background": [255, 255, 255, 255],
 
         "printer_type_label_background": [228, 228, 242, 255],
@@ -559,6 +561,7 @@
         "save_button_specs_icons": [1.4, 1.4],
 
         "job_specs_button": [2.7, 2.7],
+        "first_run_shadow_radius": [1.2, 1.2],
 
         "monitor_preheat_temperature_control": [4.5, 2.0],
 

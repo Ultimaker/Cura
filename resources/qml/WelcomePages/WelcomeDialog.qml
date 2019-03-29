@@ -47,12 +47,12 @@ Item
     DropShadow
     {
         id: shadow
-        radius: UM.Theme.getSize("monitor_shadow_radius").width
+        radius: UM.Theme.getSize("first_run_shadow_radius").width
         anchors.fill: stepPanel
         source: stepPanel
         horizontalOffset: shadowOffset
         verticalOffset: shadowOffset
-        color: UM.Theme.getColor("monitor_shadow")
+        color: UM.Theme.getColor("first_run_shadow")
         transparentBorder: true
     }
 
