@@ -83,7 +83,7 @@ Item
         onClicked:
         {
             CuraApplication.writeToLog("i", "User declined the User Agreement.")
-            base.passLastPage()
+            base.endWizard()
             CuraApplication.closeApplication() // NOTE: Hard exit, don't use if anything needs to be saved!
         }
     }
