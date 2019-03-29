@@ -28,11 +28,13 @@ Item
     signal showNextPage()
     signal showPreviousPage()
     signal goToPage(string page_id)  // Go to a specific page by the given page_id.
+    signal endWizard()
 
     // Call the corresponding functions in the model
     onShowNextPage: model.goToNextPage()
     onShowPreviousPage: model.goToPreviousPage()
     onGoToPage: model.goToPage(page_id)
+    onEndWizard: model.atEnd()
 
     Rectangle  // Panel background
     {

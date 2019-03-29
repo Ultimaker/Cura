@@ -76,6 +76,12 @@ class WelcomePagesModel(ListModel):
             self._current_page_index = page_index
             self.currentPageIndexChanged.emit()
 
+    # Ends the Welcome-Pages. Put as a separate function for cases like the 'decline' in the User-Agreement.
+    @pyqtSlot()
+    def atEnd(self) -> None:
+        self.allFinished.emit()
+        self.resetState()
+
     # Goes to the next page.
     # If "from_index" is given, it will look for the next page to show starting from the "from_index" page instead of
     # the "self._current_page_index".
@@ -100,8 +106,7 @@ class WelcomePagesModel(ListModel):
 
             # If we have reached the last page, emit allFinished signal and reset.
             if next_page_index == len(self._items):
-                self.allFinished.emit()
-                self.resetState()
+                self.atEnd()
                 return
 
             # Check if the this page should be shown (default yes), if not, keep looking for the next one.
