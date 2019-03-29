@@ -4,7 +4,7 @@
 import os.path
 
 from UM.Qt.QtApplication import QtApplication
-from cura.UI.CuraStage import CuraStage
+from cura.Stages.CuraStage import CuraStage
 
 from typing import TYPE_CHECKING, Optional
 
