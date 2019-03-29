@@ -39,6 +39,8 @@ class TextManager(QObject):
                     line = line.replace("[", "")
                     line = line.replace("]", "")
                     open_version = Version(line)
+                    if open_version > Version([14, 99, 99]):  # Bit of a hack: We released the 15.x.x versions before 2.x
+                        open_version = Version([0, open_version.getMinor(), open_version.getRevision(), open_version.getPostfixVersion()])
                     open_header = ""
                     change_logs_dict[open_version] = collections.OrderedDict()
                 elif line.startswith("*"):
@@ -51,8 +53,11 @@ class TextManager(QObject):
 
         # Format changelog text
         content = ""
-        for version in change_logs_dict:
-            content += "<h1>" + str(version) + "</h1><br>"
+        for version in sorted(change_logs_dict.keys(), reverse=True):
+            text_version = version
+            if version < Version([1, 0, 0]):  # Bit of a hack: We released the 15.x.x versions before 2.x
+                text_version = Version([15, version.getMinor(), version.getRevision(), version.getPostfixVersion()])
+            content += "<h1>" + str(text_version) + "</h1><br>"
             content += ""
             for change in change_logs_dict[version]:
                 if str(change) != "":
