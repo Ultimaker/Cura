@@ -90,7 +90,7 @@ class DiscoveredPrintersModel(QObject):
     @pyqtProperty(list, notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
-        item_list.sort(key = lambda x: x.name)
+        item_list.sort(key = lambda x: x.device.name)
         return item_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
