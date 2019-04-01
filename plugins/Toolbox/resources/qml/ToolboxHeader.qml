@@ -1,9 +1,11 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.4
-import UM 1.1 as UM
+
+import UM 1.4 as UM
+import Cura 1.0 as Cura
 
 Item
 {
@@ -66,37 +68,19 @@ Item
         width: UM.Theme.getSize("toolbox_header_tab").width + marketplaceNotificationIcon.width - UM.Theme.getSize("default_margin").width
     }
 
-    Rectangle
+    Cura.NotificationIcon
     {
         id: marketplaceNotificationIcon
-        color: UM.Theme.getColor("notification_icon")
-        width: (installedTabButton.height / 3) | 0
-        height: width
-        radius: (0.5 * width) | 0
 
         visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 
         anchors.right: installedTabButton.right
         anchors.verticalCenter: installedTabButton.verticalCenter
 
-        Label
+        labelText:
         {
-            id: marketplaceNotificationText
-            anchors.centerIn: parent
-            anchors.fill: parent
-            text:
-            {
-                if(CuraApplication.getPackageManager().packagesWithUpdate.length > 9)
-                {
-                    return "9+"  // More than 2 characters don't fit.
-                }
-
-                return CuraApplication.getPackageManager().packagesWithUpdate.length
-            }
-            color: UM.Theme.getColor("primary_text")
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-            font: UM.Theme.getFont("small")
+            const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
+            return itemCount > 9 ? "9+" : itemCount
         }
     }
 

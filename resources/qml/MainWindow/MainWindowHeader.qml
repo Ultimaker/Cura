@@ -118,13 +118,9 @@ Item
             verticalCenter: parent.verticalCenter
         }
 
-        Rectangle
+        Cura.NotificationIcon
         {
             id: marketplaceNotificationIcon
-            color: UM.Theme.getColor("notification_icon")
-            width: (marketplaceButton.height / 1.5) | 0
-            height: width
-            radius: (0.5 * width) | 0
             anchors
             {
                 top: parent.top
@@ -134,23 +130,10 @@ Item
             }
             visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 
-            Label
+            labelText:
             {
-                id: marketplaceNotificationText
-                anchors.centerIn: parent
-                anchors.fill: parent
-                text:
-                {
-                    if(CuraApplication.getPackageManager().packagesWithUpdate.length > 9)
-                    {
-                        return "9+"  // More than 2 characters don't fit.
-                    }
-                    return CuraApplication.getPackageManager().packagesWithUpdate.length
-                }
-                color: UM.Theme.getColor("primary_text")
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font: UM.Theme.getFont("small")
+                const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
+                return itemCount > 9 ? "9+" : itemCount
             }
         }
     }
