@@ -51,7 +51,6 @@
         "material_print_temp_wait":   {"default_value": true},
         "material_bed_temp_wait":     {"default_value": true },
         "prime_tower_enable":         {"default_value": false },
-        "prime_tower_wall_thickness": {"resolve": 0.7 },
         "prime_tower_size":           {"value": 20.6 },
         "prime_tower_position_x":     {"value": 125 },
         "prime_tower_position_y":     {"value": 70 },
@@ -60,14 +59,11 @@
         "machine_start_gcode":        {"default_value": "\n;Neither HMS434 nor any of HMS434 Subsidiaries has any liabilities or gives any warrenties on this .gcode file,\n\n;or on any or all objects made with this .gcode file \nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\nG1 Z10 F600\n\nG1 X-71 F9000;go to wipe point\nG1 Y-100 F9000\nG1 Z0 F900\n\nG1 Z0.2 F900\n\nG1 Y-65 F12000\nG1 X50 Y0 F9000\nM117 HMS434 Printing ...\n\n" },
         "machine_end_gcode":          {"default_value": "" },
 
-
         "retraction_extra_prime_amount":      {"minimum_value_warning": "-2.0" },
         "optimize_wall_printing_order":       {"default_value": true },
-        "material_initial_print_temperature": {"maximum_value_warning": "material_print_temperature + 15" },
         "machine_nozzle_heat_up_speed":       {"default_value": 12},
         "machine_nozzle_cool_down_speed":     {"default_value": 20},
         "machine_min_cool_heat_time_window":  {"default_value": 5},
-
 
         "layer_height":                 {"maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
         "layer_height_0":               {"maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
@@ -94,7 +90,8 @@
         "infill_before_walls":   {"value": false},
 
         "material_print_temperature_layer_0": {"value": "material_print_temperature + 5"},
-        "material_initial_print_temperature": {"value": "material_print_temperature"},
+        "material_initial_print_temperature": {"value": "material_print_temperature",
+                                               "maximum_value_warning": "material_print_temperature + 15"},
         "material_final_print_temperature":   {"value": "material_print_temperature"},
         "material_bed_temperature_layer_0":   {"value": "material_bed_temperature + 1"},
         "material_flow":                      {"value": "120 if infill_sparse_density < 95 else 115"},
