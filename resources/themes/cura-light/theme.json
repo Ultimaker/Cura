@@ -29,6 +29,11 @@
             "weight": 63,
             "family": "Noto Sans"
         },
+        "huge": {
+            "size": 1.8,
+            "weight": 50,
+            "family": "Noto Sans"
+        },
         "medium": {
             "size": 1.16,
             "weight": 40,

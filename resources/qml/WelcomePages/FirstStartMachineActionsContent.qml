@@ -44,7 +44,7 @@ Item
         horizontalAlignment: Text.AlignHCenter
         text: machineActionsModel.currentItem.title == undefined ? "" : machineActionsModel.currentItem.title
         color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("large_bold")
+        font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
     }
 

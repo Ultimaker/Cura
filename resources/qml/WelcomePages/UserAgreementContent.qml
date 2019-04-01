@@ -22,7 +22,7 @@ Item
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "User Agreement")
         color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("large_bold")
+        font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
     }
 

@@ -23,7 +23,7 @@ Item
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "What's new in Ultimaker Cura")
         color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("large_bold")
+        font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
     }
 
