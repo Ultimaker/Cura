@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from collections import deque
 import os
-from typing import TYPE_CHECKING, Optional, List, Dict, Any, Deque
+from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
@@ -48,7 +48,7 @@ class WelcomePagesModel(ListModel):
 
         self._current_page_index = 0
         # Store all the previous page indices so it can go back.
-        self._previous_page_indices_stack = deque()  # type: Deque[int]
+        self._previous_page_indices_stack = deque()  # type: deque
 
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
