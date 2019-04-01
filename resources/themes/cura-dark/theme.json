@@ -214,7 +214,6 @@
 
         "toolbox_header_button_text_active": [255, 255, 255, 255],
         "toolbox_header_button_text_inactive": [128, 128, 128, 255],
-        "toolbox_header_button_text_hovered": [255, 255, 255, 255],
 
         "monitor_printer_family_tag": [86, 86, 106, 255],
         "monitor_text_primary": [229, 229, 229, 255],

@@ -62,14 +62,19 @@ Item
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
 
+        if(!propertyProvider.isValueUsed)
+        {
+            tooltip += "<i>%1</i><br/><br/>".arg(catalog.i18nc("@label", "This setting is not used because all the settings that it influences are overriden."))
+        }
+
         if (affects_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
         }
 
         if (affected_by_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
         }
 
         return tooltip
