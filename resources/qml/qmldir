@@ -17,3 +17,5 @@ SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
 CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml
+
+NotificationIcon 1.0 NotificationIcon.qml
