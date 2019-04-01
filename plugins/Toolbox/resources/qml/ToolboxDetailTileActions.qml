@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Column
 {
     property bool installed: toolbox.isInstalled(model.id)
-    property bool canUpdate: toolbox.canUpdate(model.id)
+    property bool canUpdate: CuraApplication.getPackageManager().packagesWithUpdate.indexOf(model.id) != -1
     property bool loginRequired: model.login_required && !Cura.API.account.isLoggedIn
     property var packageData
 
@@ -112,11 +112,9 @@ Column
     {
         target: toolbox
         onInstallChanged: installed = toolbox.isInstalled(model.id)
-        onMetadataChanged: canUpdate = toolbox.canUpdate(model.id)
         onFilterChanged:
         {
             installed = toolbox.isInstalled(model.id)
-            canUpdate = toolbox.canUpdate(model.id)
         }
     }
 }

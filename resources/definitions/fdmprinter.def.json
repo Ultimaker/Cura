@@ -459,6 +459,7 @@
                     "label": "Gantry height",
                     "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
                     "default_value": 99999999999,
+                    "value": "machine_height",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,

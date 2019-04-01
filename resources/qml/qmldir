@@ -21,11 +21,12 @@ ToolTip 1.0 ToolTip.qml
 
 # Cura/Widgets
 
-CheckBox    1.0 CheckBox.qml
-ComboBox    1.0 ComboBox.qml
-ProgressBar 1.0 ProgressBar.qml
-RadioButton 1.0 RadioButton.qml
-TabButton   1.0 TabButton.qml
+CheckBox            1.0 CheckBox.qml
+ComboBox            1.0 ComboBox.qml
+NotificationIcon    1.0 NotificationIcon.qml
+ProgressBar         1.0 ProgressBar.qml
+RadioButton         1.0 RadioButton.qml
+TabButton           1.0 TabButton.qml
 
 
 # Cura/MachineSettings
