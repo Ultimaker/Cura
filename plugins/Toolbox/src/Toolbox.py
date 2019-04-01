@@ -190,8 +190,10 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
-    @pyqtSlot()
-    def browsePackages(self) -> None:
+        # Request the latest and greatest!
+        self._fetchPackageData()
+
+    def _fetchPackageData(self):
         # Create the network manager:
         # This was formerly its own function but really had no reason to be as
         # it was never called more than once ever.
@@ -208,6 +210,10 @@ class Toolbox(QObject, Extension):
 
         # Gather installed packages:
         self._updateInstalledModels()
+
+    @pyqtSlot()
+    def browsePackages(self) -> None:
+        self._fetchPackageData()
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -455,36 +461,6 @@ class Toolbox(QObject, Extension):
                 break
         return remote_package
 
-    # Checks
-    # --------------------------------------------------------------------------
-    @pyqtSlot(str, result = bool)
-    def canUpdate(self, package_id: str) -> bool:
-        local_package = self._package_manager.getInstalledPackageInfo(package_id)
-        if local_package is None:
-            local_package = self.getOldPluginPackageMetadata(package_id)
-            if local_package is None:
-                return False
-
-        remote_package = self.getRemotePackage(package_id)
-        if remote_package is None:
-            return False
-
-        local_version = Version(local_package["package_version"])
-        remote_version = Version(remote_package["package_version"])
-        can_upgrade = False
-        if remote_version > local_version:
-            can_upgrade = True
-        # A package with the same version can be built to have different SDK versions. So, for a package with the same
-        # version, we also need to check if the current one has a lower SDK version. If so, this package should also
-        # be upgradable.
-        elif remote_version == local_version:
-            # First read sdk_version_semver. If that doesn't exist, read just sdk_version (old version system).
-            remote_sdk_version = Version(remote_package.get("sdk_version_semver", remote_package.get("sdk_version", 0)))
-            local_sdk_version = Version(local_package.get("sdk_version_semver", local_package.get("sdk_version", 0)))
-            can_upgrade = local_sdk_version < remote_sdk_version
-
-        return can_upgrade
-
     @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
         # If the currently installed version is higher than the bundled version (if present), the we can downgrade
@@ -636,6 +612,7 @@ class Toolbox(QObject, Extension):
                                 self._models[response_type].setFilter({"type": "plugin"})
                                 self.reBuildMaterialsModels()
                                 self.reBuildPluginsModels()
+                                self._notifyPackageManager()
                             elif response_type is "authors":
                                 self._models[response_type].setFilter({"package_types": "material"})
                                 self._models[response_type].setFilter({"tags": "generic"})
@@ -655,6 +632,11 @@ class Toolbox(QObject, Extension):
         elif reply.operation() == QNetworkAccessManager.PutOperation:
             # Ignore any operation that is not a get operation
             pass
+
+    # This function goes through all known remote versions of a package and notifies the package manager of this change
+    def _notifyPackageManager(self):
+        for package in self._server_response_data["packages"]:
+            self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]))
 
     def _onDownloadProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:

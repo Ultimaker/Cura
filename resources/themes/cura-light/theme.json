@@ -189,6 +189,8 @@
 
         "toolbar_background": [255, 255, 255, 255],
 
+        "notification_icon": [255, 0, 0, 255],
+
         "printer_type_label_background": [228, 228, 242, 255],
 
         "text": [25, 25, 25, 255],
@@ -384,7 +386,6 @@
 
         "toolbox_header_button_text_active": [0, 0, 0, 255],
         "toolbox_header_button_text_inactive": [0, 0, 0, 255],
-        "toolbox_header_button_text_hovered": [0, 0, 0, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
         "favorites_header_hover": [245, 245, 245, 255],
@@ -594,6 +595,8 @@
         "toolbox_chart_row": [1.0, 2.0],
         "toolbox_action_button": [8.0, 2.5],
         "toolbox_loader": [2.0, 2.0],
+
+        "notification_icon": [1.4, 1.4],
 
         "avatar_image": [6.8, 6.8],
 
