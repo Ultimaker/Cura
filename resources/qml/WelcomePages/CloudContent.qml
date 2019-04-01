@@ -15,6 +15,18 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
+    property bool isLoggedIn: Cura.API.account.isLoggedIn
+
+    onIsLoggedInChanged:
+    {
+        if(isLoggedIn)
+        {
+            // If the user created an account or logged in by pressing any button on this page, all the actions that
+            // need / can be done by this page are completed, so we can just go to the next (if any).
+            base.showNextPage()
+        }
+    }
+
     Label
     {
         id: titleLabel
