@@ -103,33 +103,29 @@ QtObject
             // This property will be back-propagated when the width of the label is calculated
             property var buttonWidth: 0
 
-            background: Item
+            background: Rectangle
             {
+                id: backgroundRectangle
                 implicitHeight: control.height
                 implicitWidth: buttonWidth
-                Rectangle
-                {
-                    id: buttonFace
-                    implicitHeight: parent.height
-                    implicitWidth: parent.width
-                    radius: UM.Theme.getSize("action_button_radius").width
+                radius: UM.Theme.getSize("action_button_radius").width
 
-                    color:
+                color:
+                {
+                    if (control.checked)
                     {
-                        if (control.checked)
+                        return UM.Theme.getColor("main_window_header_button_background_active")
+                    }
+                    else
+                    {
+                        if (control.hovered)
                         {
-                            return UM.Theme.getColor("main_window_header_button_background_active")
+                            return UM.Theme.getColor("main_window_header_button_background_hovered")
                         }
-                        else
-                        {
-                            if (control.hovered)
-                            {
-                                return UM.Theme.getColor("main_window_header_button_background_hovered")
-                            }
-                            return UM.Theme.getColor("main_window_header_button_background_inactive")
-                        }
+                        return UM.Theme.getColor("main_window_header_button_background_inactive")
                     }
                 }
+
             }
 
             label: Item
@@ -168,6 +164,8 @@ QtObject
                     buttonWidth = width
                 }
             }
+
+
         }
     }
 
