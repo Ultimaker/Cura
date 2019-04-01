@@ -18,7 +18,6 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "User Agreement")
@@ -27,31 +26,25 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Item  // Area for pictures and texts
+    Label
     {
-        anchors.top: titleLabel.bottom
-        anchors.bottom: agreeButton.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("wide_margin").width
-
-        Label
+        id: disclaimerLineLabel
+        anchors
         {
-            id: disclaimerLineLabel
-            anchors.centerIn: parent
-            anchors.margins: UM.Theme.getSize("wide_margin").width
-
-            width: (parent.width * 2 / 3) | 0
-
-            text: "<p><b>Disclaimer by Ultimaker</b></p>"
-                + "<p>Please read this disclaimer carefully.</p>"
-                + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and perfoemance of Ultimaker software is with you.</p>"
-                + "<p>Unless required by applicable law or agreed to in writing, in no event will Ultimaker be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use any Ultimaker software or third party software.</p>"
-            textFormat: Text.RichText
-            wrapMode: Text.WordWrap
-            font: UM.Theme.getFont("default")
-            renderType: Text.NativeRendering
+            top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("wide_margin").height
+            left: parent.left
+            right: parent.right
         }
+
+        text: "<p><b>Disclaimer by Ultimaker</b></p>"
+            + "<p>Please read this disclaimer carefully.</p>"
+            + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and perfoemance of Ultimaker software is with you.</p>"
+            + "<p>Unless required by applicable law or agreed to in writing, in no event will Ultimaker be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use any Ultimaker software or third party software.</p>"
+        textFormat: Text.RichText
+        wrapMode: Text.WordWrap
+        font: UM.Theme.getFont("default")
+        renderType: Text.NativeRendering
     }
 
     Cura.PrimaryButton
@@ -59,7 +52,6 @@ Item
         id: agreeButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Agree")
         onClicked:
         {
@@ -74,7 +66,6 @@ Item
         id: declineButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Decline and close")
         onClicked:
         {

@@ -31,7 +31,6 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Ultimaker Cloud")
@@ -44,11 +43,15 @@ Item
     Item
     {
         id: cloudContentsArea
-        anchors.top: titleLabel.bottom
-        anchors.bottom: finishButton.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors
+        {
+            top: titleLabel.bottom
+            bottom: finishButton.top
+            left: parent.left
+            right: parent.right
+            topMargin: UM.Theme.getSize("default_margin").height
+        }
+
 
         // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
         // the cloud contents area.
@@ -113,7 +116,6 @@ Item
         id: finishButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Finish")
         onClicked: base.showNextPage()
     }
@@ -123,7 +125,6 @@ Item
         id: createAccountButton
         anchors.left: parent.left
         anchors.verticalCenter: finishButton.verticalCenter
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Create an account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
     }
@@ -133,7 +134,7 @@ Item
         id: signInButton
         anchors.left: createAccountButton.right
         anchors.verticalCenter: finishButton.verticalCenter
-        anchors.margins: UM.Theme.getSize("wide_margin").width
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         text: catalog.i18nc("@button", "Sign in")
         color: UM.Theme.getColor("secondary_button_text")
         font: UM.Theme.getFont("medium")

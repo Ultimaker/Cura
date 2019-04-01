@@ -40,7 +40,6 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: machineActionsModel.currentItem.title == undefined ? "" : machineActionsModel.currentItem.title
@@ -51,11 +50,13 @@ Item
 
     Item
     {
-        anchors.top: titleLabel.bottom
-        anchors.bottom: nextButton.top
-        anchors.margins: UM.Theme.getSize("default_margin").width
-        anchors.left: parent.left
-        anchors.right: parent.right
+        anchors
+        {
+            top: titleLabel.bottom
+            bottom: nextButton.top
+            left: parent.left
+            right: parent.right
+        }
 
         data: machineActionsModel.currentItem.content == undefined ? emptyItem : machineActionsModel.currentItem.content
     }
@@ -71,7 +72,6 @@ Item
         id: nextButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Next")
         onClicked: machineActionsModel.goToNextAction()
     }

@@ -61,7 +61,8 @@ Item
             id: contentLoader
             anchors
             {
-                margins: UM.Theme.getSize("default_margin").width
+                margins: UM.Theme.getSize("wide_margin").width
+                bottomMargin: UM.Theme.getSize("default_margin").width
                 top: progressBar.bottom
                 bottom: parent.bottom
                 left: parent.left

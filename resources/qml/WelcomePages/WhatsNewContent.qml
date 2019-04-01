@@ -19,7 +19,6 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "What's new in Ultimaker Cura")
@@ -34,8 +33,8 @@ Item
         anchors.bottom: getStartedButton.top
         anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.bottomMargin: UM.Theme.getSize("wide_margin").height
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: (parent.width * 3 / 4) | 0
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         border.color: "#dfdfdf"
         border.width: UM.Theme.getSize("default_lining").width
@@ -65,7 +64,6 @@ Item
         id: getStartedButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Next")
         onClicked: base.showNextPage()
     }

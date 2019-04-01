@@ -19,7 +19,6 @@ Item
     {
         id: titleLabel
         anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Help us to improve Ultimaker Cura")
@@ -32,11 +31,15 @@ Item
     Item
     {
         id: contentsArea
-        anchors.top: titleLabel.bottom
-        anchors.bottom: getStartedButton.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("wide_margin").width
+
+        anchors
+        {
+            top: titleLabel.bottom
+            bottom: getStartedButton.top
+            left: parent.left
+            right: parent.right
+            topMargin: UM.Theme.getSize("default_margin").width
+        }
 
         Column
         {
@@ -87,7 +90,6 @@ Item
         id: getStartedButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("wide_margin").width
         text: catalog.i18nc("@button", "Next")
         onClicked: base.showNextPage()
     }

@@ -15,8 +15,6 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    anchors.margins: UM.Theme.getSize("wide_margin").width
-
     Column  // Arrange the items vertically and put everything in the center
     {
         anchors.centerIn: parent
