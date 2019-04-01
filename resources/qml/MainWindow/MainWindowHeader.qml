@@ -122,15 +122,15 @@ Item
         {
             id: marketplaceNotificationIcon
             color: UM.Theme.getColor("notification_icon")
-            width: marketplaceButton.height / 1.5
+            width: (marketplaceButton.height / 1.5) | 0
             height: width
-            radius: 0.5 * width
+            radius: (0.5 * width) | 0
             anchors
             {
                 top: parent.top
                 right: parent.right
-                rightMargin: -0.5 * width
-                topMargin: -0.5 * height
+                rightMargin: (-0.5 * width) | 0
+                topMargin: (-0.5 * height) | 0
             }
             visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 

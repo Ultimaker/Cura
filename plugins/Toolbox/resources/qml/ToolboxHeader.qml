@@ -70,9 +70,9 @@ Item
     {
         id: marketplaceNotificationIcon
         color: UM.Theme.getColor("notification_icon")
-        width: installedTabButton.height / 3
+        width: (installedTabButton.height / 3) | 0
         height: width
-        radius: 0.5 * width
+        radius: (0.5 * width) | 0
 
         visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
 
