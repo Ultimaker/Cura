@@ -53,7 +53,7 @@ class TextManager(QObject):
 
         # Format changelog text
         content = ""
-        for version in sorted(change_logs_dict.keys(), reverse=True):
+        for version in sorted(change_logs_dict.keys(), reverse = True):
             text_version = version
             if version < Version([1, 0, 0]):  # Bit of a hack: We released the 15.x.x versions before 2.x
                 text_version = Version([15, version.getMinor(), version.getRevision(), version.getPostfixVersion()])
