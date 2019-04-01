@@ -384,7 +384,6 @@
         "printer_config_matched": [50, 130, 255, 255],
         "printer_config_mismatch": [127, 127, 127, 255],
 
-        "toolbox_header_button_text_active": [0, 0, 0, 255],
         "toolbox_header_button_text_inactive": [0, 0, 0, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
@@ -580,10 +579,8 @@
         "toolbox_thumbnail_large": [12.0, 10.0],
         "toolbox_footer": [1.0, 4.5],
         "toolbox_footer_button": [8.0, 2.5],
-        "toolbox_showcase_spacing": [1.0, 1.0],
         "toolbox_header_tab": [8.0, 4.0],
         "toolbox_detail_header": [1.0, 14.0],
-        "toolbox_detail_tile": [1.0, 8.0],
         "toolbox_back_column": [6.0, 1.0],
         "toolbox_back_button": [6.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
@@ -591,7 +588,6 @@
         "toolbox_heading_label": [1.0, 3.8],
         "toolbox_header": [1.0, 4.0],
         "toolbox_header_highlight": [0.25, 0.25],
-        "toolbox_progress_bar": [8.0, 0.5],
         "toolbox_chart_row": [1.0, 2.0],
         "toolbox_action_button": [8.0, 2.5],
         "toolbox_loader": [2.0, 2.0],
