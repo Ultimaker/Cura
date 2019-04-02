@@ -81,7 +81,15 @@ class GlobalStack(CuraContainerStack):
         # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
         # But we do want them returned as a list of ints (so the rest of the code can directly compare)
         connection_types = self.getMetaDataEntry("connection_type", "").split(",")
-        return [int(connection_type) for connection_type in connection_types if connection_type != ""]
+        result = []
+        for connection_type in connection_types:
+            if connection_type != "":
+                try:
+                    result.append(int(connection_type))
+                except ValueError:
+                    # We got invalid data, probably a None.
+                    pass
+        return result
 
     ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:
