@@ -85,10 +85,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         if PluginRegistry.getInstance() is not None:
-            self._monitor_view_qml_path = os.path.join(
-                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-                "resources", "qml", "MonitorStage.qml"
-            )
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            if plugin_path is None:
+                Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
+                raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
+            self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -149,7 +150,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # the host name should then be "ultimakersystem-aabbccdd0011"
         if network_key.startswith(self.clusterData.host_name):
             return True
-        
+
         # However, for manually added printers, the local IP address is used in lieu of a proper
         # network key, so check for that as well
         if self.clusterData.host_internal_ip is not None and network_key.find(self.clusterData.host_internal_ip):
