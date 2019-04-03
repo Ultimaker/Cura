@@ -458,7 +458,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if self._start_cloud_flow_message and not self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.show()        
 
-    def _onCloudPrintingConfigured(self) -> None:
+    def _onCloudPrintingConfigured(self, device) -> None:
         # Hide the cloud flow start message if it was hanging around already
         # For example: if the user already had the browser openen and made the association themselves
         if self._start_cloud_flow_message and self._start_cloud_flow_message.visible:
@@ -473,7 +473,16 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
         active_machine = self._application.getMachineManager().activeMachine
         if active_machine:
-            active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
+
+            # The active machine _might_ not be the machine that was in the added cloud cluster and
+            # then this will hide the cloud message for the wrong machine. So we only set it if the
+            # host names match between the active machine and the newly added cluster
+            saved_host_name = active_machine.getMetaDataEntry("um_network_key", "").split('.')[0]
+            added_host_name = device.toDict()["host_name"]
+
+            if added_host_name == saved_host_name:
+                active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
+            
         return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
