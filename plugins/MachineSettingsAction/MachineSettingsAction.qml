@@ -17,7 +17,6 @@ Cura.MachineAction
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     anchors.fill: parent
-    anchors.margins: UM.Theme.getSize("default_margin").width
 
     property var extrudersModel: Cura.ExtrudersModel {}
 
@@ -49,37 +48,26 @@ Cura.MachineAction
         }
     }
 
-    Rectangle
+    Cura.RoundedRectangle
     {
-        anchors.fill: parent
-        border.color: tabBar.visible ? UM.Theme.getColor("lining") : "transparent"
+        anchors
+        {
+            top: tabBar.bottom
+            topMargin: -UM.Theme.getSize("default_lining").height
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+        cornerSide: Cura.RoundedRectangle.Direction.Down
+        border.color: UM.Theme.getColor("lining")
         border.width: UM.Theme.getSize("default_lining").width
         radius: UM.Theme.getSize("default_radius").width
-
-        UM.TabRow
-        {
-            id: tabBar
-            width: parent.width
-
-            Repeater
-            {
-                model: tabNameModel
-                delegate: Cura.TabButton
-                {
-                    text: model.name
-                }
-            }
-        }
-
+        color: UM.Theme.getColor("main_background")
         StackLayout
         {
             id: tabStack
-            anchors.top: tabBar.bottom
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
+            anchors.fill: parent
 
-            width: parent.width
             currentIndex: tabBar.currentIndex
 
             MachineSettingsPrinterTab
@@ -96,6 +84,19 @@ Cura.MachineAction
                     extruderPosition: model.index
                     extruderStackId: model.id
                 }
+            }
+        }
+    }
+    UM.TabRow
+    {
+        id: tabBar
+        width: parent.width
+        Repeater
+        {
+            model: tabNameModel
+            delegate: UM.TabRowButton
+            {
+                text: model.name
             }
         }
     }
