@@ -44,7 +44,7 @@ Item
         anchors.fill: parent
         radius: UM.Theme.getSize("default_radius").width
         color: UM.Theme.getColor("main_background")
-        Cura.ProgressBar
+        UM.ProgressBar
         {
             id: progressBar
             anchors.top: parent.top

@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.1 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
@@ -64,7 +64,7 @@ Column
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
-    Cura.ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         width: parent.width
