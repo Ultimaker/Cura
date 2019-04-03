@@ -265,7 +265,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             old_network_key = meta_data["um_network_key"]
             # Since we might have a bunch of hidden stacks, we also need to change it there.
             metadata_filter = {"um_network_key": old_network_key}
-            containers = self._application.findContainerStacks(type = "machine", **metadata_filter)
+            containers = self._application.getContainerRegistry().findContainerStacks(type = "machine", **metadata_filter)
 
             for container in containers:
                 container.setMetaDataEntry("um_network_key", printer_device.key)
