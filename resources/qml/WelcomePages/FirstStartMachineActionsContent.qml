@@ -54,6 +54,7 @@ Item
         {
             top: titleLabel.bottom
             bottom: nextButton.top
+            bottomMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             right: parent.right
         }
