@@ -147,6 +147,7 @@ ScrollView
             }
             text: name
             visible: base.currentSection == section
+            onClicked: ListView.view.currentIndex = index
         }
     }
 }

@@ -95,6 +95,7 @@ class FirstStartMachineActionsModel(ListModel):
                               "content": item.displayItem,
                               "action": item,
                               })
+            item.reset()
 
         self.setItems(item_list)
         self.reset()
