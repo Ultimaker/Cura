@@ -851,7 +851,7 @@ UM.MainWindow
             {
                 base.visible = true;
             }
-            if(Cura.MachineManager.activeMachine == null)
+            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
             {
                 addMachineDialog.open();
             }
