@@ -61,7 +61,7 @@ Button
             {
                 target: label
                 font: UM.Theme.getFont("medium_bold")
-                color: UM.Theme.getColor("toolbox_header_button_text_active")
+                color: UM.Theme.getColor("action_button_text")
             }
         }
     ]

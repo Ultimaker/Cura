@@ -77,13 +77,15 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.setIconName("print")
 
-        if PluginRegistry.getInstance() is not None:
+        self._output_controller = LegacyUM3PrinterOutputController(self)
+
+    def _createMonitorViewFromQML(self) -> None:
+        if self._monitor_view_qml_path is None and PluginRegistry.getInstance() is not None:
             self._monitor_view_qml_path = os.path.join(
                 PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
                 "resources", "qml", "MonitorStage.qml"
             )
-
-        self._output_controller = LegacyUM3PrinterOutputController(self)
+        super()._createMonitorViewFromQML()
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.

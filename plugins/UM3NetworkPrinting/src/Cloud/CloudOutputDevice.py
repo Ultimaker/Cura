@@ -145,9 +145,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Checks whether the given network key is found in the cloud's host name
     def matchesNetworkKey(self, network_key: str) -> bool:
-        # A network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
+        # Typically, a network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
-        return network_key.startswith(self.clusterData.host_name)
+        if network_key.startswith(self.clusterData.host_name):
+            return True
+        
+        # However, for manually added printers, the local IP address is used in lieu of a proper
+        # network key, so check for that as well
+        if self.clusterData.host_internal_ip is not None and network_key.find(self.clusterData.host_internal_ip):
+            return True
+
+        return False
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
