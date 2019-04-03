@@ -6958,7 +6958,7 @@
                 "clean_between_layers": 
                 {
                     "label": "Wipe Nozzle Between Layers",
-                    "description": "Whether to include nozzle wipe G-Code between layers.",
+                    "description": "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
                     "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
