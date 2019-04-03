@@ -34,11 +34,8 @@ configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
     # Use FindPythonInterp and FindPythonLibs for CMake <3.12
     find_package(PythonInterp 3 REQUIRED)
-    find_package(PythonLibs 3 REQUIRED)
 
     set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
-    set(Python3_INCLUDE_DIRS ${PYTHON_INCLUDE_DIRS})
-    set(Python3_LIBRARIES ${PYTHON_LIBRARIES})
 
     set(Python3_VERSION ${PYTHON_VERSION_STRING})
     set(Python3_VERSION_MAJOR ${PYTHON_VERSION_MAJOR})

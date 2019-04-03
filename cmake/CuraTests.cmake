@@ -10,7 +10,6 @@ include(CMakeParseArguments)
 if(${CMAKE_VERSION} VERSION_LESS 3.12)
     # Use FindPythonInterp and FindPythonLibs for CMake <3.12
     find_package(PythonInterp 3 REQUIRED)
-    find_package(PythonLibs 3 REQUIRED)
 
     set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
 else()
