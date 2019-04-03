@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -57,7 +57,7 @@ UM.MainWindow
             enabled: parent.visible
             anchors.fill: parent
             hoverEnabled: true
-            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            acceptedButtons: Qt.AllButtons
         }
     }
 
@@ -719,11 +719,13 @@ UM.MainWindow
         onTriggered:
         {
             var path = UM.Resources.getPath(UM.Resources.Preferences, "");
-            if(Qt.platform.os == "windows") {
+            if(Qt.platform.os == "windows")
+            {
                 path = path.replace(/\\/g,"/");
             }
             Qt.openUrlExternally(path);
-            if(Qt.platform.os == "linux") {
+            if(Qt.platform.os == "linux")
+            {
                 Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
             }
         }
