@@ -23,9 +23,11 @@ cd "${PROJECT_DIR}"
 URANIUM_BRANCH="${CI_COMMIT_REF_NAME:-master}"
 output="$(git ls-remote --heads https://github.com/Ultimaker/Uranium.git "${URANIUM_BRANCH}")"
 if [ -z "${output}" ]; then
+    echo "Could not find Uranium banch ${URANIUM_BRANCH}, fallback to use master."
     URANIUM_BRANCH="master"
 fi
 
+echo "Using Uranium branch ${URANIUM_BRANCH} ..."
 git clone --depth=1 -b "${URANIUM_BRANCH}" https://github.com/Ultimaker/Uranium.git "${PROJECT_DIR}"/Uranium
 export PYTHONPATH="${PROJECT_DIR}/Uranium:.:${PYTHONPATH}"
 
