@@ -39,7 +39,7 @@ Item
 
         text: "<p><b>Disclaimer by Ultimaker</b></p>"
             + "<p>Please read this disclaimer carefully.</p>"
-            + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and perfoemance of Ultimaker software is with you.</p>"
+            + "<p>Except when otherwise stated in writing, Ultimaker provides any Ultimaker software or third party software \"As is\" without warranty of any kind. The entire risk as to the quality and performance of Ultimaker software is with you.</p>"
             + "<p>Unless required by applicable law or agreed to in writing, in no event will Ultimaker be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use any Ultimaker software or third party software.</p>"
         textFormat: Text.RichText
         wrapMode: Text.WordWrap
