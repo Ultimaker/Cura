@@ -84,7 +84,7 @@ UM.MainWindow
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
 
-        if (CuraApplication.needToShowUserAgreement || Cura.MachineManager.activeMachine == null)
+        if (CuraApplication.needToShowUserAgreement)
         {
             welcomeDialog.visible = true
         }
@@ -850,6 +850,10 @@ UM.MainWindow
             if(!base.visible)
             {
                 base.visible = true;
+            }
+            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
+            {
+                addMachineDialog.open();
             }
         }
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -38,7 +38,8 @@ UM.Dialog
     onVisibilityChanged:
     {
         // Reset selection and machine name
-        if (visible) {
+        if (visible)
+        {
             activeCategory = preferredCategory;
             machineList.currentIndex = 0;
             machineName.text = getMachineName();
