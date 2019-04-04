@@ -731,44 +731,6 @@ UM.MainWindow
         }
     }
 
-    AddMachineDialog
-    {
-        id: addMachineDialog
-        onMachineAdded:
-        {
-            machineActionsWizard.firstRun = addMachineDialog.firstRun
-            machineActionsWizard.start(id)
-        }
-    }
-
-    // Dialog to handle first run machine actions
-    UM.Wizard
-    {
-        id: machineActionsWizard;
-
-        title: catalog.i18nc("@title:window", "Add Printer")
-        property var machine;
-
-        function start(id)
-        {
-            var actions = Cura.MachineActionManager.getFirstStartActions(id)
-            resetPages() // Remove previous pages
-
-            for (var i = 0; i < actions.length; i++)
-            {
-                actions[i].displayItem.reset()
-                machineActionsWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
-            }
-
-            //Only start if there are actions to perform.
-            if (actions.length > 0)
-            {
-                machineActionsWizard.currentPage = 0;
-                show()
-            }
-        }
-    }
-
     MessageDialog
     {
         id: messageDialog
@@ -812,10 +774,23 @@ UM.MainWindow
         }
     }
 
+    Cura.WizardDialog
+    {
+        id: addMachineDialog
+        title: catalog.i18nc("@title:window", "Add Printer")
+        model: CuraApplication.getAddPrinterPagesModel()
+    }
+
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered: addMachineDialog.visible = true;
+        onTriggered: addMachineDialog.show()
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onRequestAddPrinter: addMachineDialog.show()
     }
 
     AboutDialog
@@ -829,31 +804,17 @@ UM.MainWindow
         onTriggered: aboutDialog.visible = true;
     }
 
-    Connections
-    {
-        target: CuraApplication
-        onRequestAddPrinter:
-        {
-            addMachineDialog.visible = true
-            addMachineDialog.firstRun = false
-        }
-    }
-
     Timer
     {
-        id: startupTimer;
-        interval: 100;
-        repeat: false;
-        running: true;
+        id: startupTimer
+        interval: 100
+        repeat: false
+        running: true
         onTriggered:
         {
-            if(!base.visible)
+            if (!base.visible)
             {
-                base.visible = true;
-            }
-            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
-            {
-                addMachineDialog.open();
+                base.visible = true
             }
         }
     }
