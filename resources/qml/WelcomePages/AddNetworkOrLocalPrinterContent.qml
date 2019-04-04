@@ -122,7 +122,7 @@ Item
             }
         }
 
-        text: catalog.i18nc("@button", "Next")
+        text: base.currentItem.next_page_button_text
         onClicked:
         {
             // Create a network printer or a local printer according to the selection
