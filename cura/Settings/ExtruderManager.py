@@ -229,7 +229,7 @@ class ExtruderManager(QObject):
         mesh_list = []
         for mesh in meshes:
             stack = mesh.callDecoration("getStack")
-            if stack is not None and stack.getProperty("anti_overhang_mesh", "value"):
+            if stack is not None and (stack.getProperty("anti_overhang_mesh", "value") or stack.getProperty("support_mesh", "value")):
                 continue
             mesh_list.append(mesh)
 
