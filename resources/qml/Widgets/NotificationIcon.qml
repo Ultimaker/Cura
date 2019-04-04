@@ -31,5 +31,6 @@ Rectangle
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         font: UM.Theme.getFont("small")
+        renderType: Text.NativeRendering
     }
 }
