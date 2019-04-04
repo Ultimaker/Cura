@@ -121,7 +121,7 @@
 
         "retraction_hop_enabled": {"value": false},
         "retraction_hop":         {"value": 1},
-        "retraction_combing":     {"value": "off"},
+        "retraction_combing":     {"value": "'off'"},
 
         "cool_fan_speed":                    {"value": 0},
         "cool_fan_enabled":                  {"value": true},
