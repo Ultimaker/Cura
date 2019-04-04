@@ -19,6 +19,12 @@ CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml
 
 
+# Cura/WelcomePages
+
+WizardPanel         1.0 WizardPanel.qml
+WizardDialog        1.0 WizardDialog.qml
+
+
 # Cura/Widgets
 
 CheckBox            1.0 CheckBox.qml
