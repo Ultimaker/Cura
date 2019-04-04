@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from ...UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from ...ConfigurationChangeModel import ConfigurationChangeModel
 from ..CloudOutputController import CloudOutputController
@@ -95,9 +95,9 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         return model
 
     ## Creates a new configuration model
-    def _createConfigurationModel(self) -> ConfigurationModel:
+    def _createConfigurationModel(self) -> PrinterConfigurationModel:
         extruders = [extruder.createConfigurationModel() for extruder in self.configuration or ()]
-        configuration = ConfigurationModel()
+        configuration = PrinterConfigurationModel()
         configuration.setExtruderConfigurations(extruders)
         return configuration
 

@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from PyQt5.QtNetwork import QNetworkAccessManager
 from PyQt5.QtCore import QUrl
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from cura.PrinterOutputDevice import ConnectionState
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 
 def test_properties():

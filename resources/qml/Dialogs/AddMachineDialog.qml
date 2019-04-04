@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -38,7 +38,8 @@ UM.Dialog
     onVisibilityChanged:
     {
         // Reset selection and machine name
-        if (visible) {
+        if (visible)
+        {
             activeCategory = preferredCategory;
             machineList.currentIndex = 0;
             machineName.text = getMachineName();
@@ -303,7 +304,7 @@ UM.Dialog
     {
         base.visible = false
         var item = machineList.model.getItem(machineList.currentIndex);
-        Cura.MachineManager.addMachine(machineName.text, item.id)
+        Cura.MachineManager.addMachine(item.id, machineName.text)
         base.machineAdded(item.id) // Emit signal that the user added a machine.
     }
 

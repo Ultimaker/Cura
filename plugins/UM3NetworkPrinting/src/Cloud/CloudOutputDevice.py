@@ -18,8 +18,8 @@ from UM.Scene.SceneNode import SceneNode
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler

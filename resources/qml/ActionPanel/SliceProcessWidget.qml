@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.1 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
@@ -64,7 +64,7 @@ Column
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         width: parent.width
@@ -72,25 +72,6 @@ Column
         value: progress
         indeterminate: widget.backendState == UM.Backend.NotStarted
         visible: (widget.backendState == UM.Backend.Processing || (prepareButtons.autoSlice && widget.backendState == UM.Backend.NotStarted))
-
-        background: Rectangle
-        {
-            anchors.fill: parent
-            radius: UM.Theme.getSize("progressbar_radius").width
-            color: UM.Theme.getColor("progressbar_background")
-        }
-
-        contentItem: Item
-        {
-            anchors.fill: parent
-            Rectangle
-            {
-                width: progressBar.visualPosition * parent.width
-                height: parent.height
-                radius: UM.Theme.getSize("progressbar_radius").width
-                color: UM.Theme.getColor("progressbar_control")
-            }
-        }
     }
 
     Item

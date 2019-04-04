@@ -64,6 +64,10 @@ class GlobalStack(CuraContainerStack):
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")
         return result_list[:machine_extruder_count]
 
+    @pyqtProperty(int, constant = True)
+    def maxExtruderCount(self):
+        return len(self.getMetaDataEntry("machine_extruder_trains"))
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
