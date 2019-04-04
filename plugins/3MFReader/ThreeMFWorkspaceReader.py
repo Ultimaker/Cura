@@ -820,6 +820,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
+                    container.setDirty(True)
+                    self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)
