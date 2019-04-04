@@ -44,44 +44,48 @@ UM.TooltipArea
         renderType: Text.NativeRendering
     }
 
-    TextArea
+    ScrollView
     {
-        id: gcodeTextArea
         anchors.top: titleLabel.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
 
-        hoverEnabled: true
-        selectByMouse: true
-
-        font: UM.Theme.getFont("fixed")
-        renderType: Text.NativeRendering
-        text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
-        wrapMode: TextEdit.NoWrap
-
-        background: Rectangle
+        TextArea
         {
-            border.color:
+            id: gcodeTextArea
+
+            hoverEnabled: true
+            selectByMouse: true
+
+            font: UM.Theme.getFont("fixed")
+            renderType: Text.NativeRendering
+            text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
+            wrapMode: TextEdit.NoWrap
+
+            background: Rectangle
             {
-                if (!gcodeTextArea.enabled)
+                border.color:
                 {
-                    return UM.Theme.getColor("setting_control_disabled_border")
+                    if (!gcodeTextArea.enabled)
+                    {
+                        return UM.Theme.getColor("setting_control_disabled_border")
+                    }
+                    if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
+                    {
+                        return UM.Theme.getColor("setting_control_border_highlight")
+                    }
+                    return UM.Theme.getColor("setting_control_border")
                 }
-                if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_control_border_highlight")
-                }
-                return UM.Theme.getColor("setting_control_border")
             }
-        }
 
-        onActiveFocusChanged:
-        {
-            if (!activeFocus)
+            onActiveFocusChanged:
             {
-                propertyProvider.setPropertyValue("value", text)
+                if (!activeFocus)
+                {
+                    propertyProvider.setPropertyValue("value", text)
+                }
             }
         }
     }
