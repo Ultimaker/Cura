@@ -966,11 +966,6 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
-msgctxt "@action"
-msgid "Checkup"
-msgstr ""
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
 msgid "Level build plate"
@@ -3083,101 +3078,6 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:45
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:27
-msgctxt "@title"
-msgid "Check Printer"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
-msgctxt "@label"
-msgid ""
-"It's a good idea to do a few sanity checks on your Ultimaker. You can skip "
-"this step if you know your machine is functional"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
-msgctxt "@action:button"
-msgid "Start Printer Check"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
-msgctxt "@label"
-msgid "Connection: "
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Connected"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Not connected"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
-msgctxt "@label"
-msgid "Min endstop X: "
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-msgctxt "@info:status"
-msgid "Works"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:173
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Not checked"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
-msgctxt "@label"
-msgid "Min endstop Y: "
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
-msgctxt "@label"
-msgid "Min endstop Z: "
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
-msgctxt "@label"
-msgid "Nozzle temperature check: "
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Stop Heating"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Start Heating"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:223
-msgctxt "@label"
-msgid "Build plate temperature check:"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Checked"
-msgstr ""
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
-msgctxt "@label"
-msgid "Everything is in order! You're done with your CheckUp."
 msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119

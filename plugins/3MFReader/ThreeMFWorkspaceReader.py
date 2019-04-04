@@ -259,7 +259,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         custom_quality_name = ""
-        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
 
@@ -297,7 +297,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 custom_quality_name = parser["general"]["name"]
                 values = parser["values"] if parser.has_section("values") else dict()
-                num_settings_overriden_by_quality_changes += len(values)
+                num_settings_overridden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
                                                                                   type = "quality_changes")
@@ -515,7 +515,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
@@ -820,6 +820,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
+                    container.setDirty(True)
+                    self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)

@@ -15,6 +15,7 @@ def global_stack():
 def container_registry() -> ContainerRegistry:
     return MagicMock(name = "ContainerRegistry")
 
+
 @pytest.fixture()
 def extruder_manager(application, container_registry) -> ExtruderManager:
     if ExtruderManager.getInstance() is not None:
@@ -25,6 +26,7 @@ def extruder_manager(application, container_registry) -> ExtruderManager:
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             manager = ExtruderManager()
     return manager
+
 
 @pytest.fixture()
 def machine_manager(application, extruder_manager, container_registry, global_stack) -> MachineManager:

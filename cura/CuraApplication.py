@@ -13,112 +13,116 @@ from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
 
+from UM.i18n import i18nCatalog
 from UM.Application import Application
+from UM.Decorators import override
+from UM.FlameProfiler import pyqtSlot
+from UM.Logger import Logger
+from UM.Message import Message
+from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
-from UM.Scene.SceneNode import SceneNode
-from UM.Scene.Camera import Camera
-from UM.Math.Vector import Vector
-from UM.Math.Quaternion import Quaternion
+from UM.Resources import Resources
+from UM.Preferences import Preferences
+from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
+import UM.Util
+from UM.View.SelectionPass import SelectionPass  # For typing.
+
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
-from UM.Platform import Platform
-from UM.Resources import Resources
-from UM.Scene.ToolHandle import ToolHandle
-from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Math.Quaternion import Quaternion
+from UM.Math.Vector import Vector
+
 from UM.Mesh.ReadMeshJob import ReadMeshJob
-from UM.Logger import Logger
-from UM.Preferences import Preferences
-from UM.Qt.QtApplication import QtApplication #The class we're inheriting from.
-from UM.View.SelectionPass import SelectionPass #For typing.
-from UM.Scene.Selection import Selection
-from UM.Scene.GroupDecorator import GroupDecorator
-from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Settings.Validator import Validator
-from UM.Message import Message
-from UM.i18n import i18nCatalog
-from UM.Workspace.WorkspaceReader import WorkspaceReader
 
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
 
+from UM.Scene.Camera import Camera
+from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from UM.Scene.SceneNode import SceneNode
+from UM.Scene.Selection import Selection
+from UM.Scene.ToolHandle import ToolHandle
+
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
+from UM.Settings.SettingFunction import SettingFunction
+from UM.Settings.Validator import Validator
+
+from UM.Workspace.WorkspaceReader import WorkspaceReader
+
 from cura.API import CuraAPI
+
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
-from cura.MultiplyObjectsJob import MultiplyObjectsJob
-from cura.GlobalStacksModel import GlobalStacksModel
-from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
+
 from cura.Operations.SetParentOperation import SetParentOperation
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+
 from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.Scene.CuraSceneNode import CuraSceneNode
-
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.CuraSceneController import CuraSceneController
-
-from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
-from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
-from cura.Settings.MachineNameValidator import MachineNameValidator
-
-from cura.Machines.Models.BuildPlateModel import BuildPlateModel
-from cura.Machines.Models.NozzleModel import NozzleModel
-from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
-from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
-from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
-from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
-from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
-from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
-from cura.Machines.Models.QualityManagementModel import QualityManagementModel
-from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
-from cura.Machines.Models.MachineManagementModel import MachineManagementModel
-
-from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene import ZOffsetDecorator
 
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
+from cura.Machines.VariantManager import VariantManager
 
+from cura.Machines.Models.BuildPlateModel import BuildPlateModel
+from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
+from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
+from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
+from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
+from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
+from cura.Machines.Models.GlobalStacksModel import GlobalStacksModel
+from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
+from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.Machines.Models.NozzleModel import NozzleModel
+from cura.Machines.Models.QualityManagementModel import QualityManagementModel
+from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
+from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
+from cura.Machines.Models.UserChangesModel import UserChangesModel
+
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
+
+import cura.Settings.cura_empty_instance_containers
+from cura.Settings.ContainerManager import ContainerManager
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
+from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
+from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.MachineManager import MachineManager
+from cura.Settings.MachineNameValidator import MachineNameValidator
+from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
+from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
 
-from cura.Machines.VariantManager import VariantManager
+from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
+
+from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
+from cura.UI.MachineSettingsManager import MachineSettingsManager
+from cura.UI.ObjectsModel import ObjectsModel
+from cura.UI.TextManager import TextManager
+from cura.UI.WelcomePagesModel import WelcomePagesModel
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
 from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
-from . import PrintInformation
 from . import CuraActions
-from cura.Scene import ZOffsetDecorator
-from . import CuraSplashScreen
 from . import PrintJobPreviewImageProvider
-from . import MachineActionManager
-
-from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
-
-from cura.Settings.MachineManager import MachineManager
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.UserChangesModel import UserChangesModel
-from cura.Settings.ExtrudersModel import ExtrudersModel
-from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
-from cura.Settings.ContainerManager import ContainerManager
-from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
-import cura.Settings.cura_empty_instance_containers
-from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
-
-from cura.ObjectsModel import ObjectsModel
-
-from cura.PrinterOutputDevice import PrinterOutputDevice
-from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
 
 from cura import ApplicationMetadata, UltimakerCloudAuthentication
-
-from UM.FlameProfiler import pyqtSlot
-from UM.Decorators import override
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialManager import MaterialManager
@@ -208,6 +212,13 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
+        self._machine_settings_manager = MachineSettingsManager(self)
+
+        self._discovered_printer_model = DiscoveredPrintersModel(self)
+        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
+        self._welcome_pages_model = WelcomePagesModel(self)
+        self._text_manager = TextManager(self)
+
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
         self._cura_API = CuraAPI(self)
@@ -236,8 +247,6 @@ class CuraApplication(QtApplication):
         self._open_file_queue = []  # A list of files to open (after the application has started)
 
         self._update_platform_activity_timer = None
-
-        self._need_to_show_user_agreement = True
 
         self._sidebar_custom_menu_items = []  # type: list # Keeps list of custom menu items for the side bar
 
@@ -450,7 +459,6 @@ class CuraApplication(QtApplication):
             # Misc.:
             "ConsoleLogger", #You want to be able to read the log if something goes wrong.
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
-            "UserAgreement", #Our lawyers want every user to see this at least once.
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
             "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
@@ -522,7 +530,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/expanded_brands", "")
         preferences.addPreference("cura/expanded_types", "")
 
-        self._need_to_show_user_agreement = not preferences.getValue("general/accepted_user_agreement")
+        preferences.addPreference("general/accepted_user_agreement", False)
 
         for key in [
             "dialog_load_path",  # dialog_save_path is in LocalFileOutputDevicePlugin
@@ -545,13 +553,20 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(bool)
     def needToShowUserAgreement(self) -> bool:
-        return self._need_to_show_user_agreement
+        return not UM.Util.parseBool(self.getPreferences().getValue("general/accepted_user_agreement"))
 
-    def setNeedToShowUserAgreement(self, set_value = True) -> None:
-        self._need_to_show_user_agreement = set_value
+    @pyqtSlot(bool)
+    def setNeedToShowUserAgreement(self, set_value: bool = True) -> None:
+        self.getPreferences().setValue("general/accepted_user_agreement", str(not set_value))
+
+    @pyqtSlot(str, str)
+    def writeToLog(self, severity: str, message: str) -> None:
+        Logger.log(severity, message)
 
     # DO NOT call this function to close the application, use checkAndExitApplication() instead which will perform
     # pre-exit checks such as checking for in-progress USB printing, etc.
+    # Except for the 'Decline and close' in the 'User Agreement'-step in the Welcome-pages, that should be a hard exit.
+    @pyqtSlot()
     def closeApplication(self) -> None:
         Logger.log("i", "Close application")
         main_window = self.getMainWindow()
@@ -745,6 +760,9 @@ class CuraApplication(QtApplication):
         # Initialize Cura API
         self._cura_API.initialize()
 
+        self._output_device_manager.start()
+        self._welcome_pages_model.initialize()
+
         # Detect in which mode to run and execute that mode
         if self._is_headless:
             self.runWithoutGUI()
@@ -840,8 +858,28 @@ class CuraApplication(QtApplication):
         self.closeSplash()
 
     @pyqtSlot(result = QObject)
+    def getDiscoveredPrintersModel(self, *args) -> "DiscoveredPrintersModel":
+        return self._discovered_printer_model
+
+    @pyqtSlot(result = QObject)
+    def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
+        return self._first_start_machine_actions_model
+
+    @pyqtSlot(result = QObject)
     def getSettingVisibilityPresetsModel(self, *args) -> SettingVisibilityPresetsModel:
         return self._setting_visibility_presets_model
+
+    @pyqtSlot(result = QObject)
+    def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
+        return self._welcome_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
+        return self._machine_settings_manager
+
+    @pyqtSlot(result = QObject)
+    def getTextManager(self, *args) -> "TextManager":
+        return self._text_manager
 
     def getCuraFormulaFunctions(self, *args) -> "CuraFormulaFunctions":
         if self._cura_formula_functions is None:
@@ -975,6 +1013,9 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
+        qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
+
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
         qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
@@ -988,7 +1029,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
-        qmlRegisterType(MachineManagementModel, "Cura", 1, 0, "MachineManagementModel")
+
+        qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
 
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
@@ -999,6 +1041,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
+        qmlRegisterType(FirstStartMachineActionsModel, "Cura", 1, 0, "FirstStartMachineActionsModel")
         qmlRegisterType(MachineNameValidator, "Cura", 1, 0, "MachineNameValidator")
         qmlRegisterType(UserChangesModel, "Cura", 1, 0, "UserChangesModel")
         qmlRegisterSingletonType(ContainerManager, "Cura", 1, 0, "ContainerManager", ContainerManager.getInstance)

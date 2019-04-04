@@ -19,12 +19,12 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .Cloud.Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
@@ -522,7 +522,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job = UM3PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
                                         key=data["uuid"], name= data["name"])
 
-        configuration = ConfigurationModel()
+        configuration = PrinterConfigurationModel()
         extruders = [ExtruderConfigurationModel(position = idx) for idx in range(0, self._number_of_extruders)]
         for index in range(0, self._number_of_extruders):
             try:
@@ -632,6 +632,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
+
+        if data["status"] != "unreachable":
+            self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(data["ip_address"],
+                                                                               name = data["friendly_name"],
+                                                                               machine_type = data["machine_variant"])
 
         # Do not store the build plate information that comes from connect if the current printer has not build plate information
         if "build_plate" in data and machine_definition.getMetaDataEntry("has_variant_buildplates", False):

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -14,6 +14,7 @@ import Cura 1.1 as Cura
 import "Dialogs"
 import "Menus"
 import "MainWindow"
+import "WelcomePages"
 
 UM.MainWindow
 {
@@ -41,6 +42,31 @@ UM.MainWindow
         tooltip.hide();
     }
 
+    Rectangle
+    {
+        id: greyOutBackground
+        anchors.fill: parent
+        visible: welcomeDialog.visible
+        color: UM.Theme.getColor("window_disabled_background")
+        opacity: 0.7
+        z: stageMenu.z + 1
+
+        MouseArea
+        {
+            // Prevent all mouse events from passing through.
+            enabled: parent.visible
+            anchors.fill: parent
+            hoverEnabled: true
+            acceptedButtons: Qt.AllButtons
+        }
+    }
+
+    WelcomeDialog
+    {
+        id: welcomeDialog
+        visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
+        z: greyOutBackground.z + 1
+    }
 
     Component.onCompleted:
     {
@@ -57,6 +83,17 @@ UM.MainWindow
         // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
+
+        if (CuraApplication.needToShowUserAgreement)
+        {
+            welcomeDialog.visible = true
+        }
+        else
+        {
+            welcomeDialog.visible = false
+        }
+        // TODO: While the new onboarding process contains the user-agreement,
+        //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
     }
 
     Item
@@ -682,11 +719,13 @@ UM.MainWindow
         onTriggered:
         {
             var path = UM.Resources.getPath(UM.Resources.Preferences, "");
-            if(Qt.platform.os == "windows") {
+            if(Qt.platform.os == "windows")
+            {
                 path = path.replace(/\\/g,"/");
             }
             Qt.openUrlExternally(path);
-            if(Qt.platform.os == "linux") {
+            if(Qt.platform.os == "linux")
+            {
                 Qt.openUrlExternally(UM.Resources.getPath(UM.Resources.Resources, ""));
             }
         }
@@ -812,13 +851,7 @@ UM.MainWindow
             {
                 base.visible = true;
             }
-
-            // check later if the user agreement dialog has been closed
-            if (CuraApplication.needToShowUserAgreement)
-            {
-                restart();
-            }
-            else if(Cura.MachineManager.activeMachine == null)
+            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
             {
                 addMachineDialog.open();
             }

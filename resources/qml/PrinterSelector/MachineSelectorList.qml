@@ -42,5 +42,11 @@ ListView
             }
             return result
         }
+
+        onClicked:
+        {
+            toggleContent()
+            Cura.MachineManager.setActiveMachine(model.id)
+        }
     }
 }

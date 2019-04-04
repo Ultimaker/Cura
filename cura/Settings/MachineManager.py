@@ -6,13 +6,13 @@ import re
 import unicodedata
 from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
+
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
-
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 from UM.FlameProfiler import pyqtSlot
 from UM import Util
 from UM.Logger import Logger
@@ -22,10 +22,10 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
@@ -106,7 +106,7 @@ class MachineManager(QObject):
         # There might already be some output devices by the time the signal is connected
         self._onOutputDevicesChanged()
 
-        self._current_printer_configuration = ConfigurationModel()   # Indicates the current configuration setup in this printer
+        self._current_printer_configuration = PrinterConfigurationModel()   # Indicates the current configuration setup in this printer
         self.activeMaterialChanged.connect(self._onCurrentConfigurationChanged)
         self.activeVariantChanged.connect(self._onCurrentConfigurationChanged)
         # Force to compute the current configuration
@@ -157,6 +157,7 @@ class MachineManager(QObject):
     printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
+    discoveredPrintersChanged = pyqtSignal()
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
@@ -171,10 +172,9 @@ class MachineManager(QObject):
                 self._printer_output_devices.append(printer_output_device)
 
         self.outputDevicesChanged.emit()
-        self.printerConnectedStatusChanged.emit()
 
     @pyqtProperty(QObject, notify = currentConfigurationChanged)
-    def currentConfiguration(self) -> ConfigurationModel:
+    def currentConfiguration(self) -> PrinterConfigurationModel:
         return self._current_printer_configuration
 
     def _onCurrentConfigurationChanged(self) -> None:
@@ -205,7 +205,7 @@ class MachineManager(QObject):
         self.currentConfigurationChanged.emit()
 
     @pyqtSlot(QObject, result = bool)
-    def matchesConfiguration(self, configuration: ConfigurationModel) -> bool:
+    def matchesConfiguration(self, configuration: PrinterConfigurationModel) -> bool:
         return self._current_printer_configuration == configuration
 
     @pyqtProperty("QVariantList", notify = outputDevicesChanged)
@@ -386,9 +386,17 @@ class MachineManager(QObject):
                 return machine
         return None
 
+    @pyqtSlot(str)
     @pyqtSlot(str, str)
-    def addMachine(self, name: str, definition_id: str) -> None:
-        new_stack = CuraStackBuilder.createMachine(name, definition_id)
+    def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+        if name is None:
+            definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
+            if definitions:
+                name = definitions[0].getName()
+            else:
+                name = definition_id
+
+        new_stack = CuraStackBuilder.createMachine(cast(str, name), definition_id)
         if new_stack:
             # Instead of setting the global container stack here, we set the active machine and so the signals are emitted
             self.setActiveMachine(new_stack.getId())
@@ -1367,7 +1375,7 @@ class MachineManager(QObject):
         self.setActiveMachine(new_machine.getId())
 
     @pyqtSlot(QObject)
-    def applyRemoteConfiguration(self, configuration: ConfigurationModel) -> None:
+    def applyRemoteConfiguration(self, configuration: PrinterConfigurationModel) -> None:
         if self._global_container_stack is None:
             return
         self.blurSettings.emit()
@@ -1650,3 +1658,10 @@ class MachineManager(QObject):
                 abbr_machine += stripped_word
 
         return abbr_machine
+
+    def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
+        machine_type_name = ""
+        results = self._container_registry.findDefinitionContainersMetadata(id = machine_type_id)
+        if results:
+            machine_type_name = results[0]["name"]
+        return machine_type_name

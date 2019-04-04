@@ -18,7 +18,7 @@ from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
 
 if TYPE_CHECKING:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 catalog = i18nCatalog("cura")
 
@@ -40,6 +40,11 @@ class DiscoverUM3Action(MachineAction):
 
         # Time to wait after a zero-conf service change before allowing a zeroconf reset
         self._zero_conf_change_grace_period = 0.25 #type: float
+
+    # Overrides the one in MachineAction.
+    # This requires not attention from the user (any more), so we don't need to show any 'upgrade screens'.
+    def needsUserInteraction(self) -> bool:
+        return False
 
     @pyqtSlot()
     def startDiscovery(self):
@@ -118,49 +123,14 @@ class DiscoverUM3Action(MachineAction):
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.refreshConnections()
 
     # Associates the currently active machine with the given printer device. The network connection information will be
     # stored into the metadata of the currently active machine.
     @pyqtSlot(QObject)
     def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        if not printer_device:
-            return
-
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
-
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
-            return
-
-        meta_data = global_container_stack.getMetaData()
-
-        if "um_network_key" in meta_data:  # Global stack already had a connection, but it's changed.
-            old_network_key = meta_data["um_network_key"]
-            # Since we might have a bunch of hidden stacks, we also need to change it there.
-            metadata_filter = {"um_network_key": old_network_key}
-            containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
-
-            for container in containers:
-                container.setMetaDataEntry("um_network_key", printer_device.key)
-
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s",
-                           global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-
-                container.removeMetaDataEntry("network_authentication_id")
-                container.removeMetaDataEntry("network_authentication_key")
-
-                # Ensure that these containers do know that they are configured for network connection
-                container.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        else:  # Global stack didn't have a connection yet, configure it.
-            global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-            global_container_stack.addConfiguredConnectionType(printer_device.connectionType.value)
-
         if self._network_plugin:
-            # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.associateActiveMachineWithPrinterDevice(printer_device)
 
     @pyqtSlot(result = str)
     def getStoredKey(self) -> str:

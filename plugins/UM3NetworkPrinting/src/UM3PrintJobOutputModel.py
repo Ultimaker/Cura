@@ -5,7 +5,7 @@ from typing import List
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from .ConfigurationChangeModel import ConfigurationChangeModel
 

@@ -923,11 +923,6 @@ msgctxt "@action"
 msgid "Select upgrades"
 msgstr "Sélectionner les mises à niveau"
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.py:14
-msgctxt "@action"
-msgid "Checkup"
-msgstr "Check-up"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.py:21
 msgctxt "@action"
 msgid "Level build plate"
@@ -2955,99 +2950,6 @@ msgstr "Sélectionnez les mises à niveau disponibles pour cet Ultimaker Origina
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
 msgstr "Plateau chauffant (kit officiel ou fabriqué soi-même)"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:27
-msgctxt "@title"
-msgid "Check Printer"
-msgstr "Tester l'imprimante"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:39
-msgctxt "@label"
-msgid "It's a good idea to do a few sanity checks on your Ultimaker. You can skip this step if you know your machine is functional"
-msgstr "Il est préférable de procéder à quelques tests de fonctionnement sur votre Ultimaker. Vous pouvez passer cette étape si vous savez que votre machine est fonctionnelle"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:53
-msgctxt "@action:button"
-msgid "Start Printer Check"
-msgstr "Démarrer le test de l'imprimante"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:80
-msgctxt "@label"
-msgid "Connection: "
-msgstr "Connexion : "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Connected"
-msgstr "Connecté"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:89
-msgctxt "@info:status"
-msgid "Not connected"
-msgstr "Non connecté"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:99
-msgctxt "@label"
-msgid "Min endstop X: "
-msgstr "Fin de course X : "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-msgctxt "@info:status"
-msgid "Works"
-msgstr "Fonctionne"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:109
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:130
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:151
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:173
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Not checked"
-msgstr "Non testé"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:120
-msgctxt "@label"
-msgid "Min endstop Y: "
-msgstr "Fin de course Y : "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:141
-msgctxt "@label"
-msgid "Min endstop Z: "
-msgstr "Fin de course Z : "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:163
-msgctxt "@label"
-msgid "Nozzle temperature check: "
-msgstr "Test de la température de la buse : "
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Stop Heating"
-msgstr "Arrêter le chauffage"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:187
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:248
-msgctxt "@action:button"
-msgid "Start Heating"
-msgstr "Démarrer le chauffage"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:223
-msgctxt "@label"
-msgid "Build plate temperature check:"
-msgstr "Contrôle de la température du plateau :"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:234
-msgctxt "@info:status"
-msgid "Checked"
-msgstr "Contrôlée"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOCheckupMachineAction.qml:284
-msgctxt "@label"
-msgid "Everything is in order! You're done with your CheckUp."
-msgstr "Tout est en ordre ! Vous avez terminé votre check-up."
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
