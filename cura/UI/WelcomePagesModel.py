@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
@@ -23,6 +24,9 @@ if TYPE_CHECKING:
 #  - page_url     : The QUrl to the QML file that contains the content of this page
 #  - next_page_id : (OPTIONAL) The next page ID to go to when this page finished. This is optional. If this is not
 #                   provided, it will go to the page with the current index + 1
+#  - next_page_button_text: (OPTIONAL) The text to show for the "next" button, by default it's the translated text of
+#                           "Next". Note that each step QML can decide whether to use this text or not, so it's not
+#                           mandatory.
 #  - should_show_function : (OPTIONAL) An optional function that returns True/False indicating if this page should be
 #                           shown. By default all pages should be shown. If a function returns False, that page will
 #                           be skipped and its next page will be shown.
@@ -34,6 +38,7 @@ class WelcomePagesModel(ListModel):
     IdRole = Qt.UserRole + 1  # Page ID
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
+    NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -41,8 +46,12 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.PageUrlRole, "page_url")
         self.addRoleName(self.NextPageIdRole, "next_page_id")
+        self.addRoleName(self.NextPageButtonTextRole, "next_page_button_text")
 
         self._application = application
+        self._catalog = i18nCatalog("cura")
+
+        self._default_next_button_text = self._catalog.i18nc("@action:button", "Next")
 
         self._pages = []  # type: List[Dict[str, Any]]
 
@@ -211,6 +220,14 @@ class WelcomePagesModel(ListModel):
                             })
 
         self.setItems(self._pages)
+
+    # For convenience, inject the default "next" button text to each item if it's not present.
+    def setItems(self, items: List[Dict[str, Any]]) -> None:
+        for item in items:
+            if "next_page_button_text" not in item:
+                item["next_page_button_text"] = self._default_next_button_text
+
+        super().setItems(items)
 
     # Indicates if the machine action panel should be shown by checking if there's any first start machine actions
     # available.
