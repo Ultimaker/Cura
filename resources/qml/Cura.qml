@@ -46,7 +46,7 @@ UM.MainWindow
     {
         id: greyOutBackground
         anchors.fill: parent
-        visible: welcomeDialog.visible
+        visible: welcomeDialogItem.visible
         color: UM.Theme.getColor("window_disabled_background")
         opacity: 0.7
         z: stageMenu.z + 1
@@ -61,9 +61,9 @@ UM.MainWindow
         }
     }
 
-    WelcomeDialog
+    WelcomeDialogItem
     {
-        id: welcomeDialog
+        id: welcomeDialogItem
         visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
         z: greyOutBackground.z + 1
     }
@@ -86,11 +86,11 @@ UM.MainWindow
 
         if (CuraApplication.needToShowUserAgreement)
         {
-            welcomeDialog.visible = true
+            welcomeDialogItem.visible = true
         }
         else
         {
-            welcomeDialog.visible = false
+            welcomeDialogItem.visible = false
         }
         // TODO: While the new onboarding process contains the user-agreement,
         //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
