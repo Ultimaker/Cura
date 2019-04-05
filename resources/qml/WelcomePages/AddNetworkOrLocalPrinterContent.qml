@@ -118,7 +118,10 @@ Item
             }
             else
             {
-                return addLocalPrinterDropDown.contentItem.currentItem != null
+                // Printer name cannot be empty
+                const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
+                const isPrinterNameValid = addLocalPrinterDropDown.contentItem.isPrinterNameValid
+                return localPrinterItem != null && isPrinterNameValid
             }
         }
 

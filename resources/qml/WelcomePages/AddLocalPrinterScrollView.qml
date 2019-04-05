@@ -32,6 +32,7 @@ Item
 
     // User-editable printer name
     property alias printerName: printerNameTextField.text
+    property alias isPrinterNameValid: printerNameTextField.acceptableInput
 
     onCurrentItemChanged:
     {
@@ -211,6 +212,10 @@ Item
             id: printerNameTextField
             anchors.verticalCenter: parent.verticalCenter
             width: (parent.width / 2) | 0
+            placeholderText: catalog.i18nc("@text", "Please give your printer a name")
+
+            // Make sure that the fill is not empty
+            validator: RegExpValidator { regExp: /.+/ }
         }
     }
 }

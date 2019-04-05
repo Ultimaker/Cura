@@ -37,11 +37,28 @@ TextField
             {
                 return UM.Theme.getColor("setting_control_disabled_border")
             }
+            if (!textField.acceptableInput)
+            {
+                return UM.Theme.getColor("setting_validation_error")
+            }
             if (textField.hovered || textField.activeFocus)
             {
                 return UM.Theme.getColor("setting_control_border_highlight")
             }
             return UM.Theme.getColor("setting_control_border")
+        }
+
+        color:
+        {
+            if (!textField.enabled)
+            {
+                return UM.Theme.getColor("setting_control_disabled")
+            }
+            if (!textField.acceptableInput)
+            {
+                return UM.Theme.getColor("setting_validation_error_background")
+            }
+            return UM.Theme.getColor("setting_control")
         }
     }
 }
