@@ -155,7 +155,7 @@ class WorkspaceDialog(QObject):
 
     def setNumSettingsOverriddenByQualityChanges(self, num_settings_overridden_by_quality_changes):
         self._num_settings_overridden_by_quality_changes = num_settings_overridden_by_quality_changes
-        self.numSettingsOverriddenByQualityChangesChanged.emit()
+        self.numSettingsOverridenByQualityChangesChanged.emit()
 
     @pyqtProperty(str, notify=qualityNameChanged)
     def qualityName(self):
