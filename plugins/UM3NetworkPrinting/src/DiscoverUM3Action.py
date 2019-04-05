@@ -157,7 +157,9 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot(str, result = bool)
     def existsKey(self, key: str) -> bool:
-        return CuraApplication.getInstance().getMachineManager().existNetworkInstances(network_key = key)
+        metadata_filter = {"um_network_key": key}
+        containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
+        return bool(containers)
 
     @pyqtSlot()
     def loadConfigurationFromPrinter(self) -> None:

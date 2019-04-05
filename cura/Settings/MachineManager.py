@@ -1455,13 +1455,6 @@ class MachineManager(QObject):
         if self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
-
-    ##  This method checks if there is an instance connected to the given network_key
-    def existNetworkInstances(self, network_key: str) -> bool:
-        metadata_filter = {"um_network_key": network_key}
-        containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
-        return bool(containers)
-
     @pyqtSlot("QVariant")
     def setGlobalVariant(self, container_node: "ContainerNode") -> None:
         self.blurSettings.emit()
