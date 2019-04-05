@@ -356,7 +356,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 properties = device.getProperties().copy()
                 if b"incomplete" in properties:
                     del properties[b"incomplete"]
-                properties[b"cluster_size"] = len(cluster_printers_list)
+                properties[b"cluster_size"] = str(len(cluster_printers_list)).encode("utf-8")
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 
