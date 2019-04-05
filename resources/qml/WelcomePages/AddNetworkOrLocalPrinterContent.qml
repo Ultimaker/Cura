@@ -139,7 +139,8 @@ Item
             {
                 // Create a local printer
                 const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
-                Cura.MachineManager.addMachine(localPrinterItem.id)
+                const printerName = addLocalPrinterDropDown.contentItem.printerName
+                Cura.MachineManager.addMachine(localPrinterItem.id, printerName)
 
                 base.showNextPage()
             }
