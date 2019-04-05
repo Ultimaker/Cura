@@ -282,7 +282,7 @@ Item
     {
         id: groupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
         onTriggered: CuraApplication.groupSelected();
@@ -302,7 +302,7 @@ Item
     {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
-        enabled: UM.Scene.isGroupSelected
+        enabled: UM.Selection.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
         onTriggered: CuraApplication.ungroupSelected();
@@ -312,7 +312,7 @@ Item
     {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
         onTriggered: CuraApplication.mergeSelected();
