@@ -27,6 +27,7 @@ Window
     color: UM.Theme.getColor("main_background")
 
     property var model: null  // Needs to be set by whoever is using this dialog.
+    property alias progressBarVisible: wizardPanel.progressBarVisible
 
     onVisibilityChanged:
     {

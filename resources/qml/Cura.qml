@@ -779,6 +779,7 @@ UM.MainWindow
         id: addMachineDialog
         title: catalog.i18nc("@title:window", "Add Printer")
         model: CuraApplication.getAddPrinterPagesModel()
+        progressBarVisible: false
     }
 
     Connections
