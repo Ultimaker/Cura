@@ -7,9 +7,12 @@
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
-        "icon": "icon_ultimaker2.png",
         "platform": "makerstarter_platform.stl",
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "maker_starter_extruder_0"
+        }
     },
 
     "overrides": {
@@ -28,9 +31,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
         },
         "gantry_height": {
             "default_value": 55

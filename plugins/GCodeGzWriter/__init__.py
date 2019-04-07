@@ -9,14 +9,15 @@ from . import GCodeGzWriter
 catalog = i18nCatalog("cura")
 
 def getMetaData():
-    file_extension = "gz" if Platform.isOSX() else "gcode.gz"
+    file_extension = "gcode.gz"
     return {
         "mesh_writer": {
             "output": [{
                 "extension": file_extension,
                 "description": catalog.i18nc("@item:inlistbox", "Compressed G-code File"),
                 "mime_type": "application/gzip",
-                "mode": GCodeGzWriter.GCodeGzWriter.OutputMode.BinaryMode
+                "mode": GCodeGzWriter.GCodeGzWriter.OutputMode.BinaryMode,
+                "hide_in_file_dialog": True,
             }]
         }
     }

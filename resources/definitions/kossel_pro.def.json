@@ -7,9 +7,12 @@
         "author": "Chris Petersen",
         "manufacturer": "OpenBeam",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "kossel_pro_build_platform.stl",
-        "platform_offset": [0, -0.25, 0]
+        "platform_offset": [0, -0.25, 0],
+        "machine_extruder_trains":
+        {
+            "0": "kossel_pro_extruder_0"
+        }
     },
     "overrides": {
         "machine_heated_bed": {
@@ -26,12 +29,6 @@
         },
         "machine_center_is_zero": {
             "default_value": true
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.35
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

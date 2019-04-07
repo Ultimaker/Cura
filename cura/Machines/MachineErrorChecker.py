@@ -50,7 +50,7 @@ class MachineErrorChecker(QObject):
         self._error_check_timer.setInterval(100)
         self._error_check_timer.setSingleShot(True)
 
-    def initialize(self):
+    def initialize(self) -> None:
         self._error_check_timer.timeout.connect(self._rescheduleCheck)
 
         # Reconnect all signals when the active machine gets changed.
@@ -62,23 +62,23 @@ class MachineErrorChecker(QObject):
 
         self._onMachineChanged()
 
-    def _onMachineChanged(self):
+    def _onMachineChanged(self) -> None:
         if self._global_stack:
-            self._global_stack.propertyChanged.disconnect(self.startErrorCheck)
+            self._global_stack.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.disconnect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruders.values():
-                extruder.propertyChanged.disconnect(self.startErrorCheck)
+                extruder.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.disconnect(self.startErrorCheck)
 
         self._global_stack = self._machine_manager.activeMachine
 
         if self._global_stack:
-            self._global_stack.propertyChanged.connect(self.startErrorCheck)
+            self._global_stack.propertyChanged.connect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.connect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruders.values():
-                extruder.propertyChanged.connect(self.startErrorCheck)
+                extruder.propertyChanged.connect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.connect(self.startErrorCheck)
 
     hasErrorUpdated = pyqtSignal()
@@ -93,8 +93,15 @@ class MachineErrorChecker(QObject):
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
 
+    #   Start the error check for property changed
+    #   this is seperate from the startErrorCheck because it ignores a number property types
+    def startErrorCheckPropertyChanged(self, key, property_name):
+        if property_name != "value":
+            return
+        self.startErrorCheck()
+
     # Starts the error check timer to schedule a new error check.
-    def startErrorCheck(self, *args):
+    def startErrorCheck(self, *args) -> None:
         if not self._check_in_progress:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()
@@ -103,7 +110,7 @@ class MachineErrorChecker(QObject):
     # This function is called by the timer to reschedule a new error check.
     # If there is no check in progress, it will start a new one. If there is any, it sets the "_need_to_check" flag
     # to notify the current check to stop and start a new one.
-    def _rescheduleCheck(self):
+    def _rescheduleCheck(self) -> None:
         if self._check_in_progress and not self._need_to_check:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()
@@ -128,7 +135,7 @@ class MachineErrorChecker(QObject):
         self._start_time = time.time()
         Logger.log("d", "New error check scheduled.")
 
-    def _checkStack(self):
+    def _checkStack(self) -> None:
         if self._need_to_check:
             Logger.log("d", "Need to check for errors again. Discard the current progress and reschedule a check.")
             self._check_in_progress = False
@@ -169,7 +176,7 @@ class MachineErrorChecker(QObject):
         # Schedule the check for the next key
         self._application.callLater(self._checkStack)
 
-    def _setResult(self, result: bool):
+    def _setResult(self, result: bool) -> None:
         if result != self._has_errors:
             self._has_errors = result
             self.hasErrorUpdated.emit()

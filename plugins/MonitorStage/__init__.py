@@ -3,16 +3,19 @@
 
 from . import MonitorStage
 
+
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
+
 
 def getMetaData():
     return {
         "stage": {
             "name": i18n_catalog.i18nc("@item:inmenu", "Monitor"),
-            "weight": 1
+            "weight": 2
         }
     }
+
 
 def register(app):
     return {

@@ -7,9 +7,12 @@
         "author": "PouncingIguana, JJ",
         "manufacturer": "SeeMeCNC",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "artemis_platform.stl",
-        "has_materials": true
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "seemecnc_artemis_extruder_0"
+        }
     },
 
     "overrides": {
@@ -22,10 +25,8 @@
         "machine_height": { "default_value": 530 },
         "machine_max_feedrate_z": { "default_value": 400 },
         "machine_name": { "default_value": "Artemis" },
-        "machine_nozzle_size": { "default_value": 0.5 },
         "machine_shape": { "default_value": "elliptic" },
         "machine_width": { "default_value": 290 },
-        "material_diameter": { "default_value": 1.75 },
         "relative_extrusion": { "default_value": false },
         "retraction_amount": { "default_value": 3.2 },
         "retraction_combing": { "default_value": "off" },

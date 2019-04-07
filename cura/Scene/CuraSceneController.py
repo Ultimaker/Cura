@@ -3,7 +3,8 @@ from UM.Logger import Logger
 from PyQt5.QtCore import Qt, pyqtSlot, QObject
 from PyQt5.QtWidgets import QApplication
 
-from cura.ObjectsModel import ObjectsModel
+from UM.Scene.Camera import Camera
+from cura.UI.ObjectsModel import ObjectsModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from UM.Application import Application
@@ -16,7 +17,7 @@ from UM.Signal import Signal
 class CuraSceneController(QObject):
     activeBuildPlateChanged = Signal()
 
-    def __init__(self, objects_model: ObjectsModel, multi_build_plate_model: MultiBuildPlateModel):
+    def __init__(self, objects_model: ObjectsModel, multi_build_plate_model: MultiBuildPlateModel) -> None:
         super().__init__()
 
         self._objects_model = objects_model
@@ -33,7 +34,7 @@ class CuraSceneController(QObject):
             source = args[0]
         else:
             source = None
-        if not isinstance(source, SceneNode):
+        if not isinstance(source, SceneNode) or isinstance(source, Camera):
             return
         max_build_plate = self._calcMaxBuildPlate()
         changed = False

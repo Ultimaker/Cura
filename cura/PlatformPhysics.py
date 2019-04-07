@@ -8,7 +8,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
-from UM.Preferences import Preferences
+from UM.Scene.SceneNodeSettings import SceneNodeSettings
 
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 
@@ -16,7 +16,6 @@ from cura.Operations import PlatformPhysicsOperation
 from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
-
 
 class PlatformPhysics:
     def __init__(self, controller, volume):
@@ -36,12 +35,13 @@ class PlatformPhysics:
         self._max_overlap_checks = 10  # How many times should we try to find a new spot per tick?
         self._minimum_gap = 2  # It is a minimum distance (in mm) between two models, applicable for small models
 
-        Preferences.getInstance().addPreference("physics/automatic_push_free", True)
-        Preferences.getInstance().addPreference("physics/automatic_drop_down", True)
+        Application.getInstance().getPreferences().addPreference("physics/automatic_push_free", False)
+        Application.getInstance().getPreferences().addPreference("physics/automatic_drop_down", True)
 
     def _onSceneChanged(self, source):
-        if not source.getMeshData():
+        if not source.callDecoration("isSliceable"):
             return
+
         self._change_timer.start()
 
     def _onChangeTimerFinished(self):
@@ -71,7 +71,7 @@ class PlatformPhysics:
             # Move it downwards if bottom is above platform
             move_vector = Vector()
 
-            if Preferences.getInstance().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
+            if Application.getInstance().getPreferences().getValue("physics/automatic_drop_down") and not (node.getParent() and node.getParent().callDecoration("isGroup") or node.getParent() != root) and node.isEnabled(): #If an object is grouped, don't move it down
                 z_offset = node.callDecoration("getZOffset") if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator) else 0
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
@@ -80,7 +80,11 @@ class PlatformPhysics:
                 node.addDecorator(ConvexHullDecorator())
 
             # only push away objects if this node is a printing mesh
-            if not node.callDecoration("isNonPrintingMesh") and Preferences.getInstance().getValue("physics/automatic_push_free"):
+            if not node.callDecoration("isNonPrintingMesh") and Application.getInstance().getPreferences().getValue("physics/automatic_push_free"):
+                # Do not move locked nodes
+                if node.getSetting(SceneNodeSettings.LockPosition):
+                    continue
+
                 # Check for collisions between convex hulls
                 for other_node in BreadthFirstIterator(root):
                     # Ignore root, ourselves and anything that is not a normal SceneNode.

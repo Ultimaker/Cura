@@ -6,7 +6,10 @@
         "author": "Unimatech",
         "manufacturer": "Unimatech",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2.png"
+        "machine_extruder_trains":
+        {
+            "0": "uniqbot_one_extruder_0"
+        }
     },
 
     "overrides": {
@@ -25,12 +28,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.5
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "gantry_height": {
             "default_value": 55

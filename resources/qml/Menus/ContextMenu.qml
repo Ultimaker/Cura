@@ -27,7 +27,7 @@ Menu
     MenuItem { id: extruderHeader; text: catalog.i18ncp("@label", "Print Selected Model With:", "Print Selected Models With:", UM.Selection.selectionCount); enabled: false; visible: base.shouldShowExtruders }
     Instantiator
     {
-        model: Cura.ExtrudersModel { id: extrudersModel }
+        model: CuraApplication.getExtrudersModel()
         MenuItem {
             text: "%1: %2 - %3".arg(model.name).arg(model.material).arg(model.variant)
             visible: base.shouldShowExtruders
@@ -103,7 +103,7 @@ Menu
     {
         id: machineExtruderCount
 
-        containerStackId: Cura.MachineManager.activeMachineId
+        containerStack: Cura.MachineManager.activeMachine
         key: "machine_extruder_count"
         watchedProperties: [ "value" ]
     }

@@ -25,6 +25,9 @@ except ImportError:
 import zipfile
 import UM.Application
 
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
+
 
 class ThreeMFWriter(MeshWriter):
     def __init__(self):
@@ -91,7 +94,7 @@ class ThreeMFWriter(MeshWriter):
         # Handle per object settings (if any)
         stack = um_node.callDecoration("getStack")
         if stack is not None:
-            changed_setting_keys = set(stack.getTop().getAllKeys())
+            changed_setting_keys = stack.getTop().getAllKeys()
 
             # Ensure that we save the extruder used for this object in a multi-extrusion setup
             if stack.getProperty("machine_extruder_count", "value") > 1:
@@ -173,6 +176,7 @@ class ThreeMFWriter(MeshWriter):
             archive.writestr(relations_file, b'<?xml version="1.0" encoding="UTF-8"?> \n' + ET.tostring(relations_element))
         except Exception as e:
             Logger.logException("e", "Error writing zip file")
+            self.setInformation(catalog.i18nc("@error:zip", "Error writing 3mf file."))
             return False
         finally:
             if not self._store_archive:

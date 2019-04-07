@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -9,7 +9,6 @@ import UM 1.1 as UM
 Item
 {
     id: tile
-    property bool installed: toolbox.isInstalled(model.id)
     width: detailList.width - UM.Theme.getSize("wide_margin").width
     height: normalData.height + compatibilityChart.height + 4 * UM.Theme.getSize("default_margin").height
     Item
@@ -32,50 +31,30 @@ Item
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium_bold")
+            renderType: Text.NativeRendering
         }
         Label
         {
             anchors.top: packageName.bottom
             width: parent.width
             text: model.description
-            maximumLineCount: 3
+            maximumLineCount: 25
             elide: Text.ElideRight
             wrapMode: Text.WordWrap
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
         }
     }
 
-    Item
+    ToolboxDetailTileActions
     {
         id: controls
         anchors.right: tile.right
         anchors.top: tile.top
         width: childrenRect.width
         height: childrenRect.height
-
-        ToolboxProgressButton
-        {
-            id: installButton
-            active: toolbox.isDownloading && toolbox.activePackage == model
-            complete: tile.installed
-            readyAction: function()
-            {
-                toolbox.activePackage = model
-                toolbox.startDownload(model.download_url)
-            }
-            activeAction: function()
-            {
-                toolbox.cancelDownload()
-            }
-            completeAction: function()
-            {
-                toolbox.viewCategory = "installed"
-            }
-            // Don't allow installing while another download is running
-            enabled: installed || !(toolbox.isDownloading && toolbox.activePackage != model)
-            opacity: enabled ? 1.0 : 0.5
-        }
+        packageData: model
     }
 
     ToolboxCompatibilityChart
@@ -93,10 +72,5 @@ Item
         height: UM.Theme.getSize("default_lining").height
         anchors.top: compatibilityChart.bottom
         anchors.topMargin: UM.Theme.getSize("default_margin").height + UM.Theme.getSize("wide_margin").height //Normal margin for spacing after chart, wide margin between items.
-    }
-    Connections
-    {
-        target: toolbox
-        onInstallChanged: installed = toolbox.isInstalled(model.id)
     }
 }

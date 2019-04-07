@@ -17,8 +17,14 @@ if(CURA_DEBUGMODE)
     set(_cura_debugmode "ON")
 endif()
 
+set(CURA_APP_NAME "cura" CACHE STRING "Short name of Cura, used for configuration folder")
+set(CURA_APP_DISPLAY_NAME "Ultimaker Cura" CACHE STRING "Display name of Cura")
 set(CURA_VERSION "master" CACHE STRING "Version name of Cura")
 set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
+set(CURA_SDK_VERSION "" CACHE STRING "SDK version of Cura")
+set(CURA_CLOUD_API_ROOT "" CACHE STRING "Alternative Cura cloud API root")
+set(CURA_CLOUD_API_VERSION "" CACHE STRING "Alternative Cura cloud API version")
+
 configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 configure_file(cura/CuraVersion.py.in CuraVersion.py @ONLY)
 

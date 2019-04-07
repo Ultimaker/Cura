@@ -5,83 +5,60 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 
 import UM 1.2 as UM
+import Cura 1.0 as Cura
 
-
-Column
+Item
 {
     id: extruderInfo
     property var printCoreConfiguration
-    property var mainColor: "black"
-    spacing: Math.round(UM.Theme.getSize("default_margin").height / 2)
 
-    height: childrenRect.height
+    height: information.height
 
-    Item
+    //Extruder icon.
+    Cura.ExtruderIcon
     {
-        id: extruder
-        width: parent.width
-        height: childrenRect.height
+        id: icon
+        materialColor: printCoreConfiguration.material.color
+        anchors.verticalCenter: parent.verticalCenter
+        extruderEnabled: printCoreConfiguration.material.brand !== "" && printCoreConfiguration.hotendID !== ""
+    }
+
+    Column
+    {
+        id: information
+        anchors
+        {
+            left: icon.right
+            right: parent.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
 
         Label
         {
-            id: extruderLabel
-            text: catalog.i18nc("@label:extruder label", "Extruder")
+            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.brand : " " //Use space so that the height is still correct.
+            renderType: Text.NativeRendering
             elide: Text.ElideRight
-            anchors.left: parent.left
             font: UM.Theme.getFont("default")
-            color: mainColor
+            color: UM.Theme.getColor("text_inactive")
+            width: parent.width
         }
-
-        // Rounded item to show the extruder number
-        Item
+        Label
         {
-            id: extruderIconItem
-            anchors.verticalCenter: extruderLabel.verticalCenter
-            anchors.left: extruderLabel.right
-            anchors.leftMargin: Math.round(UM.Theme.getSize("default_margin").width / 2)
-
-            width: UM.Theme.getSize("section_icon").width
-            height: UM.Theme.getSize("section_icon").height
-
-            UM.RecolorImage {
-                id: mainCircle
-                anchors.fill: parent
-
-                anchors.centerIn: parent
-                sourceSize.width: parent.width
-                sourceSize.height: parent.height
-                source: UM.Theme.getIcon("extruder_button")
-                color: mainColor
-            }
-
-            Label
-            {
-                id: extruderNumberText
-                anchors.centerIn: parent
-                text: printCoreConfiguration.position + 1
-                font: UM.Theme.getFont("default")
-                color: mainColor
-            }
+            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
+            renderType: Text.NativeRendering
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            width: parent.width
         }
-    }
-
-    Label
-    {
-        id: materialLabel
-        text: printCoreConfiguration.material.name
-        elide: Text.ElideRight
-        width: parent.width
-        font: UM.Theme.getFont("default_bold")
-        color: mainColor
-    }
-
-    Label
-    {
-        id: printCoreTypeLabel
-        text: printCoreConfiguration.hotendID
-        elide: Text.ElideRight
-        width: parent.width
-        font: UM.Theme.getFont("default")
-        color: mainColor
+        Label
+        {
+            text: printCoreConfiguration.hotendID ? printCoreConfiguration.hotendID : " " //Use space so that the height is still correct.
+            renderType: Text.NativeRendering
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text_inactive")
+            width: parent.width
+        }
     }
 }

@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Fracktal",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "julia_extruder_0"
+        }
     },
 
     "overrides": {
@@ -28,7 +32,6 @@
         "brim_line_count": { "default_value": 15 },
         "skin_overlap": { "default_value": 30 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
-        "material_diameter": { "default_value": 1.75 },
         "bottom_thickness": { "default_value": 0.8 },
         "retraction_amount": { "default_value": 3 },
         "speed_topbottom": { "default_value": 80 },

@@ -1,0 +1,16 @@
+{
+    "id": "monoprice_select_mini_v1_extruder_0",
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "monoprice_select_mini_v1",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

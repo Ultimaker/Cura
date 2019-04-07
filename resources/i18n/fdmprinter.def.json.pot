@@ -1,17 +1,12 @@
-# Cura JSON setting files
-# Copyright (C) 2018 Ultimaker
-# This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
-#
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.3\n"
+"Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2018-03-29 08:36+0200\n"
+"POT-Creation-Date: 2019-02-26 16:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: TEAM\n"
-"Language: xx_XX\n"
+"Language-Team: LANGUAGE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -80,6 +75,18 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_diameter description"
+msgid ""
+"Adjusts the diameter of the filament used. Match this value with the "
+"diameter of the used filament."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1155,6 +1162,20 @@ msgid "Zig Zag"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid ""
+"Connect top/bottom skin paths where they run next to each other. For the "
+"concentric pattern enabling this setting greatly reduces the travel time, "
+"but because the connections can happen midway over infill this feature can "
+"reduce the top surface quality."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr ""
@@ -1195,7 +1216,8 @@ msgid ""
 "Optimize the order in which walls are printed so as to reduce the number of "
 "retractions and the distance travelled. Most parts will benefit from this "
 "being enabled but some may actually take longer so please compare the print "
-"time estimates with and without optimization."
+"time estimates with and without optimization. First layer is not optimized "
+"when choosing brim as build plate adhesion type."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1258,6 +1280,33 @@ msgctxt "travel_compensate_overlapping_walls_x_enabled description"
 msgid ""
 "Compensate the flow for parts of an inner wall being printed where there is "
 "already a wall in place."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow label"
+msgid "Minimum Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow description"
+msgid ""
+"Minimum allowed percentage flow for a wall line. The wall overlap "
+"compensation reduces a wall's flow when it lies close to an existing wall. "
+"Walls whose flow is less than this value will be replaced with a travel "
+"move. When using this setting, you must enable the wall overlap compensation "
+"and print the outer wall before inner walls."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract label"
+msgid "Prefer Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract description"
+msgid ""
+"If enabled, retraction is used rather than combing for travel moves that "
+"replace walls whose flow is below the minimum flow threshold."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1626,8 +1675,8 @@ msgid ""
 "The pattern of the infill material of the print. The line and zig zag infill "
 "swap direction on alternate layers, reducing material cost. The grid, "
 "triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric "
-"patterns are fully printed every layer. Cubic, quarter cubic and octet "
-"infill change with every layer to provide a more equal distribution of "
+"patterns are fully printed every layer. Gyroid, cubic, quarter cubic and "
+"octet infill change with every layer to provide a more equal distribution of "
 "strength over each direction."
 msgstr ""
 
@@ -1677,11 +1726,6 @@ msgid "Concentric"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "infill_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
@@ -1697,6 +1741,11 @@ msgid "Cross 3D"
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr ""
@@ -1709,6 +1758,19 @@ msgid ""
 "the infill adhere to the walls better and reduce the effects of infill on "
 "the quality of vertical surfaces. Disabling this setting reduces the amount "
 "of material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons label"
+msgid "Connect Infill Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons description"
+msgid ""
+"Connect infill paths where they run next to each other. For infill patterns "
+"which consist of several closed polygons, enabling this setting greatly "
+"reduces the travel time."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1745,6 +1807,35 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
 msgid "The infill pattern is moved this distance along the Y axis."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier label"
+msgid "Infill Line Multiplier"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier description"
+msgid ""
+"Convert each infill line to this many lines. The extra lines do not cross "
+"over each other, but avoid each other. This makes the infill stiffer, but "
+"increases print time and material usage."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count label"
+msgid "Extra Infill Wall Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count description"
+msgid ""
+"Add extra walls around the infill area. Such walls can make top/bottom skin "
+"lines sag down less which means you need less top/bottom skin layers for the "
+"same quality at the cost of some extra material.\n"
+"This feature can combine with the Connect Infill Polygons to connect all the "
+"infill into a single extrusion path without the need for travels or "
+"retractions if configured right."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1794,10 +1885,13 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
 msgid ""
-"The amount of overlap between the skin and the walls as a percentage of the "
-"skin line width. A slight overlap allows the walls to connect firmly to the "
-"skin. This is a percentage of the average line widths of the skin lines and "
-"the innermost wall."
+"Adjust the amount of overlap between the walls and (the endpoints of) the "
+"skin-centerlines, as a percentage of the line widths of the skin lines and "
+"the innermost wall. A slight overlap allows the walls to connect firmly to "
+"the skin. Note that, given an equal skin and wall line-width, any percentage "
+"over 50% may already cause any skin to go past the wall, because at that "
+"point the position of the nozzle of the skin-extruder may already reach past "
+"the middle of the wall."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1808,8 +1902,12 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
 msgid ""
-"The amount of overlap between the skin and the walls. A slight overlap "
-"allows the walls to connect firmly to the skin."
+"Adjust the amount of overlap between the walls and (the endpoints of) the "
+"skin-centerlines. A slight overlap allows the walls to connect firmly to the "
+"skin. Note that, given an equal skin and wall line-width, any value over "
+"half the width of the wall may already cause any skin to go past the wall, "
+"because at that point the position of the nozzle of the skin-extruder may "
+"already reach past the middle of the wall."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1883,6 +1981,32 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid ""
+"Print infill structures only where tops of the model should be supported. "
+"Enabling this reduces print time and material usage, but leads to ununiform "
+"object strength."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid ""
+"The minimum angle of internal overhangs for which infill is added. At a "
+"value of 0° objects are totally filled with infill, 90° will not provide any "
+"infill."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2113,18 +2237,6 @@ msgid "The temperature used for the heated build plate at the first layer."
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "material_diameter description"
-msgid ""
-"Adjusts the diameter of the filament used. Match this value with the "
-"diameter of the used filament."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
 msgid "Adhesion Tendency"
 msgstr ""
@@ -2294,6 +2406,19 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid ""
+"Omit retraction when moving from support to support in a straight line. "
+"Enabling this setting saves print time, but can lead to excesive stringing "
+"within the support structure."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr ""
@@ -2313,8 +2438,9 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
 msgid ""
-"The amount of retraction: Set at 0 for no retraction at all. This should "
-"generally be the same as the length of the heat zone."
+"The amount of retraction when switching extruders. Set to 0 for no "
+"retraction at all. This should generally be the same as the length of the "
+"heat zone."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3066,7 +3192,7 @@ msgid ""
 "results in slightly longer travel moves but reduces the need for "
 "retractions. If combing is off, the material will retract and the nozzle "
 "moves in a straight line to the next point. It is also possible to avoid "
-"combing over top/bottom skin areas by combing within the infill only."
+"combing over top/bottom skin areas or to only comb within the infill."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3081,7 +3207,24 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
+msgid "Not in Skin"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option infill"
+msgid "Within Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid ""
+"When non-zero, combing travel moves that are longer than this distance will "
+"use retraction."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3104,6 +3247,18 @@ msgctxt "travel_avoid_other_parts description"
 msgid ""
 "The nozzle avoids already printed parts when traveling. This option is only "
 "available when combing is enabled."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid ""
+"The nozzle avoids already printed supports when traveling. This option is "
+"only available when combing is enabled."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3518,11 +3673,6 @@ msgid "Concentric"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
@@ -3530,6 +3680,19 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid ""
+"The number of walls with which to surround support infill. Adding a wall can "
+"make support print more reliably and can support overhangs better, but "
+"increases print time and material used."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3579,6 +3742,67 @@ msgctxt "support_line_distance description"
 msgid ""
 "Distance between the printed support structure lines. This setting is "
 "calculated by the support density."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance label"
+msgid "Initial Layer Support Line Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance description"
+msgid ""
+"Distance between the printed initial layer support structure lines. This "
+"setting is calculated by the support density."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle label"
+msgid "Support Infill Line Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle description"
+msgid ""
+"Orientation of the infill pattern for supports. The support infill pattern "
+"is rotated in the horizontal plane."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid ""
+"Generate a brim within the support infill regions of the first layer. This "
+"brim is printed underneath the support, not around it. Enabling this setting "
+"increases the adhesion of support to the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid ""
+"The width of the brim to print underneath the support. A larger brim "
+"enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid ""
+"The number of lines used for the support brim. More brim lines enhance "
+"adhesion to the build plate, at the cost of some extra material."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3746,6 +3970,18 @@ msgctxt "gradual_support_infill_step_height description"
 msgid ""
 "The height of support infill of a given density before switching to half the "
 "density."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid ""
+"Minimum area size for support polygons. Polygons which have an area smaller "
+"than this value will not be generated."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -3929,11 +4165,6 @@ msgid "Concentric"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_interface_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_interface_pattern option zigzag"
 msgid "Zig Zag"
 msgstr ""
@@ -3966,11 +4197,6 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_roof_pattern option concentric_3d"
-msgid "Concentric 3D"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4009,13 +4235,98 @@ msgid "Concentric"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_bottom_pattern option concentric_3d"
-msgid "Concentric 3D"
+msgctxt "support_bottom_pattern option zigzag"
+msgid "Zig Zag"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_bottom_pattern option zigzag"
-msgid "Zig Zag"
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid ""
+"Minimum area size for support interface polygons. Polygons which have an "
+"area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid ""
+"Minimum area size for the roofs of the support. Polygons which have an area "
+"smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid ""
+"Minimum area size for the floors of the support. Polygons which have an area "
+"smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable label"
+msgid "Fan Speed Override"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable description"
+msgid ""
+"When enabled, the print cooling fan speed is altered for the skin regions "
+"immediately above the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed label"
+msgid "Supported Skin Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed description"
+msgid ""
+"Percentage fan speed to use when printing the skin regions immediately above "
+"the support. Using a high fan speed can make the support easier to remove."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4237,6 +4548,19 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid ""
+"Enforce brim to be printed around the model even if that space would "
+"otherwise be occupied by support. This replaces some regions of the first "
+"layer of support by brim regions."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_outside_only label"
 msgid "Brim Only on Outside"
 msgstr ""
@@ -4410,7 +4734,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
-msgid "Raft Line Spacing"
+msgid "Raft Base Line Spacing"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4644,18 +4968,6 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness label"
-msgid "Prime Tower Thickness"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness description"
-msgid ""
-"The thickness of the hollow prime tower. A thickness larger than half the "
-"Prime Tower Minimum Volume will result in a dense prime tower."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
 msgstr ""
@@ -4697,32 +5009,6 @@ msgctxt "prime_tower_wipe_enabled description"
 msgid ""
 "After printing the prime tower with one nozzle, wipe the oozed material from "
 "the other nozzle off on the prime tower."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "dual_pre_wipe label"
-msgid "Wipe Nozzle After Switch"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "dual_pre_wipe description"
-msgid ""
-"After switching extruder, wipe the oozed material off of the nozzle on the "
-"first thing printed. This performs a safe slow wipe move at a place where "
-"the oozed material causes least harm to the surface quality of your print."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume label"
-msgid "Prime Tower Purge Volume"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume description"
-msgid ""
-"Amount of filament to be purged when wiping on the prime tower. Purging is "
-"useful for compensating the filament lost by oozing during inactivity of the "
-"nozzle."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5326,6 +5612,20 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference label"
+msgid "Minimum Polygon Circumference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference description"
+msgid ""
+"Polygons in sliced layers that have a circumference smaller than this amount "
+"will be filtered out. Lower values lead to higher resolution mesh at the "
+"cost of slicing time. It is meant mostly for high resolution SLA printers "
+"and very tiny 3D models with a lot of details."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "meshfix_maximum_resolution label"
 msgid "Maximum Resolution"
 msgstr ""
@@ -5337,6 +5637,20 @@ msgid ""
 "mesh will have a lower resolution. This may allow the printer to keep up "
 "with the speed it has to process g-code and will increase slice speed by "
 "removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid ""
+"The minimum size of a travel line segment after slicing. If you increase "
+"this, the travel moves will have less smooth corners. This may allow the "
+"printer to keep up with the speed it has to process g-code, but it may cause "
+"model avoidance to become less accurate."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5535,16 +5849,27 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
+msgctxt "cross_infill_density_image description"
 msgid ""
-"Only apply pockets at half of the four-way crossings in the cross 3D pattern "
-"and alternate the location of the pockets between heights where the pattern "
-"is touching itself."
+"The file location of an image of which the brightness values determine the "
+"minimal density at the corresponding location in the infill of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid ""
+"The file location of an image of which the brightness values determine the "
+"minimal density at the corresponding location in the support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5669,17 +5994,6 @@ msgctxt "support_conical_min_width description"
 msgid ""
 "Minimum width to which the base of the conical support area is reduced. "
 "Small widths can lead to unstable support structures."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid ""
-"Remove all infill and make the inside of the object eligible for support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6085,7 +6399,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
-msgid "The maximum allowed height different from the base layer height in mm."
+msgid "The maximum allowed height different from the base layer height."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6110,6 +6424,30 @@ msgctxt "adaptive_layer_height_threshold description"
 msgid ""
 "Threshold whether to use a smaller layer or not. This number is compared to "
 "the tan of the steepest slope in a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_angle label"
+msgid "Overhanging Wall Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_angle description"
+msgid ""
+"Walls that overhang more than this angle will be printed using overhanging "
+"wall settings. When the value is 90, no walls will be treated as overhanging."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor label"
+msgid "Overhanging Wall Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor description"
+msgid ""
+"Overhanging walls will be printed at this percentage of their normal print "
+"speed."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6148,22 +6486,6 @@ msgid ""
 "If a skin region is supported for less than this percentage of its area, "
 "print it using the bridge settings. Otherwise it is printed using the normal "
 "skin settings."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "bridge_wall_max_overhang label"
-msgid "Bridge Wall Max Overhang"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "bridge_wall_max_overhang description"
-msgid ""
-"The maximum allowed width of the region of air below a wall line before the "
-"wall is printed using bridge settings. Expressed as a percentage of the wall "
-"line width. When the air gap is wider than this, the wall line is printed "
-"using the bridge settings. Otherwise, the wall line is printed using the "
-"normal settings. The lower the value, the more likely it is that overhung "
-"wall lines will be printed using bridge settings."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6360,7 +6682,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
+msgid "Center Object"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6372,7 +6694,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
+msgid "Mesh Position X"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6382,7 +6704,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
+msgid "Mesh Position Y"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6392,7 +6714,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
+msgid "Mesh Position Z"
 msgstr ""
 
 #: fdmprinter.def.json

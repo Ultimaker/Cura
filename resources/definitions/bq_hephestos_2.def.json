@@ -8,13 +8,17 @@
         "manufacturer": "BQ",
         "platform": "bq_hephestos_2_platform.stl",
         "platform_offset": [6, 1320, 0 ],
-        "file_formats": "text/x-gcode"
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "bq_hephestos_2_extruder_0"
+        }
     },
 
     "overrides": {
         "machine_name": { "default_value": "BQ Hephestos 2" },
-        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature} ; Heat up extruder while leveling\nM800 ; Custom GCODE to fire start print procedure\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
-        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Custom GCODE to fire end print procedure\n; -- end of END GCODE --" },
+        "machine_start_gcode": { "default_value": "; -- START GCODE --\nM104 S{material_print_temperature}\nG28 ; Zero-ing position\nG29 ; Auto bed-leveling\nG0 X4 Y297 Z15 F4000 ; Fast move to BQ's start position\nG90 ; Set to Absolute Positioning\nG92 E0 ; Reset extruder 0\nG1 F1800 ; Set default feedrate\nM109 S{material_print_temperature} ; Makes sure the temperature is correct before printing\n; -- end of START GCODE --" },
+        "machine_end_gcode": { "default_value": "; -- END GCODE --\nM801        ; Marlin G-CODE to fire end print procedure\n; -- end of END GCODE --" },
         "machine_width": { "default_value": 210 },
         "machine_depth": { "default_value": 297 },
         "machine_height": { "default_value": 220 },
@@ -22,7 +26,6 @@
         "machine_center_is_zero": { "default_value": false },
         "material_print_temperature": { "default_value": 210 },
         "material_bed_temperature": { "default_value": 0 },
-        "material_diameter": { "default_value": 1.75 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },
         "wall_line_count": { "default_value": 3 },

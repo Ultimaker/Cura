@@ -1,14 +1,16 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-import UM.VersionUpgrade #To indicate that a file is of incorrect format.
-import UM.VersionUpgradeManager #To schedule more files to be upgraded.
-from UM.Resources import Resources #To get the config storage path.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
 import os.path #To get the path to write new user profiles to.
+from typing import Dict, List, Optional, Set, Tuple
 import urllib #To serialise the user container file name properly.
+import urllib.parse
+
+import UM.VersionUpgrade #To indicate that a file is of incorrect format.
+import UM.VersionUpgradeManager #To schedule more files to be upgraded.
+from UM.Resources import Resources #To get the config storage path.
 
 ##  Creates a new machine instance instance by parsing a serialised machine
 #   instance in version 1 of the file format.
@@ -18,7 +20,7 @@ import urllib #To serialise the user container file name properly.
 #   extension.
 #   \return A machine instance instance, or None if the file format is
 #   incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["MachineInstance"]:
     try:
         return MachineInstance(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
@@ -32,7 +34,7 @@ class MachineInstance:
     #   \param serialised A string with the contents of a machine instance file,
     #   without extension.
     #   \param filename The supposed file name of this machine instance.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str) -> None:
         self._filename = filename
 
         config = configparser.ConfigParser(interpolation = None)
@@ -53,11 +55,11 @@ class MachineInstance:
         self._type_name = config.get("general", "type")
         self._variant_name = config.get("general", "variant", fallback = "empty_variant")
         self._name = config.get("general", "name", fallback = "")
-        self._key = config.get("general", "key", fallback = None)
+        self._key = config.get("general", "key", fallback = "")
         self._active_profile_name = config.get("general", "active_profile", fallback = "empty_quality")
         self._active_material_name = config.get("general", "material", fallback = "empty_material")
 
-        self._machine_setting_overrides = {}
+        self._machine_setting_overrides = {} # type: Dict[str, str]
         for key, value in config["machine_settings"].items():
             self._machine_setting_overrides[key] = value
 
@@ -67,7 +69,7 @@ class MachineInstance:
     #
     #   \return A tuple containing the new filename and a serialised form of
     #   this machine instance, serialised in version 2 of the file format.
-    def export(self):
+    def export(self) -> Tuple[List[str], List[str]]:
         config = configparser.ConfigParser(interpolation = None) # Build a config file in the form of version 2.
 
         config.add_section("general")
@@ -107,7 +109,12 @@ class MachineInstance:
         user_profile["values"] = {}
 
         version_upgrade_manager = UM.VersionUpgradeManager.VersionUpgradeManager.getInstance()
-        user_storage = os.path.join(Resources.getDataStoragePath(), next(iter(version_upgrade_manager.getStoragePaths("user"))))
+        user_version_to_paths_dict = version_upgrade_manager.getStoragePaths("user")
+        paths_set = set() # type: Set[str]
+        for paths in user_version_to_paths_dict.values():
+            paths_set |= paths
+
+        user_storage = os.path.join(Resources.getDataStoragePath(), next(iter(paths_set)))
         user_profile_file = os.path.join(user_storage, urllib.parse.quote_plus(self._name) + "_current_settings.inst.cfg")
         if not os.path.exists(user_storage):
             os.makedirs(user_storage)

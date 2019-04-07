@@ -1,8 +1,0 @@
-{
-    "name": "Auto Save",
-    "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "description": "Automatically saves Preferences, Machines and Profiles after changes.",
-    "api": 4,
-    "i18n-catalog": "cura"
-}

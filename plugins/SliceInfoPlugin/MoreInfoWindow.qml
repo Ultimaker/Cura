@@ -98,7 +98,7 @@ UM.Dialog
         RadioButton
         {
             id: dontSendButton
-            text: catalog.i18nc("@text:window", "I don't want to send these data")
+            text: catalog.i18nc("@text:window", "I don't want to send this data")
             exclusiveGroup: group
             onClicked:
             {
@@ -108,7 +108,7 @@ UM.Dialog
         RadioButton
         {
             id: allowSendButton
-            text: catalog.i18nc("@text:window", "Allow sending these data to Ultimaker and help us improve Cura")
+            text: catalog.i18nc("@text:window", "Allow sending this data to Ultimaker and help us improve Cura")
             exclusiveGroup: group
             onClicked:
             {

@@ -25,11 +25,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
-
-        // After calling this function update Setting visibility preset combobox.
-        // Reset should set default setting preset ("Basic")
-        visibilityPreset.currentIndex = 1
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
@@ -54,7 +50,7 @@ UM.PreferencesPage
                 {
                     return Qt.Unchecked
                 }
-                else if(definitionsModel.visibleCount == definitionsModel.rowCount(null))
+                else if(definitionsModel.visibleCount == definitionsModel.count)
                 {
                     return Qt.Checked
                 }
@@ -110,25 +106,27 @@ UM.PreferencesPage
                 right: parent.right
             }
 
-            model: settingVisibilityPresetsModel
+            model: settingVisibilityPresetsModel.items
             textRole: "name"
 
             currentIndex:
             {
-                // Load previously selected preset.
-                var index = settingVisibilityPresetsModel.find("id", settingVisibilityPresetsModel.activePreset)
-                if (index == -1)
+                var idx = -1;
+                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
                 {
-                    return 0
+                    if(settingVisibilityPresetsModel.items[i].presetId == settingVisibilityPresetsModel.activePreset)
+                    {
+                        idx = i;
+                        break;
+                    }
                 }
-
-                return index
+                return idx;
             }
 
             onActivated:
             {
-                var preset_id = settingVisibilityPresetsModel.getItem(index).id;
-                settingVisibilityPresetsModel.setActivePreset(preset_id);
+                var preset_id = settingVisibilityPresetsModel.items[index].presetId
+                settingVisibilityPresetsModel.setActivePreset(preset_id)
             }
         }
 

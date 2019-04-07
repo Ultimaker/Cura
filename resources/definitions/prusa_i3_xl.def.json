@@ -7,8 +7,11 @@
         "author": "guigashm",
         "manufacturer": "Prusajr",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2.png",
-        "platform": "prusai3_xl_platform.stl"
+        "platform": "prusai3_xl_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "prusa_i3_xl_extruder_0"
+        }
     },
 
     "overrides": {
@@ -27,12 +30,6 @@
         },
         "machine_center_is_zero": {
             "default_value": false
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "machine_head_polygon": {
             "default_value": [

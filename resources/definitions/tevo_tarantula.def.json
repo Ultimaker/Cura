@@ -8,8 +8,11 @@
         "author": "TheAssassin",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
-        "platform": "prusai3_platform.stl"
+        "platform": "prusai3_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "tevo_tarantula_extruder_0"
+        }
     },
 
     "overrides":
@@ -20,8 +23,6 @@
         "machine_height": { "default_value": 200 },
         "machine_depth": { "default_value": 200 },
         "machine_center_is_zero": { "default_value": false },
-        "machine_nozzle_size": { "default_value": 0.4 },
-        "material_diameter": { "default_value": 1.75 },
         "machine_head_polygon":
         {
             "default_value":
@@ -41,7 +42,7 @@
         "machine_max_feedrate_x": { "default_value": 255 },
         "machine_max_feedrate_y": { "default_value": 225 },
         "machine_max_feedrate_z": { "default_value": 3 },
-        "machine_max_acceleration_x": { "default_value": 2620 },
+        "machine_max_acceleration_x": { "default_value": 2650 },
         "machine_max_acceleration_y": { "default_value": 2650 },
         "acceleration_print": { "default_value": 2650 },
         "machine_start_gcode": { "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..." },

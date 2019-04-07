@@ -5,12 +5,12 @@ import json
 import os
 import platform
 import time
+from typing import cast, Optional, Set
 
 from PyQt5.QtCore import pyqtSlot, QObject
 
 from UM.Extension import Extension
 from UM.Application import Application
-from UM.Preferences import Preferences
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -33,36 +33,28 @@ class SliceInfo(QObject, Extension):
     def __init__(self, parent = None):
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
-        Preferences.getInstance().addPreference("info/send_slice_info", True)
-        Preferences.getInstance().addPreference("info/asked_send_slice_info", False)
+
+        self._application = Application.getInstance()
+
+        self._application.getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
+        self._application.getPreferences().addPreference("info/send_slice_info", True)
+        self._application.getPreferences().addPreference("info/asked_send_slice_info", False)
 
         self._more_info_dialog = None
         self._example_data_content = None
 
-        if not Preferences.getInstance().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymized usage statistics."),
-                                                   lifetime = 0,
-                                                   dismissable = False,
-                                                   title = catalog.i18nc("@info:title", "Collecting Data"))
-
-            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
-            self.send_slice_info_message.addAction("MoreInfo", name = catalog.i18nc("@action:button", "More info"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "See more information on what data Cura sends."), button_style = Message.ActionButtonStyle.LINK)
-            self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
-            self.send_slice_info_message.show()
-
-        Application.getInstance().initializationFinished.connect(self._onAppInitialized)
+        self._application.initializationFinished.connect(self._onAppInitialized)
 
     def _onAppInitialized(self):
+        # DO NOT read any preferences values in the constructor because at the time plugins are created, no version
+        # upgrade has been performed yet because version upgrades are plugins too!
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
 
     ##  Perform action based on user input.
     #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
-        Preferences.getInstance().setValue("info/asked_send_slice_info", True)
+        Application.getInstance().getPreferences().setValue("info/asked_send_slice_info", True)
         if action_id == "MoreInfo":
             self.showMoreInfoDialog()
         self.send_slice_info_message.hide()
@@ -79,24 +71,45 @@ class SliceInfo(QObject, Extension):
         return dialog
 
     @pyqtSlot(result = str)
-    def getExampleData(self) -> str:
+    def getExampleData(self) -> Optional[str]:
         if self._example_data_content is None:
-            file_path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), "example_data.json")
-            with open(file_path, "r", encoding = "utf-8") as f:
-                self._example_data_content = f.read()
+            plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+            if not plugin_path:
+                Logger.log("e", "Could not get plugin path!", self.getPluginId())
+                return None
+            file_path = os.path.join(plugin_path, "example_data.json")
+            if file_path:
+                with open(file_path, "r", encoding = "utf-8") as f:
+                    self._example_data_content = f.read()
         return self._example_data_content
 
     @pyqtSlot(bool)
     def setSendSliceInfo(self, enabled: bool):
-        Preferences.getInstance().setValue("info/send_slice_info", enabled)
+        Application.getInstance().getPreferences().setValue("info/send_slice_info", enabled)
+
+    def _getUserModifiedSettingKeys(self) -> list:
+        from cura.CuraApplication import CuraApplication
+        application = cast(CuraApplication, Application.getInstance())
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        user_modified_setting_keys = set()  # type: Set[str]
+
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            # Get all settings in user_changes and quality_changes
+            all_keys = stack.userChanges.getAllKeys() | stack.qualityChanges.getAllKeys()
+            user_modified_setting_keys |= all_keys
+
+        return list(sorted(user_modified_setting_keys))
 
     def _onWriteStarted(self, output_device):
         try:
-            if not Preferences.getInstance().getValue("info/send_slice_info"):
+            if not Application.getInstance().getPreferences().getValue("info/send_slice_info"):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return  # Do nothing, user does not want to send data
 
-            application = Application.getInstance()
+            from cura.CuraApplication import CuraApplication
+            application = cast(CuraApplication, Application.getInstance())
             machine_manager = application.getMachineManager()
             print_information = application.getPrintInformation()
 
@@ -107,7 +120,7 @@ class SliceInfo(QObject, Extension):
             data["schema_version"] = 0
             data["cura_version"] = application.getVersion()
 
-            active_mode = Preferences.getInstance().getValue("cura/active_mode")
+            active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
                 data["active_mode"] = "recommended"
             else:
@@ -122,7 +135,7 @@ class SliceInfo(QObject, Extension):
                     machine_settings_changed_by_user = True
 
             data["machine_settings_changed_by_user"] = machine_settings_changed_by_user
-            data["language"] = Preferences.getInstance().getValue("general/language")
+            data["language"] = Application.getInstance().getPreferences().getValue("general/language")
             data["os"] = {"type": platform.system(), "version": platform.version()}
 
             data["active_machine"] = {"definition_id": global_stack.definition.getId(),
@@ -158,6 +171,8 @@ class SliceInfo(QObject, Extension):
                 data["extruders"].append(extruder_dict)
 
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
+
+            data["user_modified_setting_keys"] = self._getUserModifiedSettingKeys()
 
             data["models"] = []
             # Listing all files placed on the build plate

@@ -6,15 +6,19 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "MakerBot",
+        "machine_x3g_variant": "r1",
         "file_formats": "application/x3g",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "makerbotreplicator_extruder_0"
+        }
     },
 
     "overrides": {
         "prime_tower_size": { "default_value": 10.0 },
         "infill_sparse_density": { "default_value": 10 },
         "speed_travel": { "default_value": 150 },
-        "material_diameter": { "default_value": 1.75 },
         "layer_height": { "default_value": 0.15 },
         "material_print_temperature": { "default_value": 220 },
         "machine_extruder_count": { "default_value": 1 },

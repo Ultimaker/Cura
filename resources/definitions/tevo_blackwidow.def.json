@@ -7,11 +7,14 @@
         "author": "TheTobby",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "has_materials": false,
         "has_machine_quality": true,
         "platform": "tevo_blackwidow.stl",
-        "preferred_quality_type": "normal"
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "tevo_blackwidow_extruder_0"
+        }
     },
     "overrides":
     {
@@ -38,14 +41,6 @@
         "machine_center_is_zero":
         {
             "default_value": false
-        },
-        "machine_nozzle_size":
-        {
-            "default_value": 0.4
-        },
-        "material_diameter":
-        {
-            "default_value": 1.75
         },
         "gantry_height":
         {

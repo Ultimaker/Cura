@@ -7,7 +7,11 @@
         "author": "Michael Wildermuth",
         "manufacturer": "Creality3D",
         "file_formats": "text/x-gcode",
-        "preferred_quality_type": "draft"
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "creality_cr10_extruder_0"
+        }
     },
     "overrides": {
         "machine_width": {
@@ -27,19 +31,13 @@
                 [30, 34]
             ]
         },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "layer_height_0": {
             "default_value": 0.2
         },
         "top_bottom_thickness": {
             "default_value": 0.6
         },
-        "top_bottom_pattern": {
+        "top_bottom_pattern_0": {
             "default_value": "concentric"
         },
         "infill_pattern": {

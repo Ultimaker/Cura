@@ -42,7 +42,7 @@ class ShapeArray:
     #   \param min_offset offset for the offset ShapeArray
     #   \param scale scale the coordinates
     @classmethod
-    def fromNode(cls, node, min_offset, scale = 0.5):
+    def fromNode(cls, node, min_offset, scale = 0.5, include_children = False):
         transform = node._transformation
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
@@ -52,6 +52,21 @@ class ShapeArray:
             return None, None
         # For one_at_a_time printing you need the convex hull head.
         hull_head_verts = node.callDecoration("getConvexHullHead") or hull_verts
+        if hull_head_verts is None:
+            hull_head_verts = Polygon()
+
+        # If the child-nodes are included, adjust convex hulls as well:
+        if include_children:
+            children = node.getAllChildren()
+            if not children is None:
+                for child in children:
+                    # 'Inefficient' combination of convex hulls through known code rather than mess it up:
+                    child_hull = child.callDecoration("getConvexHull")
+                    if not child_hull is None:
+                        hull_verts = hull_verts.unionConvexHulls(child_hull)
+                    child_hull_head = child.callDecoration("getConvexHullHead") or child_hull
+                    if not child_hull_head is None:
+                        hull_head_verts = hull_head_verts.unionConvexHulls(child_hull_head)
 
         offset_verts = hull_head_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
@@ -74,7 +89,7 @@ class ShapeArray:
     #   \param vertices
     @classmethod
     def arrayFromPolygon(cls, shape, vertices):
-        base_array = numpy.zeros(shape, dtype=float)  # Initialize your array of zeros
+        base_array = numpy.zeros(shape, dtype = numpy.int32)  # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
 

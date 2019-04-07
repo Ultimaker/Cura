@@ -20,7 +20,7 @@ UM.Dialog
 
     GridLayout
     {
-        UM.I18nCatalog{id: catalog; name:"cura"}
+        UM.I18nCatalog{id: catalog; name: "cura"}
         anchors.fill: parent;
         Layout.fillWidth: true
         columnSpacing: 16 * screenScaleFactor
@@ -35,7 +35,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Height (mm)")
+                    text: catalog.i18nc("@action:label", "Height (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -58,7 +58,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Base (mm)")
+                    text: catalog.i18nc("@action:label", "Base (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -81,7 +81,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Width (mm)")
+                    text: catalog.i18nc("@action:label", "Width (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -105,7 +105,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Depth (mm)")
+                    text: catalog.i18nc("@action:label", "Depth (mm)")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -123,7 +123,7 @@ UM.Dialog
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","By default, white pixels represent high points on the mesh and black pixels represent low points on the mesh. Change this option to reverse the behavior such that black pixels represent high points on the mesh and white pixels represent low points on the mesh.")
+            text: catalog.i18nc("@info:tooltip","For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model.")
             Row {
                 width: parent.width
 
@@ -134,9 +134,9 @@ UM.Dialog
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ComboBox {
-                    id: image_color_invert
-                    objectName: "Image_Color_Invert"
-                    model: [ catalog.i18nc("@item:inlistbox","Lighter is higher"), catalog.i18nc("@item:inlistbox","Darker is higher") ]
+                    id: lighter_is_higher
+                    objectName: "Lighter_Is_Higher"
+                    model: [ catalog.i18nc("@item:inlistbox","Darker is higher"), catalog.i18nc("@item:inlistbox","Lighter is higher") ]
                     width: 180 * screenScaleFactor
                     onCurrentIndexChanged: { manager.onImageColorInvertChanged(currentIndex) }
                 }
@@ -151,7 +151,7 @@ UM.Dialog
                 width: parent.width
 
                 Label {
-                    text: catalog.i18nc("@action:label","Smoothing")
+                    text: catalog.i18nc("@action:label", "Smoothing")
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }

@@ -1,5 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, QTimer, pyqtProperty, pyqtSignal
 from UM.FlameProfiler import pyqtSlot
@@ -13,18 +14,24 @@ from UM.Logger import Logger
 #     speed settings. If all the children of print_speed have a single value override, changing the speed won't
 #     actually do anything, as only the 'leaf' settings are used by the engine.
 from UM.Settings.ContainerStack import ContainerStack
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.SettingInstance import InstanceState
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
+if TYPE_CHECKING:
+    from cura.Settings.ExtruderStack import ExtruderStack
+    from UM.Settings.SettingDefinition import SettingDefinition
+
+
 class SettingInheritanceManager(QObject):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
-        self._global_container_stack = None
-        self._settings_with_inheritance_warning = []
-        self._active_container_stack = None
+        self._global_container_stack = None  # type: Optional[ContainerStack]
+        self._settings_with_inheritance_warning = []  # type: List[str]
+        self._active_container_stack = None  # type: Optional[ExtruderStack]
         self._onGlobalContainerChanged()
 
         ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
@@ -39,7 +46,9 @@ class SettingInheritanceManager(QObject):
 
     ##  Get the keys of all children settings with an override.
     @pyqtSlot(str, result = "QStringList")
-    def getChildrenKeysWithOverride(self, key):
+    def getChildrenKeysWithOverride(self, key: str) -> List[str]:
+        if self._global_container_stack is None:
+            return []
         definitions = self._global_container_stack.definition.findDefinitions(key=key)
         if not definitions:
             Logger.log("w", "Could not find definition for key [%s]", key)
@@ -51,9 +60,11 @@ class SettingInheritanceManager(QObject):
         return result
 
     @pyqtSlot(str, str, result = "QStringList")
-    def getOverridesForExtruder(self, key, extruder_index):
-        result = []
+    def getOverridesForExtruder(self, key: str, extruder_index: str) -> List[str]:
+        if self._global_container_stack is None:
+            return []
 
+        result = []  # type: List[str]
         extruder_stack = ExtruderManager.getInstance().getExtruderStack(extruder_index)
         if not extruder_stack:
             Logger.log("w", "Unable to find extruder for current machine with index %s", extruder_index)
@@ -71,16 +82,16 @@ class SettingInheritanceManager(QObject):
         return result
 
     @pyqtSlot(str)
-    def manualRemoveOverride(self, key):
+    def manualRemoveOverride(self, key: str) -> None:
         if key in self._settings_with_inheritance_warning:
             self._settings_with_inheritance_warning.remove(key)
             self.settingsWithIntheritanceChanged.emit()
 
     @pyqtSlot()
-    def forceUpdate(self):
+    def forceUpdate(self) -> None:
         self._update()
 
-    def _onActiveExtruderChanged(self):
+    def _onActiveExtruderChanged(self) -> None:
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
         if not new_active_stack:
             self._active_container_stack = None
@@ -92,13 +103,14 @@ class SettingInheritanceManager(QObject):
                 self._active_container_stack.containersChanged.disconnect(self._onContainersChanged)
 
             self._active_container_stack = new_active_stack
-            self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
-            self._active_container_stack.containersChanged.connect(self._onContainersChanged)
+            if self._active_container_stack is not None:
+                self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
+                self._active_container_stack.containersChanged.connect(self._onContainersChanged)
             self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
 
-    def _onPropertyChanged(self, key, property_name):
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if (property_name == "value" or property_name == "enabled") and self._global_container_stack:
-            definitions = self._global_container_stack.definition.findDefinitions(key = key)
+            definitions = self._global_container_stack.definition.findDefinitions(key = key)  # type: List["SettingDefinition"]
             if not definitions:
                 return
 
@@ -137,7 +149,7 @@ class SettingInheritanceManager(QObject):
             if settings_with_inheritance_warning_changed:
                 self.settingsWithIntheritanceChanged.emit()
 
-    def _recursiveCheck(self, definition):
+    def _recursiveCheck(self, definition: "SettingDefinition") -> bool:
         for child in definition.children:
             if child.key in self._settings_with_inheritance_warning:
                 return True
@@ -147,7 +159,7 @@ class SettingInheritanceManager(QObject):
         return False
 
     @pyqtProperty("QVariantList", notify = settingsWithIntheritanceChanged)
-    def settingsWithInheritanceWarning(self):
+    def settingsWithInheritanceWarning(self) -> List[str]:
         return self._settings_with_inheritance_warning
 
     ##  Check if a setting has an inheritance function that is overwritten
@@ -155,9 +167,14 @@ class SettingInheritanceManager(QObject):
         has_setting_function = False
         if not stack:
             stack = self._active_container_stack
-        if not stack: #No active container stack yet!
+        if not stack:  # No active container stack yet!
             return False
-        containers = []
+
+        if self._active_container_stack is None:
+            return False
+        all_keys = self._active_container_stack.getAllKeys()
+
+        containers = []  # type: List[ContainerInterface]
 
         ## Check if the setting has a user state. If not, it is never overwritten.
         has_user_state = stack.getProperty(key, "state") == InstanceState.User
@@ -169,7 +186,8 @@ class SettingInheritanceManager(QObject):
             return False
 
         ## Also check if the top container is not a setting function (this happens if the inheritance is restored).
-        if isinstance(stack.getTop().getProperty(key, "value"), SettingFunction):
+        user_container = stack.getTop()
+        if user_container and isinstance(user_container.getProperty(key, "value"), SettingFunction):
             return False
 
         ##  Mash all containers for all the stacks together.
@@ -187,8 +205,8 @@ class SettingInheritanceManager(QObject):
                 has_setting_function = isinstance(value, SettingFunction)
                 if has_setting_function:
                     for setting_key in value.getUsedSettingKeys():
-                        if setting_key in self._active_container_stack.getAllKeys():
-                            break # We found an actual setting. So has_setting_function can remain true
+                        if setting_key in all_keys:
+                            break  # We found an actual setting. So has_setting_function can remain true
                     else:
                         # All of the setting_keys turned out to not be setting keys at all!
                         # This can happen due enum keys also being marked as settings.
@@ -202,7 +220,7 @@ class SettingInheritanceManager(QObject):
                 break  # There is a setting function somewhere, stop looking deeper.
         return has_setting_function and has_non_function_value
 
-    def _update(self):
+    def _update(self) -> None:
         self._settings_with_inheritance_warning = []  # Reset previous data.
 
         # Make sure that the GlobalStack is not None. sometimes the globalContainerChanged signal gets here late.
@@ -223,7 +241,7 @@ class SettingInheritanceManager(QObject):
         # Notify others that things have changed.
         self.settingsWithIntheritanceChanged.emit()
 
-    def _onGlobalContainerChanged(self):
+    def _onGlobalContainerChanged(self) -> None:
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
