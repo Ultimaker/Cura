@@ -7161,7 +7161,7 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_max_length":
                 {
@@ -7172,7 +7172,7 @@
                     "minimum_value": "0",
                     "default_value": 0,
                     "value": "small_hole_max_size * math.pi",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_speed_factor":
                 {
@@ -7184,7 +7184,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 },
                 "small_feature_speed_factor_0":
                 {
@@ -7197,7 +7197,7 @@
                     "minimum_value": "10",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
-                    "settable_per_mesh": false
+                    "settable_per_mesh": true
                 }
             }
         },
