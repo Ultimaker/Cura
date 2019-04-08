@@ -69,16 +69,14 @@ Item
                 width: parent.width
                 anchors.top: explainLabel.bottom
 
-                TextField
+                Cura.TextField
                 {
                     id: hostnameField
+                    width: (parent.width / 2) | 0
+                    height: addPrinterButton.height
                     anchors.verticalCenter: addPrinterButton.verticalCenter
                     anchors.left: parent.left
-                    height: addPrinterButton.height
-                    anchors.right: addPrinterButton.left
                     anchors.margins: UM.Theme.getSize("default_margin").width
-                    font: UM.Theme.getFont("default")
-                    selectByMouse: true
 
                     validator: RegExpValidator
                     {
@@ -89,11 +87,11 @@ Item
                     onAccepted: addPrinterButton.clicked()
                 }
 
-                Cura.PrimaryButton
+                Cura.SecondaryButton
                 {
                     id: addPrinterButton
                     anchors.top: parent.top
-                    anchors.right: parent.right
+                    anchors.left: hostnameField.right
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
                     text: catalog.i18nc("@button", "Add")
