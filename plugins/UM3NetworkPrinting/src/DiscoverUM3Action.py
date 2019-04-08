@@ -115,7 +115,7 @@ class DiscoverUM3Action(MachineAction):
                 previous_connect_group_name = meta_data["group_name"]
                 global_container_stack.setMetaDataEntry("group_name", group_name)
                 # Find all the places where there is the same group name and change it accordingly
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "group_name", value = previous_connect_group_name, new_value = group_name)
+                self._replaceContainersMetadata(key = "group_name", value = previous_connect_group_name, new_value = group_name)
             else:
                 global_container_stack.setMetaDataEntry("group_name", group_name)
             # Set the default value for "hidden", which is used when you have a group with multiple types of printers
@@ -124,6 +124,13 @@ class DiscoverUM3Action(MachineAction):
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
             self._network_plugin.refreshConnections()
+
+    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
+    def _replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
+        machines = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        for machine in machines:
+            if machine.getMetaDataEntry(key) == value:
+                machine.setMetaDataEntry(key, new_value)
 
     # Associates the currently active machine with the given printer device. The network connection information will be
     # stored into the metadata of the currently active machine.
@@ -150,7 +157,9 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot(str, result = bool)
     def existsKey(self, key: str) -> bool:
-        return CuraApplication.getInstance().getMachineManager().existNetworkInstances(network_key = key)
+        metadata_filter = {"um_network_key": key}
+        containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
+        return bool(containers)
 
     @pyqtSlot()
     def loadConfigurationFromPrinter(self) -> None:

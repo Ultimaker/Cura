@@ -26,7 +26,7 @@ UM.Dialog
     minimumWidth: 450 * screenScaleFactor
     minimumHeight: 150 * screenScaleFactor
 
-    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal
+    modality: Qt.WindowModal
 
     Column
     {

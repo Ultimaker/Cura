@@ -26,7 +26,7 @@ UM.Dialog
     minimumHeight: maximumHeight
     minimumWidth: maximumWidth
 
-    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal
+    modality: Qt.WindowModal
 
     property var fileUrl
 
