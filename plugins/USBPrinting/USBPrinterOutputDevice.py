@@ -226,6 +226,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
             self._command_received.set()
+        except SerialException:
+            Logger.logException("w", "An unexpected exception occurred while writing to the serial.")
+            self.setConnectionState(ConnectionState.Error)
 
     def _update(self):
         while self._connection_state == ConnectionState.Connected and self._serial is not None:
