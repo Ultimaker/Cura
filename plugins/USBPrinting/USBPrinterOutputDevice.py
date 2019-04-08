@@ -371,10 +371,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
 
-        progress = (self._gcode_position / len(self._gcode))
+        print_job = self._printers[0].activePrintJob
+        try:
+            progress = self._gcode_position / len(self._gcode)
+        except ZeroDivisionError:
+            # There is nothing to send!
+            if print_job is not None:
+                print_job.updateState("error")
+            return
 
         elapsed_time = int(time() - self._print_start_time)
-        print_job = self._printers[0].activePrintJob
+
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
