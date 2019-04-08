@@ -27,8 +27,10 @@ Item
         renderType: Text.NativeRendering
     }
 
-    Rectangle
+    Cura.ScrollableTextArea
     {
+        id: whatsNewTextArea
+
         anchors.top: titleLabel.bottom
         anchors.bottom: getStartedButton.top
         anchors.topMargin: UM.Theme.getSize("wide_margin").height
@@ -36,27 +38,12 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
 
-        border.color: "#dfdfdf"
-        border.width: UM.Theme.getSize("default_lining").width
+        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-        ScrollView
-        {
-            anchors.fill: parent
-            anchors.margins: UM.Theme.getSize("default_lining").width
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
-            TextArea
-            {
-                id: whatsNewTextArea
-                text: CuraApplication.getTextManager().getChangeLogText()
-                textFormat: Text.RichText
-                wrapMode: Text.WordWrap
-                readOnly: true
-                font: UM.Theme.getFont("default")
-                renderType: Text.NativeRendering
-            }
-        }
+        textArea.text: CuraApplication.getTextManager().getChangeLogText()
+        textArea.textFormat: Text.RichText
+        textArea.wrapMode: Text.WordWrap
+        textArea.readOnly: true
     }
 
     Cura.PrimaryButton
