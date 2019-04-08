@@ -25,12 +25,16 @@ Rectangle
     Label
     {
         id: notificationLabel
-        anchors.centerIn: parent
         anchors.fill: parent
         color: UM.Theme.getColor("primary_text")
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
-        font: UM.Theme.getFont("small")
+        font: UM.Theme.getFont("default")
         renderType: Text.NativeRendering
+
+        // This is a bit of a hack, but we don't really have enough room for 2 characters (eg 9+). The default font
+        // does have a tad bit to much spacing. So instead of adding a whole new font, we just modify it a bit for this
+        // specific instance.
+        Component.onCompleted: font.letterSpacing = -1
     }
 }
