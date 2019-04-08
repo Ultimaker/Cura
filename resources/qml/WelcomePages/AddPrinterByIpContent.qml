@@ -196,7 +196,10 @@ Item
                             {
                                 if (UM.OutputDeviceManager.hasManualDevice)
                                 {
-                                    typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    const type_id = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    var readable_type = Cura.MachineManager.getMachineTypeNameFromId(type_id)
+                                    readable_type = (readable_type != "") ? readable_type : catalog.i18nc("@label", "Unknown")
+                                    typeText.text = readable_type
                                     firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
                                     addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
                                 }

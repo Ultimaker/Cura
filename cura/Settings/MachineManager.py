@@ -1630,6 +1630,7 @@ class MachineManager(QObject):
 
         return abbr_machine
 
+    @pyqtSlot(str, result = str)
     def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
         machine_type_name = ""
         results = self._container_registry.findDefinitionContainersMetadata(id = machine_type_id)
