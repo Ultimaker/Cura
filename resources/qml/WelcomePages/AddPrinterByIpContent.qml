@@ -238,7 +238,7 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Cancel")
+        text: catalog.i18nc("@button", "Back")
         onClicked: base.showPreviousPage()
     }
 
