@@ -146,7 +146,8 @@ class WelcomePagesModel(ListModel):
         page_index = self.getPageIndexById(page_id)
         if page_index is None:
             # FIXME: If we cannot find the next page, we cannot do anything here.
-            Logger.log("e", "Cannot find page with ID [%s]", page_index)
+            Logger.log("e", "Cannot find page with ID [%s], go to the next page by default", page_index)
+            self.goToNextPage()
             return
 
         if self._shouldPageBeShown(page_index):
