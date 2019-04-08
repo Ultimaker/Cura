@@ -21,6 +21,7 @@ ScrollView
         font: UM.Theme.getFont("default")
         textFormat: TextEdit.PlainText
         renderType: Text.NativeRendering
+        selectByMouse: true
 
         background: Rectangle  // Border
         {
