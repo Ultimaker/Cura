@@ -559,7 +559,7 @@ class Toolbox(QObject, Extension):
         if self._download_reply:
             try:
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-            except TypeError:  # Raised when the method is not connected to the signal yet.
+            except (TypeError, RuntimeError):  # Raised when the method is not connected to the signal yet.
                 pass  # Don't need to disconnect.
             self._download_reply.abort()
         self._download_reply = None
