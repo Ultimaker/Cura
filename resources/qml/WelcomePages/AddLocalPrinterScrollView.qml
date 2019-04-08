@@ -141,7 +141,7 @@ Item
                             anchors.leftMargin: UM.Theme.getSize("default_margin").width
                             verticalAlignment: Text.AlignVCenter
                             text: button.text
-                            font.bold: true
+                            font: UM.Theme.getFont("default_bold")
                             renderType: Text.NativeRendering
                         }
                     }
