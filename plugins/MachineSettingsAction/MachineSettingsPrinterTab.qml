@@ -20,12 +20,12 @@ Item
     anchors.right: parent.right
     anchors.top: parent.top
 
-    property int labelWidth: 130
-    property int controlWidth: UM.Theme.getSize("setting_control").width * 3 / 4
+    property int labelWidth: 120 * screenScaleFactor
+    property int controlWidth: (UM.Theme.getSize("setting_control").width * 3 / 4) | 0
     property var labelFont: UM.Theme.getFont("default")
 
-    property int columnWidth: (parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2
-    property int columnSpacing: 3
+    property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
+    property int columnSpacing: 3 * screenScaleFactor
     property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
 
     property string machineStackId: Cura.MachineManager.activeMachineId
