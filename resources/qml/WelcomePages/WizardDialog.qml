@@ -20,6 +20,7 @@ Window
     id: dialog
 
     flags: Qt.Dialog
+    modality: Qt.ApplicationModal
 
     minimumWidth: 580 * screenScaleFactor
     minimumHeight: 600 * screenScaleFactor

@@ -788,12 +788,6 @@ UM.MainWindow
         onTriggered: addMachineDialog.show()
     }
 
-    Connections
-    {
-        target: CuraApplication
-        onRequestAddPrinter: addMachineDialog.show()
-    }
-
     AboutDialog
     {
         id: aboutDialog
