@@ -25,13 +25,17 @@ Button
     property var outputDevice: null
     property var printerTypesList: []
 
+    // Indicates if only to update the printer types list when this button is checked
+    property bool updatePrinterTypesOnlyWhenChecked: true
+
     property var updatePrinterTypesFunction: updatePrinterTypesList
     // This function converts the printer type string to another string.
     property var printerTypeLabelConversionFunction: Cura.MachineManager.getAbbreviatedMachineName
 
     function updatePrinterTypesList()
     {
-        printerTypesList = (outputDevice != null) ? outputDevice.uniquePrinterTypes : []
+        var to_update = (updatePrinterTypesOnlyWhenChecked && checked) || !updatePrinterTypesOnlyWhenChecked
+        printerTypesList = (to_update && outputDevice != null) ? outputDevice.uniquePrinterTypes : []
     }
 
     contentItem: Item

@@ -62,7 +62,7 @@ class SliceInfo(QObject, Extension):
     def showMoreInfoDialog(self):
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
-        self._more_info_dialog.open()
+        self._more_info_dialog.show()
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
