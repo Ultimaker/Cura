@@ -286,7 +286,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         self.refreshConnections()
 
-    def _checkManualDevice(self, address):
+    def _checkManualDevice(self, address: str) -> None:
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
@@ -307,7 +307,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             #  - Something went wrong with checking the amount of printers the cluster has!
             #  - Couldn't find printer at the address when trying to add it manually.
             if address in self._manual_instances:
-                self.removeManualDeviceSignal.emit(self.getPluginId(), "", address)
+                key = "manual:" + address
+                self.removeManualDevice(key, address)
             return
 
         if "system" in reply_url:

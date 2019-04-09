@@ -69,16 +69,14 @@ Item
                 width: parent.width
                 anchors.top: explainLabel.bottom
 
-                TextField
+                Cura.TextField
                 {
                     id: hostnameField
+                    width: (parent.width / 2) | 0
+                    height: addPrinterButton.height
                     anchors.verticalCenter: addPrinterButton.verticalCenter
                     anchors.left: parent.left
-                    height: addPrinterButton.height
-                    anchors.right: addPrinterButton.left
                     anchors.margins: UM.Theme.getSize("default_margin").width
-                    font: UM.Theme.getFont("default")
-                    selectByMouse: true
 
                     validator: RegExpValidator
                     {
@@ -89,11 +87,11 @@ Item
                     onAccepted: addPrinterButton.clicked()
                 }
 
-                Cura.PrimaryButton
+                Cura.SecondaryButton
                 {
                     id: addPrinterButton
                     anchors.top: parent.top
-                    anchors.right: parent.right
+                    anchors.left: hostnameField.right
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
                     text: catalog.i18nc("@button", "Add")
@@ -198,7 +196,10 @@ Item
                             {
                                 if (UM.OutputDeviceManager.hasManualDevice)
                                 {
-                                    typeText.text = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    const type_id = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
+                                    var readable_type = Cura.MachineManager.getMachineTypeNameFromId(type_id)
+                                    readable_type = (readable_type != "") ? readable_type : catalog.i18nc("@label", "Unknown")
+                                    typeText.text = readable_type
                                     firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
                                     addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
                                 }
@@ -240,7 +241,7 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Cancel")
+        text: catalog.i18nc("@button", "Back")
         onClicked: base.showPreviousPage()
     }
 

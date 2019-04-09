@@ -97,6 +97,8 @@ Item
 
                     printerTypeLabelAutoFit: true
 
+                    // update printer types for all items in the list
+                    updatePrinterTypesOnlyWhenChecked: false
                     updatePrinterTypesFunction: updateMachineTypes
                     // show printer type as it is
                     printerTypeLabelConversionFunction: function(value) { return value }
