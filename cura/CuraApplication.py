@@ -112,6 +112,7 @@ from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
 from cura.UI.TextManager import TextManager
+from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 
 from .SingleInstance import SingleInstance
@@ -217,6 +218,7 @@ class CuraApplication(QtApplication):
         self._discovered_printer_model = DiscoveredPrintersModel(self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
         self._welcome_pages_model = WelcomePagesModel(self)
+        self._add_printer_pages_model = AddPrinterPagesModel(self)
         self._text_manager = TextManager(self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -762,6 +764,7 @@ class CuraApplication(QtApplication):
 
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
+        self._add_printer_pages_model.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -872,6 +875,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getWelcomePagesModel(self, *args) -> "WelcomePagesModel":
         return self._welcome_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
+        return self._add_printer_pages_model
 
     @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
@@ -1014,6 +1021,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")

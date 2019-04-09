@@ -25,6 +25,7 @@ Item
     property var progressValue: model == null ? 0 : model.currentProgress
     property string pageUrl: currentItem == null ? "" : currentItem.page_url
 
+    property alias progressBarVisible: progressBar.visible
     property alias backgroundColor: panelBackground.color
 
     signal showNextPage()
@@ -44,6 +45,7 @@ Item
         anchors.fill: parent
         radius: UM.Theme.getSize("default_radius").width
         color: UM.Theme.getColor("main_background")
+
         UM.ProgressBar
         {
             id: progressBar

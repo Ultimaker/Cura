@@ -118,11 +118,14 @@ Item
             }
             else
             {
-                return addLocalPrinterDropDown.contentItem.currentItem != null
+                // Printer name cannot be empty
+                const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
+                const isPrinterNameValid = addLocalPrinterDropDown.contentItem.isPrinterNameValid
+                return localPrinterItem != null && isPrinterNameValid
             }
         }
 
-        text: catalog.i18nc("@button", "Next")
+        text: base.currentItem.next_page_button_text
         onClicked:
         {
             // Create a network printer or a local printer according to the selection
@@ -139,7 +142,8 @@ Item
             {
                 // Create a local printer
                 const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
-                Cura.MachineManager.addMachine(localPrinterItem.id)
+                const printerName = addLocalPrinterDropDown.contentItem.printerName
+                Cura.MachineManager.addMachine(localPrinterItem.id, printerName)
 
                 base.showNextPage()
             }

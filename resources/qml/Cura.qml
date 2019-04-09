@@ -46,7 +46,7 @@ UM.MainWindow
     {
         id: greyOutBackground
         anchors.fill: parent
-        visible: welcomeDialog.visible
+        visible: welcomeDialogItem.visible
         color: UM.Theme.getColor("window_disabled_background")
         opacity: 0.7
         z: stageMenu.z + 1
@@ -61,9 +61,9 @@ UM.MainWindow
         }
     }
 
-    WelcomeDialog
+    WelcomeDialogItem
     {
-        id: welcomeDialog
+        id: welcomeDialogItem
         visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
         z: greyOutBackground.z + 1
     }
@@ -86,11 +86,11 @@ UM.MainWindow
 
         if (CuraApplication.needToShowUserAgreement)
         {
-            welcomeDialog.visible = true
+            welcomeDialogItem.visible = true
         }
         else
         {
-            welcomeDialog.visible = false
+            welcomeDialogItem.visible = false
         }
         // TODO: While the new onboarding process contains the user-agreement,
         //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
@@ -731,44 +731,6 @@ UM.MainWindow
         }
     }
 
-    AddMachineDialog
-    {
-        id: addMachineDialog
-        onMachineAdded:
-        {
-            machineActionsWizard.firstRun = addMachineDialog.firstRun
-            machineActionsWizard.start(id)
-        }
-    }
-
-    // Dialog to handle first run machine actions
-    UM.Wizard
-    {
-        id: machineActionsWizard;
-
-        title: catalog.i18nc("@title:window", "Add Printer")
-        property var machine;
-
-        function start(id)
-        {
-            var actions = Cura.MachineActionManager.getFirstStartActions(id)
-            resetPages() // Remove previous pages
-
-            for (var i = 0; i < actions.length; i++)
-            {
-                actions[i].displayItem.reset()
-                machineActionsWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
-            }
-
-            //Only start if there are actions to perform.
-            if (actions.length > 0)
-            {
-                machineActionsWizard.currentPage = 0;
-                show()
-            }
-        }
-    }
-
     MessageDialog
     {
         id: messageDialog
@@ -812,10 +774,24 @@ UM.MainWindow
         }
     }
 
+    Cura.WizardDialog
+    {
+        id: addMachineDialog
+        title: catalog.i18nc("@title:window", "Add Printer")
+        model: CuraApplication.getAddPrinterPagesModel()
+        progressBarVisible: false
+    }
+
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered: addMachineDialog.visible = true;
+        onTriggered: addMachineDialog.show()
+    }
+
+    Connections
+    {
+        target: CuraApplication
+        onRequestAddPrinter: addMachineDialog.show()
     }
 
     AboutDialog
@@ -829,31 +805,17 @@ UM.MainWindow
         onTriggered: aboutDialog.visible = true;
     }
 
-    Connections
-    {
-        target: CuraApplication
-        onRequestAddPrinter:
-        {
-            addMachineDialog.visible = true
-            addMachineDialog.firstRun = false
-        }
-    }
-
     Timer
     {
-        id: startupTimer;
-        interval: 100;
-        repeat: false;
-        running: true;
+        id: startupTimer
+        interval: 100
+        repeat: false
+        running: true
         onTriggered:
         {
-            if(!base.visible)
+            if (!base.visible)
             {
-                base.visible = true;
-            }
-            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
-            {
-                addMachineDialog.open();
+                base.visible = true
             }
         }
     }
