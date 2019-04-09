@@ -561,7 +561,13 @@ class Toolbox(QObject, Extension):
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
             except (TypeError, RuntimeError):  # Raised when the method is not connected to the signal yet.
                 pass  # Don't need to disconnect.
-            self._download_reply.abort()
+            try:
+                self._download_reply.abort()
+            except RuntimeError:
+                # In some cases the garbage collector is a bit to agressive, which causes the dowload_reply
+                # to be deleted (especially if the machine has been put to sleep). As we don't know what exactly causes
+                # this (The issue probably lives in the bowels of (py)Qt somewhere), we can only catch and ignore it.
+                pass
         self._download_reply = None
         self._download_request = None
         self.setDownloadProgress(0)
