@@ -48,12 +48,21 @@ TextField
     background: Rectangle
     {
         id: backgroundRectangle
-        anchors.fill: parent
+
         anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
         radius: UM.Theme.getSize("setting_control_radius").width
 
-        border.color: UM.Theme.getColor("setting_control_border")
-
-        color: UM.Theme.getColor("setting_control")
+        border.color:
+        {
+            if (!textField.enabled)
+            {
+                return UM.Theme.getColor("setting_control_disabled_border")
+            }
+            if (textField.hovered || textField.activeFocus)
+            {
+                return UM.Theme.getColor("setting_control_border_highlight")
+            }
+            return UM.Theme.getColor("setting_control_border")
+        }
     }
 }
