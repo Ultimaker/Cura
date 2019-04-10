@@ -202,7 +202,7 @@ class WelcomePagesModel(ListModel):
     # FIXME: HACKs for optimization that we don't update the model every time the active machine gets changed.
     def _onActiveMachineChanged(self) -> None:
         self._application.getMachineManager().globalContainerChanged.disconnect(self._onActiveMachineChanged)
-        self.initialize()
+        self._initialize()
 
     def initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._onActiveMachineChanged)
@@ -210,7 +210,7 @@ class WelcomePagesModel(ListModel):
 
     def _initialize(self) -> None:
         has_active_machine = self._application.getMachineManager().activeMachine is not None
-        has_app_just_upgraded = self._application.hasJustUpgradedToNewVersion()
+        has_app_just_upgraded = self._application.hasJustUpdatedFromOldVersion()
 
         # Only show the what's new dialog if there's no machine and we have just upgraded
         show_complete_flow = not has_active_machine
