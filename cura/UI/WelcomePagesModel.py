@@ -59,6 +59,10 @@ class WelcomePagesModel(ListModel):
         # Store all the previous page indices so it can go back.
         self._previous_page_indices_stack = deque()  # type: deque
 
+        # If the welcome flow should be shown. It can show the complete flow or just the changelog depending on the
+        # specific case. See initialize() for how this variable is set.
+        self._should_show_welcome_flow = False
+
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
 
@@ -174,6 +178,12 @@ class WelcomePagesModel(ListModel):
 
         self.currentPageIndexChanged.emit()
 
+    shouldShowWelcomeFlowChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = shouldShowWelcomeFlowChanged)
+    def shouldShowWelcomeFlow(self) -> bool:
+        return self._should_show_welcome_flow
+
     # Gets the page index with the given page ID. If the page ID doesn't exist, returns None.
     def getPageIndexById(self, page_id: str) -> Optional[int]:
         page_idx = None
@@ -189,37 +199,69 @@ class WelcomePagesModel(ListModel):
         return QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                     os.path.join("WelcomePages", page_filename)))
 
-    def initialize(self) -> None:
-        # Add default welcome pages
-        self._pages.append({"id": "welcome",
-                            "page_url": self._getBuiltinWelcomePagePath("WelcomeContent.qml"),
-                            })
-        self._pages.append({"id": "user_agreement",
-                            "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
-                            })
-        self._pages.append({"id": "whats_new",
-                            "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
-                            })
-        self._pages.append({"id": "data_collections",
-                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
-                            })
-        self._pages.append({"id": "add_network_or_local_printer",
-                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
-                            "next_page_id": "machine_actions",
-                            })
-        self._pages.append({"id": "add_printer_by_ip",
-                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
-                            "next_page_id": "machine_actions",
-                            })
-        self._pages.append({"id": "machine_actions",
-                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
-                            "next_page_id": "cloud",
-                            "should_show_function": self.shouldShowMachineActions,
-                            })
-        self._pages.append({"id": "cloud",
-                            "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
-                            })
+    # FIXME: HACKs for optimization that we don't update the model every time the active machine gets changed.
+    def _onActiveMachineChanged(self) -> None:
+        self._application.getMachineManager().globalContainerChanged.disconnect(self._onActiveMachineChanged)
+        self.initialize()
 
+    def initialize(self) -> None:
+        self._application.getMachineManager().globalContainerChanged.connect(self._onActiveMachineChanged)
+        self._initialize()
+
+    def _initialize(self) -> None:
+        has_active_machine = self._application.getMachineManager().activeMachine is not None
+        has_app_just_upgraded = self._application.hasJustUpgradedToNewVersion()
+
+        # Only show the what's new dialog if there's no machine and we have just upgraded
+        show_complete_flow = not has_active_machine
+        show_whatsnew_only = has_active_machine and has_app_just_upgraded
+
+        # FIXME: This is a hack. Because of the circular dependency between MachineManager, ExtruderManager, and
+        # possibly some others, setting the initial active machine is not done when the MachineManager gets initialized.
+        # So at this point, we don't know if there will be an active machine or not. It could be that the active machine
+        # files are corrupted so we cannot rely on Preferences either. This makes sure that once the active machine
+        # gets changed, this model updates the flags, so it can decide whether to show the welcome flow or not.
+        should_show_welcome_flow = show_complete_flow or show_whatsnew_only
+        if should_show_welcome_flow != self._should_show_welcome_flow:
+            self._should_show_welcome_flow = should_show_welcome_flow
+            self.shouldShowWelcomeFlowChanged.emit()
+
+        # All pages
+        all_pages_list = [{"id": "welcome",
+                           "page_url": self._getBuiltinWelcomePagePath("WelcomeContent.qml"),
+                           },
+                          {"id": "user_agreement",
+                           "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
+                           },
+                          {"id": "whats_new",
+                           "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
+                           },
+                          {"id": "data_collections",
+                           "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
+                           },
+                          {"id": "add_network_or_local_printer",
+                           "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
+                           "next_page_id": "machine_actions",
+                           },
+                          {"id": "add_printer_by_ip",
+                           "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
+                           "next_page_id": "machine_actions",
+                           },
+                          {"id": "machine_actions",
+                           "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
+                           "next_page_id": "cloud",
+                           "should_show_function": self.shouldShowMachineActions,
+                           },
+                          {"id": "cloud",
+                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                           },
+                          ]
+
+        pages_to_show = all_pages_list
+        if show_whatsnew_only:
+            pages_to_show = list(filter(lambda x: x["id"] == "whats_new", all_pages_list))
+
+        self._pages = pages_to_show
         self.setItems(self._pages)
 
     # For convenience, inject the default "next" button text to each item if it's not present.

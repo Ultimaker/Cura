@@ -84,7 +84,7 @@ UM.MainWindow
         Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
 
-        if (CuraApplication.needToShowUserAgreement)
+        if (CuraApplication.getWelcomePagesModel().shouldShowWelcomeFlow)
         {
             welcomeDialogItem.visible = true
         }
@@ -92,8 +92,6 @@ UM.MainWindow
         {
             welcomeDialogItem.visible = false
         }
-        // TODO: While the new onboarding process contains the user-agreement,
-        //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
     }
 
     Item
