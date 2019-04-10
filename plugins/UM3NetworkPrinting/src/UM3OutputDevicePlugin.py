@@ -181,7 +181,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
-                self.checkCloudFlowIsPossible()
+                self.checkCloudFlowIsPossible(None)
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
             if key.startswith("manual:"):
@@ -488,7 +488,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return True
 
     ## Check if the prerequsites are in place to start the cloud flow
-    def checkCloudFlowIsPossible(self) -> None:
+    def checkCloudFlowIsPossible(self, cluster: Optional["CloudOutputDevice"]) -> None:
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
@@ -595,7 +595,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message.hide()
 
         # Check for cloud flow again with newly selected machine
-        self.checkCloudFlowIsPossible()
+        self.checkCloudFlowIsPossible(None)
 
     def _createCloudFlowStartMessage(self):
         self._start_cloud_flow_message = Message(
