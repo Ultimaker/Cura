@@ -48,17 +48,19 @@ Item
 
         Item
         {
-            width: parent.width
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.margins: UM.Theme.getSize("default_margin").width
 
             Label
             {
                 id: explainLabel
                 height: contentHeight
-                width: parent.width
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.top: parent.top
-                anchors.margins: UM.Theme.getSize("default_margin").width
-                font: UM.Theme.getFont("default")
 
+                font: UM.Theme.getFont("default")
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
             }
 
@@ -66,8 +68,10 @@ Item
             {
                 id: userInputFields
                 height: childrenRect.height
-                width: parent.width
+                anchors.left: parent.left
+                anchors.right: parent.right
                 anchors.top: explainLabel.bottom
+                anchors.topMargin: UM.Theme.getSize("default_margin").width
 
                 Cura.TextField
                 {
@@ -76,7 +80,6 @@ Item
                     height: addPrinterButton.height
                     anchors.verticalCenter: addPrinterButton.verticalCenter
                     anchors.left: parent.left
-                    anchors.margins: UM.Theme.getSize("default_margin").width
 
                     validator: RegExpValidator
                     {
@@ -92,8 +95,7 @@ Item
                     id: addPrinterButton
                     anchors.top: parent.top
                     anchors.left: hostnameField.right
-                    anchors.margins: UM.Theme.getSize("default_margin").width
-
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     text: catalog.i18nc("@button", "Add")
                     onClicked:
                     {
