@@ -211,7 +211,7 @@ UM.MainWindow
                         for (var i = 0; i < drop.urls.length; i++)
                         {
                             var filename = drop.urls[i];
-                            if (filename.endsWith(".curapackage"))
+                            if (filename.toLowerCase().endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
                                 CuraApplication.getPackageManager().installPackageViaDragAndDrop(filename);
