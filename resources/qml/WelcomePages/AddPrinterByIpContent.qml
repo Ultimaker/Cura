@@ -61,6 +61,7 @@ Item
                 anchors.top: parent.top
 
                 font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
             }
 
@@ -128,6 +129,7 @@ Item
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
 
                     visible:
                     {
@@ -160,6 +162,7 @@ Item
                         id: printerNameLabel
                         anchors.top: parent.top
                         font: UM.Theme.getFont("large")
+                        renderType: Text.NativeRendering
 
                         text: "???"
                     }
@@ -172,14 +175,14 @@ Item
                         columns: 2
                         columnSpacing: UM.Theme.getSize("default_margin").width
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type") }
-                        Label { id: typeText; font: UM.Theme.getFont("default"); text: "?" }
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type"); renderType: Text.NativeRendering }
+                        Label { id: typeText; font: UM.Theme.getFont("default"); text: "?"; renderType: Text.NativeRendering }
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Firmware version") }
-                        Label { id: firmwareText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Firmware version"); renderType: Text.NativeRendering }
+                        Label { id: firmwareText; font: UM.Theme.getFont("default"); text: "0.0.0.0"; renderType: Text.NativeRendering }
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Address") }
-                        Label { id: addressText; font: UM.Theme.getFont("default"); text: "0.0.0.0" }
+                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Address"); renderType: Text.NativeRendering }
+                        Label { id: addressText; font: UM.Theme.getFont("default"); text: "0.0.0.0"; renderType: Text.NativeRendering }
 
                         Connections
                         {
