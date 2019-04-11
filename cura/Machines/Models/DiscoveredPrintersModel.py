@@ -66,11 +66,22 @@ class DiscoveredPrinter(QObject):
 
     @pyqtProperty(bool, notify = machineTypeChanged)
     def isUnknownMachineType(self) -> bool:
-        return self.readableMachineType.lower() == "unknown"
+        return self.readableMachineType == catalog.i18nc("@label", "Unknown")
 
     @pyqtProperty(QObject, constant = True)
     def device(self) -> "NetworkedPrinterOutputDevice":
         return self._device
+
+    @pyqtProperty(bool, constant = True)
+    def isHostOfGroup(self) -> bool:
+        return getattr(self._device, "clusterSize", 1) > 0
+
+    @pyqtProperty(str, constant = True)
+    def sectionName(self) -> str:
+        if self.isUnknownMachineType or not self.isHostOfGroup:
+            return catalog.i18nc("@label", "The printer(s) below cannot be connected because they are part of a group")
+        else:
+            return catalog.i18nc("@label", "Available network printers")
 
 
 #
@@ -90,7 +101,7 @@ class DiscoveredPrintersModel(QObject):
     @pyqtProperty(list, notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
-        item_list.sort(key = lambda x: x.device.name)
+        item_list.sort(key = lambda x: (int(not x.isUnknownMachineType), getattr(x.device, "clusterSize", 1), x.device.name), reverse = True)
         return item_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],

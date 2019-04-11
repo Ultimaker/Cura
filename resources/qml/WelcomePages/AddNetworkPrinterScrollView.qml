@@ -71,6 +71,10 @@ Item
                 anchors.fill: parent
                 model: CuraApplication.getDiscoveredPrintersModel().discoveredPrinters
 
+                section.property: "modelData.sectionName"
+                section.criteria: ViewSection.FullString
+                section.delegate: sectionHeading
+
                 Component.onCompleted:
                 {
                     // Select the first one that's not "unknown" by default.
@@ -84,6 +88,23 @@ Item
                     }
                 }
 
+                Component
+                {
+                    id: sectionHeading
+
+                    Label
+                    {
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        height: UM.Theme.getSize("setting_control").height
+                        text: section
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("small_button_text")
+                        verticalAlignment: Text.AlignVCenter
+                        renderType: Text.NativeRendering
+                    }
+                }
+
                 delegate: MachineSelectorButton
                 {
                     text: modelData.device.name
@@ -93,7 +114,7 @@ Item
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     outputDevice: modelData.device
 
-                    enabled: !modelData.isUnknownMachineType
+                    enabled: !modelData.isUnknownMachineType && modelData.isHostOfGroup
 
                     printerTypeLabelAutoFit: true
 
