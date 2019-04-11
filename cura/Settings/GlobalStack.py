@@ -212,7 +212,7 @@ class GlobalStack(CuraContainerStack):
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
-        if property_name is not "value":
+        if property_name != "value":
             # Do not try to resolve anything but the "value" property
             return False
 
