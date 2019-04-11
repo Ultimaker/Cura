@@ -27,6 +27,7 @@ from UM.Version import Version
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
+from .Cloud.CloudOutputDevice import CloudOutputDevice # typing
 
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
@@ -488,7 +489,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return True
 
     ## Check if the prerequsites are in place to start the cloud flow
-    def checkCloudFlowIsPossible(self, cluster: Optional["CloudOutputDevice"]) -> None:
+    def checkCloudFlowIsPossible(self, cluster: Optional[CloudOutputDevice]) -> None:
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
