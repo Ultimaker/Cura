@@ -106,17 +106,7 @@ Item
                             UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
                         }
                     }
-
-                    BusyIndicator
-                    {
-                        anchors.fill: parent
-                        running:
-                        {
-                            ! parent.enabled &&
-                            ! addPrinterByIpScreen.hasSentRequest &&
-                            ! addPrinterByIpScreen.haveConnection
-                        }
-                    }
+                    busy: !enabled && !addPrinterByIpScreen.hasSentRequest && !addPrinterByIpScreen.haveConnection
 
                     Connections
                     {
