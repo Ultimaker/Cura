@@ -65,6 +65,7 @@ Item
         {
             id: description
             text: details.description || ""
+            font: UM.Theme.getFont("default")
             anchors
             {
                 top: title.bottom
