@@ -53,7 +53,7 @@ class AuthorsModel(ListModel):
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "package_types":
+            if key == "package_types":
                 key_filter = lambda item, value = value: value in item["package_types"]  # type: ignore
             elif "*" in value:
                 key_filter = lambda item, key = key, value = value: self._matchRegExp(item, key, value)  # type: ignore
