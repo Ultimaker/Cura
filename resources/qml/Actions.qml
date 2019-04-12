@@ -61,6 +61,7 @@ Item
     property alias documentation: documentationAction;
     property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
+    property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
@@ -227,6 +228,13 @@ Item
         text: catalog.i18nc("@action:inmenu menubar:help", "Report a &Bug");
         iconName: "tools-report-bug";
         onTriggered: CuraActions.openBugReportPage();
+    }
+
+    Action
+    {
+        id: whatsNewAction;
+        text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
+        iconName: "help-whats-new";
     }
 
     Action

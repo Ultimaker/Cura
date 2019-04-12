@@ -68,30 +68,52 @@ UM.MainWindow
         z: greyOutBackground.z + 1
     }
 
-    Component.onCompleted:
+    Connections
     {
-        CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-        // Workaround silly issues with QML Action's shortcut property.
-        //
-        // Currently, there is no way to define shortcuts as "Application Shortcut".
-        // This means that all Actions are "Window Shortcuts". The code for this
-        // implements a rather naive check that just checks if any of the action's parents
-        // are a window. Since the "Actions" object is a singleton it has no parent by
-        // default. If we set its parent to something contained in this window, the
-        // shortcut will activate properly because one of its parents is a window.
-        //
-        // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
-        Cura.Actions.parent = backgroundItem
-        CuraApplication.purgeWindows()
+        target: CuraApplication
+        onInitializationFinished:
+        {
+            CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+            // Workaround silly issues with QML Action's shortcut property.
+            //
+            // Currently, there is no way to define shortcuts as "Application Shortcut".
+            // This means that all Actions are "Window Shortcuts". The code for this
+            // implements a rather naive check that just checks if any of the action's parents
+            // are a window. Since the "Actions" object is a singleton it has no parent by
+            // default. If we set its parent to something contained in this window, the
+            // shortcut will activate properly because one of its parents is a window.
+            //
+            // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
+            Cura.Actions.parent = backgroundItem
+            CuraApplication.purgeWindows()
 
-        if (CuraApplication.getWelcomePagesModel().shouldShowWelcomeFlow)
-        {
-            welcomeDialogItem.visible = true
+            if (CuraApplication.shouldShowWelcomeDialog())
+            {
+                welcomeDialogItem.visible = true
+            }
+            else
+            {
+                welcomeDialogItem.visible = false
+            }
+
+            if (CuraApplication.shouldShowWhatsNewDialog())
+            {
+                showWhatsNewDialogTimer.start()
+            }
         }
-        else
-        {
-            welcomeDialogItem.visible = false
-        }
+    }
+
+    // HACK: Use a timer here because if we call "Cura.Actions.whatsNew.trigger()" or "whatsNewDialog.show()" when
+    // the component gets completed or when the application finishes its initialization, the main window has not been
+    // fully initialized yet. If we should the dialog before the main window is fully initialized, you will see the
+    // dialog first but when the main windows is fully initialized, the dialog will disappear. Adding a timer here is
+    // to bypass this problem.
+    Timer
+    {
+        id: showWhatsNewDialogTimer
+        repeat: false
+        interval: 1000
+        onTriggered: Cura.Actions.whatsNew.trigger()
     }
 
     Item
@@ -778,6 +800,20 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "Add Printer")
         model: CuraApplication.getAddPrinterPagesModel()
         progressBarVisible: false
+    }
+
+    Cura.WizardDialog
+    {
+        id: whatsNewDialog
+        title: catalog.i18nc("@title:window", "What's New")
+        model: CuraApplication.getWhatsNewPagesModel()
+        progressBarVisible: false
+    }
+
+    Connections
+    {
+        target: Cura.Actions.whatsNew
+        onTriggered: whatsNewDialog.show()
     }
 
     Connections

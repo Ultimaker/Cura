@@ -114,6 +114,7 @@ from cura.UI.ObjectsModel import ObjectsModel
 from cura.UI.TextManager import TextManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.WelcomePagesModel import WelcomePagesModel
+from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -219,6 +220,7 @@ class CuraApplication(QtApplication):
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
         self._welcome_pages_model = WelcomePagesModel(self)
         self._add_printer_pages_model = AddPrinterPagesModel(self)
+        self._whats_new_pages_model = WhatsNewPagesModel(self)
         self._text_manager = TextManager(self)
 
         self._quality_profile_drop_down_menu_model = None
@@ -765,6 +767,7 @@ class CuraApplication(QtApplication):
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
         self._add_printer_pages_model.initialize()
+        self._whats_new_pages_model.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -879,6 +882,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
         return self._add_printer_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
+        return self._whats_new_pages_model
 
     @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
@@ -1021,6 +1028,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
 
@@ -1765,3 +1773,21 @@ class CuraApplication(QtApplication):
     def getSidebarCustomMenuItems(self) -> list:
         return self._sidebar_custom_menu_items
 
+    @pyqtSlot(result = bool)
+    def shouldShowWelcomeDialog(self) -> bool:
+        has_active_machine = self._machine_manager.activeMachine is not None
+
+        # Only show the complete flow if there is not printer yet.
+        show_complete_flow = not has_active_machine
+        return show_complete_flow
+
+    @pyqtSlot(result = bool)
+    def shouldShowWhatsNewDialog(self) -> bool:
+        has_active_machine = self._machine_manager.activeMachine is not None
+        has_app_just_upgraded = self.hasJustUpdatedFromOldVersion()
+
+        print("!!!!!!!!!!!!! has_active_machine =  ", has_active_machine)
+
+        # Only show the what's new dialog if there's no machine and we have just upgraded
+        show_whatsnew_only = has_active_machine and has_app_just_upgraded
+        return show_whatsnew_only
