@@ -81,7 +81,7 @@ class DiscoveredPrinter(QObject):
         if self.isUnknownMachineType or not self.isHostOfGroup:
             return catalog.i18nc("@label", "The printer(s) below cannot be connected because they are part of a group")
         else:
-            return catalog.i18nc("@label", "Available network printers")
+            return catalog.i18nc("@label", "Available networked printers")
 
 
 #
