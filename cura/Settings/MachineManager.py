@@ -9,6 +9,7 @@ from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
@@ -498,30 +499,35 @@ class MachineManager(QObject):
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.definition.getName instead", "4.1")
     def activeMachineDefinitionName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.definition.getName()
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.getName instead", "4.1")
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("group_name", self._global_container_stack.getName())
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.getId instead", "4.1")
     def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.firmwareVersion instead", "4.1")
     def activeMachineFirmwareVersion(self) -> str:
         if not self._printer_output_devices:
             return ""
         return self._printer_output_devices[0].firmwareVersion
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.address instead", "4.1")
     def activeMachineAddress(self) -> str:
         if not self._printer_output_devices:
             return ""
@@ -543,21 +549,25 @@ class MachineManager(QObject):
         return False
 
     @pyqtProperty("QVariantList", notify=globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.1")
     def activeMachineConfiguredConnectionTypes(self):
         if self._global_container_stack:
             return self._global_container_stack.configuredConnectionTypes
         return []
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    @deprecated("use len(Cura.MachineManager.activeMachine.printers) instead", "4.1")
     def activeMachineIsGroup(self) -> bool:
         return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.connectionType instead", "4.1")
     def activeMachineHasNetworkConnection(self) -> bool:
         # A network connection is only available if any output device is actually a network connected device.
         return any(d.connectionType == ConnectionType.NetworkConnection for d in self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.connectionType instead", "4.1")
     def activeMachineHasCloudConnection(self) -> bool:
         # A cloud connection is only available if any output device actually is a cloud connected device.
         return any(d.connectionType == ConnectionType.CloudConnection for d in self._printer_output_devices)
@@ -715,6 +725,7 @@ class MachineManager(QObject):
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    @deprecated("use XXY instead", "4.1")
     def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -733,6 +744,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    @deprecated("use XXY instead", "4.1")
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -751,6 +763,7 @@ class MachineManager(QObject):
     ##  Get the Definition ID to use to select quality profiles for the currently active machine
     #   \returns DefinitionID (string) if found, empty string otherwise
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use XXY instead", "4.1")
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
             return getMachineDefinitionIDForQualitySearch(self._global_container_stack.definition)
