@@ -200,7 +200,7 @@ Item
 
         Label
         {
-            text: catalog.i18nc("@label", "Printer Name")
+            text: catalog.i18nc("@label", "Printer name")
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.getFont("medium")
             verticalAlignment: Text.AlignVCenter
