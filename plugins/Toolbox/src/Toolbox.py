@@ -613,12 +613,12 @@ class Toolbox(QObject, Extension):
                             self._server_response_data[response_type] = json_data["data"]
                             self._models[response_type].setMetadata(self._server_response_data[response_type])
 
-                            if response_type is "packages":
+                            if response_type == "packages":
                                 self._models[response_type].setFilter({"type": "plugin"})
                                 self.reBuildMaterialsModels()
                                 self.reBuildPluginsModels()
                                 self._notifyPackageManager()
-                            elif response_type is "authors":
+                            elif response_type == "authors":
                                 self._models[response_type].setFilter({"package_types": "material"})
                                 self._models[response_type].setFilter({"tags": "generic"})
 
