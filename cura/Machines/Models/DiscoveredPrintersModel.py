@@ -89,7 +89,8 @@ class DiscoveredPrintersModel(QObject):
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
-        item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
+        item_list = list(
+            x for x in self._discovered_printer_by_ip_dict.values() if x.device.getProperty("temporary") != "true")
         item_list.sort(key = lambda x: x.device.name)
         return item_list
 
