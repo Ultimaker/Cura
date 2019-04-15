@@ -1,15 +1,13 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import cast
-
 from Charon.VirtualFile import VirtualFile
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.PluginRegistry import PluginRegistry
+
 from cura.Scene.CuraSceneNode import CuraSceneNode
-from plugins.GCodeReader.GCodeReader import GCodeReader
 
 
 class UFPReader(MeshReader):
@@ -36,6 +34,6 @@ class UFPReader(MeshReader):
         gcode_stream = gcode_data["/3D/model.gcode"].decode("utf-8")
 
         # Open the GCodeReader to parse the data
-        gcode_reader = cast(GCodeReader, PluginRegistry.getInstance().getPluginObject("GCodeReader"))
+        gcode_reader = PluginRegistry.getInstance().getPluginObject("GCodeReader")  # type: ignore
         gcode_reader.preReadFromStream(gcode_stream)
         return gcode_reader.readFromStream(gcode_stream)
