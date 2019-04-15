@@ -1428,6 +1428,7 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(True)
                     self.updateMaterialWithVariant(position)
 
+            self.updateDefaultExtruder()
             self.updateNumberExtrudersEnabled()
 
             if configuration.buildplateConfiguration is not None:
