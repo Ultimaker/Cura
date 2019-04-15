@@ -181,6 +181,8 @@ class SliceInfo(QObject, Extension):
                     model = dict()
                     model["hash"] = node.getMeshData().getHash()
                     bounding_box = node.getBoundingBox()
+                    if not bounding_box:
+                        continue
                     model["bounding_box"] = {"minimum": {"x": bounding_box.minimum.x,
                                                          "y": bounding_box.minimum.y,
                                                          "z": bounding_box.minimum.z},

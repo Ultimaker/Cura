@@ -116,7 +116,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             # Trigger slice/need slicing if the value has changed.
             self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
             self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
-
+            # Only calculate the bounding box of the mesh if it's an actual mesh (and not a helper)
+            self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 
