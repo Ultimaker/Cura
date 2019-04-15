@@ -1,13 +1,16 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import TYPE_CHECKING
+
 from Charon.VirtualFile import VirtualFile
 
 from UM.Mesh.MeshReader import MeshReader
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.PluginRegistry import PluginRegistry
 
-from cura.Scene.CuraSceneNode import CuraSceneNode
+if TYPE_CHECKING:
+    from cura.Scene.CuraSceneNode import CuraSceneNode
 
 
 class UFPReader(MeshReader):
@@ -24,7 +27,7 @@ class UFPReader(MeshReader):
         )
         self._supported_extensions = [".ufp"]
 
-    def _read(self, file_name: str) -> CuraSceneNode:
+    def _read(self, file_name: str) -> "CuraSceneNode":
         # Open the file
         archive = VirtualFile()
         archive.open(file_name)
