@@ -725,7 +725,7 @@ class MachineManager(QObject):
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use XXY instead", "4.1")
+    @deprecated("use Cura.activeStack.variant.name instead", "4.1")
     def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -744,7 +744,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use XXY instead", "4.1")
+    @deprecated("use Cura.activeMachine.variant.name instead", "4.1")
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -763,7 +763,6 @@ class MachineManager(QObject):
     ##  Get the Definition ID to use to select quality profiles for the currently active machine
     #   \returns DefinitionID (string) if found, empty string otherwise
     @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use XXY instead", "4.1")
     def activeQualityDefinitionId(self) -> str:
         if self._global_container_stack:
             return getMachineDefinitionIDForQualitySearch(self._global_container_stack.definition)
