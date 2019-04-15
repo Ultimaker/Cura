@@ -114,12 +114,19 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
         if property_name == "value":
             # Trigger slice/need slicing if the value has changed.
-            self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
-            self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
-            # Only calculate the bounding box of the mesh if it's an actual mesh (and not a helper)
-            self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
-            Application.getInstance().getBackend().needsSlicing()
-            Application.getInstance().getBackend().tickle()
+            new_is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
+            new_is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
+            changed = False
+            if self._is_non_printing_mesh != new_is_non_printing_mesh:
+                self._is_non_printing_mesh = new_is_non_printing_mesh
+                self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
+                changed = True
+            if self._is_non_thumbnail_visible_mesh != new_is_non_thumbnail_visible_mesh:
+                changed = True
+
+            if changed:
+                Application.getInstance().getBackend().needsSlicing()
+                Application.getInstance().getBackend().tickle()
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
