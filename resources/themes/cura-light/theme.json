@@ -433,7 +433,7 @@
         "monitor_skeleton_loading": [238, 238, 238, 255],
         "monitor_placeholder_image": [230, 230, 230, 255],
         "monitor_image_overlay": [0, 0, 0, 255],
-        "monitor_shadow": [220, 220, 220, 255],
+        "monitor_shadow": [200, 200, 200, 255],
 
         "monitor_carousel_dot": [216, 216, 216, 255],
         "monitor_carousel_dot_current": [119, 119, 119, 255]
