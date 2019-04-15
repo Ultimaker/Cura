@@ -111,8 +111,9 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def _evaluateIsNonThumbnailVisibleMesh(self):
         return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_thumbnail_visible_settings)
 
-    def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
-        if property_name == "value":
+    def _onSettingChanged(self, setting_key, property_name): # Reminder: 'property' is a built-in function
+        # We're only interested in a few settings and only if it's value changed.
+        if property_name == "value" and (setting_key in self._non_printing_mesh_settings or setting_key in self._non_thumbnail_visible_settings):
             # Trigger slice/need slicing if the value has changed.
             new_is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
             new_is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
