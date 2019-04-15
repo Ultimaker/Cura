@@ -7,6 +7,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Util import parseBool
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
@@ -100,7 +101,8 @@ class DiscoveredPrintersModel(QObject):
 
     @pyqtProperty(list, notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
-        item_list = list(x for x in self._discovered_printer_by_ip_dict.values())
+        item_list = list(
+            x for x in self._discovered_printer_by_ip_dict.values() if not parseBool(x.device.getProperty("temporary")))
         item_list.sort(key = lambda x: (int(not x.isUnknownMachineType), getattr(x.device, "clusterSize", 1), x.device.name), reverse = True)
         return item_list
 

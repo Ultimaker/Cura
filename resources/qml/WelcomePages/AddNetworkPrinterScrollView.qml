@@ -7,9 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../PrinterSelector"
-
-
 //
 // This is the widget for adding a network printer. There are 2 parts in this widget. One is a scroll view of a list
 // of discovered network printers. Beneath the scroll view is a container with 3 buttons: "Refresh", "Add by IP", and
@@ -105,13 +102,11 @@ Item
                     }
                 }
 
-                delegate: MachineSelectorButton
+                delegate: Cura.MachineSelectorButton
                 {
                     text: modelData.device.name
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    width: networkPrinterListView.width
                     outputDevice: modelData.device
 
                     enabled: !modelData.isUnknownMachineType && modelData.isHostOfGroup
@@ -140,22 +135,23 @@ Item
         }
     }
 
+    // Horizontal line separating the buttons (below) and the discovered network printers (above)
+    Rectangle
+    {
+        id: separator
+        anchors.left: parent.left
+        anchors.top: networkPrinterInfo.bottom
+        anchors.right: parent.right
+        height: UM.Theme.getSize("default_lining").height
+        color: UM.Theme.getColor("lining")
+    }
+
     Item
     {
         id: controlsRectangle
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: networkPrinterInfo.bottom
-
-        // Horizontal line separating the buttons (below) and the discovered network printers (above)
-        Rectangle
-        {
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.right: parent.right
-            height: UM.Theme.getSize("default_lining").width
-            color: UM.Theme.getColor("lining")
-        }
+        anchors.top: separator.bottom
 
         height: UM.Theme.getSize("message_action_button").height + UM.Theme.getSize("default_margin").height
 
