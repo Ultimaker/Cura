@@ -54,8 +54,8 @@ class VersionUpgrade40to41(VersionUpgrade):
             resolution = parser["values"]["meshfix_maximum_resolution"]
             if resolution.startswith("="):
                 resolution = resolution[1:]
-            resolution = "=(" + resolution + ") / 2"
-            parser["values"]["meshfix_maximum_deviation"] = resolution
+            deviation = "=(" + resolution + ") / 2"
+            parser["values"]["meshfix_maximum_deviation"] = deviation
             del parser["values"]["meshfix_maximum_resolution"]
 
         result = io.StringIO()
