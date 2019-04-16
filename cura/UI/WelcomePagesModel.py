@@ -212,7 +212,7 @@ class WelcomePagesModel(ListModel):
         show_whatsnew_only = False
         if update_should_show_flag:
             has_active_machine = self._application.getMachineManager().activeMachine is not None
-            has_app_just_upgraded = self._application.hasJustUpgradedToNewVersion()
+            has_app_just_upgraded = self._application.hasJustUpdatedFromOldVersion()
 
             # Only show the what's new dialog if there's no machine and we have just upgraded
             show_complete_flow = not has_active_machine
