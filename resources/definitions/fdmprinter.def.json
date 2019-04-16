@@ -3312,7 +3312,7 @@
                     "minimum_value": "0",
                     "maximum_value_warning": "50",
                     "value": "jerk_print if magic_spiralize else 30",
-                    "enabled": "resolveOrValue('jerk_enabled') and machine_gcode_flavor != \"RepRap (RepRap)\"",
+                    "enabled": "resolveOrValue('jerk_enabled')",
                     "settable_per_mesh": false
                 },
                 "jerk_layer_0":
@@ -3352,7 +3352,7 @@
                             "value": "jerk_layer_0 * jerk_travel / jerk_print",
                             "minimum_value": "0",
                             "maximum_value_warning": "50",
-                            "enabled": "resolveOrValue('jerk_enabled') and machine_gcode_flavor != \"RepRap (RepRap)\"",
+                            "enabled": "resolveOrValue('jerk_enabled')",
                             "settable_per_extruder": true,
                             "settable_per_mesh": false
                         }
