@@ -5870,8 +5870,8 @@
                     "default_value": 0.5,
                     "value": "meshfix_maximum_resolution * speed_travel / speed_print",
                     "minimum_value": "0.001",
-                    "minimum_value_warning": "0.005",
-                    "maximum_value_warning": "1",
+                    "minimum_value_warning": "0.05",
+                    "maximum_value_warning": "10",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
