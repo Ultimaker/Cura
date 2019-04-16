@@ -173,8 +173,8 @@
         "minimum_polygon_circumference": {
             "value": "0.1"
         },
-        "meshfix_maximum_resolution": {
-            "value": "0.005"
+        "meshfix_maximum_deviation": {
+            "value": "0.003"
         },
         "skin_outline_count": {
             "value": 0
