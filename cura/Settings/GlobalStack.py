@@ -259,7 +259,7 @@ class GlobalStack(CuraContainerStack):
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
     def getHasVariantsBuildPlates(self) -> bool:
-        return parseBool(self._global_container_stack.getMetaDataEntry("has_variant_buildplates", False))
+        return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
     def getHasMachineQuality(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_machine_quality", False))
