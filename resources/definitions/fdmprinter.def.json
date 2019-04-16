@@ -5857,8 +5857,8 @@
                     "unit": "mm",
                     "default_value": 0.25,
                     "minimum_value": "0.001",
-                    "minimum_value_warning": "0.005",
-                    "maximum_value_warning": "0.1",
+                    "minimum_value_warning": "0.02",
+                    "maximum_value_warning": "2",
                     "settable_per_mesh": true
                 },
                 "meshfix_maximum_travel_resolution":
