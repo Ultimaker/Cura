@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -48,6 +48,15 @@ class VersionUpgrade40to41(VersionUpgrade):
         # Update version number.
         parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "7"
+
+        # Limit Maximum Deviation instead of Maximum Resolution. This should have approximately the same effect as before the algorithm change, only more consistent.
+        if "meshfix_maximum_resolution" in parser["values"]:
+            resolution = parser["values"]["meshfix_maximum_resolution"]
+            if resolution.startswith("="):
+                resolution = resolution[1:]
+            deviation = "=(" + resolution + ") / 2"
+            parser["values"]["meshfix_maximum_deviation"] = deviation
+            del parser["values"]["meshfix_maximum_resolution"]
 
         result = io.StringIO()
         parser.write(result)
