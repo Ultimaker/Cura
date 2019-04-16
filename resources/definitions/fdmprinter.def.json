@@ -1316,8 +1316,7 @@
                     "default_value": 0,
                     "type": "float",
                     "enabled": "travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true
                 },
                 "wall_min_flow_retract":
                 {
@@ -1326,8 +1325,7 @@
                     "type": "bool",
                     "default_value": false,
                     "enabled": "(travel_compensate_overlapping_walls_0_enabled or travel_compensate_overlapping_walls_x_enabled) and wall_min_flow > 0",
-                    "settable_per_mesh": true,
-                    "settable_per_extruder": false
+                    "settable_per_mesh": true
                 },
                 "fill_perimeter_gaps":
                 {
