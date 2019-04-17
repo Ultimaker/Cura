@@ -72,6 +72,8 @@ Item
                 section.criteria: ViewSection.FullString
                 section.delegate: sectionHeading
 
+                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+
                 Component.onCompleted:
                 {
                     // Select the first one that's not "unknown" by default.

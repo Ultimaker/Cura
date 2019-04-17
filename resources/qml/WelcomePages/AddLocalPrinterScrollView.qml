@@ -85,6 +85,8 @@ Item
             {
                 id: machineList
 
+                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+
                 model: UM.DefinitionContainersModel
                 {
                     id: machineDefinitionsModel
