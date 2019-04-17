@@ -67,11 +67,24 @@ class DiscoveredPrinter(QObject):
 
     @pyqtProperty(bool, notify = machineTypeChanged)
     def isUnknownMachineType(self) -> bool:
-        return self.readableMachineType.lower() == "unknown"
+        from cura.CuraApplication import CuraApplication
+        readable_type = CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
+        return not readable_type
 
     @pyqtProperty(QObject, constant = True)
     def device(self) -> "NetworkedPrinterOutputDevice":
         return self._device
+
+    @pyqtProperty(bool, constant = True)
+    def isHostOfGroup(self) -> bool:
+        return getattr(self._device, "clusterSize", 1) > 0
+
+    @pyqtProperty(str, constant = True)
+    def sectionName(self) -> str:
+        if self.isUnknownMachineType or not self.isHostOfGroup:
+            return catalog.i18nc("@label", "The printer(s) below cannot be connected because they are part of a group")
+        else:
+            return catalog.i18nc("@label", "Available networked printers")
 
 
 #
@@ -92,8 +105,20 @@ class DiscoveredPrintersModel(QObject):
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(
             x for x in self._discovered_printer_by_ip_dict.values() if not parseBool(x.device.getProperty("temporary")))
-        item_list.sort(key = lambda x: x.device.name)
-        return item_list
+
+        # Split the printers into 2 lists and sort them ascending based on names.
+        available_list = []
+        not_available_list = []
+        for item in item_list:
+            if item.isUnknownMachineType or getattr(item.device, "clusterSize", 1) < 1:
+                not_available_list.append(item)
+            else:
+                available_list.append(item)
+
+        available_list.sort(key = lambda x: x.device.name)
+        not_available_list.sort(key = lambda x: x.device.name)
+
+        return available_list + not_available_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
                              machine_type: str, device: "NetworkedPrinterOutputDevice") -> None:
