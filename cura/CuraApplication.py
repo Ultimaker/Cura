@@ -1775,11 +1775,8 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = bool)
     def shouldShowWelcomeDialog(self) -> bool:
-        has_active_machine = self._machine_manager.activeMachine is not None
-
-        # Only show the complete flow if there is not printer yet.
-        show_complete_flow = not has_active_machine
-        return show_complete_flow
+        # Only show the complete flow if there is no printer yet.
+        return self._machine_manager.activeMachine is None
 
     @pyqtSlot(result = bool)
     def shouldShowWhatsNewDialog(self) -> bool:
