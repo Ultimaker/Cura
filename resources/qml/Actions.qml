@@ -234,7 +234,6 @@ Item
     {
         id: whatsNewAction;
         text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
-        iconName: "help-whats-new";
     }
 
     Action
