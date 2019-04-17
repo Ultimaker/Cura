@@ -5853,7 +5853,7 @@
                     "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.25,
+                    "default_value": 0.20,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.02",
                     "maximum_value_warning": "2",
