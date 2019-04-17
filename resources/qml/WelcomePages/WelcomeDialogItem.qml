@@ -11,7 +11,7 @@ import Cura 1.1 as Cura
 
 
 //
-// This is a no-frame dialog that shows the welcome process.
+// This is an Item that tries to mimic a dialog for showing the welcome process.
 //
 Item
 {
@@ -26,6 +26,7 @@ Item
 
     property int shadowOffset: 1 * screenScaleFactor
 
+    property alias progressBarVisible: wizardPanel.progressBarVisible
     property var model: CuraApplication.getWelcomePagesModel()
 
     onVisibleChanged:
@@ -38,7 +39,7 @@ Item
 
     WizardPanel
     {
-        id: stepPanel
+        id: wizardPanel
         anchors.fill: parent
         model: dialog.model
     }
@@ -48,8 +49,8 @@ Item
     {
         id: shadow
         radius: UM.Theme.getSize("first_run_shadow_radius").width
-        anchors.fill: stepPanel
-        source: stepPanel
+        anchors.fill: wizardPanel
+        source: wizardPanel
         horizontalOffset: shadowOffset
         verticalOffset: shadowOffset
         color: UM.Theme.getColor("first_run_shadow")

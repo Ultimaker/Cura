@@ -71,6 +71,11 @@ class VersionUpgrade40to41(VersionUpgrade):
         parser["general"]["version"] = "6"
         if "metadata" not in parser:
             parser["metadata"] = {}
+
+        # Remove changelog plugin
+        if "latest_version_changelog_shown" in parser["general"]:
+            del parser["general"]["latest_version_changelog_shown"]
+
         parser["metadata"]["setting_version"] = "7"
 
         result = io.StringIO()
