@@ -68,12 +68,17 @@ UM.MainWindow
         z: greyOutBackground.z + 1
     }
 
+    Component.onCompleted:
+    {
+        CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
+        CuraApplication.purgeWindows()
+    }
+
     Connections
     {
         target: CuraApplication
         onInitializationFinished:
         {
-            CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
             // Workaround silly issues with QML Action's shortcut property.
             //
             // Currently, there is no way to define shortcuts as "Application Shortcut".
@@ -85,7 +90,6 @@ UM.MainWindow
             //
             // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
             Cura.Actions.parent = backgroundItem
-            CuraApplication.purgeWindows()
 
             if (CuraApplication.shouldShowWelcomeDialog())
             {
