@@ -100,24 +100,14 @@ UM.MainWindow
                 welcomeDialogItem.visible = false
             }
 
+            // Reuse the welcome dialog item to show "What's New" only.
             if (CuraApplication.shouldShowWhatsNewDialog())
             {
-                showWhatsNewDialogTimer.start()
+                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
             }
         }
-    }
-
-    // HACK: Use a timer here because if we call "Cura.Actions.whatsNew.trigger()" or "whatsNewDialog.show()" when
-    // the component gets completed or when the application finishes its initialization, the main window has not been
-    // fully initialized yet. If we should the dialog before the main window is fully initialized, you will see the
-    // dialog first but when the main windows is fully initialized, the dialog will disappear. Adding a timer here is
-    // to bypass this problem.
-    Timer
-    {
-        id: showWhatsNewDialogTimer
-        repeat: false
-        interval: 1000
-        onTriggered: Cura.Actions.whatsNew.trigger()
     }
 
     Item
