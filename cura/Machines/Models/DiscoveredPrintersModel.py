@@ -105,8 +105,20 @@ class DiscoveredPrintersModel(QObject):
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(
             x for x in self._discovered_printer_by_ip_dict.values() if not parseBool(x.device.getProperty("temporary")))
-        item_list.sort(key = lambda x: (int(not x.isUnknownMachineType), getattr(x.device, "clusterSize", 1), x.device.name), reverse = True)
-        return item_list
+
+        # Split the printers into 2 lists and sort them ascending based on names.
+        available_list = []
+        not_available_list = []
+        for item in item_list:
+            if item.isUnknownMachineType or getattr(item.device, "clusterSize", 1) < 1:
+                not_available_list.append(item)
+            else:
+                available_list.append(item)
+
+        available_list.sort(key = lambda x: x.device.name)
+        not_available_list.sort(key = lambda x: x.device.name)
+
+        return available_list + not_available_list
 
     def addDiscoveredPrinter(self, ip_address: str, key: str, name: str, create_callback: Callable[[str], None],
                              machine_type: str, device: "NetworkedPrinterOutputDevice") -> None:
