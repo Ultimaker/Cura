@@ -57,6 +57,7 @@ Item
             {
                 text: catalog.i18nc("@title:label", "Printer Settings")
                 font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
 
@@ -172,6 +173,7 @@ Item
             {
                 text: catalog.i18nc("@title:label", "Printhead Settings")
                 font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
 

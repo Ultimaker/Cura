@@ -41,6 +41,7 @@ UM.TooltipArea
         anchors.top: parent.top
         anchors.left: parent.left
         font: UM.Theme.getFont("medium_bold")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
 
@@ -59,13 +60,16 @@ UM.TooltipArea
             hoverEnabled: true
             selectByMouse: true
 
+            text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
             font: UM.Theme.getFont("fixed")
             renderType: Text.NativeRendering
-            text: (propertyProvider.properties.value) ? propertyProvider.properties.value : ""
+            color: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
 
             background: Rectangle
             {
+                color: UM.Theme.getColor("main_background")
+
                 border.color:
                 {
                     if (!gcodeTextArea.enabled)

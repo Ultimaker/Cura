@@ -61,6 +61,7 @@ Item
                 anchors.top: parent.top
 
                 font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
                 text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
             }
@@ -129,6 +130,7 @@ Item
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
                     font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
                     visible:
@@ -162,6 +164,7 @@ Item
                         id: printerNameLabel
                         anchors.top: parent.top
                         font: UM.Theme.getFont("large")
+                        color: UM.Theme.getColor("text")
                         renderType: Text.NativeRendering
 
                         text: "???"
@@ -175,14 +178,53 @@ Item
                         columns: 2
                         columnSpacing: UM.Theme.getSize("default_margin").width
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Type"); renderType: Text.NativeRendering }
-                        Label { id: typeText; font: UM.Theme.getFont("default"); text: "?"; renderType: Text.NativeRendering }
+                        Label
+                        {
+                            text: catalog.i18nc("@label", "Type")
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
+                        Label
+                        {
+                            id: typeText
+                            text: "?"
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Firmware version"); renderType: Text.NativeRendering }
-                        Label { id: firmwareText; font: UM.Theme.getFont("default"); text: "0.0.0.0"; renderType: Text.NativeRendering }
+                        Label
+                        {
+                            text: catalog.i18nc("@label", "Firmware version")
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
+                        Label
+                        {
+                            id: firmwareText
+                            text: "0.0.0.0"
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
 
-                        Label { font: UM.Theme.getFont("default"); text: catalog.i18nc("@label", "Address"); renderType: Text.NativeRendering }
-                        Label { id: addressText; font: UM.Theme.getFont("default"); text: "0.0.0.0"; renderType: Text.NativeRendering }
+                        Label
+                        {
+                            text: catalog.i18nc("@label", "Address")
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
+                        Label
+                        {
+                            id: addressText
+                            text: "0.0.0.0"
+                            font: UM.Theme.getFont("default")
+                            color: UM.Theme.getColor("text")
+                            renderType: Text.NativeRendering
+                        }
 
                         Connections
                         {

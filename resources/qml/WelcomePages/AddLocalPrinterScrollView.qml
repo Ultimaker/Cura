@@ -142,6 +142,7 @@ Item
                             verticalAlignment: Text.AlignVCenter
                             text: button.text
                             font: UM.Theme.getFont("default_bold")
+                            color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                         }
                     }
@@ -203,6 +204,7 @@ Item
             text: catalog.i18nc("@label", "Printer name")
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }

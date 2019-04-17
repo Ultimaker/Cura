@@ -53,6 +53,7 @@ UM.TooltipArea
         anchors.verticalCenter: checkBox.verticalCenter
         visible: text != ""
         font: UM.Theme.getFont("medium")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
 

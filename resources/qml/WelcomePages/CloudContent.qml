@@ -52,7 +52,6 @@ Item
             topMargin: UM.Theme.getSize("default_margin").height
         }
 
-
         // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
         // the cloud contents area.
         Column
@@ -105,6 +104,7 @@ Item
                 }
                 textFormat: Text.RichText
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
         }

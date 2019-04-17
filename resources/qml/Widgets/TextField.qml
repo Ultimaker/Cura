@@ -20,6 +20,7 @@ TextField
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")
+    color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
 
     states: [
@@ -48,6 +49,8 @@ TextField
     background: Rectangle
     {
         id: backgroundRectangle
+
+        color: UM.Theme.getColor("main_background")
 
         anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
         radius: UM.Theme.getSize("setting_control_radius").width
