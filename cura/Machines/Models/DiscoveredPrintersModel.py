@@ -62,12 +62,14 @@ class DiscoveredPrinter(QObject):
         from cura.CuraApplication import CuraApplication
         readable_type = CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
         if not readable_type:
-            readable_type = "unknown"
+            readable_type = catalog.i18nc("@label", "Unknown")
         return readable_type
 
     @pyqtProperty(bool, notify = machineTypeChanged)
     def isUnknownMachineType(self) -> bool:
-        return self.readableMachineType == "unknown"
+        from cura.CuraApplication import CuraApplication
+        readable_type = CuraApplication.getInstance().getMachineManager().getMachineTypeNameFromId(self._machine_type)
+        return not readable_type
 
     @pyqtProperty(QObject, constant = True)
     def device(self) -> "NetworkedPrinterOutputDevice":
