@@ -214,9 +214,11 @@ Item
             width: (parent.width / 2) | 0
             placeholderText: catalog.i18nc("@text", "Please give your printer a name")
             maximumLength: 40
-
-            // Make sure that the fill is not empty
-            validator: RegExpValidator { regExp: /.+/ }
+            validator: RegExpValidator
+            {
+                regExp: printerNameTextField.machineNameValidator.machineNameRegex
+            }
+            property var machineNameValidator: Cura.MachineNameValidator { }
         }
     }
 }
