@@ -71,26 +71,42 @@ UM.MainWindow
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-        // Workaround silly issues with QML Action's shortcut property.
-        //
-        // Currently, there is no way to define shortcuts as "Application Shortcut".
-        // This means that all Actions are "Window Shortcuts". The code for this
-        // implements a rather naive check that just checks if any of the action's parents
-        // are a window. Since the "Actions" object is a singleton it has no parent by
-        // default. If we set its parent to something contained in this window, the
-        // shortcut will activate properly because one of its parents is a window.
-        //
-        // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
-        Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
+    }
 
-        if (CuraApplication.getWelcomePagesModel().shouldShowWelcomeFlow)
+    Connections
+    {
+        target: CuraApplication
+        onInitializationFinished:
         {
-            welcomeDialogItem.visible = true
-        }
-        else
-        {
-            welcomeDialogItem.visible = false
+            // Workaround silly issues with QML Action's shortcut property.
+            //
+            // Currently, there is no way to define shortcuts as "Application Shortcut".
+            // This means that all Actions are "Window Shortcuts". The code for this
+            // implements a rather naive check that just checks if any of the action's parents
+            // are a window. Since the "Actions" object is a singleton it has no parent by
+            // default. If we set its parent to something contained in this window, the
+            // shortcut will activate properly because one of its parents is a window.
+            //
+            // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
+            Cura.Actions.parent = backgroundItem
+
+            if (CuraApplication.shouldShowWelcomeDialog())
+            {
+                welcomeDialogItem.visible = true
+            }
+            else
+            {
+                welcomeDialogItem.visible = false
+            }
+
+            // Reuse the welcome dialog item to show "What's New" only.
+            if (CuraApplication.shouldShowWhatsNewDialog())
+            {
+                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
         }
     }
 
@@ -778,6 +794,20 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "Add Printer")
         model: CuraApplication.getAddPrinterPagesModel()
         progressBarVisible: false
+    }
+
+    Cura.WizardDialog
+    {
+        id: whatsNewDialog
+        title: catalog.i18nc("@title:window", "What's New")
+        model: CuraApplication.getWhatsNewPagesModel()
+        progressBarVisible: false
+    }
+
+    Connections
+    {
+        target: Cura.Actions.whatsNew
+        onTriggered: whatsNewDialog.show()
     }
 
     Connections

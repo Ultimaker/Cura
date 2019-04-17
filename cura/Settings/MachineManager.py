@@ -9,6 +9,7 @@ from typing import Any, List, Dict, TYPE_CHECKING, Optional, cast
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, QTimer
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.Interfaces import ContainerInterface
@@ -498,18 +499,21 @@ class MachineManager(QObject):
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.definition.name instead", "4.1")
     def activeMachineDefinitionName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.definition.getName()
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.name instead", "4.1")
     def activeMachineName(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getMetaDataEntry("group_name", self._global_container_stack.getName())
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.id instead", "4.1")
     def activeMachineId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.getId()
@@ -543,6 +547,7 @@ class MachineManager(QObject):
         return False
 
     @pyqtProperty("QVariantList", notify=globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.1")
     def activeMachineConfiguredConnectionTypes(self):
         if self._global_container_stack:
             return self._global_container_stack.configuredConnectionTypes
@@ -715,6 +720,7 @@ class MachineManager(QObject):
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    @deprecated("use Cura.activeStack.variant.name instead", "4.1")
     def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -724,6 +730,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    @deprecated("use Cura.activeStack.variant.id instead", "4.1")
     def activeVariantId(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -733,6 +740,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
+    @deprecated("use Cura.activeMachine.variant.name instead", "4.1")
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -742,6 +750,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
+    @deprecated("use Cura.activeMachine.definition.id instead", "4.1")
     def activeDefinitionId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.definition.id
@@ -806,19 +815,19 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasMaterials(self) -> bool:
         if self._global_container_stack:
-            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False))
+            return self._global_container_stack.getHasMaterials()
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariants(self) -> bool:
         if self._global_container_stack:
-            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variants", False))
+            return self._global_container_stack.getHasVariants()
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
     def hasVariantBuildplates(self) -> bool:
         if self._global_container_stack:
-            return Util.parseBool(self._global_container_stack.getMetaDataEntry("has_variant_buildplates", False))
+            return self._global_container_stack.getHasVariantsBuildPlates()
         return False
 
     ##  The selected buildplate is compatible if it is compatible with all the materials in all the extruders
@@ -1428,6 +1437,7 @@ class MachineManager(QObject):
                     self._global_container_stack.extruders[position].setEnabled(True)
                     self.updateMaterialWithVariant(position)
 
+            self.updateDefaultExtruder()
             self.updateNumberExtrudersEnabled()
 
             if configuration.buildplateConfiguration is not None:

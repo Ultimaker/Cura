@@ -97,7 +97,7 @@ class FilamentChange(Script):
                 if layer_num <= len(data):
                     index, layer_data = self._searchLayerData(data, layer_num - 1)
                     if layer_data is None:
-                        Logger.log("e", "Could not found the layer")
+                        Logger.log("e", "Could not find the layer {layer_num}".format(layer_num = layer_num))
                         continue
                     lines = layer_data.split("\n")
                     lines.insert(2, color_change)
