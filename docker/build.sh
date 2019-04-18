@@ -40,4 +40,4 @@ cmake3 \
     -DBUILD_TESTS=ON \
     ..
 make
-ctest3 --verbose --output-on-failure -T Test
+ctest3 --output-on-failure -T Test
