@@ -66,10 +66,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._received_print_jobs = False # type: bool
 
         if PluginRegistry.getInstance() is not None:
-            self._monitor_view_qml_path = os.path.join(
-                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-                "resources", "qml", "MonitorStage.qml"
-            )
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            if plugin_path is None:
+                Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
+                raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
+            self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)

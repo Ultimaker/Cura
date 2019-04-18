@@ -21,7 +21,7 @@ Cura.RoundedRectangle
 
     border.width: UM.Theme.getSize("default_lining").width
     border.color: UM.Theme.getColor("lining")
-    color: hovered ? UM.Theme.getColor("secondary_button_hover") : UM.Theme.getColor("secondary_button")
+    color: UM.Theme.getColor("secondary")
     radius: UM.Theme.getSize("default_radius").width
 
     cornerSide: contentShown ? Cura.RoundedRectangle.Direction.Up : Cura.RoundedRectangle.Direction.All

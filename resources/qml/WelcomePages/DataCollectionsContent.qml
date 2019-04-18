@@ -71,6 +71,7 @@ Item
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
 
                 MouseArea
