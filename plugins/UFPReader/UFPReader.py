@@ -38,5 +38,5 @@ class UFPReader(MeshReader):
 
         # Open the GCodeReader to parse the data
         gcode_reader = PluginRegistry.getInstance().getPluginObject("GCodeReader")  # type: ignore
-        gcode_reader.preReadFromStream(gcode_stream)
-        return gcode_reader.readFromStream(gcode_stream)
+        gcode_reader.preReadFromStream(gcode_stream)  # type: ignore
+        return gcode_reader.readFromStream(gcode_stream)  # type: ignore
