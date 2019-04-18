@@ -68,6 +68,7 @@ class AuthorizationService:
                 self._user_profile = self._parseJWT()
             except requests.exceptions.ConnectionError:
                 # Unable to get connection, can't login.
+                Logger.logException("w", "Unable to validate user data with the remote server.")
                 return None
 
         if not self._user_profile and self._auth_data:
@@ -83,6 +84,7 @@ class AuthorizationService:
     def _parseJWT(self) -> Optional["UserProfile"]:
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
+            Logger.log("d", "There was no auth data or access token")
             return None
         user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
         if user_data:
@@ -90,9 +92,11 @@ class AuthorizationService:
             return user_data
         # The JWT was expired or invalid and we should request a new one.
         if self._auth_data.refresh_token is None:
+            Logger.log("w", "There was no refresh token in the auth data.")
             return None
         self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
         if not self._auth_data or self._auth_data.access_token is None:
+            Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
 
