@@ -79,7 +79,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             b"address": cluster.host_internal_ip.encode() if cluster.host_internal_ip else b"",
             b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
             b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
-            b"cluster_size": 1  # cloud devices are always clusters of at least one
+            b"cluster_size": b"1"  # cloud devices are always clusters of at least one
         }
 
         super().__init__(device_id = cluster.cluster_id, address = "",
