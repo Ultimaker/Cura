@@ -85,6 +85,8 @@ Item
             {
                 id: machineList
 
+                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+
                 model: UM.DefinitionContainersModel
                 {
                     id: machineDefinitionsModel
@@ -142,6 +144,7 @@ Item
                             verticalAlignment: Text.AlignVCenter
                             text: button.text
                             font: UM.Theme.getFont("default_bold")
+                            color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
                         }
                     }
@@ -200,9 +203,10 @@ Item
 
         Label
         {
-            text: catalog.i18nc("@label", "Printer Name")
+            text: catalog.i18nc("@label", "Printer name")
             anchors.verticalCenter: parent.verticalCenter
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
             renderType: Text.NativeRendering
         }
@@ -213,9 +217,12 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             width: (parent.width / 2) | 0
             placeholderText: catalog.i18nc("@text", "Please give your printer a name")
-
-            // Make sure that the fill is not empty
-            validator: RegExpValidator { regExp: /.+/ }
+            maximumLength: 40
+            validator: RegExpValidator
+            {
+                regExp: printerNameTextField.machineNameValidator.machineNameRegex
+            }
+            property var machineNameValidator: Cura.MachineNameValidator { }
         }
     }
 }
