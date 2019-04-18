@@ -3537,6 +3537,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
+                    "value": "retraction_hop",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
                     "enabled": "retraction_enable and retraction_hop_after_extruder_switch",
