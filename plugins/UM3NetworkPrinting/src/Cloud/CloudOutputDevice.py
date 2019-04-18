@@ -244,9 +244,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _updatePrinters(self, printers: List[CloudClusterPrinterStatus]) -> None:
         previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
         received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinterStatus]
-        
-        # We need the machine type of the host (1st list entry) to allow discovery to work.
-        self._host_machine_type = printers[0].machine_variant
+
+        if len(printers) > 0:
+            # We need the machine type of the host (1st list entry) to allow discovery to work.
+            self._host_machine_type = printers[0].machine_variant
 
         removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
