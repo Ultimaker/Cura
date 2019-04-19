@@ -188,65 +188,83 @@ geometry41core =
         g_vertex_offset_vert = vec4(g_vertex_normal_vert * size_y, 0.0);
 
         if ((v_line_type[0] == 8) || (v_line_type[0] == 9)) {
+            vec4 va_head = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert);
+            vec4 va_up =  viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
+            vec4 va_down = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert);
+            vec4 vb_head =  viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head + g_vertex_offset_vert);
+            vec4 vb_down = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert);
+            vec4 vb_up = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert);
+
             // Travels: flat plane with pointy ends
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_head);
             //And reverse so that the line is also visible from the back side.
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz + g_vertex_offset_vert));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_up);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_down);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_down);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_head);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_up);
 
             EndPrimitive();
         } else {
+            vec4 va_m_horz = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz);
+            vec4 vb_m_horz = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz);
+            vec4 va_p_vert = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert);
+            vec4 vb_p_vert = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert);
+            vec4 va_p_horz = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz);
+            vec4 vb_p_horz = viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz);
+            vec4 va_m_vert = viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert);
+            vec4 vb_m_vert = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert);
+            vec4 va_head   = viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head);
+            vec4 vb_head   = viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head);
+
             // All normal lines are rendered as 3d tubes.
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
 
             EndPrimitive();
 
             // left side
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_vert, va_p_vert);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
 
             EndPrimitive();
 
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_vert));
-            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, viewProjectionMatrix * (gl_in[0].gl_Position + g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[0].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz, va_p_horz);
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_vert, va_m_vert);
+            myEmitVertex(v_vertex[0], v_color[0], g_vertex_normal_horz_head, va_head);
+            myEmitVertex(v_vertex[0], v_color[0], -g_vertex_normal_horz, va_m_horz);
 
             EndPrimitive();
 
             // right side
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_vert, vb_p_vert);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
 
             EndPrimitive();
 
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_vert));
-            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, viewProjectionMatrix * (gl_in[1].gl_Position - g_vertex_offset_horz_head));
-            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, viewProjectionMatrix * (gl_in[1].gl_Position + g_vertex_offset_horz));
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz, vb_m_horz);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_vert, vb_m_vert);
+            myEmitVertex(v_vertex[1], v_color[1], -g_vertex_normal_horz_head, vb_head);
+            myEmitVertex(v_vertex[1], v_color[1], g_vertex_normal_horz, vb_p_horz);
 
             EndPrimitive();
         }
