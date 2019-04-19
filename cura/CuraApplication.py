@@ -214,14 +214,14 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._machine_settings_manager = MachineSettingsManager(self)
+        self._machine_settings_manager = MachineSettingsManager(self, parent = self)
 
-        self._discovered_printer_model = DiscoveredPrintersModel(self)
-        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
-        self._welcome_pages_model = WelcomePagesModel(self)
-        self._add_printer_pages_model = AddPrinterPagesModel(self)
-        self._whats_new_pages_model = WhatsNewPagesModel(self)
-        self._text_manager = TextManager(self)
+        self._discovered_printer_model = DiscoveredPrintersModel(parent = self)
+        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+        self._welcome_pages_model = WelcomePagesModel(self, parent = self)
+        self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
+        self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
+        self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
