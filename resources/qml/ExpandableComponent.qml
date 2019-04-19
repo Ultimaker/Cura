@@ -225,6 +225,33 @@ Item
                 left: parent.left
             }
 
+            MouseArea
+            {
+                id: dragRegion
+                anchors
+                {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: contentHeader.xPosCloseButton
+                }
+                property variant clickPos: Qt.point(0, 0)
+
+                onPressed:
+                {
+                    clickPos = Qt.point(mouse.x, mouse.y);
+                }
+
+                onPositionChanged:
+                {
+                    var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
+                    if (delta.x != 0 || delta.y != 0)
+                    {
+                        contentContainer.x += delta.x;
+                        contentContainer.y += delta.y;
+                    }
+                }
+            }
         }
 
         Control
