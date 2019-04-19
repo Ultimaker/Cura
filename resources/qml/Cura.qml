@@ -197,7 +197,7 @@ UM.MainWindow
                 top: applicationMenu.bottom
             }
         }
-        
+
         Item
         {
             id: contentItem
