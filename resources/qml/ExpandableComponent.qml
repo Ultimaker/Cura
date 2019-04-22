@@ -247,11 +247,12 @@ Item
                     var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
                     if (delta.x !== 0 || delta.y !== 0)
                     {
-                        var minPt = base.mapFromItem(null, 0, 0);
+                        var margin = UM.Theme.getSize("narrow_margin");
+                        var minPt = base.mapFromItem(null, margin.width, margin.height);
                         var maxPt = base.mapFromItem(null,
-                            CuraApplication.appWidth() - contentContainer.width,
-                            CuraApplication.appHeight() - contentContainer.height);
-                        var initialY = background.height + base.shadowOffset + base.contentSpacingY;
+                            CuraApplication.appWidth() - (contentContainer.width + margin.width),
+                            CuraApplication.appHeight() - (contentContainer.height + margin.width));
+                        var initialY = background.height + base.shadowOffset + margin.height;
 
                         contentContainer.x = Math.min(maxPt.x, Math.max(minPt.x, contentContainer.x + delta.x));
                         contentContainer.y = Math.min(maxPt.y, Math.max(initialY, contentContainer.y + delta.y));
