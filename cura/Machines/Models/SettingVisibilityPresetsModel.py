@@ -6,6 +6,7 @@ from typing import Optional, List
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot, QObject
 
 from UM.Logger import Logger
+from UM.Preferences import Preferences
 from UM.Resources import Resources
 
 from UM.i18n import i18nCatalog
@@ -18,14 +19,20 @@ class SettingVisibilityPresetsModel(QObject):
     onItemsChanged = pyqtSignal()
     activePresetChanged = pyqtSignal()
 
-    def __init__(self, preferences, parent = None):
+    def __init__(self, preferences: Preferences, parent = None) -> None:
         super().__init__(parent)
 
         self._items = []  # type: List[SettingVisibilityPreset]
+        self._custom_preset = SettingVisibilityPreset(preset_id = "custom", name = "Custom selection", weight = -100)
+
         self._populate()
 
         basic_item = self.getVisibilityPresetById("basic")
-        basic_visibile_settings = ";".join(basic_item.settings)
+        if basic_item is not None:
+            basic_visibile_settings = ";".join(basic_item.settings)
+        else:
+            Logger.log("w", "Unable to find the basic visiblity preset.")
+            basic_visibile_settings = ""
 
         self._preferences = preferences
 
@@ -42,7 +49,8 @@ class SettingVisibilityPresetsModel(QObject):
         visible_settings = self._preferences.getValue("general/visible_settings")
 
         if not visible_settings:
-            self._preferences.setValue("general/visible_settings", ";".join(self._active_preset_item.settings))
+            new_visible_settings = self._active_preset_item.settings if self._active_preset_item is not None else []
+            self._preferences.setValue("general/visible_settings", ";".join(new_visible_settings))
         else:
             self._onPreferencesChanged("general/visible_settings")
 
@@ -59,9 +67,7 @@ class SettingVisibilityPresetsModel(QObject):
     def _populate(self) -> None:
         from cura.CuraApplication import CuraApplication
         items = []  # type: List[SettingVisibilityPreset]
-
-        custom_preset = SettingVisibilityPreset(preset_id="custom", name ="Custom selection", weight = -100)
-        items.append(custom_preset)
+        items.append(self._custom_preset)
         for file_path in Resources.getAllResourcesOfType(CuraApplication.ResourceTypes.SettingVisibilityPreset):
             setting_visibility_preset = SettingVisibilityPreset()
             try:
@@ -77,7 +83,7 @@ class SettingVisibilityPresetsModel(QObject):
         self.setItems(items)
 
     @pyqtProperty("QVariantList", notify = onItemsChanged)
-    def items(self):
+    def items(self) -> List[SettingVisibilityPreset]:
         return self._items
 
     def setItems(self, items: List[SettingVisibilityPreset]) -> None:
@@ -87,7 +93,7 @@ class SettingVisibilityPresetsModel(QObject):
 
     @pyqtSlot(str)
     def setActivePreset(self, preset_id: str) -> None:
-        if preset_id == self._active_preset_item.presetId:
+        if self._active_preset_item is not None and preset_id == self._active_preset_item.presetId:
             Logger.log("d", "Same setting visibility preset [%s] selected, do nothing.", preset_id)
             return
 
@@ -96,7 +102,7 @@ class SettingVisibilityPresetsModel(QObject):
             Logger.log("w", "Tried to set active preset to unknown id [%s]", preset_id)
             return
 
-        need_to_save_to_custom = self._active_preset_item.presetId == "custom" and preset_id != "custom"
+        need_to_save_to_custom = self._active_preset_item is None or (self._active_preset_item.presetId == "custom" and preset_id != "custom")
         if need_to_save_to_custom:
             # Save the current visibility settings to custom
             current_visibility_string = self._preferences.getValue("general/visible_settings")
@@ -117,7 +123,9 @@ class SettingVisibilityPresetsModel(QObject):
 
     @pyqtProperty(str, notify = activePresetChanged)
     def activePreset(self) -> str:
-        return self._active_preset_item.presetId
+        if self._active_preset_item is not None:
+            return self._active_preset_item.presetId
+        return ""
 
     def _onPreferencesChanged(self, name: str) -> None:
         if name != "general/visible_settings":
@@ -140,7 +148,7 @@ class SettingVisibilityPresetsModel(QObject):
         item_to_set = self._active_preset_item
         if matching_preset_item is None:
             # The new visibility setup is "custom" should be custom
-            if self._active_preset_item.presetId == "custom":
+            if self._active_preset_item is None or self._active_preset_item.presetId == "custom":
                 # We are already in custom, just save the settings
                 self._preferences.setValue("cura/custom_visible_settings", visibility_string)
             else:
@@ -149,7 +157,12 @@ class SettingVisibilityPresetsModel(QObject):
         else:
             item_to_set = matching_preset_item
 
+        # If we didn't find a matching preset, fallback to custom.
+        if item_to_set is None:
+            item_to_set = self._custom_preset
+
         if self._active_preset_item is None or self._active_preset_item.presetId != item_to_set.presetId:
             self._active_preset_item = item_to_set
-            self._preferences.setValue("cura/active_setting_visibility_preset", self._active_preset_item.presetId)
+            if self._active_preset_item is not None:
+                self._preferences.setValue("cura/active_setting_visibility_preset", self._active_preset_item.presetId)
             self.activePresetChanged.emit()

@@ -1,0 +1,92 @@
+{
+    "id": "BIBO2 dual",
+    "version": 2,
+    "name": "BIBO2 dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "na",
+        "manufacturer": "BIBO",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains": {
+            "0": "bibo2_dual_extruder_0",
+            "1": "bibo2_dual_extruder_1"
+        },
+        "first_start_actions": [
+            "MachineSettingsAction"
+        ]
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "BIBO2 dual"
+        },
+        "machine_width": {
+            "default_value": 214
+        },
+        "machine_height": {
+            "default_value": 160
+        },
+        "machine_depth": {
+            "default_value": 186
+        },
+        "machine_center_is_zero": {
+            "default_value": true
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 2
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 2
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [
+                    -68.18,
+                    64.63
+                ],
+                [
+                    -68.18,
+                    -47.38
+                ],
+                [
+                    35.18,
+                    64.63
+                ],
+                [
+                    35.18,
+                    -47.38
+                ]
+            ]
+        },
+        "gantry_height": {
+            "default_value": 12
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21        ;metric values\nG90        ;absolute positioning\nM107       ;start with the fan off\nG28 X0 Y0  ;move X/Y to min endstops\nG28 Z0     ;move Z to min endstops\nG1 Z2.0 F400 ;move the platform down 15mm\nT0\nG92 E0\nG28\nG1 Y0 F1200 E0\nG92 E0\nM117 BIBO Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": ";End GCode\nM104 T0 S0                     ;extruder heater off\nM104 T1 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off (if you have it)\nG91\nG1 Z1 F100                                        ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-2 X-20 Y-20 F300 ;move Z up a bit and retract filament even more\nG28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\nM84                         ;steppers off\nG90                         ;absolute positioning"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "prime_tower_position_x": {
+            "default_value": 50
+        },
+        "prime_tower_position_y": {
+            "default_value": 50
+        }
+    }
+}
+

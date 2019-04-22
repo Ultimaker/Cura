@@ -47,8 +47,10 @@ class ContainerManager(QObject):
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
         ContainerManager.__instance = self
-
-        super().__init__(parent = application)
+        try:
+            super().__init__(parent = application)
+        except TypeError:
+            super().__init__()
 
         self._application = application # type: CuraApplication
         self._plugin_registry = self._application.getPluginRegistry()  # type: PluginRegistry
@@ -419,13 +421,13 @@ class ContainerManager(QObject):
             self._container_name_filters[name_filter] = entry
 
     ##  Import single profile, file_url does not have to end with curaprofile
-    @pyqtSlot(QUrl, result="QVariantMap")
-    def importProfile(self, file_url: QUrl):
+    @pyqtSlot(QUrl, result = "QVariantMap")
+    def importProfile(self, file_url: QUrl) -> Dict[str, str]:
         if not file_url.isValid():
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         path = file_url.toLocalFile()
         if not path:
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
         return self._container_registry.importProfile(path)
 
     @pyqtSlot(QObject, QUrl, str)

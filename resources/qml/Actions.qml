@@ -1,10 +1,11 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 pragma Singleton
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.3 as Controls2
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
@@ -22,8 +23,6 @@ Item
     property alias viewTopCamera: viewTopCameraAction;
     property alias viewLeftSideCamera: viewLeftSideCameraAction;
     property alias viewRightSideCamera: viewRightSideCameraAction;
-
-    property alias expandSidebar: expandSidebarAction;
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
@@ -58,10 +57,11 @@ Item
 
     property alias preferences: preferencesAction;
 
-    property alias showEngineLog: showEngineLogAction;
     property alias showProfileFolder: showProfileFolderAction;
     property alias documentation: documentationAction;
+    property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
+    property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
@@ -70,20 +70,28 @@ Item
 
     property alias browsePackages: browsePackagesAction
 
-    UM.I18nCatalog{id: catalog; name:"cura"}
+    UM.I18nCatalog{id: catalog; name: "cura"}
+
+
+    Action
+    {
+        id: showTroubleShootingAction
+        onTriggered: Qt.openUrlExternally("https://ultimaker.com/en/troubleshooting")
+        text: catalog.i18nc("@action:inmenu", "Show Online Troubleshooting Guide");
+    }
 
     Action
     {
         id:toggleFullScreenAction
         shortcut: StandardKey.FullScreen;
-        text: catalog.i18nc("@action:inmenu","Toggle Full Screen");
+        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen");
         iconName: "view-fullscreen";
     }
 
     Action
     {
         id: undoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Undo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Undo");
         iconName: "edit-undo";
         shortcut: StandardKey.Undo;
         onTriggered: UM.OperationStack.undo();
@@ -168,6 +176,7 @@ Item
         id: manageMaterialsAction
         text: catalog.i18nc("@action:inmenu", "Manage Materials...")
         iconName: "configure"
+        shortcut: "Ctrl+K"
     }
 
     Action
@@ -182,7 +191,7 @@ Item
     {
         id: resetProfileAction;
         enabled: Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Discard current changes");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Discard current changes");
         onTriggered:
         {
             forceActiveFocus();
@@ -194,20 +203,21 @@ Item
     {
         id: addProfileAction;
         enabled: !Cura.MachineManager.stacksHaveErrors && Cura.MachineManager.hasUserSettings
-        text: catalog.i18nc("@action:inmenu menubar:profile","&Create profile from current settings/overrides...");
+        text: catalog.i18nc("@action:inmenu menubar:profile", "&Create profile from current settings/overrides...");
     }
 
     Action
     {
-        id: manageProfilesAction;
-        text: catalog.i18nc("@action:inmenu menubar:profile","Manage Profiles...");
-        iconName: "configure";
+        id: manageProfilesAction
+        text: catalog.i18nc("@action:inmenu menubar:profile", "Manage Profiles...")
+        iconName: "configure"
+        shortcut: "Ctrl+J"
     }
 
     Action
     {
         id: documentationAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Online &Documentation");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Show Online &Documentation");
         iconName: "help-contents";
         shortcut: StandardKey.Help;
         onTriggered: CuraActions.openDocumentation();
@@ -215,15 +225,21 @@ Item
 
     Action {
         id: reportBugAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Report a &Bug");
+        text: catalog.i18nc("@action:inmenu menubar:help", "Report a &Bug");
         iconName: "tools-report-bug";
         onTriggered: CuraActions.openBugReportPage();
     }
 
     Action
     {
+        id: whatsNewAction;
+        text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
+    }
+
+    Action
+    {
         id: aboutAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","About...");
+        text: catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
     }
 
@@ -273,7 +289,7 @@ Item
     {
         id: groupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
         onTriggered: CuraApplication.groupSelected();
@@ -293,7 +309,7 @@ Item
     {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
-        enabled: UM.Scene.isGroupSelected
+        enabled: UM.Selection.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
         onTriggered: CuraApplication.ungroupSelected();
@@ -303,7 +319,7 @@ Item
     {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
         onTriggered: CuraApplication.mergeSelected();
@@ -398,14 +414,6 @@ Item
 
     Action
     {
-        id: showEngineLogAction;
-        text: catalog.i18nc("@action:inmenu menubar:help","Show Engine &Log...");
-        iconName: "view-list-text";
-        shortcut: StandardKey.WhatsThis;
-    }
-
-    Action
-    {
         id: showProfileFolderAction;
         text: catalog.i18nc("@action:inmenu menubar:help","Show Configuration Folder");
     }
@@ -421,14 +429,7 @@ Item
     Action
     {
         id: browsePackagesAction
-        text: catalog.i18nc("@action:menu", "Browse packages...")
+        text: catalog.i18nc("@action:menu", "&Marketplace")
         iconName: "plugins_browse"
-    }
-
-    Action
-    {
-        id: expandSidebarAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Expand/Collapse Sidebar");
-        shortcut: "Ctrl+E";
     }
 }

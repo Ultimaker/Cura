@@ -1,0 +1,96 @@
+{
+    "name": "Cocoon Create ModelMaker",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Samuel Pinches",
+        "manufacturer": "Cocoon Create",
+        "file_formats": "text/x-gcode",
+        "preferred_quality_type": "fine",
+        "machine_extruder_trains":
+        {
+            "0": "cocoon_create_modelmaker_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Cocoon Create ModelMaker"
+        },
+        "machine_start_gcode": {
+            "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM104 S0                 ;turn off nozzle heater\nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament slightly\nG90                     ;set to absolute positioning\nG28 X0 Y0                 ;move to the XY-axis origin (Home)\nM84                     ;turn off stepper motors\n; -- end of END GCODE --"
+        },        
+        "machine_width": {
+            "default_value": 120
+        },
+        "machine_height": {
+            "default_value": 100
+        },
+        "machine_depth": {
+            "default_value": 135
+        },
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "default_value": 10
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "material_print_temperature": {
+            "default_value": 220
+        },
+        "layer_height": {
+            "default_value": 0.10
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "wall_thickness": {
+            "default_value": 1.2
+        },
+        "top_bottom_thickness": {
+            "default_value": 0.6
+        },
+        "speed_print": {
+            "default_value": 40
+        },
+        "speed_infill": {
+            "default_value": 40
+        },
+        "speed_wall": {
+            "default_value": 35
+        },
+        "speed_topbottom": {
+            "default_value": 35
+        },
+        "speed_travel": {
+            "default_value": 70
+        },
+        "speed_layer_0": {
+            "default_value": 20
+        },
+        "support_enable": {
+            "default_value": true
+        },
+        "retraction_enable": {
+            "default_value": true
+        },
+        "retraction_amount": {
+            "default_value": 7
+        },
+        "retraction_speed": {
+            "default_value": 40
+        }
+    }
+}

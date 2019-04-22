@@ -83,7 +83,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: !isCurrentItemActivated
+            enabled: !isCurrentItemActivated && Cura.MachineManager.hasMaterials
             onClicked:
             {
                 forceActiveFocus()
@@ -127,7 +127,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManager.canMaterialBeRemoved(base.currentItem.container_node)
             onClicked:
             {
                 forceActiveFocus();

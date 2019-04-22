@@ -1,17 +1,15 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
 from UM.Signal import Signal
 
-from typing import Union
-
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+    from .Models.PrintJobOutputModel import PrintJobOutputModel
+    from .Models.ExtruderOutputModel import ExtruderOutputModel
+    from .Models.PrinterOutputModel import PrinterOutputModel
+    from .PrinterOutputDevice import PrinterOutputDevice
 
 
 class PrinterOutputController:
@@ -25,10 +23,10 @@ class PrinterOutputController:
         self.can_update_firmware = False
         self._output_device = output_device
 
-    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: Union[int, float]) -> None:
+    def setTargetHotendTemperature(self, printer: "PrinterOutputModel", position: int, temperature: float) -> None:
         Logger.log("w", "Set target hotend temperature not implemented in controller")
 
-    def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int) -> None:
+    def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: float) -> None:
         Logger.log("w", "Set target bed temperature not implemented in controller")
 
     def setJobState(self, job: "PrintJobOutputModel", state: str) -> None:

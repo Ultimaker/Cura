@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
@@ -101,24 +101,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("cura/choice_on_open_project")
         setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
-        if (pluginExistsAndEnabled("SliceInfoPlugin")) {
-            UM.Preferences.resetPreference("info/send_slice_info")
-            sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-        }
-        if (pluginExistsAndEnabled("UpdateChecker")) {
-            UM.Preferences.resetPreference("info/automatic_update_check")
-            checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-        }
-    }
-
-    function pluginExistsAndEnabled(pluginName)
-    {
-        var pluginItem = plugins.find("id", pluginName)
-        if (pluginItem > -1)
-        {
-            return plugins.getItem(pluginItem).enabled
-        }
-        return false
+        UM.Preferences.resetPreference("info/send_slice_info")
+        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        UM.Preferences.resetPreference("info/automatic_update_check")
+        checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
     }
 
     ScrollView
@@ -130,11 +116,9 @@ UM.PreferencesPage
 
         Column
         {
-            //: Model used to check if a plugin exists
-            UM.PluginsModel { id: plugins }
 
             //: Language selection label
-            UM.I18nCatalog{id: catalog; name:"cura"}
+            UM.I18nCatalog{id: catalog; name: "cura"}
 
             Label
             {
@@ -151,7 +135,6 @@ UM.PreferencesPage
                 {
                     id: languageLabel
                     text: catalog.i18nc("@label","Language:")
-                    anchors.verticalCenter: languageComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -219,7 +202,6 @@ UM.PreferencesPage
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label","Currency:")
-                    anchors.verticalCenter: currencyField.verticalCenter
                 }
 
                 TextField
@@ -233,7 +215,6 @@ UM.PreferencesPage
                 {
                     id: themeLabel
                     text: catalog.i18nc("@label","Theme:")
-                    anchors.verticalCenter: themeComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -675,7 +656,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("UpdateChecker")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -691,7 +671,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("SliceInfoPlugin")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -749,6 +728,11 @@ UM.PreferencesPage
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
+                    if (preference !== "info/send_slice_info")
+                    {
+                        return;
+                    }
+
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 }
             }

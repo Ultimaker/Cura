@@ -1,22 +1,21 @@
 # Cura JSON setting files
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-09-21 21:52+0200\n"
-"Last-Translator: 'Jaguś' Paweł Jagusiak, Andrzej 'anraf1001' Rafalski and Jakub 'drzejkopf' Świeciński\n"
+"Project-Id-Version: Cura 4.0\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"PO-Revision-Date: 2019-03-14 14:44+0100\n"
+"Last-Translator: Mariusz 'Virgin71' Matłosz <matliks@gmail.com>\n"
 "Language-Team: reprapy.pl\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 2.1.1\n"
-"POT-Creation-Date: \n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -249,7 +248,7 @@ msgstr "Liczba zespołów ekstruderów, które są dostępne; automatycznie usta
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer nozzle diameter"
-msgstr "Zewn. średnica dyszy"
+msgstr "Zew. średnica dyszy"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -764,7 +763,7 @@ msgstr "Szerokość jednej linii ściany."
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 label"
 msgid "Outer Wall Line Width"
-msgstr "Szerokość Linii Ściany Zewn."
+msgstr "Szerokość Linii Ścian(y) Zewnętrznych"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_0 description"
@@ -774,7 +773,7 @@ msgstr "Szerokość zewnętrznej linii ściany. Przez obniżenie tej wartości w
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x label"
 msgid "Inner Wall(s) Line Width"
-msgstr "Szerokość Linii Ściany Wewn."
+msgstr "Szerokość Linii Ścian(y) Wewnętnych"
 
 #: fdmprinter.def.json
 msgctxt "wall_line_width_x description"
@@ -794,7 +793,7 @@ msgstr "Szerokość pojedynczej górnej/dolnej linii."
 #: fdmprinter.def.json
 msgctxt "infill_line_width label"
 msgid "Infill Line Width"
-msgstr "Szerokość Linii Wypełn."
+msgstr "Szerokość Linii Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_line_width description"
@@ -854,7 +853,7 @@ msgstr "Szerokość pojedynczej linii podłoża podpory."
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "Szerokość Linii Wieży Czyszcz."
+msgstr "Szerokość Linii Wieży Czyszczczenia"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
@@ -894,7 +893,7 @@ msgstr "Ekstruder używany do drukowania ścian. Używane w multi-esktruzji."
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr label"
 msgid "Outer Wall Extruder"
-msgstr "Esktruder Zewn. Ściany"
+msgstr "Esktruder Zew. Ściany"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_extruder_nr description"
@@ -904,7 +903,7 @@ msgstr "Esktruder używany do drukowania zewn. ściany. Używane w multi-ekstruz
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr label"
 msgid "Inner Wall Extruder"
-msgstr "Ekstruder Wewn. Linii"
+msgstr "Ekstruder Wew. Linii"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_extruder_nr description"
@@ -934,7 +933,7 @@ msgstr "Liczba ścian. Przy obliczaniu za pomocą grubości ściany, ta wartoś�
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist label"
 msgid "Outer Wall Wipe Distance"
-msgstr "Długość Czyszczenia Zewn. Ściana"
+msgstr "Długość Czyszczenia Zew. Ściana"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_wipe_dist description"
@@ -1078,8 +1077,8 @@ msgstr "Połącz Górne/Dolne Wieloboki"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr "Łączy górne/dolne ścieżki powłoki, gdy są one prowadzone obok siebie. Przy wzorze koncentrycznym, załączenie tego ustawienia znacznie zredukuje czas ruchów jałowych, ale ze względu na to, że połączenie może nastąpić w połowie drogi ponad wypełnieniem, ta fukncja może pogorszyć jakość górnej powierzchni."
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "Połącz górne/dolne ścieżki, które przebiegają koło siebie. Włączenie tej opcji powoduje ograniczenie czasu ruchów jałowych dla wzorca koncentrycznego, ale ze względu na możliwość pojawienia się połączeń w połowie ścieżki wypełnienia, opcja ta może obniżyć jakość górnego wykończenia."
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1094,7 +1093,7 @@ msgstr "Lista całkowitych kierunków linii używana kiedy górne/dolne warstwy 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset label"
 msgid "Outer Wall Inset"
-msgstr "Wkład Zewn. Ściany"
+msgstr "Wkład Zew. Ściany"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_inset description"
@@ -1114,7 +1113,7 @@ msgstr "Optymalizuje kolejność, w jakiej będą drukowane ścianki w celu zred
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
 msgid "Outer Before Inner Walls"
-msgstr "Zewn. Ściany przed Wewn."
+msgstr "Zew. Ściany Przed Wew"
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first description"
@@ -1144,7 +1143,7 @@ msgstr "Kompensuje przepływ dla części, których ściana jest drukowana kiedy
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled label"
 msgid "Compensate Outer Wall Overlaps"
-msgstr "Komp. Zewn. Nakład. się Ścian"
+msgstr "Komp. Zew. Nakład. się Ścian"
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_0_enabled description"
@@ -1154,7 +1153,7 @@ msgstr "Kompensuje przepływ dla części, których zewnętrzna ściana jest dru
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled label"
 msgid "Compensate Inner Wall Overlaps"
-msgstr "Komp. Wewn. Nakład. się Ścian"
+msgstr "Komp. Wew. Nakład. się Ścian"
 
 #: fdmprinter.def.json
 msgctxt "travel_compensate_overlapping_walls_x_enabled description"
@@ -1464,7 +1463,7 @@ msgstr "Wypełnienie"
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr label"
 msgid "Infill Extruder"
-msgstr "Ekstruder Wypełn."
+msgstr "Ekstruder Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_extruder_nr description"
@@ -1474,7 +1473,7 @@ msgstr "Ekstruder używany do drukowania wypełnienia. Używane w multi-ekstruzj
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density label"
 msgid "Infill Density"
-msgstr "Gęstość Wypełn."
+msgstr "Gęstość Wypełnnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_density description"
@@ -1484,7 +1483,7 @@ msgstr "Dostosowuje gęstość wypełnienia wydruku."
 #: fdmprinter.def.json
 msgctxt "infill_line_distance label"
 msgid "Infill Line Distance"
-msgstr "Odstęp Linii Wypełn."
+msgstr "Odstęp Linii Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_line_distance description"
@@ -1494,12 +1493,12 @@ msgstr "Odległość między drukowanymi liniami wypełnienia. To ustawienie jes
 #: fdmprinter.def.json
 msgctxt "infill_pattern label"
 msgid "Infill Pattern"
-msgstr "Wzór Wypełn."
+msgstr "Wzorzec Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Wzór materiału wypełniającego wydruk. Linie i zygzaki zmieniają kierunek na przemiennych warstwach, redukując koszty materiału. Kratka, trójkąty, tri-sześciokąt,  sześcienne, ośmiościenne, ćwierć sześcienny i koncentryczny wzór są drukowane w pełni na każdej warstwie. Sześcienne, ćwierć sześcienne i czworościenne wypełnienie zmienia się co każdą warstwę, aby zapewnić równy rozkład siły w każdym kierunku."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr "Wzorzec wypełnienia wydruku. Kierunek zamiany linii i zygzaka na alternatywnych warstwach, zmniejsza koszty materiałów. Wzorzec siatki, trójkąta, sześcianu, oktetu, ćwiartki sześciennej, krzyżyka i koncentryczny, są w pełni drukowane na każdej warstwie. Gyroid, sześcian, świartka sześcienna i oktet zmienia się z każdą warstwą, aby zapewnić bardziej równomierny rozkład sił w każdym kierunku."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1562,6 +1561,11 @@ msgid "Cross 3D"
 msgstr "Krzyż 3D"
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr "Gyroid"
+
+#: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr "Połącz Linie Wypełnienia"
@@ -1584,7 +1588,7 @@ msgstr "Łączy ścieżki wypełnienia, gdy są one prowadzone obok siebie. Dla 
 #: fdmprinter.def.json
 msgctxt "infill_angles label"
 msgid "Infill Line Directions"
-msgstr "Kierunek Linii Wypełn."
+msgstr "Kierunek Linii Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_angles description"
@@ -1648,7 +1652,7 @@ msgstr "Dodatek do promienia od środka każdej kostki, aby sprawdzić granicę 
 #: fdmprinter.def.json
 msgctxt "infill_overlap label"
 msgid "Infill Overlap Percentage"
-msgstr "Procent Nałożenia Wypełn."
+msgstr "Procent Zachodzenia Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
@@ -1658,7 +1662,7 @@ msgstr "Ilość nałożenia pomiędzy wypełnieniem i ścianami w procentach sze
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
 msgid "Infill Overlap"
-msgstr "Nałożenie Wypełn."
+msgstr "Zachodzenie Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm description"
@@ -1672,8 +1676,8 @@ msgstr "Procent Nakładania się Skóry"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
-msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr "Ilość nałożenia pomiędzy skórą a ścianami w procentach szerokości linii skóry. Delikatne nałożenie pozawala na lepsze połączenie się ścian ze skórą. Jest to procent średniej szerokości linii skóry i wewnętrznej ściany."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu, jako procent szerokości linii obrysu i najbardziej wewnętrznej ściany. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1682,13 +1686,13 @@ msgstr "Nakładanie się Skóry"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
-msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Ilość nakładania się skóry i ścian. Lekkie nałożenie pozwala ściśle łączyć się ze skórą."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
 msgid "Infill Wipe Distance"
-msgstr "Dług. Czyszczenia Wypełn."
+msgstr "Długość Czyszczenia Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist description"
@@ -1698,7 +1702,7 @@ msgstr "Odległość ruchu jałowego pomiędzy każdą linią wypełnienia, aby 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness label"
 msgid "Infill Layer Thickness"
-msgstr "Grubość Warstwy Wypełn."
+msgstr "Grubość Warstwy Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_sparse_thickness description"
@@ -1708,7 +1712,7 @@ msgstr "Grubość na warstwe materiału wypełniającego. Ta wartość powinna z
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps label"
 msgid "Gradual Infill Steps"
-msgstr "Stopnie Stopniowego Wypełn."
+msgstr "Stopniowe Kroki Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_steps description"
@@ -1718,7 +1722,7 @@ msgstr "Liczba redukcji wypełnienia o połowę podczas drukowania poniżej gór
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height label"
 msgid "Gradual Infill Step Height"
-msgstr "Wys. Stopnia Stopniowego Wypełn."
+msgstr "Wysokość Kroku Stopniowego Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "gradual_infill_step_height description"
@@ -1738,7 +1742,7 @@ msgstr "Wydrukuj wypełnienie przed wydrukowaniem ścian. Drukowanie ścian jako
 #: fdmprinter.def.json
 msgctxt "min_infill_area label"
 msgid "Minimum Infill Area"
-msgstr "Min. Obszar Wypełn."
+msgstr "Min. Obszar Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "min_infill_area description"
@@ -2122,8 +2126,8 @@ msgstr "Długość Retrakcji przy Zmianie Dyszy"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "Długość retrakcji: Ustaw na 0, aby wyłączyć retrkację. To powinno ogólnie być takie samo jak długość strefy grzewczej."
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "Wielkość retrakcji przy przełączaniu ekstruderów. Ustaw na 0, aby wyłączyć retrakcję. Powinno być ustawione tak samo jak długość strefy grzania."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2178,7 +2182,7 @@ msgstr "Prędkość druku."
 #: fdmprinter.def.json
 msgctxt "speed_infill label"
 msgid "Infill Speed"
-msgstr "Prędkość Wypełn."
+msgstr "Prędkość Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "speed_infill description"
@@ -2198,7 +2202,7 @@ msgstr "Prędkość drukowania ścian."
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 label"
 msgid "Outer Wall Speed"
-msgstr "Prędkość Zewn. Ściany"
+msgstr "Prędkość Zew. Ściany"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_0 description"
@@ -2208,7 +2212,7 @@ msgstr "Szybkość, z jaką drukowane są ściany zewnętrzne. Drukując zewnęt
 #: fdmprinter.def.json
 msgctxt "speed_wall_x label"
 msgid "Inner Wall Speed"
-msgstr "Prędkość Wewn. Ściany"
+msgstr "Prędkość Wew. Ściany"
 
 #: fdmprinter.def.json
 msgctxt "speed_wall_x description"
@@ -2288,7 +2292,7 @@ msgstr "Prędkość, z jaką drukowane jest podłoże podpory. Drukowanie z niż
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
-msgstr "Prędkość Wieży Czyszcz."
+msgstr "Prędkość Wieży Czyszczenia"
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
@@ -2428,7 +2432,7 @@ msgstr "Przyspieszenie, z jakim drukowane są ściany."
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_0 label"
 msgid "Outer Wall Acceleration"
-msgstr "Przyspieszenie Ściany Zewn."
+msgstr "Przyspieszenie Ściany Zew"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_0 description"
@@ -2438,7 +2442,7 @@ msgstr "Przyspieszenia, z jakim drukowane są ściany zewn."
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_x label"
 msgid "Inner Wall Acceleration"
-msgstr "Przyspieszenie Ściany Wewn."
+msgstr "Przyspieszenie Ściany Wew"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_wall_x description"
@@ -2618,7 +2622,7 @@ msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są ściany."
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 label"
 msgid "Outer Wall Jerk"
-msgstr "Zryw Zewn. Ścian"
+msgstr "Zryw Zew. Ścian"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_0 description"
@@ -2628,7 +2632,7 @@ msgstr "Maksymalna zmiana prędkości chwilowej z jaką drukowane są zewnętrzn
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x label"
 msgid "Inner Wall Jerk"
-msgstr "Zryw Wewn. Ścian"
+msgstr "Zryw Wew. Ścian"
 
 #: fdmprinter.def.json
 msgctxt "jerk_wall_x description"
@@ -2782,10 +2786,8 @@ msgstr "Tryb Kombinowania"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr ""
-"Kombinowanie utrzymuje dyszę w już zadrukowanych obszarach podczas ruchu jałowego. Powoduje to nieco dłuższe ruchy jałowe, ale zmniejsza potrzebę retrakcji. Jeśli kombinowanie jest wyłączone, materiał się cofa, a dysza przemieszcza się w linii prostej do następnego punktu. Można też unikać kombinowania na górnych/dolnych obszarach powłoki, a także kombinować tylko wewnątrz wypełnienia. Opcja \"Wewnątrz Wypełnienia\" wymusza takie samo zachowanie, jak opcja \"Nie w Powłoce\" we wcześniejszych "
-"wydaniach Cura."
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
+msgstr "Combing utrzymuje dyszę w obszarach wydruku podczas poruszania. Powoduje to nieco dłuższe ruchy, ale zmniejsza potrzebę retrakcji. Jeśli Combing jest wyłączone, następuje retrakcja, a dysza przesuwa się w linii prostej do następnego punktu. Możliwe jest wyłączenie opcji górnych / dolnych obszarach obrysu lub utrzymanie dyszy w obrębie wypełnienia."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2820,7 +2822,7 @@ msgstr "Przy wartości niezerowej, kombinowane ruchy jałowe o dystansie większ
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
 msgid "Retract Before Outer Wall"
-msgstr "Cofnij Przed Zewn. Ścianą"
+msgstr "Cofnij Przed Zew. Ścianą"
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall description"
@@ -3268,6 +3270,36 @@ msgid "Orientation of the infill pattern for supports. The support infill patter
 msgstr "Orientacja wzoru wypełnienia dla podpór. Wzór podpory jest obracany w płaszczyźnie poziomej."
 
 #: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr "Włącz Obrys Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "Generuj obrys w obszarach wypełnienia podpory pierwszej warstwy. Obrys jest drukowany pod podporą, a nie wokół. Włączenie tej opcji zwiększa przyczepność podpór do stołu."
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr "Szerokość Obrysu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr "Szerokość obrysu, który ma być wydrukowany pod podporami. Szerszy obrys to większa przyczepność do stołu, kosztem zużytego materiału."
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr "Ilość Linii Obrysu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr "Liczba linii używanych do obrysu podpór. Większa ilość linii obrysu to większa przyczepność do stołu, kosztem zużytego materiału."
+
+#: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Odległość Podpory Z"
@@ -3406,6 +3438,16 @@ msgstr "Wys. Stopnia Stopniowego Wypełn. Podpory"
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
 msgstr "Wysokość wypełnienia podpory o danej gęstości przed przełączeniem na połowę gęstości."
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr "Minimalna Powierzchnia Podpór"
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "Minimalny rozmiar powierzchni dla podpór. Obszary, które mają mniejszą powierzchnię od tej wartości, nie będą generowane."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3633,6 +3675,66 @@ msgid "Zig Zag"
 msgstr "Zygzak"
 
 #: fdmprinter.def.json
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr "Minimalna Powierzchnia Interfejsu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "Minimalny rozmiar obszaru dla interfejsu podpór. Obszary, które mają powierzchnię mniejszą od tej wartości, nie będą generowane."
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr "Minimalna Powierzchnia Dachu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "Minimalny rozmiar obszaru dla dachu podpór. Obszary, które mają powierzchnię mniejszą od tej wartości, nie będą generowane."
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr "Minimalna Powierzchnia Podłoża Podpór"
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "Minimalny rozmiar obszaru dla podłoża podpór. Obszary, które mają powierzchnię mniejszą od tej wartości, nie będą generowane."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr "Rozrost Poziomy Interfejsu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr "Wartość przesunięcia zastosowana do obszaru interfejsu podpór."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr "Rozrost Poziomy Dachu Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr "Wartość przesunięcia zastosowana do obszaru dachu podpór."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr "Rozrost Poziomy Podłoża Podpór"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr "Wartość przesunięcia zastosowana do obszaru podłoża podpór."
+
+#: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
 msgstr "Nadpisanie Prędkości Wentylatora"
@@ -3640,7 +3742,7 @@ msgstr "Nadpisanie Prędkości Wentylatora"
 #: fdmprinter.def.json
 msgctxt "support_fan_enable description"
 msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
-msgstr "Gdy załączone, prędkość wentylatora chłodzącego wydruk jest zmieniana dla obszarów leżących bezpośrednio ponad podporami,"
+msgstr "Gdy włączone, prędkość wentylatora chłodzącego wydruk jest zmieniana dla obszarów leżących bezpośrednio ponad podporami."
 
 #: fdmprinter.def.json
 msgctxt "support_supported_skin_fan_speed label"
@@ -3715,7 +3817,7 @@ msgstr "Przyczepność"
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable label"
 msgid "Enable Prime Blob"
-msgstr "Włącz Czyszcz. \"Blob\""
+msgstr "Włącz Czyszczenie \"Blob”ów"
 
 #: fdmprinter.def.json
 msgctxt "prime_blob_enable description"
@@ -3745,7 +3847,7 @@ msgstr "Współrzędna Y, w której dysza jest czyszczona na początku wydruku."
 #: fdmprinter.def.json
 msgctxt "adhesion_type label"
 msgid "Build Plate Adhesion Type"
-msgstr "Typ Ulepszenia Przyczepności"
+msgstr "Typ Zwiększenia Przyczepności"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type description"
@@ -3775,7 +3877,7 @@ msgstr "Brak"
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr label"
 msgid "Build Plate Adhesion Extruder"
-msgstr "Ekstruder Drukujący Ułatw. Przyczep."
+msgstr "Ekstruder Adhezji Pola Roboczego"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_extruder_nr description"
@@ -3837,9 +3939,19 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "Liczba linii używana dla obrysu. Więcej linii obrysu poprawia przyczepność do stołu, ale zmniejsza rzeczywiste pole wydruku."
 
 #: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr "Podpory Zastąp Obrysem"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr "Wymuś drukowanie obrysu wokół modelu, nawet jeśli powierzchnia byłaby zajęta przez podpory. Zastępuje obszary podpór przez obrys. Dotyczy pierwszej warstwy."
+
+#: fdmprinter.def.json
 msgctxt "brim_outside_only label"
 msgid "Brim Only on Outside"
-msgstr "Obrys Tylko na Zewn."
+msgstr "Obrys Tylko na Zew"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
@@ -3864,7 +3976,7 @@ msgstr "Wygładzanie Tratwy"
 #: fdmprinter.def.json
 msgctxt "raft_smoothing description"
 msgid "This setting controls how much inner corners in the raft outline are rounded. Inward corners are rounded to a semi circle with a radius equal to the value given here. This setting also removes holes in the raft outline which are smaller than such a circle."
-msgstr "To ustawienie kontroluje jak bardzo wewn. narożniki w zewn. krawędzi tratwy mają być zaokrąglone. Wewn. narożniki są zaokrąglane do półokręgów o promieniu równym wartości podanej tutaj. To ustawienie usuwa także otwory w zewn. krawędzi tratwy, które są mniejsze niż taki okrąg."
+msgstr "To ustawienie kontroluje jak bardzo wewn. narożniki w zewn. krawędzi tratwy mają być zaokrąglone. Wew. narożniki są zaokrąglane do półokręgów o promieniu równym wartości podanej tutaj. To ustawienie usuwa także otwory w zewn. krawędzi tratwy, które są mniejsze niż taki okrąg."
 
 #: fdmprinter.def.json
 msgctxt "raft_airgap label"
@@ -4159,7 +4271,7 @@ msgstr "Ustawienia używane do drukowania wieloma głowicami."
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
-msgstr "Włącz Wieżę Czyszcz."
+msgstr "Włącz Wieżę Czyszczącą"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable description"
@@ -4179,7 +4291,7 @@ msgstr "Twórz wieżę czyszczącą o okrągłym kształcie."
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
-msgstr "Rozmiar Wieży Czyszcz."
+msgstr "Rozmiar Wieży Czyszczącej"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
@@ -4189,7 +4301,7 @@ msgstr "Szerokość wieży czyszczącej."
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
-msgstr "Min. Objętość Wieży Czyszcz."
+msgstr "Min. Objętość Wieży Czyszczącej"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume description"
@@ -4219,7 +4331,7 @@ msgstr "Współrzędna Y położenia wieży czyszczącej."
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "Przepływ Wieży Czyszcz."
+msgstr "Przepływ Wieży Czyszczącej"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
@@ -4229,7 +4341,7 @@ msgstr "Kompensacja przepływu: ilość ekstrudowanego materiału jest mnożona 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
-msgstr "Wytrzyj Nieuż. Dyszą o Wieże Czyszcz."
+msgstr "Wytrzyj Nieużywaną Dyszę o Wieżę Czyszczącą"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled description"
@@ -4309,7 +4421,7 @@ msgstr "Szerokie szwy próbują zszywać otwarte otwory w siatce przez zamknięc
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons label"
 msgid "Keep Disconnected Faces"
-msgstr "Zachowaj Rozłączone Pow."
+msgstr "Zachowaj Rozłączone Powierzchnie"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
@@ -4389,7 +4501,7 @@ msgstr "Jeden na raz"
 #: fdmprinter.def.json
 msgctxt "infill_mesh label"
 msgid "Infill Mesh"
-msgstr "Siatka Wypełn."
+msgstr "Siatka Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh description"
@@ -4399,7 +4511,7 @@ msgstr "Użyj tej siatki, aby zmodyfikować wypełnienie innych siatek, z który
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order label"
 msgid "Infill Mesh Order"
-msgstr "Porządek Siatki Wypełn."
+msgstr "Porządek Siatki Wypełnienia"
 
 #: fdmprinter.def.json
 msgctxt "infill_mesh_order description"
@@ -4504,7 +4616,7 @@ msgstr "Oba"
 #: fdmprinter.def.json
 msgctxt "magic_spiralize label"
 msgid "Spiralize Outer Contour"
-msgstr "Spiralizuj Zewn. Kontur"
+msgstr "Spiralizuj Zew. Kontur"
 
 #: fdmprinter.def.json
 msgctxt "magic_spiralize description"
@@ -5333,7 +5445,7 @@ msgstr "Długość końcówki wewnętrznej linii, która jest rozciągana podcza
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_outer_delay label"
 msgid "WP Roof Outer Delay"
-msgstr "DD Opóźnienie Zewn. Dachu"
+msgstr "DD Opóźnienie Zew. Dachu"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_roof_outer_delay description"
@@ -5659,6 +5771,30 @@ msgstr "Forma Obrotu Siatki"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Forma przesunięcia, która ma być zastosowana do modelu podczas ładowania z pliku."
+
+#~ msgctxt "skin_overlap description"
+#~ msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
+#~ msgstr "Ilość nałożenia pomiędzy skórą a ścianami w procentach szerokości linii skóry. Delikatne nałożenie pozawala na lepsze połączenie się ścian ze skórą. Jest to procent średniej szerokości linii skóry i wewnętrznej ściany."
+
+#~ msgctxt "skin_overlap_mm description"
+#~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
+#~ msgstr "Ilość nakładania się skóry i ścian. Lekkie nałożenie pozwala ściśle łączyć się ze skórą."
+
+#~ msgctxt "switch_extruder_retraction_amount description"
+#~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+#~ msgstr "Długość retrakcji: Ustaw na 0, aby wyłączyć retrkację. To powinno ogólnie być takie samo jak długość strefy grzewczej."
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
+#~ msgstr "Kombinowanie utrzymuje dyszę w już zadrukowanych obszarach podczas ruchu jałowego. Powoduje to nieco dłuższe ruchy jałowe, ale zmniejsza potrzebę retrakcji. Jeśli kombinowanie jest wyłączone, materiał się cofa, a dysza przemieszcza się w linii prostej do następnego punktu. Można też unikać kombinowania na górnych/dolnych obszarach powłoki, a także kombinować tylko wewnątrz wypełnienia. Opcja \"Wewnątrz Wypełnienia\" wymusza takie samo zachowanie, jak opcja \"Nie w Powłoce\" we wcześniejszych wydaniach Cura."
+
+#~ msgctxt "connect_skin_polygons description"
+#~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+#~ msgstr "Łączy górne/dolne ścieżki powłoki, gdy są one prowadzone obok siebie. Przy wzorze koncentrycznym, załączenie tego ustawienia znacznie zredukuje czas ruchów jałowych, ale ze względu na to, że połączenie może nastąpić w połowie drogi ponad wypełnieniem, ta fukncja może pogorszyć jakość górnej powierzchni."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "Wzór materiału wypełniającego wydruk. Linie i zygzaki zmieniają kierunek na przemiennych warstwach, redukując koszty materiału. Kratka, trójkąty, tri-sześciokąt,  sześcienne, ośmiościenne, ćwierć sześcienny i koncentryczny wzór są drukowane w pełni na każdej warstwie. Sześcienne, ćwierć sześcienne i czworościenne wypełnienie zmienia się co każdą warstwę, aby zapewnić równy rozkład siły w każdym kierunku."
 
 #~ msgctxt "infill_pattern option concentric_3d"
 #~ msgid "Concentric 3D"

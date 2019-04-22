@@ -1,20 +1,20 @@
 # Cura
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.comPOT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-09-28 15:02+0200\n"
+"Project-Id-Version: Cura 4.0\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"PO-Revision-Date: 2019-03-13 14:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: \n"
 "X-Generator: Poedit 2.0.6\n"
 
 #: fdmprinter.def.json
@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"I comandi codice G da eseguire all’avvio, separati da \n"
-"."
+msgstr "I comandi codice G da eseguire all’avvio, separati da \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"I comandi codice G da eseguire alla fine, separati da \n"
-"."
+msgstr "I comandi codice G da eseguire alla fine, separati da \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -1077,7 +1073,7 @@ msgstr "Collega poligoni superiori/inferiori"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
 msgstr "Collega i percorsi del rivestimento esterno superiore/inferiore quando corrono uno accanto all’altro. Per le configurazioni concentriche, l’abilitazione di questa impostazione riduce notevolmente il tempo di spostamento, tuttavia poiché i collegamenti possono aver luogo a metà del riempimento, con questa funzione la qualità della superficie superiore potrebbe risultare inferiore."
 
 #: fdmprinter.def.json
@@ -1497,8 +1493,8 @@ msgstr "Configurazione di riempimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente su ogni strato. Le configurazioni cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione della forza in ogni direzione."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente su ogni strato. Le configurazioni gyroid, cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione della forza in ogni direzione."
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1559,6 +1555,11 @@ msgstr "Incrociata"
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
 msgstr "Incrociata 3D"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1630,9 +1631,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare.\n"
-"Questa funzione può essere abbinata a Collega poligoni riempimento per collegare tutto il riempimento in un unico percorso di estrusione senza necessità di avanzamenti o arretramenti, se configurata correttamente."
+msgstr "Aggiunge pareti supplementari intorno alla zona di riempimento. Queste pareti possono ridurre l’abbassamento delle linee del rivestimento esterno superiore/inferiore, pertanto saranno necessari meno strati di rivestimento esterno superiore/inferiore per ottenere la stessa qualità al costo del materiale supplementare.\nQuesta funzione può essere abbinata a Collega poligoni riempimento per collegare tutto il riempimento in un unico percorso di estrusione senza necessità di avanzamenti o arretramenti, se configurata correttamente."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1671,8 +1670,8 @@ msgstr "Percentuale di sovrapposizione del rivestimento esterno"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
-msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr "Entità della sovrapposizione tra il rivestimento e le pareti espressa in percentuale della larghezza della linea del rivestimento esterno. Una leggera sovrapposizione consente alle pareti di essere saldamente collegate al rivestimento. È una percentuale delle larghezze medie delle linee del rivestimento e della parete più interna."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Regolare l’entità della sovrapposizione tra le pareti e (i punti finali delle) linee centrali del rivestimento esterno espressa in percentuale delle larghezze delle linee del rivestimento esterno. Una leggera sovrapposizione consente alle pareti di essere saldamente collegate al rivestimento. Si noti che, data una larghezza uguale del rivestimento esterno e della linea perimetrale, qualsiasi percentuale superiore al 50% può già causare il superamento della parete da parte del rivestimento esterno in quanto, in quel punto, la posizione dell’ugello dell’estrusore del rivestimento esterno può già avere superato la parte centrale della parete."
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1681,8 +1680,8 @@ msgstr "Sovrapposizione del rivestimento esterno"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
-msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Indica la quantità di sovrapposizione tra il rivestimento esterno e le pareti. Una leggera sovrapposizione consente il saldo collegamento delle pareti al rivestimento esterno."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Regolare l’entità della sovrapposizione tra le pareti e (i punti finali delle) linee centrali del rivestimento esterno. Una leggera sovrapposizione consente alle pareti di essere saldamente collegate al rivestimento. Si noti che, data una larghezza uguale del rivestimento esterno e della linea perimetrale, qualsiasi percentuale superiore alla metà della parete può già causare il superamento della parete da parte del rivestimento esterno in quanto, in quel punto, la posizione dell’ugello dell’estrusore del rivestimento esterno può già aver superato la parte centrale della parete."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2121,8 +2120,8 @@ msgstr "Distanza di retrazione cambio ugello"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "Indica il valore di retrazione: impostato a 0 per nessuna retrazione. Questo valore generalmente dovrebbe essere lo stesso della lunghezza della zona di riscaldamento."
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "Indica il valore di retrazione alla commutazione degli estrusori. Impostato a 0 per nessuna retrazione. Questo valore generalmente dovrebbe essere lo stesso della lunghezza della zona di riscaldamento."
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2781,8 +2780,8 @@ msgstr "Modalità Combing"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr "La funzione Combing tiene l’ugello all’interno delle aree già stampate durante lo spostamento. In tal modo le corse di spostamento sono leggermente più lunghe, ma si riduce l’esigenza di effettuare retrazioni. Se questa funzione viene disabilitata, il materiale viene retratto e l’ugello si sposta in linea retta al punto successivo. È anche possibile evitare il combing sopra le aree del rivestimento esterno superiore/inferiore effettuando il combing solo nel riempimento. Si noti che l’opzione ‘Nel riempimento' si comporta esattamente come l’opzione ‘Non nel rivestimento' delle precedenti versioni Cura."
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
+msgstr "La funzione Combing tiene l’ugello all’interno delle aree già stampate durante lo spostamento. In tal modo le corse di spostamento sono leggermente più lunghe ma si riduce l’esigenza di effettuare retrazioni. Se questa funzione viene disabilitata, il materiale viene retratto e l’ugello si sposta in linea retta al punto successivo. È anche possibile evitare il combing sopra le aree del rivestimento esterno superiore/inferiore o effettuare il combing solo nel riempimento."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3265,6 +3264,36 @@ msgid "Orientation of the infill pattern for supports. The support infill patter
 msgstr "Indica l’orientamento della configurazione del riempimento per i supporti. La configurazione del riempimento del supporto viene ruotata sul piano orizzontale."
 
 #: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr "Abilitazione brim del supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "Genera un brim entro le zone di riempimento del supporto del primo strato. Questo brim viene stampato al di sotto del supporto, non intorno ad esso. L’abilitazione di questa impostazione aumenta l’adesione del supporto al piano di stampa."
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr "Larghezza del brim del supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr "Corrisponde alla larghezza del brim da stampare al di sotto del supporto. Un brim più largo migliora l’adesione al piano di stampa, ma utilizza una maggiore quantità di materiale."
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr "Numero di linee del brim del supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr "Corrisponde al numero di linee utilizzate per il brim del supporto. Più linee brim migliorano l’adesione al piano di stampa, ma utilizzano una maggiore quantità di materiale."
+
+#: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "Distanza Z supporto"
@@ -3403,6 +3432,16 @@ msgstr "Altezza fasi di riempimento graduale del supporto"
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
 msgstr "Indica l’altezza di riempimento del supporto di una data densità prima di passare a metà densità."
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr "Area minima supporto"
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "Dimensioni minime area per i poligoni del supporto. I poligoni con un’area inferiore a questo valore non verranno generati."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3630,6 +3669,66 @@ msgid "Zig Zag"
 msgstr "Zig Zag"
 
 #: fdmprinter.def.json
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr "Area minima interfaccia supporto"
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "Dimensioni minime area per i poligoni di interfaccia del supporto. I poligoni con un’area inferiore a questo valore non verranno generati."
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr "Area minima parti superiori supporto"
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "Dimensioni minime area per le parti superiori del supporto. I poligoni con un’area inferiore a questo valore non verranno generati."
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr "Area minima parti inferiori supporto"
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "Dimensioni minime area per le parti inferiori del supporto. I poligoni con un’area inferiore a questo valore non verranno generati."
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr "Espansione orizzontale interfaccia supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr "Entità di offset applicato ai poligoni di interfaccia del supporto."
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr "Espansione orizzontale parti superiori supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr "Entità di offset applicato alle parti superiori del supporto."
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr "Espansione orizzontale parti inferiori supporto"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr "Entità di offset applicato alle parti inferiori del supporto."
+
+#: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
 msgstr "Override velocità della ventola"
@@ -3799,9 +3898,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\n"
-"Questa è la distanza minima. Più linee di skirt aumenteranno tale distanza."
+msgstr "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\nQuesta è la distanza minima. Più linee di skirt aumenteranno tale distanza."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3832,6 +3929,16 @@ msgstr "Numero di linee del brim"
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
 msgstr "Corrisponde al numero di linee utilizzate per un brim. Più linee brim migliorano l’adesione al piano di stampa, ma con riduzione dell'area di stampa."
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr "Brim in sostituzione del supporto"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr "Abilita la stampa del brim intorno al modello anche se quello spazio dovrebbe essere occupato dal supporto. Sostituisce alcune zone del primo strato del supporto con zone del brim."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5238,9 +5345,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Indica la distanza di uno spostamento verso l'alto con estrusione a velocità dimezzata.\n"
-"Ciò può garantire una migliore adesione agli strati precedenti, senza eccessivo riscaldamento del materiale su questi strati. Applicabile solo alla funzione Wire Printing."
+msgstr "Indica la distanza di uno spostamento verso l'alto con estrusione a velocità dimezzata.\nCiò può garantire una migliore adesione agli strati precedenti, senza eccessivo riscaldamento del materiale su questi strati. Applicabile solo alla funzione Wire Printing."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5657,6 +5762,30 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
 
+#~ msgctxt "skin_overlap description"
+#~ msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
+#~ msgstr "Entità della sovrapposizione tra il rivestimento e le pareti espressa in percentuale della larghezza della linea del rivestimento esterno. Una leggera sovrapposizione consente alle pareti di essere saldamente collegate al rivestimento. È una percentuale delle larghezze medie delle linee del rivestimento e della parete più interna."
+
+#~ msgctxt "skin_overlap_mm description"
+#~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
+#~ msgstr "Indica la quantità di sovrapposizione tra il rivestimento esterno e le pareti. Una leggera sovrapposizione consente il saldo collegamento delle pareti al rivestimento esterno."
+
+#~ msgctxt "switch_extruder_retraction_amount description"
+#~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+#~ msgstr "Indica il valore di retrazione: impostato a 0 per nessuna retrazione. Questo valore generalmente dovrebbe essere lo stesso della lunghezza della zona di riscaldamento."
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
+#~ msgstr "La funzione Combing tiene l’ugello all’interno delle aree già stampate durante lo spostamento. In tal modo le corse di spostamento sono leggermente più lunghe, ma si riduce l’esigenza di effettuare retrazioni. Se questa funzione viene disabilitata, il materiale viene retratto e l’ugello si sposta in linea retta al punto successivo. È anche possibile evitare il combing sopra le aree del rivestimento esterno superiore/inferiore effettuando il combing solo nel riempimento. Si noti che l’opzione ‘Nel riempimento' si comporta esattamente come l’opzione ‘Non nel rivestimento' delle precedenti versioni Cura."
+
+#~ msgctxt "connect_skin_polygons description"
+#~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+#~ msgstr "Collega i percorsi del rivestimento esterno superiore/inferiore quando corrono uno accanto all’altro. Per le configurazioni concentriche, l’abilitazione di questa impostazione riduce notevolmente il tempo di spostamento, tuttavia poiché i collegamenti possono aver luogo a metà del riempimento, con questa funzione la qualità della superficie superiore potrebbe risultare inferiore."
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "Configurazione del materiale di riempimento della stampa. Il riempimento a linea e a zig zag cambia direzione su strati alternati, riducendo il costo del materiale. Le configurazioni a griglia, a triangolo, tri-esagonali, cubiche, ottagonali, a quarto di cubo, incrociate e concentriche sono stampate completamente su ogni strato. Le configurazioni cubiche, a quarto di cubo e ottagonali variano per ciascuno strato per garantire una più uniforme distribuzione della forza in ogni direzione."
+
 #~ msgctxt "infill_pattern option concentric_3d"
 #~ msgid "Concentric 3D"
 #~ msgstr "3D concentrica"
@@ -5770,6 +5899,7 @@ msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "I comandi del Gcode da eseguire all’avvio, separati da \n"
 #~ "."
 
@@ -5782,6 +5912,7 @@ msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "I comandi del Gcode da eseguire alla fine, separati da \n"
 #~ "."
 
@@ -5838,6 +5969,7 @@ msgstr "Matrice di rotazione da applicare al modello quando caricato dal file."
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "Indica la distanza orizzontale tra lo skirt ed il primo strato della stampa.\n"
 #~ "Questa è la distanza minima, più linee di skirt aumenteranno tale distanza."
 

@@ -14,29 +14,6 @@ Menu
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
-    // main views
-    Instantiator
-    {
-        model: UM.ViewModel{}
-        MenuItem
-        {
-            text: model.name
-            checkable: true
-            checked: model.active
-            exclusiveGroup: group
-            onTriggered: UM.Controller.setActiveView(model.id)
-            enabled: !PrintInformation.preSliced
-        }
-        onObjectAdded: base.insertItem(index, object)
-        onObjectRemoved: base.removeItem(object)
-    }
-    ExclusiveGroup
-    {
-        id: group
-    }
-
-    MenuSeparator {}
-
     Menu
     {
         title: catalog.i18nc("@action:inmenu menubar:view","&Camera position");
@@ -80,12 +57,6 @@ Menu
 
     MenuSeparator {}
 
-    MenuItem
-    {
-        action: Cura.Actions.expandSidebar
-    }
-
-    MenuSeparator {}
     MenuItem
     {
         action: Cura.Actions.toggleFullScreen

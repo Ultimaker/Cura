@@ -1,21 +1,21 @@
 # Cura
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-10-01 14:20+0100\n"
+"Project-Id-Version: Cura 4.0\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"PO-Revision-Date: 2019-03-13 14:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.13\n"
+"X-Generator: Poedit 2.0.6\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: fdmprinter.def.json
@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"在开始时执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"在结束前执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -84,7 +80,7 @@ msgstr "材料 GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
-msgstr "材料 GUID，此项为自动设置。"
+msgstr "材料 GUID，此项为自动设置。 "
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -239,7 +235,7 @@ msgstr "挤出机组数目。 挤出机组是指进料装置、鲍登管和喷�
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders that are enabled"
-msgstr "已启用的挤出机数目。"
+msgstr "已启用的挤出机数目"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -554,7 +550,7 @@ msgstr "X 轴方向电机的最大加速度"
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y label"
 msgid "Maximum Acceleration Y"
-msgstr " 轴最大加速度"
+msgstr "轴最大加速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_max_acceleration_y description"
@@ -854,7 +850,7 @@ msgstr "单一支撑底板走线宽度。"
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "装填塔走线宽度。"
+msgstr "装填塔走线宽度"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
@@ -1078,8 +1074,8 @@ msgstr "连接顶部/底部多边形"
 
 #: fdmprinter.def.json
 msgctxt "connect_skin_polygons description"
-msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
-msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但因为连接可在填充中途发生，此功能可能会降低顶部表面质量。"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但由于连接可在填充中途发生，此功能可能会降低顶部表面质量。"
 
 #: fdmprinter.def.json
 msgctxt "skin_angles label"
@@ -1498,8 +1494,8 @@ msgstr "填充图案"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
-msgstr "打印填充材料的图案。线条和锯齿形填充在交替层上交换方向，从而降低材料成本。网格、三角形、内六角、立方体、八角形、四面体、交叉和同心图案在每层完整打印。立方体、四面体和八角形填充随每层变化，以在各个方向提供更均衡的强度分布。"
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgstr "打印填充材料的图案。线条和锯齿形填充在交替层上交换方向，从而降低材料成本。网格、三角形、内六角、立方体、八角形、四面体、交叉和同心图案在每层完整打印。螺旋二十四面体、立方体、四面体和八角形填充随每层变化，以在各个方向提供更均衡的强度分布。"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern option grid"
@@ -1560,6 +1556,11 @@ msgstr "交叉"
 msgctxt "infill_pattern option cross_3d"
 msgid "Cross 3D"
 msgstr "交叉 3D"
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr "螺旋二十四面体"
 
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
@@ -1670,8 +1671,8 @@ msgstr "皮肤重叠百分比"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
-msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr "皮肤和壁之间的重叠量占皮肤走线宽度的百分比。稍微重叠可让各个壁与皮肤牢固连接。这是皮肤走线和最内壁的平均走线宽度的百分比。"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "调整壁和皮肤中心线的（端点）之间的重叠量，以皮肤线走线和最内壁的线宽度的百分比表示。稍微重叠可让各个壁与皮肤牢固连接。请注意，对于相等的皮肤和壁线宽度，任何超过 50% 的百分比可能已经导致任何皮肤越过壁，因为在该点，皮肤挤出机的喷嘴位置可能已经达到越过壁中间的位置。"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1680,8 +1681,8 @@ msgstr "皮肤重叠"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
-msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "皮肤和壁之间的重叠量。 稍微重叠可让各个壁与皮肤牢固连接。"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "调整壁和皮肤中心线的（端点）之间的重叠量。稍微重叠可让各个壁与皮肤牢固连接。请注意，对于相等的皮肤和壁线宽度，任何超过壁宽度一半的值可能已经导致任何皮肤越过壁，因为在该点，皮肤挤出机的喷嘴位置可能已经达到越过壁中间的位置。"
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -2120,8 +2121,8 @@ msgstr "喷嘴切换回抽距离"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "回抽量： 设为 0，不进行任何回抽。 该值通常应与加热区的长度相同。"
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "切换挤出机时的回抽量。设为 0，不进行任何回抽。该值通常应与加热区的长度相同。"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2780,8 +2781,8 @@ msgstr "梳理模式"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
-msgstr "梳理可在空驶时让喷嘴保持在已打印区域内。这会使空驶距离稍微延长，但可减少回抽需求。如果关闭梳理，则材料将回抽，且喷嘴沿着直线移动到下一个点。也可以避免顶部/底部皮肤区域的梳理和仅在填充物内进行梳理。请注意，“在填充物内”选项的操作方式与较早 Cura 版本中的“不在皮肤中”选项完全相同。"
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
+msgstr "梳理可在空驶时让喷嘴保持在已打印区域内。这会使空驶距离稍微延长，但可减少回抽需求。如果关闭梳理，则材料将回抽，且喷嘴沿着直线移动到下一个点。也可以避免顶部/底部皮肤区域的梳理或仅在填充物内进行梳理。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -3264,6 +3265,36 @@ msgid "Orientation of the infill pattern for supports. The support infill patter
 msgstr "用于支撑的填充图案的方向。支撑填充图案在水平面中旋转。"
 
 #: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr "启用支撑 Brim"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr "在第一层的支撑填充区域内生成一个 Brim。此 Brim 在支撑下方打印，而非周围。启用此设置会增强支撑与打印平台的附着。"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr "支撑 Brim 宽度"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr "在支撑下方要打印的 Brim 的宽度。较大的 Brim 可增强与打印平台的附着，但也会增加一些额外材料成本。"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr "支撑 Brim 走线次数"
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr "用于支撑 Brim 的走线数量。更多 Brim 走线可增强与打印平台的附着，但也会增加一些额外材料成本。"
+
+#: fdmprinter.def.json
 msgctxt "support_z_distance label"
 msgid "Support Z Distance"
 msgstr "支撑 Z 距离"
@@ -3402,6 +3433,16 @@ msgstr "渐进支撑填充步阶高度"
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
 msgstr "在切换至密度的一半前指定密度的支撑填充高度。"
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr "最小支撑面积"
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "支撑多边形的最小面积。将不会生成面积小于此值的多边形。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3629,6 +3670,66 @@ msgid "Zig Zag"
 msgstr "锯齿形"
 
 #: fdmprinter.def.json
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr "最小支撑接触面面积"
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr "支撑接触面多边形的最小面积。将不会生成面积小于此值的多边形。"
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr "最小支撑顶板面积"
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "支撑顶板的最小面积。将不会生成面积小于此值的多边形。"
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr "最小支撑底板面积"
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr "支撑底板的最小面积。将不会生成面积小于此值的多边形。"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr "支撑接触面水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr "应用到支撑接触面多边形的偏移量。"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr "支撑顶板水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr "应用到支撑顶板的偏移量。"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr "支撑底板水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr "应用到支撑底板的偏移量。"
+
+#: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
 msgstr "风扇速度覆盖"
@@ -3798,9 +3899,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"skirt  和打印第一层之间的水平距离。\n"
-"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -3831,6 +3930,16 @@ msgstr "Brim 走线计数"
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
 msgstr "brim 所用走线数量。 更多 brim 走线可增强与打印平台的附着，但也会减少有效打印区域。"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr "Brim 替换支撑"
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr "强制围绕模型打印 Brim，即使该空间本该由支撑占据。此操作会将第一层的某些支撑区域替换为 Brim 区域。"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -5237,9 +5346,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"以半速挤出的上行移动的距离。\n"
-"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5656,6 +5763,30 @@ msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 
+#~ msgctxt "skin_overlap description"
+#~ msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
+#~ msgstr "皮肤和壁之间的重叠量占皮肤走线宽度的百分比。稍微重叠可让各个壁与皮肤牢固连接。这是皮肤走线和最内壁的平均走线宽度的百分比。"
+
+#~ msgctxt "skin_overlap_mm description"
+#~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
+#~ msgstr "皮肤和壁之间的重叠量。 稍微重叠可让各个壁与皮肤牢固连接。"
+
+#~ msgctxt "switch_extruder_retraction_amount description"
+#~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+#~ msgstr "回抽量： 设为 0，不进行任何回抽。 该值通常应与加热区的长度相同。"
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas and also to only comb within the infill. Note that the 'Within Infill' option behaves exactly like the 'Not in Skin' option in earlier Cura releases."
+#~ msgstr "梳理可在空驶时让喷嘴保持在已打印区域内。这会使空驶距离稍微延长，但可减少回抽需求。如果关闭梳理，则材料将回抽，且喷嘴沿着直线移动到下一个点。也可以避免顶部/底部皮肤区域的梳理和仅在填充物内进行梳理。请注意，“在填充物内”选项的操作方式与较早 Cura 版本中的“不在皮肤中”选项完全相同。"
+
+#~ msgctxt "connect_skin_polygons description"
+#~ msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happend midway over infill this feature can reduce the top surface quality."
+#~ msgstr "在顶部/底部皮肤路径互相紧靠运行的地方连接它们。对于同心图案，启用此设置可大大减少空驶时间，但因为连接可在填充中途发生，此功能可能会降低顶部表面质量。"
+
+#~ msgctxt "infill_pattern description"
+#~ msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+#~ msgstr "打印填充材料的图案。线条和锯齿形填充在交替层上交换方向，从而降低材料成本。网格、三角形、内六角、立方体、八角形、四面体、交叉和同心图案在每层完整打印。立方体、四面体和八角形填充随每层变化，以在各个方向提供更均衡的强度分布。"
+
 #~ msgctxt "infill_pattern option concentric_3d"
 #~ msgid "Concentric 3D"
 #~ msgstr "立体同心圆"
@@ -5769,6 +5900,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "在开始后执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -5781,6 +5913,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "在结束前执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -5837,6 +5970,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "skirt 和打印第一层之间的水平距离。\n"
 #~ "这是最小距离，多个 skirt 走线将从此距离向外延伸。"
 

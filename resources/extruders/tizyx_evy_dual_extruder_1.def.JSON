@@ -1,0 +1,18 @@
+{
+    "id": "tizyx_evy_dual_extruder_1",
+    "version": 2,
+    "name": "Direct Drive",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "tizyx_evy_dual",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "1"
+        },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

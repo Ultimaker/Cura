@@ -10,7 +10,7 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: material_type_section
     property var materialType
@@ -74,8 +74,6 @@ Rectangle
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: height
                 color: "black"
                 source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
@@ -132,6 +130,11 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
+            if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
+            {
+                return;
+            }
+
             expanded = materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
         }
     }

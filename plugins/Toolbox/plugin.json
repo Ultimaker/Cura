@@ -1,7 +1,7 @@
 {
     "name": "Toolbox",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "api": 5,
+    "version": "1.0.1",
+    "api": "6.0",
     "description": "Find, manage and install new Cura packages."
 }

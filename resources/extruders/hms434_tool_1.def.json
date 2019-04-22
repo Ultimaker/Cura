@@ -1,0 +1,26 @@
+{
+    "id": "hms434_tool_1",
+    "version": 2,
+    "name": "Tool 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "hms434",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "8"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": {
+          "default_value": "\n;start T0\n\nM117 changing tool....\nM109 T0 S{material_print_temperature}\n\nG1 Y-47 F9000; wipe\nG1 X150 Y10 F9000\n\nM117 printing...\n"         
+        },
+        "machine_extruder_end_code": {
+           "default_value": "\nM104 T0 S{material_standby_temperature}\nG1 X150 Y10 F9000\nG1 X-47 Y47 F9000 ; go to wipe position\nG1 X0 Y-100 F3000; wipe\nG1 X-44 F9000\n;end T0\n\n"
+        }
+    }
+}

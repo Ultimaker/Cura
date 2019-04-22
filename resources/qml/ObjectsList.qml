@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -55,7 +55,6 @@ Rectangle
             {
                 width: control.width
                 height: control.height
-                sourceSize.width: width
                 sourceSize.height: width
                 color:  UM.Theme.getColor("setting_control_text")
                 source: collapsed ? UM.Theme.getIcon("arrow_left") : UM.Theme.getIcon("arrow_bottom")
@@ -225,7 +224,7 @@ Rectangle
     {
         id: arrangeAllBuildPlatesButton;
         text: catalog.i18nc("@action:button","Arrange to all build plates");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors
@@ -245,7 +244,7 @@ Rectangle
     {
         id: arrangeBuildPlateButton;
         text: catalog.i18nc("@action:button","Arrange current build plate");
-        style: UM.Theme.styles.sidebar_action_button
+        style: UM.Theme.styles.print_setup_action_button
         height: UM.Theme.getSize("objects_menu_button").height;
         tooltip: '';
         anchors

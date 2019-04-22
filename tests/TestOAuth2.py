@@ -1,8 +1,9 @@
 import webbrowser
+from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 from UM.Preferences import Preferences
-from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
+from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import OAuth2Settings, AuthenticationResponse, UserProfile
@@ -12,19 +13,27 @@ OAUTH_ROOT = "https://account.ultimaker.com"
 CLOUD_API_ROOT = "https://api.ultimaker.com"
 
 OAUTH_SETTINGS = OAuth2Settings(
-            OAUTH_SERVER_URL= OAUTH_ROOT,
-            CALLBACK_PORT=CALLBACK_PORT,
-            CALLBACK_URL="http://localhost:{}/callback".format(CALLBACK_PORT),
-            CLIENT_ID="",
-            CLIENT_SCOPES="",
-            AUTH_DATA_PREFERENCE_KEY="test/auth_data",
-            AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(OAUTH_ROOT),
-            AUTH_FAILED_REDIRECT="{}/app/auth-error".format(OAUTH_ROOT)
-        )
+    OAUTH_SERVER_URL= OAUTH_ROOT,
+    CALLBACK_PORT=CALLBACK_PORT,
+    CALLBACK_URL="http://localhost:{}/callback".format(CALLBACK_PORT),
+    CLIENT_ID="",
+    CLIENT_SCOPES="",
+    AUTH_DATA_PREFERENCE_KEY="test/auth_data",
+    AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(OAUTH_ROOT),
+    AUTH_FAILED_REDIRECT="{}/app/auth-error".format(OAUTH_ROOT)
+)
 
-FAILED_AUTH_RESPONSE = AuthenticationResponse(success = False, err_message = "FAILURE!")
+FAILED_AUTH_RESPONSE = AuthenticationResponse(
+    success = False,
+    err_message = "FAILURE!"
+)
 
-SUCCESFULL_AUTH_RESPONSE = AuthenticationResponse(access_token = "beep", refresh_token = "beep?")
+SUCCESSFUL_AUTH_RESPONSE = AuthenticationResponse(
+    access_token = "beep",
+    refresh_token = "beep?",
+    received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT),
+    expires_in = 300  # 5 minutes should be more than enough for testing
+)
 
 MALFORMED_AUTH_RESPONSE = AuthenticationResponse()
 
@@ -64,7 +73,7 @@ def test_storeAuthData(get_user_profile) -> None:
     authorization_service.initialize()
 
     # Write stuff to the preferences.
-    authorization_service._storeAuthData(SUCCESFULL_AUTH_RESPONSE)
+    authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
     preference_value = preferences.getValue(OAUTH_SETTINGS.AUTH_DATA_PREFERENCE_KEY)
     # Check that something was actually put in the preferences
     assert preference_value is not None and preference_value != {}
@@ -73,7 +82,7 @@ def test_storeAuthData(get_user_profile) -> None:
     second_auth_service = AuthorizationService(OAUTH_SETTINGS, preferences)
     second_auth_service.initialize()
     second_auth_service.loadAuthDataFromPreferences()
-    assert second_auth_service.getAccessToken() == SUCCESFULL_AUTH_RESPONSE.access_token
+    assert second_auth_service.getAccessToken() == SUCCESSFUL_AUTH_RESPONSE.access_token
 
 
 @patch.object(LocalAuthorizationServer, "stop")
@@ -101,9 +110,9 @@ def test_loginAndLogout() -> None:
     authorization_service.onAuthStateChanged.emit = MagicMock()
     authorization_service.initialize()
 
-    # Let the service think there was a succesfull response
+    # Let the service think there was a successful response
     with patch.object(AuthorizationHelpers, "parseJWT", return_value=UserProfile()):
-        authorization_service._onAuthStateChanged(SUCCESFULL_AUTH_RESPONSE)
+        authorization_service._onAuthStateChanged(SUCCESSFUL_AUTH_RESPONSE)
 
     # Ensure that the error signal was not triggered
     assert authorization_service.onAuthenticationError.emit.call_count == 0

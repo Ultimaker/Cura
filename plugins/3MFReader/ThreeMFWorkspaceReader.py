@@ -26,6 +26,7 @@ from UM.Preferences import Preferences
 
 from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
@@ -258,7 +259,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         custom_quality_name = ""
-        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
 
@@ -296,9 +297,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 custom_quality_name = parser["general"]["name"]
                 values = parser["values"] if parser.has_section("values") else dict()
-                num_settings_overriden_by_quality_changes += len(values)
+                num_settings_overridden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
-                quality_changes = self._container_registry.findInstanceContainers(id = container_id)
+                quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
+                                                                                  type = "quality_changes")
                 if quality_changes:
                     containers_found_dict["quality_changes"] = True
                     # Check if there really is a conflict by comparing the values
@@ -499,7 +501,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         is_printer_group = False
         if machine_conflict:
-            group_name = existing_global_stack.getMetaDataEntry("connect_group_name")
+            group_name = existing_global_stack.getMetaDataEntry("group_name")
             if group_name is not None:
                 is_printer_group = True
                 machine_name = group_name
@@ -513,7 +515,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
@@ -780,6 +782,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if not quality_changes_info.extruder_info_dict:
                 container_info = ContainerInfo(None, None, None)
                 quality_changes_info.extruder_info_dict["0"] = container_info
+                # If the global stack we're "targeting" has never been active, but was updated from Cura 3.4,
+                # it might not have it's extruders set properly. 
+                if not global_stack.extruders:
+                    ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
                 container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
@@ -793,7 +799,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             # Clear all existing containers
             quality_changes_info.global_info.container.clear()
             for container_info in quality_changes_info.extruder_info_dict.values():
-                container_info.container.clear()
+                if container_info.container:
+                    container_info.container.clear()
 
             # Loop over everything and override the existing containers
             global_info = quality_changes_info.global_info
@@ -813,6 +820,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
+                    container.setDirty(True)
+                    self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)

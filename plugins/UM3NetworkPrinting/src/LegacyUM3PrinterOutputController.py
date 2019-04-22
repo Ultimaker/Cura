@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -7,8 +7,8 @@ from UM.Version import Version
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-    from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+    from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 
 
 class LegacyUM3PrinterOutputController(PrinterOutputController):
@@ -33,9 +33,9 @@ class LegacyUM3PrinterOutputController(PrinterOutputController):
         data = "{\"target\": \"%s\"}" % state
         self._output_device.put("print_job/state", data, on_finished=None)
 
-    def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: int):
+    def setTargetBedTemperature(self, printer: "PrinterOutputModel", temperature: float):
         data = str(temperature)
-        self._output_device.put("printer/bed/temperature/target", data, on_finished=self._onPutBedTemperatureCompleted)
+        self._output_device.put("printer/bed/temperature/target", data, on_finished = self._onPutBedTemperatureCompleted)
 
     def _onPutBedTemperatureCompleted(self, reply):
         if Version(self._preheat_printer.firmwareVersion) < Version("3.5.92"):
