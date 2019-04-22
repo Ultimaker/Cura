@@ -1782,3 +1782,13 @@ class CuraApplication(QtApplication):
         # Only show the what's new dialog if there's no machine and we have just upgraded
         show_whatsnew_only = has_active_machine and has_app_just_upgraded
         return show_whatsnew_only
+
+    @pyqtSlot(result = int)
+    def appWidth(self) -> int:
+        main_window = cast(UM.Qt.Bindings.MainWindow, QtApplication.getInstance().getMainWindow())
+        return main_window.width()
+
+    @pyqtSlot(result = int)
+    def appHeight(self) -> int:
+        main_window = cast(UM.Qt.Bindings.MainWindow, QtApplication.getInstance().getMainWindow())
+        return main_window.height()

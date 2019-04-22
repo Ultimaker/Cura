@@ -245,10 +245,16 @@ Item
                 onPositionChanged:
                 {
                     var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
-                    if (delta.x != 0 || delta.y != 0)
+                    if (delta.x !== 0 || delta.y !== 0)
                     {
-                        contentContainer.x += delta.x;
-                        contentContainer.y += delta.y;
+                        var minPt = base.mapFromItem(null, 0, 0);
+                        var maxPt = base.mapFromItem(null,
+                            CuraApplication.appWidth() - contentContainer.width,
+                            CuraApplication.appHeight() - contentContainer.height);
+                        var initialY = background.height + base.shadowOffset + base.contentSpacingY;
+
+                        contentContainer.x = Math.min(maxPt.x, Math.max(minPt.x, contentContainer.x + delta.x));
+                        contentContainer.y = Math.min(maxPt.y, Math.max(initialY, contentContainer.y + delta.y));
                     }
                 }
             }
