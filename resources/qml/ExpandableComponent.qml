@@ -214,6 +214,19 @@ Item
         border.color: UM.Theme.getColor("lining")
         radius: UM.Theme.getSize("default_radius").width
 
+        function trySetPosition(posNewX, posNewY)
+        {
+            var margin = UM.Theme.getSize("narrow_margin");
+            var minPt = base.mapFromItem(null, margin.width, margin.height);
+            var maxPt = base.mapFromItem(null,
+                CuraApplication.appWidth() - (contentContainer.width + margin.width),
+                CuraApplication.appHeight() - (contentContainer.height + margin.height));
+            var initialY = background.height + base.shadowOffset + margin.height;
+
+            contentContainer.x = Math.min(maxPt.x, Math.max(minPt.x, posNewX));
+            contentContainer.y = Math.min(maxPt.y, Math.max(initialY, posNewY));
+        }
+
         ExpandableComponentHeader
         {
             id: contentHeader
@@ -247,15 +260,7 @@ Item
                     var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
                     if (delta.x !== 0 || delta.y !== 0)
                     {
-                        var margin = UM.Theme.getSize("narrow_margin");
-                        var minPt = base.mapFromItem(null, margin.width, margin.height);
-                        var maxPt = base.mapFromItem(null,
-                            CuraApplication.appWidth() - (contentContainer.width + margin.width),
-                            CuraApplication.appHeight() - (contentContainer.height + margin.width));
-                        var initialY = background.height + base.shadowOffset + margin.height;
-
-                        contentContainer.x = Math.min(maxPt.x, Math.max(minPt.x, contentContainer.x + delta.x));
-                        contentContainer.y = Math.min(maxPt.y, Math.max(initialY, contentContainer.y + delta.y));
+                        contentContainer.trySetPosition(contentContainer.x + delta.x, contentContainer.y + delta.y);
                     }
                 }
             }
