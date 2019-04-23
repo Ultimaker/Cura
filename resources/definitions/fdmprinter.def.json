@@ -523,7 +523,7 @@
                     "description": "The maximum speed for the motor of the X-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -534,7 +534,7 @@
                     "description": "The maximum speed for the motor of the Y-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -545,7 +545,7 @@
                     "description": "The maximum speed for the motor of the Z-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
