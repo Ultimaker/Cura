@@ -99,7 +99,9 @@ class AuthorizationService:
             Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
-
+        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
+        # from the server already.
+        self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     ##  Get the access token as provided by the repsonse data.
@@ -198,6 +200,7 @@ class AuthorizationService:
 
     ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        Logger.log("d", "Attempting to store the auth data")
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return

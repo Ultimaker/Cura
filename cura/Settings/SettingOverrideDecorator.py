@@ -121,8 +121,7 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
                 if self._is_non_printing_mesh != new_is_non_printing_mesh:
                     self._is_non_printing_mesh = new_is_non_printing_mesh
-                    self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
-
+               
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 
