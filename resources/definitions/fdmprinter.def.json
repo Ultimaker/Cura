@@ -523,7 +523,7 @@
                     "description": "The maximum speed for the motor of the X-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -534,7 +534,7 @@
                     "description": "The maximum speed for the motor of the Y-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -545,7 +545,7 @@
                     "description": "The maximum speed for the motor of the Z-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -3525,6 +3525,20 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "retraction_hop_enabled and extruders_enabled_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_after_extruder_switch_height": 
+                {
+                    "label": "Z Hop After Extruder Switch Height",
+                    "description": "The height difference when performing a Z Hop after extruder switch.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "value": "retraction_hop",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "10",
+                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }

@@ -19,6 +19,7 @@ class AutoSave:
         self._change_timer.setInterval(self._application.getPreferences().getValue("cura/autosave_delay"))
         self._change_timer.setSingleShot(True)
 
+        self._enabled = True
         self._saving = False
 
     def initialize(self):
@@ -31,6 +32,13 @@ class AutoSave:
     def _triggerTimer(self, *args):
         if not self._saving:
             self._change_timer.start()
+
+    def setEnabled(self, enabled: bool) -> None:
+        self._enabled = enabled
+        if self._enabled:
+            self._change_timer.start()
+        else:
+            self._change_timer.stop()
 
     def _onGlobalStackChanged(self):
         if self._global_stack:

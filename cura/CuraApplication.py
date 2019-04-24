@@ -258,7 +258,6 @@ class CuraApplication(QtApplication):
 
         # Backups
         self._auto_save = None
-        self._save_data_enabled = True
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -668,13 +667,10 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-            
-    def setSaveDataEnabled(self, enabled: bool) -> None:
-        self._save_data_enabled = enabled
 
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
-        if not self.started or not self._save_data_enabled:
+        if not self.started:
             # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
