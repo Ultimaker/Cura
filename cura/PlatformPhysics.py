@@ -173,11 +173,15 @@ class PlatformPhysics:
 
         if tool.getPluginId() == "TranslateTool":
             for node in Selection.getAllSelectedObjects():
-                if node.getBoundingBox().bottom < 0:
+                bounding_box = node.getBoundingBox()
+                if bounding_box is None:
+                    continue
+
+                if bounding_box.bottom < 0:
                     if not node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
                         node.addDecorator(ZOffsetDecorator.ZOffsetDecorator())
 
-                    node.callDecoration("setZOffset", node.getBoundingBox().bottom)
+                    node.callDecoration("setZOffset", bounding_box.bottom)
                 else:
                     if node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
                         node.removeDecorator(ZOffsetDecorator.ZOffsetDecorator)
