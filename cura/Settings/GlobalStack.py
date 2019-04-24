@@ -45,6 +45,7 @@ class GlobalStack(CuraContainerStack):
         # Since the metadatachanged is defined in container stack, we can't use it here as a notifier for pyqt
         # properties. So we need to tie them together like this.
         self.metaDataChanged.connect(self.configuredConnectionTypesChanged)
+        self.metaDataChanged.connect(self.networkGroupNameChanged)
 
     extrudersChanged = pyqtSignal()
     configuredConnectionTypesChanged = pyqtSignal()

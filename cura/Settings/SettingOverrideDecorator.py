@@ -120,7 +120,6 @@ class SettingOverrideDecorator(SceneNodeDecorator):
             changed = False
             if self._is_non_printing_mesh != new_is_non_printing_mesh:
                 self._is_non_printing_mesh = new_is_non_printing_mesh
-                self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
                 changed = True
             if self._is_non_thumbnail_visible_mesh != new_is_non_thumbnail_visible_mesh:
                 changed = True
