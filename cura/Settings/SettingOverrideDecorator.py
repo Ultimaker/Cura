@@ -113,21 +113,18 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
     def _onSettingChanged(self, setting_key, property_name): # Reminder: 'property' is a built-in function
         # We're only interested in a few settings and only if it's value changed.
-        if property_name == "value" and (setting_key in self._non_printing_mesh_settings or setting_key in self._non_thumbnail_visible_settings):
-            # Trigger slice/need slicing if the value has changed.
-            new_is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
-            new_is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
-            changed = False
-            if self._is_non_printing_mesh != new_is_non_printing_mesh:
-                self._is_non_printing_mesh = new_is_non_printing_mesh
-                self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
-                changed = True
-            if self._is_non_thumbnail_visible_mesh != new_is_non_thumbnail_visible_mesh:
-                changed = True
+        if property_name == "value":
+            if setting_key in self._non_printing_mesh_settings or setting_key in self._non_thumbnail_visible_settings:
+                # Trigger slice/need slicing if the value has changed.
+                new_is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
+                self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
 
-            if changed:
-                Application.getInstance().getBackend().needsSlicing()
-                Application.getInstance().getBackend().tickle()
+                if self._is_non_printing_mesh != new_is_non_printing_mesh:
+                    self._is_non_printing_mesh = new_is_non_printing_mesh
+                    self._node.setCalculateBoundingBox(not self._is_non_printing_mesh)
+
+            Application.getInstance().getBackend().needsSlicing()
+            Application.getInstance().getBackend().tickle()
 
     ##  Makes sure that the stack upon which the container stack is placed is
     #   kept up to date.
