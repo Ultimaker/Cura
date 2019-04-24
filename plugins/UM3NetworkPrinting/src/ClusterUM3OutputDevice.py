@@ -535,6 +535,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             extruder.setMaterial(self._createMaterialOutputModel(extruder_data.get("material", {})))
 
         configuration.setExtruderConfigurations(extruders)
+        configuration.setPrinterType(data.get("machine_variant", ""))
         print_job.updateConfiguration(configuration)
         print_job.setCompatibleMachineFamilies(data.get("compatible_machine_families", []))
         print_job.stateChanged.connect(self._printJobStateChanged)
