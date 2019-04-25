@@ -12,7 +12,6 @@ Cura.ExpandableComponent
     id: printSetupSelector
 
     dragPreferencesNamePrefix: "view/settings"
-    isMultiStage: true
 
     property bool preSlicedData: PrintInformation.preSliced
 

@@ -81,9 +81,6 @@ Item
     // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
     property string dragPreferencesNamePrefix: ""
 
-    // Whether this component can remain when switchin from one stage to the other (for ex. 'Prepare' to 'Preview')
-    property bool isMultiStage: false
-
     function toggleContent()
     {
         contentContainer.visible = !expanded
@@ -326,18 +323,6 @@ Item
     Component.onCompleted:
     {
         updateDragPosition();
-    }
-
-    Connections
-    {
-        target: UM.Controller
-        onActiveStageChanged:
-        {
-            if (isMultiStage)
-            {
-                updateDragPosition();
-            }
-        }
     }
 
     // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
