@@ -105,6 +105,7 @@ class Toolbox(QObject, Extension):
 
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._application.getCuraAPI().account.loginStateChanged.connect(self._updateRequestHeader)
+        self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
     # --------------------------------------------------------------------------
