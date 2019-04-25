@@ -263,6 +263,24 @@ Item
                         contentContainer.trySetPosition(contentContainer.x + delta.x, contentContainer.y + delta.y);
                     }
                 }
+
+                Connections
+                {
+                    target: UM.Preferences
+                    onPreferenceChanged:
+                    {
+                        if
+                        (
+                            preference !== "general/window_height" &&
+                            preference !== "general/window_width" &&
+                            preference !== "general/window_state"
+                        )
+                        {
+                            return;
+                        }
+                        contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
+                    }
+                }
             }
         }
 
