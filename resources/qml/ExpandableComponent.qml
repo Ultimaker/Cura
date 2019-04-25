@@ -281,6 +281,11 @@ Item
                     }
                 }
 
+                onDoubleClicked:
+                {
+                    contentContainer.trySetPosition(0, 0);
+                }
+
                 Connections
                 {
                     target: UM.Preferences
