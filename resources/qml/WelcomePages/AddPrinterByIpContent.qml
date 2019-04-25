@@ -26,6 +26,15 @@ Item
     property var discoveredPrinter: null
     property var isPrinterDiscovered: discoveredPrinter != null
 
+    // Make sure to cancel the current request when this page closes.
+    onVisibleChanged:
+    {
+        if (!visible)
+        {
+            CuraApplication.getDiscoveredPrintersModel().cancelCurrentManualDeviceRequest()
+        }
+    }
+
     Label
     {
         id: titleLabel

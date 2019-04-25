@@ -3,7 +3,7 @@
 
 from typing import Callable, Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, pyqtSignal, QObject, QTimer
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
@@ -109,6 +109,12 @@ class DiscoveredPrintersModel(QObject):
         self._plugin_for_manual_device = None  # type: Optional[OutputDevicePlugin]
         self._manual_device_address = ""
 
+        self._manual_device_request_timeout_in_seconds = 5  # timeout for adding a manual device in seconds
+        self._manual_device_request_timer = QTimer()
+        self._manual_device_request_timer.setInterval(self._manual_device_request_timeout_in_seconds * 1000)
+        self._manual_device_request_timer.setSingleShot(True)
+        self._manual_device_request_timer.timeout.connect(self._onManualRequestTimeout)
+
     discoveredPrintersChanged = pyqtSignal()
 
     @pyqtSlot(str)
@@ -137,10 +143,13 @@ class DiscoveredPrintersModel(QObject):
         self._plugin_for_manual_device = plugin
         self._plugin_for_manual_device.addManualDevice(address, callback = self._onManualDeviceRequestFinished)
         self._manual_device_address = address
+        self._manual_device_request_timer.start()
         self.hasManualDeviceRequestInProgressChanged.emit()
 
     @pyqtSlot()
     def cancelCurrentManualDeviceRequest(self) -> None:
+        self._manual_device_request_timer.stop()
+
         if self._manual_device_address:
             if self._plugin_for_manual_device is not None:
                 self._plugin_for_manual_device.removeManualDevice(self._manual_device_address, address = self._manual_device_address)
@@ -148,6 +157,10 @@ class DiscoveredPrintersModel(QObject):
             self._plugin_for_manual_device = None
             self.hasManualDeviceRequestInProgressChanged.emit()
             self.manualDeviceRequestFinished.emit(False)
+
+    def _onManualRequestTimeout(self) -> None:
+        Logger.log("w", "Manual printer [%s] request timed out. Cancel the current request.", self._manual_device_address)
+        self.cancelCurrentManualDeviceRequest()
 
     hasManualDeviceRequestInProgressChanged = pyqtSignal()
 
@@ -158,6 +171,7 @@ class DiscoveredPrintersModel(QObject):
     manualDeviceRequestFinished = pyqtSignal(bool, arguments = ["success"])
 
     def _onManualDeviceRequestFinished(self, success: bool, address: str) -> None:
+        self._manual_device_request_timer.stop()
         if address == self._manual_device_address:
             self._manual_device_address = ""
             self.hasManualDeviceRequestInProgressChanged.emit()
