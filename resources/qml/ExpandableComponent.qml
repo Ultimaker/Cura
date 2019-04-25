@@ -78,6 +78,9 @@ Item
 
     property int shadowOffset: 2
 
+    // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
+    property var dragPreferencesNamePrefix: ""
+
     function toggleContent()
     {
         contentContainer.visible = !expanded
@@ -202,17 +205,19 @@ Item
     Cura.RoundedRectangle
     {
         id: contentContainer
+        property string dragPreferencesNameX: "_xpos"
+        property string dragPreferencesNameY: "_ypos"
 
         visible: false
         width: childrenRect.width
         height: childrenRect.height
 
         // Ensure that the content is located directly below the headerItem
-        y: background.height + base.shadowOffset + base.contentSpacingY
+        y: dragPreferencesNamePrefix === "" ? (background.height + base.shadowOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
-        x: contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
+        x: dragPreferencesNamePrefix === "" ? (contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameX)
 
         cornerSide: Cura.RoundedRectangle.Direction.All
         color: contentBackgroundColor
@@ -231,6 +236,12 @@ Item
 
             contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
             contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));
+
+            if (dragPreferencesNamePrefix !== "")
+            {
+                UM.Preferences.setValue(dragPreferencesNamePrefix + dragPreferencesNameX, contentContainer.x);
+                UM.Preferences.setValue(dragPreferencesNamePrefix + dragPreferencesNameY, contentContainer.y);
+            }
         }
 
         ExpandableComponentHeader
@@ -307,6 +318,11 @@ Item
                 content.height = contentItem.height + 2 * content.padding
             }
         }
+    }
+
+    Component.onCompleted:
+    {
+        updateDragPosition();
     }
 
     // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
