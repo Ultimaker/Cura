@@ -320,11 +320,6 @@ Item
         }
     }
 
-    Component.onCompleted:
-    {
-        updateDragPosition();
-    }
-
     // DO NOT MOVE UP IN THE CODE: This connection has to be here, after the definition of the content item.
     // Apparently the order in which these are handled matters and so the height is correctly updated if this is here.
     Connections
