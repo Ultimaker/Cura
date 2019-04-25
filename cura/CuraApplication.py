@@ -23,6 +23,7 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
+from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -1789,10 +1790,16 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = int)
     def appWidth(self) -> int:
-        main_window = cast(UM.Qt.Bindings.MainWindow, QtApplication.getInstance().getMainWindow())
-        return main_window.width()
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.width()
+        else:
+            return 0
 
     @pyqtSlot(result = int)
     def appHeight(self) -> int:
-        main_window = cast(UM.Qt.Bindings.MainWindow, QtApplication.getInstance().getMainWindow())
-        return main_window.height()
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.height()
+        else:
+            return 0
