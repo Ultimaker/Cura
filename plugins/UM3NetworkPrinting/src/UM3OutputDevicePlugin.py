@@ -9,7 +9,7 @@ from typing import Optional, TYPE_CHECKING, Dict, Callable
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -45,11 +45,14 @@ i18n_catalog = i18nCatalog("cura")
 #  - callback: (Optional) Once the HTTP request to the printer to get printer information is done, whether successful
 #              or not, this callback will be invoked to notify about the result. The callback must have a signature of
 #                  func(success: bool, address: str) -> None
+#  - network_reply: This is the QNetworkReply instance for this request if the request has been issued and still in
+#                   progress. It is kept here so we can cancel a request when needed.
 #
 class ManualPrinterRequest:
     def __init__(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
         self.address = address
         self.callback = callback
+        self.network_reply = None  # type: Optional["QNetworkReply"]
 
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
@@ -225,6 +228,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             manual_printer_request = self._manual_instances.pop(address)
             self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
+            if manual_printer_request.network_reply is not None:
+                manual_printer_request.network_reply.abort()
+
             if manual_printer_request.callback is not None:
                 self._application.callLater(manual_printer_request.callback, False, address)
 
@@ -250,7 +256,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._onAddDevice(instance_name, address, properties)
         self._last_manual_entry_key = instance_name
 
-        self._checkManualDevice(address)
+        reply = self._checkManualDevice(address)
+        self._manual_instances[address].network_reply = reply
 
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
         discovered_device = self._discovered_devices.get(key)
@@ -307,13 +314,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         self.refreshConnections()
 
-    def _checkManualDevice(self, address: str) -> None:
+    def _checkManualDevice(self, address: str) -> "QNetworkReply":
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
         url = QUrl("http://" + address + self._api_prefix + "system")
         name_request = QNetworkRequest(url)
-        self._network_manager.get(name_request)
+        return self._network_manager.get(name_request)
 
     def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
@@ -341,6 +348,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
             if address in self._manual_instances:
                 manual_printer_request = self._manual_instances[address]
+                manual_printer_request.network_reply = None
                 if manual_printer_request.callback is not None:
                     self._application.callLater(manual_printer_request.callback, True, address)
 
