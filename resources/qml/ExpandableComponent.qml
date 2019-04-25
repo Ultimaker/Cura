@@ -83,6 +83,11 @@ Item
         contentContainer.visible = !expanded
     }
 
+    function updateDragPosition()
+    {
+        contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
+    }
+
     // Add this binding since the background color is not updated otherwise
     Binding
     {
@@ -102,7 +107,8 @@ Item
         {
             if (!base.enabled && expanded)
             {
-                toggleContent()
+                toggleContent();
+                updateDragPosition();
             }
         }
     }
@@ -223,8 +229,8 @@ Item
                 CuraApplication.appHeight() - (contentContainer.height + margin.height));
             var initialY = background.height + base.shadowOffset + margin.height;
 
-            contentContainer.x = Math.min(maxPt.x, Math.max(minPt.x, posNewX));
-            contentContainer.y = Math.min(maxPt.y, Math.max(initialY, posNewY));
+            contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
+            contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));
         }
 
         ExpandableComponentHeader
@@ -248,7 +254,7 @@ Item
                     left: parent.left
                     right: contentHeader.xPosCloseButton
                 }
-                property variant clickPos: Qt.point(0, 0)
+                property var clickPos: Qt.point(0, 0)
 
                 onPressed:
                 {

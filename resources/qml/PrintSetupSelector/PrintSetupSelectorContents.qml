@@ -143,7 +143,11 @@ Item
             iconSource: UM.Theme.getIcon("arrow_right")
             isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
-            onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Custom
+            onClicked:
+            {
+                currentModeIndex = PrintSetupSelectorContents.Mode.Custom
+                updateDragPosition();
+            }
         }
 
         //Invisible area at the bottom with which you can resize the panel.
