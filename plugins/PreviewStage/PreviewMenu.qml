@@ -36,9 +36,6 @@ Item
         width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
         height: parent.height
 
-        // // We want this row to have a preferred with up to the 85% of the parent
-        // property int preferredWidth: Math.round(0.85 * previewMenu.width)
-
         Cura.ViewsSelector
         {
             id: viewsSelector
