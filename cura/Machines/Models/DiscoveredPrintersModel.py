@@ -12,6 +12,7 @@ from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 if TYPE_CHECKING:
     from PyQt5.QtCore import QObject
+    from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
     from cura.CuraApplication import CuraApplication
     from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
 
@@ -105,7 +106,7 @@ class DiscoveredPrintersModel(QObject):
         self._application = application
         self._discovered_printer_by_ip_dict = dict()  # type: Dict[str, DiscoveredPrinter]
 
-        self._plugin_for_manual_device = None
+        self._plugin_for_manual_device = None  # type: Optional[OutputDevicePlugin]
         self._manual_device_address = ""
 
     discoveredPrintersChanged = pyqtSignal()
@@ -141,7 +142,8 @@ class DiscoveredPrintersModel(QObject):
     @pyqtSlot()
     def cancelCurrentManualDeviceRequest(self) -> None:
         if self._manual_device_address:
-            self._plugin_for_manual_device.removeManualDevice(self._manual_device_address, address = self._manual_device_address)
+            if self._plugin_for_manual_device is not None:
+                self._plugin_for_manual_device.removeManualDevice(self._manual_device_address, address = self._manual_device_address)
             self._manual_device_address = ""
             self._plugin_for_manual_device = None
             self.hasManualDeviceRequestInProgressChanged.emit()
