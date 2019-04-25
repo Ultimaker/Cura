@@ -18,12 +18,13 @@ Item
 
     id: addPrinterByIpScreen
 
-    // Whether an IP address is currently being resolved.
-    property bool hasSentRequest: false
-    // Whether the IP address user entered can be resolved as a recognizable printer.
-    property bool haveConnection: false
-    // True when a request comes back, but the device hasn't responded.
-    property bool deviceUnresponsive: false
+    // If there's a manual address resolve request in progress.
+    property bool hasRequestInProgress: CuraApplication.getDiscoveredPrintersModel().hasManualDeviceRequestInProgress
+    // Indicates if a request has finished.
+    property bool hasRequestFinished: false
+
+    property var discoveredPrinter: null
+    property var isPrinterDiscovered: discoveredPrinter != null
 
     Label
     {
@@ -88,7 +89,7 @@ Item
                         regExp: /[a-fA-F0-9\.\:]*/
                     }
 
-                    enabled: { ! (addPrinterByIpScreen.hasSentRequest || addPrinterByIpScreen.haveConnection) }
+                    enabled: { ! (addPrinterByIpScreen.hasRequestInProgress || addPrinterByIpScreen.isPrinterDiscovered) }
                     onAccepted: addPrinterButton.clicked()
                 }
 
@@ -99,22 +100,25 @@ Item
                     anchors.left: hostnameField.right
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     text: catalog.i18nc("@button", "Add")
+                    enabled: !addPrinterByIpScreen.hasRequestInProgress && !addPrinterByIpScreen.hasRequestFinished
                     onClicked:
                     {
-                        if (hostnameField.text.trim() != "")
+                        const address = hostnameField.text.trim()
+                        if (address == "")
                         {
-                            enabled = false;
-                            addPrinterByIpScreen.deviceUnresponsive = false;
-                            UM.OutputDeviceManager.addManualDevice(hostnameField.text, hostnameField.text);
+                            return
                         }
-                    }
-                    busy: !enabled && !addPrinterByIpScreen.hasSentRequest && !addPrinterByIpScreen.haveConnection
 
-                    Connections
-                    {
-                        target: UM.OutputDeviceManager
-                        onManualDeviceChanged: { addPrinterButton.enabled = ! UM.OutputDeviceManager.hasManualDevice }
+                        // This address is already in the discovered printer model, no need to add a manual discovery.
+                        if (CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[address])
+                        {
+                            addPrinterByIpScreen.discoveredPrinter = CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[address]
+                            return
+                        }
+
+                        CuraApplication.getDiscoveredPrintersModel().checkManualDevice(address)
                     }
+                    busy: addPrinterByIpScreen.hasRequestInProgress
                 }
             }
 
@@ -133,14 +137,10 @@ Item
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
 
-                    visible:
-                    {
-                        (addPrinterByIpScreen.hasSentRequest && ! addPrinterByIpScreen.haveConnection)
-                            || addPrinterByIpScreen.deviceUnresponsive
-                    }
+                    visible: addPrinterByIpScreen.hasRequestInProgress || (addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.isPrinterDiscovered)
                     text:
                     {
-                        if (addPrinterByIpScreen.deviceUnresponsive)
+                        if (addPrinterByIpScreen.hasRequestFinished)
                         {
                             catalog.i18nc("@label", "Could not connect to device.")
                         }
@@ -157,7 +157,7 @@ Item
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
-                    visible: addPrinterByIpScreen.haveConnection && ! addPrinterByIpScreen.deviceUnresponsive
+                    visible: addPrinterByIpScreen.isPrinterDiscovered
 
                     Label
                     {
@@ -167,7 +167,7 @@ Item
                         color: UM.Theme.getColor("text")
                         renderType: Text.NativeRendering
 
-                        text: "???"
+                        text: !addPrinterByIpScreen.isPrinterDiscovered ? "???" : addPrinterByIpScreen.discoveredPrinter.name
                     }
 
                     GridLayout
@@ -188,7 +188,7 @@ Item
                         Label
                         {
                             id: typeText
-                            text: "?"
+                            text: !addPrinterByIpScreen.isPrinterDiscovered ? "?" : addPrinterByIpScreen.discoveredPrinter.readableMachineType
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
@@ -204,7 +204,7 @@ Item
                         Label
                         {
                             id: firmwareText
-                            text: "0.0.0.0"
+                            text: !addPrinterByIpScreen.isPrinterDiscovered ? "0.0.0.0" : addPrinterByIpScreen.discoveredPrinter.device.getProperty("firmware_version")
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
@@ -220,52 +220,25 @@ Item
                         Label
                         {
                             id: addressText
-                            text: "0.0.0.0"
+                            text: !addPrinterByIpScreen.isPrinterDiscovered ? "0.0.0.0" : addPrinterByIpScreen.discoveredPrinter.address
                             font: UM.Theme.getFont("default")
                             color: UM.Theme.getColor("text")
                             renderType: Text.NativeRendering
-                        }
-
-                        Connections
-                        {
-                            target: UM.OutputDeviceManager
-                            onManualDeviceChanged:
-                            {
-                                if (UM.OutputDeviceManager.hasManualDevice)
-                                {
-                                    const type_id = UM.OutputDeviceManager.manualDeviceProperty("printer_type")
-                                    var readable_type = Cura.MachineManager.getMachineTypeNameFromId(type_id)
-                                    readable_type = (readable_type != "") ? readable_type : catalog.i18nc("@label", "Unknown")
-                                    typeText.text = readable_type
-                                    firmwareText.text = UM.OutputDeviceManager.manualDeviceProperty("firmware_version")
-                                    addressText.text = UM.OutputDeviceManager.manualDeviceProperty("address")
-                                }
-                                else
-                                {
-                                    typeText.text = ""
-                                    firmwareText.text = ""
-                                    addressText.text = ""
-                                }
-                            }
                         }
                     }
 
                     Connections
                     {
-                        target: UM.OutputDeviceManager
-                        onManualDeviceChanged:
+                        target: CuraApplication.getDiscoveredPrintersModel()
+                        onManualDeviceRequestFinished:
                         {
-                            if (UM.OutputDeviceManager.hasManualDevice)
+                            var discovered_printers_model = CuraApplication.getDiscoveredPrintersModel()
+                            var printer = discovered_printers_model.discoveredPrintersByAddress[hostnameField.text]
+                            if (printer)
                             {
-                                printerNameLabel.text = UM.OutputDeviceManager.manualDeviceProperty("name")
-                                addPrinterByIpScreen.haveConnection = true
+                                addPrinterByIpScreen.discoveredPrinter = printer
                             }
-                            else
-                            {
-                                addPrinterByIpScreen.hasSentRequest = false
-                                addPrinterByIpScreen.haveConnection = false
-                                addPrinterByIpScreen.deviceUnresponsive = true
-                            }
+                            addPrinterByIpScreen.hasRequestFinished = true
                         }
                     }
                 }
@@ -279,7 +252,11 @@ Item
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         text: catalog.i18nc("@button", "Back")
-        onClicked: base.showPreviousPage()
+        onClicked:
+        {
+            CuraApplication.getDiscoveredPrintersModel().cancelCurrentManualDeviceRequest()
+            base.showPreviousPage()
+        }
     }
 
     Cura.PrimaryButton
@@ -290,12 +267,10 @@ Item
         text: catalog.i18nc("@button", "Connect")
         onClicked:
         {
-            CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinterAddress(
-                UM.OutputDeviceManager.manualDeviceProperty("address"))
-            UM.OutputDeviceManager.setActiveDevice(UM.OutputDeviceManager.manualDeviceProperty("device_id"))
+            CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(discoveredPrinter)
             base.showNextPage()
         }
 
-        enabled: addPrinterByIpScreen.haveConnection
+        enabled: addPrinterByIpScreen.hasRequestFinished && addPrinterByIpScreen.isPrinterDiscovered
     }
 }

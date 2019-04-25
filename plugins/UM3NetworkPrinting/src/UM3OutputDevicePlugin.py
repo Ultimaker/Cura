@@ -5,7 +5,7 @@ import os
 from queue import Queue
 from threading import Event, Thread
 from time import time
-from typing import Optional, TYPE_CHECKING, Dict
+from typing import Optional, TYPE_CHECKING, Dict, Callable
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
@@ -37,6 +37,19 @@ if TYPE_CHECKING:
 
 
 i18n_catalog = i18nCatalog("cura")
+
+
+#
+# Represents a request for adding a manual printer. It has the following fields:
+#  - address: The string of the (IP) address of the manual printer
+#  - callback: (Optional) Once the HTTP request to the printer to get printer information is done, whether successful
+#              or not, this callback will be invoked to notify about the result. The callback must have a signature of
+#                  func(success: bool, address: str) -> None
+#
+class ManualPrinterRequest:
+    def __init__(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        self.address = address
+        self.callback = callback
 
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
@@ -84,10 +97,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
-        self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        self._manual_instances = {address: ManualPrinterRequest(address)
+                                  for address in manual_instances}  # type: Dict[str, ManualPrinterRequest]
 
         # Store the last manual entry key
-        self._last_manual_entry_key = "" # type: str
+        self._last_manual_entry_key = ""  # type: str
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
@@ -185,8 +200,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.checkCloudFlowIsPossible(None)
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
-            if key.startswith("manual:"):
-                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address)
 
     def stop(self):
         if self._zero_conf is not None:
@@ -198,7 +211,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # This plugin should always be the fallback option (at least try it):
         return ManualDeviceAdditionAttempt.POSSIBLE
 
-    def removeManualDevice(self, key, address = None):
+    def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
+        if key not in self._discovered_devices and address is not None:
+            key = "manual:%s" % address
+
         if key in self._discovered_devices:
             if not address:
                 address = self._discovered_devices[key].ipAddress
@@ -206,15 +222,19 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self.resetLastManualDevice()
 
         if address in self._manual_instances:
-            self._manual_instances.remove(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+            manual_printer_request = self._manual_instances.pop(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
-        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)
+            if manual_printer_request.callback is not None:
+                self._application.callLater(manual_printer_request.callback, False, address)
 
-    def addManualDevice(self, address):
-        if address not in self._manual_instances:
-            self._manual_instances.append(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+    def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        if address in self._manual_instances:
+            Logger.log("i", "Manual printer with address [%s] has already been added, do nothing", address)
+            return
+
+        self._manual_instances[address] = ManualPrinterRequest(address, callback = callback)
+        self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
         instance_name = "manual:%s" % address
         properties = {
@@ -319,6 +339,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
 
+            if address in self._manual_instances:
+                manual_printer_request = self._manual_instances[address]
+                if manual_printer_request.callback is not None:
+                    self._application.callLater(manual_printer_request.callback, True, address)
+
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
             properties = {
@@ -362,10 +387,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 
-        if device and address in self._manual_instances:
-            self.getOutputDeviceManager().addOutputDevice(device)
-            self.addManualDeviceSignal.emit(self.getPluginId(), device.getId(), address, properties)
-
     def _onRemoveDevice(self, device_id: str) -> None:
         device = self._discovered_devices.pop(device_id, None)
         if device:
@@ -401,7 +422,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(address, device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"), device)
+        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
+            address, device.getId(), properties[b"name"].decode("utf-8"), self._createMachineFromDiscoveredPrinter,
+            properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
