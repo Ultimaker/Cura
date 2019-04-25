@@ -130,6 +130,7 @@ class AuthorizationService:
             self._storeAuthData(response)
             self.onAuthStateChanged.emit(logged_in = True)
         else:
+            Logger.log("w", "Failed to get a new access token from the server.")
             self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
