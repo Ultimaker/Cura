@@ -23,7 +23,7 @@
             "display_name": "3MF Writer",
             "description": "Provides support for writing 3MF files.",
             "package_version": "1.0.1",
-            "sdk_version": "6.0",
+            "sdk_version": "6.0.0",
             "website": "https://ultimaker.com",
             "author": {
                 "author_id": "UltimakerPackages",
