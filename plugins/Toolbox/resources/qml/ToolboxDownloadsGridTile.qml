@@ -76,7 +76,7 @@ Item
             height: (parent.height * 0.4) | 0
             anchors
             {
-                bottom: parent.bottomcommi
+                bottom: parent.bottom
                 right: parent.right
             }
             sourceSize.height: height

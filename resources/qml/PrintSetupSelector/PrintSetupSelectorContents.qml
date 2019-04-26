@@ -14,6 +14,8 @@ Item
 {
     id: content
 
+    property int absoluteMinimumHeight: 200 * screenScaleFactor
+
     width: UM.Theme.getSize("print_setup_widget").width - 2 * UM.Theme.getSize("default_margin").width
     height: contents.height + buttonRow.height
 
@@ -86,8 +88,14 @@ Item
                         Math.min
                         (
                             UM.Preferences.getValue("view/settings_list_height"),
-                            base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height)
+                            Math.max
+                            (
+                                absoluteMinimumHeight,
+                                base.height - (customPrintSetup.mapToItem(null, 0, 0).y + buttonRow.height + UM.Theme.getSize("default_margin").height)
+                            )
                         );
+
+                    updateDragPosition();
                 }
             }
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Custom
@@ -143,7 +151,11 @@ Item
             iconSource: UM.Theme.getIcon("arrow_right")
             isIconOnRightSide: true
             visible: currentModeIndex == PrintSetupSelectorContents.Mode.Recommended
-            onClicked: currentModeIndex = PrintSetupSelectorContents.Mode.Custom
+            onClicked:
+            {
+                currentModeIndex = PrintSetupSelectorContents.Mode.Custom
+                updateDragPosition();
+            }
         }
 
         //Invisible area at the bottom with which you can resize the panel.
@@ -171,9 +183,9 @@ Item
                     // position of mouse relative to dropdown  align vertical centre of mouse area to cursor
                     //      v------------------------------v   v------------v
                     var h = mouseY + buttonRow.y + content.y - height / 2 | 0;
-                    if(h < 200 * screenScaleFactor) //Enforce a minimum size.
+                    if(h < absoluteMinimumHeight) //Enforce a minimum size.
                     {
-                        h = 200 * screenScaleFactor;
+                        h = absoluteMinimumHeight;
                     }
 
                     //Absolute mouse Y position in the window, to prevent it from going outside the window.

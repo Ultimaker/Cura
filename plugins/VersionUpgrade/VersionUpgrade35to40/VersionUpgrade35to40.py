@@ -3,7 +3,7 @@ from typing import Tuple, List, Set, Dict
 import io
 
 from UM.VersionUpgrade import VersionUpgrade
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 deleted_settings = {"bridge_wall_max_overhang"}  # type: Set[str]
 renamed_configurations = {"connect_group_name": "group_name"}  # type: Dict[str, str]

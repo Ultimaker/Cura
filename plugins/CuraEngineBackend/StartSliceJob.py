@@ -196,10 +196,7 @@ class StartSliceJob(Job):
                 has_printing_mesh = False
                 for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
                     if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        per_object_stack = node.callDecoration("getStack")
-                        is_non_printing_mesh = False
-                        if per_object_stack:
-                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+                        is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
                         # Find a reason not to add the node
                         if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:

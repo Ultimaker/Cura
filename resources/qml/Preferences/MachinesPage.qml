@@ -14,7 +14,9 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: Cura.MachineManagementModel { }
+    model: Cura.GlobalStacksModel { }
+
+    sectionRole: "discoverySource"
 
     activeId: Cura.MachineManager.activeMachineId
     activeIndex: activeMachineIndex()
@@ -43,7 +45,7 @@ UM.ManagementPage
         {
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
-            onClicked: CuraApplication.requestAddPrinter()
+            onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {

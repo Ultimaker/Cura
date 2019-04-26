@@ -19,12 +19,12 @@ from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.ConfigurationModel import ConfigurationModel
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .Cloud.Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
@@ -66,10 +66,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._received_print_jobs = False # type: bool
 
         if PluginRegistry.getInstance() is not None:
-            self._monitor_view_qml_path = os.path.join(
-                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
-                "resources", "qml", "MonitorStage.qml"
-            )
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            if plugin_path is None:
+                Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
+                raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
+            self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -395,9 +396,9 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         newly_finished_jobs = [job for job in finished_jobs if job not in self._finished_jobs and job.owner == username]
         for job in newly_finished_jobs:
             if job.assignedPrinter:
-                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.".format(printer_name=job.assignedPrinter.name, job_name = job.name))
+                job_completed_text = i18n_catalog.i18nc("@info:status", "Printer '{printer_name}' has finished printing '{job_name}'.").format(printer_name=job.assignedPrinter.name, job_name = job.name)
             else:
-                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.".format(job_name = job.name))
+                job_completed_text =  i18n_catalog.i18nc("@info:status", "The print job '{job_name}' was finished.").format(job_name = job.name)
             job_completed_message = Message(text=job_completed_text, title = i18n_catalog.i18nc("@info:status", "Print finished"))
             job_completed_message.show()
 
@@ -522,7 +523,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         print_job = UM3PrintJobOutputModel(output_controller=ClusterUM3PrinterOutputController(self),
                                         key=data["uuid"], name= data["name"])
 
-        configuration = ConfigurationModel()
+        configuration = PrinterConfigurationModel()
         extruders = [ExtruderConfigurationModel(position = idx) for idx in range(0, self._number_of_extruders)]
         for index in range(0, self._number_of_extruders):
             try:
@@ -534,6 +535,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
             extruder.setMaterial(self._createMaterialOutputModel(extruder_data.get("material", {})))
 
         configuration.setExtruderConfigurations(extruders)
+        configuration.setPrinterType(data.get("machine_variant", ""))
         print_job.updateConfiguration(configuration)
         print_job.setCompatibleMachineFamilies(data.get("compatible_machine_families", []))
         print_job.stateChanged.connect(self._printJobStateChanged)
@@ -632,6 +634,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         printer.updateName(data["friendly_name"])
         printer.updateKey(data["uuid"])
         printer.updateType(data["machine_variant"])
+
+        if data["status"] != "unreachable":
+            self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(data["ip_address"],
+                                                                               name = data["friendly_name"],
+                                                                               machine_type = data["machine_variant"])
 
         # Do not store the build plate information that comes from connect if the current printer has not build plate information
         if "build_plate" in data and machine_definition.getMetaDataEntry("has_variant_buildplates", False):

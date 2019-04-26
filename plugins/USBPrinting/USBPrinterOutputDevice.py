@@ -10,9 +10,9 @@ from UM.PluginRegistry import PluginRegistry #To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionState, ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.GenericOutputController import GenericOutputController
 
 from .AutoDetectBaudJob import AutoDetectBaudJob
@@ -226,6 +226,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         except SerialTimeoutException:
             Logger.log("w", "Timeout when sending command to printer via USB.")
             self._command_received.set()
+        except SerialException:
+            Logger.logException("w", "An unexpected exception occurred while writing to the serial.")
+            self.setConnectionState(ConnectionState.Error)
 
     def _update(self):
         while self._connection_state == ConnectionState.Connected and self._serial is not None:
@@ -371,10 +374,17 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._sendCommand("N%d%s*%d" % (self._gcode_position, line, checksum))
 
-        progress = (self._gcode_position / len(self._gcode))
+        print_job = self._printers[0].activePrintJob
+        try:
+            progress = self._gcode_position / len(self._gcode)
+        except ZeroDivisionError:
+            # There is nothing to send!
+            if print_job is not None:
+                print_job.updateState("error")
+            return
 
         elapsed_time = int(time() - self._print_start_time)
-        print_job = self._printers[0].activePrintJob
+
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)

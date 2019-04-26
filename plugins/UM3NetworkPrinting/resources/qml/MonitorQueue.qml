@@ -210,7 +210,7 @@ Item
 
             Label
             {
-                text: "All jobs are printed."
+                text: i18n.i18nc("@info", "All jobs are printed.")
                 color: UM.Theme.getColor("monitor_text_primary")
                 font: UM.Theme.getFont("medium") // 14pt, regular
             }

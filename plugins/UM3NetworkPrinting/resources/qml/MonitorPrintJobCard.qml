@@ -158,14 +158,9 @@ Item
                     spacing: 6 // TODO: Theme!
                     visible: printJob
 
-                    Repeater
+                    MonitorPrinterPill
                     {
-                        id: compatiblePills
-                        delegate: MonitorPrinterPill
-                        {
-                            text: modelData
-                        }
-                        model: printJob ? printJob.compatibleMachineFamilies : []
+                        text: printJob.configuration.printerType
                     }
                 }
             }

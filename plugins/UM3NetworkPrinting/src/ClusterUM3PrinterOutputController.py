@@ -5,7 +5,7 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 
 class ClusterUM3PrinterOutputController(PrinterOutputController):
     def __init__(self, output_device):

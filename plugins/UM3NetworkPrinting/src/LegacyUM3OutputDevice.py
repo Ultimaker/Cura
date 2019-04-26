@@ -2,10 +2,10 @@ from typing import List, Optional
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -77,13 +77,15 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.setIconName("print")
 
-        if PluginRegistry.getInstance() is not None:
+        self._output_controller = LegacyUM3PrinterOutputController(self)
+
+    def _createMonitorViewFromQML(self) -> None:
+        if self._monitor_view_qml_path is None and PluginRegistry.getInstance() is not None:
             self._monitor_view_qml_path = os.path.join(
                 PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
                 "resources", "qml", "MonitorStage.qml"
             )
-
-        self._output_controller = LegacyUM3PrinterOutputController(self)
+        super()._createMonitorViewFromQML()
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.

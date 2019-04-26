@@ -60,13 +60,11 @@ class ConvexHullDecorator(SceneNodeDecorator):
         previous_node = self._node
         # Disconnect from previous node signals
         if previous_node is not None and node is not previous_node:
-            previous_node.transformationChanged.disconnect(self._onChanged)
-            previous_node.parentChanged.disconnect(self._onChanged)
+            previous_node.boundingBoxChanged.disconnect(self._onChanged)
 
         super().setNode(node)
-        # Mypy doesn't understand that self._node is no longer optional, so just use the node.
-        node.transformationChanged.connect(self._onChanged)
-        node.parentChanged.connect(self._onChanged)
+
+        node.boundingBoxChanged.connect(self._onChanged)
 
         self._onChanged()
 
