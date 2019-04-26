@@ -62,7 +62,24 @@ class ExtruderConfigurationModel(QObject):
         return " ".join(message_chunks)
 
     def __eq__(self, other) -> bool:
-        return hash(self) == hash(other)
+        if not isinstance(other, ExtruderConfigurationModel):
+            return False
+
+        if self._position != other.position:
+            return False
+        # Empty materials should be ignored for comparison
+        if self.activeMaterial is not None and other.activeMaterial is not None:
+            if self.activeMaterial.guid != other.activeMaterial.guid:
+                if self.activeMaterial.guid != "" and other.activeMaterial.guid != "":
+                    return False
+                else:
+                    # At this point there is no material, so it doesn't matter what the hotend is.
+                    return True
+
+        if self.hotendID != other.hotendID:
+            return False
+
+        return True
 
     #   Calculating a hash function using the position of the extruder, the material GUID and the hotend id to check if is
     #   unique within a set
