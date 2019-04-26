@@ -217,7 +217,7 @@ class CuraApplication(QtApplication):
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
 
-        self._discovered_printer_model = DiscoveredPrintersModel(parent = self)
+        self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)

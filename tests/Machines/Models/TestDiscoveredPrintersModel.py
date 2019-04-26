@@ -7,7 +7,7 @@ from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
 
 @pytest.fixture()
 def discovered_printer_model(application) -> DiscoveredPrintersModel:
-    return DiscoveredPrintersModel()
+    return DiscoveredPrintersModel(application)
 
 
 def test_discoveredPrinters(discovered_printer_model):
