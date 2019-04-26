@@ -1,5 +1,5 @@
 # Copyright (c) 2019 fieldOfView
-# The Cura is released under the terms of the LGPLv3 or higher.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 # This AMF parser is based on the AMF parser in legacy cura:
 # https://github.com/daid/LegacyCura/blob/ad7641e059048c7dcb25da1f47c0a7e95e7f4f7c/Cura/util/meshLoaders/amf.py
