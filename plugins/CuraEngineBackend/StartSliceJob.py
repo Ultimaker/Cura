@@ -355,6 +355,8 @@ class StartSliceJob(Job):
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
+            if self._all_extruders_settings is None:
+                return ""
             settings = self._all_extruders_settings.copy()
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
@@ -368,6 +370,10 @@ class StartSliceJob(Job):
         message.id = int(stack.getMetaDataEntry("position"))
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
+
+        if self._all_extruders_settings is None:
+            return
+
         extruder_nr = stack.getProperty("extruder_nr", "value")
         settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
@@ -395,6 +401,9 @@ class StartSliceJob(Job):
     def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
         if not self._all_extruders_settings:
             self._cacheAllExtruderSettings()
+
+        if self._all_extruders_settings is None:
+            return
 
         settings = self._all_extruders_settings["-1"].copy()
 
