@@ -29,6 +29,7 @@ i18n_catalog = i18nCatalog("cura")
 class Account(QObject):
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
+    accessTokenChanged = pyqtSignal()
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -59,7 +60,11 @@ class Account(QObject):
         self._authorization_service.initialize(self._application.getPreferences())
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
+        self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
+
+    def _onAccessTokenChanged(self):
+        self.accessTokenChanged.emit()
 
     ## Returns a boolean indicating whether the given authentication is applied against staging or not.
     @property
@@ -105,7 +110,7 @@ class Account(QObject):
             return None
         return user_profile.profile_image_url
 
-    @pyqtProperty(str, notify=loginStateChanged)
+    @pyqtProperty(str, notify=accessTokenChanged)
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 

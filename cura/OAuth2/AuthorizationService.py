@@ -34,6 +34,8 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
+    accessTokenChanged = Signal()
+
     def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
@@ -213,6 +215,8 @@ class AuthorizationService:
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
+
+        self.accessTokenChanged.emit()
 
     def _onMessageActionTriggered(self, _, action):
         if action == "retry":
