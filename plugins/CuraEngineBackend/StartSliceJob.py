@@ -334,25 +334,29 @@ class StartSliceJob(Job):
 
         return result
 
+    def _cacheAllExtruderSettings(self):
+        global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
+
+        # NB: keys must be strings for the string formatter
+        self._all_extruders_settings = {
+            "-1": self._buildReplacementTokens(global_stack)
+        }
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
+            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+
     ##  Replace setting tokens in a piece of g-code.
     #   \param value A piece of g-code to replace tokens in.
     #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         if not self._all_extruders_settings:
-            global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
-
-            # NB: keys must be strings for the string formatter
-            self._all_extruders_settings = {
-                "-1": self._buildReplacementTokens(global_stack)
-            }
-
-            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
-                extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
-                self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+            self._cacheAllExtruderSettings()
 
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
+            if self._all_extruders_settings is None:
+                return ""
             settings = self._all_extruders_settings.copy()
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
@@ -364,8 +368,14 @@ class StartSliceJob(Job):
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
+        if not self._all_extruders_settings:
+            self._cacheAllExtruderSettings()
 
-        settings = self._buildReplacementTokens(stack)
+        if self._all_extruders_settings is None:
+            return
+
+        extruder_nr = stack.getProperty("extruder_nr", "value")
+        settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
         # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
@@ -389,7 +399,13 @@ class StartSliceJob(Job):
     #   The settings are taken from the global stack. This does not include any
     #   per-extruder settings or per-object settings.
     def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
-        settings = self._buildReplacementTokens(stack)
+        if not self._all_extruders_settings:
+            self._cacheAllExtruderSettings()
+
+        if self._all_extruders_settings is None:
+            return
+
+        settings = self._all_extruders_settings["-1"].copy()
 
         # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]
