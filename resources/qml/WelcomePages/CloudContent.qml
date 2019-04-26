@@ -97,7 +97,7 @@ Item
                     t = catalog.i18nc("@text", "- Store your Ultimaker Cura settings in the cloud for use anywhere")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Get exclusive access to material profiles from leading brands")
+                    t = catalog.i18nc("@text", "- Get exclusive access to print profiles from leading brands")
                     full_text += "<p>" + t + "</p>"
 
                     return full_text
