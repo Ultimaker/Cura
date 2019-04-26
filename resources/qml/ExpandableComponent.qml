@@ -258,6 +258,7 @@ Item
             MouseArea
             {
                 id: dragRegion
+                cursorShape: Qt.SizeAllCursor
                 anchors
                 {
                     top: parent.top
