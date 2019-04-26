@@ -20,11 +20,19 @@ Item
         name: "cura"
     }
 
+    anchors
+    {
+        left: parent.left
+        right: parent.right
+        leftMargin: UM.Theme.getSize("wide_margin").width
+        rightMargin: UM.Theme.getSize("wide_margin").width
+    }
+
     // Item to ensure that all of the buttons are nicely centered.
     Item
     {
         anchors.horizontalCenter: parent.horizontalCenter
-        width: openFileButton.width + itemRow.width + UM.Theme.getSize("default_margin").width
+        width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
         height: parent.height
 
         RowLayout
@@ -32,9 +40,9 @@ Item
             id: itemRow
 
             anchors.left: openFileButton.right
+            anchors.right: parent.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
 
-            width: Math.round(0.9 * prepareMenu.width)
             height: parent.height
             spacing: 0
 

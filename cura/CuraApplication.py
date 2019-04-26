@@ -23,6 +23,7 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
+from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -522,6 +523,10 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/use_multi_build_plate", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
+        preferences.addPreference("view/settings_xpos", 0)
+        preferences.addPreference("view/settings_ypos", 56)
+        preferences.addPreference("view/colorscheme_xpos", 0)
+        preferences.addPreference("view/colorscheme_ypos", 56)
         preferences.addPreference("cura/currency", "€")
         preferences.addPreference("cura/material_settings", "{}")
 
@@ -1782,3 +1787,19 @@ class CuraApplication(QtApplication):
         # Only show the what's new dialog if there's no machine and we have just upgraded
         show_whatsnew_only = has_active_machine and has_app_just_upgraded
         return show_whatsnew_only
+
+    @pyqtSlot(result = int)
+    def appWidth(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.width()
+        else:
+            return 0
+
+    @pyqtSlot(result = int)
+    def appHeight(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.height()
+        else:
+            return 0
