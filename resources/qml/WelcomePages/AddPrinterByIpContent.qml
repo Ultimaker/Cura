@@ -111,7 +111,7 @@ Item
                     anchors.left: hostnameField.right
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     text: catalog.i18nc("@button", "Add")
-                    enabled: !addPrinterByIpScreen.hasRequestInProgress && !addPrinterByIpScreen.hasRequestFinished && (hostnameField.state != "invalid" && hostnameField.text != "")
+                    enabled: !addPrinterByIpScreen.hasRequestInProgress && !addPrinterByIpScreen.isPrinterDiscovered && (hostnameField.state != "invalid" && hostnameField.text != "")
                     onClicked:
                     {
                         const address = hostnameField.text
@@ -278,6 +278,6 @@ Item
             base.showNextPage()
         }
 
-        enabled: addPrinterByIpScreen.hasRequestFinished && addPrinterByIpScreen.isPrinterDiscovered
+        enabled: addPrinterByIpScreen.isPrinterDiscovered
     }
 }
