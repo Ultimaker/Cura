@@ -268,23 +268,32 @@ Item
                     right: contentHeader.xPosCloseButton
                 }
                 property var clickPos: Qt.point(0, 0)
-
+                property bool dragging: false
                 onPressed:
                 {
                     clickPos = Qt.point(mouse.x, mouse.y);
+                    dragging = true
                 }
 
                 onPositionChanged:
                 {
-                    var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
-                    if (delta.x !== 0 || delta.y !== 0)
+                    if(dragging)
                     {
-                        contentContainer.trySetPosition(contentContainer.x + delta.x, contentContainer.y + delta.y);
+                        var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
+                        if (delta.x !== 0 || delta.y !== 0)
+                        {
+                            contentContainer.trySetPosition(contentContainer.x + delta.x, contentContainer.y + delta.y);
+                        }
                     }
+                }
+                onReleased:
+                {
+                     dragging = false
                 }
 
                 onDoubleClicked:
                 {
+                    dragging = false
                     contentContainer.trySetPosition(0, 0);
                 }
 
