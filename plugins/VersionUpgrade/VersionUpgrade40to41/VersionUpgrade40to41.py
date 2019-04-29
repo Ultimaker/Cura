@@ -3,6 +3,7 @@
 
 import configparser
 import io
+import uuid
 from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
@@ -17,6 +18,7 @@ _renamed_quality_profiles = {
     "gmax15plus_pla_thin": "gmax15plus_global_thin",
     "gmax15plus_pla_very_thick": "gmax15plus_global_very_thick"
 } # type: Dict[str, str]
+
 
 ##  Upgrades configurations from the state they were in at version 4.0 to the
 #   state they should be in at version 4.1.
@@ -94,6 +96,13 @@ class VersionUpgrade40to41(VersionUpgrade):
         #Update the name of the quality profile.
         if parser["containers"]["4"] in _renamed_quality_profiles:
             parser["containers"]["4"] = _renamed_quality_profiles[parser["containers"]["4"]]
+
+        # Assign a GlobalStack to a unique group_id. If the GlobalStack has a UM network connection, use the UM network
+        # key as the group_id.
+        if "um_network_key" in parser["metadata"]:
+            parser["metadata"]["group_id"] = parser["metadata"]["um_network_key"]
+        elif "group_id" not in parser["metadata"]:
+            parser["metadata"]["group_id"] = str(uuid.uuid4())
 
         result = io.StringIO()
         parser.write(result)

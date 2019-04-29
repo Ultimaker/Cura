@@ -4,6 +4,8 @@
 from collections import defaultdict
 import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
+import uuid
+
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
@@ -33,6 +35,7 @@ class GlobalStack(CuraContainerStack):
         super().__init__(container_id)
 
         self.setMetaDataEntry("type", "machine")  # For backward compatibility
+        self.setMetaDataEntry("group_id", str(uuid.uuid4()))  # Assign a new GlobalStack to a unique group by default
 
         self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
