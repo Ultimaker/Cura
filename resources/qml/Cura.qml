@@ -391,7 +391,7 @@ UM.MainWindow
         PrintSetupTooltip
         {
             id: tooltip
-            sourceWidth: UM.Theme.getSize("print_setup_widget").width 
+            sourceWidth: UM.Theme.getSize("print_setup_widget").width
         }
     }
 

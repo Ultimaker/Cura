@@ -25,6 +25,13 @@ Item
         Custom = 1
     }
 
+    // Catch all mouse events
+    MouseArea
+    {
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
     // Set the current mode index to the value that is stored in the preferences or Recommended mode otherwise.
     property int currentModeIndex:
     {
