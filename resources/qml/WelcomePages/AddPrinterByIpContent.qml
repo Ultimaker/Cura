@@ -26,6 +26,9 @@ Item
     property var discoveredPrinter: null
     property var isPrinterDiscovered: discoveredPrinter != null
 
+    // For validating IP address
+    property var util: Cura.QtUtil{}
+
     // Make sure to cancel the current request when this page closes.
     onVisibleChanged:
     {
@@ -93,15 +96,34 @@ Item
                     anchors.verticalCenter: addPrinterButton.verticalCenter
                     anchors.left: parent.left
 
+                    signal invalidInputDetected()
+
+                    onInvalidInputDetected: invalidInputLabel.visible = true
+
                     validator: RegExpValidator
                     {
-                        regExp: /((^\s*((([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))\s*$)|(^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$))?/
+                        regExp: /([a-zA-Z0-9.:]+)?/
                     }
+
+                    onTextEdited: invalidInputLabel.visible = false
 
                     placeholderText: catalog.i18nc("@text", "Place enter your printer's IP address.")
 
                     enabled: { ! (addPrinterByIpScreen.hasRequestInProgress || addPrinterByIpScreen.isPrinterDiscovered) }
                     onAccepted: addPrinterButton.clicked()
+                }
+
+                Label
+                {
+                    id: invalidInputLabel
+                    anchors.top: hostnameField.bottom
+                    anchors.topMargin: UM.Theme.getSize("default_margin").height
+                    anchors.left: parent.left
+                    visible: false
+                    text: catalog.i18nc("@text", "Place enter a valid IP address.")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
                 }
 
                 Cura.SecondaryButton
@@ -115,6 +137,11 @@ Item
                     onClicked:
                     {
                         const address = hostnameField.text
+                        if (!util.isValidIP(address))
+                        {
+                            hostnameField.invalidInputDetected()
+                            return
+                        }
 
                         // This address is already in the discovered printer model, no need to add a manual discovery.
                         if (CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[address])
