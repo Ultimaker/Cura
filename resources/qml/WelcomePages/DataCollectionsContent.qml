@@ -48,6 +48,19 @@ Item
 
             spacing: UM.Theme.getSize("wide_margin").height
 
+            Label
+            {
+                id: topLabel
+                width: parent.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience. For instance:")
+                wrapMode: Text.WordWrap
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
+            }
+
             Image
             {
                 id: curaImage
@@ -57,31 +70,24 @@ Item
 
             Label
             {
-                id: textLabel
+                id: bottomLabel
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t = catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience.")
+                    var t = catalog.i18nc("@text", "Ultimaker Cura will not collect any information on the model.")
                     var t2 = catalog.i18nc("@text", "More information")
-                    t += " <span style=\"color: rgb(0,0,255)\">" + t2 + "</span>"
+                    t += " <a href='https://notusedref'>" + t2 + "</a>"
                     return t
                 }
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
                 color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                onLinkActivated: CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
                 renderType: Text.NativeRendering
-
-                MouseArea
-                {
-                    anchors.fill: parent
-                    onClicked:
-                    {
-                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
-                    }
-                }
             }
         }
     }
