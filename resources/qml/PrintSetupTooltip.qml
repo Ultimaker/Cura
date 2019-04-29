@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -6,26 +6,43 @@ import QtQuick.Controls 2.3
 
 import UM 1.0 as UM
 
-UM.PointingRectangle {
-    id: base;
-
-    width: UM.Theme.getSize("tooltip").width;
-    height: label.height + UM.Theme.getSize("tooltip_margins").height * 2;
-    color: UM.Theme.getColor("tooltip");
+UM.PointingRectangle
+{
+    id: base
+    property real sourceWidth: 0
+    width: UM.Theme.getSize("tooltip").width
+    height: label.height + UM.Theme.getSize("tooltip_margins").height * 2
+    color: UM.Theme.getColor("tooltip")
 
     arrowSize: UM.Theme.getSize("default_arrow").width
 
-    opacity: 0;
-    Behavior on opacity { NumberAnimation { duration: 100; } }
+    opacity: 0
 
-    property alias text: label.text;
+    Behavior on opacity
+    {
+        NumberAnimation { duration: 100; }
+    }
 
-    function show(position) {
-        if(position.y + base.height > parent.height) {
+    property alias text: label.text
+
+    function show(position)
+    {
+        if(position.y + base.height > parent.height)
+        {
             x = position.x - base.width;
             y = parent.height - base.height;
-        } else {
-            x = position.x - base.width;
+        } else
+        {
+            var new_x = x = position.x - base.width
+
+            // If the tooltip would fall out of the screen, display it on the other side.
+            if(new_x < 0)
+            {
+                new_x = x + sourceWidth + base.width
+            }
+
+            x = new_x
+
             y = position.y - UM.Theme.getSize("tooltip_arrow_margins").height;
             if(y < 0)
             {
@@ -37,14 +54,16 @@ UM.PointingRectangle {
         target = Qt.point(position.x + 1, position.y + Math.round(UM.Theme.getSize("tooltip_arrow_margins").height / 2))
     }
 
-    function hide() {
+    function hide()
+    {
         base.opacity = 0;
     }
 
     Label
     {
         id: label;
-        anchors {
+        anchors
+        {
             top: parent.top;
             topMargin: UM.Theme.getSize("tooltip_margins").height;
             left: parent.left;
