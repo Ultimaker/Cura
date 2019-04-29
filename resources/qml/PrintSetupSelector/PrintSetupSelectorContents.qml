@@ -25,6 +25,13 @@ Item
         Custom = 1
     }
 
+    // Catch all mouse events
+    MouseArea
+    {
+        anchors.fill: parent
+        hoverEnabled: true
+    }
+
     // Set the current mode index to the value that is stored in the preferences or Recommended mode otherwise.
     property int currentModeIndex:
     {
@@ -194,7 +201,13 @@ Item
                     {
                         h -= mouse_absolute_y - base.height;
                     }
-
+                    // Enforce a minimum size (again).
+                    // This is a bit of a hackish way to do it, but we've seen some ocasional reports that the size
+                    // could get below the the minimum height.
+                    if(h < absoluteMinimumHeight)
+                    {
+                        h = absoluteMinimumHeight;
+                    }
                     UM.Preferences.setValue("view/settings_list_height", h);
                 }
             }
