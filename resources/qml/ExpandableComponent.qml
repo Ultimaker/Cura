@@ -41,6 +41,7 @@ Item
     property alias disabledText: disabledLabel.text
 
     // Defines the alignment of the content with respect of the headerItem, by default to the right
+    // Note that this only has an effect if the panel is draggable
     property int contentAlignment: ExpandableComponent.ContentAlignment.AlignRight
 
     // How much spacing is needed around the contentItem
