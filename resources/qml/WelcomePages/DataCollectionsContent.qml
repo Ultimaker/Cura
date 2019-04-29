@@ -61,11 +61,34 @@ Item
                 renderType: Text.NativeRendering
             }
 
-            Image
-            {
-                id: curaImage
+            Grid {
+                columns: 2
+                spacing: UM.Theme.getSize("wide_margin").height
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: UM.Theme.getImage("first_run_share_data")
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Machine types")
+                    imageSource: UM.Theme.getImage("first_run_machine_types")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Material usage")
+                    imageSource: UM.Theme.getImage("first_run_material_usage")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Number of slices")
+                    imageSource: UM.Theme.getImage("first_run_number_slices")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Print settings")
+                    imageSource: UM.Theme.getImage("first_run_print_settings")
+                }
             }
 
             Label
