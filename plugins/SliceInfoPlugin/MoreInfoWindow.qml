@@ -89,6 +89,7 @@ Window
                 }
 
                 textArea.text: manager.getExampleData()
+                textArea.textFormat: Text.RichText
                 textArea.readOnly: true
             }
         }
