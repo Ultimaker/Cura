@@ -1179,6 +1179,7 @@ class XmlMaterialProfile(InstanceContainer):
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
+        "build volume temperature": "build_volume_temperature",
     }
     __unmapped_settings = [
         "hardware compatible",
