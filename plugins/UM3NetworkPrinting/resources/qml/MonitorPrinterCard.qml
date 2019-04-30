@@ -284,9 +284,7 @@ Item
                 topMargin: 12 * screenScaleFactor + borderSize // TODO: Theme!
                 bottomMargin: 12 * screenScaleFactor // TODO: Theme!
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
-                rightMargin: 36 * screenScaleFactor // TODO: Theme!
             }
-            width: parent.width
             height: childrenRect.height
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
