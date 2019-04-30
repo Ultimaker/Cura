@@ -3,7 +3,7 @@
 
 # This AMF parser is based on the AMF parser in legacy cura:
 # https://github.com/daid/LegacyCura/blob/ad7641e059048c7dcb25da1f47c0a7e95e7f4f7c/Cura/util/meshLoaders/amf.py
-
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from cura.CuraApplication import CuraApplication
 from UM.Logger import Logger
 
@@ -30,11 +30,20 @@ except ImportError:
 
 from typing import Dict
 
+
 class AMFReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".amf"]
         self._namespaces = {}   # type: Dict[str, str]
+
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name="application/x-amf",
+                comment="AMF",
+                suffixes=["amf"]
+            )
+        )
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None
