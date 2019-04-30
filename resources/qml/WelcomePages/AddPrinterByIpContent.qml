@@ -120,7 +120,7 @@ Item
                     anchors.topMargin: UM.Theme.getSize("default_margin").height
                     anchors.left: parent.left
                     visible: false
-                    text: catalog.i18nc("@text", "Place enter a valid IP address.")
+                    text: catalog.i18nc("@text", "Please enter a valid IP address.")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
