@@ -11,8 +11,8 @@
         "platform_texture": "StereotechSte320backplate.png",
         "platform_offset": [
             0,
-            -50.6,
-            0
+            0,
+            -14
         ],
         "file_formats": "text/x-gcode",
         "has_materials": true,
