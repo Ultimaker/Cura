@@ -110,8 +110,8 @@ Item
         id: backButton
         anchors.left: parent.left
         anchors.bottom: parent.bottom
-        visible: base.currentItem.previous_page_button_text
-        text: base.currentItem.previous_page_button_text
+        visible: base.currentItem.previous_page_button_text ? true : false
+        text: base.currentItem.previous_page_button_text ? base.currentItem.previous_page_button_text : ""
         onClicked:
         {
             base.endWizard()
