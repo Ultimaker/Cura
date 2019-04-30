@@ -54,7 +54,7 @@ Item
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience. For instance:")
+                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:")
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
                 color: UM.Theme.getColor("text")
@@ -99,7 +99,7 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t = catalog.i18nc("@text", "Ultimaker Cura will not collect any information on the model.")
+                    var t = catalog.i18nc("@text", "The data that Ultimaker Cura collects will not contain any information about your model.")
                     var t2 = catalog.i18nc("@text", "More information")
                     t += " <a href='https://notusedref'>" + t2 + "</a>"
                     return t
