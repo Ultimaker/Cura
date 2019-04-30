@@ -32,16 +32,7 @@ ListView
         width: listView.width
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-        checked:
-        {
-            // If the machine has a remote connection
-            var result = Cura.MachineManager.activeMachineId == model.id
-            if (Cura.MachineManager.activeMachineHasRemoteConnection)
-            {
-                result |= Cura.MachineManager.activeMachineNetworkGroupName == model.metadata["group_name"]
-            }
-            return result
-        }
+        checked: Cura.MachineManager.activeMachineId == model.id
 
         onClicked:
         {
