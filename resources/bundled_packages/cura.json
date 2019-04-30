@@ -33,6 +33,23 @@
             }
         }
     },
+    "AMFReader": {
+        "package_info": {
+            "package_id": "AMFReader",
+            "package_type": "plugin",
+            "display_name": "AMF Reader",
+            "description": "Provides support for reading AMF files.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "fieldOfView",
+                "display_name": "fieldOfView",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "CuraDrive": {
         "package_info": {
             "package_id": "CuraDrive",
