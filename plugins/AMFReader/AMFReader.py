@@ -51,7 +51,7 @@ class AMFReader(MeshReader):
         base_name = os.path.basename(file_name)
         try:
             zipped_file = zipfile.ZipFile(file_name)
-            xml_document = zfile.read(zipped_file.namelist()[0])
+            xml_document = zipped_file.read(zipped_file.namelist()[0])
             zipped_file.close()
         except zipfile.BadZipfile:
             raw_file = open(file_name, "r")
@@ -89,7 +89,7 @@ class AMFReader(MeshReader):
                 for vertices in amf_mesh.iter("vertices"):
                     for vertex in vertices.iter("vertex"):
                         for coordinates in vertex.iter("coordinates"):
-                            v = [0.0,0.0,0.0]
+                            v = [0.0, 0.0, 0.0]
                             for t in coordinates:
                                 if t.tag == "x":
                                     v[0] = float(t.text) * scale
@@ -104,7 +104,7 @@ class AMFReader(MeshReader):
                 indices = []
                 for volume in amf_mesh.iter("volume"):
                     for triangle in volume.iter("triangle"):
-                        f = [0,0,0]
+                        f = [0, 0, 0]
                         for t in triangle:
                             if t.tag == "v1":
                                 f[0] = int(t.text)
