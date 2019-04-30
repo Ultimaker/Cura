@@ -27,7 +27,7 @@ Item
     property var isPrinterDiscovered: discoveredPrinter != null
 
     // For validating IP address
-    property var util: Cura.QtUtil{}
+    property var networkingUtil: Cura.NetworkingUtil {}
 
     // Make sure to cancel the current request when this page closes.
     onVisibleChanged:
@@ -137,7 +137,7 @@ Item
                     onClicked:
                     {
                         const address = hostnameField.text
-                        if (!util.isValidIP(address))
+                        if (!networkingUtil.isValidIP(address))
                         {
                             hostnameField.invalidInputDetected()
                             return
