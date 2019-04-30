@@ -70,7 +70,7 @@ class DiscoveredPrinter(QObject):
         # In ClusterUM3OutputDevice, when it updates a printer information, it updates the machine type using the field
         # "machine_variant", and for some reason, it's not the machine type ID/codename/... but a human-readable string
         # like "Ultimaker 3". The code below handles this case.
-        if machine_manager.hasMachineTypeName(self._machine_type):
+        if machine_manager.hasHumanReadableMachineTypeName(self._machine_type):
             readable_type = self._machine_type
         else:
             readable_type = machine_manager.getMachineTypeNameFromId(self._machine_type)
@@ -82,7 +82,7 @@ class DiscoveredPrinter(QObject):
     def isUnknownMachineType(self) -> bool:
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
-        if machine_manager.hasMachineTypeName(self._machine_type):
+        if machine_manager.hasHumanReadableMachineTypeName(self._machine_type):
             readable_type = self._machine_type
         else:
             readable_type = machine_manager.getMachineTypeNameFromId(self._machine_type)
