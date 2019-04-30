@@ -1030,7 +1030,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
-        qmlRegisterType(NetworkingUtil, "Cura", 1, 0, "NetworkingUtil")
+        qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
