@@ -48,5 +48,6 @@ Item
         x: Math.round(size * 0.25)
         y: Math.round(size * 0.15625)
         visible: position >= 0
+        renderType: Text.NativeRendering
     }
 }

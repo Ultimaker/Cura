@@ -23,6 +23,7 @@ Button
         horizontalAlignment: Text.AlignHCenter
         text: base.text
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering;
     }
     height: width
     hoverEnabled: enabled

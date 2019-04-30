@@ -112,6 +112,7 @@ Item
                         // FIXED-LINE-HEIGHT:
                         height: parent.height
                         verticalAlignment: Text.AlignVCenter
+                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -283,7 +284,9 @@ Item
                 topMargin: 12 * screenScaleFactor + borderSize // TODO: Theme!
                 bottomMargin: 12 * screenScaleFactor // TODO: Theme!
                 leftMargin: 36 * screenScaleFactor // TODO: Theme!
+                rightMargin: 36 * screenScaleFactor // TODO: Theme!
             }
+            width: parent.width
             height: childrenRect.height
             spacing: 18 * screenScaleFactor // TODO: Theme!
 
@@ -315,6 +318,7 @@ Item
                     return ""
                 }
                 visible: text !== ""
+                renderType: Text.NativeRendering
             }
 
             Item
@@ -356,6 +360,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Label
@@ -376,6 +381,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -403,6 +409,7 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
 
@@ -437,6 +444,7 @@ Item
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
+                renderType: Text.NativeRendering
             }
             implicitHeight: 32 * screenScaleFactor // TODO: Theme!
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!
