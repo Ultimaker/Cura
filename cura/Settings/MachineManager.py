@@ -1360,7 +1360,10 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey()})
+        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id"),
+                           "um_network_key": self.activeMachineNetworkKey(),
+                           }
+        new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
@@ -1369,13 +1372,12 @@ class MachineManager(QObject):
             new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
             new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
             new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
-            new_machine.setMetaDataEntry("hidden", False)
             new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("hidden", False)
 
         # Set the current printer instance to hidden (the metadata entry must exist)
+        new_machine.setMetaDataEntry("hidden", False)
         self._global_container_stack.setMetaDataEntry("hidden", True)
 
         self.setActiveMachine(new_machine.getId())
