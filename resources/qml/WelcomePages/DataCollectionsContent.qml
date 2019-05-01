@@ -99,7 +99,7 @@ Item
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t = catalog.i18nc("@text", "The data that Ultimaker Cura collects will not contain any information about your model.")
+                    var t = catalog.i18nc("@text", "Data collected by Ultimaker Cura will not contain any personal information.")
                     var t2 = catalog.i18nc("@text", "More information")
                     t += " <a href='https://notusedref'>" + t2 + "</a>"
                     return t
