@@ -24,7 +24,9 @@ Item
     property bool hasRequestFinished: false
 
     property var discoveredPrinter: null
-    property var isPrinterDiscovered: discoveredPrinter != null
+    property bool isPrinterDiscovered: discoveredPrinter != null
+    // A printer can only be added if it doesn't have an unknown type and it's the host of a group.
+    property bool canAddPrinter: isPrinterDiscovered && !discoveredPrinter.isUnknownMachineType && discoveredPrinter.isHostOfGroup
 
     // For validating IP address
     property var networkingUtil: Cura.NetworkingUtil {}
@@ -188,6 +190,8 @@ Item
                 Item
                 {
                     id: printerInfoLabels
+                    anchors.left: parent.left
+                    anchors.right: parent.right
                     anchors.top: parent.top
                     anchors.margins: UM.Theme.getSize("default_margin").width
 
@@ -204,10 +208,24 @@ Item
                         text: !addPrinterByIpScreen.isPrinterDiscovered ? "???" : addPrinterByIpScreen.discoveredPrinter.name
                     }
 
+                    Label
+                    {
+                        id: printerCannotBeAddedLabel
+                        width: parent.width
+                        anchors.top: printerNameLabel.bottom
+                        anchors.topMargin: UM.Theme.getSize("default_margin").height
+                        text: catalog.i18nc("@label", "This printer cannot be added because it's an unknown printer or it's not the host of a group.")
+                        visible: addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.canAddPrinter
+                        font: UM.Theme.getFont("default_bold")
+                        color: UM.Theme.getColor("text")
+                        renderType: Text.NativeRendering
+                        wrapMode: Text.WordWrap
+                    }
+
                     GridLayout
                     {
                         id: printerInfoGrid
-                        anchors.top: printerNameLabel.bottom
+                        anchors.top: printerCannotBeAddedLabel ? printerCannotBeAddedLabel.bottom : printerNameLabel.bottom
                         anchors.margins: UM.Theme.getSize("default_margin").width
                         columns: 2
                         columnSpacing: UM.Theme.getSize("default_margin").width
@@ -305,6 +323,6 @@ Item
             base.showNextPage()
         }
 
-        enabled: addPrinterByIpScreen.isPrinterDiscovered
+        enabled: addPrinterByIpScreen.canAddPrinter
     }
 }
