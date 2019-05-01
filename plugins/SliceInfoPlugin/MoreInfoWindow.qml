@@ -90,6 +90,7 @@ Window
 
                 textArea.text: manager.getExampleData()
                 textArea.textFormat: Text.RichText
+                textArea.wrapMode: Text.Wrap
                 textArea.readOnly: true
             }
         }
