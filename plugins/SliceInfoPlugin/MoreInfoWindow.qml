@@ -71,7 +71,7 @@ Window
                     left: parent.left
                     right: parent.right
                 }
-                text: catalog.i18nc("@text:window", "Cura sends anonymous data to Ultimaker in order to improve the print quality and user experience. Below is an example of all the data that is sent.")
+                text: catalog.i18nc("@text:window", "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is sent:")
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering
             }
@@ -89,6 +89,8 @@ Window
                 }
 
                 textArea.text: manager.getExampleData()
+                textArea.textFormat: Text.RichText
+                textArea.wrapMode: Text.Wrap
                 textArea.readOnly: true
             }
         }
