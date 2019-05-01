@@ -41,10 +41,7 @@ Item
 
         onClicked:
         {
-            if (contentShown)
-            {
-                addLocalPrinterDropDown.contentShown = false
-            }
+            addLocalPrinterDropDown.contentShown = !contentShown
         }
 
         contentComponent: networkPrinterListComponent
@@ -79,16 +76,13 @@ Item
         anchors.top: addNetworkPrinterDropDown.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         title: catalog.i18nc("@label", "Add a non-networked printer")
 
         onClicked:
         {
-            if (contentShown)
-            {
-                addNetworkPrinterDropDown.contentShown = false
-            }
+            addNetworkPrinterDropDown.contentShown = !contentShown
         }
 
         contentComponent: localPrinterListComponent

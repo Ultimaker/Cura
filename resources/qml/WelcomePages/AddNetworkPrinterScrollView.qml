@@ -56,7 +56,7 @@ Item
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-            height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+            height: Math.min(contentHeight, maxItemCountAtOnce * UM.Theme.getSize("action_button").height)
 
             visible: networkPrinterListView.count > 0
 
