@@ -22,6 +22,7 @@ Item
     property bool hasRequestInProgress: CuraApplication.getDiscoveredPrintersModel().hasManualDeviceRequestInProgress
     // Indicates if a request has finished.
     property bool hasRequestFinished: false
+    property string currentRequestAddress: ""
 
     property var discoveredPrinter: null
     property bool isPrinterDiscovered: discoveredPrinter != null
@@ -30,6 +31,26 @@ Item
 
     // For validating IP address
     property var networkingUtil: Cura.NetworkingUtil {}
+
+    // CURA-6483
+    // For a manually added UM printer, the UM3OutputDevicePlugin will first create a LegacyUM device for it. Later,
+    // when it gets more info from the printer, it will first REMOVE the LegacyUM device and then add a ClusterUM device.
+    // The Add-by-IP page needs to make sure that the user do not add an unknown printer or a printer that's not the
+    // host of a group. Because of the device list change, this page needs to react upon DiscoveredPrintersChanged so
+    // it has the correct information.
+    Connections
+    {
+        target: CuraApplication.getDiscoveredPrintersModel()
+        onDiscoveredPrintersChanged:
+        {
+            if (hasRequestFinished && currentRequestAddress)
+            {
+                var printer = CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[currentRequestAddress]
+                printer = printer ? printer : null
+                discoveredPrinter = printer
+            }
+        }
+    }
 
     // Make sure to cancel the current request when this page closes.
     onVisibleChanged:
@@ -149,9 +170,11 @@ Item
                         if (CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[address])
                         {
                             addPrinterByIpScreen.discoveredPrinter = CuraApplication.getDiscoveredPrintersModel().discoveredPrintersByAddress[address]
+                            addPrinterByIpScreen.hasRequestFinished = true
                             return
                         }
 
+                        addPrinterByIpScreen.currentRequestAddress = address
                         CuraApplication.getDiscoveredPrintersModel().checkManualDevice(address)
                     }
                     busy: addPrinterByIpScreen.hasRequestInProgress
