@@ -77,7 +77,7 @@ class SliceInfo(QObject, Extension):
             if not plugin_path:
                 Logger.log("e", "Could not get plugin path!", self.getPluginId())
                 return None
-            file_path = os.path.join(plugin_path, "example_data.json")
+            file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
                 with open(file_path, "r", encoding = "utf-8") as f:
                     self._example_data_content = f.read()
