@@ -125,7 +125,7 @@ Item
 
                     validator: RegExpValidator
                     {
-                        regExp: /([a-zA-Z0-9.:]+)?/
+                        regExp: /([a-fA-F0-9.:]+)?/
                     }
 
                     onTextEdited: invalidInputLabel.visible = false
