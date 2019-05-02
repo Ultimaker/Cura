@@ -52,6 +52,7 @@ UM.Dialog
             bottomMargin: 56 * screenScaleFactor // TODO: Theme!
         }
         wrapMode: Text.WordWrap
+        renderType: Text.NativeRendering
         text:
         {
             if (!printer || !printer.activePrintJob)

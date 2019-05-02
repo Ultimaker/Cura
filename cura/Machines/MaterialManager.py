@@ -103,6 +103,8 @@ class MaterialManager(QObject):
                 continue
 
             root_material_id = material_metadata.get("base_file", "")
+            if root_material_id not in material_metadatas: #Not a registered material profile. Don't store this in the look-up tables.
+                continue
             if root_material_id not in self._material_group_map:
                 self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
                 self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
