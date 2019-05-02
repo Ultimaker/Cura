@@ -321,7 +321,7 @@ Item
         }
     }
 
-    Cura.PrimaryButton
+    Cura.SecondaryButton
     {
         id: backButton
         anchors.left: parent.left

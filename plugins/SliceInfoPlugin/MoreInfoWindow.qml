@@ -71,7 +71,7 @@ Window
                     left: parent.left
                     right: parent.right
                 }
-                text: catalog.i18nc("@text:window", "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is sent:")
+                text: catalog.i18nc("@text:window", "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:")
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering
             }
@@ -106,7 +106,7 @@ Window
             Cura.RadioButton
             {
                 id: dontSendButton
-                text: catalog.i18nc("@text:window", "I don't want to send this data")
+                text: catalog.i18nc("@text:window", "I don't want to send anonymous data")
                 onClicked:
                 {
                     baseDialog.allowSendData = !checked
@@ -115,7 +115,7 @@ Window
             Cura.RadioButton
             {
                 id: allowSendButton
-                text: catalog.i18nc("@text:window", "Allow sending this data to Ultimaker and help us improve Cura")
+                text: catalog.i18nc("@text:window", "Allow sending anonymous data")
                 onClicked:
                 {
                     baseDialog.allowSendData = checked
