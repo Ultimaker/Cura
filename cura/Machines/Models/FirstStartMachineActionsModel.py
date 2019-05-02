@@ -35,6 +35,8 @@ class FirstStartMachineActionsModel(ListModel):
         self._application = application
         self._application.initializationFinished.connect(self._initialize)
 
+        self._previous_global_stack = None
+
     def _initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._update)
         self._update()
@@ -85,6 +87,12 @@ class FirstStartMachineActionsModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+
+        # Do not update if the machine has not been switched. This can cause the SettingProviders on the Machine
+        # Setting page to do a force update, but they can use potential outdated cached values.
+        if self._previous_global_stack is not None and global_stack.getId() == self._previous_global_stack.getId():
+            return
+        self._previous_global_stack = global_stack
 
         definition_id = global_stack.definition.getId()
         first_start_actions = self._application.getMachineActionManager().getFirstStartActions(definition_id)
