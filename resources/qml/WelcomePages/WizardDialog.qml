@@ -66,6 +66,7 @@ Window
         anchors.left: parent.left
         anchors.bottom: parent.bottom
         anchors.margins: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("wide_margin").width
 
         enabled: true
         onClicked: dialog.visible = false

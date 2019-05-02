@@ -71,6 +71,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -98,6 +99,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -143,6 +145,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Row
@@ -197,6 +200,7 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
     }

@@ -69,6 +69,7 @@ UM.TooltipArea
             background: Rectangle
             {
                 color: UM.Theme.getColor("main_background")
+                anchors.fill: parent
 
                 border.color:
                 {

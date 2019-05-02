@@ -16,6 +16,7 @@ Button {
         text: parent.text
         horizontalAlignment: Text.AlignLeft;
         verticalAlignment: Text.AlignVCenter;
+        renderType: Text.NativeRendering;
     }
     height: visible ? 39 * screenScaleFactor : 0; // TODO: Theme!
     hoverEnabled: true;
