@@ -32,7 +32,11 @@ Cura.ExpandablePopup
             {
                 return Cura.MachineManager.activeMachineNetworkGroupName
             }
-            return Cura.MachineManager.activeMachineName
+            if(Cura.MachineManager.activeStack != null)
+            {
+                return Cura.MachineManager.activeStack.name
+            }
+            return ""
         }
         source:
         {

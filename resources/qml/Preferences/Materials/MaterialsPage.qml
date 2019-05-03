@@ -200,13 +200,13 @@ Item
             visible: text != ""
             text:
             {
-                var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
+                var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachine.name;
                 if (Cura.MachineManager.hasVariants)
                 {
                     var activeVariantName = ""
                     if(Cura.MachineManager.activeStack != null)
                     {
-                        activeVariantName =  Cura.MachineManager.activeStack.variant.name
+                        activeVariantName = Cura.MachineManager.activeStack.variant.name
                     }
                     caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + activeVariantName;
                 }
