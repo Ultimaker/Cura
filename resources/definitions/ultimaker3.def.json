@@ -26,6 +26,7 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
+        "supports_network_connection": true,
         "firmware_update_info": {
             "id": 9066,
             "check_urls":

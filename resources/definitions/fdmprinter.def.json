@@ -17,7 +17,8 @@
         {
             "0": "fdmextruder"
         },
-        "supports_usb_connection": true
+        "supports_usb_connection": true,
+        "supports_network_connection": false
     },
     "settings":
     {
