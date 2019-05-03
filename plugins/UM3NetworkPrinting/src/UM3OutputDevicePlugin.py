@@ -283,34 +283,24 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
         Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
 
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        global_container_stack = machine_manager.activeMachine
         if not global_container_stack:
             return
 
-        meta_data = global_container_stack.getMetaData()
+        for machine in machine_manager.getMachinesInGroup(global_container_stack.getMetaDataEntry("group_id")):
+            machine.setMetaDataEntry("um_network_key", printer_device.key)
+            machine.setMetaDataEntry("group_name", printer_device.name)
 
-        if "um_network_key" in meta_data:  # Global stack already had a connection, but it's changed.
-            old_network_key = meta_data["um_network_key"]
-            # Since we might have a bunch of hidden stacks, we also need to change it there.
-            metadata_filter = {"um_network_key": old_network_key}
-            containers = self._application.getContainerRegistry().findContainerStacks(type = "machine", **metadata_filter)
+            # Delete old authentication data.
+            Logger.log("d", "Removing old authentication id %s for device %s",
+                       global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
 
-            for container in containers:
-                container.setMetaDataEntry("um_network_key", printer_device.key)
+            machine.removeMetaDataEntry("network_authentication_id")
+            machine.removeMetaDataEntry("network_authentication_key")
 
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s",
-                           global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-
-                container.removeMetaDataEntry("network_authentication_id")
-                container.removeMetaDataEntry("network_authentication_key")
-
-                # Ensure that these containers do know that they are configured for network connection
-                container.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        else:  # Global stack didn't have a connection yet, configure it.
-            global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-            global_container_stack.addConfiguredConnectionType(printer_device.connectionType.value)
+            # Ensure that these containers do know that they are configured for network connection
+            machine.addConfiguredConnectionType(printer_device.connectionType.value)
 
         self.refreshConnections()
 

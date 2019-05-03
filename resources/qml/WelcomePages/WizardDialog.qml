@@ -31,7 +31,6 @@ Window
 
     property var model: null  // Needs to be set by whoever is using this dialog.
     property alias progressBarVisible: wizardPanel.progressBarVisible
-    property alias hasCancelButton: cancelButton.visible
 
     onVisibilityChanged:
     {
@@ -53,22 +52,5 @@ Window
     {
         target: model
         onAllFinished: dialog.hide()
-    }
-
-    Cura.SecondaryButton
-    {
-        id: cancelButton
-
-        text: catalog.i18nc("@button", "Cancel")
-
-        visible: false
-
-        anchors.left: parent.left
-        anchors.bottom: parent.bottom
-        anchors.margins: UM.Theme.getSize("default_margin").width
-        anchors.leftMargin: UM.Theme.getSize("wide_margin").width
-
-        enabled: true
-        onClicked: dialog.visible = false
     }
 }

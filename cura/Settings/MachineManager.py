@@ -797,7 +797,6 @@ class MachineManager(QObject):
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
         metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
-        network_key = metadata.get("um_network_key", None)
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
@@ -805,8 +804,9 @@ class MachineManager(QObject):
         CuraContainerRegistry.getInstance().removeContainer(machine_id)
 
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
-        if network_key:
-            metadata_filter = {"um_network_key": network_key}
+        group_id = metadata.get("group_id", None)
+        if group_id:
+            metadata_filter = {"group_id": group_id}
             hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
             if hidden_containers:
                 # This reuses the method and remove all printers recursively
@@ -1360,21 +1360,24 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey()})
+        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id"),
+                           "um_network_key": self.activeMachineNetworkKey(),
+                           }
+        new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
+            new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
             new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
             new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
-            new_machine.setMetaDataEntry("hidden", False)
             new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("hidden", False)
 
         # Set the current printer instance to hidden (the metadata entry must exist)
+        new_machine.setMetaDataEntry("hidden", False)
         self._global_container_stack.setMetaDataEntry("hidden", True)
 
         self.setActiveMachine(new_machine.getId())
@@ -1654,3 +1657,7 @@ class MachineManager(QObject):
         if results:
             machine_type_name = results[0]["name"]
         return machine_type_name
+
+    # Gets all machines that belong to the given group_id.
+    def getMachinesInGroup(self, group_id: str) -> List["GlobalStack"]:
+        return self._container_registry.findContainerStacks(type = "machine", group_id = group_id)

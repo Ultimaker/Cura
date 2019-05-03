@@ -192,7 +192,7 @@ class DiscoveredPrintersModel(QObject):
     def discoveredPrintersByAddress(self) -> Dict[str, DiscoveredPrinter]:
         return self._discovered_printer_by_ip_dict
 
-    @pyqtProperty(list, notify = discoveredPrintersChanged)
+    @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(
             x for x in self._discovered_printer_by_ip_dict.values() if not parseBool(x.device.getProperty("temporary")))
