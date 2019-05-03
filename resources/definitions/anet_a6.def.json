@@ -8,6 +8,7 @@
         "manufacturer": "Anet",
         "file_formats": "text/x-gcode",
         "platform": "aneta6_platform.stl",
+        "platform_offset": [0, -3.4, 0],
         "machine_extruder_trains":
         {
             "0": "anet_a6_extruder_0"
