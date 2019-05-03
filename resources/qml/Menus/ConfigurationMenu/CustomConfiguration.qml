@@ -70,8 +70,8 @@ Item
         OldControls.ToolButton
         {
             id: printerTypeSelector
-            text: Cura.MachineManager.activeMachineDefinitionName
-            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            text: Cura.MachineManager.activeMachine.definition.name
+            tooltip: text
             height: UM.Theme.getSize("print_setup_big_item").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
