@@ -720,7 +720,7 @@ class MachineManager(QObject):
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeStack.variant.name instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeStack.variant.name instead", "4.1")
     def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -730,7 +730,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeStack.variant.id instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeStack.variant.id instead", "4.1")
     def activeVariantId(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -740,7 +740,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeMachine.variant.name instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeMachine.variant.name instead", "4.1")
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -750,7 +750,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.activeMachine.definition.id instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeMachine.definition.id instead", "4.1")
     def activeDefinitionId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.definition.id
