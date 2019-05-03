@@ -110,27 +110,18 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "group_name" in meta_data:
-                previous_connect_group_name = meta_data["group_name"]
-                global_container_stack.setMetaDataEntry("group_name", group_name)
-                # Find all the places where there is the same group name and change it accordingly
-                self._replaceContainersMetadata(key = "group_name", value = previous_connect_group_name, new_value = group_name)
-            else:
-                global_container_stack.setMetaDataEntry("group_name", group_name)
+            # Update a GlobalStacks in the same group with the new group name.
+            group_id = global_container_stack.getMetaDataEntry("group_id")
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+            for machine in machine_manager.getMachinesInGroup(group_id):
+                machine.setMetaDataEntry("group_name", group_name)
+
             # Set the default value for "hidden", which is used when you have a group with multiple types of printers
             global_container_stack.setMetaDataEntry("hidden", False)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
             self._network_plugin.refreshConnections()
-
-    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
-    def _replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
-        machines = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
-        for machine in machines:
-            if machine.getMetaDataEntry(key) == value:
-                machine.setMetaDataEntry(key, new_value)
 
     # Associates the currently active machine with the given printer device. The network connection information will be
     # stored into the metadata of the currently active machine.

@@ -15,6 +15,7 @@ class AddPrinterPagesModel(WelcomePagesModel):
                             "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
                             "next_page_id": "machine_actions",
                             "next_page_button_text": self._catalog.i18nc("@action:button", "Add"),
+                            "previous_page_button_text": self._catalog.i18nc("@action:button", "Cancel"),
                             })
         self._pages.append({"id": "add_printer_by_ip",
                             "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
