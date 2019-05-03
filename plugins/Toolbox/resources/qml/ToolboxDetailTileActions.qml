@@ -40,6 +40,7 @@ Column
 
         Cura.SecondaryButton
         {
+            id: installedButton
             visible: installed
             onClicked: toolbox.viewCategory = "installed"
             text: catalog.i18nc("@action:button", "Installed")

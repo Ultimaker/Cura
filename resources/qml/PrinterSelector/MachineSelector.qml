@@ -157,6 +157,7 @@ Cura.ExpandablePopup
 
             Cura.SecondaryButton
             {
+                id: addPrinterButton
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Add printer")
@@ -172,6 +173,7 @@ Cura.ExpandablePopup
 
             Cura.SecondaryButton
             {
+                id: managePrinterButton
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Manage printers")

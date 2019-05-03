@@ -36,6 +36,7 @@ UM.ManagementPage
     buttons: [
         Button
         {
+            id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
@@ -43,12 +44,14 @@ UM.ManagementPage
         },
         Button
         {
+            id: addMenuButton
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
             onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {
+            id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
             enabled: base.currentItem != null && model.count > 1
@@ -56,6 +59,7 @@ UM.ManagementPage
         },
         Button
         {
+            id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
             enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
