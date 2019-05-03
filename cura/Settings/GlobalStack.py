@@ -76,6 +76,10 @@ class GlobalStack(CuraContainerStack):
     def maxExtruderCount(self):
         return len(self.getMetaDataEntry("machine_extruder_trains"))
 
+    @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
+    def supportsNetworkConnection(self):
+        return self.getMetaDataEntry("supports_network_connection", False)
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
