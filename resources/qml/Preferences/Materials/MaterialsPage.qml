@@ -203,7 +203,12 @@ Item
                 var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
                 if (Cura.MachineManager.hasVariants)
                 {
-                    caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + Cura.MachineManager.activeVariantName;
+                    var activeVariantName = ""
+                    if(Cura.MachineManager.activeStack != null)
+                    {
+                        activeVariantName =  Cura.MachineManager.activeStack.variant.name
+                    }
+                    caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + activeVariantName;
                 }
                 return caption;
             }

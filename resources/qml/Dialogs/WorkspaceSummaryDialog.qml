@@ -140,7 +140,7 @@ UM.Dialog
                     }
                     Label
                     {
-                        text: Cura.MachineManager.activeVariantBuildplateName
+                        text: Cura.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
                         width: Math.floor(scroll.width / 3) | 0
                     }
                 }
