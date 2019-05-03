@@ -39,6 +39,7 @@ class WelcomePagesModel(ListModel):
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
     NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
+    PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -47,6 +48,7 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.PageUrlRole, "page_url")
         self.addRoleName(self.NextPageIdRole, "next_page_id")
         self.addRoleName(self.NextPageButtonTextRole, "next_page_button_text")
+        self.addRoleName(self.PreviousPageButtonTextRole, "previous_page_button_text")
 
         self._application = application
         self._catalog = i18nCatalog("cura")

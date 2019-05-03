@@ -117,6 +117,8 @@ from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
 
+from cura.Utils.NetworkingUtil import NetworkingUtil
+
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
 from . import PlatformPhysics
@@ -1027,6 +1029,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")

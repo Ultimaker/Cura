@@ -1,8 +1,8 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,8 +14,12 @@ Cura.MachineAction
 {
     id: base
     anchors.fill: parent;
+    property alias currentItemIndex: listview.currentIndex
     property var selectedDevice: null
     property bool completeProperties: true
+
+    // For validating IP addresses
+    property var networkingUtil: Cura.NetworkingUtil {}
 
     function connectToPrinter()
     {
@@ -342,6 +346,17 @@ Cura.MachineAction
         }
     }
 
+    MessageDialog
+    {
+        id: invalidIPAddressMessageDialog
+        x: (parent.x + (parent.width) / 2) | 0
+        y: (parent.y + (parent.height) / 2) | 0
+        title: catalog.i18nc("@title:window", "Invalid IP address")
+        text: catalog.i18nc("@text", "Please enter a valid IP address.")
+        icon: StandardIcon.Warning
+        standardButtons: StandardButton.Ok
+    }
+
     UM.Dialog
     {
         id: manualPrinterDialog
@@ -404,6 +419,26 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
+                    // Validate the input first
+                    if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
+                    {
+                        invalidIPAddressMessageDialog.open()
+                        return
+                    }
+
+                    // if the entered IP address has already been discovered, switch the current item to that item
+                    // and do nothing else.
+                    for (var i = 0; i < manager.foundDevices.length; i++)
+                    {
+                        var device = manager.foundDevices[i]
+                        if (device.address == manualPrinterDialog.addressText)
+                        {
+                            currentItemIndex = i
+                            manualPrinterDialog.hide()
+                            return
+                        }
+                    }
+
                     manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }
