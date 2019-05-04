@@ -6758,6 +6758,7 @@
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
+                    "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
                 "bridge_wall_coast":
