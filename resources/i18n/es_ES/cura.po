@@ -561,7 +561,7 @@ msgstr "Conectar a Ultimaker Cloud"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"
 msgid "Don't ask me again for this printer."
-msgstr "No volver a preguntarme para esta impresora."
+msgstr "No volver a preguntarme por esta impresora."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:464
 msgctxt "@action"
@@ -805,7 +805,7 @@ msgstr "Tobera"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
-msgstr "El archivo del proyecto<filename>{0}</filename> contiene un tipo de máquina desconocida <message>{1}</message>. No se puede importar la máquina, en su lugar, se importarán los modelos."
+msgstr "El archivo del proyecto <filename>{0}</filename> contiene un tipo de máquina desconocida <message>{1}</message>. No se puede importar la máquina, en su lugar, se importarán los modelos."
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:472
 msgctxt "@info:title"
@@ -1856,7 +1856,7 @@ msgstr "Correo electrónico"
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
 msgid "Some things could be problematic in this print. Click to see tips for adjustment."
-msgstr "Algunos elementos pueden causar problemas durante la impresión. Haga clic para ver consejos sobre cómo ajustarla."
+msgstr "Algunos elementos pueden causar problemas durante la impresión. Haga clic para ver consejos sobre cómo ajustarlos."
 
 #: /home/ruben/Projects/Cura/plugins/ChangeLogPlugin/ChangeLog.qml:18
 msgctxt "@label"
@@ -2072,7 +2072,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "Para imprimir directamente en la impresora a través de la red, asegúrese de que esta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n\nSeleccione la impresora de la siguiente lista:"
+msgstr "Para imprimir directamente en la impresora a través de la red, asegúrese de que ésta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n\nSeleccione la impresora de la siguiente lista:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:87
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
@@ -3298,7 +3298,7 @@ msgstr "¿Deben moverse los modelos en la plataforma de modo que no se crucen?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:385
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
-msgstr "Asegúrese de que lo modelos están separados"
+msgstr "Asegúrese de que los modelos están separados"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:394
 msgctxt "@info:tooltip"
@@ -6038,7 +6038,7 @@ msgstr "X3GWriter"
 
 #~ msgctxt "@title:window"
 #~ msgid "SolidWorks plugin: Configuration"
-#~ msgstr "Complementos de SolidWorks: configuración"
+#~ msgstr "Complemento de SolidWorks: configuración"
 
 #~ msgctxt "@title:tab"
 #~ msgid "Conversion settings"
@@ -6130,7 +6130,7 @@ msgstr "X3GWriter"
 
 #~ msgctxt "description"
 #~ msgid "Helps you to install an 'export to Cura' button in Siemens NX."
-#~ msgstr "Ayuda a instalar el botón para exportar a Cura en in Siemens NX."
+#~ msgstr "Ayuda a instalar el botón para exportar a Cura en Siemens NX."
 
 #~ msgctxt "name"
 #~ msgid "Siemens NX Integration"
