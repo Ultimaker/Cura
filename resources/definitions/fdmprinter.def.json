@@ -3706,6 +3706,17 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
+                },
+                "cool_fan_lag":
+                {
+                    "label": "Cooling Fan Lag",
+                    "description": "The time it takes the cooling fan to accelerate from 0 to 100%.",
+                    "unit": "s",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value": "0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
