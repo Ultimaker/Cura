@@ -116,11 +116,11 @@ class CuraSceneNode(SceneNode):
         if self._mesh_data:
             self._aabb = self._mesh_data.getExtents(self.getWorldTransformation())
 
-        for child in self._children:
+        for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
                 # Non-printing-meshes inside a group should not affect push apart or drop to build plate
                 continue
-            if not child._mesh_data:
+            if not child.getMeshData():
                 # Nodes without mesh data should not affect bounding boxes of their parents.
                 continue
             if self._aabb is None:
