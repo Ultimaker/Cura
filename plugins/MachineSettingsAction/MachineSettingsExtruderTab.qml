@@ -26,7 +26,7 @@ Item
 
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
-    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
+    property int propertyStoreIndex: manager ? manager.storeContainerIndex : 1  // definition_changes
 
     property string extruderStackId: ""
     property int extruderPosition: 0
