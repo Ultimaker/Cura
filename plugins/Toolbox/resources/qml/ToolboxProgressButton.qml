@@ -1,16 +1,16 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.4
-import QtQuick.Controls.Styles 1.4
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
 
-Item
+Cura.PrimaryButton
 {
-    id: base
+    id: button
 
     property var active: false
     property var complete: false
@@ -25,43 +25,36 @@ Item
 
     width: UM.Theme.getSize("toolbox_action_button").width
     height: UM.Theme.getSize("toolbox_action_button").height
-
-    Cura.PrimaryButton
+    fixedWidthMode: true
+    text:
     {
-        id: button
-        width: UM.Theme.getSize("toolbox_action_button").width
-        height: UM.Theme.getSize("toolbox_action_button").height
-        fixedWidthMode: true
-        text:
+        if (complete)
         {
-            if (complete)
-            {
-                return completeLabel
-            }
-            else if (active)
-            {
-                return activeLabel
-            }
-            else
-            {
-                return readyLabel
-            }
+            return completeLabel
         }
-        onClicked:
+        else if (active)
         {
-            if (complete)
-            {
-                completeAction()
-            }
-            else if (active)
-            {
-                activeAction()
-            }
-            else
-            {
-                readyAction()
-            }
+            return activeLabel
         }
-        busy: active
+        else
+        {
+            return readyLabel
+        }
     }
+    onClicked:
+    {
+        if (complete)
+        {
+            completeAction()
+        }
+        else if (active)
+        {
+            activeAction()
+        }
+        else
+        {
+            readyAction()
+        }
+    }
+    busy: active
 }
