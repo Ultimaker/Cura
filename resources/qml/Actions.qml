@@ -3,8 +3,9 @@
 
 pragma Singleton
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.1
+import QtQuick.Controls 2.3 as Controls2
 import UM 1.1 as UM
 import Cura 1.0 as Cura
 
@@ -60,6 +61,7 @@ Item
     property alias documentation: documentationAction;
     property alias showTroubleshooting: showTroubleShootingAction
     property alias reportBug: reportBugAction;
+    property alias whatsNew: whatsNewAction
     property alias about: aboutAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
@@ -230,6 +232,12 @@ Item
 
     Action
     {
+        id: whatsNewAction;
+        text: catalog.i18nc("@action:inmenu menubar:help", "What's New");
+    }
+
+    Action
+    {
         id: aboutAction;
         text: catalog.i18nc("@action:inmenu menubar:help", "About...");
         iconName: "help-about";
@@ -281,7 +289,7 @@ Item
     {
         id: groupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Group Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "object-group"
         shortcut: "Ctrl+G";
         onTriggered: CuraApplication.groupSelected();
@@ -301,7 +309,7 @@ Item
     {
         id: unGroupObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","Ungroup Models");
-        enabled: UM.Scene.isGroupSelected
+        enabled: UM.Selection.isGroupSelected
         iconName: "object-ungroup"
         shortcut: "Ctrl+Shift+G";
         onTriggered: CuraApplication.ungroupSelected();
@@ -311,7 +319,7 @@ Item
     {
         id: mergeObjectsAction
         text: catalog.i18nc("@action:inmenu menubar:edit","&Merge Models");
-        enabled: UM.Scene.numObjectsSelected > 1 ? true: false
+        enabled: UM.Selection.selectionCount > 1 ? true: false
         iconName: "merge";
         shortcut: "Ctrl+Alt+G";
         onTriggered: CuraApplication.mergeSelected();

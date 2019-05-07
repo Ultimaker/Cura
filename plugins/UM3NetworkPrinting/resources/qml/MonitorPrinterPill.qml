@@ -43,5 +43,6 @@ Item
         text: tagText
         font.pointSize: 10 // TODO: Theme!
         visible: text !== ""
+        renderType: Text.NativeRendering
     }
 }

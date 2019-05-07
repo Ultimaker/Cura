@@ -32,7 +32,11 @@ Cura.ExpandablePopup
             {
                 return Cura.MachineManager.activeMachineNetworkGroupName
             }
-            return Cura.MachineManager.activeMachineName
+            if(Cura.MachineManager.activeStack != null)
+            {
+                return Cura.MachineManager.activeStack.name
+            }
+            return ""
         }
         source:
         {
@@ -114,6 +118,7 @@ Cura.ExpandablePopup
 
             MachineSelectorList
             {
+                id: machineSelectorList
                 // Can't use parent.width since the parent is the flickable component and not the ScrollView
                 width: scroll.width - scroll.leftPadding - scroll.rightPadding
                 property real maximumHeight: UM.Theme.getSize("machine_selector_widget_content").height - buttonRow.height
@@ -155,9 +160,13 @@ Cura.ExpandablePopup
 
             Cura.SecondaryButton
             {
+                id: addPrinterButton
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Add printer")
+                // The maximum width of the button is half of the total space, minus the padding of the parent, the left
+                // padding of the component and half the spacing because of the space between buttons.
+                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - parent.padding - leftPadding - parent.spacing / 2
                 onClicked:
                 {
                     toggleContent()
@@ -167,9 +176,13 @@ Cura.ExpandablePopup
 
             Cura.SecondaryButton
             {
+                id: managePrinterButton
                 leftPadding: UM.Theme.getSize("default_margin").width
                 rightPadding: UM.Theme.getSize("default_margin").width
                 text: catalog.i18nc("@button", "Manage printers")
+                // The maximum width of the button is half of the total space, minus the padding of the parent, the right
+                // padding of the component and half the spacing because of the space between buttons.
+                maximumWidth: UM.Theme.getSize("machine_selector_widget_content").width / 2 - parent.padding - rightPadding - parent.spacing / 2
                 onClicked:
                 {
                     toggleContent()

@@ -101,6 +101,7 @@ Item
             MenuItem { action: Cura.Actions.documentation }
             MenuItem { action: Cura.Actions.reportBug }
             MenuSeparator { }
+            MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
     }

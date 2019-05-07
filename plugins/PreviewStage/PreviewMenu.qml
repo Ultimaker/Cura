@@ -20,15 +20,21 @@ Item
         name: "cura"
     }
 
+    anchors
+    {
+        left: parent.left
+        right: parent.right
+        leftMargin: UM.Theme.getSize("wide_margin").width
+        rightMargin: UM.Theme.getSize("wide_margin").width
+    }
+
     Row
     {
         id: stageMenuRow
-        anchors.centerIn: parent
-        height: parent.height
-        width: childrenRect.width
 
-        // We want this row to have a preferred with equals to the 85% of the parent
-        property int preferredWidth: Math.round(0.85 * previewMenu.width)
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
+        height: parent.height
 
         Cura.ViewsSelector
         {
@@ -49,12 +55,12 @@ Item
             color: UM.Theme.getColor("lining")
         }
 
-        // This component will grow freely up to complete the preferredWidth of the row.
+        // This component will grow freely up to complete the width of the row.
         Loader
         {
             id: viewPanel
             height: parent.height
-            width: source != "" ? (stageMenuRow.preferredWidth - viewsSelector.width - printSetupSelectorItem.width - 2 * UM.Theme.getSize("default_lining").width) : 0
+            width: source != "" ? (previewMenu.width - viewsSelector.width - printSetupSelectorItem.width - 2 * (UM.Theme.getSize("wide_margin").width + UM.Theme.getSize("default_lining").width)) : 0
             source: UM.Controller.activeView != null && UM.Controller.activeView.stageMenuComponent != null ? UM.Controller.activeView.stageMenuComponent : ""
         }
 

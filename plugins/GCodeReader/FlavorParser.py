@@ -1,30 +1,32 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import math
+import re
+from typing import Dict, List, NamedTuple, Optional, Union
+
+import numpy
+
 from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from UM.Message import Message
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.i18n import i18nCatalog
-
-catalog = i18nCatalog("cura")
 
 from cura.CuraApplication import CuraApplication
 from cura.LayerDataBuilder import LayerDataBuilder
 from cura.LayerDataDecorator import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 
-import numpy
-import math
-import re
-from typing import Dict, List, NamedTuple, Optional, Union
+catalog = i18nCatalog("cura")
 
 PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
+
 
 ##  This parser is intended to interpret the common firmware codes among all the
 #   different flavors
@@ -33,7 +35,7 @@ class FlavorParser:
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
-        self._message = None
+        self._message = None  # type: Optional[Message]
         self._layer_number = 0
         self._extruder_number = 0
         self._clearValues()
@@ -368,6 +370,8 @@ class FlavorParser:
                     self._layer_type = LayerPolygon.InfillType
                 elif type == "SUPPORT-INTERFACE":
                     self._layer_type = LayerPolygon.SupportInterfaceType
+                elif type == "PRIME-TOWER":
+                    self._layer_type = LayerPolygon.PrimeTowerType
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
@@ -425,7 +429,8 @@ class FlavorParser:
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
-                self.processMCode(M, line, current_position, current_path)
+                if M is not None:
+                    self.processMCode(M, line, current_position, current_path)
 
         # "Flush" leftovers. Last layer paths are still stored
         if len(current_path) > 1:
@@ -463,7 +468,7 @@ class FlavorParser:
             Logger.log("w", "File doesn't contain any valid layers")
 
         settings = CuraApplication.getInstance().getGlobalContainerStack()
-        if not settings.getProperty("machine_center_is_zero", "value"):
+        if settings is not None and not settings.getProperty("machine_center_is_zero", "value"):
             machine_width = settings.getProperty("machine_width", "value")
             machine_depth = settings.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))

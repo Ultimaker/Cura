@@ -78,6 +78,7 @@ UM.Dialog {
             height: 20 * screenScaleFactor;
             text: catalog.i18nc("@label", "Printer selection");
             wrapMode: Text.Wrap;
+            renderType: Text.NativeRendering;
         }
 
         ComboBox {

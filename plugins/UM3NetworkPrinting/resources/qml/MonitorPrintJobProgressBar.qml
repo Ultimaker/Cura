@@ -22,7 +22,7 @@ Item
     width: childrenRect.width
     height: 18 * screenScaleFactor // TODO: Theme!
 
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         anchors
@@ -30,22 +30,6 @@ Item
             verticalCenter: parent.verticalCenter
         }
         value: printJob ? printJob.progress : 0
-        style: ProgressBarStyle
-        {
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("monitor_progress_bar_empty")
-                implicitHeight: visible ? 12 * screenScaleFactor : 0 // TODO: Theme!
-                implicitWidth: 180 * screenScaleFactor // TODO: Theme!
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-            progress: Rectangle
-            {
-                id: progressItem;
-                color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_progress_bar_fill") : UM.Theme.getColor("monitor_progress_bar_deactive")
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-        }
     }
     Label
     {
@@ -63,6 +47,7 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
     Label
     {
@@ -115,5 +100,6 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
 }

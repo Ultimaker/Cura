@@ -127,7 +127,7 @@ Item
         {
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManager.canMaterialBeRemoved(base.currentItem.container_node)
             onClicked:
             {
                 forceActiveFocus();
@@ -200,10 +200,15 @@ Item
             visible: text != ""
             text:
             {
-                var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachineName;
+                var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachine.name;
                 if (Cura.MachineManager.hasVariants)
                 {
-                    caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + Cura.MachineManager.activeVariantName;
+                    var activeVariantName = ""
+                    if(Cura.MachineManager.activeStack != null)
+                    {
+                        activeVariantName = Cura.MachineManager.activeStack.variant.name
+                    }
+                    caption += ", " + Cura.MachineManager.activeDefinitionVariantsName + ": " + activeVariantName;
                 }
                 return caption;
             }

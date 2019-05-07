@@ -6,7 +6,7 @@ from unittest.mock import patch, MagicMock
 
 from UM.Scene.SceneNode import SceneNode
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
 from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
@@ -22,6 +22,7 @@ class TestCloudOutputDevice(TestCase):
     HOST_NAME = "ultimakersystem-ccbdd30044ec"
     HOST_GUID = "e90ae0ac-1257-4403-91ee-a44c9b7e8050"
     HOST_VERSION = "5.2.0"
+    FRIENDLY_NAME = "My Friendly Printer"
 
     STATUS_URL = "{}/connect/v1/clusters/{}/status".format(CuraCloudAPIRoot, CLUSTER_ID)
     PRINT_URL = "{}/connect/v1/clusters/{}/print/{}".format(CuraCloudAPIRoot, CLUSTER_ID, JOB_ID)
@@ -37,7 +38,8 @@ class TestCloudOutputDevice(TestCase):
             patched_method.start()
 
         self.cluster = CloudClusterResponse(self.CLUSTER_ID, self.HOST_GUID, self.HOST_NAME, is_online=True,
-                                            status="active", host_version=self.HOST_VERSION)
+                                            status="active", host_version=self.HOST_VERSION,
+                                            friendly_name=self.FRIENDLY_NAME)
 
         self.network = NetworkManagerMock()
         self.account = MagicMock(isLoggedIn=True, accessToken="TestAccessToken")
@@ -60,7 +62,7 @@ class TestCloudOutputDevice(TestCase):
     # We test for these in order to make sure the correct file type is selected depending on the firmware version.
     def test_properties(self):
         self.assertEqual(self.device.firmwareVersion, self.HOST_VERSION)
-        self.assertEqual(self.device.name, self.HOST_NAME)
+        self.assertEqual(self.device.name, self.FRIENDLY_NAME)
 
     def test_status(self):
         self.device._update()

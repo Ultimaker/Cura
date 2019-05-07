@@ -47,8 +47,10 @@ class ContainerManager(QObject):
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
         ContainerManager.__instance = self
-
-        super().__init__(parent = application)
+        try:
+            super().__init__(parent = application)
+        except TypeError:
+            super().__init__()
 
         self._application = application # type: CuraApplication
         self._plugin_registry = self._application.getPluginRegistry()  # type: PluginRegistry

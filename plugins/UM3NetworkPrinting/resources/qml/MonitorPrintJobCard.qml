@@ -71,6 +71,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -98,6 +99,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -143,6 +145,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Row
@@ -158,14 +161,9 @@ Item
                     spacing: 6 // TODO: Theme!
                     visible: printJob
 
-                    Repeater
+                    MonitorPrinterPill
                     {
-                        id: compatiblePills
-                        delegate: MonitorPrinterPill
-                        {
-                            text: modelData
-                        }
-                        model: printJob ? printJob.compatibleMachineFamilies : []
+                        text: printJob.configuration.printerType
                     }
                 }
             }
@@ -202,6 +200,7 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
     }

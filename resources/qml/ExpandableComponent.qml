@@ -41,6 +41,7 @@ Item
     property alias disabledText: disabledLabel.text
 
     // Defines the alignment of the content with respect of the headerItem, by default to the right
+    // Note that this only has an effect if the panel is draggable
     property int contentAlignment: ExpandableComponent.ContentAlignment.AlignRight
 
     // How much spacing is needed around the contentItem
@@ -78,9 +79,17 @@ Item
 
     property int shadowOffset: 2
 
+    // Prefix used for the dragged position preferences. Preferences not used if empty. Don't translate!
+    property string dragPreferencesNamePrefix: ""
+
     function toggleContent()
     {
         contentContainer.visible = !expanded
+    }
+
+    function updateDragPosition()
+    {
+        contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
     }
 
     // Add this binding since the background color is not updated otherwise
@@ -102,7 +111,8 @@ Item
         {
             if (!base.enabled && expanded)
             {
-                toggleContent()
+                toggleContent();
+                updateDragPosition();
             }
         }
     }
@@ -196,23 +206,44 @@ Item
     Cura.RoundedRectangle
     {
         id: contentContainer
+        property string dragPreferencesNameX: "_xpos"
+        property string dragPreferencesNameY: "_ypos"
 
         visible: false
         width: childrenRect.width
         height: childrenRect.height
 
         // Ensure that the content is located directly below the headerItem
-        y: background.height + base.shadowOffset + base.contentSpacingY
+        y: dragPreferencesNamePrefix === "" ? (background.height + base.shadowOffset + base.contentSpacingY) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameY)
 
         // Make the content aligned with the rest, using the property contentAlignment to decide whether is right or left.
         // In case of right alignment, the 3x padding is due to left, right and padding between the button & text.
-        x: contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0
+        x: dragPreferencesNamePrefix === "" ? (contentAlignment == ExpandableComponent.ContentAlignment.AlignRight ? -width + collapseButton.width + headerItemLoader.width + 3 * background.padding : 0) : UM.Preferences.getValue(dragPreferencesNamePrefix + dragPreferencesNameX)
 
         cornerSide: Cura.RoundedRectangle.Direction.All
         color: contentBackgroundColor
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
         radius: UM.Theme.getSize("default_radius").width
+
+        function trySetPosition(posNewX, posNewY)
+        {
+            var margin = UM.Theme.getSize("narrow_margin");
+            var minPt = base.mapFromItem(null, margin.width, margin.height);
+            var maxPt = base.mapFromItem(null,
+                CuraApplication.appWidth() - (contentContainer.width + margin.width),
+                CuraApplication.appHeight() - (contentContainer.height + margin.height));
+            var initialY = background.height + base.shadowOffset + margin.height;
+
+            contentContainer.x = Math.max(minPt.x, Math.min(maxPt.x, posNewX));
+            contentContainer.y = Math.max(initialY, Math.min(maxPt.y, posNewY));
+
+            if (dragPreferencesNamePrefix !== "")
+            {
+                UM.Preferences.setValue(dragPreferencesNamePrefix + dragPreferencesNameX, contentContainer.x);
+                UM.Preferences.setValue(dragPreferencesNamePrefix + dragPreferencesNameY, contentContainer.y);
+            }
+        }
 
         ExpandableComponentHeader
         {
@@ -225,6 +256,65 @@ Item
                 left: parent.left
             }
 
+            MouseArea
+            {
+                id: dragRegion
+                cursorShape: Qt.SizeAllCursor
+                anchors
+                {
+                    top: parent.top
+                    bottom: parent.bottom
+                    left: parent.left
+                    right: contentHeader.xPosCloseButton
+                }
+                property var clickPos: Qt.point(0, 0)
+                property bool dragging: false
+                onPressed:
+                {
+                    clickPos = Qt.point(mouse.x, mouse.y);
+                    dragging = true
+                }
+
+                onPositionChanged:
+                {
+                    if(dragging)
+                    {
+                        var delta = Qt.point(mouse.x - clickPos.x, mouse.y - clickPos.y);
+                        if (delta.x !== 0 || delta.y !== 0)
+                        {
+                            contentContainer.trySetPosition(contentContainer.x + delta.x, contentContainer.y + delta.y);
+                        }
+                    }
+                }
+                onReleased:
+                {
+                     dragging = false
+                }
+
+                onDoubleClicked:
+                {
+                    dragging = false
+                    contentContainer.trySetPosition(0, 0);
+                }
+
+                Connections
+                {
+                    target: UM.Preferences
+                    onPreferenceChanged:
+                    {
+                        if
+                        (
+                            preference !== "general/window_height" &&
+                            preference !== "general/window_width" &&
+                            preference !== "general/window_state"
+                        )
+                        {
+                            return;
+                        }
+                        contentContainer.trySetPosition(contentContainer.x, contentContainer.y);
+                    }
+                }
+            }
         }
 
         Control

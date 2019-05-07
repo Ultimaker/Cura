@@ -40,6 +40,7 @@ Item
                 width: 240 * screenScaleFactor // TODO: Theme!
                 color: UM.Theme.getColor("monitor_tooltip_text")
                 font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
             }
         }
     }

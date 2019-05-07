@@ -112,6 +112,7 @@ Item
                         // FIXED-LINE-HEIGHT:
                         height: parent.height
                         verticalAlignment: Text.AlignVCenter
+                        renderType: Text.NativeRendering
                     }
                 }
 
@@ -140,7 +141,7 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: printer ? "Glass" : null // 'Glass' as a default
+                buildplate: printer ? catalog.i18nc("@label", "Glass") : null // 'Glass' as a default
                 configurations:
                 {
                     var configs = []
@@ -315,6 +316,7 @@ Item
                     return ""
                 }
                 visible: text !== ""
+                renderType: Text.NativeRendering
             }
 
             Item
@@ -356,6 +358,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Label
@@ -376,6 +379,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -403,6 +407,7 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
 
@@ -437,6 +442,7 @@ Item
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
+                renderType: Text.NativeRendering
             }
             implicitHeight: 32 * screenScaleFactor // TODO: Theme!
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!

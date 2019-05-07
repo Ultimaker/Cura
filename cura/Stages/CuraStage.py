@@ -27,3 +27,6 @@ class CuraStage(Stage):
     @pyqtProperty(QUrl, constant = True)
     def stageMenuComponent(self) -> QUrl:
         return self.getDisplayComponent("menu")
+
+
+__all__ = ["CuraStage"]

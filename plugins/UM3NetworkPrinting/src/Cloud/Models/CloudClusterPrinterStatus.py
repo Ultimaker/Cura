@@ -3,7 +3,7 @@
 from typing import List, Union, Dict, Optional, Any
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from .CloudClusterBuildPlate import CloudClusterBuildPlate
 from .CloudClusterPrintCoreConfiguration import CloudClusterPrintCoreConfiguration
 from .BaseCloudModel import BaseCloudModel

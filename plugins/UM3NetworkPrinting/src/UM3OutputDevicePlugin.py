@@ -1,40 +1,67 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
+import os
 from queue import Queue
 from threading import Event, Thread
 from time import time
-import os
+from typing import Optional, TYPE_CHECKING, Dict, Callable
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
-from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty, QObject
+
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
+from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutputDevice import ConnectionType
-from cura.Settings.GlobalStack import GlobalStack # typing
-from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
+from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
+from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+from UM.PluginRegistry import PluginRegistry
 from UM.Signal import Signal, signalemitter
 from UM.Version import Version
-from UM.Message import Message
-from UM.i18n import i18nCatalog
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
+from .Cloud.CloudOutputDevice import CloudOutputDevice # typing
 
-from typing import Optional
+if TYPE_CHECKING:
+    from PyQt5.QtNetwork import QNetworkReply
+    from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+    from cura.Settings.GlobalStack import GlobalStack
+
 
 i18n_catalog = i18nCatalog("cura")
+
+
+#
+# Represents a request for adding a manual printer. It has the following fields:
+#  - address: The string of the (IP) address of the manual printer
+#  - callback: (Optional) Once the HTTP request to the printer to get printer information is done, whether successful
+#              or not, this callback will be invoked to notify about the result. The callback must have a signature of
+#                  func(success: bool, address: str) -> None
+#  - network_reply: This is the QNetworkReply instance for this request if the request has been issued and still in
+#                   progress. It is kept here so we can cancel a request when needed.
+#
+class ManualPrinterRequest:
+    def __init__(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        self.address = address
+        self.callback = callback
+        self.network_reply = None  # type: Optional["QNetworkReply"]
+
 
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
 @signalemitter
 class UM3OutputDevicePlugin(OutputDevicePlugin):
-    addDeviceSignal = Signal()
-    removeDeviceSignal = Signal()
+    addDeviceSignal = Signal()     # Called '...Signal' to avoid confusion with function-names.
+    removeDeviceSignal = Signal()  # Ditto ^^^.
     discoveredDevicesChanged = Signal()
     cloudFlowIsPossible = Signal()
 
@@ -53,7 +80,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        self._application.globalContainerStackChanged.connect(self.reCheckConnections)
+        self._application.globalContainerStackChanged.connect(self.refreshConnections)
 
         self._discovered_devices = {}
         
@@ -73,10 +100,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
-        self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        self._manual_instances = {address: ManualPrinterRequest(address)
+                                  for address in manual_instances}  # type: Dict[str, ManualPrinterRequest]
 
         # Store the last manual entry key
-        self._last_manual_entry_key = "" # type: str
+        self._last_manual_entry_key = ""  # type: str
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
@@ -140,7 +169,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self.addManualDevice(address)
         self.resetLastManualDevice()
 
-    def reCheckConnections(self):
+    def refreshConnections(self):
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -171,7 +200,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
-                self.checkCloudFlowIsPossible()
+                self.checkCloudFlowIsPossible(None)
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
 
@@ -181,7 +210,14 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._zero_conf.close()
         self._cloud_output_device_manager.stop()
 
-    def removeManualDevice(self, key, address = None):
+    def canAddManualDevice(self, address: str = "") -> ManualDeviceAdditionAttempt:
+        # This plugin should always be the fallback option (at least try it):
+        return ManualDeviceAdditionAttempt.POSSIBLE
+
+    def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
+        if key not in self._discovered_devices and address is not None:
+            key = "manual:%s" % address
+
         if key in self._discovered_devices:
             if not address:
                 address = self._discovered_devices[key].ipAddress
@@ -189,13 +225,22 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self.resetLastManualDevice()
 
         if address in self._manual_instances:
-            self._manual_instances.remove(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+            manual_printer_request = self._manual_instances.pop(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
-    def addManualDevice(self, address):
-        if address not in self._manual_instances:
-            self._manual_instances.append(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+            if manual_printer_request.network_reply is not None:
+                manual_printer_request.network_reply.abort()
+
+            if manual_printer_request.callback is not None:
+                self._application.callLater(manual_printer_request.callback, False, address)
+
+    def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        if address in self._manual_instances:
+            Logger.log("i", "Manual printer with address [%s] has already been added, do nothing", address)
+            return
+
+        self._manual_instances[address] = ManualPrinterRequest(address, callback = callback)
+        self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
         instance_name = "manual:%s" % address
         properties = {
@@ -211,31 +256,92 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._onAddDevice(instance_name, address, properties)
         self._last_manual_entry_key = instance_name
 
-        self._checkManualDevice(address)
+        reply = self._checkManualDevice(address)
+        self._manual_instances[address].network_reply = reply
 
-    def _checkManualDevice(self, address):
+    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
+        discovered_device = self._discovered_devices.get(key)
+        if discovered_device is None:
+            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            return
+
+        group_name = discovered_device.getProperty("name")
+        machine_type_id = discovered_device.getProperty("printer_type")
+
+        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
+                   key, group_name, machine_type_id)
+
+        self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        # connect the new machine to that network printer
+        self.associateActiveMachineWithPrinterDevice(discovered_device)
+        # ensure that the connection states are refreshed.
+        self.refreshConnections()
+
+    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
+        if not printer_device:
+            return
+
+        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
+
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+        global_container_stack = machine_manager.activeMachine
+        if not global_container_stack:
+            return
+
+        for machine in machine_manager.getMachinesInGroup(global_container_stack.getMetaDataEntry("group_id")):
+            machine.setMetaDataEntry("um_network_key", printer_device.key)
+            machine.setMetaDataEntry("group_name", printer_device.name)
+
+            # Delete old authentication data.
+            Logger.log("d", "Removing old authentication id %s for device %s",
+                       global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
+
+            machine.removeMetaDataEntry("network_authentication_id")
+            machine.removeMetaDataEntry("network_authentication_key")
+
+            # Ensure that these containers do know that they are configured for network connection
+            machine.addConfiguredConnectionType(printer_device.connectionType.value)
+
+        self.refreshConnections()
+
+    def _checkManualDevice(self, address: str) -> "QNetworkReply":
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
         url = QUrl("http://" + address + self._api_prefix + "system")
         name_request = QNetworkRequest(url)
-        self._network_manager.get(name_request)
+        return self._network_manager.get(name_request)
 
-    def _onNetworkRequestFinished(self, reply):
+    def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
-        if "system" in reply_url:
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                # Something went wrong with checking the firmware version!
-                return
+        address = reply.url().host()
+        device = None
+        properties = {}  # type: Dict[bytes, bytes]
 
+        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+            # Either:
+            #  - Something went wrong with checking the firmware version!
+            #  - Something went wrong with checking the amount of printers the cluster has!
+            #  - Couldn't find printer at the address when trying to add it manually.
+            if address in self._manual_instances:
+                key = "manual:" + address
+                self.removeManualDevice(key, address)
+            return
+
+        if "system" in reply_url:
             try:
                 system_info = json.loads(bytes(reply.readAll()).decode("utf-8"))
             except:
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
 
-            address = reply.url().host()
+            if address in self._manual_instances:
+                manual_printer_request = self._manual_instances[address]
+                manual_printer_request.network_reply = None
+                if manual_printer_request.callback is not None:
+                    self._application.callLater(manual_printer_request.callback, True, address)
+
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
             properties = {
@@ -263,27 +369,23 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._network_manager.get(cluster_request)
 
         elif "printers" in reply_url:
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                # Something went wrong with checking the amount of printers the cluster has!
-                return
             # So we confirmed that the device is in fact a cluster printer, and we should now know how big it is.
             try:
                 cluster_printers_list = json.loads(bytes(reply.readAll()).decode("utf-8"))
             except:
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
-            address = reply.url().host()
             instance_name = "manual:%s" % address
             if instance_name in self._discovered_devices:
                 device = self._discovered_devices[instance_name]
                 properties = device.getProperties().copy()
                 if b"incomplete" in properties:
                     del properties[b"incomplete"]
-                properties[b"cluster_size"] = len(cluster_printers_list)
+                properties[b"cluster_size"] = str(len(cluster_printers_list)).encode("utf-8")
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 
-    def _onRemoveDevice(self, device_id):
+    def _onRemoveDevice(self, device_id: str) -> None:
         device = self._discovered_devices.pop(device_id, None)
         if device:
             if device.isConnected():
@@ -293,7 +395,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 except TypeError:
                     # Disconnect already happened.
                     pass
-
+            self._application.getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
             self.discoveredDevicesChanged.emit()
 
     def _onAddDevice(self, name, address, properties):
@@ -318,7 +420,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-
+        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
+            address, device.getId(), properties[b"name"].decode("utf-8"), self._createMachineFromDiscoveredPrinter,
+            properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
@@ -406,13 +510,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return True
 
     ## Check if the prerequsites are in place to start the cloud flow
-    def checkCloudFlowIsPossible(self) -> None:
+    def checkCloudFlowIsPossible(self, cluster: Optional[CloudOutputDevice]) -> None:
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine  # type: Optional[GlobalStack]
         if active_machine:
-            
             # Check 1A: Printer isn't already configured for cloud
             if ConnectionType.CloudConnection.value in active_machine.configuredConnectionTypes:
                 Logger.log("d", "Active machine was already configured for cloud.")
@@ -452,49 +555,39 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     def _onCloudFlowPossible(self) -> None:
         # Cloud flow is possible, so show the message
         if not self._start_cloud_flow_message:
-            self._start_cloud_flow_message = Message(
-                text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
-                lifetime = 0,
-                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
-                                                               "resources", "svg", "cloud-flow-start.svg")),
-                image_caption = i18n_catalog.i18nc("@info:status", "Connect to Ultimaker Cloud"),
-                option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
-                option_state = False
-            )
-            self._start_cloud_flow_message.addAction("", i18n_catalog.i18nc("@action", "Get started"), "", "")
-            self._start_cloud_flow_message.optionToggled.connect(self._onDontAskMeAgain)
-            self._start_cloud_flow_message.actionTriggered.connect(self._onCloudFlowStarted)
-            self._start_cloud_flow_message.show()
-            return
+            self._createCloudFlowStartMessage()
+        if self._start_cloud_flow_message and not self._start_cloud_flow_message.visible:
+            self._start_cloud_flow_message.show()        
 
-    def _onCloudPrintingConfigured(self) -> None:
-        if self._start_cloud_flow_message:
+    def _onCloudPrintingConfigured(self, device) -> None:
+        # Hide the cloud flow start message if it was hanging around already
+        # For example: if the user already had the browser openen and made the association themselves
+        if self._start_cloud_flow_message and self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.hide()
-            self._start_cloud_flow_message = None
         
-        # Show the successful pop-up
-        if not self._start_cloud_flow_message:
-            self._cloud_flow_complete_message = Message(
-                text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
-                lifetime = 30,
-                image_source = QUrl.fromLocalFile(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..",
-                                                               "resources", "svg", "cloud-flow-completed.svg")),
-                image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
-            )
-            # Don't show the review connection link if we're not on the local network
-            if self._application.getMachineManager().activeMachineHasNetworkConnection:
-                self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
-                self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)
+        # Cloud flow is complete, so show the message
+        if not self._cloud_flow_complete_message:
+            self._createCloudFlowCompleteMessage()
+        if self._cloud_flow_complete_message and not self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.show()
+        
+        # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
+        active_machine = self._application.getMachineManager().activeMachine
+        if active_machine:
 
-            # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
-            active_machine = self._application.getMachineManager().activeMachine
-            if active_machine:
+            # The active machine _might_ not be the machine that was in the added cloud cluster and
+            # then this will hide the cloud message for the wrong machine. So we only set it if the
+            # host names match between the active machine and the newly added cluster
+            saved_host_name = active_machine.getMetaDataEntry("um_network_key", "").split('.')[0]
+            added_host_name = device.toDict()["host_name"]
+
+            if added_host_name == saved_host_name:
                 active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
-            return
+            
+        return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional["GlobalStack"]
+        active_machine = self._application.getMachineManager().activeMachine # type: Optional[GlobalStack]
         if active_machine:
             active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
             if checked:
@@ -517,11 +610,40 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return
 
     def _onMachineSwitched(self) -> None:
-        if self._start_cloud_flow_message is not None:
+        # Hide any left over messages
+        if self._start_cloud_flow_message is not None and self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.hide()
-            self._start_cloud_flow_message = None
-        if self._cloud_flow_complete_message is not None:
+        if self._cloud_flow_complete_message is not None and self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.hide()
-            self._cloud_flow_complete_message = None
 
-        self.checkCloudFlowIsPossible()
+        # Check for cloud flow again with newly selected machine
+        self.checkCloudFlowIsPossible(None)
+
+    def _createCloudFlowStartMessage(self):
+        self._start_cloud_flow_message = Message(
+            text = i18n_catalog.i18nc("@info:status", "Send and monitor print jobs from anywhere using your Ultimaker account."),
+            lifetime = 0,
+            image_source = QUrl.fromLocalFile(os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "svg", "cloud-flow-start.svg"
+            )),
+            image_caption = i18n_catalog.i18nc("@info:status Ultimaker Cloud is a brand name and shouldn't be translated.", "Connect to Ultimaker Cloud"),
+            option_text = i18n_catalog.i18nc("@action", "Don't ask me again for this printer."),
+            option_state = False
+        )
+        self._start_cloud_flow_message.addAction("", i18n_catalog.i18nc("@action", "Get started"), "", "")
+        self._start_cloud_flow_message.optionToggled.connect(self._onDontAskMeAgain)
+        self._start_cloud_flow_message.actionTriggered.connect(self._onCloudFlowStarted)
+
+    def _createCloudFlowCompleteMessage(self):
+        self._cloud_flow_complete_message = Message(
+            text = i18n_catalog.i18nc("@info:status", "You can now send and monitor print jobs from anywhere using your Ultimaker account."),
+            lifetime = 30,
+            image_source = QUrl.fromLocalFile(os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "svg", "cloud-flow-completed.svg"
+            )),
+            image_caption = i18n_catalog.i18nc("@info:status", "Connected!")
+        )
+        self._cloud_flow_complete_message.addAction("", i18n_catalog.i18nc("@action", "Review your connection"), "", "", 1) # TODO: Icon
+        self._cloud_flow_complete_message.actionTriggered.connect(self._onReviewCloudConnection)

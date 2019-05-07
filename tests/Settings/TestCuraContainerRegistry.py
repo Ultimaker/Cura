@@ -1,7 +1,8 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os #To find the directory with test files and find the test files.
+import pytest #To parameterize tests.
 import unittest.mock #To mock and monkeypatch stuff.
 
 from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -119,3 +120,62 @@ def test_addContainerBadSettingVersion(container_registry, definition_container)
         container_registry.addContainer(instance)
 
     mock_super_add_container.assert_not_called() #Should not get passed on to UM.Settings.ContainerRegistry.addContainer, because the setting_version doesn't match its definition!
+
+test_loadMetaDataValidation_data = [
+    {
+        "id": "valid_container",
+        "is_valid": True,
+        "metadata": {
+            "id": "valid_container",
+            "setting_version": None, #The tests sets this to the current version so it's always correct.
+            "foo": "bar"
+        }
+    },
+    {
+        "id": "wrong_setting_version",
+        "is_valid": False,
+        "metadata": {
+            "id": "wrong_setting_version",
+            "setting_version": "5",
+            "foo": "bar"
+        }
+    },
+    {
+        "id": "missing_setting_version",
+        "is_valid": False,
+        "metadata": {
+            "id": "missing_setting_version",
+            "foo": "bar"
+        }
+    },
+    {
+        "id": "unparsable_setting_version",
+        "is_valid": False,
+        "metadata": {
+            "id": "unparsable_setting_version",
+            "setting_version": "Not an integer!",
+            "foo": "bar"
+        }
+    }
+]
+
+@pytest.mark.parametrize("parameters", test_loadMetaDataValidation_data)
+def test_loadMetadataValidation(container_registry, definition_container, parameters):
+    from cura.CuraApplication import CuraApplication
+    definition_container.getMetaData()["setting_version"] = CuraApplication.SettingVersion
+    container_registry.addContainer(definition_container)
+    if "setting_version" in parameters["metadata"] and parameters["metadata"]["setting_version"] is None: #Signal that the setting_version must be set to the currently correct version.
+        parameters["metadata"]["setting_version"] = CuraApplication.SettingVersion
+
+    mock_provider = unittest.mock.MagicMock()
+    mock_provider.getAllIds = unittest.mock.MagicMock(return_value = [parameters["id"]])
+    mock_provider.loadMetadata = unittest.mock.MagicMock(return_value = parameters["metadata"])
+    container_registry._providers = [mock_provider]
+
+    container_registry.loadAllMetadata() #Run the test.
+
+    if parameters["is_valid"]:
+        assert parameters["id"] in container_registry.metadata
+        assert container_registry.metadata[parameters["id"]] == parameters["metadata"]
+    else:
+        assert parameters["id"] not in container_registry.metadata

@@ -26,7 +26,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Ultimaker Cloud")
+        text: "Ultimaker Cloud"
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
     }
@@ -48,7 +48,7 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignLeft
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside your local network\n- Store your Ultimaker Cura settings in the cloud for use anywhere\n- Get exclusive access to material profiles from leading brands")
+        text: catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside your local network\n- Store your Ultimaker Cura settings in the cloud for use anywhere\n- Get exclusive access to print profiles from leading brands")
         lineHeight: 1.4
         font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")

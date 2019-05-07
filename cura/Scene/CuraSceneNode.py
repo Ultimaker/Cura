@@ -112,21 +112,21 @@ class CuraSceneNode(SceneNode):
 
     ##  Override of SceneNode._calculateAABB to exclude non-printing-meshes from bounding box
     def _calculateAABB(self) -> None:
+        self._aabb = None
         if self._mesh_data:
-            aabb = self._mesh_data.getExtents(self.getWorldTransformation())
-        else:  # If there is no mesh_data, use a boundingbox that encompasses the local (0,0,0)
-            position = self.getWorldPosition()
-            aabb = AxisAlignedBox(minimum = position, maximum = position)
+            self._aabb = self._mesh_data.getExtents(self.getWorldTransformation())
 
-        for child in self._children:
+        for child in self.getAllChildren():
             if child.callDecoration("isNonPrintingMesh"):
                 # Non-printing-meshes inside a group should not affect push apart or drop to build plate
                 continue
-            if aabb is None:
-                aabb = child.getBoundingBox()
+            if not child.getMeshData():
+                # Nodes without mesh data should not affect bounding boxes of their parents.
+                continue
+            if self._aabb is None:
+                self._aabb = child.getBoundingBox()
             else:
-                aabb = aabb + child.getBoundingBox()
-        self._aabb = aabb
+                self._aabb = self._aabb + child.getBoundingBox()
 
     ##  Taken from SceneNode, but replaced SceneNode with CuraSceneNode
     def __deepcopy__(self, memo: Dict[int, object]) -> "CuraSceneNode":

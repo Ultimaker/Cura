@@ -144,7 +144,7 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
@@ -945,11 +945,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
-            for entry in machine.iterfind("./um:setting", cls.__namespaces):
-                key = entry.get("key")
-                if key == "hardware compatible":
-                    if entry.text is not None:
-                        machine_compatibility = cls._parseCompatibleValue(entry.text)
+            for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                if entry.text is not None:
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
@@ -1020,11 +1018,9 @@ class XmlMaterialProfile(InstanceContainer):
                             continue
 
                         hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        for entry in hotend.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                            if entry.text is not None:
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -1183,6 +1179,7 @@ class XmlMaterialProfile(InstanceContainer):
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
+        "build volume temperature": "build_volume_temperature",
     }
     __unmapped_settings = [
         "hardware compatible",

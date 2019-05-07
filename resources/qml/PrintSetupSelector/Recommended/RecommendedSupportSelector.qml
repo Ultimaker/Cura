@@ -133,7 +133,14 @@ Item
                     supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
                 }
             }
-            onCurrentIndexChanged: supportExtruderCombobox.color = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
+            onCurrentIndexChanged:
+            {
+                var maybeColor = supportExtruderCombobox.model.getItem(supportExtruderCombobox.currentIndex).color
+                if(maybeColor)
+                {
+                    supportExtruderCombobox.color = maybeColor
+                }
+            }
 
             Binding
             {
