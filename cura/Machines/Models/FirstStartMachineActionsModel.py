@@ -100,7 +100,7 @@ class FirstStartMachineActionsModel(ListModel):
         item_list = []
         for item in first_start_actions:
             item_list.append({"title": item.label,
-                              "content": item.displayItem,
+                              "content": item.getDisplayItem(),
                               "action": item,
                               })
             item.reset()

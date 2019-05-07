@@ -735,6 +735,7 @@ class CuraEngineBackend(QObject, Backend):
             "support_interface": message.time_support_interface,
             "support": message.time_support,
             "skirt": message.time_skirt,
+            "prime_tower": message.time_prime_tower,
             "travel": message.time_travel,
             "retract": message.time_retract,
             "none": message.time_none

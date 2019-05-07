@@ -591,7 +591,7 @@
         "toolbox_thumbnail_large": [12.0, 10.0],
         "toolbox_footer": [1.0, 4.5],
         "toolbox_footer_button": [8.0, 2.5],
-        "toolbox_header_tab": [8.0, 4.0],
+        "toolbox_header_tab": [12.0, 4.0],
         "toolbox_detail_header": [1.0, 14.0],
         "toolbox_back_column": [6.0, 1.0],
         "toolbox_back_button": [6.0, 2.0],
