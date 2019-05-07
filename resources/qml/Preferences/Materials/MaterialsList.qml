@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -159,7 +159,6 @@ Item
             delegate: MaterialsBrandSection
             {
                 id: brandSection
-                text: model.name
                 sectionName: model.name
                 elementsModel: model.material_types
                 hasMaterialTypes: true

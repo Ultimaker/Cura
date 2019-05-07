@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -14,7 +14,6 @@ Item
 {
     id: brand_section
 
-    property var text: ""
     property var sectionName: ""
     property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
     property var hasMaterialTypes: true  // It indicates wheather it has material types or not
