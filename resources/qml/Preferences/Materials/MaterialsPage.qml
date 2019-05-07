@@ -81,6 +81,7 @@ Item
         // Activate button
         Button
         {
+            id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
             enabled: !isCurrentItemActivated && Cura.MachineManager.hasMaterials
@@ -98,6 +99,7 @@ Item
         // Create button
         Button
         {
+            id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
             onClicked:
@@ -111,6 +113,7 @@ Item
         // Duplicate button
         Button
         {
+            id: duplicateMenuButton
             text: catalog.i18nc("@action:button", "Duplicate");
             iconName: "list-add"
             enabled: base.hasCurrentItem
@@ -125,6 +128,7 @@ Item
         // Remove button
         Button
         {
+            id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManager.canMaterialBeRemoved(base.currentItem.container_node)
@@ -138,6 +142,7 @@ Item
         // Import button
         Button
         {
+            id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
             onClicked:
@@ -151,6 +156,7 @@ Item
         // Export button
         Button
         {
+            id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             onClicked:

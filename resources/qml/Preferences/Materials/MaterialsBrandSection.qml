@@ -13,7 +13,8 @@ import Cura 1.0 as Cura
 Item
 {
     id: brand_section
-    
+
+    property var text: ""
     property var sectionName: ""
     property var elementsModel   // This can be a MaterialTypesModel or GenericMaterialsModel or FavoriteMaterialsModel
     property var hasMaterialTypes: true  // It indicates wheather it has material types or not

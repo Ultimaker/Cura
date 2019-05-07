@@ -159,6 +159,7 @@ Item
             delegate: MaterialsBrandSection
             {
                 id: brandSection
+                text: model.name
                 sectionName: model.name
                 elementsModel: model.material_types
                 hasMaterialTypes: true
