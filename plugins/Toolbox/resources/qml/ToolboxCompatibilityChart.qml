@@ -17,18 +17,19 @@ Item
     property var materialWebsiteUrl: packageData.links.website
 
     height: childrenRect.height
-    onVisibleChanged: packageData.type == "material" && (compatibilityItem.visible || dataSheetLinks.visible)
+    onVisibleChanged: packageData.type === "material" && (compatibilityItem.visible || dataSheetLinks.visible)
 
-    Item
+    Column
     {
         id: compatibilityItem
         visible: packageData.has_configs
         width: parent.width
+        // This is a bit of a hack, but the whole QML is pretty messy right now. This needs a big overhaul.
+        height: visible ? heading.height + table.height: 0
 
         Label
         {
             id: heading
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             text: catalog.i18nc("@label", "Compatibility")
             wrapMode: Text.WordWrap
@@ -40,8 +41,6 @@ Item
         TableView
         {
             id: table
-            anchors.top: heading.bottom
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
             width: parent.width
             frameVisible: false
 
@@ -122,32 +121,32 @@ Item
             TableViewColumn
             {
                 role: "machine"
-                title: catalog.i18nc("@label table header", "Machine")
+                title: catalog.i18nc("@label:table_header", "Machine")
                 width: Math.floor(table.width * 0.25)
                 delegate: columnTextDelegate
             }
             TableViewColumn
             {
                 role: "print_core"
-                title: catalog.i18nc("@label table header", "Print Core")
+                title: catalog.i18nc("@label:table_header", "Print Core")
                 width: Math.floor(table.width * 0.2)
             }
             TableViewColumn
             {
                 role: "build_plate"
-                title: catalog.i18nc("@label table header", "Build Plate")
+                title: catalog.i18nc("@label:table_header", "Build Plate")
                 width: Math.floor(table.width * 0.225)
             }
             TableViewColumn
             {
                 role: "support_material"
-                title: catalog.i18nc("@label table header", "Support")
+                title: catalog.i18nc("@label:table_header", "Support")
                 width: Math.floor(table.width * 0.225)
             }
             TableViewColumn
             {
                 role: "quality"
-                title: catalog.i18nc("@label table header", "Quality")
+                title: catalog.i18nc("@label:table_header", "Quality")
                 width: Math.floor(table.width * 0.1)
             }
         }
@@ -156,7 +155,7 @@ Item
     Label
     {
         id: dataSheetLinks
-        anchors.top: parent.top
+        anchors.top: compatibilityItem.bottom
         anchors.topMargin: UM.Theme.getSize("narrow_margin").height
         visible: base.technicalDataSheetUrl !== undefined ||
                     base.safetyDataSheetUrl !== undefined ||
