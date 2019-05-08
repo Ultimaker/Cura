@@ -561,7 +561,7 @@ msgstr "Conectar a Ultimaker Cloud"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:461
 msgctxt "@action"
 msgid "Don't ask me again for this printer."
-msgstr "No volver a preguntarme por esta impresora."
+msgstr "No volver a preguntarme para esta impresora."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:464
 msgctxt "@action"
