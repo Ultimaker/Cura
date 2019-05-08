@@ -1430,10 +1430,11 @@
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none":  "None",
-                        "z_seam_corner_inner": "Hide Seam",
-                        "z_seam_corner_outer": "Expose Seam",
-                        "z_seam_corner_any":   "Hide or Expose Seam"
+                        "z_seam_corner_none":     "None",
+                        "z_seam_corner_inner":    "Hide Seam",
+                        "z_seam_corner_outer":    "Expose Seam",
+                        "z_seam_corner_any":      "Hide or Expose Seam",
+                        "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
                     "enabled": "z_seam_type != 'random'",
