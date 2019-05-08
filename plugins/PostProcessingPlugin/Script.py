@@ -92,17 +92,8 @@ class Script:
     def getSettingDataString(self) -> str:
         raise NotImplementedError()
 
-    def getDefinitionId(self) -> Optional[str]:
-        if self._stack:
-            bottom = self._stack.getBottom()
-            if bottom is not None:
-                return bottom.getId()
-        return None
-
-    def getStackId(self) -> Optional[str]:
-        if self._stack:
-            return self._stack.getId()
-        return None
+    def getStack(self) -> Optional["ContainerStack"]:
+        return self._stack
 
     ##  Convenience function that retrieves value of a setting from the stack.
     def getSettingValueByKey(self, key: str) -> Any:

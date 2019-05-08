@@ -151,7 +151,7 @@ UM.PreferencesPage
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerStack: Cura.MachineManager.activeStack
                     showAll: true
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true

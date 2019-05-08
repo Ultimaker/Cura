@@ -23,6 +23,7 @@ from cura.CuraApplication import CuraApplication
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
+    from UM.Settings.ContainerStack import ContainerStack
     from .Script import Script
 
 
@@ -51,19 +52,12 @@ class PostProcessingPlugin(QObject, Extension):
 
     selectedIndexChanged = pyqtSignal()
 
-    @pyqtProperty(str, notify = selectedIndexChanged)
-    def selectedScriptDefinitionId(self) -> Optional[str]:
+    @pyqtProperty(QObject, notify = selectedIndexChanged)
+    def selectedScriptStack(self) -> Optional["ContainerStack"]:
         try:
-            return self._script_list[self._selected_script_index].getDefinitionId()
+            return self._script_list[self._selected_script_index].getStack()
         except IndexError:
-            return ""
-
-    @pyqtProperty(str, notify=selectedIndexChanged)
-    def selectedScriptStackId(self) -> Optional[str]:
-        try:
-            return self._script_list[self._selected_script_index].getStackId()
-        except IndexError:
-            return ""
+            return None
 
     ##  Execute all post-processing scripts on the gcode.
     def execute(self, output_device) -> None:

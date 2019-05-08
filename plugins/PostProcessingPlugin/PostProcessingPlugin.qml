@@ -306,7 +306,7 @@ UM.Dialog
                     bottom: parent.bottom
                 }
 
-                visible: manager.selectedScriptDefinitionId != ""
+                visible: manager.selectedScriptStack !== null
                 style: UM.Theme.styles.scrollview;
 
                 ListView
@@ -316,7 +316,7 @@ UM.Dialog
                     model: UM.SettingDefinitionsModel
                     {
                         id: definitionsModel
-                        containerId: manager.selectedScriptDefinitionId
+                        containerStack: manager.selectedScriptStack
                         showAll: true
                     }
 
@@ -394,7 +394,7 @@ UM.Dialog
                         UM.SettingPropertyProvider
                         {
                             id: provider
-                            containerStackId: manager.selectedScriptStackId
+                            containerStack: manager.selectedScriptStack
                             key: model.key ? model.key : "None"
                             watchedProperties: [ "value", "enabled", "state", "validationState" ]
                             storeIndex: 0

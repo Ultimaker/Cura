@@ -160,7 +160,7 @@ Item {
                     model: UM.SettingDefinitionsModel
                     {
                         id: addedSettingsModel;
-                        containerId: Cura.MachineManager.activeDefinitionId
+                        containerStack: Cura.MachineManager.activeStack
                         expanded: [ "*" ]
                         filter:
                         {
@@ -466,8 +466,8 @@ Item {
                 id:listview
                 model: UM.SettingDefinitionsModel
                 {
-                    id: definitionsModel;
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    id: definitionsModel
+                    containerStack: Cura.MachineManager.activeStack
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
                     exclude:

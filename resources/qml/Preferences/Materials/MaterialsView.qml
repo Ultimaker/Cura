@@ -393,7 +393,7 @@ TabView
             {
                 model: UM.SettingDefinitionsModel
                 {
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerStack: Cura.MachineManager.activeStack
                     visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
                     expanded: ["*"]
                 }

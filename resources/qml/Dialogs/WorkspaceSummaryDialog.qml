@@ -50,7 +50,7 @@ UM.Dialog
         UM.SettingDefinitionsModel
         {
             id: definitionsModel
-            containerId: base.visible ? Cura.MachineManager.activeDefinitionId: ""
+            containerStack: base.visible ? Cura.MachineManager.activeMachine : null
             showAll: true
             exclude: ["command_line_settings"]
             showAncestors: true
