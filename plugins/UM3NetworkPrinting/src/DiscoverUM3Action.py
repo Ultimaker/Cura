@@ -108,27 +108,32 @@ class DiscoverUM3Action(MachineAction):
         else:
             return []
 
-    # TODO: Should be able to just access the API from QML.
-    @pyqtSlot(str)
-    def setGroupName(self, group_name: str) -> None:
-        self._api.machines.setCurrentMachineGroupName(group_name)
+    # # TODO: Should be able to just access the API from QML.
+    # @pyqtSlot(str)
+    # def setGroupName(self, group_name: str) -> None:
+    #     self._api.machines.setCurrentMachineGroupName(group_name)
+    #     if self._network_plugin:
+    #         self._network_plugin.refreshConnections()
+
+    # # TODO: Should be able to just access the API from QML.
+    # @pyqtSlot(QObject)
+    # def associateActiveMachineWithPrinterDevice(self, output_device: Optional["PrinterOutputDevice"]) -> None:
+    #     self._api.machines.addOutputDeviceToCurrentMachine(output_device)
+
+    @pyqtSlot()
+    def refreshConnections(self) -> None:
         if self._network_plugin:
             self._network_plugin.refreshConnections()
 
-    # TODO: Should be able to just access the API from QML.
-    @pyqtSlot(QObject)
-    def associateActiveMachineWithPrinterDevice(self, output_device: Optional["PrinterOutputDevice"]) -> None:
-        self._api.machines.addOutputDeviceToCurrentMachine(output_device)
-        if self._network_plugin:
-            self._network_plugin.refreshConnections()
-
-    # TODO: Better naming needed. Stored where? This is current machine's key.
-    # TODO: CHANGE TO HOSTNAME
-    # TODO: Should be able to just access the API from QML.
-    @pyqtSlot(result = str)
-    def getStoredKey(self) -> str:
-        current_machine = self._api.machines.getCurrentMachine()
-        return current_machine["um_network_key"]
+    # # TODO: Better naming needed. Stored where? This is current machine's key.
+    # # TODO: CHANGE TO HOSTNAME
+    # # TODO: Should be able to just access the API from QML.
+    # @pyqtSlot(result = str)
+    # def getStoredKey(self) -> str:
+    #     current_machine = self._api.machines.getCurrentMachine()
+    #     if current_machine:
+    #         return current_machine["um_network_key"]
+    #     return ""
 
     # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(result = str)

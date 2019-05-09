@@ -25,8 +25,8 @@ class Machines(QObject):
         super().__init__(parent)
         self._application = application
 
-    @pyqtSlot(result=dict)
-    def getCurrentMachine(self) -> dict:
+    @pyqtSlot(result="QVariantMap")
+    def getCurrentMachine(self) -> "QVariantMap":
         # Since Cura doesn't have a machine class, we're going to make a fake one to make our
         # lives a little bit easier.
         fake_machine = {

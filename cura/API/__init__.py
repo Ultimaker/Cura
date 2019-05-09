@@ -62,7 +62,7 @@ class CuraAPI(QObject):
     def backups(self) -> "Backups":
         return self._backups
 
-    @property
+    @pyqtProperty(QObject)
     def machines(self) -> "Machines":
         return self._machines
 
