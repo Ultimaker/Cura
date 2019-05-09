@@ -15,31 +15,26 @@ ScrollView
 
     Column
     {
+        width: page.width
         spacing: UM.Theme.getSize("default_margin").height
+        padding: UM.Theme.getSize("wide_margin").width
         visible: toolbox.pluginsInstalledModel.items.length > 0
-        height: childrenRect.height + 4 * UM.Theme.getSize("default_margin").height
-
-        anchors
-        {
-            right: parent.right
-            left: parent.left
-            margins: UM.Theme.getSize("default_margin").width
-            top: parent.top
-        }
+        height: childrenRect.height + 2 * UM.Theme.getSize("wide_margin").height
 
         Label
         {
-            width: page.width
+            width: parent.width - 2 * parent.padding
             text: catalog.i18nc("@title:tab", "Plugins")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("large")
             renderType: Text.NativeRendering
         }
+
         Rectangle
         {
             id: installedPlugins
             color: "transparent"
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
@@ -60,8 +55,10 @@ ScrollView
                 }
             }
         }
+
         Label
         {
+            width: parent.width - 2 * parent.padding
             text: catalog.i18nc("@title:tab", "Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
@@ -72,7 +69,7 @@ ScrollView
         {
             id: installedMaterials
             color: "transparent"
-            width: parent.width
+            width: parent.width - 2 * parent.padding
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
