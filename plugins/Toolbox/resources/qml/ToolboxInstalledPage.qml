@@ -5,11 +5,11 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.1 as UM
+import Cura 1.1 as Cura
 
-ScrollView
+Cura.ScrollView
 {
     id: page
-    clip: true
     width: parent.width
     height: parent.height
 
