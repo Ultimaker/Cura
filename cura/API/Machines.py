@@ -27,20 +27,26 @@ class Machines(QObject):
 
     @pyqtSlot(result=dict)
     def getCurrentMachine(self) -> dict:
+        # Since Cura doesn't have a machine class, we're going to make a fake one to make our
+        # lives a little bit easier.
+        fake_machine = {
+            "hostname": "",
+            "group_id": "",
+            "group_name": "",
+            "um_network_key": "",
+            "configuration": {}
+        }
         global_stack = self._application.getGlobalContainerStack()
         if global_stack:
             metadata = global_stack.getMetaData()
-        
-            # Since Cura doesn't have a machine class, we're going to make a fake one to make our
-            # lives a little bit easier.
-            fake_machine = {
-                "hostname": "",
-                "group_id": global_stack.getMetaDataEntry("group_id") if "group_id" in metadata else "",
-                "group_name": global_stack.getMetaDataEntry("group_name") if "group_name" in metadata else "",
-                "um_network_key": global_stack.getMetaDataEntry("um_network_key") if "um_network_key" in metadata else "",
-                "configuration": {}
-            }
-            return fake_machine
+            if "group_id" in metadata:
+                fake_machine["group_id"] = global_stack.getMetaDataEntry("group_id")
+            if "group_name" in metadata:
+                fake_machine["group_name"] = global_stack.getMetaDataEntry("group_name")
+            if "um_network_key" in metadata:
+                fake_machine["um_network_key"] = global_stack.getMetaDataEntry("um_network_key")
+            
+        return fake_machine
 
     ##  Set the current machine's friendy name.
     #   This is the same as "group name" since we use "group" and "current machine" interchangeably.
