@@ -108,63 +108,47 @@ class DiscoverUM3Action(MachineAction):
         else:
             return []
 
+    # TODO: Should be able to just access the API from QML.
     @pyqtSlot(str)
     def setGroupName(self, group_name: str) -> None:
-        Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
-        global_container_stack = self._application.getGlobalContainerStack()
-        if global_container_stack:
-            # Update a GlobalStacks in the same group with the new group name.
-            group_id = global_container_stack.getMetaDataEntry("group_id")
-            machine_manager = self._application.getMachineManager()
-            for machine in machine_manager.getMachinesInGroup(group_id):
-                machine.setMetaDataEntry("group_name", group_name)
-
-            # Set the default value for "hidden", which is used when you have a group with multiple types of printers
-            global_container_stack.setMetaDataEntry("hidden", False)
-
+        self._api.machines.setCurrentMachineGroupName(group_name)
         if self._network_plugin:
-            # Ensure that the connection states are refreshed.
             self._network_plugin.refreshConnections()
 
-    # Associates the currently active machine with the given printer device. The network connection information will be
-    # stored into the metadata of the currently active machine.
+    # TODO: Should be able to just access the API from QML.
     @pyqtSlot(QObject)
     def associateActiveMachineWithPrinterDevice(self, output_device: Optional["PrinterOutputDevice"]) -> None:
         self._api.machines.addOutputDeviceToCurrentMachine(output_device)
         if self._network_plugin:
             self._network_plugin.refreshConnections()
 
+    # TODO: Better naming needed. Stored where? This is current machine's key.
+    # TODO: CHANGE TO HOSTNAME
+    # TODO: Should be able to just access the API from QML.
     @pyqtSlot(result = str)
     def getStoredKey(self) -> str:
-        global_container_stack = self._application.getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "um_network_key" in meta_data:
-                return global_container_stack.getMetaDataEntry("um_network_key")
+        current_machine = self._api.machines.getCurrentMachine()
+        return current_machine["um_network_key"]
 
-        return ""
-
+    # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(result = str)
     def getLastManualEntryKey(self) -> str:
         if self._network_plugin:
             return self._network_plugin.getLastManualDevice()
         return ""
 
+    # TODO: Better naming needed. Exists where? On the current machine? On all machines?
+    # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(str, result = bool)
     def existsKey(self, key: str) -> bool:
         metadata_filter = {"um_network_key": key}
         containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
         return bool(containers)
 
+    # TODO: Should be able to just access the API from QML.
     @pyqtSlot()
     def loadConfigurationFromPrinter(self) -> None:
-        machine_manager = self._application.getMachineManager()
-        hotend_ids = machine_manager.printerOutputDevices[0].hotendIds
-        for index in range(len(hotend_ids)):
-            machine_manager.printerOutputDevices[0].hotendIdChanged.emit(index, hotend_ids[index])
-        material_ids = machine_manager.printerOutputDevices[0].materialIds
-        for index in range(len(material_ids)):
-            machine_manager.printerOutputDevices[0].materialIdChanged.emit(index, material_ids[index])
+        self._api.machines.updateCurrentMachineConfiguration()
 
     def _createAdditionalComponentsView(self) -> None:
         Logger.log("d", "Creating additional ui components for UM3.")
