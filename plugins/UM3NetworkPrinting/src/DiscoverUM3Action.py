@@ -34,7 +34,10 @@ class DiscoverUM3Action(MachineAction):
 
         self.__additional_components_view = None #type: Optional[QObject]
 
-        CuraApplication.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
+        self._application = CuraApplication.getInstance()
+        self._api = self._application.getCuraAPI()
+
+        self._application.engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
         self._last_zero_conf_event_time = time.time() #type: float
 
@@ -50,7 +53,7 @@ class DiscoverUM3Action(MachineAction):
     def startDiscovery(self):
         if not self._network_plugin:
             Logger.log("d", "Starting device discovery.")
-            self._network_plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
+            self._network_plugin = self._application.getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
             self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
             self.discoveredDevicesChanged.emit()
 
@@ -108,11 +111,11 @@ class DiscoverUM3Action(MachineAction):
     @pyqtSlot(str)
     def setGroupName(self, group_name: str) -> None:
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
             # Update a GlobalStacks in the same group with the new group name.
             group_id = global_container_stack.getMetaDataEntry("group_id")
-            machine_manager = CuraApplication.getInstance().getMachineManager()
+            machine_manager = self._application.getMachineManager()
             for machine in machine_manager.getMachinesInGroup(group_id):
                 machine.setMetaDataEntry("group_name", group_name)
 
@@ -126,13 +129,14 @@ class DiscoverUM3Action(MachineAction):
     # Associates the currently active machine with the given printer device. The network connection information will be
     # stored into the metadata of the currently active machine.
     @pyqtSlot(QObject)
-    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
+    def associateActiveMachineWithPrinterDevice(self, output_device: Optional["PrinterOutputDevice"]) -> None:
+        self._api.machines.addOutputDeviceToCurrentMachine(output_device)
         if self._network_plugin:
-            self._network_plugin.associateActiveMachineWithPrinterDevice(printer_device)
+            self._network_plugin.refreshConnections()
 
     @pyqtSlot(result = str)
     def getStoredKey(self) -> str:
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
             meta_data = global_container_stack.getMetaData()
             if "um_network_key" in meta_data:
@@ -154,7 +158,7 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot()
     def loadConfigurationFromPrinter(self) -> None:
-        machine_manager = CuraApplication.getInstance().getMachineManager()
+        machine_manager = self._application.getMachineManager()
         hotend_ids = machine_manager.printerOutputDevices[0].hotendIds
         for index in range(len(hotend_ids)):
             machine_manager.printerOutputDevices[0].hotendIdChanged.emit(index, hotend_ids[index])
@@ -170,10 +174,10 @@ class DiscoverUM3Action(MachineAction):
         if not plugin_path:
             return
         path = os.path.join(plugin_path, "resources/qml/UM3InfoComponents.qml")
-        self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        self.__additional_components_view = self._application.createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")
             return
 
         # Create extra components
-        CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
+        self._application.addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
