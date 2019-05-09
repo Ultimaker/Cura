@@ -113,6 +113,7 @@ class DiscoverUM3Action(MachineAction):
         if self._network_plugin:
             self._network_plugin.refreshConnections()
 
+    # TODO: Improve naming
     # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(result = str)
     def getLastManualEntryKey(self) -> str:

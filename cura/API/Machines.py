@@ -68,6 +68,7 @@ class Machines(QObject):
     ##  Set the current machine's configuration from an (optional) output device.
     #   If no output device is given, the first one available on the machine will be used.
     #   NOTE: Group and machine are used interchangeably.
+    #   NOTE: This doesn't seem to be used anywhere. Maybe delete?
     @pyqtSlot(QObject)
     def updateCurrentMachineConfiguration(self, output_device: Optional["PrinterOutputDevice"]) -> None:
 
