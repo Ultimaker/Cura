@@ -34,7 +34,8 @@ class Machines(QObject):
             "group_id": "",
             "group_name": "",
             "um_network_key": "",
-            "configuration": {}
+            "configuration": {},
+            "connection_types": []
         }
         global_stack = self._application.getGlobalContainerStack()
         if global_stack:
@@ -45,6 +46,8 @@ class Machines(QObject):
                 fake_machine["group_name"] = global_stack.getMetaDataEntry("group_name")
             if "um_network_key" in metadata:
                 fake_machine["um_network_key"] = global_stack.getMetaDataEntry("um_network_key")
+
+            fake_machine["connection_types"] = global_stack.configuredConnectionTypes
             
         return fake_machine
 
