@@ -420,6 +420,9 @@ Item
                     width: profileScrollView.width
                     height: childrenRect.height
 
+                    // Added this property to identify custom profiles in automated system tests (Squish)
+                    property bool isReadOnly: model.is_read_only
+
                     property bool isCurrentItem: ListView.isCurrentItem
                     color: isCurrentItem ? palette.highlight : (model.index % 2) ? palette.base : palette.alternateBase
 
