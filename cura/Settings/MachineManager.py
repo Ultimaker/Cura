@@ -1263,8 +1263,8 @@ class MachineManager(QObject):
         if self._global_container_stack is not None:
             if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
                 for position, extruder in self._global_container_stack.extruders.items():
-                    if extruder.isEnabled and not extruder.material.getMetaDataEntry("compatible"):
-                        return False
+                    if not extruder.isEnabled:
+                        continue
                     if not extruder.material.getMetaDataEntry("compatible"):
                         return False
         return True
