@@ -5249,7 +5249,7 @@
                     "type": "bool",
                     "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
-                    "resolve": "any(extruderValues('prime_tower_enable')) or (adhesion_type in ('none', 'skirt'))",
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable')) or (adhesion_type in ('none', 'skirt'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
