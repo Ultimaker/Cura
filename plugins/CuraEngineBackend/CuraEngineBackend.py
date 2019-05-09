@@ -517,9 +517,6 @@ class CuraEngineBackend(QObject, Backend):
                 self._build_plates_to_be_sliced.append(build_plate_number)
             self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
-        # if not self._use_timer:
-            # With manually having to slice, we want to clear the old invalid layer data.
         self._clearLayerData(build_plate_changed)
 
         self._invokeSlice()
@@ -563,10 +560,10 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self) -> None:
+        self.determineAutoSlicing()
         self.stopSlicing()
         self.markSliceAll()
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
         if not self._use_timer:
             # With manually having to slice, we want to clear the old invalid layer data.
             self._clearLayerData()
