@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
@@ -108,11 +108,10 @@ Cura.ExpandablePopup
         id: popup
         width: UM.Theme.getSize("machine_selector_widget_content").width
 
-        ScrollView
+        Cura.ScrollView
         {
             id: scroll
             width: parent.width
-            clip: true
             leftPadding: UM.Theme.getSize("default_lining").width
             rightPadding: UM.Theme.getSize("default_lining").width
 

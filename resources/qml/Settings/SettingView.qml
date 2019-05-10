@@ -203,9 +203,10 @@ Item
         onWheel: wheel.accepted = true
     }
 
-    ScrollView
+    Cura.ScrollView
     {
         id: scrollView
+        scrollAlwaysVisible: true
         anchors
         {
             top: filterContainer.bottom
@@ -214,10 +215,6 @@ Item
             right: parent.right
             left: parent.left
         }
-
-        style: UM.Theme.styles.scrollview
-        flickableItem.flickableDirection: Flickable.VerticalFlick
-        __wheelAreaScrollSpeed: 75  // Scroll three lines in one scroll event
 
         ListView
         {
