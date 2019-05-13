@@ -18,7 +18,18 @@ i18n_catalog = i18nCatalog("cura")
 #       api = CuraAPI()
 #       api.machines.addOutputDeviceToCurrentMachine()
 #       ```
-#
+
+##  Since Cura doesn't have a machine class, we're going to make a fake one to make our lives a
+#   little bit easier.
+class Machine():
+    def __init__(self) -> None:
+        self.hostname = "" # type: str
+        self.group_id = "" # type: str
+        self.group_name = "" # type: str
+        self.um_network_key = "" # type: str
+        self.configuration = {} # type: Dict
+        self.connection_types = [] # type: List
+
 class Machines(QObject):
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
@@ -27,27 +38,18 @@ class Machines(QObject):
 
     @pyqtSlot(result="QVariantMap")
     def getCurrentMachine(self) -> "QVariantMap":
-        # Since Cura doesn't have a machine class, we're going to make a fake one to make our
-        # lives a little bit easier.
-        fake_machine = {
-            "hostname": "",
-            "group_id": "",
-            "group_name": "",
-            "um_network_key": "",
-            "configuration": {},
-            "connection_types": []
-        }
+        fake_machine = Machine() # type: Machine
         global_stack = self._application.getGlobalContainerStack()
         if global_stack:
             metadata = global_stack.getMetaData()
             if "group_id" in metadata:
-                fake_machine["group_id"] = global_stack.getMetaDataEntry("group_id")
+                fake_machine.group_id = global_stack.getMetaDataEntry("group_id")
             if "group_name" in metadata:
-                fake_machine["group_name"] = global_stack.getMetaDataEntry("group_name")
+                fake_machine.group_name = global_stack.getMetaDataEntry("group_name")
             if "um_network_key" in metadata:
-                fake_machine["um_network_key"] = global_stack.getMetaDataEntry("um_network_key")
+                fake_machine.um_network_key = global_stack.getMetaDataEntry("um_network_key")
 
-            fake_machine["connection_types"] = global_stack.configuredConnectionTypes
+            fake_machine.connection_types = global_stack.configuredConnectionTypes
             
         return fake_machine
 
