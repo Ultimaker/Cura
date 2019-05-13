@@ -167,8 +167,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        self.resetLastManualDevice()
-
+        self.resetLastManu
+    
+    # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
         active_machine = self._application.getGlobalContainerStack()
         if not active_machine:
@@ -272,8 +273,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                    key, group_name, machine_type_id)
 
         self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        
         # connect the new machine to that network printer
         self._api.machines.addOutputDeviceToCurrentMachine(discovered_device)
+
         # ensure that the connection states are refreshed.
         self.refreshConnections()
 
@@ -285,6 +288,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         name_request = QNetworkRequest(url)
         return self._network_manager.get(name_request)
 
+    ##  This is the function which handles the above network request's reply when it comes back.
     def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
