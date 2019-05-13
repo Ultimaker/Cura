@@ -33,7 +33,7 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_start_gcode": {
             "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM84 ;steppers off\nM0 S12 ;wait 12 seconds\nM17 ;turn steppers on\nG1 Z10.0 F300 ;move the platform down 10mm\nG92 E0 ;zero the extruded length\nG1 F200 E8 ;extrude 8mm of feed stock\nG92 E0 ;zero the extruded length again\nM0 S5 ;wait 5 seconds\nG1 F9000\nM117 Printing..."
