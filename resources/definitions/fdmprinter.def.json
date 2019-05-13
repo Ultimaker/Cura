@@ -2063,7 +2063,7 @@
                     "description": "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
-                    "default_value": 0,
+                    "default_value": 35,
                     "resolve": "max(extruderValues('build_volume_temperature'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
