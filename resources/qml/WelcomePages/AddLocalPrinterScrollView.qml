@@ -14,8 +14,6 @@ import Cura 1.0 as Cura
 //
 Item
 {
-//    UM.I18nCatalog { id: catalog; name: "cura" }
-
     id: base
     height: childrenRect.height
 
