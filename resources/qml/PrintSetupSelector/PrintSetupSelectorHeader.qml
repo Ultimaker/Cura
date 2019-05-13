@@ -15,6 +15,7 @@ RowLayout
 
     Cura.IconWithText
     {
+        id: printSetupSelectorProfileText
         source: UM.Theme.getIcon("category_layer_height")
         text:
         {
