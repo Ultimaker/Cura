@@ -31,7 +31,7 @@
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
         "supports_network_connection": true,
-        "weight": -1,
+        "weight": -2,
         "firmware_update_info": {
             "id": 9051,
             "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
