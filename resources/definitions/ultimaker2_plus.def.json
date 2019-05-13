@@ -51,7 +51,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 52
+            "value": "52"
         },
         "machine_nozzle_head_distance": {
             "default_value": 5
