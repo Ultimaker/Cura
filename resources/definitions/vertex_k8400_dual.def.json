@@ -59,7 +59,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 18
+            "value": "18"
         },
         "machine_extruder_count": {
             "default_value": 2

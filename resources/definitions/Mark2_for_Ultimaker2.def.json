@@ -37,7 +37,7 @@
             "default_value": 203
         },
         "gantry_height": {
-            "default_value": 52
+            "value": "52"
         },
         "machine_center_is_zero": {
             "default_value": false
