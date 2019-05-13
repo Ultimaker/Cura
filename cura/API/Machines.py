@@ -7,6 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -37,7 +38,7 @@ class Machines(QObject):
         self._application = application
 
     @pyqtSlot(result="QVariantMap")
-    def getCurrentMachine(self) -> "QVariantMap":
+    def getCurrentMachine(self) -> Machine:
         fake_machine = Machine() # type: Machine
         global_stack = self._application.getGlobalContainerStack()
         if global_stack:
