@@ -72,7 +72,7 @@ Item
                 section.criteria: ViewSection.FullString
                 section.delegate: sectionHeading
 
-                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
                 Component.onCompleted:
                 {

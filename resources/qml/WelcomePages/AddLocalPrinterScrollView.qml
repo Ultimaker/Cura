@@ -14,8 +14,6 @@ import Cura 1.0 as Cura
 //
 Item
 {
-    UM.I18nCatalog { id: catalog; name: "cura" }
-
     id: base
     height: childrenRect.height
 
@@ -85,7 +83,7 @@ Item
             {
                 id: machineList
 
-                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
                 model: UM.DefinitionContainersModel
                 {
