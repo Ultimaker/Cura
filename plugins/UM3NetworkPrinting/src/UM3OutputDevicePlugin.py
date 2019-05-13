@@ -280,7 +280,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # ensure that the connection states are refreshed.
         self.refreshConnections()
 
-    def _checkManualDevice(self, address: str) -> None:
+    def _checkManualDevice(self, address: str):
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
