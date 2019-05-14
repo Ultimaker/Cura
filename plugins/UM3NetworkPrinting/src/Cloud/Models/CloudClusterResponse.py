@@ -17,10 +17,10 @@ class CloudClusterResponse(BaseCloudModel):
     #  \param host_version: The firmware version of the cluster host. This is where the Stardust client is running on.
     #  \param host_internal_ip: The internal IP address of the host printer.
     #  \param friendly_name: The human readable name of the host printer.
-    #  \param printer_type: The machine type of the host printer, for example "Ultimaker 3".
+    #  \param printer_type: The machine type of the host printer.
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
-                 friendly_name: Optional[str] = None, printer_type: str = "Ultimaker 3", **kwargs) -> None:
+                 friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", **kwargs) -> None:
         self.cluster_id = cluster_id
         self.host_guid = host_guid
         self.host_name = host_name
