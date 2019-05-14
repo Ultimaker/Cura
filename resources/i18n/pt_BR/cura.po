@@ -5,8 +5,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.0\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Cura 4.1\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-05-14 12:48+0200\n"
 "PO-Revision-Date: 2019-03-18 11:26+0100\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
