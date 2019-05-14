@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"POT-Creation-Date: 2019-05-14 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -244,7 +244,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
-msgid "Number of Extruders that are enabled"
+msgid "Number of Extruders That Are Enabled"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -255,7 +255,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
-msgid "Outer nozzle diameter"
+msgid "Outer Nozzle Diameter"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -265,7 +265,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle length"
+msgid "Nozzle Length"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -277,7 +277,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
-msgid "Nozzle angle"
+msgid "Nozzle Angle"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -289,7 +289,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
-msgid "Heat zone length"
+msgid "Heat Zone Length"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -325,7 +325,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
-msgid "Heat up speed"
+msgid "Heat Up Speed"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -337,7 +337,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
-msgid "Cool down speed"
+msgid "Cool Down Speed"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -362,7 +362,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
-msgid "G-code flavour"
+msgid "G-code Flavour"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -429,7 +429,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
-msgid "Disallowed areas"
+msgid "Disallowed Areas"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -449,7 +449,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
-msgid "Machine head polygon"
+msgid "Machine Head Polygon"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -459,7 +459,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
-msgid "Machine head & Fan polygon"
+msgid "Machine Head & Fan Polygon"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -469,7 +469,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
-msgid "Gantry height"
+msgid "Gantry Height"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -503,7 +503,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
-msgid "Offset With Extruder"
+msgid "Offset with Extruder"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2144,6 +2144,18 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "build_volume_temperature label"
+msgid "Build Volume Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "build_volume_temperature description"
+msgid ""
+"The temperature used for build volume. If this is 0, the build volume "
+"temperature will not be adjusted."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
 msgstr ""
@@ -3361,6 +3373,16 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height label"
+msgid "Z Hop After Extruder Switch Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height description"
+msgid "The height difference when performing a Z Hop after extruder switch."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "cooling label"
 msgid "Cooling"
 msgstr ""
@@ -3680,6 +3702,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_pattern option cross"
 msgid "Cross"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_pattern option gyroid"
+msgid "Gyroid"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5012,6 +5039,18 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "prime_tower_brim_enable label"
+msgid "Prime Tower Brim"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_brim_enable description"
+msgid ""
+"Prime-towers might need the extra adhesion afforded by a brim even if the "
+"model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
 msgid "Enable Ooze Shield"
 msgstr ""
@@ -5651,6 +5690,19 @@ msgid ""
 "this, the travel moves will have less smooth corners. This may allow the "
 "printer to keep up with the speed it has to process g-code, but it may cause "
 "model avoidance to become less accurate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid ""
+"The maximum deviation allowed when reducing the resolution for the Maximum "
+"Resolution setting. If you increase this, the print will be less accurate, "
+"but the g-code will be smaller."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6382,7 +6434,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
-msgid "Use adaptive layers"
+msgid "Use Adaptive Layers"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6394,7 +6446,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
-msgid "Adaptive layers maximum variation"
+msgid "Adaptive Layers Maximum Variation"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6404,7 +6456,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
-msgid "Adaptive layers variation step size"
+msgid "Adaptive Layers Variation Step Size"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6416,7 +6468,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
-msgid "Adaptive layers threshold"
+msgid "Adaptive Layers Threshold"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6666,6 +6718,173 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "bridge_fan_speed_3 description"
 msgid "Percentage fan speed to use when printing the third bridge skin layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "clean_between_layers label"
+msgid "Wipe Nozzle Between Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "clean_between_layers description"
+msgid ""
+"Whether to include nozzle wipe G-Code between layers. Enabling this setting "
+"could influence behavior of retract at layer change. Please use Wipe "
+"Retraction settings to control retraction at layers where the wipe script "
+"will be working."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe label"
+msgid "Material Volume Between Wipes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe description"
+msgid ""
+"Maximum material, that can be extruded before another nozzle wipe is "
+"initiated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable label"
+msgid "Wipe Retraction Enable"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount label"
+msgid "Wipe Retraction Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount description"
+msgid ""
+"Amount to retract the filament so it does not ooze during the wipe sequence."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount label"
+msgid "Wipe Retraction Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount description"
+msgid ""
+"Some material can ooze away during a wipe travel moves, which can be "
+"compensated for here."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed label"
+msgid "Wipe Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed description"
+msgid ""
+"The speed at which the filament is retracted and primed during a wipe "
+"retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed label"
+msgid "Wipe Retraction Retract Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed description"
+msgid ""
+"The speed at which the filament is retracted during a wipe retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed description"
+msgid ""
+"The speed at which the filament is primed during a wipe retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause label"
+msgid "Wipe Pause"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause description"
+msgid "Pause after the unretract."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable label"
+msgid "Wipe Z Hop When Retracted"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable description"
+msgid ""
+"Whenever a retraction is done, the build plate is lowered to create "
+"clearance between the nozzle and the print. It prevents the nozzle from "
+"hitting the print during travel moves, reducing the chance to knock the "
+"print from the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount label"
+msgid "Wipe Z Hop Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount description"
+msgid "The height difference when performing a Z Hop."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed label"
+msgid "Wipe Hop Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed description"
+msgid "Speed to move the z-axis during the hop."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x label"
+msgid "Wipe Brush X Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x description"
+msgid "X location where wipe script will start."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count label"
+msgid "Wipe Repeat Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance label"
+msgid "Wipe Move Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance description"
+msgid "The distance to move the head back and forth across the brush."
 msgstr ""
 
 #: fdmprinter.def.json
