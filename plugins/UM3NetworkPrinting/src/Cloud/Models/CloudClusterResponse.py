@@ -20,7 +20,7 @@ class CloudClusterResponse(BaseCloudModel):
     #  \param printer_type: The machine type of the host printer.
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
-                 friendly_name: Optional[str] = None, printer_type: Optional[str] = "Ultimaker 3", **kwargs) -> None:
+                 friendly_name: Optional[str] = None, printer_type: str = "Ultimaker 3", **kwargs) -> None:
         self.cluster_id = cluster_id
         self.host_guid = host_guid
         self.host_name = host_name
