@@ -5276,26 +5276,6 @@ msgctxt "name"
 msgid "X3GWriter"
 msgstr ""
 
-#: X3GWriter/build/install/X3GWriter/plugin.json
-msgctxt "description"
-msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
-
-#: X3GWriter/build/install/X3GWriter/plugin.json
-msgctxt "name"
-msgid "X3GWriter"
-msgstr ""
-
-#: X3GWriter/plugin.json
-msgctxt "description"
-msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr ""
-
-#: X3GWriter/plugin.json
-msgctxt "name"
-msgid "X3GWriter"
-msgstr ""
-
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
 msgid "Writes g-code to a compressed archive."
@@ -5622,36 +5602,6 @@ msgid "Reads SVG files as toolpaths, for debugging printer movements."
 msgstr ""
 
 #: SVGToolpathReader/build/plugin.json
-msgctxt "name"
-msgid "SVG Toolpath Reader"
-msgstr ""
-
-#: SVGToolpathReader/build/pack5.0.0/files/plugins/SVGToolpathReader/plugin.json
-msgctxt "description"
-msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr ""
-
-#: SVGToolpathReader/build/pack5.0.0/files/plugins/SVGToolpathReader/plugin.json
-msgctxt "name"
-msgid "SVG Toolpath Reader"
-msgstr ""
-
-#: SVGToolpathReader/build/pack6.0.0/files/plugins/SVGToolpathReader/plugin.json
-msgctxt "description"
-msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr ""
-
-#: SVGToolpathReader/build/pack6.0.0/files/plugins/SVGToolpathReader/plugin.json
-msgctxt "name"
-msgid "SVG Toolpath Reader"
-msgstr ""
-
-#: SVGToolpathReader/plugin.json
-msgctxt "description"
-msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr ""
-
-#: SVGToolpathReader/plugin.json
 msgctxt "name"
 msgid "SVG Toolpath Reader"
 msgstr ""
