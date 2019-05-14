@@ -79,6 +79,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             b"address": cluster.host_internal_ip.encode() if cluster.host_internal_ip else b"",
             b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
             b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
+            b"printer_type": cluster.printer_type.encode() if cluster.printer_type else b"",
             b"cluster_size": b"1"  # cloud devices are always clusters of at least one
         }
 
@@ -104,7 +105,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We keep track of which printer is visible in the monitor page.
         self._active_printer = None  # type: Optional[PrinterOutputModel]
-        self._host_machine_type = ""
+        self._host_machine_type = cluster.printer_type  # type: str
 
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -375,7 +376,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     ##  Gets the printer type of the cluster host. Falls back to the printer type in the device properties.
     @pyqtProperty(str, notify=_clusterPrintersChanged)
     def printerType(self) -> str:
-        if self._printers and self._host_machine_type in self._host_machine_variant_to_machine_type_map:
+        if self._host_machine_type in self._host_machine_variant_to_machine_type_map:
             return self._host_machine_variant_to_machine_type_map[self._host_machine_type]
         return super().printerType
 
