@@ -137,7 +137,6 @@
         "skirt_brim_minimal_length": {"value": 50},
 
         "prime_tower_enable":         {"value": false },
-        "prime_tower_wall_thickness": {"resolve": 0.7 },
         "prime_tower_size":           {"value": 20.6 },
         "prime_tower_position_x":     {"value": 125 },
         "prime_tower_position_y":     {"value": 70 },
