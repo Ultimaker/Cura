@@ -394,6 +394,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     @pyqtSlot(str, str)
     def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+        Logger.log("i", "Trying to add a machine with the definition id [%s]", definition_id)
         if name is None:
             definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
             if definitions:
@@ -464,6 +465,7 @@ class MachineManager(QObject):
     #   \param key \type{str} the name of the key to delete
     @pyqtSlot(str)
     def clearUserSettingAllCurrentStacks(self, key: str) -> None:
+        Logger.log("i", "Clearing the setting [%s] from all stacks", key)
         if not self._global_container_stack:
             return
 
@@ -786,6 +788,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(str)
     def removeMachine(self, machine_id: str) -> None:
+        Logger.log("i", "Attempting to remove a machine with the id [%s]", machine_id)
         # If the machine that is being removed is the currently active machine, set another machine as the active machine.
         activate_new_machine = (self._global_container_stack and self._global_container_stack.getId() == machine_id)
 
@@ -1273,7 +1276,7 @@ class MachineManager(QObject):
     def _updateQualityWithMaterial(self, *args: Any) -> None:
         if self._global_container_stack is None:
             return
-        Logger.log("i", "Updating quality/quality_changes due to material change")
+        Logger.log("d", "Updating quality/quality_changes due to material change")
         current_quality_type = None
         if self._current_quality_group:
             current_quality_type = self._current_quality_group.quality_type
@@ -1354,6 +1357,7 @@ class MachineManager(QObject):
     #   instance with the same network key.
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
+        Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Don't switch if the user tries to change to the same type of printer
         if self._global_container_stack is None or self.activeMachineDefinitionName == machine_name:
             return

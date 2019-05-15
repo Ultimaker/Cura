@@ -207,7 +207,7 @@ class CuraEngineBackend(QObject, Backend):
             self._createSocket()
 
         if self._process_layers_job is not None:  # We were processing layers. Stop that, the layers are going to change soon.
-            Logger.log("d", "Aborting process layers job...")
+            Logger.log("i", "Aborting process layers job...")
             self._process_layers_job.abort()
             self._process_layers_job = None
 
@@ -222,7 +222,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self) -> None:
-        Logger.log("d", "Starting to slice...")
+        Logger.log("i", "Starting to slice...")
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
