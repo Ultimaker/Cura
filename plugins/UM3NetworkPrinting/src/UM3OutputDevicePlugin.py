@@ -67,11 +67,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def __init__(self):
         super().__init__()
-        
         self._zero_conf = None
         self._zero_conf_browser = None
 
         self._application = CuraApplication.getInstance()
+        self._api = self._application.getCuraAPI()
 
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
@@ -96,7 +96,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = CuraApplication.getInstance().getPreferences()
+        self._preferences = self._application.getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
@@ -116,7 +116,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
 
-        self._account = self._application.getCuraAPI().account
+        self._account = self._api.account
 
         # Check if cloud flow is possible when user logs in
         self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
@@ -167,10 +167,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        self.resetLastManualDevice()
-
+        self.resetLastManu
+    
+    # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        active_machine = self._application.getGlobalContainerStack()
         if not active_machine:
             return
 
@@ -197,7 +198,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
         if self._discovered_devices[key].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            um_network_key = self._application.getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
                 self.checkCloudFlowIsPossible(None)
@@ -272,39 +273,14 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                    key, group_name, machine_type_id)
 
         self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        
         # connect the new machine to that network printer
-        self.associateActiveMachineWithPrinterDevice(discovered_device)
+        self._api.machines.addOutputDeviceToCurrentMachine(discovered_device)
+
         # ensure that the connection states are refreshed.
         self.refreshConnections()
 
-    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        if not printer_device:
-            return
-
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
-
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        global_container_stack = machine_manager.activeMachine
-        if not global_container_stack:
-            return
-
-        for machine in machine_manager.getMachinesInGroup(global_container_stack.getMetaDataEntry("group_id")):
-            machine.setMetaDataEntry("um_network_key", printer_device.key)
-            machine.setMetaDataEntry("group_name", printer_device.name)
-
-            # Delete old authentication data.
-            Logger.log("d", "Removing old authentication id %s for device %s",
-                       global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-
-            machine.removeMetaDataEntry("network_authentication_id")
-            machine.removeMetaDataEntry("network_authentication_key")
-
-            # Ensure that these containers do know that they are configured for network connection
-            machine.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        self.refreshConnections()
-
-    def _checkManualDevice(self, address: str) -> "QNetworkReply":
+    def _checkManualDevice(self, address: str) -> Optional[QNetworkReply]:
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
@@ -312,6 +288,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         name_request = QNetworkRequest(url)
         return self._network_manager.get(name_request)
 
+    ##  This is the function which handles the above network request's reply when it comes back.
     def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
@@ -426,7 +403,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
@@ -446,7 +423,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._service_changed_request_event.wait(timeout = 5.0)
 
             # Stop if the application is shutting down
-            if CuraApplication.getInstance().isShuttingDown():
+            if self._application.isShuttingDown():
                 return
 
             self._service_changed_request_event.clear()
