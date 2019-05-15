@@ -102,7 +102,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                                   for address in manual_instances}  # type: Dict[str, ManualPrinterRequest]
 
         # Store the last manual entry key
-        self._last_manual_entry_key = ""  # type: str
+        self._last_manual_entry_hostname = ""  # type: str
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
@@ -113,7 +113,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
 
-        self._account = CuraApplication.getInstance().getCuraAPI.account
+        self._account = CuraApplication.getInstance().getCuraAPI().account
 
         # Check if cloud flow is possible when user logs in
         self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
@@ -137,10 +137,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return self._discovered_devices
 
     def getLastManualDevice(self) -> str:
-        return self._last_manual_entry_key
+        return self._last_manual_entry_hostname
 
     def resetLastManualDevice(self) -> None:
-        self._last_manual_entry_key = ""
+        self._last_manual_entry_hostname = ""
 
     ##  Start looking for devices on network.
     def start(self):
@@ -164,7 +164,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        self.resetLastManu
+        self.resetLastManualDevice()
     
     # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
@@ -172,35 +172,35 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if not active_machine:
             return
 
-        um_network_key = active_machine.getMetaDataEntry("um_network_key")
+        existing_hostname = active_machine.getMetaDataEntry("hostname")
 
-        for key in self._discovered_devices:
-            if key == um_network_key:
-                if not self._discovered_devices[key].isConnected():
-                    Logger.log("d", "Attempting to connect with [%s]" % key)
+        for hostname in self._discovered_devices:
+            if hostname == existing_hostname:
+                if not self._discovered_devices[hostname].isConnected():
+                    Logger.log("d", "Attempting to connect with [%s]" % hostname)
                     # It should already be set, but if it actually connects we know for sure it's supported!
-                    active_machine.addConfiguredConnectionType(self._discovered_devices[key].connectionType.value)
-                    self._discovered_devices[key].connect()
-                    self._discovered_devices[key].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
+                    active_machine.addConfiguredConnectionType(self._discovered_devices[hostname].connectionType.value)
+                    self._discovered_devices[hostname].connect()
+                    self._discovered_devices[hostname].connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
                 else:
                     self._onDeviceConnectionStateChanged(key)
             else:
-                if self._discovered_devices[key].isConnected():
+                if self._discovered_devices[hostname].isConnected():
                     Logger.log("d", "Attempting to close connection with [%s]" % key)
-                    self._discovered_devices[key].close()
-                    self._discovered_devices[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+                    self._discovered_devices[hostname].close()
+                    self._discovered_devices[hostname].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
 
-    def _onDeviceConnectionStateChanged(self, key):
-        if key not in self._discovered_devices:
+    def _onDeviceConnectionStateChanged(self, hostname):
+        if hostname not in self._discovered_devices:
             return
-        if self._discovered_devices[key].isConnected():
+        if self._discovered_devices[hostname].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
-            if key == um_network_key:
-                self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
+            existing_hostname = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            if hostname == existing_hostname:
+                self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[hostname])
                 self.checkCloudFlowIsPossible(None)
         else:
-            self.getOutputDeviceManager().removeOutputDevice(key)
+            self.getOutputDeviceManager().removeOutputDevice(hostname)
 
     def stop(self):
         if self._zero_conf is not None:
@@ -212,14 +212,14 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # This plugin should always be the fallback option (at least try it):
         return ManualDeviceAdditionAttempt.POSSIBLE
 
-    def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
-        if key not in self._discovered_devices and address is not None:
-            key = "manual:%s" % address
+    def removeManualDevice(self, hostname: str, address: Optional[str] = None) -> None:
+        if hostname not in self._discovered_devices and address is not None:
+            hostname = "manual:%s" % address # TODO: NOOOO DONT DO THIS
 
-        if key in self._discovered_devices:
+        if hostname in self._discovered_devices:
             if not address:
-                address = self._discovered_devices[key].ipAddress
-            self._onRemoveDevice(key)
+                address = self._discovered_devices[hostname].ipAddress
+            self._onRemoveDevice(hostname)
             self.resetLastManualDevice()
 
         if address in self._manual_instances:
@@ -252,27 +252,27 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if instance_name not in self._discovered_devices:
             # Add a preliminary printer instance
             self._onAddDevice(instance_name, address, properties)
-        self._last_manual_entry_key = instance_name
+        self._last_manual_entry_hostname = instance_name
 
         reply = self._checkManualDevice(address)
         self._manual_instances[address].network_reply = reply
 
-    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        discovered_device = self._discovered_devices.get(key)
+    def _createMachineFromDiscoveredPrinter(self, hostname: str) -> None:
+        discovered_device = self._discovered_devices.get(hostname)
         if discovered_device is None:
-            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            Logger.log("e", "Could not find discovered device with hostname [%s]", hostname)
             return
 
         group_name = discovered_device.getProperty("name")
         machine_type_id = discovered_device.getProperty("printer_type")
 
-        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
-                   key, group_name, machine_type_id)
+        Logger.log("i", "Creating machine from network device with hostname = [%s], group name = [%s],  printer type = [%s]",
+                   hostname, group_name, machine_type_id)
 
         CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
         
         # connect the new machine to that network printer
-        CuraApplication.getInstance().getCuraAPI.machines.addOutputDeviceToCurrentMachine(discovered_device)
+        CuraApplication.getInstance().getCuraAPI().machines.addOutputDeviceToCurrentMachine(discovered_device)
 
         # ensure that the connection states are refreshed.
         self.refreshConnections()
@@ -299,8 +299,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             #  - Something went wrong with checking the amount of printers the cluster has!
             #  - Couldn't find printer at the address when trying to add it manually.
             if address in self._manual_instances:
-                key = "manual:" + address
-                self.removeManualDevice(key, address)
+                hostname = "manual:" + address # TODO: NOOOOO LOOK UP HOSTNAME PROPERLY
+                self.removeManualDevice(hostname, address)
             return
 
         if "system" in reply_url:
@@ -319,7 +319,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
             properties = {
-                b"name": (system_info["name"] + " (manual)").encode("utf-8"),
+                b"name": (system_info["name"] + " (manual)").encode("utf-8"), # TODO: MORE GHETTO HOSTNAME
                 b"address": address.encode("utf-8"),
                 b"firmware_version": system_info["firmware"].encode("utf-8"),
                 b"manual": b"true",
@@ -552,10 +552,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             # The active machine _might_ not be the machine that was in the added cloud cluster and
             # then this will hide the cloud message for the wrong machine. So we only set it if the
             # host names match between the active machine and the newly added cluster
-            saved_host_name = active_machine.getMetaDataEntry("um_network_key", "").split('.')[0]
-            added_host_name = device.toDict()["host_name"]
+            saved_hostname = active_machine.getMetaDataEntry("hostname", "")
+            added_hostname = device.toDict()["hostname"]
 
-            if added_host_name == saved_host_name:
+            if added_hostname == saved_hostname:
                 active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
             
         return

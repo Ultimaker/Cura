@@ -50,6 +50,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     # Therefore we create a private signal used to trigger the printersChanged signal.
     _clusterPrintersChanged = pyqtSignal()
 
+    # NOTE: device_id is actually the hostname
     def __init__(self, device_id, address, properties, parent = None) -> None:
         super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/cluster-api/v1/"
