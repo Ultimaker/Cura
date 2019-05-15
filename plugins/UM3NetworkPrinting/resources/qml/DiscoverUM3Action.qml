@@ -27,7 +27,7 @@ Cura.MachineAction
         {
             var printerKey = base.selectedDevice.key
             var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
-            if (Cura.API.machines.getCurrentMachine()["um_network_key"] != printerKey)
+            if (Cura.API.machines.getCurrentMachine().um_network_key != printerKey) // TODO: change to hostname
             {
                 // Check if there is another instance with the same key
                 if (!manager.existsKey(printerKey))
@@ -157,7 +157,7 @@ Cura.MachineAction
                             var selectedKey = manager.getLastManualEntryKey()
                             // If there is no last manual entry key, then we select the stored key (if any)
                             if (selectedKey == "")
-                                selectedKey = Cura.API.machines.getCurrentMachine()["um_network_key"]
+                                selectedKey = Cura.API.machines.getCurrentMachine().um_network_key // TODO: change to host name
                             for(var i = 0; i < model.length; i++) {
                                 if(model[i].key == selectedKey)
                                 {
