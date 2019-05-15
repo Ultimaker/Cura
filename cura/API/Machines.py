@@ -28,8 +28,8 @@ class Machine():
         self.group_id = "" # type: str
         self.group_name = "" # type: str
         self.um_network_key = "" # type: str
-        self.configuration = {} # type: Dict
-        self.connection_types = [] # type: List
+        self.configuration = {} # type: Dict[str, any]
+        self.connection_types = [] # type: List["ConnectionType"]
 
 class Machines(QObject):
 
@@ -58,7 +58,7 @@ class Machines(QObject):
     #   This is the same as "group name" since we use "group" and "current machine" interchangeably.
     #   TODO: Maybe make this "friendly name" to distinguish from "hostname"?
     @pyqtSlot(str)
-    def setCurrentMachineGroupName(self, group_name: str):
+    def setCurrentMachineGroupName(self, group_name: str) -> None:
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
         global_stack = self._application.getGlobalContainerStack()
         if global_stack:
