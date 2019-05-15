@@ -7,7 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
-    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 i18n_catalog = i18nCatalog("cura")
 
@@ -29,7 +29,7 @@ class Machine():
         self.group_name = "" # type: str
         self.um_network_key = "" # type: str
         self.configuration = {} # type: Dict[str, any]
-        self.connection_types = [] # type: List["ConnectionType"]
+        self.connection_types = [] # type: List[int]
 
 class Machines(QObject):
 
