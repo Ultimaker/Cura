@@ -11,12 +11,11 @@ if TYPE_CHECKING:
 
 i18n_catalog = i18nCatalog("cura")
 
-##  The account API provides a version-proof bridge to use Ultimaker Accounts
+##  The account API provides a version-proof bridge to interact with machines.
 #
-#   Usage:
+#   Use the API via the CuraApplication's instance:
 #       ```
-#       from cura.API import CuraAPI
-#       api = CuraAPI()
+#       api = CuraApplication.getInstance().getCuraAPI()
 #       api.machines.addOutputDeviceToCurrentMachine()
 #       ```
 
