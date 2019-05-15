@@ -7,7 +7,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
-    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 
 i18n_catalog = i18nCatalog("cura")
 
