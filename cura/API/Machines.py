@@ -69,25 +69,6 @@ class Machines(QObject):
             # Set the default value for "hidden", which is used when you have a group with multiple types of printers
             global_stack.setMetaDataEntry("hidden", False)
 
-    ##  Set the current machine's configuration from an (optional) output device.
-    #   If no output device is given, the first one available on the machine will be used.
-    #   NOTE: Group and machine are used interchangeably.
-    #   NOTE: This doesn't seem to be used anywhere. Maybe delete?
-    @pyqtSlot(QObject)
-    def updateCurrentMachineConfiguration(self, output_device: Optional["PrinterOutputDevice"]) -> None:
-
-        if output_device is None:
-            machine_manager = CuraApplication.getInstance().getMachineManager()
-            output_device = machine_manager.printerOutputDevices[0]
-        
-        hotend_ids = output_device.hotendIds
-        for index in range(len(hotend_ids)):
-            output_device.hotendIdChanged.emit(index, hotend_ids[index])
-        
-        material_ids = output_device.materialIds
-        for index in range(len(material_ids)):
-            output_device.materialIdChanged.emit(index, material_ids[index])
-
     ##  Add an output device to the current machine.
     #   In practice, this means:
     #   - Setting the output device's network key in the current machine's metadata
