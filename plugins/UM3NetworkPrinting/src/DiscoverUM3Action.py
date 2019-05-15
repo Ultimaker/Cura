@@ -76,17 +76,17 @@ class DiscoverUM3Action(MachineAction):
                 self._network_plugin.startDiscovery()
 
     @pyqtSlot(str, str)
-    def removeManualDevice(self, hostname, address):
+    def removeManualDevice(self, key, address):
         if not self._network_plugin:
             return
 
-        self._network_plugin.removeManualDevice(hostname, address)
+        self._network_plugin.removeManualDevice(key, address)
 
     @pyqtSlot(str, str)
-    def setManualDevice(self, hostname, address):
-        if hostname != "":
+    def setManualDevice(self, key, address):
+        if key != "":
             # This manual printer replaces a current manual printer
-            self._network_plugin.removeManualDevice(hostname)
+            self._network_plugin.removeManualDevice(key)
 
         if address != "":
             self._network_plugin.addManualDevice(address)
@@ -121,8 +121,8 @@ class DiscoverUM3Action(MachineAction):
     # TODO: Better naming needed. Exists where? On the current machine? On all machines?
     # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(str, result = bool)
-    def existsHostname(self, hostname: str) -> bool:
-        metadata_filter = {"hostname": hostname}
+    def existsKey(self, key: str) -> bool:
+        metadata_filter = {"um_network_key": key}
         containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
         return bool(containers)
 
