@@ -15,8 +15,7 @@ i18n_catalog = i18nCatalog("cura")
 #
 #   Use the API via the CuraApplication's instance:
 #       ```
-#       api = CuraApplication.getInstance().getCuraAPI()
-#       api.machines.addOutputDeviceToCurrentMachine()
+#       api = CuraApplication.getInstance().getCuraAPI().machines.addOutputDeviceToCurrentMachine()
 #       ```
 
 ##  Since Cura doesn't have a machine class, we're going to make a fake one to make our lives a
