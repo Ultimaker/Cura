@@ -70,9 +70,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._zero_conf = None
         self._zero_conf_browser = None
 
-        self._application = CuraApplication.getInstance()
-        self._api = self._application.getCuraAPI()
-
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
 
@@ -80,7 +77,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self.addDeviceSignal.connect(self._onAddDevice)
         self.removeDeviceSignal.connect(self._onRemoveDevice)
 
-        self._application.globalContainerStackChanged.connect(self.refreshConnections)
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self.refreshConnections)
 
         self._discovered_devices = {}
         
@@ -96,7 +93,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = self._application.getPreferences()
+        self._preferences = CuraApplication.getInstance().getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
@@ -116,13 +113,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
 
-        self._account = self._api.account
+        self._account = CuraApplication.getInstance().getCuraAPI.account
 
         # Check if cloud flow is possible when user logs in
         self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
 
         # Check if cloud flow is possible when user switches machines
-        self._application.globalContainerStackChanged.connect(self._onMachineSwitched)
+        CuraApplication.getInstance().globalContainerStackChanged.connect(self._onMachineSwitched)
 
         # Listen for when cloud flow is possible 
         self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
@@ -171,7 +168,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     
     # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
-        active_machine = self._application.getGlobalContainerStack()
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
 
@@ -198,7 +195,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
         if self._discovered_devices[key].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = self._application.getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
                 self.checkCloudFlowIsPossible(None)
@@ -233,7 +230,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 manual_printer_request.network_reply.abort()
 
             if manual_printer_request.callback is not None:
-                self._application.callLater(manual_printer_request.callback, False, address)
+                CuraApplication.getInstance().callLater(manual_printer_request.callback, False, address)
 
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
         if address in self._manual_instances:
@@ -272,10 +269,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
                    key, group_name, machine_type_id)
 
-        self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
         
         # connect the new machine to that network printer
-        self._api.machines.addOutputDeviceToCurrentMachine(discovered_device)
+        CuraApplication.getInstance().getCuraAPI.machines.addOutputDeviceToCurrentMachine(discovered_device)
 
         # ensure that the connection states are refreshed.
         self.refreshConnections()
@@ -317,7 +314,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 manual_printer_request = self._manual_instances[address]
                 manual_printer_request.network_reply = None
                 if manual_printer_request.callback is not None:
-                    self._application.callLater(manual_printer_request.callback, True, address)
+                    CuraApplication.getInstance().callLater(manual_printer_request.callback, True, address)
 
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
@@ -372,7 +369,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 except TypeError:
                     # Disconnect already happened.
                     pass
-            self._application.getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
+            CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
             self.discoveredDevicesChanged.emit()
 
     def _onAddDevice(self, name, address, properties):
@@ -397,13 +394,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
+        CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
             address, device.getId(), properties[b"name"].decode("utf-8"), self._createMachineFromDiscoveredPrinter,
             properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = self._application.getGlobalContainerStack()
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
@@ -423,7 +420,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._service_changed_request_event.wait(timeout = 5.0)
 
             # Stop if the application is shutting down
-            if self._application.isShuttingDown():
+            if CuraApplication.getInstance().isShuttingDown():
                 return
 
             self._service_changed_request_event.clear()
@@ -475,7 +472,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                         self.addDeviceSignal.emit(str(name), address, info.properties)
                     else:
                         Logger.log("w",
-                                   "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device)
+                                   "The type of the found device is '%s', not 'printer'! Ignoring..." % type_of_device)
             else:
                 Logger.log("w", "Could not get information about %s" % name)
                 return False
@@ -491,7 +488,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         Logger.log("d", "Checking if cloud connection is possible...")
 
         # Pre-Check: Skip if active machine already has been cloud connected or you said don't ask again
-        active_machine = self._application.getMachineManager().activeMachine  # type: Optional[GlobalStack]
+        active_machine = CuraApplication.getInstance().getMachineManager().activeMachine  # type: Optional[GlobalStack]
         if active_machine:
             # Check 1A: Printer isn't already configured for cloud
             if ConnectionType.CloudConnection.value in active_machine.configuredConnectionTypes:
@@ -514,12 +511,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 return
 
             # Check 4: Machine is configured for network connectivity
-            if not self._application.getMachineManager().activeMachineHasNetworkConnection:
+            if not CuraApplication.getInstance().getMachineManager().activeMachineHasNetworkConnection:
                 Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
                 return
             
             # Check 5: Machine has correct firmware version
-            firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion # type: str
+            firmware_version = CuraApplication.getInstance().getMachineManager().activeMachineFirmwareVersion # type: str
             if not Version(firmware_version) > self._min_cloud_version:
                 Logger.log("d", "Cloud Flow not possible: Machine firmware (%s) is too low! (Requires version %s)",
                                 firmware_version,
@@ -549,7 +546,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._cloud_flow_complete_message.show()
         
         # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
-        active_machine = self._application.getMachineManager().activeMachine
+        active_machine = CuraApplication.getInstance().getMachineManager().activeMachine
         if active_machine:
 
             # The active machine _might_ not be the machine that was in the added cloud cluster and
@@ -564,7 +561,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
-        active_machine = self._application.getMachineManager().activeMachine # type: Optional[GlobalStack]
+        active_machine = CuraApplication.getInstance().getMachineManager().activeMachine # type: Optional[GlobalStack]
         if active_machine:
             active_machine.setMetaDataEntry("do_not_show_cloud_message", checked)
             if checked:
@@ -572,7 +569,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return
 
     def _onCloudFlowStarted(self, messageId: str, actionId: str) -> None:
-        address = self._application.getMachineManager().activeMachineAddress # type: str
+        address = CuraApplication.getInstance().getMachineManager().activeMachineAddress # type: str
         if address:
             QDesktopServices.openUrl(QUrl("http://" + address + "/cloud_connect"))
             if self._start_cloud_flow_message:
@@ -581,7 +578,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         return
     
     def _onReviewCloudConnection(self, messageId: str, actionId: str) -> None:
-        address = self._application.getMachineManager().activeMachineAddress # type: str
+        address = CuraApplication.getInstance().getMachineManager().activeMachineAddress # type: str
         if address:
             QDesktopServices.openUrl(QUrl("http://" + address + "/settings"))
         return

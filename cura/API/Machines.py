@@ -32,14 +32,13 @@ class Machine():
 
 class Machines(QObject):
 
-    def __init__(self, application: "CuraApplication", parent = None) -> None:
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
-        self._application = application
 
     @pyqtSlot(result="QVariantMap")
     def getCurrentMachine(self) -> Machine:
         fake_machine = Machine() # type: Machine
-        global_stack = self._application.getGlobalContainerStack()
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack:
             metadata = global_stack.getMetaData()
             if "group_id" in metadata:
@@ -59,11 +58,11 @@ class Machines(QObject):
     @pyqtSlot(str)
     def setCurrentMachineGroupName(self, group_name: str) -> None:
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
-        global_stack = self._application.getGlobalContainerStack()
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack:
             # Update a GlobalStacks in the same group with the new group name.
             group_id = global_stack.getMetaDataEntry("group_id")
-            machine_manager = self._application.getMachineManager()
+            machine_manager = CuraApplication.getInstance().getMachineManager()
             for machine in machine_manager.getMachinesInGroup(group_id):
                 machine.setMetaDataEntry("group_name", group_name)
 
@@ -78,7 +77,7 @@ class Machines(QObject):
     def updateCurrentMachineConfiguration(self, output_device: Optional["PrinterOutputDevice"]) -> None:
 
         if output_device is None:
-            machine_manager = self._application.getMachineManager()
+            machine_manager = CuraApplication.getInstance().getMachineManager()
             output_device = machine_manager.printerOutputDevices[0]
         
         hotend_ids = output_device.hotendIds
@@ -102,7 +101,7 @@ class Machines(QObject):
         Logger.log("d",
             "Attempting to set the network key of the active machine to %s",
             output_device.key)
-        global_stack = self._application.getGlobalContainerStack()
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             return
         metadata = global_stack.getMetaData()
@@ -113,7 +112,7 @@ class Machines(QObject):
 
             # Since we might have a bunch of hidden stacks, we also need to change it there.
             metadata_filter = {"um_network_key": old_network_key}
-            containers = self._application.getContainerRegistry().findContainerStacks(
+            containers = CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
                 type = "machine", **metadata_filter)
             for container in containers:
                 container.setMetaDataEntry("um_network_key", output_device.key)

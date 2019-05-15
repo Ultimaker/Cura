@@ -34,10 +34,7 @@ class DiscoverUM3Action(MachineAction):
 
         self.__additional_components_view = None #type: Optional[QObject]
 
-        self._application = CuraApplication.getInstance()
-        self._api = self._application.getCuraAPI()
-
-        self._application.engineCreatedSignal.connect(self._createAdditionalComponentsView)
+        CuraApplication.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
         self._last_zero_conf_event_time = time.time() #type: float
 
@@ -53,7 +50,7 @@ class DiscoverUM3Action(MachineAction):
     def startDiscovery(self):
         if not self._network_plugin:
             Logger.log("d", "Starting device discovery.")
-            self._network_plugin = self._application.getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
+            self._network_plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
             self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
             self.discoveredDevicesChanged.emit()
 
@@ -137,10 +134,10 @@ class DiscoverUM3Action(MachineAction):
         if not plugin_path:
             return
         path = os.path.join(plugin_path, "resources/qml/UM3InfoComponents.qml")
-        self.__additional_components_view = self._application.createQmlComponent(path, {"manager": self})
+        self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")
             return
 
         # Create extra components
-        self._application.addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
+        CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
