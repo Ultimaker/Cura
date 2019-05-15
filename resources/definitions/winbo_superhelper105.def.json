@@ -37,7 +37,7 @@
         "machine_max_feedrate_y": { "default_value": 200 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 2000 },
-        "gantry_height": { "default_value": 200 },
+        "gantry_height": { "value": "200" },
         "machine_extruder_count": { "default_value": 1 },
         "machine_start_gcode": { "default_value": "G21\nG90\nM82\nM107\nG28 X0 Y0\nG28 Z0\nG1 F6000 Z0.3\nG92 E0\nG1 F1000 X30 E8\nG92 E0\nM117 Printing." },
         "machine_end_gcode": { "default_value": "M104 S0\nM140 S0\nG92 E2\nG1 E0 F200\nG28 X0 Y0\nM84 X Y E" },

@@ -38,7 +38,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 10
+            "value": "10"
         },
         "machine_start_gcode": {
             "default_value": ";Gcode by Cura\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
