@@ -2047,12 +2047,6 @@ msgid ""
 "Select your printer from the list below:"
 msgstr "Para imprimir directamente en la impresora a través de la red, asegúrese de que ésta está conectada a la red utilizando un cable de red o conéctela a la red wifi. Si no conecta Cura con la impresora, también puede utilizar una unidad USB para transferir archivos GCode a la impresora.\n\nSeleccione la impresora de la siguiente lista:"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:44
-msgctxt "@action:button"
-msgid "Add"
-msgstr "Agregar"
-
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
 msgid "Edit"
