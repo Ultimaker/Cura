@@ -46,7 +46,7 @@ class CuraAPI(QObject):
         self._backups = Backups(self._application)
 
         # Machines API
-        self._machines = Machines()
+        self._machines = Machines(self._application)
 
         # Interface API
         self._interface = Interface(self._application)
