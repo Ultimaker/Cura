@@ -28,7 +28,7 @@ class Machine():
         self.group_id = "" # type: str
         self.group_name = "" # type: str
         self.um_network_key = "" # type: str
-        self.configuration = {} # type: Dict[str, any]
+        self.configuration = {} # type: Dict[str, Any]
         self.connection_types = [] # type: List[int]
 
 class Machines(QObject):
