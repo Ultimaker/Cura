@@ -18,7 +18,7 @@ UM.ManagementPage
 
     sectionRole: "discoverySource"
 
-    activeId: Cura.MachineManager.activeMachineId
+    activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
 
     function activeMachineIndex()

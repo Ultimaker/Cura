@@ -70,7 +70,7 @@ Item
         OldControls.ToolButton
         {
             id: printerTypeSelector
-            text: Cura.MachineManager.activeMachine.definition.name
+            text: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.name: ""
             tooltip: text
             height: UM.Theme.getSize("print_setup_big_item").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
@@ -201,7 +201,7 @@ Item
                     return paddedWidth - textWidth - UM.Theme.getSize("print_setup_big_item").height * 0.5 - UM.Theme.getSize("default_margin").width
                 }
             }
-            property string instructionLink: Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", "")
+            property string instructionLink: Cura.MachineManager.activeStack != null ? Cura.ContainerManager.getContainerMetaDataEntry(Cura.MachineManager.activeStack.material.id, "instruction_link", ""): ""
 
             Row
             {
