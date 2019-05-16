@@ -58,14 +58,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     # Therefore we create a private signal used to trigger the printersChanged signal.
     _clusterPrintersChanged = pyqtSignal()
 
-    # Map of Cura Connect machine_variant field to Cura machine types.
-    # Needed for printer discovery stack creation.
-    _host_machine_variant_to_machine_type_map = {
-        "Ultimaker 3": "ultimaker3",
-        "Ultimaker 3 Extended": "ultimaker3_extended",
-        "Ultimaker S5": "ultimaker_s5"
-    }
-
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
     #  \param cluster: The device response received from the cloud API.
@@ -79,6 +71,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             b"address": cluster.host_internal_ip.encode() if cluster.host_internal_ip else b"",
             b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
             b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
+            b"printer_type": cluster.printer_type.encode() if cluster.printer_type else b"",
             b"cluster_size": b"1"  # cloud devices are always clusters of at least one
         }
 
@@ -104,7 +97,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We keep track of which printer is visible in the monitor page.
         self._active_printer = None  # type: Optional[PrinterOutputModel]
-        self._host_machine_type = ""
 
         # Properties to populate later on with received cloud data.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -244,11 +236,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _updatePrinters(self, printers: List[CloudClusterPrinterStatus]) -> None:
         previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
         received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinterStatus]
-
-        if len(printers) > 0:
-            # We need the machine type of the host (1st list entry) to allow discovery to work.
-            self._host_machine_type = printers[0].machine_variant
-
         removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
         for removed_printer in removed_printers:
@@ -371,13 +358,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             lifetime = 5
         ).show()
         self.writeFinished.emit()
-
-    ##  Gets the printer type of the cluster host. Falls back to the printer type in the device properties.
-    @pyqtProperty(str, notify=_clusterPrintersChanged)
-    def printerType(self) -> str:
-        if self._printers and self._host_machine_type in self._host_machine_variant_to_machine_type_map:
-            return self._host_machine_variant_to_machine_type_map[self._host_machine_type]
-        return super().printerType
 
     ##  Gets the number of printers in the cluster.
     #   We use a minimum of 1 because cloud devices are always a cluster and printer discovery needs it.

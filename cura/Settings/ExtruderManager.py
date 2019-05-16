@@ -279,7 +279,8 @@ class ExtruderManager(QObject):
             extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
-            used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
+            if extruder_str_nr in self.extruderIds:
+                used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
         try:
             return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]

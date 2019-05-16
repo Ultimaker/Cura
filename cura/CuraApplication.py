@@ -260,7 +260,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = False
 
         # Backups
-        self._auto_save = None
+        self._auto_save = None  # type: Optional[AutoSave]
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -988,7 +988,7 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
-    def getAutoSave(self):
+    def getAutoSave(self) -> Optional[AutoSave]:
         return self._auto_save
 
     ##  Get print information (duration / material used)
