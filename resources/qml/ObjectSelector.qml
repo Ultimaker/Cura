@@ -1,7 +1,7 @@
 // Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
@@ -11,7 +11,7 @@ Item
 {
     id: objectSelector
     width: UM.Theme.getSize("objects_menu_size").width
-    property bool opened: UM.Preferences.getValue("cura/show_list_of_files")
+    property bool opened: UM.Preferences.getValue("cura/show_list_of_objects")
 
     Button
     {
@@ -61,8 +61,8 @@ Item
 
         onClicked:
         {
-            UM.Preferences.setValue("cura/show_list_of_files", !objectSelector.opened)
-            objectSelector.opened = UM.Preferences.getValue("cura/show_list_of_files")
+            UM.Preferences.setValue("cura/show_list_of_objects", !objectSelector.opened)
+            objectSelector.opened = UM.Preferences.getValue("cura/show_list_of_objects")
         }
     }
 
