@@ -29,6 +29,7 @@ Item
         color: UM.Theme.getColor("monitor_text_primary")
         font: UM.Theme.getFont("large")
         text: catalog.i18nc("@label", "Queued")
+        renderType: Text.NativeRendering
     }
 
     Item
@@ -109,6 +110,7 @@ Item
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
 
         Label
@@ -123,6 +125,7 @@ Item
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
 
         Label
@@ -137,6 +140,7 @@ Item
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
     }
 
@@ -213,6 +217,7 @@ Item
                 text: i18n.i18nc("@info", "All jobs are printed.")
                 color: UM.Theme.getColor("monitor_text_primary")
                 font: UM.Theme.getFont("medium") // 14pt, regular
+                renderType: Text.NativeRendering
             }
 
             Item

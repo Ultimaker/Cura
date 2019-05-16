@@ -6,6 +6,7 @@ from PyQt5.QtCore import QObject, pyqtProperty
 
 from cura.API.Backups import Backups
 from cura.API.Interface import Interface
+from cura.API.Machines import Machines
 from cura.API.Account import Account
 
 if TYPE_CHECKING:
@@ -44,6 +45,9 @@ class CuraAPI(QObject):
         # Backups API
         self._backups = Backups(self._application)
 
+        # Machines API
+        self._machines = Machines(self._application)
+
         # Interface API
         self._interface = Interface(self._application)
 
@@ -57,6 +61,10 @@ class CuraAPI(QObject):
     @property
     def backups(self) -> "Backups":
         return self._backups
+
+    @pyqtProperty(QObject)
+    def machines(self) -> "Machines":
+        return self._machines
 
     @property
     def interface(self) -> "Interface":

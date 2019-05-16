@@ -4,6 +4,8 @@
 from collections import defaultdict
 import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
+import uuid
+
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
@@ -33,6 +35,12 @@ class GlobalStack(CuraContainerStack):
         super().__init__(container_id)
 
         self.setMetaDataEntry("type", "machine")  # For backward compatibility
+
+        # TL;DR: If Cura is looking for printers that belong to the same group, it should use "group_id".
+        # Each GlobalStack by default belongs to a group which is identified via "group_id". This group_id is used to
+        # figure out which GlobalStacks are in the printer cluster for example without knowing the implementation
+        # details such as the um_network_key or some other identifier that's used by the underlying device plugin.
+        self.setMetaDataEntry("group_id", str(uuid.uuid4()))  # Assign a new GlobalStack to a unique group by default
 
         self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
@@ -67,6 +75,10 @@ class GlobalStack(CuraContainerStack):
     @pyqtProperty(int, constant = True)
     def maxExtruderCount(self):
         return len(self.getMetaDataEntry("machine_extruder_trains"))
+
+    @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
+    def supportsNetworkConnection(self):
+        return self.getMetaDataEntry("supports_network_connection", False)
 
     @classmethod
     def getLoadingPriority(cls) -> int:

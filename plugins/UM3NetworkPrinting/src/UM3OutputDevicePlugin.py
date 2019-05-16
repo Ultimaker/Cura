@@ -5,11 +5,11 @@ import os
 from queue import Queue
 from threading import Event, Thread
 from time import time
-from typing import Optional, TYPE_CHECKING, Dict
+from typing import Optional, TYPE_CHECKING, Dict, Callable
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
-from PyQt5.QtNetwork import QNetworkRequest, QNetworkAccessManager
+from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManager
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
@@ -39,6 +39,22 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 
+#
+# Represents a request for adding a manual printer. It has the following fields:
+#  - address: The string of the (IP) address of the manual printer
+#  - callback: (Optional) Once the HTTP request to the printer to get printer information is done, whether successful
+#              or not, this callback will be invoked to notify about the result. The callback must have a signature of
+#                  func(success: bool, address: str) -> None
+#  - network_reply: This is the QNetworkReply instance for this request if the request has been issued and still in
+#                   progress. It is kept here so we can cancel a request when needed.
+#
+class ManualPrinterRequest:
+    def __init__(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        self.address = address
+        self.callback = callback
+        self.network_reply = None  # type: Optional["QNetworkReply"]
+
+
 ##      This plugin handles the connection detection & creation of output device objects for the UM3 printer.
 #       Zero-Conf is used to detect printers, which are saved in a dict.
 #       If we discover a printer that has the same key as the active machine instance a connection is made.
@@ -51,11 +67,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def __init__(self):
         super().__init__()
-        
         self._zero_conf = None
         self._zero_conf_browser = None
 
         self._application = CuraApplication.getInstance()
+        self._api = self._application.getCuraAPI()
 
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
@@ -80,14 +96,16 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cluster_api_prefix = "/cluster-api/v" + self._cluster_api_version + "/"
 
         # Get list of manual instances from preferences
-        self._preferences = CuraApplication.getInstance().getPreferences()
+        self._preferences = self._application.getPreferences()
         self._preferences.addPreference("um3networkprinting/manual_instances",
                                         "")  # A comma-separated list of ip adresses or hostnames
 
-        self._manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        manual_instances = self._preferences.getValue("um3networkprinting/manual_instances").split(",")
+        self._manual_instances = {address: ManualPrinterRequest(address)
+                                  for address in manual_instances}  # type: Dict[str, ManualPrinterRequest]
 
         # Store the last manual entry key
-        self._last_manual_entry_key = "" # type: str
+        self._last_manual_entry_key = ""  # type: str
 
         # The zero-conf service changed requests are handled in a separate thread, so we can re-schedule the requests
         # which fail to get detailed service info.
@@ -98,7 +116,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
         self._service_changed_request_thread.start()
 
-        self._account = self._application.getCuraAPI().account
+        self._account = self._api.account
 
         # Check if cloud flow is possible when user logs in
         self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
@@ -149,10 +167,11 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        self.resetLastManualDevice()
-
+        self.resetLastManu
+    
+    # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        active_machine = self._application.getGlobalContainerStack()
         if not active_machine:
             return
 
@@ -179,14 +198,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             return
         if self._discovered_devices[key].isConnected():
             # Sometimes the status changes after changing the global container and maybe the device doesn't belong to this machine
-            um_network_key = CuraApplication.getInstance().getGlobalContainerStack().getMetaDataEntry("um_network_key")
+            um_network_key = self._application.getGlobalContainerStack().getMetaDataEntry("um_network_key")
             if key == um_network_key:
                 self.getOutputDeviceManager().addOutputDevice(self._discovered_devices[key])
                 self.checkCloudFlowIsPossible(None)
         else:
             self.getOutputDeviceManager().removeOutputDevice(key)
-            if key.startswith("manual:"):
-                self.removeManualDeviceSignal.emit(self.getPluginId(), key, self._discovered_devices[key].address)
 
     def stop(self):
         if self._zero_conf is not None:
@@ -198,7 +215,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # This plugin should always be the fallback option (at least try it):
         return ManualDeviceAdditionAttempt.POSSIBLE
 
-    def removeManualDevice(self, key, address = None):
+    def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
+        if key not in self._discovered_devices and address is not None:
+            key = "manual:%s" % address
+
         if key in self._discovered_devices:
             if not address:
                 address = self._discovered_devices[key].ipAddress
@@ -206,15 +226,22 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self.resetLastManualDevice()
 
         if address in self._manual_instances:
-            self._manual_instances.remove(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+            manual_printer_request = self._manual_instances.pop(address)
+            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
-        self.removeManualDeviceSignal.emit(self.getPluginId(), key, address)
+            if manual_printer_request.network_reply is not None:
+                manual_printer_request.network_reply.abort()
 
-    def addManualDevice(self, address):
-        if address not in self._manual_instances:
-            self._manual_instances.append(address)
-            self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances))
+            if manual_printer_request.callback is not None:
+                self._application.callLater(manual_printer_request.callback, False, address)
+
+    def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        if address in self._manual_instances:
+            Logger.log("i", "Manual printer with address [%s] has already been added, do nothing", address)
+            return
+
+        self._manual_instances[address] = ManualPrinterRequest(address, callback = callback)
+        self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
         instance_name = "manual:%s" % address
         properties = {
@@ -230,7 +257,8 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._onAddDevice(instance_name, address, properties)
         self._last_manual_entry_key = instance_name
 
-        self._checkManualDevice(address)
+        reply = self._checkManualDevice(address)
+        self._manual_instances[address].network_reply = reply
 
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
         discovered_device = self._discovered_devices.get(key)
@@ -245,56 +273,22 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                    key, group_name, machine_type_id)
 
         self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        
         # connect the new machine to that network printer
-        self.associateActiveMachineWithPrinterDevice(discovered_device)
+        self._api.machines.addOutputDeviceToCurrentMachine(discovered_device)
+
         # ensure that the connection states are refreshed.
         self.refreshConnections()
 
-    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        if not printer_device:
-            return
-
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", printer_device.key)
-
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_container_stack:
-            return
-
-        meta_data = global_container_stack.getMetaData()
-
-        if "um_network_key" in meta_data:  # Global stack already had a connection, but it's changed.
-            old_network_key = meta_data["um_network_key"]
-            # Since we might have a bunch of hidden stacks, we also need to change it there.
-            metadata_filter = {"um_network_key": old_network_key}
-            containers = self._application.getContainerRegistry().findContainerStacks(type = "machine", **metadata_filter)
-
-            for container in containers:
-                container.setMetaDataEntry("um_network_key", printer_device.key)
-
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s",
-                           global_container_stack.getMetaDataEntry("network_authentication_id", None), printer_device.key)
-
-                container.removeMetaDataEntry("network_authentication_id")
-                container.removeMetaDataEntry("network_authentication_key")
-
-                # Ensure that these containers do know that they are configured for network connection
-                container.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        else:  # Global stack didn't have a connection yet, configure it.
-            global_container_stack.setMetaDataEntry("um_network_key", printer_device.key)
-            global_container_stack.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        self.refreshConnections()
-
-    def _checkManualDevice(self, address: str) -> None:
+    def _checkManualDevice(self, address: str) -> Optional[QNetworkReply]:
         # Check if a UM3 family device exists at this address.
         # If a printer responds, it will replace the preliminary printer created above
         # origin=manual is for tracking back the origin of the call
         url = QUrl("http://" + address + self._api_prefix + "system")
         name_request = QNetworkRequest(url)
-        self._network_manager.get(name_request)
+        return self._network_manager.get(name_request)
 
+    ##  This is the function which handles the above network request's reply when it comes back.
     def _onNetworkRequestFinished(self, reply: "QNetworkReply") -> None:
         reply_url = reply.url().toString()
 
@@ -318,6 +312,12 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             except:
                 Logger.log("e", "Something went wrong converting the JSON.")
                 return
+
+            if address in self._manual_instances:
+                manual_printer_request = self._manual_instances[address]
+                manual_printer_request.network_reply = None
+                if manual_printer_request.callback is not None:
+                    self._application.callLater(manual_printer_request.callback, True, address)
 
             has_cluster_capable_firmware = Version(system_info["firmware"]) > self._min_cluster_version
             instance_name = "manual:%s" % address
@@ -362,10 +362,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._onRemoveDevice(instance_name)
                 self._onAddDevice(instance_name, address, properties)
 
-        if device and address in self._manual_instances:
-            self.getOutputDeviceManager().addOutputDevice(device)
-            self.addManualDeviceSignal.emit(self.getPluginId(), device.getId(), address, properties)
-
     def _onRemoveDevice(self, device_id: str) -> None:
         device = self._discovered_devices.pop(device_id, None)
         if device:
@@ -401,11 +397,13 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             device = ClusterUM3OutputDevice.ClusterUM3OutputDevice(name, address, properties)
         else:
             device = LegacyUM3OutputDevice.LegacyUM3OutputDevice(name, address, properties)
-        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(address, device.getId(), name, self._createMachineFromDiscoveredPrinter, properties[b"printer_type"].decode("utf-8"), device)
+        self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
+            address, device.getId(), properties[b"name"].decode("utf-8"), self._createMachineFromDiscoveredPrinter,
+            properties[b"printer_type"].decode("utf-8"), device)
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
 
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
@@ -425,7 +423,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._service_changed_request_event.wait(timeout = 5.0)
 
             # Stop if the application is shutting down
-            if CuraApplication.getInstance().isShuttingDown():
+            if self._application.isShuttingDown():
                 return
 
             self._service_changed_request_event.clear()

@@ -34,7 +34,10 @@ class DiscoverUM3Action(MachineAction):
 
         self.__additional_components_view = None #type: Optional[QObject]
 
-        CuraApplication.getInstance().engineCreatedSignal.connect(self._createAdditionalComponentsView)
+        self._application = CuraApplication.getInstance()
+        self._api = self._application.getCuraAPI()
+
+        self._application.engineCreatedSignal.connect(self._createAdditionalComponentsView)
 
         self._last_zero_conf_event_time = time.time() #type: float
 
@@ -50,7 +53,7 @@ class DiscoverUM3Action(MachineAction):
     def startDiscovery(self):
         if not self._network_plugin:
             Logger.log("d", "Starting device discovery.")
-            self._network_plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
+            self._network_plugin = self._application.getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
             self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
             self.discoveredDevicesChanged.emit()
 
@@ -105,71 +108,26 @@ class DiscoverUM3Action(MachineAction):
         else:
             return []
 
-    @pyqtSlot(str)
-    def setGroupName(self, group_name: str) -> None:
-        Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "group_name" in meta_data:
-                previous_connect_group_name = meta_data["group_name"]
-                global_container_stack.setMetaDataEntry("group_name", group_name)
-                # Find all the places where there is the same group name and change it accordingly
-                self._replaceContainersMetadata(key = "group_name", value = previous_connect_group_name, new_value = group_name)
-            else:
-                global_container_stack.setMetaDataEntry("group_name", group_name)
-            # Set the default value for "hidden", which is used when you have a group with multiple types of printers
-            global_container_stack.setMetaDataEntry("hidden", False)
-
+    @pyqtSlot()
+    def refreshConnections(self) -> None:
         if self._network_plugin:
-            # Ensure that the connection states are refreshed.
             self._network_plugin.refreshConnections()
 
-    ##  Find all container stacks that has the pair 'key = value' in its metadata and replaces the value with 'new_value'
-    def _replaceContainersMetadata(self, key: str, value: str, new_value: str) -> None:
-        machines = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
-        for machine in machines:
-            if machine.getMetaDataEntry(key) == value:
-                machine.setMetaDataEntry(key, new_value)
-
-    # Associates the currently active machine with the given printer device. The network connection information will be
-    # stored into the metadata of the currently active machine.
-    @pyqtSlot(QObject)
-    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
-        if self._network_plugin:
-            self._network_plugin.associateActiveMachineWithPrinterDevice(printer_device)
-
-    @pyqtSlot(result = str)
-    def getStoredKey(self) -> str:
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "um_network_key" in meta_data:
-                return global_container_stack.getMetaDataEntry("um_network_key")
-
-        return ""
-
+    # TODO: Improve naming
+    # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(result = str)
     def getLastManualEntryKey(self) -> str:
         if self._network_plugin:
             return self._network_plugin.getLastManualDevice()
         return ""
 
+    # TODO: Better naming needed. Exists where? On the current machine? On all machines?
+    # TODO: CHANGE TO HOSTNAME
     @pyqtSlot(str, result = bool)
     def existsKey(self, key: str) -> bool:
         metadata_filter = {"um_network_key": key}
         containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
         return bool(containers)
-
-    @pyqtSlot()
-    def loadConfigurationFromPrinter(self) -> None:
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        hotend_ids = machine_manager.printerOutputDevices[0].hotendIds
-        for index in range(len(hotend_ids)):
-            machine_manager.printerOutputDevices[0].hotendIdChanged.emit(index, hotend_ids[index])
-        material_ids = machine_manager.printerOutputDevices[0].materialIds
-        for index in range(len(material_ids)):
-            machine_manager.printerOutputDevices[0].materialIdChanged.emit(index, material_ids[index])
 
     def _createAdditionalComponentsView(self) -> None:
         Logger.log("d", "Creating additional ui components for UM3.")
@@ -179,10 +137,10 @@ class DiscoverUM3Action(MachineAction):
         if not plugin_path:
             return
         path = os.path.join(plugin_path, "resources/qml/UM3InfoComponents.qml")
-        self.__additional_components_view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        self.__additional_components_view = self._application.createQmlComponent(path, {"manager": self})
         if not self.__additional_components_view:
             Logger.log("w", "Could not create ui components for UM3.")
             return
 
         # Create extra components
-        CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
+        self._application.addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))

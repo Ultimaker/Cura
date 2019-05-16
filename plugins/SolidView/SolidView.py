@@ -19,7 +19,7 @@ import math
 class SolidView(View):
     def __init__(self):
         super().__init__()
-        application =  Application.getInstance()
+        application = Application.getInstance()
         application.getPreferences().addPreference("view/show_overhang", True)
         application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._enabled_shader = None
@@ -58,7 +58,7 @@ class SolidView(View):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
-            support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
+            support_angle_stack = global_container_stack.extruders.get(str(support_extruder_nr))
             if support_angle_stack:
                 self._support_angle = support_angle_stack.getProperty("support_angle", "value")
 

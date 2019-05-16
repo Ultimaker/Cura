@@ -26,7 +26,7 @@ Item
 
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
-    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
+    property int propertyStoreIndex: manager ? manager.storeContainerIndex : 1  // definition_changes
 
     property string machineStackId: Cura.MachineManager.activeMachineId
 
@@ -285,17 +285,29 @@ Item
                 optionModel: ListModel
                 {
                     id: extruderCountModel
+
                     Component.onCompleted:
                     {
-                        extruderCountModel.clear()
+                        update()
+                    }
+
+                    function update()
+                    {
+                        clear()
                         for (var i = 1; i <= Cura.MachineManager.activeMachine.maxExtruderCount; i++)
                         {
                             // Use String as value. JavaScript only has Number. PropertyProvider.setPropertyValue()
                             // takes a QVariant as value, and Number gets translated into a float. This will cause problem
                             // for integer settings such as "Number of Extruders".
-                            extruderCountModel.append({ text: String(i), value: String(i) })
+                            append({ text: String(i), value: String(i) })
                         }
                     }
+                }
+
+                Connections
+                {
+                    target: Cura.MachineManager
+                    onGlobalContainerChanged: extruderCountModel.update()
                 }
             }
         }

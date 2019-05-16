@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="108px" height="81px" viewBox="0 0 108 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>Print settings</title>
+    <desc>Created with Sketch.</desc>
+    <g id="0419-data-collection-update" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="4.-collect-data-updated" transform="translate(-672.000000, -447.000000)">
+            <g id="Print-settings" transform="translate(672.000000, 447.000000)">
+                <rect id="Rectangle" fill="#CCCCCC" x="8" y="3" width="100" height="78"></rect>
+                <rect id="Rectangle" fill="#E5E5E5" x="0" y="0" width="103" height="78"></rect>
+                <rect id="Rectangle" fill="#2671E7" x="29" y="40" width="1" height="13"></rect>
+                <rect id="Rectangle" fill="#2671E7" x="18" y="53" width="12" height="1"></rect>
+                <rect id="Rectangle-Copy-5" fill="#999999" x="18" y="55" width="29" height="1"></rect>
+                <rect id="Rectangle-Copy-27" fill="#999999" x="18" y="57" width="29" height="1"></rect>
+                <rect id="Rectangle-Copy-28" fill="#999999" x="64" y="23" width="2" height="32" rx="1"></rect>
+                <rect id="Rectangle-Copy-29" fill="#999999" x="74" y="23" width="2" height="32" rx="1"></rect>
+                <rect id="Rectangle-Copy-30" fill="#999999" x="84" y="23" width="2" height="32" rx="1"></rect>
+                <rect id="Rectangle" fill="#999999" x="25" y="25" width="14" height="12"></rect>
+                <path d="M19.618034,25 L24,25 L24,37 L18.7236068,26.4472136 C18.4766175,25.9532351 18.6768419,25.3525621 19.1708204,25.1055728 C19.3096758,25.0361451 19.4627889,25 19.618034,25 Z" id="Path-4" fill="#999999"></path>
+                <path d="M41.618034,25 L46,25 L46,37 L40.7236068,26.4472136 C40.4766175,25.9532351 40.6768419,25.3525621 41.1708204,25.1055728 C41.3096758,25.0361451 41.4627889,25 41.618034,25 Z" id="Path-4" fill="#999999" transform="translate(43.000000, 31.000000) scale(-1, 1) translate(-43.000000, -31.000000) "></path>
+                <path d="M28,37 L28.7,37.9333333 C29.0313708,38.3751611 29.6581722,38.4647042 30.1,38.1333333 C30.1758057,38.0764791 30.2431458,38.009139 30.3,37.9333333 L31,37 L28,37 Z" id="Path-5" fill="#999999"></path>
+                <polygon id="Path-6" fill="#999999" points="25 24 39 24 37 20 27 20"></polygon>
+                <circle id="Oval-Copy" fill="#104CAA" cx="65" cy="27" r="3"></circle>
+                <circle id="Oval-Copy-2" fill="#4E93FF" cx="75" cy="43" r="3"></circle>
+                <circle id="Oval-Copy-16" fill="#2671E7" cx="85" cy="50" r="3"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

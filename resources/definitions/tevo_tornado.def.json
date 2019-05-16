@@ -70,7 +70,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 30
+            "value": "30"
         },
         "acceleration_enabled": {
             "default_value": false

@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, QTimer
 
 from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
+from UM.Util import parseBool
 
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
@@ -54,7 +55,6 @@ class GlobalStacksModel(ListModel):
         items = []
 
         container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
-
         for container_stack in container_stacks:
             has_remote_connection = False
 
@@ -62,7 +62,7 @@ class GlobalStacksModel(ListModel):
                 has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
                                                              ConnectionType.CloudConnection.value]
 
-            if container_stack.getMetaDataEntry("hidden", False) in ["True", True]:
+            if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
 
             section_name = "Network enabled printers" if has_remote_connection else "Local printers"
@@ -73,5 +73,5 @@ class GlobalStacksModel(ListModel):
                           "hasRemoteConnection": has_remote_connection,
                           "metadata": container_stack.getMetaData().copy(),
                           "discoverySource": section_name})
-        items.sort(key = lambda i: not i["hasRemoteConnection"])
+        items.sort(key = lambda i: (not i["hasRemoteConnection"], i["name"]))
         self.setItems(items)

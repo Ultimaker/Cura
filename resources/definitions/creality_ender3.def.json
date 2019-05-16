@@ -31,7 +31,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 30
+            "value": "30"
         },
         "machine_head_polygon": {
             "default_value": [
@@ -59,6 +59,9 @@
         "jerk_travel": {
             "value": "jerk_print"
         },
+        "machine_max_jerk_z": {
+            "default_value": 0.3
+        },
         "layer_height_0": {
             "default_value": 0.2
         },
@@ -69,10 +72,10 @@
             "default_value": 0.6
         },
         "retraction_amount": {
-            "default_value": 5
+            "default_value": 6
         },
         "retraction_speed": {
-            "default_value": 40
+            "default_value": 25
         },
         "cool_min_layer_time": {
             "default_value": 10

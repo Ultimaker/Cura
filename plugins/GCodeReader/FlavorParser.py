@@ -370,6 +370,8 @@ class FlavorParser:
                     self._layer_type = LayerPolygon.InfillType
                 elif type == "SUPPORT-INTERFACE":
                     self._layer_type = LayerPolygon.SupportInterfaceType
+                elif type == "PRIME-TOWER":
+                    self._layer_type = LayerPolygon.PrimeTowerType
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 

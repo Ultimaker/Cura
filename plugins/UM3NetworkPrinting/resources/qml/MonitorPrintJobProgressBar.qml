@@ -47,6 +47,7 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
     Label
     {
@@ -99,5 +100,6 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
 }

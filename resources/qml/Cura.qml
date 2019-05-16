@@ -391,6 +391,7 @@ UM.MainWindow
         PrintSetupTooltip
         {
             id: tooltip
+            sourceWidth: UM.Theme.getSize("print_setup_widget").width
         }
     }
 
@@ -794,7 +795,6 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "Add Printer")
         model: CuraApplication.getAddPrinterPagesModel()
         progressBarVisible: false
-        hasCancelButton: true
     }
 
     Cura.WizardDialog
@@ -803,7 +803,6 @@ UM.MainWindow
         title: catalog.i18nc("@title:window", "What's New")
         model: CuraApplication.getWhatsNewPagesModel()
         progressBarVisible: false
-        hasCancelButton: false
     }
 
     Connections

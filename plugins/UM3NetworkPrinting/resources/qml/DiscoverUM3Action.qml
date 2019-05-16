@@ -1,8 +1,8 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,8 +14,12 @@ Cura.MachineAction
 {
     id: base
     anchors.fill: parent;
+    property alias currentItemIndex: listview.currentIndex
     property var selectedDevice: null
     property bool completeProperties: true
+
+    // For validating IP addresses
+    property var networkingUtil: Cura.NetworkingUtil {}
 
     function connectToPrinter()
     {
@@ -23,13 +27,14 @@ Cura.MachineAction
         {
             var printerKey = base.selectedDevice.key
             var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
-            if (manager.getStoredKey() != printerKey)
+            if (Cura.API.machines.getCurrentMachine().um_network_key != printerKey) // TODO: change to hostname
             {
                 // Check if there is another instance with the same key
                 if (!manager.existsKey(printerKey))
                 {
-                    manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
-                    manager.setGroupName(printerName)   // TODO To change when the groups have a name
+                    Cura.API.machines.addOutputDeviceToCurrentMachine(base.selectedDevice)
+                    Cura.API.machines.setCurrentMachineGroupName(printerName)   // TODO To change when the groups have a name
+                    manager.refreshConnections()
                     completed()
                 }
                 else
@@ -152,7 +157,7 @@ Cura.MachineAction
                             var selectedKey = manager.getLastManualEntryKey()
                             // If there is no last manual entry key, then we select the stored key (if any)
                             if (selectedKey == "")
-                                selectedKey = manager.getStoredKey()
+                                selectedKey = Cura.API.machines.getCurrentMachine().um_network_key // TODO: change to host name
                             for(var i = 0; i < model.length; i++) {
                                 if(model[i].key == selectedKey)
                                 {
@@ -342,6 +347,17 @@ Cura.MachineAction
         }
     }
 
+    MessageDialog
+    {
+        id: invalidIPAddressMessageDialog
+        x: (parent.x + (parent.width) / 2) | 0
+        y: (parent.y + (parent.height) / 2) | 0
+        title: catalog.i18nc("@title:window", "Invalid IP address")
+        text: catalog.i18nc("@text", "Please enter a valid IP address.")
+        icon: StandardIcon.Warning
+        standardButtons: StandardButton.Ok
+    }
+
     UM.Dialog
     {
         id: manualPrinterDialog
@@ -404,6 +420,26 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
+                    // Validate the input first
+                    if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
+                    {
+                        invalidIPAddressMessageDialog.open()
+                        return
+                    }
+
+                    // if the entered IP address has already been discovered, switch the current item to that item
+                    // and do nothing else.
+                    for (var i = 0; i < manager.foundDevices.length; i++)
+                    {
+                        var device = manager.foundDevices[i]
+                        if (device.address == manualPrinterDialog.addressText)
+                        {
+                            currentItemIndex = i
+                            manualPrinterDialog.hide()
+                            return
+                        }
+                    }
+
                     manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }

@@ -19,7 +19,7 @@ Item
     {
         anchors.centerIn: parent
         width: parent.width
-        spacing: UM.Theme.getSize("wide_margin").height
+        spacing: 2 * UM.Theme.getSize("wide_margin").height
 
         Label
         {

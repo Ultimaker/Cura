@@ -34,6 +34,8 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
+    accessTokenChanged = Signal()
+
     def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
@@ -99,7 +101,9 @@ class AuthorizationService:
             Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
-
+        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
+        # from the server already.
+        self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     ##  Get the access token as provided by the repsonse data.
@@ -128,6 +132,7 @@ class AuthorizationService:
             self._storeAuthData(response)
             self.onAuthStateChanged.emit(logged_in = True)
         else:
+            Logger.log("w", "Failed to get a new access token from the server.")
             self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
@@ -198,6 +203,7 @@ class AuthorizationService:
 
     ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        Logger.log("d", "Attempting to store the auth data")
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
@@ -209,6 +215,8 @@ class AuthorizationService:
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
+
+        self.accessTokenChanged.emit()
 
     def _onMessageActionTriggered(self, _, action):
         if action == "retry":

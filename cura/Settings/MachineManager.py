@@ -720,7 +720,7 @@ class MachineManager(QObject):
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeStack.variant.name instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeStack.variant.name instead", "4.1")
     def activeVariantName(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -730,7 +730,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeStack.variant.id instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeStack.variant.id instead", "4.1")
     def activeVariantId(self) -> str:
         if self._active_container_stack:
             variant = self._active_container_stack.variant
@@ -740,7 +740,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.activeMachine.variant.name instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeMachine.variant.name instead", "4.1")
     def activeVariantBuildplateName(self) -> str:
         if self._global_container_stack:
             variant = self._global_container_stack.variant
@@ -750,7 +750,7 @@ class MachineManager(QObject):
         return ""
 
     @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.activeMachine.definition.id instead", "4.1")
+    @deprecated("use Cura.MachineManager.activeMachine.definition.id instead", "4.1")
     def activeDefinitionId(self) -> str:
         if self._global_container_stack:
             return self._global_container_stack.definition.id
@@ -797,7 +797,6 @@ class MachineManager(QObject):
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
         metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
-        network_key = metadata.get("um_network_key", None)
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
@@ -805,8 +804,9 @@ class MachineManager(QObject):
         CuraContainerRegistry.getInstance().removeContainer(machine_id)
 
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
-        if network_key:
-            metadata_filter = {"um_network_key": network_key}
+        group_id = metadata.get("group_id", None)
+        if group_id:
+            metadata_filter = {"group_id": group_id}
             hidden_containers = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
             if hidden_containers:
                 # This reuses the method and remove all printers recursively
@@ -1263,8 +1263,8 @@ class MachineManager(QObject):
         if self._global_container_stack is not None:
             if Util.parseBool(self._global_container_stack.getMetaDataEntry("has_materials", False)):
                 for position, extruder in self._global_container_stack.extruders.items():
-                    if extruder.isEnabled and not extruder.material.getMetaDataEntry("compatible"):
-                        return False
+                    if not extruder.isEnabled:
+                        continue
                     if not extruder.material.getMetaDataEntry("compatible"):
                         return False
         return True
@@ -1360,21 +1360,24 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        new_machine = self.getMachine(machine_definition_id, metadata_filter = {"um_network_key": self.activeMachineNetworkKey()})
+        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id"),
+                           "um_network_key": self.activeMachineNetworkKey(),
+                           }
+        new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
+            new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
             new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
             new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
-            new_machine.setMetaDataEntry("hidden", False)
             new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("hidden", False)
 
         # Set the current printer instance to hidden (the metadata entry must exist)
+        new_machine.setMetaDataEntry("hidden", False)
         self._global_container_stack.setMetaDataEntry("hidden", True)
 
         self.setActiveMachine(new_machine.getId())
@@ -1640,6 +1643,13 @@ class MachineManager(QObject):
 
         return abbr_machine
 
+    # Checks if the given machine type name in the available machine list.
+    # The machine type is a code name such as "ultimaker_3", while the machine type name is the human-readable name of
+    # the machine type, which is "Ultimaker 3" for "ultimaker_3".
+    def hasHumanReadableMachineTypeName(self, machine_type_name: str) -> bool:
+        results = self._container_registry.findDefinitionContainersMetadata(name = machine_type_name)
+        return len(results) > 0
+
     @pyqtSlot(str, result = str)
     def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
         machine_type_name = ""
@@ -1647,3 +1657,7 @@ class MachineManager(QObject):
         if results:
             machine_type_name = results[0]["name"]
         return machine_type_name
+
+    # Gets all machines that belong to the given group_id.
+    def getMachinesInGroup(self, group_id: str) -> List["GlobalStack"]:
+        return self._container_registry.findContainerStacks(type = "machine", group_id = group_id)

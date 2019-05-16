@@ -20,7 +20,7 @@ class LayerPolygon:
     MoveCombingType = 8
     MoveRetractionType = 9
     SupportInterfaceType = 10
-    PrimeTower = 11
+    PrimeTowerType = 11
     __number_of_types = 12
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
@@ -245,7 +245,7 @@ class LayerPolygon:
                 theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
                 theme.getColor("layerview_support_interface").getRgbF(),  # SupportInterfaceType
-                theme.getColor("layerview_prime_tower").getRgbF()
+                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
             ])
 
         return cls.__color_map

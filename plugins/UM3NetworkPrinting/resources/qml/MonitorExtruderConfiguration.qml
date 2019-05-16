@@ -66,6 +66,7 @@ Item
             // FIXED-LINE-HEIGHT:
             height: parent.height
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
     }
 
@@ -95,6 +96,7 @@ Item
             // FIXED-LINE-HEIGHT:
             height: parent.height
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
     }
 }

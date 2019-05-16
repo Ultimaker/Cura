@@ -28,7 +28,7 @@ Column
 
         Label
         {
-            text: catalog.i18nc("@label", "Time specification").toUpperCase()
+            text: catalog.i18nc("@label", "Time estimation").toUpperCase()
             color: UM.Theme.getColor("primary")
             font: UM.Theme.getFont("default_bold")
             renderType: Text.NativeRendering
@@ -111,7 +111,7 @@ Column
 
         Label
         {
-            text: catalog.i18nc("@label", "Material specification").toUpperCase()
+            text: catalog.i18nc("@label", "Material estimation").toUpperCase()
             color: UM.Theme.getColor("primary")
             font: UM.Theme.getFont("default_bold")
             renderType: Text.NativeRendering

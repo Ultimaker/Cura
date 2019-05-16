@@ -17,7 +17,8 @@
         {
             "0": "fdmextruder"
         },
-        "supports_usb_connection": true
+        "supports_usb_connection": true,
+        "supports_network_connection": false
     },
     "settings":
     {
@@ -227,7 +228,7 @@
                 },
                 "extruders_enabled_count":
                 {
-                    "label": "Number of Extruders that are enabled",
+                    "label": "Number of Extruders That Are Enabled",
                     "description": "Number of extruder trains that are enabled; automatically set in software",
                     "value": "machine_extruder_count",
                     "default_value": 1,
@@ -240,7 +241,7 @@
                 },
                 "machine_nozzle_tip_outer_diameter":
                 {
-                    "label": "Outer nozzle diameter",
+                    "label": "Outer Nozzle Diameter",
                     "description": "The outer diameter of the tip of the nozzle.",
                     "unit": "mm",
                     "default_value": 1,
@@ -252,7 +253,7 @@
                 },
                 "machine_nozzle_head_distance":
                 {
-                    "label": "Nozzle length",
+                    "label": "Nozzle Length",
                     "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
                     "unit": "mm",
                     "default_value": 3,
@@ -263,7 +264,7 @@
                 },
                 "machine_nozzle_expansion_angle":
                 {
-                    "label": "Nozzle angle",
+                    "label": "Nozzle Angle",
                     "description": "The angle between the horizontal plane and the conical part right above the tip of the nozzle.",
                     "unit": "°",
                     "type": "int",
@@ -276,7 +277,7 @@
                 },
                 "machine_heat_zone_length":
                 {
-                    "label": "Heat zone length",
+                    "label": "Heat Zone Length",
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
@@ -310,7 +311,7 @@
                 },
                 "machine_nozzle_heat_up_speed":
                 {
-                    "label": "Heat up speed",
+                    "label": "Heat Up Speed",
                     "description": "The speed (°C/s) by which the nozzle heats up averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "unit": "°C/s",
@@ -321,7 +322,7 @@
                 },
                 "machine_nozzle_cool_down_speed":
                 {
-                    "label": "Cool down speed",
+                    "label": "Cool Down Speed",
                     "description": "The speed (°C/s) by which the nozzle cools down averaged over the window of normal printing temperatures and the standby temperature.",
                     "default_value": 2.0,
                     "unit": "°C/s",
@@ -343,7 +344,7 @@
                 },
                 "machine_gcode_flavor":
                 {
-                    "label": "G-code flavour",
+                    "label": "G-code Flavour",
                     "description": "The type of g-code to be generated.",
                     "type": "enum",
                     "options":
@@ -376,7 +377,7 @@
                 },
                 "machine_disallowed_areas":
                 {
-                    "label": "Disallowed areas",
+                    "label": "Disallowed Areas",
                     "description": "A list of polygons with areas the print head is not allowed to enter.",
                     "type": "polygons",
                     "default_value":
@@ -400,7 +401,7 @@
                 },
                 "machine_head_polygon":
                 {
-                    "label": "Machine head polygon",
+                    "label": "Machine Head Polygon",
                     "description": "A 2D silhouette of the print head (fan caps excluded).",
                     "type": "polygon",
                     "default_value":
@@ -428,7 +429,7 @@
                 },
                 "machine_head_with_fans_polygon":
                 {
-                    "label": "Machine head & Fan polygon",
+                    "label": "Machine Head & Fan Polygon",
                     "description": "A 2D silhouette of the print head (fan caps included).",
                     "type": "polygon",
                     "default_value":
@@ -456,7 +457,7 @@
                 },
                 "gantry_height":
                 {
-                    "label": "Gantry height",
+                    "label": "Gantry Height",
                     "description": "The height difference between the tip of the nozzle and the gantry system (X and Y axes).",
                     "default_value": 99999999999,
                     "value": "machine_height",
@@ -488,7 +489,7 @@
                 },
                 "machine_use_extruder_offset_to_offset_coords":
                 {
-                    "label": "Offset With Extruder",
+                    "label": "Offset with Extruder",
                     "description": "Apply the extruder offset to the coordinate system.",
                     "type": "bool",
                     "default_value": true,
@@ -523,7 +524,7 @@
                     "description": "The maximum speed for the motor of the X-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -534,7 +535,7 @@
                     "description": "The maximum speed for the motor of the Y-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 500,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -545,7 +546,7 @@
                     "description": "The maximum speed for the motor of the Z-direction.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 5,
+                    "default_value": 299792458000,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1429,10 +1430,11 @@
                     "type": "enum",
                     "options":
                     {
-                        "z_seam_corner_none":  "None",
-                        "z_seam_corner_inner": "Hide Seam",
-                        "z_seam_corner_outer": "Expose Seam",
-                        "z_seam_corner_any":   "Hide or Expose Seam"
+                        "z_seam_corner_none":     "None",
+                        "z_seam_corner_inner":    "Hide Seam",
+                        "z_seam_corner_outer":    "Expose Seam",
+                        "z_seam_corner_any":      "Hide or Expose Seam",
+                        "z_seam_corner_weighted": "Smart Hiding"
                     },
                     "default_value": "z_seam_corner_inner",
                     "enabled": "z_seam_type != 'random'",
@@ -2054,6 +2056,21 @@
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
                     "minimum_value": "-273.15"
+                },
+                "build_volume_temperature":
+                {
+                    "label": "Build Volume Temperature",
+                    "description": "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted.",
+                    "unit": "°C",
+                    "type": "float",
+                    "default_value": 35,
+                    "resolve": "min(extruderValues('build_volume_temperature'))",
+                    "minimum_value": "-273.15",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "285",
+                    "enabled": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 },
                 "material_print_temperature":
                 {
@@ -3525,6 +3542,20 @@
                     "type": "bool",
                     "default_value": true,
                     "enabled": "retraction_hop_enabled and extruders_enabled_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_hop_after_extruder_switch_height": 
+                {
+                    "label": "Z Hop After Extruder Switch Height",
+                    "description": "The height difference when performing a Z Hop after extruder switch.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "value": "retraction_hop",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "10",
+                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -5219,7 +5250,7 @@
                     "type": "bool",
                     "enabled": "extruders_enabled_count > 1",
                     "default_value": false,
-                    "resolve": "any(extruderValues('prime_tower_enable'))",
+                    "resolve": "(extruders_enabled_count > 1) and any(extruderValues('prime_tower_enable')) or (adhesion_type in ('none', 'skirt'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -6659,7 +6690,7 @@
                 },
                 "adaptive_layer_height_enabled":
                 {
-                    "label": "Use adaptive layers",
+                    "label": "Use Adaptive Layers",
                     "description": "Adaptive layers computes the layer heights depending on the shape of the model.",
                     "type": "bool",
                     "default_value": false,
@@ -6669,7 +6700,7 @@
                 },
                 "adaptive_layer_height_variation":
                 {
-                    "label": "Adaptive layers maximum variation",
+                    "label": "Adaptive Layers Maximum Variation",
                     "description": "The maximum allowed height different from the base layer height.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
@@ -6681,7 +6712,7 @@
                 },
                 "adaptive_layer_height_variation_step":
                 {
-                    "label": "Adaptive layers variation step size",
+                    "label": "Adaptive Layers Variation Step Size",
                     "description": "The difference in height of the next layer height compared to the previous one.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
@@ -6694,7 +6725,7 @@
                 },
                 "adaptive_layer_height_threshold":
                 {
-                    "label": "Adaptive layers threshold",
+                    "label": "Adaptive Layers Threshold",
                     "description": "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
@@ -6966,7 +6997,7 @@
                     "enabled": "bridge_settings_enabled and bridge_enable_more_layers",
                     "settable_per_mesh": true
                 },
-                "clean_between_layers": 
+                "clean_between_layers":
                 {
                     "label": "Wipe Nozzle Between Layers",
                     "description": "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
@@ -6976,7 +7007,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "max_extrusion_before_wipe": 
+                "max_extrusion_before_wipe":
                 {
                     "label": "Material Volume Between Wipes",
                     "description": "Maximum material, that can be extruded before another nozzle wipe is initiated.",
@@ -6988,7 +7019,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_retraction_enable": 
+                "wipe_retraction_enable":
                 {
                     "label": "Wipe Retraction Enable",
                     "description": "Retract the filament when the nozzle is moving over a non-printed area.",
@@ -6999,7 +7030,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_retraction_amount": 
+                "wipe_retraction_amount":
                 {
                     "label": "Wipe Retraction Distance",
                     "description": "Amount to retract the filament so it does not ooze during the wipe sequence.",
@@ -7013,7 +7044,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_retraction_extra_prime_amount": 
+                "wipe_retraction_extra_prime_amount":
                 {
                     "label": "Wipe Retraction Extra Prime Amount",
                     "description": "Some material can ooze away during a wipe travel moves, which can be compensated for here.",
@@ -7026,7 +7057,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "wipe_retraction_speed": 
+                "wipe_retraction_speed":
                 {
                     "label": "Wipe Retraction Speed",
                     "description": "The speed at which the filament is retracted and primed during a wipe retraction move.",
@@ -7040,9 +7071,9 @@
                     "enabled": "wipe_retraction_enable and clean_between_layers",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "children": 
+                    "children":
                     {
-                        "wipe_retraction_retract_speed": 
+                        "wipe_retraction_retract_speed":
                         {
                             "label": "Wipe Retraction Retract Speed",
                             "description": "The speed at which the filament is retracted during a wipe retraction move.",
@@ -7058,7 +7089,7 @@
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
-                        "wipe_retraction_prime_speed": 
+                        "wipe_retraction_prime_speed":
                         {
                             "label": "Retraction Prime Speed",
                             "description": "The speed at which the filament is primed during a wipe retraction move.",
@@ -7076,7 +7107,7 @@
                         }
                     }
                 },
-                "wipe_pause": 
+                "wipe_pause":
                 {
                     "label": "Wipe Pause",
                     "description": "Pause after the unretract.",
@@ -7089,7 +7120,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_hop_enable": 
+                "wipe_hop_enable":
                 {
                     "label": "Wipe Z Hop When Retracted",
                     "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
@@ -7100,7 +7131,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_hop_amount": 
+                "wipe_hop_amount":
                 {
                     "label": "Wipe Z Hop Height",
                     "description": "The height difference when performing a Z Hop.",
@@ -7112,7 +7143,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_hop_speed": 
+                "wipe_hop_speed":
                 {
                     "label": "Wipe Hop Speed",
                     "description": "Speed to move the z-axis during the hop.",
@@ -7126,7 +7157,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_brush_pos_x": 
+                "wipe_brush_pos_x":
                 {
                     "label": "Wipe Brush X Position",
                     "description": "X location where wipe script will start.",
@@ -7139,7 +7170,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_repeat_count": 
+                "wipe_repeat_count":
                 {
                     "label": "Wipe Repeat Count",
                     "description": "Number of times to move the nozzle across the brush.",
@@ -7151,7 +7182,7 @@
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
                 },
-                "wipe_move_distance": 
+                "wipe_move_distance":
                 {
                     "label": "Wipe Move Distance",
                     "description": "The distance to move the head back and forth across the brush.",
@@ -7165,41 +7196,47 @@
                 }
             }
         },
-        "command_line_settings": {
+        "command_line_settings":
+        {
             "label": "Command Line Settings",
             "description": "Settings which are only used if CuraEngine isn't called from the Cura frontend.",
             "type": "category",
             "enabled": false,
             "children": {
-                "center_object": {
+                "center_object":
+                {
                     "description": "Whether to center the object on the middle of the build platform (0,0), instead of using the coordinate system in which the object was saved.",
                     "type": "bool",
                     "label": "Center Object",
                     "default_value": false,
                     "enabled": false
                 },
-                "mesh_position_x": {
+                "mesh_position_x":
+                {
                     "description": "Offset applied to the object in the x direction.",
                     "type": "float",
                     "label": "Mesh Position X",
                     "default_value": 0,
                     "enabled": false
                 },
-                "mesh_position_y": {
+                "mesh_position_y":
+                {
                     "description": "Offset applied to the object in the y direction.",
                     "type": "float",
                     "label": "Mesh Position Y",
                     "default_value": 0,
                     "enabled": false
                 },
-                "mesh_position_z": {
+                "mesh_position_z":
+                {
                     "description": "Offset applied to the object in the z direction. With this you can perform what was used to be called 'Object Sink'.",
                     "type": "float",
                     "label": "Mesh Position Z",
                     "default_value": 0,
                     "enabled": false
                 },
-                "mesh_rotation_matrix": {
+                "mesh_rotation_matrix":
+                {
                     "label": "Mesh Rotation Matrix",
                     "description": "Transformation matrix to be applied to the model when loading it from file.",
                     "type": "str",

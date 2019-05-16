@@ -56,7 +56,7 @@ Item
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-            height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+            height: Math.min(contentHeight, maxItemCountAtOnce * UM.Theme.getSize("action_button").height)
 
             visible: networkPrinterListView.count > 0
 
@@ -72,18 +72,31 @@ Item
                 section.criteria: ViewSection.FullString
                 section.delegate: sectionHeading
 
-                cacheBuffer: 0  // Workaround for https://bugreports.qt.io/browse/QTBUG-49224
+                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
                 Component.onCompleted:
                 {
-                    // Select the first one that's not "unknown" by default.
+                    var toSelectIndex = -1
+                    // Select the first one that's not "unknown" and is the host a group by default.
                     for (var i = 0; i < count; i++)
                     {
-                        if (!model[i].isUnknownMachineType)
+                        if (!model[i].isUnknownMachineType && model[i].isHostOfGroup)
                         {
-                            currentIndex = i
+                            toSelectIndex = i
                             break
                         }
+                    }
+                    currentIndex = toSelectIndex
+                }
+
+                // CURA-6483 For some reason currentIndex can be reset to 0. This check is here to prevent automatically
+                // selecting an unknown or non-host printer.
+                onCurrentIndexChanged:
+                {
+                    var item = model[currentIndex]
+                    if (!item || item.isUnknownMachineType || !item.isHostOfGroup)
+                    {
+                        currentIndex = -1
                     }
                 }
 

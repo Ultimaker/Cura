@@ -23,6 +23,7 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
+from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -115,6 +116,8 @@ from cura.UI.TextManager import TextManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
+
+from cura.Utils.NetworkingUtil import NetworkingUtil
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -216,7 +219,7 @@ class CuraApplication(QtApplication):
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
 
-        self._discovered_printer_model = DiscoveredPrintersModel(parent = self)
+        self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
@@ -258,7 +261,6 @@ class CuraApplication(QtApplication):
 
         # Backups
         self._auto_save = None
-        self._save_data_enabled = True
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -523,6 +525,10 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/use_multi_build_plate", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
+        preferences.addPreference("view/settings_xpos", 0)
+        preferences.addPreference("view/settings_ypos", 56)
+        preferences.addPreference("view/colorscheme_xpos", 0)
+        preferences.addPreference("view/colorscheme_ypos", 56)
         preferences.addPreference("cura/currency", "€")
         preferences.addPreference("cura/material_settings", "{}")
 
@@ -668,13 +674,10 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-            
-    def setSaveDataEnabled(self, enabled: bool) -> None:
-        self._save_data_enabled = enabled
 
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
-        if not self.started or not self._save_data_enabled:
+        if not self.started:
             # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
@@ -1026,6 +1029,8 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
+
+        qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
 
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
@@ -1786,3 +1791,19 @@ class CuraApplication(QtApplication):
         # Only show the what's new dialog if there's no machine and we have just upgraded
         show_whatsnew_only = has_active_machine and has_app_just_upgraded
         return show_whatsnew_only
+
+    @pyqtSlot(result = int)
+    def appWidth(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.width()
+        else:
+            return 0
+
+    @pyqtSlot(result = int)
+    def appHeight(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.height()
+        else:
+            return 0

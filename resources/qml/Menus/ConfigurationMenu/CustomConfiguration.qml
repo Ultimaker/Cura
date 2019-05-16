@@ -70,8 +70,8 @@ Item
         OldControls.ToolButton
         {
             id: printerTypeSelector
-            text: Cura.MachineManager.activeMachineDefinitionName
-            tooltip: Cura.MachineManager.activeMachineDefinitionName
+            text: Cura.MachineManager.activeMachine.definition.name
+            tooltip: text
             height: UM.Theme.getSize("print_setup_big_item").height
             width: Math.round(parent.width * 0.7) + UM.Theme.getSize("default_margin").width
             anchors.right: parent.right
@@ -319,8 +319,8 @@ Item
                 OldControls.ToolButton
                 {
                     id: variantSelection
-                    text: Cura.MachineManager.activeVariantName
-                    tooltip: Cura.MachineManager.activeVariantName
+                    text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
+                    tooltip: text
                     height: parent.height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button

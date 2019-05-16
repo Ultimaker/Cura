@@ -11,6 +11,8 @@ Cura.ExpandableComponent
 {
     id: printSetupSelector
 
+    dragPreferencesNamePrefix: "view/settings"
+
     property bool preSlicedData: PrintInformation.preSliced
 
     contentPadding: UM.Theme.getSize("default_lining").width

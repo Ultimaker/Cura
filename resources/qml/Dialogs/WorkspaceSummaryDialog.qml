@@ -123,7 +123,18 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+                            text:
+                            {
+                                if(Cura.MachineManager.activeMachineNetworkGroupName != "")
+                                {
+                                    return Cura.MachineManager.activeMachineNetworkGroupName
+                                }
+                                if(Cura.MachineManager.activeMachine)
+                                {
+                                    return Cura.MachineManager.activeMachine.name
+                                }
+                                return ""
+                            }
                             width: Math.floor(scroll.width / 3) | 0
                         }
                     }
@@ -140,7 +151,7 @@ UM.Dialog
                     }
                     Label
                     {
-                        text: Cura.MachineManager.activeVariantBuildplateName
+                        text: Cura.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
                         width: Math.floor(scroll.width / 3) | 0
                     }
                 }
