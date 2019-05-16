@@ -64,19 +64,19 @@ Item
 
                 onClicked:
                 {
-                    var adhesionType = "skirt"
+                    var adhesionType = "skirt";
                     if (!parent.checked)
                     {
                         // Remove the "user" setting to see if the rest of the stack prescribes a brim or a raft
-                        platformAdhesionType.removeFromContainer(0)
-                        adhesionType = platformAdhesionType.properties.value
-                        if(adhesionType == "skirt" || adhesionType == "none")
+                        platformAdhesionType.removeFromContainer(0);
+                        adhesionType = platformAdhesionType.properties.resolve;
+                        if(adhesionType === "skirt" || adhesionType === "none")
                         {
                             // If the rest of the stack doesn't prescribe an adhesion-type, default to a brim
-                            adhesionType = "brim"
+                            adhesionType = "brim";
                         }
                     }
-                    platformAdhesionType.setPropertyValue("value", adhesionType)
+                    platformAdhesionType.setPropertyValue("value", adhesionType);
                 }
 
                 onEntered:
@@ -95,7 +95,7 @@ Item
         containerStack: Cura.MachineManager.activeMachine
         removeUnusedValue: false //Doesn't work with settings that are resolved.
         key: "adhesion_type"
-        watchedProperties: [ "value", "enabled" ]
+        watchedProperties: [ "value", "resolve", "enabled" ]
         storeIndex: 0
     }
 }
