@@ -393,7 +393,7 @@ TabView
             {
                 model: UM.SettingDefinitionsModel
                 {
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
                     expanded: ["*"]
                 }
@@ -461,7 +461,7 @@ TabView
                     UM.ContainerPropertyProvider
                     {
                         id: machinePropertyProvider
-                        containerId: Cura.MachineManager.activeDefinitionId
+                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         watchedProperties: [ "value" ]
                         key: model.key
                     }
