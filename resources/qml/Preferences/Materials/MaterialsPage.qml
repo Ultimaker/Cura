@@ -271,7 +271,9 @@ Item
         id: confirmRemoveMaterialDialog
         icon: StandardIcon.Question;
         title: catalog.i18nc("@title:window", "Confirm Remove")
-        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItem.name)
+        property string materialName: base.currentItem !== null ? base.currentItem.name : ""
+
+        text: catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(materialName)
         standardButtons: StandardButton.Yes | StandardButton.No
         modality: Qt.ApplicationModal
         onYes:
