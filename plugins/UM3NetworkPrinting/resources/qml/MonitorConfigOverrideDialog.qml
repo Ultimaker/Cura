@@ -30,6 +30,21 @@ UM.Dialog
                 OutputDevice.forceSendJob(printer.activePrintJob.key)
                 overrideConfirmationDialog.close()
             }
+            visible:
+            {
+                if (!printer || !printer.activePrintJob)
+                {
+                    return true
+                }
+
+                var canOverride = false
+                for (var i = 0; i < printer.activePrintJob.configurationChanges.length; i++)
+                {
+                    var change = printer.activePrintJob.configurationChanges[i]
+                    canOverride = canOverride || change.typeOfChange === "material_change";
+                }
+                return canOverride
+            }
         },
         Button
         {

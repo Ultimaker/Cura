@@ -63,7 +63,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "default_value": 60 },
+        "gantry_height": { "value": "60" },
         "machine_disallowed_areas": { "default_value": [
             [[92.8, -53.4], [92.8, -97.5], [116.5, -97.5], [116.5, -53.4]],
             [[73.8, 107.5], [73.8, 100.5], [116.5, 100.5], [116.5, 107.5]],

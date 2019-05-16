@@ -30,7 +30,7 @@
         "machine_height":              {   "default_value": 170             },
         "machine_depth":               {   "default_value": 160             },
         "machine_center_is_zero":      {   "default_value": false           },
-        "gantry_height":               {   "default_value": 55             },
+        "gantry_height":               {   "value": "55"},
         "retraction_amount":           {   "default_value": 1.5 },
         "support_enable":              {   "default_value": true},
         "machine_head_with_fans_polygon": {
