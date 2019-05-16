@@ -565,7 +565,7 @@ Item
             {
                 id: machineExtruderCount
 
-                containerStackId: delegate.activeMachineId
+                containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
                 key: "machine_extruder_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0
