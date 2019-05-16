@@ -5352,7 +5352,7 @@
                     "description": "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type.",
                     "type": "bool",
                     "enabled": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') != 'raft')",
-                    "resolve": "resolveOrValue('prime_tower_enable') and (adhesion_type in ('none', 'skirt'))",
+                    "resolve": "resolveOrValue('prime_tower_enable') and (resolveOrValue('adhesion_type') in ('none', 'skirt'))",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
