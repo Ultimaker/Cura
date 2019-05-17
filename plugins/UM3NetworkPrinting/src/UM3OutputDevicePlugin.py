@@ -167,7 +167,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        self.resetLastManu
+        self.resetLastManualDevice()
     
     # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
