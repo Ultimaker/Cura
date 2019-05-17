@@ -2,6 +2,8 @@ import webbrowser
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
+import requests
+
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -32,7 +34,8 @@ SUCCESSFUL_AUTH_RESPONSE = AuthenticationResponse(
     access_token = "beep",
     refresh_token = "beep?",
     received_at = datetime.now().strftime(TOKEN_TIMESTAMP_FORMAT),
-    expires_in = 300  # 5 minutes should be more than enough for testing
+    expires_in = 300,  # 5 minutes should be more than enough for testing
+    success = True
 )
 
 MALFORMED_AUTH_RESPONSE = AuthenticationResponse()
@@ -44,6 +47,36 @@ def test_cleanAuthService() -> None:
     authorization_service.initialize()
     assert authorization_service.getUserProfile() is None
     assert authorization_service.getAccessToken() is None
+
+
+def test_refreshAccessTokenSuccess():
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
+    authorization_service.initialize()
+    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+        authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+    authorization_service.onAuthStateChanged.emit = MagicMock()
+
+    with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", return_value=SUCCESSFUL_AUTH_RESPONSE):
+        authorization_service.refreshAccessToken()
+        assert authorization_service.onAuthStateChanged.emit.called_with(True)
+
+
+def test_refreshAccessTokenFailed():
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
+    authorization_service.initialize()
+    with patch.object(AuthorizationService, "getUserProfile", return_value=UserProfile()):
+        authorization_service._storeAuthData(SUCCESSFUL_AUTH_RESPONSE)
+    authorization_service.onAuthStateChanged.emit = MagicMock()
+    with patch.object(AuthorizationHelpers, "getAccessTokenUsingRefreshToken", return_value=FAILED_AUTH_RESPONSE):
+        authorization_service.refreshAccessToken()
+        assert authorization_service.onAuthStateChanged.emit.called_with(False)
+
+
+def test_userProfileException():
+    authorization_service = AuthorizationService(OAUTH_SETTINGS, Preferences())
+    authorization_service.initialize()
+    authorization_service._parseJWT = MagicMock(side_effect=requests.exceptions.ConnectionError)
+    assert authorization_service.getUserProfile() is None
 
 
 def test_failedLogin() -> None:
