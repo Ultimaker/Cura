@@ -24,20 +24,15 @@ Window
 
     minimumWidth: 580 * screenScaleFactor
     minimumHeight: 600 * screenScaleFactor
-    maximumWidth: minimumWidth
-    maximumHeight: minimumHeight
 
     color: UM.Theme.getColor("main_background")
 
     property var model: null  // Needs to be set by whoever is using this dialog.
     property alias progressBarVisible: wizardPanel.progressBarVisible
 
-    onVisibilityChanged:
+    function resetModelState()
     {
-        if (visible)
-        {
-            model.resetState()
-        }
+        model.resetState()
     }
 
     WizardPanel
