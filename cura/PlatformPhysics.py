@@ -76,7 +76,7 @@ class PlatformPhysics:
                 move_vector = move_vector.set(y = -bbox.bottom + z_offset)
 
             # If there is no convex hull for the node, start calculating it and continue.
-            if not node.getDecorator(ConvexHullDecorator):
+            if not node.getDecorator(ConvexHullDecorator) and not node.callDecoration("isNonPrintingMesh"):
                 node.addDecorator(ConvexHullDecorator())
 
             # only push away objects if this node is a printing mesh

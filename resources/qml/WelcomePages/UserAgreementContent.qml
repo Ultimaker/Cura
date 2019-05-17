@@ -43,7 +43,7 @@ Item
             + "<p>Unless required by applicable law or agreed to in writing, in no event will Ultimaker be liable to you for damages, including any general, special, incidental, or consequential damages arising out of the use or inability to use any Ultimaker software or third party software.</p>"
         textFormat: Text.RichText
         wrapMode: Text.WordWrap
-        font: UM.Theme.getFont("default")
+        font: UM.Theme.getFont("medium")
         color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
