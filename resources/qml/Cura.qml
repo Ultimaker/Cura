@@ -260,15 +260,17 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
-            ObjectsList
+            ObjectSelector
             {
-                id: objectsList
-                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+                id: objectSelector
+                visible: CuraApplication.platformActivity
                 anchors
                 {
-                    bottom: viewOrientationControls.top
+                    bottom: jobSpecs.top
                     left: toolbar.right
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height
                 }
             }
 
@@ -278,10 +280,12 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: viewOrientationControls.top
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     bottomMargin: UM.Theme.getSize("thin_margin").width
+                    topMargin: UM.Theme.getSize("thin_margin").width
                 }
             }
 
@@ -291,7 +295,7 @@ UM.MainWindow
 
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }

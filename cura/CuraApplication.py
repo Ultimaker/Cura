@@ -523,6 +523,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
+        preferences.addPreference("cura/show_list_of_objects", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
         preferences.addPreference("view/settings_xpos", 0)
@@ -929,7 +930,7 @@ class CuraApplication(QtApplication):
 
     def getObjectsModel(self, *args):
         if self._object_manager is None:
-            self._object_manager = ObjectsModel.createObjectsModel()
+            self._object_manager = ObjectsModel(self)
         return self._object_manager
 
     @pyqtSlot(result = QObject)
@@ -1039,7 +1040,7 @@ class CuraApplication(QtApplication):
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
-        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
+        qmlRegisterType(ObjectsModel, "Cura", 1, 0, "ObjectsModel")
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")

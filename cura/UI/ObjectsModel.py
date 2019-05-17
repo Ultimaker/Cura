@@ -4,7 +4,7 @@
 from collections import defaultdict
 from typing import Dict
 
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, Qt
 
 from UM.Application import Application
 from UM.Qt.ListModel import ListModel
@@ -19,8 +19,20 @@ catalog = i18nCatalog("cura")
 
 ##  Keep track of all objects in the project
 class ObjectsModel(ListModel):
-    def __init__(self) -> None:
-        super().__init__()
+    NameRole = Qt.UserRole + 1
+    SelectedRole = Qt.UserRole + 2
+    OutsideAreaRole = Qt.UserRole + 3
+    BuilplateNumberRole = Qt.UserRole + 4
+    NodeRole = Qt.UserRole + 5
+
+    def __init__(self, parent = None) -> None:
+        super().__init__(parent)
+
+        self.addRoleName(self.NameRole, "name")
+        self.addRoleName(self.SelectedRole, "selected")
+        self.addRoleName(self.OutsideAreaRole, "outside_build_area")
+        self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
+        self.addRoleName(self.NodeRole, "node")
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
         Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
@@ -78,7 +90,7 @@ class ObjectsModel(ListModel):
             else:
                 is_outside_build_area = False
                 
-            #check if we already have an instance of the object based on name
+            # Check if we already have an instance of the object based on name
             name_count_dict[name] += 1
             name_count = name_count_dict[name]
 
@@ -88,9 +100,9 @@ class ObjectsModel(ListModel):
 
             nodes.append({
                 "name": name,
-                "isSelected": Selection.isSelected(node),
-                "isOutsideBuildArea": is_outside_build_area,
-                "buildPlateNumber": node_build_plate_number,
+                "selected": Selection.isSelected(node),
+                "outside_build_area": is_outside_build_area,
+                "buildplate_number": node_build_plate_number,
                 "node": node
             })
        
@@ -98,7 +110,3 @@ class ObjectsModel(ListModel):
         self.setItems(nodes)
 
         self.itemsChanged.emit()
-
-    @staticmethod
-    def createObjectsModel():
-        return ObjectsModel()
