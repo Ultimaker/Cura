@@ -22,7 +22,7 @@ Item
 
     property int labelWidth: 210 * screenScaleFactor
     property int controlWidth: (UM.Theme.getSize("setting_control").width * 3 / 4) | 0
-    property var labelFont: UM.Theme.getFont("medium")
+    property var labelFont: UM.Theme.getFont("default")
 
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
