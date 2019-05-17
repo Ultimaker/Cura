@@ -3944,6 +3944,7 @@
                     "maximum_value": "180",
                     "default_value": 0,
                     "enabled": "support_enable and support_pattern != 'concentric' and support_infill_rate > 0",
+                    "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
