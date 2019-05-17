@@ -818,7 +818,12 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered: addMachineDialog.show()
+        onTriggered:
+        {
+            // Make sure to show from the first page when the dialog shows up.
+            addMachineDialog.resetModelState()
+            addMachineDialog.show()
+        }
     }
 
     AboutDialog
