@@ -24,8 +24,6 @@ Window
 
     minimumWidth: 580 * screenScaleFactor
     minimumHeight: 600 * screenScaleFactor
-    maximumWidth: minimumWidth
-    maximumHeight: minimumHeight
 
     color: UM.Theme.getColor("main_background")
 
