@@ -100,8 +100,8 @@ class ChangeAtZ(Script):
                 },
                 "d_twLayers":
                 {
-                    "label": "No. Layers",
-                    "description": "No. of layers used to change",
+                    "label": "Layer Spread",
+                    "description": "The change will be gradual over this many layers. Enter 1 to make the change immediate.",
                     "unit": "",
                     "type": "int",
                     "default_value": 1,
