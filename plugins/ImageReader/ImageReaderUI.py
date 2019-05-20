@@ -35,6 +35,7 @@ class ImageReaderUI(QObject):
         self.smoothing = 1
         self.lighter_is_higher = False;
         self.use_logarithmic_function = False;
+        self.transmittance_1mm = 40.0;
 
         self._ui_lock = threading.Lock()
         self._cancelled = False
@@ -76,6 +77,7 @@ class ImageReaderUI(QObject):
 
         self._ui_view.findChild(QObject, "Base_Height").setProperty("text", str(self.base_height))
         self._ui_view.findChild(QObject, "Peak_Height").setProperty("text", str(self.peak_height))
+        self._ui_view.findChild(QObject, "Transmittance").setProperty("text", str(self.transmittance_1mm))
         self._ui_view.findChild(QObject, "Smoothing").setProperty("value", self.smoothing)
 
     def _createConfigUI(self):
@@ -150,3 +152,6 @@ class ImageReaderUI(QObject):
     def onConvertFunctionChanged(self, value):
         self.use_logarithmic_function = (value == 0)
 
+    @pyqtSlot(int)
+    def onTransmittanceChanged(self, value):
+        self.transmittance_1mm = value

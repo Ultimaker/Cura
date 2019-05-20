@@ -168,6 +168,29 @@ UM.Dialog
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
+            text: catalog.i18nc("@info:tooltip","The percentage of light penetrating a print with a thickness of 1 millimeter.")
+            Row {
+                width: parent.width
+
+                Label {
+                    text: catalog.i18nc("@action:label", "1mm Transmittance (%)")
+                    width: 150 * screenScaleFactor
+                    anchors.verticalCenter: parent.verticalCenter
+                }
+                TextField {
+                    id: transmittance
+                    objectName: "Transmittance"
+                    focus: true
+                    validator: RegExpValidator {regExp: /^[1-9]\d{0,2}([\,|\.]\d*)?$/}
+                    width: 180 * screenScaleFactor
+                    onTextChanged: { manager.onTransmittanceChanged(text) }
+                }
+            }
+        }
+
+        UM.TooltipArea {
+            Layout.fillWidth:true
+            height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The amount of smoothing to apply to the image.")
             Row {
                 width: parent.width
