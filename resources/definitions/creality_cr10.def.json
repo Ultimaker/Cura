@@ -86,10 +86,10 @@
             "default_value": true
         },
         "jerk_print": {
-            "default_value": 20
+            "default_value": 8
         },
         "jerk_travel": {
-            "default_value": 20
+            "default_value": 8
         }
     }
 }

@@ -56,6 +56,9 @@
         "jerk_enabled": {
             "default_value": true
         },
+        "jerk_print": {
+            "value": "10"
+        },
         "jerk_travel": {
             "value": "jerk_print"
         },
