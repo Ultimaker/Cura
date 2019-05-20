@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
@@ -16,7 +16,7 @@ class AutoSave:
         self._application.getPreferences().addPreference("cura/autosave_delay", 1000 * 10)
 
         self._change_timer = QTimer()
-        self._change_timer.setInterval(self._application.getPreferences().getValue("cura/autosave_delay"))
+        self._change_timer.setInterval(int(self._application.getPreferences().getValue("cura/autosave_delay")))
         self._change_timer.setSingleShot(True)
 
         self._enabled = True
