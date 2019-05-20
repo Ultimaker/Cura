@@ -2060,7 +2060,7 @@
                 "build_volume_temperature":
                 {
                     "label": "Build Volume Temperature",
-                    "description": "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted.",
+                    "description": "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
                     "default_value": 35,
