@@ -48,7 +48,6 @@ Item
             {
                 text: model.name
                 width: parent.width
-                height: Math.floor(UM.Theme.getSize("toolbox_property_label").height)
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("large_bold")
                 color: pluginInfo.color
