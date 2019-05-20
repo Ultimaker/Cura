@@ -35,7 +35,7 @@ class ImageReaderUI(QObject):
         self.smoothing = 1
         self.lighter_is_higher = False;
         self.use_transparency_model = True;
-        self.transmittance_1mm = 40.0;
+        self.transmittance_1mm = 20.0; # based on pearl PLA
 
         self._ui_lock = threading.Lock()
         self._cancelled = False

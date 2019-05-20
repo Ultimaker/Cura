@@ -108,7 +108,7 @@ class ImageReader(MeshReader):
 
         Job.yieldThread()
 
-        if not lighter_is_higher:
+        if lighter_is_higher is use_transparency_model:
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):
@@ -133,7 +133,7 @@ class ImageReader(MeshReader):
             min_luminance = 2.0 ** ((peak_height - base_height) / p)
             for (y, x) in numpy.ndindex(height_data.shape):
                 mapped_luminance = min_luminance + (1.0 - min_luminance) * height_data[y, x]
-                height_data[y, x] = peak_height - p * math.log(mapped_luminance, 2)
+                height_data[y, x] = base_height + p * math.log(mapped_luminance, 2)
         else:
             height_data *= scale_vector.y
             height_data += base_height
