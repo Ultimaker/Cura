@@ -34,6 +34,7 @@ class ImageReaderUI(QObject):
         self.peak_height = 2.5
         self.smoothing = 1
         self.lighter_is_higher = False;
+        self.use_logarithmic_function = False;
 
         self._ui_lock = threading.Lock()
         self._cancelled = False
@@ -144,3 +145,8 @@ class ImageReaderUI(QObject):
     @pyqtSlot(int)
     def onImageColorInvertChanged(self, value):
         self.lighter_is_higher = (value == 1)
+
+    @pyqtSlot(int)
+    def onConvertFunctionChanged(self, value):
+        self.use_logarithmic_function = (value == 0)
+
