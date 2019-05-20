@@ -146,21 +146,21 @@ UM.Dialog
         UM.TooltipArea {
             Layout.fillWidth:true
             height: childrenRect.height
-            text: catalog.i18nc("@info:tooltip","For lithophanes a logarithmic function is more appropriate for most materials. For height maps the pixel values correspond to heights linearly.")
+            text: catalog.i18nc("@info:tooltip","For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly.")
             Row {
                 width: parent.width
 
                 Label {
-                    text: "Conversion"
+                    text: "Color Model"
                     width: 150 * screenScaleFactor
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 ComboBox {
-                    id: conversion
-                    objectName: "Conversion"
-                    model: [ catalog.i18nc("@item:inlistbox","Logarithmic"), catalog.i18nc("@item:inlistbox","Linear") ]
+                    id: color_model
+                    objectName: "ColorModel"
+                    model: [ catalog.i18nc("@item:inlistbox","Translucency"), catalog.i18nc("@item:inlistbox","Linear") ]
                     width: 180 * screenScaleFactor
-                    onCurrentIndexChanged: { manager.onConvertFunctionChanged(currentIndex) }
+                    onCurrentIndexChanged: { manager.onColorModelChanged(currentIndex) }
                 }
             }
         }

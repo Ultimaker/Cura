@@ -34,7 +34,7 @@ class ImageReaderUI(QObject):
         self.peak_height = 2.5
         self.smoothing = 1
         self.lighter_is_higher = False;
-        self.use_logarithmic_function = False;
+        self.use_transparency_model = True;
         self.transmittance_1mm = 40.0;
 
         self._ui_lock = threading.Lock()
@@ -149,8 +149,8 @@ class ImageReaderUI(QObject):
         self.lighter_is_higher = (value == 1)
 
     @pyqtSlot(int)
-    def onConvertFunctionChanged(self, value):
-        self.use_logarithmic_function = (value == 0)
+    def onColorModelChanged(self, value):
+        self.use_transparency_model = (value == 0)
 
     @pyqtSlot(int)
     def onTransmittanceChanged(self, value):
