@@ -41,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": -25
+            "value": "25"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

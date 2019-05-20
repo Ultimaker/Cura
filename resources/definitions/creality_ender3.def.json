@@ -31,7 +31,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 30
+            "value": "30"
         },
         "machine_head_polygon": {
             "default_value": [

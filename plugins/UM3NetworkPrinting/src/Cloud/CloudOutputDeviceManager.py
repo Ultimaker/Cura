@@ -96,7 +96,7 @@ class CloudOutputDeviceManager:
             device = CloudOutputDevice(self._api, cluster)
             self._remote_clusters[cluster.cluster_id] = device
             self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
-                    cluster.cluster_id,
+                    device.key,
                     device.key,
                     cluster.friendly_name,
                     self._createMachineFromDiscoveredPrinter,
@@ -109,7 +109,7 @@ class CloudOutputDeviceManager:
         for device, cluster in updates:
             device.clusterData = cluster
             self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(
-                    cluster.cluster_id,
+                    device.key,
                     cluster.friendly_name,
                     device.printerType,
             )

@@ -53,6 +53,25 @@ UM.TooltipArea
         anchors.left: parent.left
         anchors.right: parent.right
 
+        background: Rectangle
+        {
+            color: UM.Theme.getColor("main_background")
+            anchors.fill: parent
+
+            border.color:
+            {
+                if (!gcodeTextArea.enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled_border")
+                }
+                if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight")
+                }
+                return UM.Theme.getColor("setting_control_border")
+            }
+        }
+
         TextArea
         {
             id: gcodeTextArea
@@ -65,25 +84,6 @@ UM.TooltipArea
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("text")
             wrapMode: TextEdit.NoWrap
-
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("main_background")
-                anchors.fill: parent
-
-                border.color:
-                {
-                    if (!gcodeTextArea.enabled)
-                    {
-                        return UM.Theme.getColor("setting_control_disabled_border")
-                    }
-                    if (gcodeTextArea.hovered || gcodeTextArea.activeFocus)
-                    {
-                        return UM.Theme.getColor("setting_control_border_highlight")
-                    }
-                    return UM.Theme.getColor("setting_control_border")
-                }
-            }
 
             onActiveFocusChanged:
             {
