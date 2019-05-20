@@ -48,9 +48,9 @@ class ImageReader(MeshReader):
 
     def _read(self, file_name):
         size = max(self._ui.getWidth(), self._ui.getDepth())
-        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_logarithmic_function, self._ui.transmittance_1mm)
+        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_transparency_model, self._ui.transmittance_1mm)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_logarithmic_function, transmittance_1mm):
+    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -101,7 +101,7 @@ class ImageReader(MeshReader):
         for x in range(0, width):
             for y in range(0, height):
                 qrgb = img.pixel(x, y)
-                if use_logarithmic_function:
+                if use_transparency_model:
                     height_data[y, x] = (0.299 * math.pow(qRed(qrgb) / 255.0, 2.2) + 0.587 * math.pow(qGreen(qrgb) / 255.0, 2.2) + 0.114 * math.pow(qBlue(qrgb) / 255.0, 2.2))
                 else:
                     height_data[y, x] = (0.212655 * qRed(qrgb) + 0.715158 * qGreen(qrgb) + 0.072187 * qBlue(qrgb)) / 255 # fast computation ignoring gamma and degamma
@@ -128,7 +128,7 @@ class ImageReader(MeshReader):
 
             Job.yieldThread()
 
-        if use_logarithmic_function:
+        if use_transparency_model:
             p = 1.0 / math.log(transmittance_1mm / 100.0, 2)
             min_luminance = 2.0 ** ((peak_height - base_height) / p)
             for (y, x) in numpy.ndindex(height_data.shape):
