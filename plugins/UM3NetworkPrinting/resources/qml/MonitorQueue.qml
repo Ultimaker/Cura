@@ -120,7 +120,7 @@ Item
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
-            width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+            width: UM.Theme.getSize("monitor_column").width
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
@@ -135,7 +135,7 @@ Item
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
-            width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+            width: UM.Theme.getSize("monitor_column").width
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
