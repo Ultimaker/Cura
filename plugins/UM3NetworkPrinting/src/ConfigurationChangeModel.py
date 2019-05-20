@@ -12,7 +12,7 @@ class ConfigurationChangeModel(QObject):
         super().__init__()
         self._type_of_change = type_of_change
                                     # enum = ["material", "print_core_change"]
-        self._can_override = False if self._type_of_change in BLOCKING_CHANGE_TYPES else True
+        self._can_override = self._type_of_change not in BLOCKING_CHANGE_TYPES
         self._index = index
         self._target_name = target_name
         self._origin_name = origin_name
