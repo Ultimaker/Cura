@@ -50,7 +50,7 @@ class DiscoverUM3Action(MachineAction):
     def startDiscovery(self):
         if not self._network_plugin:
             Logger.log("d", "Starting device discovery.")
-            self._network_plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
+            self._network_plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UltimakerNetworkPrinting")
             self._network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
             self.discoveredDevicesChanged.emit()
 
@@ -166,7 +166,7 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Creating additional ui components for UM3.")
 
         # Create networking dialog
-        plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+        plugin_path = PluginRegistry.getInstance().getPluginPath("UltimakerNetworkPrinting")
         if not plugin_path:
             return
         path = os.path.join(plugin_path, "resources/qml/UM3InfoComponents.qml")

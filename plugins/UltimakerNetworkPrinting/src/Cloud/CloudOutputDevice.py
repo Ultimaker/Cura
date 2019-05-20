@@ -86,7 +86,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         if PluginRegistry.getInstance() is not None:
-            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UltimakerNetworkPrinting")
             if plugin_path is None:
                 Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
                 raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")

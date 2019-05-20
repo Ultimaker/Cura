@@ -526,9 +526,9 @@
             }
         }
     },
-    "UM3NetworkPrinting": {
+    "UltimakerNetworkPrinting": {
         "package_info": {
-            "package_id": "UM3NetworkPrinting",
+            "package_id": "UltimakerNetworkPrinting",
             "package_type": "plugin",
             "display_name": "UM3 Network Printing",
             "description": "Manages network connections to Ultimaker 3 printers.",

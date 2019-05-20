@@ -66,7 +66,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._received_print_jobs = False # type: bool
 
         if PluginRegistry.getInstance() is not None:
-            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UltimakerNetworkPrinting")
             if plugin_path is None:
                 Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
                 raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
@@ -133,7 +133,7 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         if self._printer_selection_dialog is None:
             if PluginRegistry.getInstance() is not None:
                 path = os.path.join(
-                    PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                    PluginRegistry.getInstance().getPluginPath("UltimakerNetworkPrinting"),
                     "resources", "qml", "PrintWindow.qml"
                 )
                 self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})

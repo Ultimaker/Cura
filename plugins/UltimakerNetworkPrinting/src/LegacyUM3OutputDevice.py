@@ -82,7 +82,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def _createMonitorViewFromQML(self) -> None:
         if self._monitor_view_qml_path is None and PluginRegistry.getInstance() is not None:
             self._monitor_view_qml_path = os.path.join(
-                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                PluginRegistry.getInstance().getPluginPath("UltimakerNetworkPrinting"),
                 "resources", "qml", "MonitorStage.qml"
             )
         super()._createMonitorViewFromQML()
