@@ -99,8 +99,8 @@ class ImageReader(MeshReader):
         for x in range(0, width):
             for y in range(0, height):
                 qrgb = img.pixel(x, y)
-                avg = float(qRed(qrgb) + qGreen(qrgb) + qBlue(qrgb)) / (3 * 255)
-                height_data[y, x] = avg
+                luminance = (0.2126 * qRed(qrgb) + 0.7152 * qGreen(qrgb) + 0.0722 * qBlue(qrgb)) / 255 # fast computation ignoring gamma
+                height_data[y, x] = luminance
 
         Job.yieldThread()
 
