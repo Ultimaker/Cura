@@ -3,6 +3,8 @@
 
 import numpy
 
+import math
+
 from PyQt5.QtGui import QImage, qRed, qGreen, qBlue
 from PyQt5.QtCore import Qt
 
@@ -46,9 +48,9 @@ class ImageReader(MeshReader):
 
     def _read(self, file_name):
         size = max(self._ui.getWidth(), self._ui.getDepth())
-        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher)
+        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_logarithmic_function)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher):
+    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_logarithmic_function):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -124,8 +126,14 @@ class ImageReader(MeshReader):
 
             Job.yieldThread()
 
-        height_data *= scale_vector.y
-        height_data += base_height
+        if use_logarithmic_function:
+            min_luminance = 2.0 ** (peak_height - base_height)
+            for (y, x) in numpy.ndindex(height_data.shape):
+                mapped_luminance = min_luminance + (1.0 - min_luminance) * height_data[y, x]
+                height_data[y, x] = peak_height - math.log(mapped_luminance, 2)
+        else:
+            height_data *= scale_vector.y
+            height_data += base_height
 
         heightmap_face_count = 2 * height_minus_one * width_minus_one
         total_face_count = heightmap_face_count + (width_minus_one * 2) * (height_minus_one * 2) + 2
