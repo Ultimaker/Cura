@@ -1,8 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from collections import defaultdict
-from typing import Dict
+import re
 
 from PyQt5.QtCore import QTimer, Qt
 
@@ -61,7 +60,13 @@ class ObjectsModel(ListModel):
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
         group_nr = 1
-        name_count_dict = defaultdict(int)  # type: Dict[str, int]
+
+        naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
+
+        name_to_node_info_dict = {}
+
+        group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
+        group_name_prefix = group_name_template.split("#")[0]
 
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
             if not isinstance(node, SceneNode):
@@ -78,28 +83,87 @@ class ObjectsModel(ListModel):
             if filter_current_build_plate and node_build_plate_number != active_build_plate_number:
                 continue
 
-            if not node.callDecoration("isGroup"):
+            is_group = bool(node.callDecoration("isGroup"))
+            force_rename = False
+            if not is_group:
+                # Handle names for individual nodes
                 name = node.getName()
-                
+
+                name_match = naming_regex.fullmatch(name)
+                if name_match is None:
+                    original_name = name
+                    name_index = 0
+                else:
+                    original_name = name_match.groups()[0]
+                    name_index = int(name_match.groups()[1])
+
             else:
-                name = catalog.i18nc("@label", "Group #{group_nr}").format(group_nr = str(group_nr))
-                group_nr += 1
+                # Handle names for grouped nodes
+                original_name = group_name_prefix
+
+                current_name = node.getName()
+                if current_name.startswith(group_name_prefix):
+                    name_index = int(current_name.split("#")[-1])
+                else:
+                    # Force rename this group because this node has not been named as a group yet, probably because
+                    # it's a newly created group.
+                    name_index = 0
+                    force_rename = True
+
+            if original_name not in name_to_node_info_dict:
+                # Keep track of 2 things:
+                #  - known indices for nodes which doesn't need to be renamed
+                #  - a list of nodes that need to be renamed. When renaming then, we should avoid using the known indices.
+                name_to_node_info_dict[original_name] = {"index_to_node": {},
+                                                         "nodes_to_rename": [],
+                                                         "is_group": is_group}
+            node_info_dict = name_to_node_info_dict[original_name]
+            if not force_rename and name_index not in node_info_dict["index_to_node"]:
+                node_info_dict["index_to_node"][name_index] = node
+            else:
+                node_info_dict["nodes_to_rename"].append(node)
+
+        # Go through all names and rename the nodes that need to be renamed.
+        node_rename_list = []
+        for name, node_info_dict in name_to_node_info_dict.items():
+            # First add the ones that do not need to be renamed.
+            for node in node_info_dict["index_to_node"].values():
+                node_rename_list.append({"node": node})
+
+            # Generate new names for the nodes that need to be renamed
+            current_index = 0
+            for node in node_info_dict["nodes_to_rename"]:
+                current_index += 1
+                while current_index in node_info_dict["index_to_node"]:
+                    current_index += 1
+
+                if not node_info_dict["is_group"]:
+                    new_name = "{0}({1})".format(name, current_index)
+                else:
+                    new_name = "{0}#{1}".format(name, current_index)
+                node_rename_list.append({"node": node,
+                                         "new_name": new_name})
+
+        for node_info in node_rename_list:
+            node = node_info["node"]
+            new_name = node_info.get("new_name")
 
             if hasattr(node, "isOutsideBuildArea"):
                 is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
             else:
                 is_outside_build_area = False
-                
-            # Check if we already have an instance of the object based on name
-            name_count_dict[name] += 1
-            name_count = name_count_dict[name]
 
-            if name_count > 1:
-                name = "{0}({1})".format(name, name_count-1)
-                node.setName(name)
+            node_build_plate_number = node.callDecoration("getBuildPlateNumber")
+
+            from UM.Logger import Logger
+
+            if new_name is not None:
+                old_name = node.getName()
+                node.setName(new_name)
+                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_name)
 
             nodes.append({
-                "name": name,
+                "name": node.getName(),
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
