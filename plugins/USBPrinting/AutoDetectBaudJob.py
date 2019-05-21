@@ -52,7 +52,6 @@ class AutoDetectBaudJob(Job):
                 if serial is None:
                     try:
                         serial = Serial(str(self._serial_port), baud_rate, timeout = read_timeout, writeTimeout = write_timeout)
-                        Logger.log("d", "Serial connection speed found (none)")
                     except SerialException:
                         Logger.logException("w", "Unable to create serial")
                         continue
