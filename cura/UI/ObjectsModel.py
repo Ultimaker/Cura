@@ -1,7 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from collections import namedtuple
 import re
+from typing import Any, Dict, List
 
 from PyQt5.QtCore import QTimer, Qt
 
@@ -59,11 +61,11 @@ class ObjectsModel(ListModel):
         nodes = []
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
-        group_nr = 1
 
         naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
 
-        name_to_node_info_dict = {}
+        NodeInfo = namedtuple("NodeInfo", ["index_to_node", "nodes_to_rename", "is_group"])
+        name_to_node_info_dict = {}  # type: Dict[str, NodeInfo]
 
         group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
         group_name_prefix = group_name_template.split("#")[0]
@@ -114,30 +116,30 @@ class ObjectsModel(ListModel):
                 # Keep track of 2 things:
                 #  - known indices for nodes which doesn't need to be renamed
                 #  - a list of nodes that need to be renamed. When renaming then, we should avoid using the known indices.
-                name_to_node_info_dict[original_name] = {"index_to_node": {},
-                                                         "nodes_to_rename": [],
-                                                         "is_group": is_group}
+                name_to_node_info_dict[original_name] = NodeInfo(index_to_node = {},
+                                                                 nodes_to_rename = [],
+                                                                 is_group = is_group)
             node_info_dict = name_to_node_info_dict[original_name]
-            if not force_rename and name_index not in node_info_dict["index_to_node"]:
-                node_info_dict["index_to_node"][name_index] = node
+            if not force_rename and name_index not in node_info_dict.index_to_node:
+                node_info_dict.index_to_node[name_index] = node
             else:
-                node_info_dict["nodes_to_rename"].append(node)
+                node_info_dict.nodes_to_rename.append(node)
 
         # Go through all names and rename the nodes that need to be renamed.
-        node_rename_list = []
+        node_rename_list = []  # type: List[Dict[str, Any]]
         for name, node_info_dict in name_to_node_info_dict.items():
             # First add the ones that do not need to be renamed.
-            for node in node_info_dict["index_to_node"].values():
+            for node in node_info_dict.index_to_node.values():
                 node_rename_list.append({"node": node})
 
             # Generate new names for the nodes that need to be renamed
             current_index = 0
-            for node in node_info_dict["nodes_to_rename"]:
+            for node in node_info_dict.nodes_to_rename:
                 current_index += 1
-                while current_index in node_info_dict["index_to_node"]:
+                while current_index in node_info_dict.index_to_node:
                     current_index += 1
 
-                if not node_info_dict["is_group"]:
+                if not node_info_dict.is_group:
                     new_name = "{0}({1})".format(name, current_index)
                 else:
                     new_name = "{0}#{1}".format(name, current_index)
