@@ -140,11 +140,11 @@ class ObjectsModel(ListModel):
                     current_index += 1
 
                 if not node_info_dict.is_group:
-                    new_name = "{0}({1})".format(name, current_index)
+                    new_group_name = "{0}({1})".format(name, current_index)
                 else:
-                    new_name = "{0}#{1}".format(name, current_index)
+                    new_group_name = "{0}#{1}".format(name, current_index)
                 node_rename_list.append({"node": node,
-                                         "new_name": new_name})
+                                         "new_name": new_group_name})
 
         for node_info in node_rename_list:
             node = node_info["node"]
@@ -171,7 +171,7 @@ class ObjectsModel(ListModel):
                 "buildplate_number": node_build_plate_number,
                 "node": node
             })
-       
+
         nodes = sorted(nodes, key=lambda n: n["name"])
         self.setItems(nodes)
 
