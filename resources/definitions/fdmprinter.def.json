@@ -2482,6 +2482,19 @@
                             "settable_per_extruder": true
                         }
                     }
+                },
+                "switch_extruder_extra_prime_amount": 
+                {
+                    "label": "Nozzle Switch Extra Prime Amount",
+                    "description": "Extra material to prime after nozzle switching.",
+                    "type": "float",
+                    "unit": "mm³",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
