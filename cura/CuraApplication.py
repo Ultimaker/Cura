@@ -114,6 +114,7 @@ from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
 from cura.UI.TextManager import TextManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
+from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
 
@@ -1037,6 +1038,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
+        qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
