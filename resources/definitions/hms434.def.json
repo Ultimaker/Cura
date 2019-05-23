@@ -43,7 +43,7 @@
         "material_diameter":          {"value": 1.75 },
         "machine_heated_bed":         {"value": true },
         "machine_center_is_zero":     {"value": false },
-        "gantry_height":              {"value": "35" },
+        "gantry_height":              {"value": 35 },
         "machine_height":             {"value": 400 },
         "machine_depth":              {"value": 325 },
         "machine_width":              {"value": 450 },
