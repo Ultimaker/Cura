@@ -130,36 +130,36 @@ class ObjectsModel(ListModel):
                 #  - known indices for nodes which doesn't need to be renamed
                 #  - a list of nodes that need to be renamed. When renaming then, we should avoid using the known indices.
                 name_to_node_info_dict[original_name] = _NodeInfo(is_group = is_group)
-            node_info_dict = name_to_node_info_dict[original_name]
-            if not force_rename and name_index not in node_info_dict.index_to_node:
-                node_info_dict.index_to_node[name_index] = node
+            node_info = name_to_node_info_dict[original_name]
+            if not force_rename and name_index not in node_info.index_to_node:
+                node_info.index_to_node[name_index] = node
             else:
-                node_info_dict.nodes_to_rename.append(node)
+                node_info.nodes_to_rename.append(node)
 
         # Go through all names and rename the nodes that need to be renamed.
         node_rename_list = []  # type: List[Dict[str, Union[str, SceneNode]]]
-        for name, node_info_dict in name_to_node_info_dict.items():
+        for name, node_info in name_to_node_info_dict.items():
             # First add the ones that do not need to be renamed.
-            for node in node_info_dict.index_to_node.values():
+            for node in node_info.index_to_node.values():
                 node_rename_list.append({"node": node})
 
             # Generate new names for the nodes that need to be renamed
             current_index = 0
-            for node in node_info_dict.nodes_to_rename:
+            for node in node_info.nodes_to_rename:
                 current_index += 1
-                while current_index in node_info_dict.index_to_node:
+                while current_index in node_info.index_to_node:
                     current_index += 1
 
-                if not node_info_dict.is_group:
+                if not node_info.is_group:
                     new_group_name = "{0}({1})".format(name, current_index)
                 else:
                     new_group_name = "{0}#{1}".format(name, current_index)
                 node_rename_list.append({"node": node,
                                          "new_name": new_group_name})
 
-        for node_info in node_rename_list:
-            node = node_info["node"]
-            new_name = node_info.get("new_name")
+        for rename_dict in node_rename_list:
+            node = rename_dict["node"]
+            new_name = rename_dict.get("new_name")
 
             if hasattr(node, "isOutsideBuildArea"):
                 is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
