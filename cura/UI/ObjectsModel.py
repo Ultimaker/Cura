@@ -84,19 +84,18 @@ class ObjectsModel(ListModel):
         group_name_prefix = group_name_template.split("#")[0]
 
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
-            if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
+            is_group = bool(node.callDecoration("isGroup"))
+            if not node.callDecoration("isSliceable") and not is_group:
                 continue
-
+            
             parent = node.getParent()
             if parent and parent.callDecoration("isGroup"):
                 continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            if not node.callDecoration("isSliceable") and not node.callDecoration("isGroup"):
-                continue
+            
             node_build_plate_number = node.callDecoration("getBuildPlateNumber")
             if filter_current_build_plate and node_build_plate_number != active_build_plate_number:
                 continue
 
-            is_group = bool(node.callDecoration("isGroup"))
             force_rename = False
             if not is_group:
                 # Handle names for individual nodes
