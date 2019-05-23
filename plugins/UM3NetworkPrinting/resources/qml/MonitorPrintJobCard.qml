@@ -217,7 +217,6 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        enabled: !cloudConnection
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
