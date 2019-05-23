@@ -3,7 +3,7 @@
 
 from collections import namedtuple
 import re
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional, Union
 
 from PyQt5.QtCore import QTimer, Qt
 
@@ -16,6 +16,20 @@ from UM.Scene.Selection import Selection
 from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
+
+
+# Simple convenience class to keep stuff together. Since we're still stuck on python 3.5, we can't use the full
+# typed named tuple, so we have to do it like this.
+# Once we are at python 3.6, feel free to change this to a named tuple.
+class _NodeInfo:
+    def __init__(self, index_to_node: Optional[Dict[int, SceneNode]] = None, nodes_to_rename: Optional[List[SceneNode]] = None, is_group: bool = False) -> None:
+        if index_to_node is None:
+            index_to_node = {}
+        if nodes_to_rename is None:
+            nodes_to_rename = []
+        self.index_to_node = index_to_node  # type: Dict[int, SceneNode]
+        self.nodes_to_rename = nodes_to_rename  # type: List[SceneNode]
+        self.is_group = is_group  # type: bool
 
 
 ##  Keep track of all objects in the project
@@ -64,8 +78,7 @@ class ObjectsModel(ListModel):
 
         naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
 
-        NodeInfo = namedtuple("NodeInfo", ["index_to_node", "nodes_to_rename", "is_group"])
-        name_to_node_info_dict = {}  # type: Dict[str, NodeInfo]
+        name_to_node_info_dict = {}  # type: Dict[str, _NodeInfo]
 
         group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
         group_name_prefix = group_name_template.split("#")[0]
@@ -116,9 +129,7 @@ class ObjectsModel(ListModel):
                 # Keep track of 2 things:
                 #  - known indices for nodes which doesn't need to be renamed
                 #  - a list of nodes that need to be renamed. When renaming then, we should avoid using the known indices.
-                name_to_node_info_dict[original_name] = NodeInfo(index_to_node = {},
-                                                                 nodes_to_rename = [],
-                                                                 is_group = is_group)
+                name_to_node_info_dict[original_name] = _NodeInfo(is_group = is_group)
             node_info_dict = name_to_node_info_dict[original_name]
             if not force_rename and name_index not in node_info_dict.index_to_node:
                 node_info_dict.index_to_node[name_index] = node
@@ -126,7 +137,7 @@ class ObjectsModel(ListModel):
                 node_info_dict.nodes_to_rename.append(node)
 
         # Go through all names and rename the nodes that need to be renamed.
-        node_rename_list = []  # type: List[Dict[str, Any]]
+        node_rename_list = []  # type: List[Dict[str, Union[str, SceneNode]]]
         for name, node_info_dict in name_to_node_info_dict.items():
             # First add the ones that do not need to be renamed.
             for node in node_info_dict.index_to_node.values():
