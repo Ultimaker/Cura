@@ -84,8 +84,6 @@ class ObjectsModel(ListModel):
         group_name_prefix = group_name_template.split("#")[0]
 
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
-            if not isinstance(node, SceneNode):
-                continue
             if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
                 continue
 
