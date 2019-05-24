@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n"
-"."
+msgstr "G-Code-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n"
-"."
+msgstr "G-Code-Befehle, die am Ende ausgeführt werden sollen – getrennt durch \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -238,7 +234,7 @@ msgstr "Anzahl der Extruder-Elemente. Ein Extruder-Element ist die Kombination a
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders That Are Enabled"
-msgstr ""
+msgstr "Anzahl der aktivierten Extruder"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -248,7 +244,7 @@ msgstr "Anzahl der aktivierten Extruder-Elemente; wird automatisch in der Softwa
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
-msgstr ""
+msgstr "Düsendurchmesser außen"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -258,7 +254,7 @@ msgstr "Der Außendurchmesser der Düsenspitze."
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle Length"
-msgstr ""
+msgstr "Düsenlänge"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -268,7 +264,7 @@ msgstr "Der Höhenunterschied zwischen der Düsenspitze und dem untersten Bereic
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
-msgstr ""
+msgstr "Düsenwinkel"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -278,7 +274,7 @@ msgstr "Der Winkel zwischen der horizontalen Planfläche und dem konischen Teil 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
 msgid "Heat Zone Length"
-msgstr ""
+msgstr "Heizzonenlänge"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -308,7 +304,7 @@ msgstr "Für die Temperatursteuerung von Cura. Schalten Sie diese Funktion aus, 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
-msgstr ""
+msgstr "Aufheizgeschwindigkeit"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -318,7 +314,7 @@ msgstr "Die Geschwindigkeit (°C/Sek.), mit der die Düse durchschnittlich bei n
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
-msgstr ""
+msgstr "Abkühlgeschwindigkeit"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -338,7 +334,7 @@ msgstr "Die Mindestzeit, die ein Extruder inaktiv sein muss, bevor die Düse abk
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavour"
-msgstr ""
+msgstr "G-Code-Variante"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -403,7 +399,7 @@ msgstr "Definiert, ob Firmware-Einzugsbefehle (G10/G11) anstelle der E-Eigenscha
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
-msgstr ""
+msgstr "Unzulässige Bereiche"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -423,7 +419,7 @@ msgstr "Eine Liste mit Polygonen mit Bereichen, in welche die Düse nicht eintre
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
 msgid "Machine Head Polygon"
-msgstr ""
+msgstr "Gerätekopf Polygon"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -433,7 +429,7 @@ msgstr "Eine 2D-Shilhouette des Druckkopfes (ohne Lüfterkappen)."
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine Head & Fan Polygon"
-msgstr ""
+msgstr "Gerätekopf und Lüfter Polygon"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -443,7 +439,7 @@ msgstr "Eine 2D-Shilhouette des Druckkopfes (mit Lüfterkappen)."
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "Brückenhöhe"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -473,7 +469,7 @@ msgstr "Der Innendurchmesser der Düse. Verwenden Sie diese Einstellung, wenn Si
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
-msgstr ""
+msgstr "Versatz mit Extruder"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -1635,9 +1631,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n"
-" Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
+msgstr "Fügen Sie zusätzliche Wände um den Füllbereich hinzu. Derartige Wände können zu einem verringerten Absacken der oberen/unteren Außenhautlinien beitragen, was bedeutet, dass Sie weniger Außenhautschichten oben/unten bei derselben Qualität von Kosten für zusätzliches Material benötigen.\n Diese Funktion ist verknüpfbar mit „Füllungspolygone verbinden“, um alle Füllungen mit einem einzigen Extrusionspfad zu verbinden, ohne dass hierzu Vorwärtsbewegungen oder Rückzüge erforderlich sind, sofern die richtige Konfiguration gewählt wurde."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1872,12 +1866,12 @@ msgstr "Die für den Druck verwendete Standardtemperatur. Dies sollte die „Bas
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr ""
+msgstr "Temperatur Druckabmessung"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "Die für die Druckabmessung verwendete Temperatur. Wenn dieser Wert 0 beträgt, wird die Temperatur der Druckabmessung nicht angepasst."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2942,12 +2936,12 @@ msgstr "Nachdem das Gerät von einem Extruder zu einem anderen geschaltet hat, w
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr ""
+msgstr "Z-Sprung nach Extruder-Schalterhöhe"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr ""
+msgstr "Der Höhenunterschied bei Ausführung eines Z-Sprungs nach Extruder-Schalter."
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -3222,7 +3216,7 @@ msgstr "Quer"
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
@@ -3929,9 +3923,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\n"
-"Es handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
+msgstr "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\nEs handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden mehrere Skirt-Linien in äußerer Richtung angebracht."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4376,12 +4368,12 @@ msgstr "Nach dem Drucken des Einzugsturms mit einer Düse wird das ausgetretene 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr ""
+msgstr "Brim Einzugsturm"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr ""
+msgstr "Einzugstürme benötigen möglicherweise zusätzliche Haftung in Form eines Brims, auch wenn das Modell selbst dies nicht benötigt. Kann derzeit nicht mit dem „Raft“-Haftungstyp verwendet werden."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4901,12 +4893,12 @@ msgstr "Die maximale Größe eines Bewegungsliniensegments nach dem Slicen. Wenn
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
-msgstr ""
+msgstr "Maximale Abweichung"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr ""
+msgstr "Die maximal zulässige Abweichung bei Reduzierung der Auflösung für die Einstellung der maximalen Auflösung. Wenn Sie diesen Wert erhöhen, wird der Druck ungenauer, der G-Code wird jedoch kleiner."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5398,9 +5390,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\n"
-"Dies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
+msgstr "Die Strecke einer Aufwärtsbewegung, die mit halber Geschwindigkeit extrudiert wird.\nDies kann zu einer besseren Haftung an vorhergehenden Schichten führen, während gleichzeitig ein Überhitzen des Materials in diesen Schichten vermieden wird. Dies gilt nur für das Drucken mit Drahtstruktur."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5510,7 +5500,7 @@ msgstr "Der Abstand zwischen der Düse und den horizontalen Abwärtslinien. Bei 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use Adaptive Layers"
-msgstr ""
+msgstr "Anpassschichten verwenden"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
@@ -5520,7 +5510,7 @@ msgstr "Die Funktion Anpassschichten berechnet die Schichthöhe je nach Form des
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive Layers Maximum Variation"
-msgstr ""
+msgstr "Maximale Abweichung für Anpassschichten"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
@@ -5530,7 +5520,7 @@ msgstr "Die max. zulässige Höhendifferenz von der Basisschichthöhe."
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive Layers Variation Step Size"
-msgstr ""
+msgstr "Abweichung Schrittgröße für Anpassschichten"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5540,7 +5530,7 @@ msgstr "Der Höhenunterscheid der nächsten Schichthöhe im Vergleich zur vorher
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Threshold"
-msgstr ""
+msgstr "Schwellenwert Anpassschichten"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
@@ -5760,152 +5750,152 @@ msgstr "Prozentwert der Lüfterdrehzahl für das Drucken der dritten Brücken-Au
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
 msgid "Wipe Nozzle Between Layers"
-msgstr ""
+msgstr "Düse zwischen den Schichten abwischen"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Option für das Einfügen eines G-Codes für das Abwischen der Düse zwischen den Schichten. Die Aktivierung dieser Einstellung könnte das Einzugsverhalten beim Schichtenwechsel beeinflussen. Verwenden Sie bitte die Einstellungen für Abwischen bei Einzug, um das Einziehen bei Schichten zu steuern, bei denen das Skript für Wischen aktiv wird."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
-msgstr ""
+msgstr "Materialmenge zwischen den Wischvorgängen"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr ""
+msgstr "Die maximale Materialmenge, die extrudiert werden kann, bevor die Düse ein weiteres Mal abgewischt wird."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
 msgid "Wipe Retraction Enable"
-msgstr ""
+msgstr "Abwischen bei Einzug aktivieren"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Das Filament wird eingezogen, wenn sich die Düse über einen nicht zu bedruckenden Bereich bewegt."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
 msgid "Wipe Retraction Distance"
-msgstr ""
+msgstr "Einzugsabstand für Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr ""
+msgstr "Wert, um den das Filament eingezogen wird, damit es während des Abwischens nicht austritt."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr ""
+msgstr "Zusätzliche Zurückschiebemenge nach Einzug für Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
-msgstr ""
+msgstr "Während einer Bewegung für den Abwischvorgang kann Material wegsickern, was hier kompensiert werden kann."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
-msgstr ""
+msgstr "Einzugsgeschwindigkeit für Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
-msgstr ""
+msgstr "Die Geschwindigkeit, mit der das Filament während einer Einzugsbewegung eingezogen und während einer Einzugsbewegung für Abwischen zurückgeschoben wird."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr ""
+msgstr "Einzugsgeschwindigkeit (Einzug) für Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a wipe retraction move."
-msgstr ""
+msgstr "Die Geschwindigkeit, mit der das Filament während einer Einzugsbewegung für Abwischen eingezogen wird."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr ""
+msgstr "Einzugsgeschwindigkeit (Einzug)"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a wipe retraction move."
-msgstr ""
+msgstr "Die Geschwindigkeit, mit der das Filament während einer Einzugsbewegung vorbereitet wird."
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause label"
 msgid "Wipe Pause"
-msgstr ""
+msgstr "Abwischen pausieren"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr ""
+msgstr "Pausieren nach Aufhebung des Einzugs."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop When Retracted"
-msgstr ""
+msgstr "Z-Sprung beim Einziehen - Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "Nach dem Einzug wird das Druckbett gesenkt, um einen Abstand zwischen Düse und Druck herzustellen. Das verhindert, dass die Düse den Druck während der Bewegungen anschlägt und verringert die Möglichkeit, dass der Druck vom Druckbett heruntergestoßen wird."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr ""
+msgstr "Z-Sprung Höhe - Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr ""
+msgstr "Der Höhenunterschied bei Ausführung eines Z-Sprungs."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr ""
+msgstr "Sprunghöhe - Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr ""
+msgstr "Geschwindigkeit für das Verfahren der Z-Achse während des Sprungs."
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x label"
 msgid "Wipe Brush X Position"
-msgstr ""
+msgstr "X-Position für Bürste - Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x description"
 msgid "X location where wipe script will start."
-msgstr ""
+msgstr "X-Position, an der das Skript für Abwischen startet."
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count label"
 msgid "Wipe Repeat Count"
-msgstr ""
+msgstr "Wiederholungszähler - Abwischen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
-msgstr ""
+msgstr "Anzahl der Wiederholungen für das Bewegen der Düse über der Bürste."
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance label"
 msgid "Wipe Move Distance"
-msgstr ""
+msgstr "Abstand Wischbewegung"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
-msgstr ""
+msgstr "Die Strecke, die der Kopf durch Vorwärts- und Rückwärtsbewegung über die Bürste hinweg fährt."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6172,6 +6162,7 @@ msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angew
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "Gcode-Befehle, die zu Beginn ausgeführt werden sollen – getrennt durch \n"
 #~ "."
 
@@ -6184,6 +6175,7 @@ msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angew
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "Gcode-Befehle, die Am Ende ausgeführt werden sollen – getrennt durch \n"
 #~ "."
 
@@ -6240,6 +6232,7 @@ msgstr "Transformationsmatrix, die beim Laden aus der Datei auf das Modell angew
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "Der horizontale Abstand zwischen dem Skirt und der ersten Schicht des Drucks.\n"
 #~ "Es handelt sich dabei um den Mindestabstand. Ab diesem Abstand werden Skirt-Linien in äußerer Richtung angebracht."
 

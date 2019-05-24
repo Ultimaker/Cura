@@ -57,9 +57,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het begin worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -71,9 +69,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n"
-"."
+msgstr "G-code-opdrachten die aan het eind worden uitgevoerd, gescheiden door \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -123,7 +119,7 @@ msgstr "Materiaaltemperatuur invoegen"
 #: fdmprinter.def.json
 msgctxt "material_print_temp_prepend description"
 msgid "Whether to include nozzle temperature commands at the start of the gcode. When the start_gcode already contains nozzle temperature commands Cura frontend will automatically disable this setting."
-msgstr "Hiermee bepaalt u of aan het begin van de g-code opdrachten voor de nozzletemperatuur moeten worden ingevoegd. Wanneer de start-g-code al opdrachten voor de nozzletemperatuur bevat, wordt deze instelling automatisch uitgeschakeld door de Cura-frontend."
+msgstr "Hiermee bepaalt u of aan het begin van de G-code opdrachten voor de nozzletemperatuur moeten worden ingevoegd. Wanneer de start-g-code al opdrachten voor de nozzletemperatuur bevat, wordt deze instelling automatisch uitgeschakeld door de Cura-frontend."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend label"
@@ -133,7 +129,7 @@ msgstr "Platformtemperatuur invoegen"
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_prepend description"
 msgid "Whether to include build plate temperature commands at the start of the gcode. When the start_gcode already contains build plate temperature commands Cura frontend will automatically disable this setting."
-msgstr "Hiermee bepaalt u of aan het begin van de g-code opdrachten voor de platformtemperatuur moeten worden ingevoegd. Wanneer de start-g-code al opdrachten voor de platformtemperatuur bevat, wordt deze instelling automatisch uitgeschakeld door de Cura-frontend."
+msgstr "Hiermee bepaalt u of aan het begin van de G-code opdrachten voor de platformtemperatuur moeten worden ingevoegd. Wanneer de start-g-code al opdrachten voor de platformtemperatuur bevat, wordt deze instelling automatisch uitgeschakeld door de Cura-frontend."
 
 #: fdmprinter.def.json
 msgctxt "machine_width label"
@@ -238,7 +234,7 @@ msgstr "Aantal extruder trains. Een extruder train is de combinatie van een feed
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders That Are Enabled"
-msgstr ""
+msgstr "Aantal ingeschakelde extruders"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -248,7 +244,7 @@ msgstr "Het aantal extruder trains dat ingeschakeld is; automatisch ingesteld in
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
-msgstr ""
+msgstr "Buitendiameter nozzle"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -258,7 +254,7 @@ msgstr "De buitendiameter van de punt van de nozzle."
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle Length"
-msgstr ""
+msgstr "Nozzlelengte"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -268,7 +264,7 @@ msgstr "Het hoogteverschil tussen de punt van de nozzle en het laagste deel van 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
-msgstr ""
+msgstr "Nozzlehoek"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -278,7 +274,7 @@ msgstr "De hoek tussen het horizontale vlak en het conische gedeelte boven de pu
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
 msgid "Heat Zone Length"
-msgstr ""
+msgstr "Lengte verwarmingszone"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -308,7 +304,7 @@ msgstr "Hiermee geeft u aan of u de temperatuur wilt reguleren vanuit Cura. Scha
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
-msgstr ""
+msgstr "Verwarmingssnelheid"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -318,7 +314,7 @@ msgstr "De snelheid (°C/s) waarmee de nozzle wordt verwarmd, gemiddeld over het
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
-msgstr ""
+msgstr "Afkoelsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -338,7 +334,7 @@ msgstr "De minimale tijd die een extruder inactief moet zijn, voordat de nozzle 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavour"
-msgstr ""
+msgstr "Versie G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -403,7 +399,7 @@ msgstr "Hiermee bepaalt u of u voor het intrekken van materiaal firmwareopdracht
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
-msgstr ""
+msgstr "Verboden gebieden"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -423,7 +419,7 @@ msgstr "Een lijst polygonen met gebieden waarin de nozzle niet mag komen."
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
 msgid "Machine Head Polygon"
-msgstr ""
+msgstr "Machinekoppolygoon"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -433,7 +429,7 @@ msgstr "Een 2D-silouette van de printkop (exclusief ventilatorkappen)."
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine Head & Fan Polygon"
-msgstr ""
+msgstr "Machinekop- en ventilatorpolygoon"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -443,7 +439,7 @@ msgstr "Een 2D-silouette van de printkop (inclusief ventilatorkappen)."
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "Rijbrughoogte"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -473,7 +469,7 @@ msgstr "De binnendiameter van de nozzle. Verander deze instelling wanneer u een 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
-msgstr ""
+msgstr "Offset met extruder"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -1635,9 +1631,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"Voeg extra wanden toe rondom de vulling. Deze wanden kunnen ervoor zorgen dat de skin aan de boven-/onderkant minder doorzakt. Dit betekent dat u met alleen wat extra materiaal voor dezelfde kwaliteit minder skinlagen aan de boven-/onderkant nodig hebt.\n"
-"Deze optie kan in combinatie met de optie 'Polygonen voor de vulling verbinden' worden gebruikt om alle vulling in één doorvoerpad te verbinden zonder extra bewegingen of intrekkingen, mits correct ingesteld."
+msgstr "Voeg extra wanden toe rondom de vulling. Deze wanden kunnen ervoor zorgen dat de skin aan de boven-/onderkant minder doorzakt. Dit betekent dat u met alleen wat extra materiaal voor dezelfde kwaliteit minder skinlagen aan de boven-/onderkant nodig hebt.\nDeze optie kan in combinatie met de optie 'Polygonen voor de vulling verbinden' worden gebruikt om alle vulling in één doorvoerpad te verbinden zonder extra bewegingen of intrekkingen, mits correct ingesteld."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1872,12 +1866,12 @@ msgstr "De standaardtemperatuur waarmee wordt geprint. Dit moet overeenkomen met
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr ""
+msgstr "Temperatuur werkvolume"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "De temperatuur van het werkvolume. Als deze waarde is ingesteld op 0, wordt de temperatuur van het werkvolume niet aangepast."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2932,7 +2926,7 @@ msgstr "Het hoogteverschil dat wordt aangehouden tijdens een Z-sprong."
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch label"
 msgid "Z Hop After Extruder Switch"
-msgstr "Z-beweging na Wisselen Extruder"
+msgstr "Z-sprong na Wisselen Extruder"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch description"
@@ -2942,12 +2936,12 @@ msgstr "Nadat de machine van de ene extruder naar de andere is gewisseld, wordt 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr ""
+msgstr "Hoogte Z-sprong na wisselen extruder"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr ""
+msgstr "Het hoogteverschil dat wordt aangehouden tijdens een Z-sprong na wisselen extruder."
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -3222,7 +3216,7 @@ msgstr "Kruis"
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroïde"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
@@ -3929,9 +3923,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
-"Dit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
+msgstr "De horizontale afstand tussen de skirt en de eerste laag van de print.\nDit is de minimumafstand. Als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4376,12 +4368,12 @@ msgstr "Veeg na het printen van de primepijler met één nozzle het doorgevoerde
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr ""
+msgstr "Brim primepijler"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr ""
+msgstr "Primepijlers hebben mogelijk de extra hechting van een brim nodig, ook als het model dit niet nodig heeft. Kan momenteel niet worden gebruikt met het hechtingstype 'Raft'."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4901,12 +4893,12 @@ msgstr "Het minimale formaat van een bewegingslijnsegment na het slicen. Als u d
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
-msgstr ""
+msgstr "Maximale afwijking"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr ""
+msgstr "De maximaal toegestane afwijking tijdens het verlagen van de resolutie voor de instelling Maximale resolutie. Als u deze waarde verhoogt, wordt de print minder nauwkeurig, maar wordt de G-code kleiner."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5398,9 +5390,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\n"
-"Hierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
+msgstr "De afstand van een opwaartse beweging waarbij de doorvoersnelheid wordt gehalveerd.\nHierdoor ontstaat een betere hechting aan voorgaande lagen, zonder dat het materiaal in die lagen te zeer wordt verwarmd. Alleen van toepassing op Draadprinten."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5510,7 +5500,7 @@ msgstr "De afstand tussen de nozzle en horizontaal neergaande lijnen. Een groter
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use Adaptive Layers"
-msgstr ""
+msgstr "Adaptieve lagen gebruiken"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
@@ -5520,7 +5510,7 @@ msgstr "Met adaptieve lagen berekent u de laaghoogte afhankelijk van de vorm van
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive Layers Maximum Variation"
-msgstr ""
+msgstr "Maximale variatie adaptieve lagen"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
@@ -5530,7 +5520,7 @@ msgstr "De maximaal toegestane hoogte ten opzichte van de grondlaaghoogte."
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive Layers Variation Step Size"
-msgstr ""
+msgstr "Stapgrootte variatie adaptieve lagen"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5540,7 +5530,7 @@ msgstr "Het hoogteverschil tussen de hoogte van de volgende laag ten opzichte va
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Threshold"
-msgstr ""
+msgstr "Drempelwaarde adaptieve lagen"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
@@ -5760,152 +5750,152 @@ msgstr "Percentage ventilatorsnelheid tijdens het printen van de derde brugskinl
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
 msgid "Wipe Nozzle Between Layers"
-msgstr ""
+msgstr "Nozzle afvegen tussen lagen"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze instelling kan het gedrag van het intrekken tijdens de laagwissel beïnvloeden. Gebruik de instelling voor intrekken bij afvegen om het intrekken te controleren bij lagen waarop afveegscript van toepassing is."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
-msgstr ""
+msgstr "Materiaalvolume tussen afvegen"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr ""
+msgstr "Maximale materiaalhoeveelheid die kan worden doorgevoerd voordat de nozzle opnieuw wordt afgeveegd."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
 msgid "Wipe Retraction Enable"
-msgstr ""
+msgstr "Intrekken voor afvegen inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
 msgid "Wipe Retraction Distance"
-msgstr ""
+msgstr "Intrekafstand voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr ""
+msgstr "Volume filament dat moet worden ingetrokken om te voorkomen dat filament verloren gaat tijdens het afvegen."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr ""
+msgstr "Extra primehoeveelheid na intrekken voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
-msgstr ""
+msgstr "Tijdens veegbewegingen kan materiaal verloren gaan, wat met deze optie kan worden gecompenseerd."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
-msgstr ""
+msgstr "Intreksnelheid voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
-msgstr ""
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging voor afvegen wordt ingetrokken en geprimed."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr ""
+msgstr "Intreksnelheid voor afvegen (intrekken)"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a wipe retraction move."
-msgstr ""
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging voor afvegen wordt ingetrokken."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr ""
+msgstr "Intreksnelheid (primen)"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a wipe retraction move."
-msgstr ""
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging voor afvegen wordt geprimed."
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause label"
 msgid "Wipe Pause"
-msgstr ""
+msgstr "Afvegen pauzeren"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr ""
+msgstr "Pauzeren na het ongedaan maken van intrekken."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop When Retracted"
-msgstr ""
+msgstr "Z-sprong wanneer ingetrokken voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "Tijdens het intrekken wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr ""
+msgstr "Hoogte Z-sprong voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr ""
+msgstr "Het hoogteverschil dat wordt aangehouden tijdens een Z-sprong."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr ""
+msgstr "Sprongsnelheid voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr ""
+msgstr "Snelheid waarmee de Z-as wordt verplaatst tijdens de sprong."
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x label"
 msgid "Wipe Brush X Position"
-msgstr ""
+msgstr "X-positie afveegborstel"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x description"
 msgid "X location where wipe script will start."
-msgstr ""
+msgstr "X-positie waar afveegscript start."
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count label"
 msgid "Wipe Repeat Count"
-msgstr ""
+msgstr "Aantal afveegbewegingen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
-msgstr ""
+msgstr "Aantal keren dat de nozzle over de borstel beweegt."
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance label"
 msgid "Wipe Move Distance"
-msgstr ""
+msgstr "Verplaatsingsafstand voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
-msgstr ""
+msgstr "De afstand die de kop heen en weer wordt bewogen over de borstel."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6236,6 +6226,7 @@ msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit word
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "De horizontale afstand tussen de skirt en de eerste laag van de print.\n"
 #~ "Dit is de minimumafstand; als u meerdere skirtlijnen print, worden deze vanaf deze afstand naar buiten geprint."
 
