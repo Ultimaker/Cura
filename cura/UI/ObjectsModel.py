@@ -72,7 +72,7 @@ class ObjectsModel(ListModel):
         self._update_timer.start()
 
     def _update(self, *args) -> None:
-        nodes = []
+        nodes = []  # type: List[Dict[str, Union[str, int, bool, SceneNode]]]
         filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
         active_build_plate_number = self._build_plate_number
 
@@ -133,12 +133,12 @@ class ObjectsModel(ListModel):
             else:
                 node_info.nodes_to_rename.append(node)
 
-        # Go through all names and rename the nodes that need to be renamed.
-        node_rename_list = []  # type: List[Dict[str, Union[str, SceneNode]]]
+        # Go through all names and find out the names for all nodes that need to be renamed.
+        all_nodes = []  # type: List[SceneNode]
         for name, node_info in name_to_node_info_dict.items():
             # First add the ones that do not need to be renamed.
             for node in node_info.index_to_node.values():
-                node_rename_list.append({"node": node})
+                all_nodes.append(node)
 
             # Generate new names for the nodes that need to be renamed
             current_index = 0
@@ -151,26 +151,19 @@ class ObjectsModel(ListModel):
                     new_group_name = "{0}({1})".format(name, current_index)
                 else:
                     new_group_name = "{0}#{1}".format(name, current_index)
-                node_rename_list.append({"node": node,
-                                         "new_name": new_group_name})
+                from UM.Logger import Logger
+                old_name = node.getName()
+                node.setName(new_group_name)
+                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_group_name)
+                all_nodes.append(node)
 
-        for rename_dict in node_rename_list:
-            node = rename_dict["node"]
-            new_name = rename_dict.get("new_name")
-
+        for node in all_nodes:
             if hasattr(node, "isOutsideBuildArea"):
                 is_outside_build_area = node.isOutsideBuildArea()  # type: ignore
             else:
                 is_outside_build_area = False
 
             node_build_plate_number = node.callDecoration("getBuildPlateNumber")
-
-            from UM.Logger import Logger
-
-            if new_name is not None:
-                old_name = node.getName()
-                node.setName(new_name)
-                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_name)
 
             nodes.append({
                 "name": node.getName(),
