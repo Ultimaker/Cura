@@ -75,3 +75,13 @@ def test_createMachine(application, container_registry, definition_container, gl
         assert machine.definition == definition_container
         assert machine.variant == global_variant
 
+
+def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+    application.empty_material_container = material_instance_container
+    application.empty_quality_container = quality_container
+    application.empty_quality_changes_container = quality_changes_container
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+        extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
+        assert extruder_stack.variant == global_variant
+        assert extruder_stack.material == material_instance_container
+        assert extruder_stack.quality == quality_container
