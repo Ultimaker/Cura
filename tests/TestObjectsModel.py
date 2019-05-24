@@ -6,7 +6,7 @@ from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.UI.ObjectsModel import ObjectsModel
+from cura.UI.ObjectsModel import ObjectsModel, _NodeInfo
 
 
 @pytest.fixture()
@@ -76,3 +76,36 @@ class Test_shouldNodeBeHandled:
         with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
             # A slicable node with the same buildplate number should be handled.
             assert objects_model._shouldNodeBeHandled(slicable_scene_node)
+
+
+class Test_renameNodes:
+    def test_emptyDict(self, objects_model):
+        assert objects_model._renameNodes({}) == []
+
+    def test_singleItemNoRename(self, objects_model):
+        node = SceneNode()
+        assert objects_model._renameNodes({"zomg": _NodeInfo(index_to_node={1: node})}) == [node]
+
+    def test_singleItemRename(self, objects_model):
+        node = SceneNode()
+        result = objects_model._renameNodes({"zomg": _NodeInfo(nodes_to_rename=[node])})
+        assert result == [node]
+        assert node.getName() == "zomg(1)"
+
+    def test_singleItemRenameWithIndex(self, objects_model):
+        node = SceneNode()
+        objects_model._renameNodes({"zomg": _NodeInfo(index_to_node = {1: node}, nodes_to_rename=[node])})
+        assert node.getName() == "zomg(2)"
+
+    def test_multipleItemsRename(self, objects_model):
+        node1 = SceneNode()
+        node2 = SceneNode()
+        result = objects_model._renameNodes({"zomg": _NodeInfo(nodes_to_rename=[node1, node2])})
+        assert result == [node1, node2]
+        assert node1.getName() == "zomg(1)"
+        assert node2.getName() == "zomg(2)"
+
+    def test_renameGroup(self, objects_model, group_scene_node):
+        result = objects_model._renameNodes({"zomg": _NodeInfo(nodes_to_rename=[group_scene_node], is_group=True)})
+        assert result == [group_scene_node]
+        assert group_scene_node.getName() == "zomg#1"
