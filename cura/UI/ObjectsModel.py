@@ -1,7 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from collections import namedtuple
+from UM.Logger import Logger
 import re
 from typing import Any, Dict, List, Optional, Union
 
@@ -59,6 +58,11 @@ class ObjectsModel(ListModel):
 
         self._build_plate_number = -1
 
+        self._group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
+        self._group_name_prefix = self._group_name_template.split("#")[0]
+
+        self._naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
+
     def setActiveBuildPlate(self, nr: int) -> None:
         if self._build_plate_number != nr:
             self._build_plate_number = nr
@@ -71,50 +75,73 @@ class ObjectsModel(ListModel):
     def _updateDelayed(self, *args) -> None:
         self._update_timer.start()
 
+    def _shouldNodeBeHandled(self, node: SceneNode) -> bool:
+        is_group = bool(node.callDecoration("isGroup"))
+        if not node.callDecoration("isSliceable") and not is_group:
+            return False
+
+        parent = node.getParent()
+        if parent and parent.callDecoration("isGroup"):
+            return False  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+
+        node_build_plate_number = node.callDecoration("getBuildPlateNumber")
+        if Application.getInstance().getPreferences().getValue("view/filter_current_build_plate") and node_build_plate_number != self._build_plate_number:
+            return False
+
+        return True
+
+    def _renameNodes(self, node_info_dict: Dict[str, _NodeInfo]) -> List[SceneNode]:
+        # Go through all names and find out the names for all nodes that need to be renamed.
+        all_nodes = []  # type: List[SceneNode]
+        for name, node_info in node_info_dict.items():
+            # First add the ones that do not need to be renamed.
+            for node in node_info.index_to_node.values():
+                all_nodes.append(node)
+
+            # Generate new names for the nodes that need to be renamed
+            current_index = 0
+            for node in node_info.nodes_to_rename:
+                current_index += 1
+                while current_index in node_info.index_to_node:
+                    current_index += 1
+
+                if not node_info.is_group:
+                    new_group_name = "{0}({1})".format(name, current_index)
+                else:
+                    new_group_name = "{0}#{1}".format(name, current_index)
+
+                old_name = node.getName()
+                node.setName(new_group_name)
+                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_group_name)
+                all_nodes.append(node)
+        return all_nodes
+
     def _update(self, *args) -> None:
         nodes = []  # type: List[Dict[str, Union[str, int, bool, SceneNode]]]
-        filter_current_build_plate = Application.getInstance().getPreferences().getValue("view/filter_current_build_plate")
-        active_build_plate_number = self._build_plate_number
-
-        naming_regex = re.compile("^(.+)\(([0-9]+)\)$")
-
         name_to_node_info_dict = {}  # type: Dict[str, _NodeInfo]
-
-        group_name_template = catalog.i18nc("@label", "Group #{group_nr}")
-        group_name_prefix = group_name_template.split("#")[0]
-
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
+            if not self._shouldNodeBeHandled(node):
+                continue
             is_group = bool(node.callDecoration("isGroup"))
-            if not node.callDecoration("isSliceable") and not is_group:
-                continue
-            
-            parent = node.getParent()
-            if parent and parent.callDecoration("isGroup"):
-                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
-            
-            node_build_plate_number = node.callDecoration("getBuildPlateNumber")
-            if filter_current_build_plate and node_build_plate_number != active_build_plate_number:
-                continue
 
             force_rename = False
             if not is_group:
                 # Handle names for individual nodes
                 name = node.getName()
 
-                name_match = naming_regex.fullmatch(name)
+                name_match = self._naming_regex.fullmatch(name)
                 if name_match is None:
                     original_name = name
                     name_index = 0
                 else:
                     original_name = name_match.groups()[0]
                     name_index = int(name_match.groups()[1])
-
             else:
                 # Handle names for grouped nodes
-                original_name = group_name_prefix
+                original_name = self._group_name_prefix
 
                 current_name = node.getName()
-                if current_name.startswith(group_name_prefix):
+                if current_name.startswith(self._group_name_prefix):
                     name_index = int(current_name.split("#")[-1])
                 else:
                     # Force rename this group because this node has not been named as a group yet, probably because
@@ -133,29 +160,7 @@ class ObjectsModel(ListModel):
             else:
                 node_info.nodes_to_rename.append(node)
 
-        # Go through all names and find out the names for all nodes that need to be renamed.
-        all_nodes = []  # type: List[SceneNode]
-        for name, node_info in name_to_node_info_dict.items():
-            # First add the ones that do not need to be renamed.
-            for node in node_info.index_to_node.values():
-                all_nodes.append(node)
-
-            # Generate new names for the nodes that need to be renamed
-            current_index = 0
-            for node in node_info.nodes_to_rename:
-                current_index += 1
-                while current_index in node_info.index_to_node:
-                    current_index += 1
-
-                if not node_info.is_group:
-                    new_group_name = "{0}({1})".format(name, current_index)
-                else:
-                    new_group_name = "{0}#{1}".format(name, current_index)
-                from UM.Logger import Logger
-                old_name = node.getName()
-                node.setName(new_group_name)
-                Logger.log("d", "Node [%s] renamed to [%s]", old_name, new_group_name)
-                all_nodes.append(node)
+        all_nodes = self._renameNodes(name_to_node_info_dict)
 
         for node in all_nodes:
             if hasattr(node, "isOutsideBuildArea"):
