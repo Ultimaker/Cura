@@ -4954,7 +4954,7 @@ msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr "\nUltimaker Cura를 설정하려면 다음 단계를 따르십시오. 오래 걸리지 않습니다."
+msgstr "Ultimaker Cura를 설정하려면 다음 단계를 따르십시오. 오래 걸리지 않습니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
 msgctxt "@button"
