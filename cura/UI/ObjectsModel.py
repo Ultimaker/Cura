@@ -122,6 +122,7 @@ class ObjectsModel(ListModel):
         for node in DepthFirstIterator(Application.getInstance().getController().getScene().getRoot()):  # type: ignore
             if not self._shouldNodeBeHandled(node):
                 continue
+
             is_group = bool(node.callDecoration("isGroup"))
 
             force_rename = False

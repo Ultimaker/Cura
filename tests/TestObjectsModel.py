@@ -1,5 +1,5 @@
 import pytest
-
+import copy
 from unittest.mock import patch, MagicMock
 
 from UM.Scene.GroupDecorator import GroupDecorator
@@ -27,6 +27,14 @@ def slicable_scene_node():
     node = SceneNode()
     node.addDecorator(SliceableObjectDecorator())
     return node
+
+@pytest.fixture()
+def application_with_mocked_scene(application):
+    mocked_controller = MagicMock(name = "Controller")
+    mocked_scene = MagicMock(name = "Scene")
+    mocked_controller.getScene = MagicMock(return_value = mocked_scene)
+    application.getController = MagicMock(return_value = mocked_controller)
+    return application
 
 
 def test_setActiveBuildPlate(objects_model):
@@ -109,3 +117,50 @@ class Test_renameNodes:
         result = objects_model._renameNodes({"zomg": _NodeInfo(nodes_to_rename=[group_scene_node], is_group=True)})
         assert result == [group_scene_node]
         assert group_scene_node.getName() == "zomg#1"
+
+
+class Test_Update:
+    def test_updateWithGroup(self, objects_model, application_with_mocked_scene, group_scene_node):
+        objects_model._shouldNodeBeHandled = MagicMock(return_value = True)
+        application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value = group_scene_node)
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
+            objects_model._update()
+            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': group_scene_node}]
+
+    def test_updateWithNonGroup(self, objects_model, application_with_mocked_scene, slicable_scene_node):
+        objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
+        slicable_scene_node.setName("YAY(1)")
+        application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=slicable_scene_node)
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
+            objects_model._update()
+            assert objects_model.items == [{'name': 'YAY(1)', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': slicable_scene_node}]
+
+    def test_updateWithNonTwoNodes(self, objects_model, application_with_mocked_scene, slicable_scene_node):
+        objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
+        slicable_scene_node.setName("YAY")
+        copied_node = copy.deepcopy(slicable_scene_node)
+        copied_node.setParent(slicable_scene_node)
+        application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=slicable_scene_node)
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
+            objects_model._update()
+            assert objects_model.items == [{'name': 'YAY', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': slicable_scene_node}, {'name': 'YAY(1)', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': copied_node}]
+
+    def test_updateWithNonTwoGroups(self, objects_model, application_with_mocked_scene, group_scene_node):
+        objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
+        group_scene_node.setName("Group #1")
+        copied_node = copy.deepcopy(group_scene_node)
+        copied_node.setParent(group_scene_node)
+        application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=group_scene_node)
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
+            objects_model._update()
+            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': group_scene_node}, {'name': 'Group #2', 'selected': False, 'outside_build_area': False, 'buildplate_number': None, 'node': copied_node}]
+
+    def test_updateOutsideBuildplate(self, objects_model, application_with_mocked_scene, group_scene_node):
+        objects_model._shouldNodeBeHandled = MagicMock(return_value=True)
+        group_scene_node.setName("Group")
+        group_scene_node.isOutsideBuildArea = MagicMock(return_value = True)
+        application_with_mocked_scene.getController().getScene().getRoot = MagicMock(return_value=group_scene_node)
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application_with_mocked_scene)):
+            objects_model._update()
+            assert objects_model.items == [{'name': 'Group #1', 'selected': False, 'outside_build_area': True, 'buildplate_number': None, 'node': group_scene_node}]
+
