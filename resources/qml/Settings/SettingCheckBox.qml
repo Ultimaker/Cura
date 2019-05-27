@@ -29,7 +29,7 @@ SettingItem
             // 4: variant
             // 5: machine
             var value
-            if ((base.resolve != "None") && (stackLevel != 0) && (stackLevel != 1))
+            if ((base.resolve !== undefined && base.resolve != "None") && (stackLevel != 0) && (stackLevel != 1))
             {
                 // We have a resolve function. Indicates that the setting is not settable per extruder and that
                 // we have to choose between the resolved value (default) and the global value
