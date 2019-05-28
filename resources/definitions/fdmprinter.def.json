@@ -344,7 +344,7 @@
                 },
                 "machine_gcode_flavor":
                 {
-                    "label": "G-code Flavour",
+                    "label": "G-code Flavor",
                     "description": "The type of g-code to be generated.",
                     "type": "enum",
                     "options":
