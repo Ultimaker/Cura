@@ -41,3 +41,50 @@ def test_getMaterialNode(application):
     manager.initialize()
 
     assert manager.getMaterialNode("fdmmachine", None, None, 3, "base_material").getMetaDataEntry("id") == "test"
+
+
+def test_getAvailableMaterialsForMachineExtruder(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+
+    mocked_machine = MagicMock()
+    mocked_machine.getBuildplateName = MagicMock(return_value = "build_plate")
+    mocked_machine.definition = mocked_definition
+    mocked_extruder_stack = MagicMock()
+    mocked_extruder_stack.variant.getId = MagicMock(return_value = "test")
+    mocked_extruder_stack.getApproximateMaterialDiameter = MagicMock(return_value = 2.85)
+
+    available_materials = manager.getAvailableMaterialsForMachineExtruder(mocked_machine, mocked_extruder_stack)
+    assert "base_material" in available_materials
+    assert "test" in available_materials
+
+
+class TestFavorites:
+    def test_addFavorite(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+            manager.materialsUpdated = MagicMock()
+            manager.addFavorite("blarg")
+            assert manager.getFavorites() == {"blarg"}
+
+            application.getPreferences().setValue.assert_called_once_with("cura/favorite_materials", "blarg")
+            manager.materialsUpdated.emit.assert_called_once_with()
+
+    def test_removeNotExistingFavorite(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+            manager.materialsUpdated = MagicMock()
+            manager.removeFavorite("blarg")
+            manager.materialsUpdated.emit.assert_not_called()
+
+    def test_removeExistingFavorite(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+            manager.materialsUpdated = MagicMock()
+            manager.addFavorite("blarg")
+
+            manager.removeFavorite("blarg")
+            assert manager.materialsUpdated.emit.call_count == 2
+            application.getPreferences().setValue.assert_called_with("cura/favorite_materials", "")
+            assert manager.getFavorites() == set()

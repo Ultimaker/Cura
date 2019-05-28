@@ -64,11 +64,7 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>找出如何确保最好的打印质量和可靠性.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
+msgstr "<p>由于模型的大小和材质的配置，一个或多个3D模型可能无法最优地打印:</p>\n<p>{model_names}</p>\n<p>找出如何确保最好的打印质量和可靠性.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">查看打印质量指南</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
@@ -541,12 +537,12 @@ msgstr "连接到云时出错。"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:14
 msgctxt "@info:status"
 msgid "Sending Print Job"
-msgstr ""
+msgstr "发送打印作业"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:15
 msgctxt "@info:status"
 msgid "Uploading via Ultimaker Cloud"
-msgstr ""
+msgstr "通过 Ultimaker Cloud 上传"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:624
 msgctxt "@info:status"
@@ -556,7 +552,7 @@ msgstr "使用您的 Ultimaker account 帐户从任何地方发送和监控打�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:630
 msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
 msgid "Connect to Ultimaker Cloud"
-msgstr ""
+msgstr "连接到 Ultimaker Cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:631
 msgctxt "@action"
@@ -591,7 +587,7 @@ msgstr "通过网络连接"
 #: /home/ruben/Projects/Cura/plugins/SettingsGuide/__init__.py:16
 msgctxt "@item:inmenu"
 msgid "Cura Settings Guide"
-msgstr ""
+msgstr "Cura 设置向导"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
@@ -906,7 +902,7 @@ msgstr "登录失败"
 #: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:33
 msgctxt "@info:not supported profile"
 msgid "Not supported"
-msgstr ""
+msgstr "不支持"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:203
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -1086,7 +1082,7 @@ msgstr "Skirt"
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:84
 msgctxt "@tooltip"
 msgid "Prime Tower"
-msgstr ""
+msgstr "装填塔"
 
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:85
 msgctxt "@tooltip"
@@ -1166,12 +1162,12 @@ msgstr "未知"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:102
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
-msgstr ""
+msgstr "无法连接到下列打印机，因为这些打印机已在组中"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:104
 msgctxt "@label"
 msgid "Available networked printers"
-msgstr ""
+msgstr "可用的网络打印机"
 
 #: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:689
 msgctxt "@label"
@@ -1207,12 +1203,12 @@ msgstr "试图在没有适当数据或元数据的情况下恢复Cura备份。"
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:125
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr ""
+msgstr "尝试恢复的 Cura 备份版本高于当前版本。"
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:79
 msgctxt "@message"
 msgid "Could not read response."
-msgstr ""
+msgstr "无法读取响应。"
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:197
 msgctxt "@info"
@@ -1222,12 +1218,12 @@ msgstr "无法连接 Ultimaker 帐户服务器。"
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:66
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
-msgstr ""
+msgstr "在授权此应用程序时，须提供所需权限。"
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:73
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
-msgstr ""
+msgstr "尝试登录时出现意外情况，请重试。"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1282,12 +1278,7 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>\n"
-"                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>\n"
-"                    <p>您可在配置文件夹中找到备份。</p>\n"
-"                    <p>请向我们发送此错误报告，以便解决问题。</p>\n"
-"                "
+msgstr "<p><b>糟糕，Ultimaker Cura 似乎遇到了问题。</p></b>\n                    <p>在启动时发生了不可修复的错误。这可能是因某些配置文件出错导致的。建议您备份并重置配置。</p>\n                    <p>您可在配置文件夹中找到备份。</p>\n                    <p>请向我们发送此错误报告，以便解决问题。</p>\n                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:98
 msgctxt "@action:button"
@@ -1320,10 +1311,7 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
-"            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n"
-"        "
+msgstr "<p><b>Cura 发生了严重错误。请将这份错误报告发送给我们以便修复问题</p></b>\n            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:173
 msgctxt "@title:groupbox"
@@ -1444,7 +1432,7 @@ msgstr "所选模型过小，无法加载。"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:58
 msgctxt "@title:label"
 msgid "Printer Settings"
-msgstr ""
+msgstr "打印机设置"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:70
 msgctxt "@label"
@@ -1485,12 +1473,12 @@ msgstr "打印平台形状"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:125
 msgctxt "@label"
 msgid "Origin at center"
-msgstr ""
+msgstr "置中"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
 msgctxt "@label"
 msgid "Heated bed"
-msgstr ""
+msgstr "加热床"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:149
 msgctxt "@label"
@@ -1500,7 +1488,7 @@ msgstr "G-code 风格"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:174
 msgctxt "@title:label"
 msgid "Printhead Settings"
-msgstr ""
+msgstr "打印头设置"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:186
 msgctxt "@label"
@@ -1525,7 +1513,7 @@ msgstr "Y 最大值"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:260
 msgctxt "@label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "十字轴高度"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:274
 msgctxt "@label"
@@ -1535,12 +1523,12 @@ msgstr "挤出机数目"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:333
 msgctxt "@title:label"
 msgid "Start G-code"
-msgstr ""
+msgstr "开始 G-code"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:347
 msgctxt "@title:label"
 msgid "End G-code"
-msgstr ""
+msgstr "结束 G-code"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:42
 msgctxt "@title:tab"
@@ -1550,7 +1538,7 @@ msgstr "打印机"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:63
 msgctxt "@title:label"
 msgid "Nozzle Settings"
-msgstr ""
+msgstr "喷嘴设置"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:75
 msgctxt "@label"
@@ -1580,12 +1568,12 @@ msgstr "冷却风扇数量"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:160
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
-msgstr ""
+msgstr "挤出机的开始 G-code"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:174
 msgctxt "@title:label"
 msgid "Extruder End G-code"
-msgstr ""
+msgstr "挤出机的结束 G-code"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
 msgctxt "@action:button"
@@ -1655,7 +1643,7 @@ msgstr "安装或更新需要<a href='%1'>登录</a>"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:79
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
-msgstr ""
+msgstr "<a href='%1'>购买材料线轴</a>"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:95
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:34
@@ -1781,10 +1769,7 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr ""
-"该插件包含一个许可。\n"
-"您需要接受此许可才能安装此插件。\n"
-"是否同意下列条款？"
+msgstr "该插件包含一个许可。\n您需要接受此许可才能安装此插件。\n是否同意下列条款？"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:55
 msgctxt "@action:button"
@@ -2017,7 +2002,7 @@ msgstr "等待"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:217
 msgctxt "@info"
 msgid "All jobs are printed."
-msgstr ""
+msgstr "已完成所有打印工作。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:252
 msgctxt "@label link to connect manager"
@@ -2045,10 +2030,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"要通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接到网络。若您不能连接 Cura 与打印机，您仍然可以使用 USB 设备将 G-code 文件传输到打印机。\n"
-"\n"
-"从以下列表中选择您的打印机："
+msgstr "要通过网络向打印机发送打印请求，请确保您的打印机已通过网线或 WIFI 连接到网络。若您不能连接 Cura 与打印机，您仍然可以使用 USB 设备将 G-code 文件传输到打印机。\n\n从以下列表中选择您的打印机："
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2115,13 +2097,13 @@ msgstr "连接"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:354
 msgctxt "@title:window"
 msgid "Invalid IP address"
-msgstr ""
+msgstr "IP 地址无效"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:355
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
-msgstr ""
+msgstr "请输入有效的 IP 地址。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:366
 msgctxt "@title:window"
@@ -2132,7 +2114,7 @@ msgstr "打印机网络地址"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address or hostname of your printer on the network."
-msgstr ""
+msgstr "输入打印机在网络上的 IP 地址或主机名。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:419
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:138
@@ -2337,7 +2319,7 @@ msgstr "连接到打印机"
 #: /home/ruben/Projects/Cura/plugins/SettingsGuide/resources/qml/SettingsGuide.qml:17
 msgctxt "@title"
 msgid "Cura Settings Guide"
-msgstr ""
+msgstr "Cura 设置向导"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
@@ -2345,15 +2327,12 @@ msgid ""
 "Please make sure your printer has a connection:\n"
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network."
-msgstr ""
-"请确保您的打印机已连接：\n"
-"- 检查打印机是否已启动。\n"
-"- 检查打印机是否连接到网络。"
+msgstr "请确保您的打印机已连接：\n- 检查打印机是否已启动。\n- 检查打印机是否连接到网络。"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
 msgid "Please connect your printer to the network."
-msgstr ""
+msgstr "请将打印机连接到网络。"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:156
 msgctxt "@label link to technical assistance"
@@ -2475,17 +2454,17 @@ msgstr "更多关于匿名数据收集的信息"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:74
 msgctxt "@text:window"
 msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr ""
+msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据。以下是所有数据分享的示例："
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:109
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
-msgstr ""
+msgstr "我不想发送匿名数据"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:118
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
-msgstr ""
+msgstr "允许发送匿名数据"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2535,7 +2514,7 @@ msgstr "深度 (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:126
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
-msgstr ""
+msgstr "在影像浮雕中，为了阻挡更多光源通过，深色像素应对应于较厚的位置。在高度图中，浅色像素代表着更高的地形，因此浅色像素对应于生成的 3D 模型中较厚的位置。"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:139
 msgctxt "@item:inlistbox"
@@ -3656,15 +3635,12 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"一些隐藏设置正在使用有别于一般设置的计算值。\n"
-"\n"
-"单击以使这些设置可见。"
+msgstr "一些隐藏设置正在使用有别于一般设置的计算值。\n\n单击以使这些设置可见。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:67
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
-msgstr ""
+msgstr "未使用此设置，因为受其影响的所有设置均已覆盖。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:72
 msgctxt "@label Header for list of settings."
@@ -3692,10 +3668,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"此设置的值与配置文件不同。\n"
-"\n"
-"单击以恢复配置文件的值。"
+msgstr "此设置的值与配置文件不同。\n\n单击以恢复配置文件的值。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:308
 msgctxt "@label"
@@ -3703,10 +3676,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"此设置通常可被自动计算，但其当前已被绝对定义。\n"
-"\n"
-"单击以恢复自动计算的值。"
+msgstr "此设置通常可被自动计算，但其当前已被绝对定义。\n\n单击以恢复自动计算的值。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
@@ -3761,7 +3731,7 @@ msgstr "您已修改部分配置文件设置。 如果您想对其进行更改�
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:355
 msgctxt "@tooltip"
 msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
-msgstr ""
+msgstr "此质量配置文件不适用于当前材料和喷嘴配置。请进行更改以便启用此质量配置文件。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:449
 msgctxt "@tooltip"
@@ -3789,15 +3759,12 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"某些设置/重写值与存储在配置文件中的值不同。\n"
-"\n"
-"点击打开配置文件管理器。"
+msgstr "某些设置/重写值与存储在配置文件中的值不同。\n\n点击打开配置文件管理器。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
-msgstr ""
+msgstr "打印设置已禁用。无法修改 G code 文件。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:52
 msgctxt "@label"
@@ -4121,12 +4088,12 @@ msgstr "预计剩余时间"
 #: /home/ruben/Projects/Cura/resources/qml/ViewsSelector.qml:50
 msgctxt "@label"
 msgid "View type"
-msgstr ""
+msgstr "查看类型"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
 msgid "Hi %1"
-msgstr ""
+msgstr "%1，您好"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:33
 msgctxt "@button"
@@ -4154,7 +4121,7 @@ msgid ""
 "- Send print jobs to Ultimaker printers outside your local network\n"
 "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 "- Get exclusive access to print profiles from leading brands"
-msgstr ""
+msgstr "- 将打印作业发送到局域网外的 Ultimaker 打印机\n- 将 Ultimaker Cura 设置存储到云以便在任何地方使用\n- 获得来自领先品牌的打印配置文件的独家访问权限"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4184,7 +4151,7 @@ msgstr "正在切片..."
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:61
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
-msgstr ""
+msgstr "无法切片"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:97
 msgctxt "@button"
@@ -4204,12 +4171,12 @@ msgstr "取消"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:31
 msgctxt "@label"
 msgid "Time estimation"
-msgstr ""
+msgstr "预计时间"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:114
 msgctxt "@label"
 msgid "Material estimation"
-msgstr ""
+msgstr "预计材料"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:164
 msgctxt "@label m for meter"
@@ -4344,7 +4311,7 @@ msgstr "BUG 反馈(&B)"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:236
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
-msgstr ""
+msgstr "新增功能"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:help"
@@ -4514,7 +4481,7 @@ msgstr "新增打印机"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:803
 msgctxt "@title:window"
 msgid "What's New"
-msgstr ""
+msgstr "新增功能"
 
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label %1 is filled in with the name of an extruder"
@@ -4532,9 +4499,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
-"您已自定义某些配置文件设置。\n"
-"您想保留或舍弃这些设置吗？"
+msgstr "您已自定义某些配置文件设置。\n您想保留或舍弃这些设置吗？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -4596,9 +4561,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura 由 Ultimaker B.V. 与社区合作开发。\n"
-"Cura 使用以下开源项目："
+msgstr "Cura 由 Ultimaker B.V. 与社区合作开发。\nCura 使用以下开源项目："
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:134
 msgctxt "@label"
@@ -4753,7 +4716,7 @@ msgstr "%1 & 材料"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:189
 msgctxt "@action:label"
 msgid "Material"
-msgstr ""
+msgstr "材料"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:261
 msgctxt "@action:label"
@@ -4793,158 +4756,158 @@ msgstr "导入模型"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
-msgstr ""
+msgstr "空"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
 msgid "Add a printer"
-msgstr ""
+msgstr "添加打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:39
 msgctxt "@label"
 msgid "Add a networked printer"
-msgstr ""
+msgstr "添加已联网打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:81
 msgctxt "@label"
 msgid "Add a non-networked printer"
-msgstr ""
+msgstr "添加未联网打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:70
 msgctxt "@label"
 msgid "Add printer by IP address"
-msgstr ""
+msgstr "按 IP 地址添加打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:133
 msgctxt "@text"
 msgid "Place enter your printer's IP address."
-msgstr ""
+msgstr "打印机 IP 地址输入栏。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:158
 msgctxt "@button"
 msgid "Add"
-msgstr ""
+msgstr "添加"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:204
 msgctxt "@label"
 msgid "Could not connect to device."
-msgstr ""
+msgstr "无法连接到设备。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:208
 msgctxt "@label"
 msgid "The printer at this address has not responded yet."
-msgstr ""
+msgstr "该网络地址的打印机尚未响应。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:240
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
-msgstr ""
+msgstr "由于是未知打印机或不是组内主机，无法添加该打印机。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:329
 msgctxt "@button"
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:342
 msgctxt "@button"
 msgid "Connect"
-msgstr ""
+msgstr "连接"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
 msgctxt "@button"
 msgid "Next"
-msgstr ""
+msgstr "下一步"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:23
 msgctxt "@label"
 msgid "User Agreement"
-msgstr ""
+msgstr "用户协议"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
-msgstr ""
+msgstr "同意"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:70
 msgctxt "@button"
 msgid "Decline and close"
-msgstr ""
+msgstr "拒绝并关闭"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
 msgid "Help us to improve Ultimaker Cura"
-msgstr ""
+msgstr "帮助我们改进 Ultimaker Cura"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:57
 msgctxt "@text"
 msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr ""
+msgstr "为了改善打印质量和用户体验，Ultimaker Cura 会收集匿名数据，这些数据包括："
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:71
 msgctxt "@text"
 msgid "Machine types"
-msgstr ""
+msgstr "﻿机器类型"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:77
 msgctxt "@text"
 msgid "Material usage"
-msgstr ""
+msgstr "材料使用"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:83
 msgctxt "@text"
 msgid "Number of slices"
-msgstr ""
+msgstr "切片数量"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:89
 msgctxt "@text"
 msgid "Print settings"
-msgstr ""
+msgstr "打印设置"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:102
 msgctxt "@text"
 msgid "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr ""
+msgstr "Ultimaker Cura 收集的数据不会包含任何个人信息。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:103
 msgctxt "@text"
 msgid "More information"
-msgstr ""
+msgstr "更多信息"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:24
 msgctxt "@label"
 msgid "What's new in Ultimaker Cura"
-msgstr ""
+msgstr "Ultimaker Cura 新增功能"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:42
 msgctxt "@label"
 msgid "There is no printer found over your network."
-msgstr ""
+msgstr "未找到网络内打印机。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:179
 msgctxt "@label"
 msgid "Refresh"
-msgstr ""
+msgstr "刷新"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:190
 msgctxt "@label"
 msgid "Add printer by IP"
-msgstr ""
+msgstr "按 IP 添加打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:223
 msgctxt "@label"
 msgid "Troubleshooting"
-msgstr ""
+msgstr "故障排除"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:204
 msgctxt "@label"
 msgid "Printer name"
-msgstr ""
+msgstr "打印机名称"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:217
 msgctxt "@text"
 msgid "Please give your printer a name"
-msgstr ""
+msgstr "请指定打印机名称"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:36
 msgctxt "@label"
@@ -4954,49 +4917,49 @@ msgstr "Ultimaker Cloud"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:77
 msgctxt "@text"
 msgid "The next generation 3D printing workflow"
-msgstr ""
+msgstr "下一代 3D 打印工作流程"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Send print jobs to Ultimaker printers outside your local network"
-msgstr ""
+msgstr "- 将打印作业发送到局域网外的 Ultimaker 打印机"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-msgstr ""
+msgstr "- 将 Ultimaker Cura 设置存储到云以便在任何地方使用"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
 msgid "- Get exclusive access to print profiles from leading brands"
-msgstr ""
+msgstr "- 获得来自领先品牌的打印配置文件的独家访问权限"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:119
 msgctxt "@button"
 msgid "Finish"
-msgstr ""
+msgstr "完成"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:128
 msgctxt "@button"
 msgid "Create an account"
-msgstr ""
+msgstr "创建帐户"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:29
 msgctxt "@label"
 msgid "Welcome to Ultimaker Cura"
-msgstr ""
+msgstr "欢迎使用 Ultimaker Cura"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:47
 msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "请按照以下步骤设置\nUltimaker Cura。此操作只需要几分钟时间。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
 msgctxt "@button"
 msgid "Get started"
-msgstr ""
+msgstr "开始"
 
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:210
 msgctxt "@option:check"
@@ -5096,12 +5059,12 @@ msgstr "固件更新程序"
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattened quality changes profile."
-msgstr ""
+msgstr "创建一份合并质量变化配置文件。"
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
 msgid "Profile Flattener"
-msgstr ""
+msgstr "配置文件合并器"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5176,12 +5139,12 @@ msgstr "UM3 网络连接"
 #: SettingsGuide/plugin.json
 msgctxt "description"
 msgid "Provides extra information and explanations about settings in Cura, with images and animations."
-msgstr ""
+msgstr "提供关于 Cura 设置的额外信息和说明，并附上图片及动画。"
 
 #: SettingsGuide/plugin.json
 msgctxt "name"
 msgid "Settings Guide"
-msgstr ""
+msgstr "设置向导"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5246,12 +5209,12 @@ msgstr "支持橡皮擦"
 #: UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "支持读取 Ultimaker 格式包。"
 
 #: UFPReader/plugin.json
 msgctxt "name"
 msgid "UFP Reader"
-msgstr ""
+msgstr "UFP 读取器"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
@@ -5336,12 +5299,12 @@ msgstr "版本自 2.7 升级到 3.0"
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr ""
+msgstr "将配置从 Cura 3.5 版本升级至 4.0 版本。"
 
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.5 to 4.0"
-msgstr ""
+msgstr "版本自 3.5 升级到 4.0"
 
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "description"
@@ -5356,12 +5319,12 @@ msgstr "版本自 3.4 升级到 3.5"
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr ""
+msgstr "将配置从 Cura 4.0 版本升级至 4.1 版本。"
 
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.0 to 4.1"
-msgstr ""
+msgstr "版本自 4.0 升级到 4.1"
 
 #: VersionUpgrade/VersionUpgrade30to31/plugin.json
 msgctxt "description"
@@ -5446,12 +5409,12 @@ msgstr "3MF 读取器"
 #: SVGToolpathReader/build/plugin.json
 msgctxt "description"
 msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr ""
+msgstr "读取 SVG 文件的刀具路径，调试打印机活动。"
 
 #: SVGToolpathReader/build/plugin.json
 msgctxt "name"
 msgid "SVG Toolpath Reader"
-msgstr ""
+msgstr "SVG 刀具路径读取器"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -5476,12 +5439,12 @@ msgstr "G-code 读取器"
 #: CuraDrive/plugin.json
 msgctxt "description"
 msgid "Backup and restore your configuration."
-msgstr ""
+msgstr "备份和还原配置。"
 
 #: CuraDrive/plugin.json
 msgctxt "name"
 msgid "Cura Backups"
-msgstr ""
+msgstr "Cura 备份"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
@@ -5516,12 +5479,12 @@ msgstr "3MF 写入器"
 #: PreviewStage/plugin.json
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
-msgstr ""
+msgstr "在 Cura 中提供预览阶段。"
 
 #: PreviewStage/plugin.json
 msgctxt "name"
 msgid "Preview Stage"
-msgstr ""
+msgstr "预览阶段"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
@@ -5749,6 +5712,7 @@ msgstr "Cura 配置文件读取器"
 #~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 #~ "- Get exclusive access to material profiles from leading brands"
 #~ msgstr ""
+
 #~ "- 发送打印作业到局域网外的 Ultimaker 打印机\n"
 #~ "- 将 Ultimaker Cura 设置存储到云以便在任何地方使用\n"
 #~ "- 获得来自领先品牌的材料配置文件的独家访问权限"
@@ -5775,6 +5739,7 @@ msgstr "Cura 配置文件读取器"
 #~ "\n"
 #~ "If your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog."
 #~ msgstr ""
+
 #~ "从以下列表中选择您要使用的打印机。\n"
 #~ "\n"
 #~ "如果您的打印机不在列表中，使用“自定义”类别中的“自定义 FFF 打印机”，并在下一个对话框中调整设置以匹配您的打印机。"
@@ -5987,6 +5952,7 @@ msgstr "Cura 配置文件读取器"
 #~ "Print Setup disabled\n"
 #~ "G-code files cannot be modified"
 #~ msgstr ""
+
 #~ "打印设置已禁用\n"
 #~ "G-code 文件无法被修改"
 
@@ -6239,6 +6205,7 @@ msgstr "Cura 配置文件读取器"
 #~ "Could not export using \"{}\" quality!\n"
 #~ "Felt back to \"{}\"."
 #~ msgstr ""
+
 #~ "无法使用 \"{}\" 导出质量！\n"
 #~ "返回 \"{}\"。"
 
@@ -6414,6 +6381,7 @@ msgstr "Cura 配置文件读取器"
 #~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
 #~ "3) Use a different material."
 #~ msgstr ""
+
 #~ "由于模型的对象大小和所选材质，某些模型可能无法打印出最佳效果：{Model_names}。\n"
 #~ "可以借鉴一些实用技巧来改善打印质量：\n"
 #~ "1) 使用圆角。\n"
@@ -6430,6 +6398,7 @@ msgstr "Cura 配置文件读取器"
 #~ "\n"
 #~ "Thanks!"
 #~ msgstr ""
+
 #~ "在图纸中找不到模型。请再次检查图纸内容，确保里面有一个零件或组件？\n"
 #~ "\n"
 #~ "谢谢！"
@@ -6440,6 +6409,7 @@ msgstr "Cura 配置文件读取器"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
+
 #~ "在图纸中找到一个以上的零件或组件。我们目前只支持里面正好有一个零件或组件的图纸。\n"
 #~ "\n"
 #~ "很抱歉！"
@@ -6464,6 +6434,7 @@ msgstr "Cura 配置文件读取器"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
+
 #~ "尊敬的客户：\n"
 #~ "我们无法在您的系统中找到有效的 SolidWorks 软件。这意味着您的系统中没有安装 SolidWorks，或者您没有获得有效的许可。请确保 SolidWorks 的运行没有任何问题并/或联系您的 ICT。\n"
 #~ "\n"
@@ -6478,6 +6449,7 @@ msgstr "Cura 配置文件读取器"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
+
 #~ "尊敬的客户：\n"
 #~ "您当前正在非 Windows 操作系统上运行此插件。此插件只能在装有 SolidWorks 且拥有有效许可的 Windows 系统上运行。请在装有 SolidWorks 的 Windows 计算机上安装此插件。\n"
 #~ "\n"
@@ -6582,6 +6554,7 @@ msgstr "Cura 配置文件读取器"
 #~ "Open the directory\n"
 #~ "with macro and icon"
 #~ msgstr ""
+
 #~ "打开宏和图标\n"
 #~ "所在的目录"
 
@@ -6880,6 +6853,7 @@ msgstr "Cura 配置文件读取器"
 #~ "\n"
 #~ " Thanks!."
 #~ msgstr ""
+
 #~ "在您的图纸中找不到模型。请再次检查图纸内容，确保里面有一个零件或组件。\n"
 #~ "\n"
 #~ "谢谢！"
@@ -6890,6 +6864,7 @@ msgstr "Cura 配置文件读取器"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
+
 #~ "在您的图纸中找到一个以上的零件或组件。我们目前只支持里面正好有一个零件或组件的图纸。\n"
 #~ "\n"
 #~ "很抱歉！"
@@ -6924,6 +6899,7 @@ msgstr "Cura 配置文件读取器"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
+
 #~ "<p><b>发生了致命错误。请将这份错误报告发送给我们以便修复问题</p></b>\n"
 #~ "            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n"
 #~ "        "
@@ -7090,6 +7066,7 @@ msgstr "Cura 配置文件读取器"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
+
 #~ "<p><b>发生了致命错误。 请将这份错误报告发送给我们以便修复问题</p></b>\n"
 #~ "            <p>请使用“发送报告”按钮将错误报告自动发布到我们的服务器</p>\n"
 #~ "        "
@@ -7236,6 +7213,7 @@ msgstr "Cura 配置文件读取器"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
+
 #~ "<p>发生了致命错误，我们无法恢复！</p>\n"
 #~ "        <p>请在以下网址中使用下方的信息提交错误报告：<a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>"
 
@@ -7277,6 +7255,7 @@ msgstr "Cura 配置文件读取器"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
+
 #~ " 插件包含一个许可。\n"
 #~ "您需要接受此许可才能安装此插件。\n"
 #~ "是否同意下列条款？"

@@ -3,6 +3,7 @@
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
+from cura import CuraApplication
 
 #
 # This object contains helper/convenience functions for Recommended mode.
@@ -12,9 +13,7 @@ class RecommendedMode(QObject):
     # Sets to use the adhesion or not for the "Adhesion" CheckBox in Recommended mode.
     @pyqtSlot(bool)
     def setAdhesion(self, checked: bool) -> None:
-        from cura.CuraApplication import CuraApplication
-
-        application = CuraApplication.getInstance()
+        application = CuraApplication.CuraApplication.getInstance()
         global_stack = application.getMachineManager().activeMachine
         if global_stack is None:
             return

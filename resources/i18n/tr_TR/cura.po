@@ -64,11 +64,7 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr ""
-"<p>Model boyutu ve model yapılandırması nedeniyle bir veya daha fazla 3D model optimum yazdırılamayabilir:</p>\n"
-"<p>{model_names}</p>\n"
-"<p>En iyi kalite ve güvenilirliği nasıl elde edeceğinizi öğrenin.</p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">Yazdırma kalitesi kılavuzunu görüntüleyin</a></p>"
+msgstr "<p>Model boyutu ve model yapılandırması nedeniyle bir veya daha fazla 3D model optimum yazdırılamayabilir:</p>\n<p>{model_names}</p>\n<p>En iyi kalite ve güvenilirliği nasıl elde edeceğinizi öğrenin.</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">Yazdırma kalitesi kılavuzunu görüntüleyin</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
@@ -541,12 +537,12 @@ msgstr "Buluta bağlanırken hata oluştu."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:14
 msgctxt "@info:status"
 msgid "Sending Print Job"
-msgstr ""
+msgstr "Yazdırma İşi Gönderiliyor"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:15
 msgctxt "@info:status"
 msgid "Uploading via Ultimaker Cloud"
-msgstr ""
+msgstr "Ultimaker Cloud İle Yükleniyor"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:624
 msgctxt "@info:status"
@@ -556,7 +552,7 @@ msgstr "Ultimaker hesabınızı kullanarak yazdırma görevlerini dilediğiniz y
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:630
 msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
 msgid "Connect to Ultimaker Cloud"
-msgstr ""
+msgstr "Ultimaker Cloud Platformuna Bağlan"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:631
 msgctxt "@action"
@@ -591,7 +587,7 @@ msgstr "Ağ ile Bağlan"
 #: /home/ruben/Projects/Cura/plugins/SettingsGuide/__init__.py:16
 msgctxt "@item:inmenu"
 msgid "Cura Settings Guide"
-msgstr ""
+msgstr "Cura Ayarlar Kılavuzu"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
@@ -906,7 +902,7 @@ msgstr "Giriş başarısız"
 #: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:33
 msgctxt "@info:not supported profile"
 msgid "Not supported"
-msgstr ""
+msgstr "Desteklenmiyor"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:203
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
@@ -1086,7 +1082,7 @@ msgstr "Etek"
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:84
 msgctxt "@tooltip"
 msgid "Prime Tower"
-msgstr ""
+msgstr "Astarlama Direği"
 
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:85
 msgctxt "@tooltip"
@@ -1166,12 +1162,12 @@ msgstr "Bilinmiyor"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:102
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
-msgstr ""
+msgstr "Aşağıdaki yazıcı(lar) bir grubun parçası olmadıkları için bağlanamıyor"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:104
 msgctxt "@label"
 msgid "Available networked printers"
-msgstr ""
+msgstr "Mevcut ağ yazıcıları"
 
 #: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:689
 msgctxt "@label"
@@ -1207,12 +1203,12 @@ msgstr "Uygun veri veya meta veri olmadan Cura yedeği geri yüklenmeye çalış
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:125
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr ""
+msgstr "Geçerli sürümünüzden yüksek bir sürüme sahip bir Cura yedeği geri yüklenmeye çalışıldı."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:79
 msgctxt "@message"
 msgid "Could not read response."
-msgstr ""
+msgstr "Yanıt okunamadı."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:197
 msgctxt "@info"
@@ -1222,12 +1218,12 @@ msgstr "Ultimaker hesabı sunucusuna ulaşılamadı."
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:66
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
-msgstr ""
+msgstr "Lütfen bu başvuruya yetki verirken gerekli izinleri verin."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:73
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
-msgstr ""
+msgstr "Oturum açmaya çalışırken beklenmeyen bir sorun oluştu, lütfen tekrar deneyin."
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1282,12 +1278,7 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr ""
-"<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n"
-"                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n"
-"                    <p>Yedekler yapılandırma klasöründe bulunabilir.</p>\n"
-"                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n"
-"                "
+msgstr "<p><b>Ultimaker Cura doğru görünmeyen bir şeyle karşılaştı.</p></b>\n                    <p>Başlatma esnasında kurtarılamaz bir hata ile karşılaştık. Muhtemelen bazı hatalı yapılandırma dosyalarından kaynaklanıyordu. Yapılandırmanızı yedekleyip sıfırlamanızı öneriyoruz.</p>\n                    <p>Yedekler yapılandırma klasöründe bulunabilir.</p>\n                    <p>Sorunu düzeltmek için lütfen bu Çökme Raporunu bize gönderin.</p>\n                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:98
 msgctxt "@action:button"
@@ -1320,10 +1311,7 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr ""
-"<p><b>Cura’da onarılamaz bir hata oluştu. Lütfen sorunu çözmek için bize Çökme Raporunu gönderin</p></b>\n"
-"            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen \"Rapor gönder\" düğmesini kullanın</p>\n"
-"        "
+msgstr "<p><b>Cura’da onarılamaz bir hata oluştu. Lütfen sorunu çözmek için bize Çökme Raporunu gönderin</p></b>\n            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen \"Rapor gönder\" düğmesini kullanın</p>\n        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:173
 msgctxt "@title:groupbox"
@@ -1444,7 +1432,7 @@ msgstr "Seçilen model yüklenemeyecek kadar küçüktü."
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:58
 msgctxt "@title:label"
 msgid "Printer Settings"
-msgstr ""
+msgstr "Yazıcı Ayarları"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:70
 msgctxt "@label"
@@ -1485,12 +1473,12 @@ msgstr "Yapı levhası şekli"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:125
 msgctxt "@label"
 msgid "Origin at center"
-msgstr ""
+msgstr "Merkez nokta"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
 msgctxt "@label"
 msgid "Heated bed"
-msgstr ""
+msgstr "Isıtılmış yatak"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:149
 msgctxt "@label"
@@ -1500,7 +1488,7 @@ msgstr "G-code türü"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:174
 msgctxt "@title:label"
 msgid "Printhead Settings"
-msgstr ""
+msgstr "Yazıcı Başlığı Ayarları"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:186
 msgctxt "@label"
@@ -1525,7 +1513,7 @@ msgstr "Y maks"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:260
 msgctxt "@label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "Portal Yüksekliği"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:274
 msgctxt "@label"
@@ -1535,12 +1523,12 @@ msgstr "Ekstrüder Sayısı"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:333
 msgctxt "@title:label"
 msgid "Start G-code"
-msgstr ""
+msgstr "G-code’u Başlat"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:347
 msgctxt "@title:label"
 msgid "End G-code"
-msgstr ""
+msgstr "G-code’u Sonlandır"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.qml:42
 msgctxt "@title:tab"
@@ -1550,7 +1538,7 @@ msgstr "Yazıcı"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:63
 msgctxt "@title:label"
 msgid "Nozzle Settings"
-msgstr ""
+msgstr "Nozül Ayarları"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:75
 msgctxt "@label"
@@ -1580,12 +1568,12 @@ msgstr "Soğutma Fanı Numarası"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:160
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
-msgstr ""
+msgstr "Ekstruder G-Code'u Başlatma"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:174
 msgctxt "@title:label"
 msgid "Extruder End G-code"
-msgstr ""
+msgstr "Ekstruder G-Code'u Sonlandırma"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:18
 msgctxt "@action:button"
@@ -1655,7 +1643,7 @@ msgstr "Yükleme ve güncelleme yapabilmek için <a href='%1'>oturum açın</a>"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:79
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
-msgstr ""
+msgstr "<a href='%1'>Malzeme makarası satın al</a>"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:95
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:34
@@ -1781,10 +1769,7 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr ""
-"Bu eklenti bir lisans içerir.\n"
-"Bu eklentiyi yüklemek için bu lisansı kabul etmeniz gerekir.\n"
-"Aşağıdaki koşulları kabul ediyor musunuz?"
+msgstr "Bu eklenti bir lisans içerir.\nBu eklentiyi yüklemek için bu lisansı kabul etmeniz gerekir.\nAşağıdaki koşulları kabul ediyor musunuz?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:55
 msgctxt "@action:button"
@@ -2017,7 +2002,7 @@ msgstr "Bekleniyor"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:217
 msgctxt "@info"
 msgid "All jobs are printed."
-msgstr ""
+msgstr "Tüm işler yazdırıldı."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:252
 msgctxt "@label link to connect manager"
@@ -2045,10 +2030,7 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr ""
-"Yazıcınıza ağ üzerinden doğrudan bağlamak için, lütfen yazıcınızın ağ kablosu kullanan bir ağa bağlı olduğundan emin olun veya yazıcınızı WiFi ağına bağlayın. Cura'ya yazıcınız ile bağlanamıyorsanız g-code dosyalarını yazıcınıza aktarmak için USB sürücüsü kullanabilirsiniz.\n"
-"\n"
-"Aşağıdaki listeden yazıcınızı seçin:"
+msgstr "Yazıcınıza ağ üzerinden doğrudan bağlamak için, lütfen yazıcınızın ağ kablosu kullanan bir ağa bağlı olduğundan emin olun veya yazıcınızı WiFi ağına bağlayın. Cura'ya yazıcınız ile bağlanamıyorsanız g-code dosyalarını yazıcınıza aktarmak için USB sürücüsü kullanabilirsiniz.\n\nAşağıdaki listeden yazıcınızı seçin:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2115,13 +2097,13 @@ msgstr "Bağlan"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:354
 msgctxt "@title:window"
 msgid "Invalid IP address"
-msgstr ""
+msgstr "Geçersiz IP adresi"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:355
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
-msgstr ""
+msgstr "Lütfen geçerli bir IP adresi girin."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:366
 msgctxt "@title:window"
@@ -2132,7 +2114,7 @@ msgstr "Yazıcı Adresi"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address or hostname of your printer on the network."
-msgstr ""
+msgstr "IP adresini veya yazıcınızın ağ üzerindeki ana bilgisayar adını girin."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:419
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:138
@@ -2338,7 +2320,7 @@ msgstr "Yazıcıya Bağlan"
 #: /home/ruben/Projects/Cura/plugins/SettingsGuide/resources/qml/SettingsGuide.qml:17
 msgctxt "@title"
 msgid "Cura Settings Guide"
-msgstr ""
+msgstr "Cura Ayarlar Kılavuzu"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
@@ -2346,15 +2328,12 @@ msgid ""
 "Please make sure your printer has a connection:\n"
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network."
-msgstr ""
-"Lütfen yazıcınızın bağlı olduğunu kontrol edin:\n"
-"- Yazıcının açık olduğunu kontrol edin.\n"
-"- Yazıcının ağa bağlı olduğunu kontrol edin."
+msgstr "Lütfen yazıcınızın bağlı olduğunu kontrol edin:\n- Yazıcının açık olduğunu kontrol edin.\n- Yazıcının ağa bağlı olduğunu kontrol edin."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
 msgid "Please connect your printer to the network."
-msgstr ""
+msgstr "Lütfen yazıcınızı ağa bağlayın."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:156
 msgctxt "@label link to technical assistance"
@@ -2476,17 +2455,17 @@ msgstr "Anonim veri toplama hakkında daha fazla bilgi"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:74
 msgctxt "@text:window"
 msgid "Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below is an example of all the data that is shared:"
-msgstr ""
+msgstr "Ultimaker Cura, yazdırma kalitesini ve kullanıcı deneyimini iyileştirmek için anonim veri toplar. Aşağıda, paylaşılan tüm verilerin bir örneği verilmiştir:"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:109
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
-msgstr ""
+msgstr "Anonim veri göndermek istemiyorum"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:118
 msgctxt "@text:window"
 msgid "Allow sending anonymous data"
-msgstr ""
+msgstr "Anonim veri gönderilmesine izin ver"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:19
 msgctxt "@title:window"
@@ -2536,7 +2515,7 @@ msgstr "Derinlik (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:126
 msgctxt "@info:tooltip"
 msgid "For lithophanes dark pixels should correspond to thicker locations in order to block more light coming through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to thicker locations in the generated 3D model."
-msgstr ""
+msgstr "Litofanlar için, daha fazla ışığın girmesini engellemek amacıyla koyu renk pikseller daha kalın olan bölgelere denk gelmelidir. Yükseklik haritaları için daha açık renk pikseller daha yüksek araziyi ifade eder; bu nedenle daha açık renk piksellerin oluşturulan 3D modelde daha kalın bölgelere denk gelmesi gerekir."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:139
 msgctxt "@item:inlistbox"
@@ -3659,15 +3638,12 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr ""
-"Gizlenen bazı ayarlar normal hesaplanan değerden farklı değerler kullanır.\n"
-"\n"
-"Bu ayarları görmek için tıklayın."
+msgstr "Gizlenen bazı ayarlar normal hesaplanan değerden farklı değerler kullanır.\n\nBu ayarları görmek için tıklayın."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:67
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
-msgstr ""
+msgstr "Etkilediği tüm ayarlar geçersiz kılındığı için bu ayar kullanılmamaktadır."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:72
 msgctxt "@label Header for list of settings."
@@ -3695,10 +3671,7 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr ""
-"Bu ayarın değeri profilden farklıdır.\n"
-"\n"
-"Profil değerini yenilemek için tıklayın."
+msgstr "Bu ayarın değeri profilden farklıdır.\n\nProfil değerini yenilemek için tıklayın."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:308
 msgctxt "@label"
@@ -3706,10 +3679,7 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr ""
-"Bu ayar normal olarak yapılır ama şu anda mutlak değer ayarı var.\n"
-"\n"
-"Hesaplanan değeri yenilemek için tıklayın."
+msgstr "Bu ayar normal olarak yapılır ama şu anda mutlak değer ayarı var.\n\nHesaplanan değeri yenilemek için tıklayın."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
@@ -3764,7 +3734,7 @@ msgstr "Bazı profil ayarlarını değiştirdiniz. Bunları değişiklikleri kay
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:355
 msgctxt "@tooltip"
 msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
-msgstr ""
+msgstr "Bu kalite profili mevcut malzemeniz ve nozül yapılandırması için kullanılamaz. Bu kalite profilini etkinleştirmek için lütfen bu öğeleri değiştirin."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:449
 msgctxt "@tooltip"
@@ -3792,15 +3762,12 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr ""
-"Bazı ayar/geçersiz kılma değerleri profilinizde saklanan değerlerden farklıdır.\n"
-"\n"
-"Profil yöneticisini açmak için tıklayın."
+msgstr "Bazı ayar/geçersiz kılma değerleri profilinizde saklanan değerlerden farklıdır.\n\nProfil yöneticisini açmak için tıklayın."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
 msgid "Print setup disabled. G-code file can not be modified."
-msgstr ""
+msgstr "Yazıcı kurulumu devre dışı bırakıldı. G-code dosyası düzenlenemez."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:52
 msgctxt "@label"
@@ -4126,12 +4093,12 @@ msgstr "Kalan tahmini süre"
 #: /home/ruben/Projects/Cura/resources/qml/ViewsSelector.qml:50
 msgctxt "@label"
 msgid "View type"
-msgstr ""
+msgstr "Görüntüleme tipi"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
 msgid "Hi %1"
-msgstr ""
+msgstr "Merhaba %1"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:33
 msgctxt "@button"
@@ -4159,7 +4126,7 @@ msgid ""
 "- Send print jobs to Ultimaker printers outside your local network\n"
 "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 "- Get exclusive access to print profiles from leading brands"
-msgstr ""
+msgstr "- Yerel ağınız dışındaki Ultimaker yazıcılarına yazdırma görevleri gönderin\n- Dilediğiniz yerde kullanmak üzere Ultimaker Cura ayarlarınızı bulutta depolayın\n- Lider markalardan yazdırma profillerine özel erişim sağlayın"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4189,7 +4156,7 @@ msgstr "Dilimleniyor..."
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:61
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
-msgstr ""
+msgstr "Dilimlenemedi"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:97
 msgctxt "@button"
@@ -4209,12 +4176,12 @@ msgstr "İptal"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:31
 msgctxt "@label"
 msgid "Time estimation"
-msgstr ""
+msgstr "Süre tahmini"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:114
 msgctxt "@label"
 msgid "Material estimation"
-msgstr ""
+msgstr "Malzeme tahmini"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/PrintJobInformation.qml:164
 msgctxt "@label m for meter"
@@ -4349,7 +4316,7 @@ msgstr "Hata Bildir"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:236
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
-msgstr ""
+msgstr "Yenilikler"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
 msgctxt "@action:inmenu menubar:help"
@@ -4522,7 +4489,7 @@ msgstr "Yazıcı Ekle"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:803
 msgctxt "@title:window"
 msgid "What's New"
-msgstr ""
+msgstr "Yenilikler"
 
 #: /home/ruben/Projects/Cura/resources/qml/ExtruderButton.qml:16
 msgctxt "@label %1 is filled in with the name of an extruder"
@@ -4541,9 +4508,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr ""
-"Bazı profil ayarlarını özelleştirdiniz.\n"
-"Bu ayarları kaydetmek veya iptal etmek ister misiniz?"
+msgstr "Bazı profil ayarlarını özelleştirdiniz.\nBu ayarları kaydetmek veya iptal etmek ister misiniz?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -4605,9 +4570,7 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr ""
-"Cura, topluluk iş birliği ile Ultimaker B.V. tarafından geliştirilmiştir.\n"
-"Cura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
+msgstr "Cura, topluluk iş birliği ile Ultimaker B.V. tarafından geliştirilmiştir.\nCura aşağıdaki açık kaynak projelerini gururla kullanmaktadır:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:134
 msgctxt "@label"
@@ -4762,7 +4725,7 @@ msgstr "%1 & malzeme"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:189
 msgctxt "@action:label"
 msgid "Material"
-msgstr ""
+msgstr "Malzeme"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:261
 msgctxt "@action:label"
@@ -4802,158 +4765,158 @@ msgstr "Modelleri içe aktar"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DropDownWidget.qml:93
 msgctxt "@label"
 msgid "Empty"
-msgstr ""
+msgstr "Boş"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:24
 msgctxt "@label"
 msgid "Add a printer"
-msgstr ""
+msgstr "Bir yazıcı ekleyin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:39
 msgctxt "@label"
 msgid "Add a networked printer"
-msgstr ""
+msgstr "Bir ağ yazıcısı ekleyin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkOrLocalPrinterContent.qml:81
 msgctxt "@label"
 msgid "Add a non-networked printer"
-msgstr ""
+msgstr "Ağ dışı bir yazıcı ekleyin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:70
 msgctxt "@label"
 msgid "Add printer by IP address"
-msgstr ""
+msgstr "IP adresine göre bir yazıcı ekleyin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:133
 msgctxt "@text"
 msgid "Place enter your printer's IP address."
-msgstr ""
+msgstr "Lütfen yazıcınızın IP adresini girin."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:158
 msgctxt "@button"
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:204
 msgctxt "@label"
 msgid "Could not connect to device."
-msgstr ""
+msgstr "Cihaza bağlanılamadı."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:208
 msgctxt "@label"
 msgid "The printer at this address has not responded yet."
-msgstr ""
+msgstr "Bu adresteki yazıcı henüz yanıt vermedi."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:240
 msgctxt "@label"
 msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
-msgstr ""
+msgstr "Bu yazıcı bilinmeyen bir yazıcı olduğu veya bir grubun ana makinesi olmadığı için eklenemiyor."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:329
 msgctxt "@button"
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:342
 msgctxt "@button"
 msgid "Connect"
-msgstr ""
+msgstr "Bağlan"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/FirstStartMachineActionsContent.qml:77
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:123
 msgctxt "@button"
 msgid "Next"
-msgstr ""
+msgstr "Sonraki"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:23
 msgctxt "@label"
 msgid "User Agreement"
-msgstr ""
+msgstr "Kullanıcı Anlaşması"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
 msgctxt "@button"
 msgid "Agree"
-msgstr ""
+msgstr "Kabul ediyorum"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:70
 msgctxt "@button"
 msgid "Decline and close"
-msgstr ""
+msgstr "Reddet ve kapat"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:24
 msgctxt "@label"
 msgid "Help us to improve Ultimaker Cura"
-msgstr ""
+msgstr "Ultimaker Cura'yı geliştirmemiz yardım edin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:57
 msgctxt "@text"
 msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr ""
+msgstr "Ultimaker Cura, yazdırma kalitesini ve kullanıcı deneyimini iyileştirmek için anonim veri toplar. Bu veriler aşağıdakileri içerir:"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:71
 msgctxt "@text"
 msgid "Machine types"
-msgstr ""
+msgstr "Makine türleri"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:77
 msgctxt "@text"
 msgid "Material usage"
-msgstr ""
+msgstr "Malzeme kullanımı"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:83
 msgctxt "@text"
 msgid "Number of slices"
-msgstr ""
+msgstr "Dilim sayısı"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:89
 msgctxt "@text"
 msgid "Print settings"
-msgstr ""
+msgstr "Yazdırma ayarları"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:102
 msgctxt "@text"
 msgid "Data collected by Ultimaker Cura will not contain any personal information."
-msgstr ""
+msgstr "Ultimaker Cura tarafından toplanan veriler herhangi bir kişisel bilgi içermeyecektir."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:103
 msgctxt "@text"
 msgid "More information"
-msgstr ""
+msgstr "Daha fazla bilgi"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WhatsNewContent.qml:24
 msgctxt "@label"
 msgid "What's new in Ultimaker Cura"
-msgstr ""
+msgstr "Ultimaker Cura'daki yenilikler"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:42
 msgctxt "@label"
 msgid "There is no printer found over your network."
-msgstr ""
+msgstr "Ağınızda yazıcı bulunamadı."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:179
 msgctxt "@label"
 msgid "Refresh"
-msgstr ""
+msgstr "Yenile"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:190
 msgctxt "@label"
 msgid "Add printer by IP"
-msgstr ""
+msgstr "IP'ye göre bir yazıcı ekleyin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddNetworkPrinterScrollView.qml:223
 msgctxt "@label"
 msgid "Troubleshooting"
-msgstr ""
+msgstr "Sorun giderme"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:204
 msgctxt "@label"
 msgid "Printer name"
-msgstr ""
+msgstr "Yazıcı adı"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:217
 msgctxt "@text"
 msgid "Please give your printer a name"
-msgstr ""
+msgstr "Lütfen yazıcınıza bir isim verin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:36
 msgctxt "@label"
@@ -4963,49 +4926,49 @@ msgstr "Ultimaker Cloud"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:77
 msgctxt "@text"
 msgid "The next generation 3D printing workflow"
-msgstr ""
+msgstr "Yeni nesil 3D yazdırma iş akışı"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Send print jobs to Ultimaker printers outside your local network"
-msgstr ""
+msgstr "- Yerel ağınızın dışındaki Ultimaker yazıcılara yazdırma işi gönderin"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-msgstr ""
+msgstr "- Ultimaker Cura ayarlarınızı her yerde kullanabilmek için bulutta saklayın"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
 msgid "- Get exclusive access to print profiles from leading brands"
-msgstr ""
+msgstr "- Lider markalara ait yazdırma profillerine özel erişim sağlayın"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:119
 msgctxt "@button"
 msgid "Finish"
-msgstr ""
+msgstr "Bitir"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:128
 msgctxt "@button"
 msgid "Create an account"
-msgstr ""
+msgstr "Bir hesap oluşturun"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:29
 msgctxt "@label"
 msgid "Welcome to Ultimaker Cura"
-msgstr ""
+msgstr "Ultimaker Cura'ya hoş geldiniz"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:47
 msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr ""
+msgstr "Ultimaker Cura'yı kurmak\n için lütfen aşağıdaki adımları izleyin. Bu sadece birkaç saniye sürecektir."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
 msgctxt "@button"
 msgid "Get started"
-msgstr ""
+msgstr "Başlayın"
 
 #: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:210
 msgctxt "@option:check"
@@ -5105,12 +5068,12 @@ msgstr "Aygıt Yazılımı Güncelleyici"
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattened quality changes profile."
-msgstr ""
+msgstr "Düzleştirilmiş kalitede değiştirilmiş bir profil oluşturun."
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
 msgid "Profile Flattener"
-msgstr ""
+msgstr "Profil Düzleştirici"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5185,12 +5148,12 @@ msgstr "UM3 Ağ Bağlantısı"
 #: SettingsGuide/plugin.json
 msgctxt "description"
 msgid "Provides extra information and explanations about settings in Cura, with images and animations."
-msgstr ""
+msgstr "Resim ve animasyonlar yardımıyla Cura'daki ayarlarla ilgili ekstra bilgi ve açıklama sunar."
 
 #: SettingsGuide/plugin.json
 msgctxt "name"
 msgid "Settings Guide"
-msgstr ""
+msgstr "Ayarlar Kılavuzu"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5255,12 +5218,12 @@ msgstr "Destek Silici"
 #: UFPReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading Ultimaker Format Packages."
-msgstr ""
+msgstr "Ultimaker Biçim Paketlerinin okunması için destek sağlar."
 
 #: UFPReader/plugin.json
 msgctxt "name"
 msgid "UFP Reader"
-msgstr ""
+msgstr "UFP Okuyucu"
 
 #: SliceInfoPlugin/plugin.json
 msgctxt "description"
@@ -5345,12 +5308,12 @@ msgstr "2.7’den 3.0’a Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr ""
+msgstr "Yapılandırmaları Cura 3.5’ten Cura 4.0’a yükseltir."
 
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 3.5 to 4.0"
-msgstr ""
+msgstr "3.5’ten 4.0’a Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade34to35/plugin.json
 msgctxt "description"
@@ -5365,12 +5328,12 @@ msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr ""
+msgstr "Yapılandırmaları Cura 4.0’dan Cura 4.1’e yükseltir."
 
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.0 to 4.1"
-msgstr ""
+msgstr "4.0’dan 4.1’e Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade30to31/plugin.json
 msgctxt "description"
@@ -5455,12 +5418,12 @@ msgstr "3MF Okuyucu"
 #: SVGToolpathReader/build/plugin.json
 msgctxt "description"
 msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr ""
+msgstr "Yazıcı hareketlerinde hata ayıklaması yapmak için takım yolu olarak SVG dosyalarını okur."
 
 #: SVGToolpathReader/build/plugin.json
 msgctxt "name"
 msgid "SVG Toolpath Reader"
-msgstr ""
+msgstr "SVG Takım Yolu Okuyucu"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -5485,12 +5448,12 @@ msgstr "G-code Okuyucu"
 #: CuraDrive/plugin.json
 msgctxt "description"
 msgid "Backup and restore your configuration."
-msgstr ""
+msgstr "Yapılandırmanızı yedekleyin ve geri yükleyin."
 
 #: CuraDrive/plugin.json
 msgctxt "name"
 msgid "Cura Backups"
-msgstr ""
+msgstr "Cura Yedeklemeleri"
 
 #: CuraProfileWriter/plugin.json
 msgctxt "description"
@@ -5525,12 +5488,12 @@ msgstr "3MF Yazıcı"
 #: PreviewStage/plugin.json
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
-msgstr ""
+msgstr "Cura’da ön izleme aşaması sunar."
 
 #: PreviewStage/plugin.json
 msgctxt "name"
 msgid "Preview Stage"
-msgstr ""
+msgstr "Öz İzleme Aşaması"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
@@ -5758,6 +5721,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 #~ "- Get exclusive access to material profiles from leading brands"
 #~ msgstr ""
+
 #~ "- Yerel ağınız dışındaki Ultimaker yazıcılarına yazdırma görevleri gönderin\n"
 #~ "- Dilediğiniz yerde kullanmak üzere Ultimaker Cura ayarlarınızı bulutta depolayın\n"
 #~ "- Lider markalardan malzeme profillerine özel erişim sağlayın"
@@ -5784,6 +5748,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "\n"
 #~ "If your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog."
 #~ msgstr ""
+
 #~ "Aşağıdaki listeden kullanmak istediğiniz yazıcıyı seçin.\n"
 #~ "\n"
 #~ "Yazıcınız listede yoksa “Özel” kategorisinden “Özel FFF Yazıcı” seçeneğini kullanın ve sonraki iletişim kutusunda ayarları yazıcınıza göre düzenleyin."
@@ -5996,6 +5961,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "Print Setup disabled\n"
 #~ "G-code files cannot be modified"
 #~ msgstr ""
+
 #~ "Yazdırma Ayarı devre dışı\n"
 #~ "G-code dosyaları üzerinde değişiklik yapılamaz"
 
@@ -6248,6 +6214,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "Could not export using \"{}\" quality!\n"
 #~ "Felt back to \"{}\"."
 #~ msgstr ""
+
 #~ "\"{}\" quality!\n"
 #~ "Fell back to \"{}\" kullanarak dışarı aktarım yapılamadı."
 
@@ -6423,6 +6390,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
 #~ "3) Use a different material."
 #~ msgstr ""
+
 #~ "Bazı modeller, nesne boyutu ve modeller için seçilen materyal nedeniyle optimal biçimde yazdırılamayabilir: {model_names}.\n"
 #~ "Yazdırma kalitesini iyileştirmek için faydalı olabilecek ipuçları:\n"
 #~ "1) Yuvarlak köşeler kullanın.\n"
@@ -6439,6 +6407,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "\n"
 #~ "Thanks!"
 #~ msgstr ""
+
 #~ "Çiziminizde model bulunamadı. İçeriğini tekrar kontrol edip bir parçanın veya düzeneğin içinde olduğunu teyit edebilir misiniz?\n"
 #~ "\n"
 #~ "Teşekkürler!"
@@ -6449,6 +6418,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
+
 #~ "Çiziminizin içinde birden fazla parça veya düzenek bulundu. Şu anda sadece içerisinde bir parça veya düzenek olan çizimleri desteklemekteyiz.\n"
 #~ "\n"
 #~ "Üzgünüz!"
@@ -6473,6 +6443,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
+
 #~ "Sayın müşterimiz,\n"
 #~ "Sisteminizde SolidWorks’ün geçerli bir yüklemesini bulamadık. Ya sisteminizde SolidWorks yüklü değil ya da geçerli bir lisansa sahip değilsiniz. SolidWorks’ü tek başına sorunsuz bir biçimde çalıştırabildiğinizden emin olun ve/veya ICT’niz ile irtibata geçin.\n"
 #~ "\n"
@@ -6487,6 +6458,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
+
 #~ "Sayın müşterimiz,\n"
 #~ "Şu anda bu eklentiyi Windows dışında farklı bir işletim sisteminde kullanmaktasınız. Bu eklenti sadece Windows işletim sisteminde, geçerli bir lisansa sahip, kurulu SolidWorks programıyla çalışır. Lütfen bu eklentiyi SolidWorks’ün kurulu olduğu Windows işletim sistemli bir bilgisayara yükleyin.\n"
 #~ "\n"
@@ -6591,6 +6563,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "Open the directory\n"
 #~ "with macro and icon"
 #~ msgstr ""
+
 #~ "Makro ve simge ile\n"
 #~ "dizini açın"
 
@@ -6889,6 +6862,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "\n"
 #~ " Thanks!."
 #~ msgstr ""
+
 #~ "Çiziminizde model bulunamadı. İçeriğini tekrar kontrol edip bir parçanın veya düzeneğin içinde olduğunu teyit edebilir misiniz?\n"
 #~ "\n"
 #~ " Teşekkürler!."
@@ -6899,6 +6873,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
+
 #~ "Çiziminizin içinde birden fazla parça veya düzenek bulundu. Şu anda sadece içerisinde bir parça veya düzenek olan çizimleri desteklemekteyiz.\n"
 #~ "\n"
 #~ "Üzgünüz!"
@@ -6933,6 +6908,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
+
 #~ "<p><b>Onarılamaz bir hata oluştu. Lütfen sorunu çözmek için bize Çökme Raporunu gönderin</p></b>\n"
 #~ "            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen \"Rapor gönder\" düğmesini kullanın</p>\n"
 #~ "        "
@@ -7099,6 +7075,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
+
 #~ "<p><b>Çok ciddi bir istisna oluştu. Lütfen sorunu çözmek için bize Çökme Raporu'nu gönderin</p></b>\n"
 #~ "            <p>Sunucularımıza otomatik olarak bir hata raporu yüklemek için lütfen \"Rapor gönder\" düğmesini kullanın</p>\n"
 #~ "        "
@@ -7245,6 +7222,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
+
 #~ "<p>Kurtulunamayan ciddi bir olağanüstü durum oluştu!</p>\n"
 #~ "        <p>Yazılım hatası raporunu <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a> adresine gönderirken aşağıdaki bilgileri kullanınız</p>\n"
 #~ "    "
@@ -7287,6 +7265,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
+
 #~ " eklenti lisans içerir.\n"
 #~ "Bu eklentiyi kurmak için bu lisans kabul etmeniz gerekir.\n"
 #~ "Aşağıdaki koşulları kabul ediyor musunuz?"
@@ -7814,6 +7793,7 @@ msgstr "Cura Profil Okuyucu"
 #~ msgid "Print Selected Model with %1"
 #~ msgid_plural "Print Selected Models With %1"
 #~ msgstr[0] "Seçili Modeli %1 ile Yazdır"
+
 #~ msgstr[1] "Seçili Modelleri %1 ile Yazdır"
 
 #~ msgctxt "@info:status"
@@ -7843,6 +7823,7 @@ msgstr "Cura Profil Okuyucu"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
+
 #~ "<p>Düzeltemediğimiz önemli bir özel durum oluştu!</p>\n"
 #~ "        <p>Umarız bu yavru kedi resmi şoku atlatmanıza yardımcı olur.</p>\n"
 #~ "        <p>Bir hata raporu göndermek için aşağıdaki bilgileri kullanın: <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
