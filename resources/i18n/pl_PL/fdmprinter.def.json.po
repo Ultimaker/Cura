@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Cura 4.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-05-14 12:48+0000\n"
-"PO-Revision-Date: 2019-03-14 14:44+0100\n"
-"Last-Translator: Mariusz 'Virgin71' Matłosz <matliks@gmail.com>\n"
-"Language-Team: reprapy.pl\n"
+"PO-Revision-Date: 2019-05-27 22:32+0200\n"
+"Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
+"Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,7 +45,7 @@ msgstr "Pokaż Warianty Maszyny"
 #: fdmprinter.def.json
 msgctxt "machine_show_variants description"
 msgid "Whether to show the different variants of this machine, which are described in separate json files."
-msgstr "Czy wyświetlać różna warianty drukarki, które są opisane w oddzielnych plikach JSON?"
+msgstr "Określa czy wyświetlać różne warianty drukarki, które są opisane w oddzielnych plikach JSON."
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
@@ -213,7 +213,7 @@ msgstr "Posiada Podgrzewany Stół"
 #: fdmprinter.def.json
 msgctxt "machine_heated_bed description"
 msgid "Whether the machine has a heated build plate present."
-msgstr "Czy maszyna ma podgrzewany stół?"
+msgstr "Określa czy maszyna posiada podgrzewany stół."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -238,7 +238,7 @@ msgstr "Liczba zespołów esktruderów. Zespół ekstrudera to kombinacja podajn
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders That Are Enabled"
-msgstr ""
+msgstr "Liczba Ekstruderów, które są dostępne"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -248,7 +248,7 @@ msgstr "Liczba zespołów ekstruderów, które są dostępne; automatycznie usta
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
-msgstr ""
+msgstr "Zew. średnica dyszy"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -258,7 +258,7 @@ msgstr "Zewnętrzna średnica końcówki dyszy."
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle Length"
-msgstr ""
+msgstr "Długość dyszy"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -268,7 +268,7 @@ msgstr "Różnica w wysokości pomiędzy końcówką dyszy a najniższą częśc
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
-msgstr ""
+msgstr "Kąt dyszy"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -278,7 +278,7 @@ msgstr "Kąt pomiędzy poziomą powierzchnią a częścią stożkową bezpośred
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
 msgid "Heat Zone Length"
-msgstr ""
+msgstr "Długość strefy cieplnej"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -308,7 +308,7 @@ msgstr "Czy kontrolować temperaturę przez Cura? Wyłącz tę funkcję, aby kon
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
-msgstr ""
+msgstr "Prędkość nagrzewania"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -318,7 +318,7 @@ msgstr "Szybkość (° C/s.), z którą dysza ogrzewa się - średnia z normlane
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
-msgstr ""
+msgstr "Prędkość chłodzenia"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -338,7 +338,7 @@ msgstr "Minimalny czas, w jakim ekstruder musi być nieużywany, aby schłodzić
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavour"
-msgstr ""
+msgstr "Wersja G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -403,7 +403,7 @@ msgstr "Używaj komend retrakcji (G10/G11) zamiast używać współrzędną E w 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
-msgstr ""
+msgstr "Niedozwolone obszary"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -423,7 +423,7 @@ msgstr "Lista obszarów, w które dysze nie mogą wjeżdżać."
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
 msgid "Machine Head Polygon"
-msgstr ""
+msgstr "Obszar głowicy drukarki"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -433,7 +433,7 @@ msgstr "Sylwetka 2D głowicy drukującej (bez nasadki wentylatora)."
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine Head & Fan Polygon"
-msgstr ""
+msgstr "Obszar głowicy i wentylatora drukarki"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -443,7 +443,7 @@ msgstr "Sylwetka 2D głowicy drukującej (z nasadką wentylatora)."
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "Wysokość wózka"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -473,7 +473,7 @@ msgstr "Wewnętrzna średnica dyszy. Użyj tego ustawienia, jeśli używasz dysz
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
-msgstr ""
+msgstr "Przesunięcie ekstrudera"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -1872,12 +1872,12 @@ msgstr "Domyślna temperatura używana do drukowania. Powinno to być \"podstawo
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr ""
+msgstr "Temperatura obszaru roboczego"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "Temperatura stosowana dla obszaru roboczego. Jeżeli jest ustawione 0, temperatura nie będzie ustawiona."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2942,12 +2942,12 @@ msgstr "Po przełączeniu maszyny z jednego ekstrudera na drugi, stół jest opu
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr ""
+msgstr "Skok Z po zmianie wysokości ekstrudera"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr ""
+msgstr "Różnica wysokości podczas wykonywania skoku Z po zmianie ekstrudera."
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -3222,7 +3222,7 @@ msgstr "Krzyż"
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "Gyroid"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
@@ -4376,12 +4376,12 @@ msgstr "Po wydrukowaniu podstawowej wieży jedną dyszą, wytrzyj wytłoczony ma
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr ""
+msgstr "Obrys wieży czyszczącej"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr ""
+msgstr "Wieże czyszczące mogą potrzebować dodatkowej adhezji zapewnionej przez obrys, nawet jeśli model nie potrzebuje. Nie można używać z typem przyczepności „tratwa”."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4901,12 +4901,12 @@ msgstr "Minimalny rozmiar segmentu linii ruchu jałowego po pocięciu. Jeżeli t
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
-msgstr ""
+msgstr "Maksymalne odchylenie"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr ""
+msgstr "Maksymalne odchylenie dozwolone przy zmniejszaniu rozdzielczości dla ustawienia „Maksymalna rozdzielczość”. Jeśli to zwiększysz, wydruk będzie mniej dokładny, ale G-Code będzie mniejszy."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5510,7 +5510,7 @@ msgstr "Odległość między dyszą a liniami skierowanymi w dół. Większe prz
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use Adaptive Layers"
-msgstr ""
+msgstr "Użyj zmiennych warstw"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
@@ -5520,7 +5520,7 @@ msgstr "Zmienne warstwy obliczają wysokości warstw w zależności od kształtu
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive Layers Maximum Variation"
-msgstr ""
+msgstr "Maks. zmiana zmiennych warstw"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
@@ -5530,7 +5530,7 @@ msgstr "Maksymalna dozwolona różnica wysokości względem bazowej wysokości w
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive Layers Variation Step Size"
-msgstr ""
+msgstr "Krok zmian zmiennych warstw"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5540,7 +5540,7 @@ msgstr "Różnica w wysokości pomiędzy następną wysokością warstwy i poprz
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Threshold"
-msgstr ""
+msgstr "Próg zmiany warstw"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
@@ -5760,152 +5760,152 @@ msgstr "Procent prędkości wentylatora używany podczas drukowania trzeciej war
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
 msgid "Wipe Nozzle Between Layers"
-msgstr ""
+msgstr "Wytrzyj dyszę pomiędzy warstwami"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Włącza w G-Code wycieranie dyszy między warstwami. Włączenie tego ustawienia może wpłynąć na zachowanie retrakcji przy zmianie warstwy. Użyj ustawień „Czyszczenie przy retrakcji”, aby kontrolować retrakcję na warstwach, na których będzie działał skrypt czyszczenia."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
-msgstr ""
+msgstr "Objętość materiału między czyszczeniem"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr ""
+msgstr "Maksymalna ilość materiału, który można wytłoczyć przed zainicjowaniem kolejnego czyszczenia dyszy."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
 msgid "Wipe Retraction Enable"
-msgstr ""
+msgstr "Włącz Czyszczenie przy retrakcji"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Cofnij filament, gdy dysza porusza się nad obszarem, w którym nie ma drukować."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
 msgid "Wipe Retraction Distance"
-msgstr ""
+msgstr "Długość czyszczenia przy retrakcji"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr ""
+msgstr "Ilość filamentu do retrakcji, aby nie wyciekał podczas czyszczenia."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr ""
+msgstr "Dodatkowa wartość czyszczenia dla Czyszczenia przy retrakcji"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
-msgstr ""
+msgstr "Niektóre materiały mogą wyciekać podczas ruchów czyszczenia, można to tutaj skompensować."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
-msgstr ""
+msgstr "Prędkość Czyszczenia przy retrakcji"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
-msgstr ""
+msgstr "Prędkość, z jaką jest wykonywana i dopełniana retrakcja podczas ruchu czyszczenia przy retrakcji."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr ""
+msgstr "Prędkość retrakcji Czyszczenia przy retrakcji"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a wipe retraction move."
-msgstr ""
+msgstr "Prędkość, z jaką jest wykonywana retrakcja podczas ruchu czyszczenia przy retrakcji."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr ""
+msgstr "Prędkość retrakcji Czyszczenia"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a wipe retraction move."
-msgstr ""
+msgstr "Prędkość, z jaką jest wykonywana dodatkowa retrakcja podczas ruchu czyszczenia przy retrakcji."
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause label"
 msgid "Wipe Pause"
-msgstr ""
+msgstr "Wstrzymaj czyszczenie"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr ""
+msgstr "Wstrzymaj czyszczenie, jeśli brak retrakcji."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop When Retracted"
-msgstr ""
+msgstr "Czyszczący skok Z jeśli jest retrakcja"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "Zawsze, gdy następuje retrakcja, stół roboczy jest opuszczany w celu utworzenia luzu między dyszą a drukiem. Zapobiega to uderzeniu dyszy podczas ruchu jałowego, co zmniejsza szanse uderzenia wydruku na stole."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr ""
+msgstr "Wysokość skoku Z przy czyszczeniu"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr ""
+msgstr "Różnica w wysokości podczas przeprowadzania Skoku Z."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr ""
+msgstr "Prędkość czyszczącego skoku Z"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr ""
+msgstr "Szybkość przesuwania osi Z podczas skoku."
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x label"
 msgid "Wipe Brush X Position"
-msgstr ""
+msgstr "X pozycji czyszczenia"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x description"
 msgid "X location where wipe script will start."
-msgstr ""
+msgstr "Pozycja X, w której skrypt zaczyna."
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count label"
 msgid "Wipe Repeat Count"
-msgstr ""
+msgstr "Ilość powtórzeń czyszczenia"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
-msgstr ""
+msgstr "Ilość powtórzeń przesunięcia dyszy po szczotce."
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance label"
 msgid "Wipe Move Distance"
-msgstr ""
+msgstr "Odległość ruchu czyszczenia"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
-msgstr ""
+msgstr "Odległość, którą głowica musi pokonać w tę i z powrotem po szczotce."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

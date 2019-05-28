@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-05-14 12:48+0000\n"
-"PO-Revision-Date: 2019-05-21 22:35+0800\n"
+"PO-Revision-Date: 2019-05-28 10:26+0200\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
@@ -5785,7 +5785,7 @@ msgstr "擦拭回抽啟用"
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr "當噴頭移動經過非列印區域時回抽耗材。 "
+msgstr "當噴頭移動經過非列印區域時回抽耗材。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
