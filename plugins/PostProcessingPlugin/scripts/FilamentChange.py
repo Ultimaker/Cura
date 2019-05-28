@@ -92,8 +92,11 @@ class FilamentChange(Script):
         layer_targets = layer_nums.split(",")
         if len(layer_targets) > 0:
             for layer_num in layer_targets:
-                layer_num = int(layer_num.strip()) + 1
-                if layer_num <= len(data):
+                try:
+                    layer_num = int(layer_num.strip()) + 1 #Needs +1 because the 1st layer is reserved for start g-code.
+                except ValueError: #Layer number is not an integer.
+                    continue
+                if 0 < layer_num < len(data):
                     data[layer_num] = color_change + data[layer_num]
 
         return data
