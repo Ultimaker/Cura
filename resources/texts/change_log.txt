@@ -1,6 +1,4 @@
 [4.1.0]
-**User Experience:
-
 *Draggable settings panels
 There was a lot of feedback from the 4.0 release about the collapsible settings panels. Based on this feedback, we decided to make them completely draggable. The print settings panel (prepare stage) and the color scheme panel (preview stage) can now be dragged and positioned anywhere in the 3D viewer. A double click of the header will reset each to their default position.
 
@@ -22,12 +20,8 @@ More information about how to print advanced materials can be quickly and easily
 *Increased rendering speed.
 Rendering speed improvements that should be quite noticeable with multiple objects on the build plate.
 
-**Frontend:
-
 *Layer change script.
 This new post-processing script injects custom Gcode on a layer change, so that manual commands can be defined, e.g. park the print head. Contributed by wporter82. https://github.com/wporter82
-
-**Slicing:
 
 *Prime tower brim.
 Prime towers might need the extra adhesion of a brim even when the model doesn’t, so an option for a prime tower to print with a brim independently of the model has been added. This setting is available when the adhesion type is set to 'None', 'Skirt' or 'Brim', and the prime tower is enabled. Currently this option doesn’t work with rafts.
@@ -41,15 +35,13 @@ Previously, the maximum deviation was hard-coded in CuraEngine to be half of the
 *Gyroid support.
 Smartavionics has contributed a new option for a gyroid support pattern, similar to his gyroid infill contribution. A gyroid pattern is relatively efficient with material, so gyroid patterns permeable to water can dissolve faster. It’s also easier to pull gyroid structures off your model with pliers compared to some other support patterns. https://github.com/smartavionics
 
-**Ultimaker Marketplace:
-
 *Purchase materials.
 The Marketplace now includes a direct link to a site where users can buy specific materials to work with the corresponding print profile. The link is specified by the print profile supplier through the contributor portal.
 
 *Marketplace notifications.
 When a plugin or print profile in the Marketplace has updates, a badge notification will appear over the Marketplace button and installed packages tab, prompting you to update.
 
-**Added third-party printers:
+* New third-party definitions:
 - NWA3D A5. Contributed by DragonJe. https://github.com/DragonJe
 - Anycubic Chiron. Contributed by BluefireXD. https://github.com/BluefireXD
 - Alfawise u30. Contributed by NicolasNSSM. https://github.com/NicolasNSSM
@@ -62,7 +54,7 @@ When a plugin or print profile in the Marketplace has updates, a badge notificat
 - Structur3D Silicone. Contributed by afinkle. https://github.com/afinkle
 - TiZYX Evy Dual. Contributed by ValentinPitre. https://github.com/ValentinPitre
 
-**Bug fixes:
+*Bug fixes:
 - Fixed an issue where the application crashed when opening the Ultimaker Marketplace after being logged in for more than 10 minutes. This was due to an expired token when checking network requests.
 - For PLA-PLA support combinations, the horizontal expansion value has changed from 0.2 to 0 by default. This fixes an issue where unnecessary support is generated. The default value for PVA remains the same.
 - Fixed an issue where choosing to "Update Existing" profile during project file loading did not overwrite the current settings with what was in the project file.
