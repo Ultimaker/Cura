@@ -46,7 +46,7 @@ def test_logout():
     account._authorization_service = mocked_auth_service
 
     account.logout()
-    mocked_auth_service.deleteAuthData.assert_called_once_with()  # We weren't logged in, so nothing should happen
+    mocked_auth_service.deleteAuthData.assert_not_called()  # We weren't logged in, so nothing should happen
     assert not account.isLoggedIn
 
     # Pretend the stage changed
