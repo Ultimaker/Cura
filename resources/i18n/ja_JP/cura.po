@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-05-14 12:48+0200\n"
-"PO-Revision-Date: 2019-03-14 14:39+0100\n"
+"PO-Revision-Date: 2019-05-28 09:46+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Japanese\n"
 "Language: ja_JP\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.3\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:27
 msgctxt "@action"
@@ -64,7 +64,11 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n<p>{model_names}</p>\n<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
+msgstr ""
+"<p>モデルのサイズまたは材料の設定によっては、適切に印刷しない3Dモデルがあります。:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>可能な限り最高の品質および信頼性を得る方法をご覧ください。</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">印字品質ガイドを見る</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
@@ -351,7 +355,7 @@ msgstr "ミスマッチの構成"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:230
 msgctxt "@label"
 msgid "Are you sure you wish to print with the selected configuration?"
-msgstr "選択された構成にてプリントを開始してもいいですか。"
+msgstr "選択された構成にてプリントを開始してもいいですか？"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:232
 msgctxt "@label"
@@ -985,7 +989,7 @@ msgstr "ファイル<filename>{0}</filename>にはカスタムプロファイル
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました。"
+msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
@@ -1004,7 +1008,7 @@ msgstr "プロファイル<filename>{0}</filename>の中で定義されている
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました。"
+msgstr "<filename>{0}</filename>からプロファイルの取り込に失敗しました:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:316
 #, python-brace-format
@@ -1224,7 +1228,7 @@ msgstr "このアプリケーションの許可において必要な権限を与
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:73
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
-msgstr "ログイン時に予期しないエラーが発生しました。やり直してください"
+msgstr "ログイン時に予期しないエラーが発生しました。やり直してください。"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
 msgctxt "@info:status"
@@ -1279,7 +1283,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n                    <p>バックアップは、設定フォルダに保存されます。</p>\n                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n                "
+msgstr ""
+"<p><b>申し訳ありません。Ultimaker Cura で何らかの不具合が生じています。</p></b>\n"
+"                    <p>開始時に回復不能のエラーが発生しました。不適切なファイル設定が原因の可能性があります。バックアップを実行してからリセットしてください。</p>\n"
+"                    <p>バックアップは、設定フォルダに保存されます。</p>\n"
+"                    <p>問題解決のために、このクラッシュ報告をお送りください。</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:98
 msgctxt "@action:button"
@@ -1312,7 +1321,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n        "
+msgstr ""
+"<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
+"            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:173
 msgctxt "@title:groupbox"
@@ -1474,7 +1486,7 @@ msgstr "ビルドプレート形"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:125
 msgctxt "@label"
 msgid "Origin at center"
-msgstr "センターを出します。"
+msgstr "センターを出します"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
 msgctxt "@label"
@@ -1770,7 +1782,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "このプラグインにはライセンスが含まれています。\nこのプラグインをインストールするにはこのライセンスに同意する必要があります。\n下の利用規約に同意しますか？"
+msgstr ""
+"このプラグインにはライセンスが含まれています。\n"
+"このプラグインをインストールするにはこのライセンスに同意する必要があります。\n"
+"下の利用規約に同意しますか？"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:55
 msgctxt "@action:button"
@@ -2104,7 +2119,7 @@ msgstr "無効なIPアドレス"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
-msgstr "有効なIPアドレスを入力してください"
+msgstr "有効なIPアドレスを入力してください。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:366
 msgctxt "@title:window"
@@ -2275,7 +2290,7 @@ msgstr "上書き"
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
-msgstr[0] "割り当てられたプリンター %1 には以下の構成変更が必要です。"
+msgstr[0] "割り当てられたプリンター %1 には以下の構成変更が必要です:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:69
 msgctxt "@label"
@@ -2328,7 +2343,10 @@ msgid ""
 "Please make sure your printer has a connection:\n"
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network."
-msgstr "プリンタが接続されていること確認してください:\n- プリンタの電源が入っていることを確認してください。\n- プリンタがネットワークに接続されているか確認してください。"
+msgstr ""
+"プリンタが接続されていること確認してください:\n"
+"- プリンタの電源が入っていることを確認してください。\n"
+"- プリンタがネットワークに接続されているか確認してください。"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -2953,7 +2971,7 @@ msgstr "プリント中止"
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:337
 msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
-msgstr "本当にプリントを中止してもいいですか。"
+msgstr "本当にプリントを中止してもいいですか？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:71
 msgctxt "@title"
@@ -3089,7 +3107,7 @@ msgstr "モデルを取り除きました"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:247
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
-msgstr "%1を取り外しますか？この作業はやり直しが効きません。"
+msgstr "%1を取り外しますか？この作業はやり直しが効きません！"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:277
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:285
@@ -3518,7 +3536,7 @@ msgstr "カスタムプロファイル"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:490
 msgctxt "@action:button"
 msgid "Update profile with current settings/overrides"
-msgstr "プロファイルを現在のセッティング/"
+msgstr "プロファイルを現在のセッティング"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:497
 msgctxt "@action:button"
@@ -3640,7 +3658,9 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n表示されるようにクリックしてください。"
+msgstr ""
+"いくらかの非表示設定は通常の計算された値と異なる値を使用します。\n"
+"表示されるようにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:67
 msgctxt "@label"
@@ -3673,7 +3693,9 @@ msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "この設定にプロファイルと異なった値があります。\nプロファイルの値を戻すためにクリックしてください。"
+msgstr ""
+"この設定にプロファイルと異なった値があります。\n"
+"プロファイルの値を戻すためにクリックしてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:308
 msgctxt "@label"
@@ -3681,7 +3703,9 @@ msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "このセッティングは通常計算されます、今は絶対値に固定されています。\n計算された値に変更するためにクリックを押してください。"
+msgstr ""
+"このセッティングは通常計算されます、今は絶対値に固定されています。\n"
+"計算された値に変更するためにクリックを押してください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
@@ -3764,7 +3788,9 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "いくらかの設定プロファイルにある値とことなる場合無効にします。\nプロファイルマネージャーをクリックして開いてください。"
+msgstr ""
+"いくらかの設定プロファイルにある値とことなる場合無効にします。\n"
+"プロファイルマネージャーをクリックして開いてください。"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -4128,7 +4154,10 @@ msgid ""
 "- Send print jobs to Ultimaker printers outside your local network\n"
 "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 "- Get exclusive access to print profiles from leading brands"
-msgstr "印刷ジョブをローカルネットワークの外の Ultimaker プリンタに送信します\n- Ultimaker Cura の設定をクラウドに保管してどこからでも利用できるようにします\n- 有名ブランドから印刷プロファイルへの例外アクセスを取得します"
+msgstr ""
+"印刷ジョブをローカルネットワークの外の Ultimaker プリンタに送信します\n"
+"- Ultimaker Cura の設定をクラウドに保管してどこからでも利用できるようにします\n"
+"- 有名ブランドから印刷プロファイルへの例外アクセスを取得します"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4158,7 +4187,7 @@ msgstr "スライス中…"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:61
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
-msgstr "スライスできません。"
+msgstr "スライスできません"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:97
 msgctxt "@button"
@@ -4510,7 +4539,7 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "プロファイル設定をカスタマイズしました。この設定をキープしますか、キャンセルしますか。"
+msgstr "プロファイル設定をカスタマイズしました。この設定をキープしますか、キャンセルしますか？"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -4853,7 +4882,7 @@ msgstr "Ultimaker Cura の改善にご協力ください"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:57
 msgctxt "@text"
 msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
-msgstr "Ultimaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために以下の匿名データを収集します。"
+msgstr "Ultimaker Cura は、印刷品質とユーザーエクスペリエンスを向上させるために以下の匿名データを収集します:"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:71
 msgctxt "@text"
@@ -4965,7 +4994,9 @@ msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr "以下の手順で\nUltimaker Cura を設定してください。数秒で完了します。"
+msgstr ""
+"以下の手順で\n"
+"Ultimaker Cura を設定してください。数秒で完了します。"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
 msgctxt "@button"
@@ -5070,7 +5101,7 @@ msgstr "ファームウェアアップデーター"
 #: ProfileFlattener/plugin.json
 msgctxt "description"
 msgid "Create a flattened quality changes profile."
-msgstr "プロファイルを変更するフラットエンドクオリティーを作成する"
+msgstr "プロファイルを変更するフラットエンドクオリティーを作成する。"
 
 #: ProfileFlattener/plugin.json
 msgctxt "name"
@@ -5310,7 +5341,7 @@ msgstr "2.7から3.0にバージョンアップグレート"
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 3.5 to Cura 4.0."
-msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート"
+msgstr "Cura 3.5 から Cura 4.0 のコンフィグレーションアップグレート。"
 
 #: VersionUpgrade/VersionUpgrade35to40/plugin.json
 msgctxt "name"
@@ -5330,7 +5361,7 @@ msgstr "3.4 から 3.5 にバージョンアップグレート"
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.0 to Cura 4.1."
-msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート"
+msgstr "Cura 4.0 から Cura 4.1 のコンフィグレーションアップグレート。"
 
 #: VersionUpgrade/VersionUpgrade40to41/plugin.json
 msgctxt "name"
@@ -5723,7 +5754,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 #~ "- Get exclusive access to material profiles from leading brands"
 #~ msgstr ""
-
 #~ "- 印刷ジョブをローカルネットワークの外の Ultimaker プリンタに送信します\n"
 #~ "- Ultimaker Cura の設定をクラウドに保管してどこからでも利用できるようにします\n"
 #~ "- 有名ブランドから材料プロファイルへの例外アクセスを取得します"
@@ -5750,7 +5780,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "\n"
 #~ "If your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog."
 #~ msgstr ""
-
 #~ "下のリストから使用するプリンターを選択します。\n"
 #~ "\n"
 #~ "プリンターがリストにない場合は、「カスタム」カテゴリの「カスタムFFFプリンター」を使用して、次のダイアログでプリンターに合う設定に調整します。"
@@ -5963,7 +5992,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "Print Setup disabled\n"
 #~ "G-code files cannot be modified"
 #~ msgstr ""
-
 #~ "プリントセットアップが無効\n"
 #~ "G-codeファイルを修正することができません"
 
@@ -6216,7 +6244,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "Could not export using \"{}\" quality!\n"
 #~ "Felt back to \"{}\"."
 #~ msgstr ""
-
 #~ "\"{}\"品質を使用したエクスポートができませんでした!\n"
 #~ "\"{}\"になりました。"
 
@@ -6392,7 +6419,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
 #~ "3) Use a different material."
 #~ msgstr ""
-
 #~ "オブジェクトサイズや選択した材料などにより一部のモデルが印刷されないことがあります: {model_names}.\n"
 #~ "印刷の品質を高める便利なヒント:\n"
 #~ "1) 縁を丸くする\n"
@@ -6409,7 +6435,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "\n"
 #~ "Thanks!"
 #~ msgstr ""
-
 #~ "図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n"
 #~ "\n"
 #~ " 再確認をお願いします。"
@@ -6420,7 +6445,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
-
 #~ "図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n"
 #~ "\n"
 #~ "申し訳ありません。"
@@ -6445,7 +6469,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
-
 #~ "お客様へ\n"
 #~ "システム上に正規のソリッドワークスがインストールされていません。つまり、ソリッドワークスがインストールされていないか、有効なライセンスが存在しません。ソリッドワークスだけを問題なく使用できるようになっているか確認するか、自社のIT部門にご相談ください。\n"
 #~ "\n"
@@ -6460,7 +6483,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
-
 #~ "お客様へ\n"
 #~ "このプラグインは現在Windows以外のOSで実行されています。このプラグインは、ソリッドワークスがインストールされたWindowsでしか動作しません。有効なライセンスも必要です。ソリッドワークスがインストールされたWindowsマシンにこのプラグインをインストールしてください。\n"
 #~ "\n"
@@ -6565,7 +6587,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "Open the directory\n"
 #~ "with macro and icon"
 #~ msgstr ""
-
 #~ "ディレクトリーを開きます\n"
 #~ "(マクロとアイコンで)"
 
@@ -6864,7 +6885,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "\n"
 #~ " Thanks!."
 #~ msgstr ""
-
 #~ "図面の中にモデルが見つかりません。中身を確認し、パートかアセンブリーが中に入っていることを確認してください。\n"
 #~ "\n"
 #~ " 再確認をお願いします。"
@@ -6875,7 +6895,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
-
 #~ "図面の中にパートかアセンブリーが2個以上見つかりました。今のところ、本製品はパートかアセンブリーが1個の図面のみに対応しています。\n"
 #~ "\n"
 #~ "申し訳ありません。"
@@ -6910,7 +6929,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-
 #~ "<p><b>致命的なエラーが発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
 #~ "            <p>「レポート送信」ボタンを使用してバグレポートが自動的に当社サーバーに送られるようにしてください</p>\n"
 #~ "        "
@@ -7077,7 +7095,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-
 #~ "<p><b>致命的な例外が発生しました。問題解決のためこのクラッシュレポートを送信してください</p></b>\n"
 #~ "            <p>「レポート送信」ボタンを使用してバグレポートが自動的にサーバーに送られるようにしてください</p>\n"
 #~ "        "
@@ -7224,7 +7241,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
-
 #~ "<p>不可解なエラーが発生しリカバリーできませんでした。</p>\n"
 #~ "<p>この情報をバグとして報告してください。 <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
@@ -7267,7 +7283,6 @@ msgstr "Curaプロファイルリーダー"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
-
 #~ "プラグインがライセンスを保持しています。\n"
 #~ "このライセンスを承認しプラグインをインストールしてください。\n"
 #~ "下記項目に賛成しますか？"
