@@ -235,10 +235,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._application.callLater(manual_printer_request.callback, False, address)
 
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        if address in self._manual_instances:
-            Logger.log("i", "Manual printer with address [%s] has already been added, do nothing", address)
-            return
-
         self._manual_instances[address] = ManualPrinterRequest(address, callback = callback)
         self._preferences.setValue("um3networkprinting/manual_instances", ",".join(self._manual_instances.keys()))
 
