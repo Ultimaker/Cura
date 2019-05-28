@@ -191,6 +191,7 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "min"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -209,6 +210,7 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "min"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -227,6 +229,7 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "max"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -247,6 +250,7 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "max"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
