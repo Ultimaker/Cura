@@ -48,12 +48,12 @@ class Snapshot:
         # determine zoom and look at
         bbox = None
         for node in DepthFirstIterator(root):
-            if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonThumbnailVisibleMesh"):
-                if bbox is None:
-                    bbox = node.getBoundingBox()
-                else:
-                    bbox = bbox + node.getBoundingBox()
-
+            if hasattr(node, "_outside_buildarea") and not node._outside_buildarea:
+                if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible() and not node.callDecoration("isNonThumbnailVisibleMesh"):
+                    if bbox is None:
+                        bbox = node.getBoundingBox()
+                    else:
+                        bbox = bbox + node.getBoundingBox()
         # If there is no bounding box, it means that there is no model in the buildplate
         if bbox is None:
             return None
