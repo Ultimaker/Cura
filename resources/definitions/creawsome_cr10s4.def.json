@@ -1,0 +1,25 @@
+{
+    "id": "creawsome_cr10s4",
+    "name": "Creality CR-10S4",
+    "version": 2,
+    "inherits": "creawsome_base",
+    "overrides": {
+        "machine_name": { "default_value": "Creawsome CR-10S4" },
+        "machine_width": { "default_value": 400 },
+        "machine_depth": { "default_value": 400 },
+        "machine_height": { "default_value": 400 },
+        "machine_head_polygon": { "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ]
+        },
+        
+        "gantry_height": { "default_value": 30 }
+
+    },
+    "metadata": {
+
+    }
+}

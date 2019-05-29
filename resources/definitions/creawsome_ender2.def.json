@@ -1,0 +1,25 @@
+{
+    "id": "creawsome_ender2",
+    "name": "Creality Ender-2",
+    "version": 2,
+    "inherits": "creawsome_base",
+    "overrides": {
+        "machine_name": { "default_value": "Creawsome Ender-2" },
+        "machine_width": { "default_value": 150 },
+        "machine_depth": { "default_value": 150 },
+        "machine_height": { "default_value": 200 },
+        "machine_head_polygon": { "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ]
+        },
+
+        "gantry_height": { "default_value": 30 }
+
+    },
+    "metadata": {
+
+    }
+}

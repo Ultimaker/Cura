@@ -1,0 +1,12 @@
+{
+    "id": "creawsome_cr10s",
+    "name": "Creality CR-10S",
+    "version": 2,
+    "inherits": "creawsome_cr10",
+    "overrides": {
+        "machine_name": { "default_value": "Creawsome CR-10S" }
+    },
+    "metadata": {
+
+    }
+}

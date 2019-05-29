@@ -1,0 +1,26 @@
+{
+    "id": "creawsome_ender3",
+    "name": "Creality Ender-3",
+    "version": 2,
+    "inherits": "creawsome_base",
+    "overrides": {
+        "machine_name": { "default_value": "Creawsome Ender-3" },
+        "machine_width": { "default_value": 220 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "machine_head_polygon": { "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ]
+        },
+
+        "gantry_height": { "default_value": 30 }
+
+    },
+    "metadata": {
+        "platform": "creawsome_ender3_printerhd.stl",
+        "platform_offset": [ -160, 0, 140]
+    }
+}
