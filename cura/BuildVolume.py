@@ -1027,7 +1027,17 @@ class BuildVolume(SceneNode):
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
         initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
-        if adhesion_type == "skirt":
+        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
+                                       adhesion_type != "raft"):
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "skirt":
             skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
 
@@ -1038,19 +1048,6 @@ class BuildVolume(SceneNode):
 
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-
-        elif (adhesion_type == "brim" or
-                (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
-                    self._global_container_stack.getProperty("adhesion_type", "value") != "raft")):
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the brim with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-
         elif adhesion_type == "raft":
             bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
 
