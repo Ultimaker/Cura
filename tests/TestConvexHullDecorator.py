@@ -2,6 +2,7 @@ from unittest.mock import patch, MagicMock
 
 import pytest
 
+from UM.Math.Polygon import Polygon
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
@@ -42,11 +43,43 @@ def test_getConvexHullBoundaryNoNode(convex_hull_decorator):
     assert convex_hull_decorator.getConvexHullBoundary() is None
 
 
+def test_getConvexHullHeadNoNode(convex_hull_decorator):
+    assert convex_hull_decorator.getConvexHullHead() is None
+
+
+def test_getConvexHullHeadNotPrintingMesh(convex_hull_decorator):
+    node = SceneNode()
+    node.addDecorator(NonPrintingDecorator())
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(node)
+    assert convex_hull_decorator.getConvexHullHead() is None
+
+
+def test_getConvexHullNoNode(convex_hull_decorator):
+    assert convex_hull_decorator.getConvexHull() is None
+
+
 def test_getConvexHeadFullNoNode(convex_hull_decorator):
     assert convex_hull_decorator.getConvexHullHeadFull() is None
 
 
-def test_getConvexHulLBoundaryNotPrintingMesh(convex_hull_decorator):
+def test_getConvexHullNotPrintingMesh(convex_hull_decorator):
+    node = SceneNode()
+    node.addDecorator(NonPrintingDecorator())
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(node)
+    assert convex_hull_decorator.getConvexHull() is None
+
+
+def test_getConvexHullPrintingMesh(convex_hull_decorator):
+    node = SceneNode()
+    node.addDecorator(PrintingDecorator())
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(node)
+    convex_hull_decorator._compute2DConvexHull = MagicMock(return_value = Polygon.approximatedCircle(10))
+    assert convex_hull_decorator.getConvexHull() == Polygon.approximatedCircle(10)
+
+def test_getConvexHullBoundaryNotPrintingMesh(convex_hull_decorator):
     node = SceneNode()
     node.addDecorator(NonPrintingDecorator())
     with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
