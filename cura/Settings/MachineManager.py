@@ -893,13 +893,6 @@ class MachineManager(QObject):
         result = []  # type: List[str]
         for setting_instance in container.findInstances():
             setting_key = setting_instance.definition.key
-            setting_enabled = self._global_container_stack.getProperty(setting_key, "enabled")
-            if not setting_enabled:
-                # A setting is not visible anymore
-                result.append(setting_key)
-                Logger.log("d", "Reset setting [%s] from [%s] because the setting is no longer enabled", setting_key, container)
-                continue
-
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
