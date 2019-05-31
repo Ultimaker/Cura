@@ -304,6 +304,100 @@ class BuildVolume(SceneNode):
 
             node.setOutsideBuildArea(False)
 
+    def _buildGridMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+        mb = MeshBuilder()
+        if self._shape != "elliptic":
+            # Build plate grid mesh
+            mb.addQuad(
+                Vector(min_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, max_d),
+                Vector(min_w, min_h - z_fight_distance, max_d)
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            return mb.build()
+        else:
+            aspect = 1.0
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._depth / self._width
+                scale_matrix.compose(scale=Vector(1, 1, aspect))
+            mb.addVertex(0, min_h - z_fight_distance, 0)
+            mb.addArc(max_w, Vector.Unit_Y, center=Vector(0, min_h - z_fight_distance, 0))
+            sections = mb.getVertexCount() - 1  # Center point is not an arc section
+            indices = []
+            for n in range(0, sections - 1):
+                indices.append([0, n + 2, n + 1])
+            mb.addIndices(numpy.asarray(indices, dtype=numpy.int32))
+            mb.calculateNormals()
+
+            for n in range(0, mb.getVertexCount()):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
+            return mb.build().getTransformed(scale_matrix)
+
+    def _buildMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+        if self._shape != "elliptic":
+            # Outline 'cube' of the build volume
+            mb = MeshBuilder()
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+
+            return mb.build()
+
+        else:
+            # Bottom and top 'ellipse' of the build volume
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._depth / self._width
+                scale_matrix.compose(scale = Vector(1, 1, aspect))
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
+            return mb.build().getTransformed(scale_matrix)
+
+    def _buildOriginMesh(self, origin):
+        mb = MeshBuilder()
+        mb.addCube(
+            width=self._origin_line_length,
+            height=self._origin_line_width,
+            depth=self._origin_line_width,
+            center=origin + Vector(self._origin_line_length / 2, 0, 0),
+            color=self._x_axis_color
+        )
+        mb.addCube(
+            width=self._origin_line_width,
+            height=self._origin_line_length,
+            depth=self._origin_line_width,
+            center=origin + Vector(0, self._origin_line_length / 2, 0),
+            color=self._y_axis_color
+        )
+        mb.addCube(
+            width=self._origin_line_width,
+            height=self._origin_line_width,
+            depth=self._origin_line_length,
+            center=origin - Vector(0, 0, self._origin_line_length / 2),
+            color=self._z_axis_color
+        )
+        return mb.build()
+
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
         if not self._width or not self._height or not self._depth:
@@ -328,70 +422,10 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
-        z_fight_distance = 0.2 # Distance between buildplate and disallowed area meshes to prevent z-fighting
+        z_fight_distance = 0.2  # Distance between buildplate and disallowed area meshes to prevent z-fighting
 
-        if self._shape != "elliptic":
-            # Outline 'cube' of the build volume
-            mb = MeshBuilder()
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
-
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-
-            self.setMeshData(mb.build())
-
-            # Build plate grid mesh
-            mb = MeshBuilder()
-            mb.addQuad(
-                Vector(min_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, max_d),
-                Vector(min_w, min_h - z_fight_distance, max_d)
-            )
-
-            for n in range(0, 6):
-                v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2])
-            self._grid_mesh = mb.build()
-
-        else:
-            # Bottom and top 'ellipse' of the build volume
-            aspect = 1.0
-            scale_matrix = Matrix()
-            if self._width != 0:
-                # Scale circular meshes by aspect ratio if width != height
-                aspect = self._depth / self._width
-                scale_matrix.compose(scale = Vector(1, 1, aspect))
-            mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
-            self.setMeshData(mb.build().getTransformed(scale_matrix))
-
-            # Build plate grid mesh
-            mb = MeshBuilder()
-            mb.addVertex(0, min_h - z_fight_distance, 0)
-            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
-            sections = mb.getVertexCount() - 1 # Center point is not an arc section
-            indices = []
-            for n in range(0, sections - 1):
-                indices.append([0, n + 2, n + 1])
-            mb.addIndices(numpy.asarray(indices, dtype = numpy.int32))
-            mb.calculateNormals()
-
-            for n in range(0, mb.getVertexCount()):
-                v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
-            self._grid_mesh = mb.build().getTransformed(scale_matrix)
+        self._grid_mesh = self._buildGridMesh(min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance)
+        self.setMeshData(self._buildMesh(min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance))
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
@@ -399,29 +433,7 @@ class BuildVolume(SceneNode):
         else:
             origin = Vector(min_w, min_h, max_d)
 
-        mb = MeshBuilder()
-        mb.addCube(
-            width = self._origin_line_length,
-            height = self._origin_line_width,
-            depth = self._origin_line_width,
-            center = origin + Vector(self._origin_line_length / 2, 0, 0),
-            color = self._x_axis_color
-        )
-        mb.addCube(
-            width = self._origin_line_width,
-            height = self._origin_line_length,
-            depth = self._origin_line_width,
-            center = origin + Vector(0, self._origin_line_length / 2, 0),
-            color = self._y_axis_color
-        )
-        mb.addCube(
-            width = self._origin_line_width,
-            height = self._origin_line_width,
-            depth = self._origin_line_length,
-            center = origin - Vector(0, 0, self._origin_line_length / 2),
-            color = self._z_axis_color
-        )
-        self._origin_mesh = mb.build()
+        self._origin_mesh = self._buildOriginMesh(origin)
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
