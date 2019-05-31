@@ -188,7 +188,6 @@ class TestExportQualityProfile:
         # With an invalid file_type, we should get a false for success.
         assert not container_registry.exportQualityProfile([], "zomg", "invalid")
 
-
     def test_exportQualityProfileFailedWriter(self, container_registry):
         # Create a writer that always fails.
         mocked_writer = unittest.mock.MagicMock(name = "mocked_writer")
@@ -198,7 +197,6 @@ class TestExportQualityProfile:
         # Ensure that it actually fails if the writer did.
         with unittest.mock.patch("UM.Application.Application.getInstance"):
             assert not container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
-
 
     def test_exportQualityProfileExceptionWriter(self, container_registry):
         # Create a writer that always fails.
@@ -210,7 +208,6 @@ class TestExportQualityProfile:
         with unittest.mock.patch("UM.Application.Application.getInstance"):
             assert not container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
 
-
     def test_exportQualityProfileSuccessWriter(self, container_registry):
         # Create a writer that always fails.
         mocked_writer = unittest.mock.MagicMock(name="mocked_writer")
@@ -220,3 +217,23 @@ class TestExportQualityProfile:
         # Ensure that it actually fails if the writer did.
         with unittest.mock.patch("UM.Application.Application.getInstance"):
             assert container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
+
+
+def test__findProfileWriterNoPlugins(container_registry):
+    # Mock it so that no IO plugins are found.
+    container_registry._getIOPlugins = unittest.mock.MagicMock(return_value = [])
+    mocked_plugin_registry = unittest.mock.MagicMock(name = "plugin registry")
+
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", mocked_plugin_registry):
+        # Since there are no writers, don't return any
+        assert container_registry._findProfileWriter(".zomg", "dunno") is None
+
+
+def test__findProfileWriter(container_registry):
+    # Mock it so that no IO plugins are found.
+    container_registry._getIOPlugins = unittest.mock.MagicMock(return_value = [("writer_id", {"profile_writer": [{"extension": ".zomg", "description": "dunno"}]})])
+    mocked_plugin_registry = unittest.mock.MagicMock(name = "plugin registry")
+
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", mocked_plugin_registry):
+        # In this case it's getting a mocked object (from the mocked_plugin_registry)
+        assert container_registry._findProfileWriter(".zomg", "dunno") is not None
