@@ -165,16 +165,13 @@ class BuildVolume(SceneNode):
             active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
 
     def setWidth(self, width: float) -> None:
-        if width is not None:
-            self._width = width
+        self._width = width
 
     def setHeight(self, height: float) -> None:
-        if height is not None:
-            self._height = height
+        self._height = height
 
     def setDepth(self, depth: float) -> None:
-        if depth is not None:
-            self._depth = depth
+        self._depth = depth
 
     def setShape(self, shape: str) -> None:
         if shape:
