@@ -171,9 +171,6 @@ class CuraContainerRegistry(ContainerRegistry):
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
 
-        plugin_registry = PluginRegistry.getInstance()
-        extension = file_name.split(".")[-1]
-
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
@@ -181,6 +178,9 @@ class CuraContainerRegistry(ContainerRegistry):
         machine_extruders = []
         for position in sorted(global_stack.extruders):
             machine_extruders.append(global_stack.extruders[position])
+
+        plugin_registry = PluginRegistry.getInstance()
+        extension = file_name.split(".")[-1]
 
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:

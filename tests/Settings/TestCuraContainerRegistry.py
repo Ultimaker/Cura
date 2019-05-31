@@ -6,6 +6,7 @@ import pytest #To parameterize tests.
 import unittest.mock #To mock and monkeypatch stuff.
 
 from UM.Settings.DefinitionContainer import DefinitionContainer
+from cura.ReaderWriters.ProfileReader import NoProfileException
 from cura.Settings.ExtruderStack import ExtruderStack #Testing for returning the correct types of stacks.
 from cura.Settings.GlobalStack import GlobalStack #Testing for returning the correct types of stacks.
 import UM.Settings.InstanceContainer #Creating instance containers to register.
@@ -222,9 +223,8 @@ class TestExportQualityProfile:
 def test__findProfileWriterNoPlugins(container_registry):
     # Mock it so that no IO plugins are found.
     container_registry._getIOPlugins = unittest.mock.MagicMock(return_value = [])
-    mocked_plugin_registry = unittest.mock.MagicMock(name = "plugin registry")
 
-    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", mocked_plugin_registry):
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance"):
         # Since there are no writers, don't return any
         assert container_registry._findProfileWriter(".zomg", "dunno") is None
 
@@ -232,8 +232,71 @@ def test__findProfileWriterNoPlugins(container_registry):
 def test__findProfileWriter(container_registry):
     # Mock it so that no IO plugins are found.
     container_registry._getIOPlugins = unittest.mock.MagicMock(return_value = [("writer_id", {"profile_writer": [{"extension": ".zomg", "description": "dunno"}]})])
-    mocked_plugin_registry = unittest.mock.MagicMock(name = "plugin registry")
 
-    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", mocked_plugin_registry):
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance"):
         # In this case it's getting a mocked object (from the mocked_plugin_registry)
         assert container_registry._findProfileWriter(".zomg", "dunno") is not None
+
+
+def test_importProfileEmptyFileName(container_registry):
+    result = container_registry.importProfile("")
+    assert result["status"] == "error"
+
+
+mocked_application = unittest.mock.MagicMock(name = "application")
+mocked_plugin_registry = unittest.mock.MagicMock(name="mocked_plugin_registry")
+
+@unittest.mock.patch("UM.Application.Application.getInstance", unittest.mock.MagicMock(return_value = mocked_application))
+@unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", unittest.mock.MagicMock(return_value = mocked_plugin_registry))
+class TestImportProfile:
+    mocked_global_stack = unittest.mock.MagicMock(name="global stack")
+    mocked_global_stack.extruders = {0: unittest.mock.MagicMock(name="extruder stack")}
+    mocked_global_stack.getId = unittest.mock.MagicMock(return_value="blarg")
+    mocked_profile_reader = unittest.mock.MagicMock()
+
+    mocked_plugin_registry.getPluginObject = unittest.mock.MagicMock(return_value=mocked_profile_reader)
+
+    def test_importProfileWithoutGlobalStack(self, container_registry):
+        mocked_application.getGlobalContainerStack = unittest.mock.MagicMock(return_value = None)
+        result = container_registry.importProfile("non_empty")
+        assert result["status"] == "error"
+
+    def test_importProfileNoProfileException(self, container_registry):
+        container_registry._getIOPlugins = unittest.mock.MagicMock(return_value=[("reader_id", {"profile_reader": [{"extension": "zomg", "description": "dunno"}]})])
+        mocked_application.getGlobalContainerStack = unittest.mock.MagicMock(return_value=self.mocked_global_stack)
+        self.mocked_profile_reader.read = unittest.mock.MagicMock(side_effect = NoProfileException)
+        result = container_registry.importProfile("test.zomg")
+        # It's not an error, but we also didn't find any profile to read.
+        assert result["status"] == "ok"
+
+    def test_importProfileGenericException(self, container_registry):
+        container_registry._getIOPlugins = unittest.mock.MagicMock(return_value=[("reader_id", {"profile_reader": [{"extension": "zomg", "description": "dunno"}]})])
+        mocked_application.getGlobalContainerStack = unittest.mock.MagicMock(return_value=self.mocked_global_stack)
+        self.mocked_profile_reader.read = unittest.mock.MagicMock(side_effect = Exception)
+        result = container_registry.importProfile("test.zomg")
+        assert result["status"] == "error"
+
+    def test_importProfileNoDefinitionFound(self, container_registry):
+        container_registry._getIOPlugins = unittest.mock.MagicMock(return_value=[("reader_id", {"profile_reader": [{"extension": "zomg", "description": "dunno"}]})])
+        mocked_application.getGlobalContainerStack = unittest.mock.MagicMock(return_value=self.mocked_global_stack)
+        container_registry.findDefinitionContainers = unittest.mock.MagicMock(return_value = [])
+        mocked_profile = unittest.mock.MagicMock(name = "Mocked_global_profile")
+        self.mocked_profile_reader.read = unittest.mock.MagicMock(return_value = [mocked_profile])
+
+        result = container_registry.importProfile("test.zomg")
+        assert result["status"] == "error"
+
+    def test_importProfileSuccess(self, container_registry):
+        container_registry._getIOPlugins = unittest.mock.MagicMock(return_value=[("reader_id", {"profile_reader": [{"extension": "zomg", "description": "dunno"}]})])
+        mocked_application.getGlobalContainerStack = unittest.mock.MagicMock(return_value=self.mocked_global_stack)
+
+        mocked_definition = unittest.mock.MagicMock(name = "definition")
+
+        container_registry.findDefinitionContainers = unittest.mock.MagicMock(return_value = [mocked_definition])
+        mocked_profile = unittest.mock.MagicMock(name = "Mocked_global_profile")
+
+        self.mocked_profile_reader.read = unittest.mock.MagicMock(return_value = [mocked_profile])
+        with unittest.mock.patch.object(container_registry, "createUniqueName", return_value="derp"):
+            with unittest.mock.patch.object(container_registry, "_configureProfile", return_value=None):
+                result = container_registry.importProfile("test.zomg")
+        assert result["status"] == "ok"
