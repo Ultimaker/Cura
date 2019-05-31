@@ -120,35 +120,35 @@ Item
     {
         id: view3DCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "3D View")
-        onTriggered: UM.Controller.rotateView("3d", 0)
+        onTriggered: UM.Controller.setCameraRotation("3d", 0)
     }
 
     Action
     {
         id: viewFrontCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Front View")
-        onTriggered: UM.Controller.rotateView("home", 0)
+        onTriggered: UM.Controller.setCameraRotation("home", 0)
     }
 
     Action
     {
         id: viewTopCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Top View")
-        onTriggered: UM.Controller.rotateView("y", 90)
+        onTriggered: UM.Controller.setCameraRotation("y", 90)
     }
 
     Action
     {
         id: viewLeftSideCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Left Side View")
-        onTriggered: UM.Controller.rotateView("x", 90)
+        onTriggered: UM.Controller.setCameraRotation("x", 90)
     }
 
     Action
     {
         id: viewRightSideCameraAction
         text: catalog.i18nc("@action:inmenu menubar:view", "Right Side View")
-        onTriggered: UM.Controller.rotateView("x", -90)
+        onTriggered: UM.Controller.setCameraRotation("x", -90)
     }
 
     Action
