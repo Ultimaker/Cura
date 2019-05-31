@@ -1,8 +1,11 @@
+import copy
 from unittest.mock import patch, MagicMock
 
 import pytest
 
 from UM.Math.Polygon import Polygon
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
@@ -129,3 +132,50 @@ def test_onSettingValueChangedInfluencingSettings(convex_hull_decorator, key):
     convex_hull_decorator._init2DConvexHullCache = MagicMock()
     value_changed(convex_hull_decorator, key)
     convex_hull_decorator._init2DConvexHullCache.assert_called_once_with()
+
+
+def test_compute2DConvexHullNoNode(convex_hull_decorator):
+    assert convex_hull_decorator._compute2DConvexHull() is None
+
+
+def test_compute2DConvexHullNoMeshData(convex_hull_decorator):
+    node = SceneNode()
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(node)
+
+    assert convex_hull_decorator._compute2DConvexHull() == Polygon([])
+
+
+def test_compute2DConvexHullMeshData(convex_hull_decorator):
+    node = SceneNode()
+    mb = MeshBuilder()
+    mb.addCube(10,10,10)
+    node.setMeshData(mb.build())
+
+    convex_hull_decorator._getSettingProperty = MagicMock(return_value = 0)
+
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(node)
+
+    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[5.0,-5.0], [-5.0,-5.0], [-5.0,5.0], [5.0,5.0]])
+
+
+def test_compute2DConvexHullMeshDataGrouped(convex_hull_decorator):
+    parent_node = SceneNode()
+    parent_node.addDecorator(GroupDecorator())
+    node = SceneNode()
+    parent_node.addChild(node)
+
+    mb = MeshBuilder()
+    mb.addCube(10, 10, 10)
+    node.setMeshData(mb.build())
+
+    convex_hull_decorator._getSettingProperty = MagicMock(return_value=0)
+
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=mocked_application)):
+        convex_hull_decorator.setNode(parent_node)
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
+            copied_decorator = copy.deepcopy(convex_hull_decorator)
+            copied_decorator._getSettingProperty = MagicMock(return_value=0)
+        node.addDecorator(copied_decorator)
+    assert convex_hull_decorator._compute2DConvexHull() == Polygon([[-5.0,5.0], [5.0,5.0], [5.0,-5.0], [-5.0,-5.0]])
