@@ -103,13 +103,14 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param instance_ids \type{list} the IDs of the profiles to export.
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    def exportQualityProfile(self, container_list, file_name, file_type):
+    #   \return True if the export succeeded, false otherwise.
+    def exportQualityProfile(self, container_list, file_name, file_type) -> bool:
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
         if split < 0:  # Not found. Invalid format.
             Logger.log("e", "Invalid file format identifier %s", file_type)
-            return
+            return False
         description = file_type[:split]
         extension = file_type[split + 4:-1]  # Leave out the " (*." and ")".
         if not file_name.endswith("." + extension):  # Auto-fill the extension if the user did not provide any.
@@ -121,7 +122,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
-                    return
+                    return False
 
         profile_writer = self._findProfileWriter(extension, description)
         try:
@@ -132,17 +133,18 @@ class CuraContainerRegistry(ContainerRegistry):
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
             m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
                     title = catalog.i18nc("@info:title", "Export succeeded"))
         m.show()
+        return True
 
     ##  Gets the plugin object matching the criteria
     #   \param extension

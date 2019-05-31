@@ -159,6 +159,7 @@ test_loadMetaDataValidation_data = [
     }
 ]
 
+
 @pytest.mark.parametrize("parameters", test_loadMetaDataValidation_data)
 def test_loadMetadataValidation(container_registry, definition_container, parameters):
     from cura.CuraApplication import CuraApplication
@@ -179,3 +180,43 @@ def test_loadMetadataValidation(container_registry, definition_container, parame
         assert container_registry.metadata[parameters["id"]] == parameters["metadata"]
     else:
         assert parameters["id"] not in container_registry.metadata
+
+
+class TestExportQualityProfile:
+    # This class is just there to provide some grouping for the tests.
+    def test_exportQualityProfileInvalidFileType(self, container_registry):
+        # With an invalid file_type, we should get a false for success.
+        assert not container_registry.exportQualityProfile([], "zomg", "invalid")
+
+
+    def test_exportQualityProfileFailedWriter(self, container_registry):
+        # Create a writer that always fails.
+        mocked_writer = unittest.mock.MagicMock(name = "mocked_writer")
+        mocked_writer.write = unittest.mock.MagicMock(return_value = False)
+        container_registry._findProfileWriter = unittest.mock.MagicMock("findProfileWriter", return_value = mocked_writer)
+
+        # Ensure that it actually fails if the writer did.
+        with unittest.mock.patch("UM.Application.Application.getInstance"):
+            assert not container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
+
+
+    def test_exportQualityProfileExceptionWriter(self, container_registry):
+        # Create a writer that always fails.
+        mocked_writer = unittest.mock.MagicMock(name = "mocked_writer")
+        mocked_writer.write = unittest.mock.MagicMock(return_value = True, side_effect = Exception("Failed :("))
+        container_registry._findProfileWriter = unittest.mock.MagicMock("findProfileWriter", return_value = mocked_writer)
+
+        # Ensure that it actually fails if the writer did.
+        with unittest.mock.patch("UM.Application.Application.getInstance"):
+            assert not container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
+
+
+    def test_exportQualityProfileSuccessWriter(self, container_registry):
+        # Create a writer that always fails.
+        mocked_writer = unittest.mock.MagicMock(name="mocked_writer")
+        mocked_writer.write = unittest.mock.MagicMock(return_value=True)
+        container_registry._findProfileWriter = unittest.mock.MagicMock("findProfileWriter", return_value=mocked_writer)
+
+        # Ensure that it actually fails if the writer did.
+        with unittest.mock.patch("UM.Application.Application.getInstance"):
+            assert container_registry.exportQualityProfile([], "zomg", "test files (*.tst)")
