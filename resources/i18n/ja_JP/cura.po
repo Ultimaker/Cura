@@ -2046,7 +2046,10 @@ msgid ""
 "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
 "\n"
 "Select your printer from the list below:"
-msgstr "ネットワーク接続にて直接プリントするためには、必ずケーブルまたはWifiネットワークにて繋がっていることを確認してください。Curaをプリンターに接続していない場合でも、USBメモリを使って直接プリンターにg-codeファイルをトランスファーできます。"
+msgstr ""
+"ネットワーク接続にて直接プリントするためには、必ずケーブルまたはWifiネットワークにて繋がっていることを確認してください。Curaをプリンターに接続していない場合でも、USBメモリを使って直接プリンターにg-codeファイルをトランスファーできます。\n"
+"\n"
+"下のリストからプリンターを選択してください："
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
