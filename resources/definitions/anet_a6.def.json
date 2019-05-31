@@ -1,0 +1,45 @@
+{
+    "version": 2,
+    "name": "Anet A6",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Mark",
+        "manufacturer": "Anet",
+        "file_formats": "text/x-gcode",
+        "platform": "aneta6_platform.stl",
+        "platform_offset": [0, -3.4, 0],
+        "machine_extruder_trains":
+        {
+            "0": "anet_a6_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Anet A6" },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 220
+        },
+        "machine_height": {
+            "default_value": 250
+        },
+        "machine_depth": {
+            "default_value": 220
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "55"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nM84 ;steppers off\nM0 S12 ;wait 12 seconds\nM17 ;turn steppers on\nG1 Z10.0 F300 ;move the platform down 10mm\nG92 E0 ;zero the extruded length\nG1 F200 E8 ;extrude 8mm of feed stock\nG92 E0 ;zero the extruded length again\nM0 S5 ;wait 5 seconds\nG1 F9000\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+4 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG1 Y210 F9000 ;move out to get part off\nM84 ;steppers off\nG90 ;absolute positioning"
+        }
+    }
+}

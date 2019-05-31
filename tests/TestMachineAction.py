@@ -4,7 +4,7 @@
 import pytest
 
 from cura.MachineAction import MachineAction
-from cura.MachineActionManager import NotUniqueMachineActionError, UnknownMachineActionError
+from cura.UI.MachineActionManager import NotUniqueMachineActionError, UnknownMachineActionError
 from cura.Settings.GlobalStack import GlobalStack
 
 

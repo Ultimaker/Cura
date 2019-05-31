@@ -14,80 +14,52 @@
         }
     },
     "overrides": {
-        "machine_name": {
-            "default_value": "Alfawise U30"
-        },
+        "machine_name": { "default_value": "Alfawise U30" },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nG21        ;metric values\nG90        ;absolute positioning\nM82        ;set extruder to absolute mode\nM107       ;start with the fan off\nG28 X0 Y0  ;move X/Y to min endstops\nG28 Z0     ;move Z to min endstops\nG1 Z1 F1000             ;move up slightly\nG1 Y60.0 Z0 E9.0 F1000.0;intro line\nG1 Y100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\nG1 F80\n;Put printing message on LCD screen\nM117 Printing...\n; -- end of START GCODE --"
         },
         "machine_end_gcode": {
             "default_value": "; -- END GCODE --\nM104 S0                     ;extruder heater off\nM140 S0                     ;heated bed heater off (if you have it)\nG91                                    ;relative positioning\nG1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F80 ;move Z up a bit and retract filament even more\nG28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\nM84                         ;steppers off\nG90                         ;absolute positioning\nM107       ;turn the fan off; -- end of END GCODE --"
         },
-        "machine_width": {
-            "default_value": 220
-        },
-        "machine_height": {
-            "default_value": 250
-        },
-        "machine_depth": {
-            "default_value": 220
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "gantry_height": {
-            "default_value": 10
-        },
-        "machine_gcode_flavor": {
-            "default_value": "RepRap (Marlin/Sprinter)"
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
-        "material_print_temperature": {
-            "default_value": 210
-        },
-        "material_bed_temperature": {
-            "default_value": 50
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "wall_thickness": {
-            "default_value": 1.2
-        },
-        "speed_print": {
-            "default_value": 40
-        },
-        "speed_infill": {
-            "default_value": 40
-        },
-        "speed_wall": {
-            "default_value": 35
-        },
-        "speed_topbottom": {
-            "default_value": 35
-        },
-        "speed_travel": {
-            "default_value": 120
-        },
-        "speed_layer_0": {
-            "default_value": 20
-        },
-        "support_enable": {
-            "default_value": true
-        },
-        "retraction_enable": {
-            "default_value": true
-        },
-        "retraction_amount": {
-            "default_value": 5
-        },
-        "retraction_speed": {
-            "default_value": 45
-        }
+        "material_diameter": { "default_value": 1.75 },
+        "material_print_temperature": { "default_value": 210 },
+        "material_bed_temperature": { "default_value": 50 },
+        "layer_height_0": { "default_value": 0.2 },
+        "wall_thickness": { "default_value": 1.2 },
+        "speed_print": { "default_value": 40 },
+        "speed_infill": { "default_value": 50 },
+        "speed_wall": { "default_value": 35 },
+        "speed_topbottom": { "default_value": 35 },
+        "speed_travel": { "default_value": 120 },
+        "speed_layer_0": { "default_value": 20 },
+        "support_enable": { "default_value": true },
+        "retraction_enable": { "default_value": true },
+        "retraction_amount": { "default_value": 5 },
+        "retraction_speed": { "default_value": 45 },
+        "gantry_height": { "value": "25" },
+        "machine_width": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "machine_depth": { "default_value": 220 },
+        "machine_center_is_zero": { "default_value": false },
+        "machine_heated_bed": {	"default_value": true },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_max_feedrate_x": { "default_value": 200 },
+        "machine_max_feedrate_y": { "default_value": 200 },
+        "machine_max_feedrate_z": { "default_value": 5 },
+        "machine_max_feedrate_e": { "default_value": 100 },
+        "machine_max_acceleration_x": { "default_value": 500 },
+        "machine_max_acceleration_y": { "default_value": 500 },
+        "machine_max_acceleration_z": { "default_value": 10 },
+        "machine_max_acceleration_e": { "default_value": 3000 },
+        "machine_acceleration": { "default_value": 300 },
+        "machine_max_jerk_xy": { "default_value": 20.0 },
+        "machine_max_jerk_z": { "default_value": 0.4 },
+        "machine_max_jerk_e": { "default_value": 5.0 },
+        "machine_steps_per_mm_x": { "default_value": 80 },
+        "machine_steps_per_mm_y": { "default_value": 80 },
+        "machine_steps_per_mm_z": { "default_value": 400 },
+        "machine_steps_per_mm_e": { "default_value": 93 },
+        "skirt_line_count": { "default_value": 1 },
+        "skirt_brim_minimal_length": { "default_value": 250 }
     }
 }

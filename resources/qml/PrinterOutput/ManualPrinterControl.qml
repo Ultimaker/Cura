@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -357,13 +357,16 @@ Item
 
                         onHoveredChanged:
                         {
-                            if (containsMouse) {
+                            if (containsMouse)
+                            {
                                 base.showTooltip(
                                     base,
-                                    { x: 0, y: customCommandControlMouseArea.mapToItem(base, 0, 0).y },
+                                    { x: -tooltip.width, y: customCommandControlMouseArea.mapToItem(base, 0, 0).y },
                                     catalog.i18nc("@tooltip of G-code command input", "Send a custom G-code command to the connected printer. Press 'enter' to send the command.")
                                 )
-                            } else {
+                            }
+                            else
+                            {
                                 base.hideTooltip()
                             }
                         }

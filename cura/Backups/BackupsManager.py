@@ -51,8 +51,18 @@ class BackupsManager:
     ##  Here we try to disable the auto-save plug-in as it might interfere with
     #   restoring a back-up.
     def _disableAutoSave(self) -> None:
-        self._application.setSaveDataEnabled(False)
+        auto_save = self._application.getAutoSave()
+        # The auto save is only not created if the application has not yet started.
+        if auto_save:
+            auto_save.setEnabled(False)
+        else:
+            Logger.log("e", "Unable to disable the autosave as application init has not been completed")
 
     ##  Re-enable auto-save after we're done.
     def _enableAutoSave(self) -> None:
-        self._application.setSaveDataEnabled(True)
+        auto_save = self._application.getAutoSave()
+        # The auto save is only not created if the application has not yet started.
+        if auto_save:
+            auto_save.setEnabled(True)
+        else:
+            Logger.log("e", "Unable to enable the autosave as application init has not been completed")

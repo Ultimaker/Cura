@@ -7,7 +7,7 @@ from PyQt5.QtCore import QTimer
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Signal import Signal, signalemitter
+from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
@@ -81,25 +81,61 @@ class CloudOutputDeviceManager:
         Logger.log("d", "Removed: %s, added: %s, updates: %s", len(removed_devices), len(added_clusters), len(updates))
 
         # Remove output devices that are gone
-        for removed_cluster in removed_devices:
-            if removed_cluster.isConnected():
-                removed_cluster.disconnect()
-            removed_cluster.close()
-            self._output_device_manager.removeOutputDevice(removed_cluster.key)
-            self.removedCloudCluster.emit()
-            del self._remote_clusters[removed_cluster.key]
+        for device in removed_devices:
+            if device.isConnected():
+                device.disconnect()
+                device.close()
+            self._output_device_manager.removeOutputDevice(device.key)
+            self._application.getDiscoveredPrintersModel().removeDiscoveredPrinter(device.key)
+            self.removedCloudCluster.emit(device)
+            del self._remote_clusters[device.key]
 
         # Add an output device for each new remote cluster.
         # We only add when is_online as we don't want the option in the drop down if the cluster is not online.
-        for added_cluster in added_clusters:
-            device = CloudOutputDevice(self._api, added_cluster)
-            self._remote_clusters[added_cluster.cluster_id] = device
-            self.addedCloudCluster.emit()
+        for cluster in added_clusters:
+            device = CloudOutputDevice(self._api, cluster)
+            self._remote_clusters[cluster.cluster_id] = device
+            self._application.getDiscoveredPrintersModel().addDiscoveredPrinter(
+                    device.key,
+                    device.key,
+                    cluster.friendly_name,
+                    self._createMachineFromDiscoveredPrinter,
+                    device.printerType,
+                    device
+            )
+            self.addedCloudCluster.emit(cluster)
 
+        # Update the output devices
         for device, cluster in updates:
             device.clusterData = cluster
+            self._application.getDiscoveredPrintersModel().updateDiscoveredPrinter(
+                    device.key,
+                    cluster.friendly_name,
+                    device.printerType,
+            )
 
         self._connectToActiveMachine()
+        
+    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
+        device = self._remote_clusters[key]  # type: CloudOutputDevice
+        if not device:
+            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            return
+        
+        group_name = device.clusterData.friendly_name
+        machine_type_id = device.printerType
+    
+        Logger.log("i", "Creating machine from cloud device with key = [%s], group name = [%s],  printer type = [%s]",
+                   key, group_name, machine_type_id)
+    
+        # The newly added machine is automatically activated.
+        self._application.getMachineManager().addMachine(machine_type_id, group_name)
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if not active_machine:
+            return
+
+        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        self._connectToOutputDevice(device, active_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:

@@ -51,7 +51,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                width: UM.Theme.getSize("monitor_column").width
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
@@ -71,6 +71,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -78,7 +79,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                width: UM.Theme.getSize("monitor_column").width
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
@@ -98,6 +99,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: 18 * screenScaleFactor // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
 
@@ -143,6 +145,7 @@ Item
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Row
@@ -158,14 +161,9 @@ Item
                     spacing: 6 // TODO: Theme!
                     visible: printJob
 
-                    Repeater
+                    MonitorPrinterPill
                     {
-                        id: compatiblePills
-                        delegate: MonitorPrinterPill
-                        {
-                            text: modelData
-                        }
-                        model: printJob ? printJob.compatibleMachineFamilies : []
+                        text: printJob.configuration.printerType
                     }
                 }
             }
@@ -202,6 +200,7 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
     }

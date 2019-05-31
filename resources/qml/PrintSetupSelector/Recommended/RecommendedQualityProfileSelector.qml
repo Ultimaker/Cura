@@ -137,7 +137,7 @@ Item
             if (availableMin == -1 || (availableMin == 0 && availableMax == 0))
             {
                 // Do not use Math.round otherwise the tickmarks won't be aligned
-                qualityModel.qualitySliderMarginRight = settingsColumnWidth
+                qualityModel.qualitySliderMarginRight = settingsColumnWidth / 2
             }
             else if (availableMin == availableMax)
             {
@@ -352,7 +352,7 @@ Item
                 enabled: !Cura.MachineManager.hasCustomQuality
                 onEntered:
                 {
-                    var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile")
+                    var tooltipContent = catalog.i18nc("@tooltip", "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile.")
                     base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, customisedSettings.height), tooltipContent)
                 }
                 onExited: base.hideTooltip()

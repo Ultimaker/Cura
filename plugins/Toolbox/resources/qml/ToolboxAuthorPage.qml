@@ -65,6 +65,7 @@ Item
         {
             id: description
             text: details.description || ""
+            font: UM.Theme.getFont("default")
             anchors
             {
                 top: title.bottom
@@ -108,6 +109,8 @@ Item
                 top: description.bottom
                 left: properties.right
                 leftMargin: UM.Theme.getSize("default_margin").width
+                right: parent.right
+                rightMargin: UM.Theme.getSize("default_margin").width
                 topMargin: UM.Theme.getSize("default_margin").height
             }
             spacing: Math.floor(UM.Theme.getSize("narrow_margin").height)
@@ -122,6 +125,8 @@ Item
                     }
                     return ""
                 }
+                width: parent.width
+                elide: Text.ElideRight
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")

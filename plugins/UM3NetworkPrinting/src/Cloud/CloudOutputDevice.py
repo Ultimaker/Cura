@@ -12,12 +12,14 @@ from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
@@ -66,10 +68,11 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         # Because the cloud connection does not off all of these, we manually construct this version here.
         # An example of why this is needed is the selection of the compatible file type when exporting the tool path.
         properties = {
-            b"address": b"",
-            b"name": cluster.host_name.encode() if cluster.host_name else b"",
+            b"address": cluster.host_internal_ip.encode() if cluster.host_internal_ip else b"",
+            b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
             b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
-            b"printer_type": b""
+            b"printer_type": cluster.printer_type.encode() if cluster.printer_type else b"",
+            b"cluster_size": b"1"  # cloud devices are always clusters of at least one
         }
 
         super().__init__(device_id = cluster.cluster_id, address = "",
@@ -82,8 +85,12 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self._account = api_client.account
 
         # We use the Cura Connect monitor tab to get most functionality right away.
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                                                   "../../resources/qml/MonitorStage.qml")
+        if PluginRegistry.getInstance() is not None:
+            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
+            if plugin_path is None:
+                Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
+                raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
+            self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -140,9 +147,17 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Checks whether the given network key is found in the cloud's host name
     def matchesNetworkKey(self, network_key: str) -> bool:
-        # A network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
+        # Typically, a network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
-        return network_key.startswith(self.clusterData.host_name)
+        if network_key.startswith(self.clusterData.host_name):
+            return True
+
+        # However, for manually added printers, the local IP address is used in lieu of a proper
+        # network key, so check for that as well
+        if self.clusterData.host_internal_ip is not None and network_key.find(self.clusterData.host_internal_ip):
+            return True
+
+        return False
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
@@ -221,7 +236,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def _updatePrinters(self, printers: List[CloudClusterPrinterStatus]) -> None:
         previous = {p.key: p for p in self._printers}  # type: Dict[str, PrinterOutputModel]
         received = {p.uuid: p for p in printers}  # type: Dict[str, CloudClusterPrinterStatus]
-
         removed_printers, added_printers, updated_printers = findChanges(previous, received)
 
         for removed_printer in removed_printers:
@@ -345,6 +359,12 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         ).show()
         self.writeFinished.emit()
 
+    ##  Gets the number of printers in the cluster.
+    #   We use a minimum of 1 because cloud devices are always a cluster and printer discovery needs it.
+    @pyqtProperty(int, notify = _clusterPrintersChanged)
+    def clusterSize(self) -> int:
+        return max(1, len(self._printers))
+
     ##  Gets the remote printers.
     @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
     def printers(self) -> List[PrinterOutputModel]:
@@ -361,10 +381,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         if printer != self._active_printer:
             self._active_printer = printer
             self.activePrinterChanged.emit()
-
-    @pyqtProperty(int, notify = _clusterPrintersChanged)
-    def clusterSize(self) -> int:
-        return len(self._printers)
 
     ##  Get remote print jobs.
     @pyqtProperty("QVariantList", notify = printJobsChanged)

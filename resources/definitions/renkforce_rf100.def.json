@@ -183,7 +183,7 @@
             "value": "False"
         },
         "support_infill_rate": {
-            "value": "15.0"
+            "value": "15 if support_enable else 0 if support_tree_enable else 15"
         },
         "support_pattern": {
             "default_value": "lines"

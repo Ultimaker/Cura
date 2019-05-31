@@ -217,11 +217,6 @@ class Arrange:
         prio_slice = self._priority[min_y:max_y, min_x:max_x]
         prio_slice[new_occupied] = 999
 
-        # If you want to see how the rasterized arranger build plate looks like, uncomment this code
-        # numpy.set_printoptions(linewidth=500, edgeitems=200)
-        # print(self._occupied.shape)
-        # print(self._occupied)
-
     @property
     def isEmpty(self):
         return self._is_empty

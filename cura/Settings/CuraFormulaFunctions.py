@@ -42,7 +42,14 @@ class CuraFormulaFunctions:
         try:
             extruder_stack = global_stack.extruders[str(extruder_position)]
         except KeyError:
-            Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available" % (property_key, extruder_position))
+            if extruder_position != 0:
+                Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. Returning the result form extruder 0 instead" % (property_key, extruder_position))
+                # This fixes a very specific fringe case; If a profile was created for a custom printer and one of the
+                # extruder settings has been set to non zero and the profile is loaded for a machine that has only a single extruder
+                # it would cause all kinds of issues (and eventually a crash).
+                # See https://github.com/Ultimaker/Cura/issues/5535
+                return self.getValueInExtruder(0, property_key, context)
+            Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. " % (property_key, extruder_position))
             return None
 
         value = extruder_stack.getRawProperty(property_key, "value", context = context)

@@ -7,6 +7,7 @@ from UM.OutputDevice.OutputDeviceManager import OutputDeviceManager
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud import CloudOutputDeviceManager
+from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
 from .Fixtures import parseFixture, readFixture
 from .NetworkManagerMock import NetworkManagerMock, FakeSignal
 
@@ -55,7 +56,9 @@ class TestCloudOutputDeviceManager(TestCase):
         devices = self.device_manager.getOutputDevices()
         # TODO: Check active device
 
-        response_clusters = self.clusters_response.get("data", [])
+        response_clusters = []
+        for cluster in self.clusters_response.get("data", []):
+            response_clusters.append(CloudClusterResponse(**cluster).toDict())
         manager_clusters = sorted([device.clusterData.toDict() for device in self.manager._remote_clusters.values()],
                                   key=lambda cluster: cluster['cluster_id'], reverse=True)
         self.assertEqual(response_clusters, manager_clusters)
@@ -97,7 +100,7 @@ class TestCloudOutputDeviceManager(TestCase):
 
         self.assertTrue(self.device_manager.getOutputDevice(cluster1["cluster_id"]).isConnected())
         self.assertIsNone(self.device_manager.getOutputDevice(cluster2["cluster_id"]))
-        self.assertEquals([], active_machine_mock.setMetaDataEntry.mock_calls)
+        self.assertEqual([], active_machine_mock.setMetaDataEntry.mock_calls)
 
     def test_device_connects_by_network_key(self):
         active_machine_mock = self.app.getGlobalContainerStack.return_value

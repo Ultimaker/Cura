@@ -72,7 +72,9 @@ class XmlMaterialProfile(InstanceContainer):
         material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
-
+        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
+            super().setMetaDataEntry(key, value)
+            return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
@@ -142,22 +144,12 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
                 del metadata[key]
         properties = metadata.pop("properties", {})
-
-        # Metadata properties that should not be serialized.
-        metadata.pop("status", "")
-        metadata.pop("variant", "")
-        metadata.pop("type", "")
-        metadata.pop("base_file", "")
-        metadata.pop("approximate_diameter", "")
-        metadata.pop("id", "")
-        metadata.pop("container_type", "")
-        metadata.pop("name", "")
 
         ## Begin Name Block
         builder.start("name") # type: ignore
@@ -953,11 +945,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
-            for entry in machine.iterfind("./um:setting", cls.__namespaces):
-                key = entry.get("key")
-                if key == "hardware compatible":
-                    if entry.text is not None:
-                        machine_compatibility = cls._parseCompatibleValue(entry.text)
+            for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                if entry.text is not None:
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
                 machine_id_list = product_id_map.get(identifier.get("product"), [])
@@ -1028,11 +1018,9 @@ class XmlMaterialProfile(InstanceContainer):
                             continue
 
                         hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        for entry in hotend.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                            if entry.text is not None:
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -1166,6 +1154,8 @@ class XmlMaterialProfile(InstanceContainer):
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
@@ -1189,6 +1179,7 @@ class XmlMaterialProfile(InstanceContainer):
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
+        "build volume temperature": "build_volume_temperature",
     }
     __unmapped_settings = [
         "hardware compatible",

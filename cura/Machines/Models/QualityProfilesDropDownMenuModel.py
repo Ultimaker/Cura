@@ -10,6 +10,7 @@ from UM.Settings.SettingFunction import SettingFunction
 
 from cura.Machines.QualityManager import QualityGroup
 
+
 #
 # QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
 #
@@ -51,7 +52,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
 
-        self._update()
+        self._onChange()
 
     def _onChange(self) -> None:
         self._update_timer.start()

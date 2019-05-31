@@ -2,8 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Union, Dict, Optional, Any
 
-from cura.PrinterOutput.ExtruderConfigurationModel import ExtruderConfigurationModel
-from cura.PrinterOutput.ExtruderOutputModel import ExtruderOutputModel
+from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
+from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
 from .CloudClusterPrinterConfigurationMaterial import CloudClusterPrinterConfigurationMaterial
 from .BaseCloudModel import BaseCloudModel
 

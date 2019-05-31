@@ -9,7 +9,7 @@ DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
-DEFAULT_CURA_SDK_VERSION = "6.0.0"
+DEFAULT_CURA_SDK_VERSION = "6.1.0"
 
 try:
     from cura.CuraVersion import CuraAppName  # type: ignore

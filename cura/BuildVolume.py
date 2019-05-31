@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.Scene.CuraSceneNode import CuraSceneNode
@@ -112,8 +112,6 @@ class BuildVolume(SceneNode):
         self._setting_change_timer.setSingleShot(True)
         self._setting_change_timer.timeout.connect(self._onSettingChangeTimerFinished)
 
-
-
         # Must be after setting _build_volume_message, apparently that is used in getMachineManager.
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
@@ -131,7 +129,9 @@ class BuildVolume(SceneNode):
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
-            self._scene_change_timer.start()
+            # Ignore anything that is not something we can slice in the first place!
+            if source.callDecoration("isSliceable"):
+                self._scene_change_timer.start()
 
     def _onSceneChangeTimerFinished(self):
         root = self._application.getController().getScene().getRoot()
@@ -148,7 +148,7 @@ class BuildVolume(SceneNode):
                 if active_extruder_changed is not None:
                     node.callDecoration("getActiveExtruderChangedSignal").disconnect(self._updateDisallowedAreasAndRebuild)
                 node.decoratorsChanged.disconnect(self._updateNodeListeners)
-            self._updateDisallowedAreasAndRebuild()  # make sure we didn't miss anything before we updated the node listeners
+            self.rebuild()
 
             self._scene_objects = new_scene_objects
             self._onSettingPropertyChanged("print_sequence", "value")  # Create fake event, so right settings are triggered.
@@ -165,16 +165,13 @@ class BuildVolume(SceneNode):
             active_extruder_changed.connect(self._updateDisallowedAreasAndRebuild)
 
     def setWidth(self, width: float) -> None:
-        if width is not None:
-            self._width = width
+        self._width = width
 
     def setHeight(self, height: float) -> None:
-        if height is not None:
-            self._height = height
+        self._height = height
 
     def setDepth(self, depth: float) -> None:
-        if depth is not None:
-            self._depth = depth
+        self._depth = depth
 
     def setShape(self, shape: str) -> None:
         if shape:
@@ -307,6 +304,100 @@ class BuildVolume(SceneNode):
 
             node.setOutsideBuildArea(False)
 
+    def _buildGridMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+        mb = MeshBuilder()
+        if self._shape != "elliptic":
+            # Build plate grid mesh
+            mb.addQuad(
+                Vector(min_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, min_d),
+                Vector(max_w, min_h - z_fight_distance, max_d),
+                Vector(min_w, min_h - z_fight_distance, max_d)
+            )
+
+            for n in range(0, 6):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2])
+            return mb.build()
+        else:
+            aspect = 1.0
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._depth / self._width
+                scale_matrix.compose(scale=Vector(1, 1, aspect))
+            mb.addVertex(0, min_h - z_fight_distance, 0)
+            mb.addArc(max_w, Vector.Unit_Y, center=Vector(0, min_h - z_fight_distance, 0))
+            sections = mb.getVertexCount() - 1  # Center point is not an arc section
+            indices = []
+            for n in range(0, sections - 1):
+                indices.append([0, n + 2, n + 1])
+            mb.addIndices(numpy.asarray(indices, dtype=numpy.int32))
+            mb.calculateNormals()
+
+            for n in range(0, mb.getVertexCount()):
+                v = mb.getVertex(n)
+                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
+            return mb.build().getTransformed(scale_matrix)
+
+    def _buildMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+        if self._shape != "elliptic":
+            # Outline 'cube' of the build volume
+            mb = MeshBuilder()
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
+
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+
+            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
+            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
+
+            return mb.build()
+
+        else:
+            # Bottom and top 'ellipse' of the build volume
+            scale_matrix = Matrix()
+            if self._width != 0:
+                # Scale circular meshes by aspect ratio if width != height
+                aspect = self._depth / self._width
+                scale_matrix.compose(scale = Vector(1, 1, aspect))
+            mb = MeshBuilder()
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
+            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
+            return mb.build().getTransformed(scale_matrix)
+
+    def _buildOriginMesh(self, origin):
+        mb = MeshBuilder()
+        mb.addCube(
+            width=self._origin_line_length,
+            height=self._origin_line_width,
+            depth=self._origin_line_width,
+            center=origin + Vector(self._origin_line_length / 2, 0, 0),
+            color=self._x_axis_color
+        )
+        mb.addCube(
+            width=self._origin_line_width,
+            height=self._origin_line_length,
+            depth=self._origin_line_width,
+            center=origin + Vector(0, self._origin_line_length / 2, 0),
+            color=self._y_axis_color
+        )
+        mb.addCube(
+            width=self._origin_line_width,
+            height=self._origin_line_width,
+            depth=self._origin_line_length,
+            center=origin - Vector(0, 0, self._origin_line_length / 2),
+            color=self._z_axis_color
+        )
+        return mb.build()
+
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self):
         if not self._width or not self._height or not self._depth:
@@ -331,70 +422,10 @@ class BuildVolume(SceneNode):
         min_d = -self._depth / 2
         max_d = self._depth / 2
 
-        z_fight_distance = 0.2 # Distance between buildplate and disallowed area meshes to prevent z-fighting
+        z_fight_distance = 0.2  # Distance between buildplate and disallowed area meshes to prevent z-fighting
 
-        if self._shape != "elliptic":
-            # Outline 'cube' of the build volume
-            mb = MeshBuilder()
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(max_w, min_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, max_h, min_d), color = self._volume_outline_color)
-
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, min_h, max_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, max_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-
-            mb.addLine(Vector(min_w, min_h, min_d), Vector(min_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, min_h, min_d), Vector(max_w, min_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(min_w, max_h, min_d), Vector(min_w, max_h, max_d), color = self._volume_outline_color)
-            mb.addLine(Vector(max_w, max_h, min_d), Vector(max_w, max_h, max_d), color = self._volume_outline_color)
-
-            self.setMeshData(mb.build())
-
-            # Build plate grid mesh
-            mb = MeshBuilder()
-            mb.addQuad(
-                Vector(min_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, min_d),
-                Vector(max_w, min_h - z_fight_distance, max_d),
-                Vector(min_w, min_h - z_fight_distance, max_d)
-            )
-
-            for n in range(0, 6):
-                v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2])
-            self._grid_mesh = mb.build()
-
-        else:
-            # Bottom and top 'ellipse' of the build volume
-            aspect = 1.0
-            scale_matrix = Matrix()
-            if self._width != 0:
-                # Scale circular meshes by aspect ratio if width != height
-                aspect = self._depth / self._width
-                scale_matrix.compose(scale = Vector(1, 1, aspect))
-            mb = MeshBuilder()
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, min_h - z_fight_distance, 0), color = self._volume_outline_color)
-            mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
-            self.setMeshData(mb.build().getTransformed(scale_matrix))
-
-            # Build plate grid mesh
-            mb = MeshBuilder()
-            mb.addVertex(0, min_h - z_fight_distance, 0)
-            mb.addArc(max_w, Vector.Unit_Y, center = Vector(0, min_h - z_fight_distance, 0))
-            sections = mb.getVertexCount() - 1 # Center point is not an arc section
-            indices = []
-            for n in range(0, sections - 1):
-                indices.append([0, n + 2, n + 1])
-            mb.addIndices(numpy.asarray(indices, dtype = numpy.int32))
-            mb.calculateNormals()
-
-            for n in range(0, mb.getVertexCount()):
-                v = mb.getVertex(n)
-                mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
-            self._grid_mesh = mb.build().getTransformed(scale_matrix)
+        self._grid_mesh = self._buildGridMesh(min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance)
+        self.setMeshData(self._buildMesh(min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance))
 
         # Indication of the machine origin
         if self._global_container_stack.getProperty("machine_center_is_zero", "value"):
@@ -402,29 +433,7 @@ class BuildVolume(SceneNode):
         else:
             origin = Vector(min_w, min_h, max_d)
 
-        mb = MeshBuilder()
-        mb.addCube(
-            width = self._origin_line_length,
-            height = self._origin_line_width,
-            depth = self._origin_line_width,
-            center = origin + Vector(self._origin_line_length / 2, 0, 0),
-            color = self._x_axis_color
-        )
-        mb.addCube(
-            width = self._origin_line_width,
-            height = self._origin_line_length,
-            depth = self._origin_line_width,
-            center = origin + Vector(0, self._origin_line_length / 2, 0),
-            color = self._y_axis_color
-        )
-        mb.addCube(
-            width = self._origin_line_width,
-            height = self._origin_line_width,
-            depth = self._origin_line_length,
-            center = origin - Vector(0, 0, self._origin_line_length / 2),
-            color = self._z_axis_color
-        )
-        self._origin_mesh = mb.build()
+        self._origin_mesh = self._buildOriginMesh(origin)
 
         disallowed_area_height = 0.1
         disallowed_area_size = 0
@@ -667,6 +676,7 @@ class BuildVolume(SceneNode):
     #   ``_updateDisallowedAreas`` method itself shouldn't call ``rebuild``,
     #   since there may be other changes before it needs to be rebuilt, which
     #   would hit performance.
+
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
         self._updateRaftThickness()
@@ -735,7 +745,7 @@ class BuildVolume(SceneNode):
         # Add prime tower location as disallowed area.
         if len(used_extruders) > 1: #No prime tower in single-extrusion.
 
-            if len([x for x in used_extruders if x.isEnabled == True]) > 1: #No prime tower if only one extruder is enabled
+            if len([x for x in used_extruders if x.isEnabled]) > 1: #No prime tower if only one extruder is enabled
                 prime_tower_collision = False
                 prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
                 for extruder_id in prime_tower_areas:
@@ -1026,7 +1036,18 @@ class BuildVolume(SceneNode):
         adhesion_type = container_stack.getProperty("adhesion_type", "value")
         skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
         initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
-        if adhesion_type == "skirt":
+        #Use brim width if brim is enabled OR the prime tower has a brim.
+        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
+                                       adhesion_type != "raft"):
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "skirt": #No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
             skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
             skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
 
@@ -1037,19 +1058,6 @@ class BuildVolume(SceneNode):
 
             # We don't create an additional line for the extruder we're printing the skirt with.
             bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-
-        elif (adhesion_type == "brim" or
-                (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
-                    self._global_container_stack.getProperty("adhesion_type", "value") != "raft")):
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the brim with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-
         elif adhesion_type == "raft":
             bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
 

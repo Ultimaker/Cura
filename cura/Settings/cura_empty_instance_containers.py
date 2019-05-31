@@ -1,9 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
 
 from UM.Settings.constant_instance_containers import EMPTY_CONTAINER_ID, empty_container
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 
 # Empty definition changes
@@ -28,7 +30,7 @@ empty_material_container.setMetaDataEntry("type", "material")
 EMPTY_QUALITY_CONTAINER_ID = "empty_quality"
 empty_quality_container = copy.deepcopy(empty_container)
 empty_quality_container.setMetaDataEntry("id", EMPTY_QUALITY_CONTAINER_ID)
-empty_quality_container.setName("Not Supported")
+empty_quality_container.setName(catalog.i18nc("@info:not supported profile", "Not supported"))
 empty_quality_container.setMetaDataEntry("quality_type", "not_supported")
 empty_quality_container.setMetaDataEntry("type", "quality")
 empty_quality_container.setMetaDataEntry("supported", False)
@@ -39,6 +41,22 @@ empty_quality_changes_container = copy.deepcopy(empty_container)
 empty_quality_changes_container.setMetaDataEntry("id", EMPTY_QUALITY_CHANGES_CONTAINER_ID)
 empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
 empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
+
+
+# All empty container IDs set
+ALL_EMPTY_CONTAINER_ID_SET = {
+    EMPTY_CONTAINER_ID,
+    EMPTY_DEFINITION_CHANGES_CONTAINER_ID,
+    EMPTY_VARIANT_CONTAINER_ID,
+    EMPTY_MATERIAL_CONTAINER_ID,
+    EMPTY_QUALITY_CONTAINER_ID,
+    EMPTY_QUALITY_CHANGES_CONTAINER_ID,
+}
+
+
+# Convenience function to check if a container ID represents an empty container.
+def isEmptyContainer(container_id: str) -> bool:
+    return container_id in ALL_EMPTY_CONTAINER_ID_SET
 
 
 __all__ = ["EMPTY_CONTAINER_ID",
@@ -52,5 +70,7 @@ __all__ = ["EMPTY_CONTAINER_ID",
            "EMPTY_QUALITY_CHANGES_CONTAINER_ID",
            "empty_quality_changes_container",
            "EMPTY_QUALITY_CONTAINER_ID",
-           "empty_quality_container"
+           "empty_quality_container",
+           "ALL_EMPTY_CONTAINER_ID_SET",
+           "isEmptyContainer",
            ]

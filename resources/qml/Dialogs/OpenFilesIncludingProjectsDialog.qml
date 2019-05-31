@@ -25,7 +25,7 @@ UM.Dialog
     minimumHeight: height
     minimumWidth: width
 
-    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal;
+    modality: Qt.WindowModal
 
     property var fileUrls: []
     property int spacerHeight: 10 * screenScaleFactor

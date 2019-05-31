@@ -15,14 +15,12 @@ from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
-from UM.Mesh.MeshData import MeshData #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -209,7 +207,7 @@ class CuraEngineBackend(QObject, Backend):
             self._createSocket()
 
         if self._process_layers_job is not None:  # We were processing layers. Stop that, the layers are going to change soon.
-            Logger.log("d", "Aborting process layers job...")
+            Logger.log("i", "Aborting process layers job...")
             self._process_layers_job.abort()
             self._process_layers_job = None
 
@@ -224,7 +222,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self) -> None:
-        Logger.log("d", "Starting to slice...")
+        Logger.log("i", "Starting to slice...")
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
@@ -476,7 +474,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source: SceneNode) -> None:
-        if not isinstance(source, SceneNode):
+        if not source.callDecoration("isSliceable"):
             return
 
         # This case checks if the source node is a node that contains GCode. In this case the
@@ -519,9 +517,6 @@ class CuraEngineBackend(QObject, Backend):
                 self._build_plates_to_be_sliced.append(build_plate_number)
             self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
-        # if not self._use_timer:
-            # With manually having to slice, we want to clear the old invalid layer data.
         self._clearLayerData(build_plate_changed)
 
         self._invokeSlice()
@@ -565,10 +560,10 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self) -> None:
+        self.determineAutoSlicing()
         self.stopSlicing()
         self.markSliceAll()
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
         if not self._use_timer:
             # With manually having to slice, we want to clear the old invalid layer data.
             self._clearLayerData()
@@ -737,6 +732,7 @@ class CuraEngineBackend(QObject, Backend):
             "support_interface": message.time_support_interface,
             "support": message.time_support,
             "skirt": message.time_skirt,
+            "prime_tower": message.time_prime_tower,
             "travel": message.time_travel,
             "retract": message.time_retract,
             "none": message.time_none

@@ -319,7 +319,8 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
+                                     " (Note: Developers may not speak your language, please use English if possible)"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected

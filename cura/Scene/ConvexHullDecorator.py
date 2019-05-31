@@ -60,13 +60,15 @@ class ConvexHullDecorator(SceneNodeDecorator):
         previous_node = self._node
         # Disconnect from previous node signals
         if previous_node is not None and node is not previous_node:
-            previous_node.transformationChanged.disconnect(self._onChanged)
-            previous_node.parentChanged.disconnect(self._onChanged)
+            previous_node.boundingBoxChanged.disconnect(self._onChanged)
 
         super().setNode(node)
-        # Mypy doesn't understand that self._node is no longer optional, so just use the node.
-        node.transformationChanged.connect(self._onChanged)
-        node.parentChanged.connect(self._onChanged)
+
+        node.boundingBoxChanged.connect(self._onChanged)
+
+        per_object_stack = node.callDecoration("getStack")
+        if per_object_stack:
+            per_object_stack.propertyChanged.connect(self._onSettingValueChanged)
 
         self._onChanged()
 
@@ -78,7 +80,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def getConvexHull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
-
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
         hull = self._compute2DConvexHull()
 
         if self._global_stack and self._node is not None and hull is not None:
@@ -108,7 +111,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def getConvexHullHead(self) -> Optional[Polygon]:
         if self._node is None:
             return None
-
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
         if self._global_stack:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
                 head_with_fans = self._compute2DConvexHeadMin()
@@ -123,6 +127,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         if self._node is None:
+            return None
+        
+        if self._node.callDecoration("isNonPrintingMesh"):
             return None
 
         if self._global_stack:
@@ -400,4 +407,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}

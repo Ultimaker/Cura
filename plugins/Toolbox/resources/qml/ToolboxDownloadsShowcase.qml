@@ -14,7 +14,7 @@ Rectangle
     Column
     {
         height: childrenRect.height + 2 * padding
-        spacing: UM.Theme.getSize("toolbox_showcase_spacing").width
+        spacing: UM.Theme.getSize("default_margin").width
         width: parent.width
         padding: UM.Theme.getSize("wide_margin").height
         Label

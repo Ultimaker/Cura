@@ -1,9 +1,8 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import Qt, pyqtSignal
 from UM.Qt.ListModel import ListModel
-from UM.Logger import Logger
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 
 class MaterialTypesModel(ListModel):

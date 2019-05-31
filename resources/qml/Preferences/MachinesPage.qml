@@ -14,16 +14,18 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: Cura.MachineManagementModel { }
+    model: Cura.GlobalStacksModel { }
 
-    activeId: Cura.MachineManager.activeMachineId
+    sectionRole: "discoverySource"
+
+    activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
 
     function activeMachineIndex()
     {
         for(var i = 0; i < model.count; i++)
         {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId)
+            if (model.getItem(i).id == base.activeId)
             {
                 return i;
             }
@@ -34,6 +36,7 @@ UM.ManagementPage
     buttons: [
         Button
         {
+            id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
@@ -41,12 +44,14 @@ UM.ManagementPage
         },
         Button
         {
+            id: addMenuButton
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
-            onClicked: CuraApplication.requestAddPrinter()
+            onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {
+            id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
             enabled: base.currentItem != null && model.count > 1
@@ -54,6 +59,7 @@ UM.ManagementPage
         },
         Button
         {
+            id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
             enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
@@ -98,10 +104,11 @@ UM.ManagementPage
                         text: machineActionRepeater.model[index].label
                         onClicked:
                         {
-                            actionDialog.content = machineActionRepeater.model[index].displayItem;
-                            machineActionRepeater.model[index].displayItem.reset();
-                            actionDialog.title = machineActionRepeater.model[index].label;
-                            actionDialog.show();
+                            var currentItem = machineActionRepeater.model[index]
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
                         }
                     }
                 }
@@ -111,13 +118,7 @@ UM.ManagementPage
         UM.Dialog
         {
             id: actionDialog
-            property var content
-            onContentChanged:
-            {
-                contents = content;
-                content.onCompleted.connect(hide)
-                content.dialog = actionDialog
-            }
+
             rightButtons: Button
             {
                 text: catalog.i18nc("@action:button", "Close")

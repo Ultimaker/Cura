@@ -101,24 +101,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("cura/choice_on_open_project")
         setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
-        if (pluginExistsAndEnabled("SliceInfoPlugin")) {
-            UM.Preferences.resetPreference("info/send_slice_info")
-            sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-        }
-        if (pluginExistsAndEnabled("UpdateChecker")) {
-            UM.Preferences.resetPreference("info/automatic_update_check")
-            checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-        }
-    }
-
-    function pluginExistsAndEnabled(pluginName)
-    {
-        var pluginItem = plugins.find("id", pluginName)
-        if (pluginItem > -1)
-        {
-            return plugins.getItem(pluginItem).enabled
-        }
-        return false
+        UM.Preferences.resetPreference("info/send_slice_info")
+        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        UM.Preferences.resetPreference("info/automatic_update_check")
+        checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
     }
 
     ScrollView
@@ -130,8 +116,6 @@ UM.PreferencesPage
 
         Column
         {
-            //: Model used to check if a plugin exists
-            UM.PluginsModel { id: plugins }
 
             //: Language selection label
             UM.I18nCatalog{id: catalog; name: "cura"}
@@ -170,7 +154,7 @@ UM.PreferencesPage
                             append({ text: "日本語", code: "ja_JP" })
                             append({ text: "한국어", code: "ko_KR" })
                             append({ text: "Nederlands", code: "nl_NL" })
-                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
+                            append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
                             append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
@@ -672,7 +656,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("UpdateChecker")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -688,7 +671,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("SliceInfoPlugin")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")

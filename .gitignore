@@ -71,3 +71,4 @@ run.sh
 .scannerwork/
 CuraEngine
 
+/.coverage

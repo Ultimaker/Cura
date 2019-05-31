@@ -15,7 +15,7 @@ Instantiator
     {
         text: model.name
         checkable: true
-        checked: Cura.MachineManager.activeMachineId == model.id
+        checked: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id == model.id: false
         exclusiveGroup: group
         visible: !model.hasRemoteConnection
         onTriggered: Cura.MachineManager.setActiveMachine(model.id)
