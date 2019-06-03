@@ -897,6 +897,8 @@ class MachineManager(QObject):
                 continue
 
             old_value = container.getProperty(setting_key, "value")
+            if isinstance(old_value, SettingFunction):
+                old_value = old_value(self._global_container_stack)
             if int(old_value) < 0:
                 continue
             if int(old_value) >= extruder_count or not self._global_container_stack.extruders[str(old_value)].isEnabled:
