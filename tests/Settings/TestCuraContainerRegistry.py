@@ -42,10 +42,10 @@ def test_addContainerExtruderStack(container_registry, definition_container, def
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
-    container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Extruder Stack") #A container we're going to convert.
+    container_stack = ExtruderStack("Test Extruder Stack") #A container we're going to convert.
     container_stack.setMetaDataEntry("type", "extruder_train") #This is now an extruder train.
-    container_stack.insertContainer(0, definition_container) #Add a definition to it so it doesn't complain.
-    container_stack.insertContainer(1, definition_changes_container)
+    container_stack.setDefinition(definition_container) #Add a definition to it so it doesn't complain.
+    container_stack.setDefinitionChanges(definition_changes_container)
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
@@ -61,10 +61,10 @@ def test_addContainerGlobalStack(container_registry, definition_container, defin
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
-    container_stack = UM.Settings.ContainerStack.ContainerStack(stack_id = "Test Global Stack") #A container we're going to convert.
+    container_stack = GlobalStack("Test Global Stack") #A container we're going to convert.
     container_stack.setMetaDataEntry("type", "machine") #This is now a global stack.
-    container_stack.insertContainer(0, definition_container) #Must have a definition.
-    container_stack.insertContainer(1, definition_changes_container) #Must have a definition changes.
+    container_stack.setDefinition(definition_container) #Must have a definition.
+    container_stack.setDefinitionChanges(definition_changes_container) #Must have a definition changes.
 
     mock_super_add_container = unittest.mock.MagicMock() #Takes the role of the Uranium-ContainerRegistry where the resulting containers get registered.
     with unittest.mock.patch("UM.Settings.ContainerRegistry.ContainerRegistry.addContainer", mock_super_add_container):
