@@ -197,6 +197,7 @@ class CuraApplication(QtApplication):
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
         self.empty_variant_container = None  # type: EmptyInstanceContainer
+        self.empty_intent_container = None  # type: EmptyInstanceContainer 
         self.empty_material_container = None  # type: EmptyInstanceContainer
         self.empty_quality_container = None  # type: EmptyInstanceContainer
         self.empty_quality_changes_container = None  # type: EmptyInstanceContainer
@@ -432,6 +433,9 @@ class CuraApplication(QtApplication):
 
         self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_variant_container)
         self.empty_variant_container = cura.Settings.cura_empty_instance_containers.empty_variant_container
+
+        self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_intent_container)
+        self.empty_intent_container = cura.Settings.cura_empty_instance_containers.empty_intent_container
 
         self._container_registry.addContainer(cura.Settings.cura_empty_instance_containers.empty_material_container)
         self.empty_material_container = cura.Settings.cura_empty_instance_containers.empty_material_container
