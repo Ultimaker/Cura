@@ -16,7 +16,7 @@ assignees: ''
 **Describe alternatives you've considered**
 <!-- A clear and concise description of any alternative solutions or features you've considered. Again, if possible, think about why these alternatives are not working out. -->
 
-**Affected users and/or printers **
+**Affected users and/or printers**
 <!-- Who do you think will benefit from this? Is everyone going to benefit from these changes? Only a few people? --> 
 **Additional context**
 <!-- Add any other context or screenshots about the feature request here. -->
