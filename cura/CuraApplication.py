@@ -130,13 +130,12 @@ from . import CuraActions
 from . import PrintJobPreviewImageProvider
 
 from cura import ApplicationMetadata, UltimakerCloudAuthentication
+from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
-    from cura.Settings.GlobalStack import GlobalStack
-
 
 numpy.seterr(all = "ignore")
 
@@ -161,6 +160,7 @@ class CuraApplication(QtApplication):
         ExtruderStack = Resources.UserType + 9
         DefinitionChangesContainer = Resources.UserType + 10
         SettingVisibilityPreset = Resources.UserType + 11
+        IntentInstanceContainer = Resources.UserType + 12
 
     Q_ENUMS(ResourceTypes)
 
@@ -346,7 +346,7 @@ class CuraApplication(QtApplication):
     # Adds expected directory names and search paths for Resources.
     def __addExpectedResourceDirsAndSearchPaths(self):
         # this list of dir names will be used by UM to detect an old cura directory
-        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants"]:
+        for dir_name in ["extruders", "machine_instances", "materials", "plugins", "quality", "quality_changes", "user", "variants", "intent"]:
             Resources.addExpectedDirNameInData(dir_name)
 
         Resources.addSearchPath(os.path.join(self._app_install_dir, "share", "cura", "resources"))
@@ -404,6 +404,7 @@ class CuraApplication(QtApplication):
         Resources.addStorageType(self.ResourceTypes.MachineStack, "machine_instances")
         Resources.addStorageType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
         Resources.addStorageType(self.ResourceTypes.SettingVisibilityPreset, "setting_visibility")
+        Resources.addStorageType(self.ResourceTypes.IntentInstanceContainer, "intent")
 
         self._container_registry.addResourceType(self.ResourceTypes.QualityInstanceContainer, "quality")
         self._container_registry.addResourceType(self.ResourceTypes.QualityChangesInstanceContainer, "quality_changes")
@@ -413,6 +414,7 @@ class CuraApplication(QtApplication):
         self._container_registry.addResourceType(self.ResourceTypes.ExtruderStack, "extruder_train")
         self._container_registry.addResourceType(self.ResourceTypes.MachineStack, "machine")
         self._container_registry.addResourceType(self.ResourceTypes.DefinitionChangesContainer, "definition_changes")
+        self._container_registry.addResourceType(self.ResourceTypes.IntentInstanceContainer, "intent")
 
         Resources.addType(self.ResourceTypes.QmlFiles, "qml")
         Resources.addType(self.ResourceTypes.Firmware, "firmware")
@@ -445,14 +447,15 @@ class CuraApplication(QtApplication):
     def __setLatestResouceVersionsForVersionUpgrade(self):
         self._version_upgrade_manager.setCurrentVersions(
             {
-                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):    (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("machine_stack", GlobalStack.Version * 1000000 + self.SettingVersion):         (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
-                ("extruder_train", ExtruderStack.Version * 1000000 + self.SettingVersion):        (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
-                ("preferences", Preferences.Version * 1000000 + self.SettingVersion):              (Resources.Preferences, "application/x-uranium-preferences"),
-                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):               (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
-                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion): (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
-                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):            (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality", InstanceContainer.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.QualityInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("quality_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):     (self.ResourceTypes.QualityChangesInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("intent", InstanceContainer.Version * 1000000 + self.SettingVersion):              (self.ResourceTypes.IntentInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("machine_stack", GlobalStack.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.MachineStack, "application/x-cura-globalstack"),
+                ("extruder_train", ExtruderStack.Version * 1000000 + self.SettingVersion):          (self.ResourceTypes.ExtruderStack, "application/x-cura-extruderstack"),
+                ("preferences", Preferences.Version * 1000000 + self.SettingVersion):               (Resources.Preferences, "application/x-uranium-preferences"),
+                ("user", InstanceContainer.Version * 1000000 + self.SettingVersion):                (self.ResourceTypes.UserInstanceContainer, "application/x-uranium-instancecontainer"),
+                ("definition_changes", InstanceContainer.Version * 1000000 + self.SettingVersion):  (self.ResourceTypes.DefinitionChangesContainer, "application/x-uranium-instancecontainer"),
+                ("variant", InstanceContainer.Version * 1000000 + self.SettingVersion):             (self.ResourceTypes.VariantInstanceContainer, "application/x-uranium-instancecontainer"),
             }
         )
 
