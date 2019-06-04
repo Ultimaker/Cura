@@ -2296,19 +2296,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_break_preparation_temperature":
-                {
-                    "label": "Break Preparation Temperature",
-                    "description": "The temperature at which the filament needs to be stretched towards breaking.",
-                    "type": "float",
-                    "unit": "°C",
-                    "default_value": 200,
-                    "enabled": false,
-                    "minimum_value": "-273.15",
-                    "maximum_value_warning": "300",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_break_distance":
                 {
                     "label": "Break Retraction Distance",
@@ -2317,7 +2304,7 @@
                     "unit": "mm",
                     "default_value": 50,
                     "enabled": false,
-                    "minimum_value_warning": "0",
+                    "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
