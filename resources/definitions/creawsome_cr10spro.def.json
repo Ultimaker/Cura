@@ -25,6 +25,7 @@
 
     },
     "metadata": {
+        "quality_definition": "creawsome_base",
         "platform": "creawsome_cr10spro.stl",
         "platform_offset": [ -150, 0, 150]
     }

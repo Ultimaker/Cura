@@ -27,6 +27,7 @@
 
     },
     "metadata": {
+        "quality_definition": "creawsome_base",
         "platform": "creawsome_ender3_printerhd.stl",
         "platform_offset": [ -160, 0, 140]
     }

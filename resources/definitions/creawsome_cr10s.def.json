@@ -7,6 +7,7 @@
         "machine_name": { "default_value": "Creawsome CR-10S" }
     },
     "metadata": {
+        "quality_definition": "creawsome_base"
 
     }
 }

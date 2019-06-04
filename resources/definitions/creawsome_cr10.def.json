@@ -27,6 +27,7 @@
 
     },
     "metadata": {
+        "quality_definition": "creawsome_base",
         "platform": "creawsome_cr10s_printerhd.stl",
         "platform_offset": [ -150, 0, 155]
     }
