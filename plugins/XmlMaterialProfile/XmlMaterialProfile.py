@@ -1180,6 +1180,14 @@ class XmlMaterialProfile(InstanceContainer):
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
         "build volume temperature": "build_volume_temperature",
+        "anti ooze retract position": "material_anti_ooze_retraction_distance",
+        "anti ooze retract speed": "material_anti_ooze_retraction_speed",
+        "break preparation position": "material_break_preparation_distance",
+        "break preparation speed": "material_break_preparation_speed",
+        "break preparation temperature": "material_break_preparation_temperature",
+        "break position": "material_break_distance",
+        "break speed": "material_break_speed",
+        "break temperature": "material_break_temperature"
     }
     __unmapped_settings = [
         "hardware compatible",
