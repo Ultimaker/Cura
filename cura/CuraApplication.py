@@ -61,6 +61,7 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
+from cura.Machines.Models.IntentModel import IntentModel
 
 from cura.Operations.SetParentOperation import SetParentOperation
 
@@ -1069,6 +1070,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "CustomQualityProfilesDropDownMenuModel", self.getCustomQualityProfilesDropDownMenuModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
+        qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
 
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
