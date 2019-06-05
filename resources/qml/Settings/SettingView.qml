@@ -512,12 +512,7 @@ Item
                     text: catalog.i18nc("@action:menu", "Hide this setting");
                     onTriggered:
                     {
-                        definitionsModel.hide(contextMenu.key);
-                        // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "")
-                        {
-                            settingVisibilityPresetsModel.setActivePreset("custom");
-                        }
+                        definitionsModel.hide(contextMenu.key)
                     }
                 }
                 MenuItem
@@ -544,11 +539,6 @@ Item
                         else
                         {
                             definitionsModel.show(contextMenu.key);
-                        }
-                        // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "")
-                        {
-                            settingVisibilityPresetsModel.setActivePreset("custom");
                         }
                     }
                 }
