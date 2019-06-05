@@ -3,6 +3,7 @@
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
+import QtQuick.Controls 1.1 as OldControls
 
 import UM 1.3 as UM
 import Cura 1.0 as Cura
@@ -24,12 +25,55 @@ Item
         anchors
         {
             top: parent.top
-            topMargin: parent.padding
+            left: parent.left
+            right: parent.right
+            margins: parent.padding
+        }
+    }
+    Item
+    {
+        id: intent
+        height: childrenRect.height
+
+        anchors
+        {
+            top: globalProfileRow.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             leftMargin: parent.padding
             right: parent.right
             rightMargin: parent.padding
         }
+
+        Label
+        {
+            id: intentLabel
+            anchors
+            {
+                top: parent.top
+                bottom: parent.bottom
+                left: parent.left
+                right: intentSelection.left
+            }
+            text: catalog.i18nc("@label", "Intent")
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
+            verticalAlignment: Text.AlignVCenter
+        }
+        OldControls.ToolButton
+        {
+            id: intentSelection
+            text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.intent.name : ""
+            tooltip: text
+            height: UM.Theme.getSize("print_setup_big_item").height
+            width: UM.Theme.getSize("print_setup_big_item").width
+            anchors.right: parent.right
+            style: UM.Theme.styles.print_setup_header_button
+            activeFocusOnPress: true
+
+            menu: Cura.IntentMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
+        }
+
     }
 
     UM.TabRow
@@ -40,7 +84,7 @@ Item
 
         anchors
         {
-            top: globalProfileRow.bottom
+            top: intent.bottom
             topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             leftMargin: parent.padding
