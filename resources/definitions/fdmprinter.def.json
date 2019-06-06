@@ -4582,8 +4582,8 @@
                 },
                 "support_minimal_diameter":
                 {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "label": "Maximum Tower-Supported Diameter",
+                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
