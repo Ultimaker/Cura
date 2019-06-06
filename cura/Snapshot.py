@@ -73,11 +73,10 @@ class Snapshot:
         satisfied = False
         size = None
         fovy = 30
-        min_x, min_y, max_x, max_y = 0, 0, 0, 0
 
         while not satisfied:
             if size is not None:
-                satisfied = True  # Always be satisfied after second try
+                satisfied = True  # always be satisfied after second try
             projection_matrix = Matrix()
             # Somehow the aspect ratio is also influenced in reverse by the screen width/height
             # So you have to set it to render_width/render_height to get 1
@@ -93,18 +92,16 @@ class Snapshot:
             if size > 0.5 or satisfied:
                 satisfied = True
             else:
-                # Make it big and allow for some empty space around
+                # make it big and allow for some empty space around
                 fovy *= 0.5  # strangely enough this messes up the aspect ratio: fovy *= size * 1.1
-        width = max_x - min_x
-        height = max_y - min_y
-        # Make it a square
-        if width >= height:
+
+        # make it a square
+        if max_x - min_x >= max_y - min_y:
             # make y bigger
-            min_y, max_y = int(height / 2 - width / 2), int(height / 2 + width / 2)
+            min_y, max_y = int((max_y + min_y) / 2 - (max_x - min_x) / 2), int((max_y + min_y) / 2 + (max_x - min_x) / 2)
         else:
             # make x bigger
-            min_x, max_x = int(width / 2 - height / 2), int(width / 2 + height / 2)
-
+            min_x, max_x = int((max_x + min_x) / 2 - (max_y - min_y) / 2), int((max_x + min_x) / 2 + (max_y - min_y) / 2)
         cropped_image = pixel_output.copy(min_x, min_y, max_x - min_x, max_y - min_y)
 
         # Scale it to the correct size
