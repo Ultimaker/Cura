@@ -55,7 +55,7 @@
         "prime_tower_wipe_enabled": { "default_value": false },
         "prime_tower_min_volume": { "default_value": 50 },
 
-        "prime_blob_enable": { "enabled": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
+        "prime_blob_enable": { "enabled": true },
 
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
