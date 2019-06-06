@@ -4626,7 +4626,8 @@
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "enabled": false,
+                    "warning_value": "True if resolveOrValue('print_sequence') == 'one_at_a_time' else None"
                 },
                 "extruder_prime_pos_x":
                 {
