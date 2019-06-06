@@ -66,7 +66,7 @@ class Snapshot:
         looking_from_offset = Vector(-1, 1, 2)
         if size > 0:
             # determine the watch distance depending on the size
-            looking_from_offset = looking_from_offset * size * 1.3
+            looking_from_offset = looking_from_offset * size * 1.75
         camera.setPosition(look_at + looking_from_offset)
         camera.lookAt(look_at)
 
