@@ -33,6 +33,7 @@ from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Settings.ExtruderStack import ExtruderStack
+    from UM.Settings.ContainerStack import ContainerStack
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -565,25 +566,17 @@ class BuildVolume(SceneNode):
             self.setPosition(Vector(0, -self._raft_thickness, 0), SceneNode.TransformSpace.World)
             self.raftThicknessChanged.emit()
 
-    def _updateExtraZClearance(self) -> None:
+    def _calculateExtraZClearance(self, extruders: List["ContainerStack"]) -> float:
         if not self._global_container_stack:
-            return
+            return 0
         
         extra_z = 0.0
-        extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
-        use_extruders = False
         for extruder in extruders:
             if extruder.getProperty("retraction_hop_enabled", "value"):
                 retraction_hop = extruder.getProperty("retraction_hop", "value")
                 if extra_z is None or retraction_hop > extra_z:
                     extra_z = retraction_hop
-            use_extruders = True
-        if not use_extruders:
-            # If no extruders, take global value.
-            if self._global_container_stack.getProperty("retraction_hop_enabled", "value"):
-                extra_z = self._global_container_stack.getProperty("retraction_hop", "value")
-        if extra_z != self._extra_z_clearance:
-            self._extra_z_clearance = extra_z
+        return extra_z
 
     def _onStackChanged(self):
         self._stack_change_timer.start()
@@ -620,7 +613,7 @@ class BuildVolume(SceneNode):
 
             self._updateDisallowedAreas()
             self._updateRaftThickness()
-            self._updateExtraZClearance()
+            self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
 
             if self._engine_ready:
                 self.rebuild()
@@ -694,7 +687,7 @@ class BuildVolume(SceneNode):
             self._updateRaftThickness()
 
         if update_extra_z_clearance:
-            self._updateExtraZClearance()
+            self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
 
         if rebuild_me:
             self.rebuild()
@@ -724,7 +717,7 @@ class BuildVolume(SceneNode):
     def _updateDisallowedAreasAndRebuild(self):
         self._updateDisallowedAreas()
         self._updateRaftThickness()
-        self._updateExtraZClearance()
+        self._extra_z_clearance = self._calculateExtraZClearance(ExtruderManager.getInstance().getUsedExtruderStacks())
         self.rebuild()
 
     def _updateDisallowedAreas(self) -> None:

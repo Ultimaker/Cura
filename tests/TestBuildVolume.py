@@ -142,6 +142,44 @@ class TestComputeDisallowedAreasPrimeBlob:
         assert build_volume._computeDisallowedAreasPrimeBlob(12, [mocked_extruder_stack]) == {"0": [resulting_polygon]}
 
 
+class TestCalculateExtraZClearance:
+    setting_property_dict = {"retraction_hop": {"value": 12},
+                             "retraction_hop_enabled": {"value": True}}
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestCalculateExtraZClearance.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def test_noContainerStack(self, build_volume: BuildVolume):
+        assert build_volume._calculateExtraZClearance([]) is 0
+
+    def test_withRetractionHop(self, build_volume: BuildVolume):
+        mocked_global_stack = MagicMock(name="mocked_global_stack")
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_global_stack
+
+        # It should be 12 because we have the hop enabled and the hop distance is set to 12
+        assert build_volume._calculateExtraZClearance([mocked_extruder]) == 12
+
+    def test_withoutRetractionHop(self, build_volume: BuildVolume):
+        mocked_global_stack = MagicMock(name="mocked_global_stack")
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_global_stack
+
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary["retraction_hop_enabled"] = {"value": False}
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            # It should be 12 because we have the hop enabled and the hop distance is set to 12
+            assert build_volume._calculateExtraZClearance([mocked_extruder]) == 0
+
+
 class TestRebuild:
     def test_zeroWidthHeightDepth(self, build_volume: BuildVolume):
         build_volume.rebuild()
