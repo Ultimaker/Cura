@@ -71,6 +71,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = []  # type: List[Polygon]
         self._disallowed_areas_no_brim = []  # type: List[Polygon]
         self._disallowed_area_mesh = None  # type: Optional[MeshData]
+        self._disallowed_area_size = 0.
 
         self._error_areas = []  # type: List[Polygon]
         self._error_mesh = None  # type: Optional[MeshData]
@@ -416,6 +417,68 @@ class BuildVolume(SceneNode):
         )
         return mb.build()
 
+    def _updateColors(self):
+        theme = self._application.getTheme()
+        if theme is None:
+            return
+        self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
+        self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
+        self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
+        self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
+        self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
+        self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+
+    def _buildErrorMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d: float, disallowed_area_height: float) -> Optional[MeshData]:
+        if not self._error_areas:
+            return None
+        mb = MeshBuilder()
+        for error_area in self._error_areas:
+            color = self._error_area_color
+            points = error_area.getPoints()
+            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                           self._clamp(points[0][1], min_d, max_d))
+            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                    self._clamp(points[0][1], min_d, max_d))
+            for point in points:
+                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                   self._clamp(point[1], min_d, max_d))
+                mb.addFace(first, previous_point, new_point, color=color)
+                previous_point = new_point
+        return mb.build()
+
+    def _buildDisallowedAreaMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d: float, disallowed_area_height: float) -> Optional[MeshData]:
+        if not self._disallowed_areas:
+            return None
+
+        mb = MeshBuilder()
+        color = self._disallowed_area_color
+        for polygon in self._disallowed_areas:
+            points = polygon.getPoints()
+            if len(points) == 0:
+                continue
+
+            first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                           self._clamp(points[0][1], min_d, max_d))
+            previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
+                                    self._clamp(points[0][1], min_d, max_d))
+            for point in points:
+                new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
+                                   self._clamp(point[1], min_d, max_d))
+                mb.addFace(first, previous_point, new_point, color=color)
+                previous_point = new_point
+
+            # Find the largest disallowed area to exclude it from the maximum scale bounds.
+            # This is a very nasty hack. This pretty much only works for UM machines.
+            # This disallowed area_size needs a -lot- of rework at some point in the future: TODO
+            if numpy.min(points[:,
+                         1]) >= 0:  # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
+                size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
+            else:
+                size = 0
+            self._disallowed_area_size = max(size, self._disallowed_area_size)
+        return mb.build()
+
+
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self) -> None:
         if not self._width or not self._height or not self._depth:
@@ -428,15 +491,7 @@ class BuildVolume(SceneNode):
             return
 
         if not self._volume_outline_color:
-            theme = self._application.getTheme()
-            if theme is None:
-                return
-            self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
-            self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
-            self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
-            self._z_axis_color = Color(*theme.getColor("z_axis").getRgb())
-            self._disallowed_area_color = Color(*theme.getColor("disallowed_area").getRgb())
-            self._error_area_color = Color(*theme.getColor("error_area").getRgb())
+            self._updateColors()
 
         min_w = -self._width / 2
         max_w = self._width / 2
@@ -459,52 +514,10 @@ class BuildVolume(SceneNode):
         self._origin_mesh = self._buildOriginMesh(origin)
 
         disallowed_area_height = 0.1
-        disallowed_area_size = 0
-        if self._disallowed_areas:
-            mb = MeshBuilder()
-            color = self._disallowed_area_color
-            for polygon in self._disallowed_areas:
-                points = polygon.getPoints()
-                if len(points) == 0:
-                    continue
+        self._disallowed_area_size = 0.
+        self._disallowed_area_mesh = self._buildDisallowedAreaMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
-                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
-                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height, self._clamp(points[0][1], min_d, max_d))
-                for point in points:
-                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height, self._clamp(point[1], min_d, max_d))
-                    mb.addFace(first, previous_point, new_point, color = color)
-                    previous_point = new_point
-
-                # Find the largest disallowed area to exclude it from the maximum scale bounds.
-                # This is a very nasty hack. This pretty much only works for UM machines.
-                # This disallowed area_size needs a -lot- of rework at some point in the future: TODO
-                if numpy.min(points[:, 1]) >= 0: # This filters out all areas that have points to the left of the centre. This is done to filter the skirt area.
-                    size = abs(numpy.max(points[:, 1]) - numpy.min(points[:, 1]))
-                else:
-                    size = 0
-                disallowed_area_size = max(size, disallowed_area_size)
-
-            self._disallowed_area_mesh = mb.build()
-        else:
-            self._disallowed_area_mesh = None
-
-        if self._error_areas:
-            mb = MeshBuilder()
-            for error_area in self._error_areas:
-                color = self._error_area_color
-                points = error_area.getPoints()
-                first = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                               self._clamp(points[0][1], min_d, max_d))
-                previous_point = Vector(self._clamp(points[0][0], min_w, max_w), disallowed_area_height,
-                                        self._clamp(points[0][1], min_d, max_d))
-                for point in points:
-                    new_point = Vector(self._clamp(point[0], min_w, max_w), disallowed_area_height,
-                                       self._clamp(point[1], min_d, max_d))
-                    mb.addFace(first, previous_point, new_point, color=color)
-                    previous_point = new_point
-            self._error_mesh = mb.build()
-        else:
-            self._error_mesh = None
+        self._error_mesh = self._buildErrorMesh(min_w, max_w, min_h, max_h, min_d, max_d, disallowed_area_height)
 
         self._volume_aabb = AxisAlignedBox(
             minimum = Vector(min_w, min_h - 1.0, min_d),
@@ -516,8 +529,8 @@ class BuildVolume(SceneNode):
         # This is probably wrong in all other cases. TODO!
         # The +1 and -1 is added as there is always a bit of extra room required to work properly.
         scale_to_max_bounds = AxisAlignedBox(
-            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + disallowed_area_size - bed_adhesion_size + 1),
-            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
+            minimum = Vector(min_w + bed_adhesion_size + 1, min_h, min_d + self._disallowed_area_size - bed_adhesion_size + 1),
+            maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - self._disallowed_area_size + bed_adhesion_size - 1)
         )
 
         self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
