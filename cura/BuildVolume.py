@@ -1118,7 +1118,9 @@ class BuildVolume(SceneNode):
 
     def _calculateMoveFromWallRadius(self, used_extruders):
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
+        all_values = [move_from_wall_radius]
+        all_values.extend(self._getSettingFromAllExtruders("infill_wipe_dist"))
+        move_from_wall_radius = max(all_values)
         avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts", "value") for stack in used_extruders]
         travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
         for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder):  # For each extruder (or just global).

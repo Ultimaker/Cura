@@ -255,9 +255,10 @@ class TestGetEdgeDisallowedSize:
     def test_unknownAdhesion(self, build_volume: BuildVolume):
         build_volume._global_container_stack = self.createMockedStack()
         with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
-            with pytest.raises(Exception):
+            #with pytest.raises(Exception):
                 # Since we don't have any adhesion set, this should break.
-                build_volume.getEdgeDisallowedSize()
+
+            build_volume.getEdgeDisallowedSize()
 
     def test_oneAtATime(self, build_volume: BuildVolume):
         build_volume._global_container_stack = self.createMockedStack()
