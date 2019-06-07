@@ -1648,13 +1648,6 @@ class MachineManager(QObject):
 
         return abbr_machine
 
-    # Checks if the given machine type name in the available machine list.
-    # The machine type is a code name such as "ultimaker_3", while the machine type name is the human-readable name of
-    # the machine type, which is "Ultimaker 3" for "ultimaker_3".
-    def hasHumanReadableMachineTypeName(self, machine_type_name: str) -> bool:
-        results = self._container_registry.findDefinitionContainersMetadata(name = machine_type_name)
-        return len(results) > 0
-
     @pyqtSlot(str, result = str)
     def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
         machine_type_name = ""
