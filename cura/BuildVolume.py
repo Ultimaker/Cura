@@ -661,23 +661,20 @@ class BuildVolume(SceneNode):
                 self._shape = self._global_container_stack.getProperty("machine_shape", "value")
                 update_extra_z_clearance = True
                 update_disallowed_areas = True
-                rebuild_me = True
 
-            if setting_key in self._skirt_settings + self._prime_settings + self._tower_settings + self._ooze_shield_settings + self._distance_settings + self._extruder_settings:
+            if setting_key in self._disallowed_area_settings:
                 update_disallowed_areas = True
-                rebuild_me = True
 
             if setting_key in self._raft_settings:
                 update_raft_thickness = True
-                rebuild_me = True
 
             if setting_key in self._extra_z_settings:
                 update_extra_z_clearance = True
-                rebuild_me = True
 
             if setting_key in self._limit_to_extruder_settings:
                 update_disallowed_areas = True
-                rebuild_me = True
+
+            rebuild_me = update_extra_z_clearance or update_disallowed_areas or update_raft_thickness
 
         # We only want to update all of them once.
         if update_disallowed_areas:
@@ -1150,3 +1147,4 @@ class BuildVolume(SceneNode):
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
+    _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings
