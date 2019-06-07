@@ -2252,7 +2252,7 @@
                     "unit": "mm",
                     "default_value": 4,
                     "enabled": false,
-                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "retraction_amount",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2278,7 +2278,7 @@
                     "unit": "mm",
                     "default_value": 16,
                     "enabled": false,
-                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "retraction_amount * 4",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2304,7 +2304,7 @@
                     "unit": "mm",
                     "default_value": 50,
                     "enabled": false,
-                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
