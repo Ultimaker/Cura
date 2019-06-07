@@ -651,14 +651,10 @@ class BuildVolume(SceneNode):
                     self._height = self._global_container_stack.getProperty("machine_height", "value")
                     self._build_volume_message.hide()
                 update_disallowed_areas = True
-                rebuild_me = True
 
             # sometimes the machine size or shape settings are adjusted on the active machine, we should reflect this
             if setting_key in self._machine_settings:
-                self._height = self._global_container_stack.getProperty("machine_height", "value")
-                self._width = self._global_container_stack.getProperty("machine_width", "value")
-                self._depth = self._global_container_stack.getProperty("machine_depth", "value")
-                self._shape = self._global_container_stack.getProperty("machine_shape", "value")
+                self._updateMachineSizeProperties()
                 update_extra_z_clearance = True
                 update_disallowed_areas = True
 
@@ -702,6 +698,14 @@ class BuildVolume(SceneNode):
 
     def hasErrors(self) -> bool:
         return self._has_errors
+
+    def _updateMachineSizeProperties(self) -> None:
+        if not self._global_container_stack:
+            return
+        self._height = self._global_container_stack.getProperty("machine_height", "value")
+        self._width = self._global_container_stack.getProperty("machine_width", "value")
+        self._depth = self._global_container_stack.getProperty("machine_depth", "value")
+        self._shape = self._global_container_stack.getProperty("machine_shape", "value")
 
     ##  Calls _updateDisallowedAreas and makes sure the changes appear in the
     #   scene.

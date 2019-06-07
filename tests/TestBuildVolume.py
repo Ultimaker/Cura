@@ -201,3 +201,32 @@ class TestRebuild:
         build_volume.rebuild()
         assert build_volume.getMeshData() is None
 
+
+
+class TestUpdateMachineSizeProperties:
+    setting_property_dict = {"machine_width": {"value": 50},
+                             "machine_depth": {"value": 100},
+                             "machine_height": {"value": 200},
+                             "machine_shape": {"value": "DERP!"}}
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestUpdateMachineSizeProperties.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def test_noGlobalStack(self, build_volume: BuildVolume):
+        build_volume._updateMachineSizeProperties()
+        assert build_volume._width == 0
+        assert build_volume._height == 0
+        assert build_volume._depth == 0
+        assert build_volume._shape == ""
+
+    def test_happy(self, build_volume: BuildVolume):
+        mocked_global_stack = MagicMock(name="mocked_global_stack")
+        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        build_volume._global_container_stack = mocked_global_stack
+        build_volume._updateMachineSizeProperties()
+        assert build_volume._width == 50
+        assert build_volume._height == 200
+        assert build_volume._depth == 100
+        assert build_volume._shape == "DERP!"
