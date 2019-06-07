@@ -1056,6 +1056,76 @@ class BuildVolume(SceneNode):
                 all_values[i] = 0
         return all_values
 
+    def _calculateBedAdhesionSize(self, used_extruders):
+        if self._global_container_stack is None:
+            return
+
+        container_stack = self._global_container_stack
+        adhesion_type = container_stack.getProperty("adhesion_type", "value")
+        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
+        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
+        # Use brim width if brim is enabled OR the prime tower has a brim.
+        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and adhesion_type != "raft"):
+            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
+            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the brim with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "skirt":  # No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
+            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
+            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
+
+            bed_adhesion_size = skirt_distance + (
+                        skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
+
+            for extruder_stack in used_extruders:
+                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
+
+            # We don't create an additional line for the extruder we're printing the skirt with.
+            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
+        elif adhesion_type == "raft":
+            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
+        elif adhesion_type == "none":
+            bed_adhesion_size = 0
+        else:
+            raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
+
+        max_length_available = 0.5 * min(
+            self._global_container_stack.getProperty("machine_width", "value"),
+            self._global_container_stack.getProperty("machine_depth", "value")
+        )
+        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
+        return bed_adhesion_size
+
+    def _calculateFarthestShieldDistance(self, container_stack):
+        farthest_shield_distance = 0
+        if container_stack.getProperty("draft_shield_enabled", "value"):
+            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
+        if container_stack.getProperty("ooze_shield_enabled", "value"):
+            farthest_shield_distance = max(farthest_shield_distance,container_stack.getProperty("ooze_shield_dist", "value"))
+        return farthest_shield_distance
+
+    def _calculateSupportExpansion(self, container_stack):
+        support_expansion = 0
+        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
+        support_offset = self._global_container_stack.getProperty("support_offset", "value")
+        if support_enabled and support_offset:
+            support_expansion += support_offset
+        return support_expansion
+
+    def _calculateMoveFromWallRadius(self, used_extruders):
+        move_from_wall_radius = 0  # Moves that start from outer wall.
+        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
+        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts", "value") for stack in used_extruders]
+        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
+        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder):  # For each extruder (or just global).
+            if avoid_other_parts_enabled:
+                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+        return move_from_wall_radius
+
     ##  Calculate the disallowed radius around the edge.
     #
     #   This disallowed radius is to allow for space around the models that is
@@ -1072,65 +1142,10 @@ class BuildVolume(SceneNode):
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
             return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
 
-        adhesion_type = container_stack.getProperty("adhesion_type", "value")
-        skirt_brim_line_width = self._global_container_stack.getProperty("skirt_brim_line_width", "value")
-        initial_layer_line_width_factor = self._global_container_stack.getProperty("initial_layer_line_width_factor", "value")
-        #Use brim width if brim is enabled OR the prime tower has a brim.
-        if adhesion_type == "brim" or (self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and
-                                       adhesion_type != "raft"):
-            brim_line_count = self._global_container_stack.getProperty("brim_line_count", "value")
-            bed_adhesion_size = skirt_brim_line_width * brim_line_count * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the brim with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "skirt": #No brim? Also not on prime tower? Then use whatever the adhesion type is saying: Skirt, raft or none.
-            skirt_distance = self._global_container_stack.getProperty("skirt_gap", "value")
-            skirt_line_count = self._global_container_stack.getProperty("skirt_line_count", "value")
-
-            bed_adhesion_size = skirt_distance + (skirt_brim_line_width * skirt_line_count) * initial_layer_line_width_factor / 100.0
-
-            for extruder_stack in used_extruders:
-                bed_adhesion_size += extruder_stack.getProperty("skirt_brim_line_width", "value") * extruder_stack.getProperty("initial_layer_line_width_factor", "value") / 100.0
-
-            # We don't create an additional line for the extruder we're printing the skirt with.
-            bed_adhesion_size -= skirt_brim_line_width * initial_layer_line_width_factor / 100.0
-        elif adhesion_type == "raft":
-            bed_adhesion_size = self._global_container_stack.getProperty("raft_margin", "value")
-
-        elif adhesion_type == "none":
-            bed_adhesion_size = 0
-
-        else:
-            raise Exception("Unknown bed adhesion type. Did you forget to update the build volume calculations for your new bed adhesion type?")
-
-        max_length_available = 0.5 * min(
-            self._global_container_stack.getProperty("machine_width", "value"),
-            self._global_container_stack.getProperty("machine_depth", "value")
-        )
-        bed_adhesion_size = min(bed_adhesion_size, max_length_available)
-
-        support_expansion = 0
-        support_enabled = self._global_container_stack.getProperty("support_enable", "value")
-        support_offset = self._global_container_stack.getProperty("support_offset", "value")
-        if support_enabled and support_offset:
-            support_expansion += support_offset
-
-        farthest_shield_distance = 0
-        if container_stack.getProperty("draft_shield_enabled", "value"):
-            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("draft_shield_dist", "value"))
-        if container_stack.getProperty("ooze_shield_enabled", "value"):
-            farthest_shield_distance = max(farthest_shield_distance, container_stack.getProperty("ooze_shield_dist", "value"))
-
-        move_from_wall_radius = 0  # Moves that start from outer wall.
-        move_from_wall_radius = max(move_from_wall_radius, max(self._getSettingFromAllExtruders("infill_wipe_dist")))
-        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts","value") for stack in used_extruders]
-        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
-        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder): #For each extruder (or just global).
-            if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+        bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)
+        support_expansion = self._calculateSupportExpansion(self._global_container_stack)
+        farthest_shield_distance = self._calculateFarthestShieldDistance(self._global_container_stack)
+        move_from_wall_radius = self._calculateMoveFromWallRadius(used_extruders)
 
         # Now combine our different pieces of data to get the final border size.
         # Support expansion is added to the bed adhesion, since the bed adhesion goes around support.

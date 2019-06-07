@@ -201,8 +201,6 @@ class TestRebuild:
         build_volume.rebuild()
         assert build_volume.getMeshData() is None
 
-
-
 class TestUpdateMachineSizeProperties:
     setting_property_dict = {"machine_width": {"value": 50},
                              "machine_depth": {"value": 100},
@@ -230,3 +228,40 @@ class TestUpdateMachineSizeProperties:
         assert build_volume._height == 200
         assert build_volume._depth == 100
         assert build_volume._shape == "DERP!"
+
+
+class TestGetEdgeDisallowedSize:
+    setting_property_dict = {}
+    bed_adhesion_size = 1
+
+    @pytest.fixture()
+    def build_volume(self, build_volume):
+        build_volume._calculateBedAdhesionSize = MagicMock(return_value = 1)
+        return build_volume
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestGetEdgeDisallowedSize.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def createMockedStack(self):
+        mocked_global_stack = MagicMock(name="mocked_global_stack")
+        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        return mocked_global_stack
+
+    def test_noGlobalContainer(self, build_volume: BuildVolume):
+        assert build_volume.getEdgeDisallowedSize() == 0
+
+    def test_unknownAdhesion(self, build_volume: BuildVolume):
+        build_volume._global_container_stack = self.createMockedStack()
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
+            with pytest.raises(Exception):
+                # Since we don't have any adhesion set, this should break.
+                build_volume.getEdgeDisallowedSize()
+
+    def test_oneAtATime(self, build_volume: BuildVolume):
+        build_volume._global_container_stack = self.createMockedStack()
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
+            with patch.dict(self.setting_property_dict, {"print_sequence": {"value": "one_at_a_time"}}):
+                assert build_volume.getEdgeDisallowedSize() == 0.1
+
