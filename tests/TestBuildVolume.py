@@ -3,6 +3,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from cura.BuildVolume import BuildVolume
+import numpy
 
 @pytest.fixture
 def build_volume():
@@ -25,3 +26,13 @@ def test_buildVolumeSetSizes(build_volume):
     assert build_volume.getDiagonalSize() == 200
 
 
+def test_buildMesh(build_volume):
+    mesh = build_volume._buildMesh(0, 100, 0, 100, 0, 100, 1)
+    result_vertices = numpy.array([[0., 0., 0.], [100., 0., 0.], [0., 0., 0.], [0., 100., 0.], [0., 100., 0.], [100., 100., 0.], [100., 0., 0.], [100., 100., 0.], [0., 0., 100.], [100., 0., 100.], [0., 0., 100.], [0., 100., 100.], [0., 100., 100.], [100., 100., 100.], [100., 0., 100.], [100., 100., 100.], [0., 0., 0.], [0., 0., 100.], [100., 0., 0.], [100., 0., 100.], [0., 100., 0.], [0., 100., 100.], [100., 100., 0.], [100., 100., 100.]], dtype=numpy.float32)
+    assert numpy.array_equal(result_vertices, mesh.getVertices())
+
+
+def test_buildGridMesh(build_volume):
+    mesh = build_volume._buildGridMesh(0, 100, 0, 100, 0, 100, 1)
+    result_vertices = numpy.array([[0., -1., 0.], [100., -1., 100.], [100., -1., 0.], [0., -1., 0.], [0., -1., 100.], [100., -1., 100.]])
+    assert numpy.array_equal(result_vertices, mesh.getVertices())
