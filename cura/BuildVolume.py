@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+from UM.Mesh.MeshData import MeshData
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Application import Application #To modify the maximum zoom level.
@@ -20,13 +20,18 @@ from UM.Signal import Signal
 from PyQt5.QtCore import QTimer
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+from cura.Settings.GlobalStack import GlobalStack
+
 catalog = i18nCatalog("cura")
 
 import numpy
 import math
 import copy
 
-from typing import List, Optional
+from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -36,45 +41,45 @@ PRIME_CLEARANCE = 6.5
 class BuildVolume(SceneNode):
     raftThicknessChanged = Signal()
 
-    def __init__(self, application, parent = None):
+    def __init__(self, application: "CuraApplication", parent: Optional[SceneNode] = None) -> None:
         super().__init__(parent)
         self._application = application
         self._machine_manager = self._application.getMachineManager()
 
-        self._volume_outline_color = None
-        self._x_axis_color = None
-        self._y_axis_color = None
-        self._z_axis_color = None
-        self._disallowed_area_color = None
-        self._error_area_color = None
+        self._volume_outline_color = None  # type: Optional[Color]
+        self._x_axis_color = None  # type: Optional[Color]
+        self._y_axis_color = None  # type: Optional[Color]
+        self._z_axis_color = None  # type: Optional[Color]
+        self._disallowed_area_color = None  # type: Optional[Color]
+        self._error_area_color = None  # type: Optional[Color]
 
-        self._width = 0 #type: float
-        self._height = 0 #type: float
-        self._depth = 0 #type: float
-        self._shape = "" #type: str
+        self._width = 0  # type: float
+        self._height = 0  # type: float
+        self._depth = 0  # type: float
+        self._shape = ""  # type: str
 
         self._shader = None
 
-        self._origin_mesh = None
+        self._origin_mesh = None  # type: Optional[MeshData]
         self._origin_line_length = 20
         self._origin_line_width = 0.5
 
-        self._grid_mesh = None
+        self._grid_mesh = None   # type: Optional[MeshData]
         self._grid_shader = None
 
-        self._disallowed_areas = []
-        self._disallowed_areas_no_brim = []
-        self._disallowed_area_mesh = None
+        self._disallowed_areas = []  # type: List[Polygon]
+        self._disallowed_areas_no_brim = []  # type: List[Polygon]
+        self._disallowed_area_mesh = None  # type: Optional[MeshData]
 
-        self._error_areas = []
-        self._error_mesh = None
+        self._error_areas = []  # type: List[Polygon]
+        self._error_mesh = None  # type: Optional[MeshData]
 
         self.setCalculateBoundingBox(False)
-        self._volume_aabb = None
+        self._volume_aabb = None  # type: Optional[AxisAlignedBox]
 
         self._raft_thickness = 0.0
         self._extra_z_clearance = 0.0
-        self._adhesion_type = None
+        self._adhesion_type = None  # type: Any
         self._platform = Platform(self)
 
         self._build_volume_message = Message(catalog.i18nc("@info:status",
@@ -82,7 +87,7 @@ class BuildVolume(SceneNode):
             " \"Print Sequence\" setting to prevent the gantry from colliding"
             " with printed models."), title = catalog.i18nc("@info:title", "Build Volume"))
 
-        self._global_container_stack = None
+        self._global_container_stack = None  # type: Optional[GlobalStack]
 
         self._stack_change_timer = QTimer()
         self._stack_change_timer.setInterval(100)
@@ -100,7 +105,7 @@ class BuildVolume(SceneNode):
         self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
 
         #Objects loaded at the moment. We are connected to the property changed events of these objects.
-        self._scene_objects = set()
+        self._scene_objects = set()  # type: Set[SceneNode]
 
         self._scene_change_timer = QTimer()
         self._scene_change_timer.setInterval(100)
@@ -124,8 +129,8 @@ class BuildVolume(SceneNode):
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
 
-        # list of settings which were updated
-        self._changed_settings_since_last_rebuild = []
+        # List of settings which were updated
+        self._changed_settings_since_last_rebuild = []  # type: List[str]
 
     def _onSceneChanged(self, source):
         if self._global_container_stack:
@@ -219,9 +224,12 @@ class BuildVolume(SceneNode):
     ##  For every sliceable node, update node._outside_buildarea
     #
     def updateNodeBoundaryCheck(self):
+        if not self._global_container_stack:
+            return
+
         root = self._application.getController().getScene().getRoot()
-        nodes = list(BreadthFirstIterator(root))
-        group_nodes = []
+        nodes = cast(List[SceneNode], list(cast(Iterable, BreadthFirstIterator(root))))
+        group_nodes = []  # type: List[SceneNode]
 
         build_volume_bounding_box = self.getBoundingBox()
         if build_volume_bounding_box:
@@ -240,6 +248,9 @@ class BuildVolume(SceneNode):
                 group_nodes.append(node)  # Keep list of affected group_nodes
 
             if node.callDecoration("isSliceable") or node.callDecoration("isGroup"):
+                if not isinstance(node, CuraSceneNode):
+                    continue
+
                 if node.collidesWithBbox(build_volume_bounding_box):
                     node.setOutsideBuildArea(True)
                     continue
@@ -277,8 +288,8 @@ class BuildVolume(SceneNode):
                 child_node.setOutsideBuildArea(group_node.isOutsideBuildArea())
 
     ##  Update the outsideBuildArea of a single node, given bounds or current build volume
-    def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None):
-        if not isinstance(node, CuraSceneNode):
+    def checkBoundsAndUpdate(self, node: CuraSceneNode, bounds: Optional[AxisAlignedBox] = None) -> None:
+        if not isinstance(node, CuraSceneNode) or self._global_container_stack is None:
             return
 
         if bounds is None:
@@ -310,7 +321,7 @@ class BuildVolume(SceneNode):
 
             node.setOutsideBuildArea(False)
 
-    def _buildGridMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+    def _buildGridMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d:float, z_fight_distance: float) -> MeshData:
         mb = MeshBuilder()
         if self._shape != "elliptic":
             # Build plate grid mesh
@@ -346,7 +357,7 @@ class BuildVolume(SceneNode):
                 mb.setVertexUVCoordinates(n, v[0], v[2] * aspect)
             return mb.build().getTransformed(scale_matrix)
 
-    def _buildMesh(self, min_w, max_w, min_h, max_h, min_d, max_d, z_fight_distance):
+    def _buildMesh(self, min_w: float, max_w: float, min_h: float, max_h: float, min_d: float, max_d:float, z_fight_distance: float) -> MeshData:
         if self._shape != "elliptic":
             # Outline 'cube' of the build volume
             mb = MeshBuilder()
@@ -379,7 +390,7 @@ class BuildVolume(SceneNode):
             mb.addArc(max_w, Vector.Unit_Y, center = (0, max_h, 0),  color = self._volume_outline_color)
             return mb.build().getTransformed(scale_matrix)
 
-    def _buildOriginMesh(self, origin):
+    def _buildOriginMesh(self, origin: Vector) -> MeshData:
         mb = MeshBuilder()
         mb.addCube(
             width=self._origin_line_length,
@@ -405,15 +416,20 @@ class BuildVolume(SceneNode):
         return mb.build()
 
     ##  Recalculates the build volume & disallowed areas.
-    def rebuild(self):
+    def rebuild(self) -> None:
         if not self._width or not self._height or not self._depth:
             return
 
         if not self._engine_ready:
             return
 
+        if not self._global_container_stack:
+            return
+
         if not self._volume_outline_color:
             theme = self._application.getTheme()
+            if theme is None:
+                return
             self._volume_outline_color = Color(*theme.getColor("volume_outline").getRgb())
             self._x_axis_color = Color(*theme.getColor("x_axis").getRgb())
             self._y_axis_color = Color(*theme.getColor("y_axis").getRgb())
@@ -503,17 +519,20 @@ class BuildVolume(SceneNode):
             maximum = Vector(max_w - bed_adhesion_size - 1, max_h - self._raft_thickness - self._extra_z_clearance, max_d - disallowed_area_size + bed_adhesion_size - 1)
         )
 
-        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds
+        self._application.getController().getScene()._maximum_bounds = scale_to_max_bounds  # type: ignore
 
         self.updateNodeBoundaryCheck()
 
-    def getBoundingBox(self) -> AxisAlignedBox:
+    def getBoundingBox(self):
         return self._volume_aabb
 
     def getRaftThickness(self) -> float:
         return self._raft_thickness
 
-    def _updateRaftThickness(self):
+    def _updateRaftThickness(self) -> None:
+        if not self._global_container_stack:
+            return
+
         old_raft_thickness = self._raft_thickness
         if self._global_container_stack.extruders:
             # This might be called before the extruder stacks have initialised, in which case getting the adhesion_type fails
@@ -524,7 +543,7 @@ class BuildVolume(SceneNode):
                 self._global_container_stack.getProperty("raft_base_thickness", "value") +
                 self._global_container_stack.getProperty("raft_interface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_surface_layers", "value") *
-                    self._global_container_stack.getProperty("raft_surface_thickness", "value") +
+                self._global_container_stack.getProperty("raft_surface_thickness", "value") +
                 self._global_container_stack.getProperty("raft_airgap", "value") -
                 self._global_container_stack.getProperty("layer_0_z_overlap", "value"))
 
@@ -534,6 +553,9 @@ class BuildVolume(SceneNode):
             self.raftThicknessChanged.emit()
 
     def _updateExtraZClearance(self) -> None:
+        if not self._global_container_stack:
+            return
+        
         extra_z = 0.0
         extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         use_extruders = False
@@ -554,7 +576,7 @@ class BuildVolume(SceneNode):
         self._stack_change_timer.start()
 
     ##  Update the build volume visualization
-    def _onStackChangeTimerFinished(self):
+    def _onStackChangeTimerFinished(self) -> None:
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingPropertyChanged)
             extruders = ExtruderManager.getInstance().getActiveExtruderStacks()
@@ -594,20 +616,23 @@ class BuildVolume(SceneNode):
             if camera:
                 diagonal = self.getDiagonalSize()
                 if diagonal > 1:
-                    camera.setZoomRange(min = 0.1, max = diagonal * 5) #You can zoom out up to 5 times the diagonal. This gives some space around the volume.
+                    # You can zoom out up to 5 times the diagonal. This gives some space around the volume.
+                    camera.setZoomRange(min = 0.1, max = diagonal * 5)  # type: ignore
 
-    def _onEngineCreated(self):
+    def _onEngineCreated(self) -> None:
         self._engine_ready = True
         self.rebuild()
 
-    def _onSettingChangeTimerFinished(self):
+    def _onSettingChangeTimerFinished(self) -> None:
+        if not self._global_container_stack:
+            return
+
         rebuild_me = False
         update_disallowed_areas = False
         update_raft_thickness = False
         update_extra_z_clearance = True
 
         for setting_key in self._changed_settings_since_last_rebuild:
-
             if setting_key == "print_sequence":
                 machine_height = self._global_container_stack.getProperty("machine_height", "value")
                 if self._application.getGlobalContainerStack().getProperty("print_sequence", "value") == "one_at_a_time" and len(self._scene_objects) > 1:
@@ -664,7 +689,7 @@ class BuildVolume(SceneNode):
         # We just did a rebuild, reset the list.
         self._changed_settings_since_last_rebuild = []
 
-    def _onSettingPropertyChanged(self, setting_key: str, property_name: str):
+    def _onSettingPropertyChanged(self, setting_key: str, property_name: str) -> None:
         if property_name != "value":
             return
 
@@ -689,7 +714,7 @@ class BuildVolume(SceneNode):
         self._updateExtraZClearance()
         self.rebuild()
 
-    def _updateDisallowedAreas(self):
+    def _updateDisallowedAreas(self) -> None:
         if not self._global_container_stack:
             return
 
