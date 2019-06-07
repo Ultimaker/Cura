@@ -1648,14 +1648,6 @@ class MachineManager(QObject):
 
         return abbr_machine
 
-    @pyqtSlot(str, result = str)
-    def getMachineTypeNameFromId(self, machine_type_id: str) -> str:
-        machine_type_name = ""
-        results = self._container_registry.findDefinitionContainersMetadata(id = machine_type_id)
-        if results:
-            machine_type_name = results[0]["name"]
-        return machine_type_name
-
     # Gets all machines that belong to the given group_id.
     def getMachinesInGroup(self, group_id: str) -> List["GlobalStack"]:
         return self._container_registry.findContainerStacks(type = "machine", group_id = group_id)
