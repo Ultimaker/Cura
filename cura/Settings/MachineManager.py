@@ -538,6 +538,7 @@ class MachineManager(QObject):
         return bool(self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.2")
     def activeMachineHasRemoteConnection(self) -> bool:
         if self._global_container_stack:
             has_remote_connection = False
@@ -816,21 +817,24 @@ class MachineManager(QObject):
                 self.removeMachine(hidden_containers[0].getId())
 
     @pyqtProperty(bool, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.hasMaterials instead", "4.2")
     def hasMaterials(self) -> bool:
         if self._global_container_stack:
-            return self._global_container_stack.getHasMaterials()
+            return self._global_container_stack.hasMaterials
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.hasVariants instead", "4.2")
     def hasVariants(self) -> bool:
         if self._global_container_stack:
-            return self._global_container_stack.getHasVariants()
+            return self._global_container_stack.hasVariants
         return False
 
     @pyqtProperty(bool, notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.hasVariantBuildplates instead", "4.2")
     def hasVariantBuildplates(self) -> bool:
         if self._global_container_stack:
-            return self._global_container_stack.getHasVariantsBuildPlates()
+            return self._global_container_stack.hasVariantBuildplates
         return False
 
     ##  The selected buildplate is compatible if it is compatible with all the materials in all the extruders
@@ -984,6 +988,7 @@ class MachineManager(QObject):
         self.forceUpdateAllSettings()
 
     @pyqtSlot(int, result = QObject)
+    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
     def getExtruder(self, position: int) -> Optional[ExtruderStack]:
         if self._global_container_stack:
             return self._global_container_stack.extruders.get(str(position))
@@ -1097,6 +1102,7 @@ class MachineManager(QObject):
             container.removeInstance(setting_name)
 
     @pyqtProperty("QVariantList", notify = globalContainerChanged)
+    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
     def currentExtruderPositions(self) -> List[str]:
         if self._global_container_stack is None:
             return []
