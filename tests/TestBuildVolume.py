@@ -43,6 +43,60 @@ def test_buildGridMesh(build_volume):
     assert numpy.array_equal(result_vertices, mesh.getVertices())
 
 
+
+class TestUpdateRaftThickness:
+    setting_property_dict = {"raft_base_thickness": {"value": 1},
+                             "raft_interface_thickness": {"value": 1},
+                             "raft_surface_layers": {"value": 1},
+                             "raft_surface_thickness": {"value": 1},
+                             "raft_airgap": {"value": 1},
+                             "layer_0_z_overlap": {"value": 1},
+                             "adhesion_type": {"value": "raft"}}
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestUpdateRaftThickness.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def createMockedStack(self):
+        mocked_global_stack = MagicMock(name="mocked_global_stack")
+        mocked_global_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        extruder_stack = MagicMock()
+
+        mocked_global_stack.extruders = {"0": extruder_stack}
+
+        return mocked_global_stack
+
+    def test_simple(self, build_volume: BuildVolume):
+        build_volume.raftThicknessChanged = MagicMock()
+        mocked_global_stack = self.createMockedStack()
+        build_volume._global_container_stack = mocked_global_stack
+
+        assert build_volume.getRaftThickness() == 0
+        build_volume._updateRaftThickness()
+        assert build_volume.getRaftThickness() == 3
+        assert build_volume.raftThicknessChanged.emit.call_count == 1
+
+    def test_adhesionIsNotRaft(self, build_volume: BuildVolume):
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary["adhesion_type"] = {"value": "not_raft"}
+
+        mocked_global_stack = self.createMockedStack()
+        build_volume._global_container_stack = mocked_global_stack
+
+        assert build_volume.getRaftThickness() == 0
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            build_volume._updateRaftThickness()
+        assert build_volume.getRaftThickness() == 0
+
+    def test_noGlobalStack(self, build_volume: BuildVolume):
+        build_volume.raftThicknessChanged = MagicMock()
+        assert build_volume.getRaftThickness() == 0
+        build_volume._updateRaftThickness()
+        assert build_volume.getRaftThickness() == 0
+        assert build_volume.raftThicknessChanged.emit.call_count == 0
+
+
 class TestComputeDisallowedAreasPrimeBlob:
     setting_property_dict = {"machine_width": {"value": 50},
                              "machine_depth": {"value": 100},
