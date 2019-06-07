@@ -180,7 +180,7 @@ class ExtruderManager(QObject):
     #   \param setting_key  \type{str} The setting to get the property of.
     #   \param property  \type{str} The property to get.
     #   \return \type{List} the list of results
-    def getAllExtruderSettings(self, setting_key: str, prop: str) -> List:
+    def getAllExtruderSettings(self, setting_key: str, prop: str) -> List[Any]:
         result = []
 
         for extruder_stack in self.getActiveExtruderStacks():

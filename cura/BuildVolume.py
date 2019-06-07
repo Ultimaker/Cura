@@ -1040,11 +1040,11 @@ class BuildVolume(SceneNode):
     #   stack.
     #
     #   \return A sequence of setting values, one for each extruder.
-    def _getSettingFromAllExtruders(self, setting_key):
+    def _getSettingFromAllExtruders(self, setting_key: str) -> List[Any]:
         all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
         all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
-        for i in range(len(all_values)):
-            if not all_values[i] and (all_types[i] == "int" or all_types[i] == "float"):
+        for i, (setting_value, setting_type) in enumerate(zip(all_values, all_types)):
+            if not setting_value and (setting_type == "int" or setting_type == "float"):
                 all_values[i] = 0
         return all_values
 
