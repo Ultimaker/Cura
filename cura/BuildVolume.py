@@ -478,7 +478,6 @@ class BuildVolume(SceneNode):
             self._disallowed_area_size = max(size, self._disallowed_area_size)
         return mb.build()
 
-
     ##  Recalculates the build volume & disallowed areas.
     def rebuild(self) -> None:
         if not self._width or not self._height or not self._depth:

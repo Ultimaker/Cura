@@ -140,3 +140,26 @@ class TestComputeDisallowedAreasPrimeBlob:
         # In the The translation result is 25, -50 (due to the settings used)
         resulting_polygon = resulting_polygon.translate(25, -50)
         assert build_volume._computeDisallowedAreasPrimeBlob(12, [mocked_extruder_stack]) == {"0": [resulting_polygon]}
+
+
+class TestRebuild:
+    def test_zeroWidthHeightDepth(self, build_volume: BuildVolume):
+        build_volume.rebuild()
+        assert build_volume.getMeshData() is None
+
+    def test_engineIsNotRead(self, build_volume: BuildVolume):
+        build_volume.setWidth(10)
+        build_volume.setHeight(10)
+        build_volume.setDepth(10)
+        build_volume.rebuild()
+        assert build_volume.getMeshData() is None
+
+    def test_noGlobalStack(self, build_volume: BuildVolume):
+        build_volume.setWidth(10)
+        build_volume.setHeight(10)
+        build_volume.setDepth(10)
+        # Fake the the "engine is created callback"
+        build_volume._onEngineCreated()
+        build_volume.rebuild()
+        assert build_volume.getMeshData() is None
+
