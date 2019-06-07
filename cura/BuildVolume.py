@@ -28,10 +28,11 @@ import numpy
 import math
 import copy
 
-from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable
+from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
+    from cura.Settings.ExtruderStack import ExtruderStack
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -868,9 +869,10 @@ class BuildVolume(SceneNode):
     #   \param used_extruders The extruder stacks to generate disallowed areas
     #   for.
     #   \return A dictionary with for each used extruder ID the prime areas.
-    def _computeDisallowedAreasPrimeBlob(self, border_size, used_extruders):
-        result = {}
-
+    def _computeDisallowedAreasPrimeBlob(self, border_size: float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        result = {}  # type: Dict[str, List[Polygon]]
+        if not self._global_container_stack:
+            return result
         machine_width = self._global_container_stack.getProperty("machine_width", "value")
         machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
         for extruder in used_extruders:
@@ -878,13 +880,13 @@ class BuildVolume(SceneNode):
             prime_x = extruder.getProperty("extruder_prime_pos_x", "value")
             prime_y = -extruder.getProperty("extruder_prime_pos_y", "value")
 
-            #Ignore extruder prime position if it is not set or if blob is disabled
+            # Ignore extruder prime position if it is not set or if blob is disabled
             if (prime_x == 0 and prime_y == 0) or not prime_blob_enabled:
                 result[extruder.getId()] = []
                 continue
 
             if not self._global_container_stack.getProperty("machine_center_is_zero", "value"):
-                prime_x = prime_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
+                prime_x = prime_x - machine_width / 2  # Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_y = prime_y + machine_depth / 2
 
             prime_polygon = Polygon.approximatedCircle(PRIME_CLEARANCE)
