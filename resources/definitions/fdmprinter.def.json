@@ -2239,7 +2239,7 @@
                     "label": "Crystalline Material",
                     "description": "Is this material the type that breaks off cleanly when heated, or is it the type that produces long intertwined polymer chains?",
                     "type": "bool",
-                    "default_value": true,
+                    "default_value": false,
                     "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
