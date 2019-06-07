@@ -226,6 +226,8 @@ class BuildVolume(SceneNode):
         build_volume_bounding_box = self.getBoundingBox()
         if build_volume_bounding_box:
             # It's over 9000!
+            # We set this to a very low number, as we do allow models to intersect the build plate.
+            # This means the model gets cut off at the build plate.
             build_volume_bounding_box = build_volume_bounding_box.set(bottom=-9001)
         else:
             # No bounding box. This is triggered when running Cura from command line with a model for the first time
@@ -245,7 +247,11 @@ class BuildVolume(SceneNode):
                 if node.collidesWithArea(self.getDisallowedAreas()):
                     node.setOutsideBuildArea(True)
                     continue
-
+                # If the entire node is below the build plate, still mark it as outside.
+                node_bounding_box = node.getBoundingBox()
+                if node_bounding_box and node_bounding_box.top < 0:
+                    node.setOutsideBuildArea(True)
+                    continue
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
                 if extruder_position not in self._global_container_stack.extruders:

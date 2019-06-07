@@ -101,7 +101,7 @@ def test_initialize():
     initialize_preferences = MagicMock()
     authorization_service = AuthorizationService(OAUTH_SETTINGS, original_preference)
     authorization_service.initialize(initialize_preferences)
-    assert initialize_preferences.addPreference.called
+    initialize_preferences.addPreference.assert_called_once_with("test/auth_data", "{}")
     original_preference.addPreference.assert_not_called()
 
 
