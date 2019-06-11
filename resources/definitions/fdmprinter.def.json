@@ -4580,7 +4580,7 @@
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
                 },
-                "support_minimal_diameter":
+                "support_tower_maximum_supported_diameter":
                 {
                     "label": "Maximum Tower-Supported Diameter",
                     "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
