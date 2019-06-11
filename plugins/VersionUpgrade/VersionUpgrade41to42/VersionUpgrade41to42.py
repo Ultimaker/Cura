@@ -39,7 +39,6 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "8"
 
         #Rename settings.
@@ -59,7 +58,6 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["general"]["version"] = "4"
         parser["metadata"]["setting_version"] = "8"
 
         result = io.StringIO()
