@@ -47,8 +47,8 @@ class VersionUpgrade41to42(VersionUpgrade):
         if "values" in parser:
             for old_name, new_name in _renamed_settings.items():
                 if old_name in parser["values"]:
-                    parser[new_name] = parser[old_name]
-                    del parser[old_name]
+                    parser["values"][new_name] = parser["values"][old_name]
+                    del parser["values"][old_name]
 
         result = io.StringIO()
         parser.write(result)
