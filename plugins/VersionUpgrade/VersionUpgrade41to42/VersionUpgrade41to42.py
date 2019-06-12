@@ -34,6 +34,8 @@ class VersionUpgrade41to42(VersionUpgrade):
 
     ##  Upgrades instance containers to have the new version
     #   number.
+    #
+    #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
@@ -47,6 +49,29 @@ class VersionUpgrade41to42(VersionUpgrade):
                 if old_name in parser["values"]:
                     parser[new_name] = parser[old_name]
                     del parser[old_name]
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]
+
+    ##  Upgrades Preferences to have the new version number.
+    #
+    #   This renames the renamed settings in the list of visible settings.
+    def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        #Update version number.
+        parser["metadata"]["setting_version"] = "8"
+
+        #Renamed settings.
+        if "visible_settings" in parser["general"]:
+            visible_settings = parser["general"]["visible_settings"]
+            visible_settings = set(visible_settings.split(";"))
+            for old_name, new_name in _renamed_settings.items():
+                if old_name in visible_settings:
+                    visible_settings.remove(old_name)
+                    visible_settings.add(new_name)
 
         result = io.StringIO()
         parser.write(result)
