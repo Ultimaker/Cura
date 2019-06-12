@@ -73,7 +73,10 @@
             "value": "30"
         },
         "acceleration_enabled": {
-            "default_value": false
+            "default_value": true
+        },
+        "acceleration_print": {
+            "default_value": 500
         },
         "machine_acceleration": {
             "default_value": 1500
