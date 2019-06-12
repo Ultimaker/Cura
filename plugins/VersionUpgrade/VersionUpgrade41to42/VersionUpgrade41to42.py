@@ -3,19 +3,21 @@
 
 import configparser
 import io
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
 
-_REMOVED_SETTING_KEYS = ["prime_tower_circular"]  # type: List[str]
+_renamed_settings = {
+    "support_minimal_diameter": "support_tower_maximum_supported_diameter"
+} #type: Dict[str, str]
+_removed_settings = ["prime_tower_circular"]  # type: List[str]
 
-
-##  Upgrades configurations from the state they were in at version 4.0 to the
+##  Upgrades configurations from the state they were in at version 4.1 to the
 #   state they should be in at version 4.2.
 class VersionUpgrade41to42(VersionUpgrade):
-    ##  Gets the version number from a CFG file in Uranium's 4.0 format.
+    ##  Gets the version number from a CFG file in Uranium's 4.1 format.
     #
-    #   Since the format may change, this is implemented for the 4.0 format only
+    #   Since the format may change, this is implemented for the 4.1 format only
     #   and needs to be included in the version upgrade system rather than
     #   globally in Uranium.
     #
@@ -33,16 +35,23 @@ class VersionUpgrade41to42(VersionUpgrade):
 
     ##  Upgrades instance containers to have the new version
     #   number.
+    #
+    #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number.
-        parser["general"]["version"] = "4"
+        #Update version number.
         parser["metadata"]["setting_version"] = "8"
 
+        #Rename settings.
         if "values" in parser:
-            for key in _REMOVED_SETTING_KEYS:
+            for old_name, new_name in _renamed_settings.items():
+                if old_name in parser["values"]:
+                    parser[new_name] = parser[old_name]
+                    del parser[old_name]
+            #Remove settings.
+            for key in _removed_settings:
                 if key in parser["values"]:
                     del parser["values"][key]
 
@@ -51,15 +60,23 @@ class VersionUpgrade41to42(VersionUpgrade):
         return [filename], [result.getvalue()]
 
     ##  Upgrades Preferences to have the new version number.
+    #
+    #   This renames the renamed settings in the list of visible settings.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number.
-        parser["general"]["version"] = "6"
-        if "metadata" not in parser:
-            parser["metadata"] = {}
+        #Update version number.
         parser["metadata"]["setting_version"] = "8"
+
+        #Renamed settings.
+        if "visible_settings" in parser["general"]:
+            visible_settings = parser["general"]["visible_settings"]
+            visible_settings = set(visible_settings.split(";"))
+            for old_name, new_name in _renamed_settings.items():
+                if old_name in visible_settings:
+                    visible_settings.remove(old_name)
+                    visible_settings.add(new_name)
 
         result = io.StringIO()
         parser.write(result)
@@ -70,8 +87,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number.
-        parser["general"]["version"] = "4"
+        #Update version number.
         parser["metadata"]["setting_version"] = "8"
 
         result = io.StringIO()

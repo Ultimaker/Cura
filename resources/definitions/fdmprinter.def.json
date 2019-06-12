@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 7,
+        "setting_version": 8,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -2784,6 +2784,19 @@
                     "settable_per_extruder": true,
                     "limit_to_extruder": "adhesion_extruder_nr"
                 },
+                "speed_z_hop":
+                {
+                    "label": "Z Hop Speed",
+                    "description": "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 10,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_z",
+                    "enabled": "retraction_enable and retraction_hop_enabled",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "max_feedrate_z_override":
                 {
                     "label": "Maximum Z Speed",
@@ -4567,10 +4580,10 @@
                     "enabled": "support_enable and support_use_towers",
                     "settable_per_mesh": true
                 },
-                "support_minimal_diameter":
+                "support_tower_maximum_supported_diameter":
                 {
-                    "label": "Minimum Diameter",
-                    "description": "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
+                    "label": "Maximum Tower-Supported Diameter",
+                    "description": "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower.",
                     "unit": "mm",
                     "type": "float",
                     "default_value": 3.0,
