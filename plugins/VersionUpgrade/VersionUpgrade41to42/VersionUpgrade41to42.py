@@ -72,6 +72,7 @@ class VersionUpgrade41to42(VersionUpgrade):
                 if old_name in visible_settings:
                     visible_settings.remove(old_name)
                     visible_settings.add(new_name)
+            parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
         parser.write(result)
