@@ -48,8 +48,8 @@ class VersionUpgrade41to42(VersionUpgrade):
         if "values" in parser:
             for old_name, new_name in _renamed_settings.items():
                 if old_name in parser["values"]:
-                    parser[new_name] = parser[old_name]
-                    del parser[old_name]
+                    parser["values"][new_name] = parser["values"][old_name]
+                    del parser["values"][old_name]
             #Remove settings.
             for key in _removed_settings:
                 if key in parser["values"]:
@@ -77,6 +77,7 @@ class VersionUpgrade41to42(VersionUpgrade):
                 if old_name in visible_settings:
                     visible_settings.remove(old_name)
                     visible_settings.add(new_name)
+            parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
         parser.write(result)
