@@ -2237,7 +2237,7 @@
                 "material_crystallinity":
                 {
                     "label": "Crystalline Material",
-                    "description": "Is this material the type that breaks off cleanly when heated, or is it the type that produces long intertwined polymer chains?",
+                    "description": "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?",
                     "type": "bool",
                     "default_value": false,
                     "enabled": false,
