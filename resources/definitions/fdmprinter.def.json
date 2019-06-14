@@ -2070,7 +2070,7 @@
                     "maximum_value_warning": "285",
                     "enabled": true,
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
+                    "settable_per_extruder": false
                 },
                 "material_print_temperature":
                 {
