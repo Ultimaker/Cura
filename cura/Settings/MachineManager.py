@@ -921,9 +921,8 @@ class MachineManager(QObject):
             # Apply quality changes that are incompatible to user changes, so we do not change the quality changes itself.
             self._global_container_stack.userChanges.setProperty(setting_key, "value", self._default_extruder_position)
         if add_user_changes:
-            caution_message = Message(catalog.i18nc(
-                "@info:generic",
-                "Settings have been changed to match the current availability of extruders: [%s]" % ", ".join(add_user_changes)),
+            caution_message = Message(
+                catalog.i18nc("@info:message Followed by a list of settings.", "Settings have been changed to match the current availability of extruders:") + " [{settings_list}]".format(settings_list = ", ".join(add_user_changes)),
                 lifetime = 0,
                 title = catalog.i18nc("@info:title", "Settings updated"))
             caution_message.show()
