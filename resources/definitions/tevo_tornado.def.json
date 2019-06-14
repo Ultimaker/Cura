@@ -78,6 +78,12 @@
         "acceleration_print": {
             "default_value": 500
         },
+        "acceleration_travel": {
+            "value": 500
+        },
+        "acceleration_travel_layer_0": {
+            "value": 500
+        },
         "machine_acceleration": {
             "default_value": 1500
         },
@@ -85,7 +91,13 @@
             "default_value": true
         },
         "jerk_print": {
-            "default_value": 10
+            "default_value": 8
+        },
+        "jerk_travel": {
+            "value": 8
+        },
+        "jerk_travel_layer_0": {
+            "value": 8
         },
         "machine_max_jerk_xy": {
             "default_value": 6
