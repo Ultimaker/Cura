@@ -14,7 +14,7 @@ def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
             # From                           To                              Upgrade function
-            ("preferences", 6000006):        ("preferences", 6000007, upgrade.upgradePreferences),
+            ("preferences", 6000006):        ("preferences", 6000007,        upgrade.upgradePreferences),
             ("machine_stack", 4000006):      ("machine_stack", 4000007,      upgrade.upgradeStack),
             ("extruder_train", 4000006):     ("extruder_train", 4000007,     upgrade.upgradeStack),
             ("definition_changes", 4000006): ("definition_changes", 4000007, upgrade.upgradeInstanceContainer),
