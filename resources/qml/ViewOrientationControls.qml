@@ -6,7 +6,7 @@ import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 
 import UM 1.4 as UM
-
+import Cura 1.1 as Cura
 // A row of buttons that control the view direction
 Row
 {
@@ -19,30 +19,30 @@ Row
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_3d")
-        onClicked: UM.Controller.rotateView("3d", 0)
+        onClicked: Cura.Actions.view3DCamera.trigger()
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_front")
-        onClicked: UM.Controller.rotateView("home", 0)
+        onClicked: Cura.Actions.viewFrontCamera.trigger()
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_top")
-        onClicked: UM.Controller.rotateView("y", 90)
+        onClicked: Cura.Actions.viewTopCamera.trigger()
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_left")
-        onClicked: UM.Controller.rotateView("x", 90)
+        onClicked: Cura.Actions.viewLeftSideCamera.trigger()
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_right")
-        onClicked: UM.Controller.rotateView("x", -90)
+        onClicked: Cura.Actions.viewRightSideCamera.trigger()
     }
 }

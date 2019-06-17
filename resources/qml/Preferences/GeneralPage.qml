@@ -95,6 +95,10 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
+        UM.Preferences.resetPreference("general/camera_perspective_mode")
+        var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
+        setDefaultCameraMode(defaultCameraMode)
+
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
 
@@ -330,7 +334,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
                 text: catalog.i18nc("@info:tooltip", "Moves the camera so the model is in the center of the view when a model is selected")
@@ -344,7 +349,8 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
                 text: catalog.i18nc("@info:tooltip", "Should the default zoom behavior of cura be inverted?")
@@ -433,6 +439,50 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "What type of camera rendering should be used?")
+                Column
+                {
+                    spacing: 4 * screenScaleFactor
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Camera rendering: ")
+                    }
+                    ComboBox
+                    {
+                        id: cameraComboBox
+
+                        model: ListModel
+                        {
+                            id: comboBoxList
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18n("Perspective"), code: "perspective" })
+                                append({ text: catalog.i18n("Orthogonal"), code: "orthogonal" })
+                            }
+                        }
+
+                        currentIndex:
+                        {
+                            var code = UM.Preferences.getValue("general/camera_perspective_mode");
+                            for(var i = 0; i < comboBoxList.count; ++i)
+                            {
+                                if(model.get(i).code == code)
+                                {
+                                    return i
+                                }
+                            }
+                            return 0
+                        }
+                        onActivated: UM.Preferences.setValue("general/camera_perspective_mode", model.get(index).code)
+                    }
                 }
             }
 
