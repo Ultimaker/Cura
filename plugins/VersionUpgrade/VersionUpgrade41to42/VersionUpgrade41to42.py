@@ -67,12 +67,12 @@ class VersionUpgrade41to42(VersionUpgrade):
         #Renamed settings.
         if "visible_settings" in parser["general"]:
             visible_settings = parser["general"]["visible_settings"]
-            visible_settings = set(visible_settings.split(";"))
+            visible_settings_set = set(visible_settings.split(";"))
             for old_name, new_name in _renamed_settings.items():
-                if old_name in visible_settings:
-                    visible_settings.remove(old_name)
-                    visible_settings.add(new_name)
-            parser["general"]["visible_settings"] = ";".join(visible_settings)
+                if old_name in visible_settings_set:
+                    visible_settings_set.remove(old_name)
+                    visible_settings_set.add(new_name)
+            parser["general"]["visible_settings"] = ";".join(visible_settings_set)
 
         result = io.StringIO()
         parser.write(result)
