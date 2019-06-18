@@ -144,7 +144,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 7
+    SettingVersion = 8
 
     Created = False
 
@@ -839,7 +839,6 @@ class CuraApplication(QtApplication):
         if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
             diagonal = 375
         camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
-        camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 

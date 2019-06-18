@@ -107,6 +107,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -121,6 +122,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 

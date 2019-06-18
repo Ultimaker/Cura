@@ -67,6 +67,15 @@ Button
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        TextMetrics
+        {
+            id: buttonTextMetrics
+            text: buttonText.text
+            font: buttonText.font
+            elide: buttonText.elide
+            elideWidth: buttonText.width
+        }
+
         Label
         {
             id: buttonText
@@ -124,7 +133,7 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        visible: button.hovered
+        visible: button.hovered && buttonTextMetrics.elidedText != buttonText.text
     }
 
     BusyIndicator

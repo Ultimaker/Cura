@@ -21,14 +21,14 @@ def test_login():
     account._authorization_service = mocked_auth_service
 
     account.login()
-    mocked_auth_service.startAuthorizationFlow.assert_called_once()
+    mocked_auth_service.startAuthorizationFlow.assert_called_once_with()
 
     # Fake a sucesfull login
     account._onLoginStateChanged(True)
 
     # Attempting to log in again shouldn't change anything.
     account.login()
-    mocked_auth_service.startAuthorizationFlow.assert_called_once()
+    mocked_auth_service.startAuthorizationFlow.assert_called_once_with()
 
 
 def test_initialize():
@@ -37,7 +37,7 @@ def test_initialize():
     account._authorization_service = mocked_auth_service
 
     account.initialize()
-    mocked_auth_service.loadAuthDataFromPreferences.assert_called_once()
+    mocked_auth_service.loadAuthDataFromPreferences.assert_called_once_with()
 
 
 def test_logout():
@@ -46,7 +46,7 @@ def test_logout():
     account._authorization_service = mocked_auth_service
 
     account.logout()
-    mocked_auth_service.deleteAuthData.assert_not_called() # We weren't logged in, so nothing should happen
+    mocked_auth_service.deleteAuthData.assert_not_called()  # We weren't logged in, so nothing should happen
     assert not account.isLoggedIn
 
     # Pretend the stage changed
@@ -54,7 +54,7 @@ def test_logout():
     assert account.isLoggedIn
 
     account.logout()
-    mocked_auth_service.deleteAuthData.assert_called_once()
+    mocked_auth_service.deleteAuthData.assert_called_once_with()
 
 
 def test_errorLoginState():

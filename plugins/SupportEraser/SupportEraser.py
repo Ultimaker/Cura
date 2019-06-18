@@ -98,8 +98,10 @@ class SupportEraser(Tool):
 
         node.setName("Eraser")
         node.setSelectable(True)
+        node.setCalculateBoundingBox(True)
         mesh = self._createCube(10)
         node.setMeshData(mesh.build())
+        node.calculateBoundingBoxMesh()
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
         node.addDecorator(BuildPlateDecorator(active_build_plate))

@@ -64,7 +64,6 @@ class CuraStackBuilder:
 
         # Create ExtruderStacks
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
-        print(machine_definition, extruder_dict, machine_definition.getMetaDataEntry)
         for position in extruder_dict:
             cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
 

@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"在开始时执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"在结束前执行的 G-code 命令 - 以 \n"
-" 分行。"
+msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -239,7 +235,7 @@ msgstr "挤出机组数目。 挤出机组是指进料装置、鲍登管和喷�
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders That Are Enabled"
-msgstr ""
+msgstr "已启用的挤出机数目"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -249,7 +245,7 @@ msgstr "已启用的挤出机组数目；软件自动设置"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
-msgstr ""
+msgstr "喷嘴外径"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -259,7 +255,7 @@ msgstr "喷嘴尖端的外径。"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle Length"
-msgstr ""
+msgstr "喷嘴长度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -269,7 +265,7 @@ msgstr "喷嘴尖端与打印头最低部分之间的高度差。"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
-msgstr ""
+msgstr "喷嘴角度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -279,7 +275,7 @@ msgstr "水平面与喷嘴尖端上部圆锥形之间的角度。"
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
 msgid "Heat Zone Length"
-msgstr ""
+msgstr "加热区长度"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -309,7 +305,7 @@ msgstr "是否从 Cura 控制温度。 关闭此选项，从 Cura 外部控制�
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
-msgstr ""
+msgstr "升温速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -319,7 +315,7 @@ msgstr "喷嘴升温到平均超过正常打印温度和待机温度范围的速
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
-msgstr ""
+msgstr "冷却速度"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -339,7 +335,7 @@ msgstr "挤出机必须保持不活动以便喷嘴冷却的最短时间。 挤�
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavour"
-msgstr ""
+msgstr "G-code 风格"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -404,7 +400,7 @@ msgstr "是否使用固件收回命令 (G10/G11) 而不是使用 G1 命令中的
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
-msgstr ""
+msgstr "不允许区域"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -424,7 +420,7 @@ msgstr "包含不允许喷嘴进入区域的多边形列表。"
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
 msgid "Machine Head Polygon"
-msgstr ""
+msgstr "机器头多边形"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -434,7 +430,7 @@ msgstr "打印头 2D 轮廓图（不包含风扇盖）。"
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine Head & Fan Polygon"
-msgstr ""
+msgstr "机器头和风扇多边形"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -444,7 +440,7 @@ msgstr "打印头 2D 轮廓图（包含风扇盖）。"
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "十字轴高度"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -474,7 +470,7 @@ msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
-msgstr ""
+msgstr "挤出机偏移量"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -1636,9 +1632,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n"
-"在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
+msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1873,12 +1867,12 @@ msgstr "用于打印的默认温度。 应为材料的\"基本\"温度。 所有
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr ""
+msgstr "打印体积温度"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "用于打印体积的温度。如果该值为 0，将不会调整打印体积温度。"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2943,12 +2937,12 @@ msgstr "当机器从一个挤出机切换到另一个时，打印平台会降低
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr ""
+msgstr "挤出机切换后的 Z 抬升高度"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr ""
+msgstr "挤出机切换后执行 Z 抬升的高度差。"
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -3223,7 +3217,7 @@ msgstr "交叉"
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "螺旋二十四面体"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
@@ -3930,9 +3924,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"skirt  和打印第一层之间的水平距离。\n"
-"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4377,12 +4369,12 @@ msgstr "在用一个喷嘴打印装填塔后，从装填塔上的另一个喷嘴
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr ""
+msgstr "装填塔 Brim"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr ""
+msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4902,12 +4894,12 @@ msgstr "切片后的旅行线路段的最小尺寸。如果你增加了这个，
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
-msgstr ""
+msgstr "最大偏移量"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr ""
+msgstr "在最大分辨率设置中减小分辨率时，允许的最大偏移量。如果增加该值，打印作业的准确性将降低，G-code 将减小。"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5399,9 +5391,7 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr ""
-"以半速挤出的上行移动的距离。\n"
-"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5511,7 +5501,7 @@ msgstr "喷嘴和水平下行线之间的距离。 较大的间隙会让斜下�
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use Adaptive Layers"
-msgstr ""
+msgstr "使用自适应图层"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
@@ -5521,7 +5511,7 @@ msgstr "自适应图层根据模型形状计算图层高度。"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive Layers Maximum Variation"
-msgstr ""
+msgstr "自适应图层最大变化"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
@@ -5531,7 +5521,7 @@ msgstr "最大允许高度与基层高度不同。"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive Layers Variation Step Size"
-msgstr ""
+msgstr "自适应图层变化步长"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5541,7 +5531,7 @@ msgstr "下一层与前一层的高度差。"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Threshold"
-msgstr ""
+msgstr "自适应图层阈值"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
@@ -5761,152 +5751,152 @@ msgstr "打印桥梁第三层表面时使用的风扇百分比速度。"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
 msgid "Wipe Nozzle Between Layers"
-msgstr ""
+msgstr "图层切换后擦拭喷嘴"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "是否包括图层切换后擦拭喷嘴的 G-Code。启用此设置可能会影响图层变化时的回抽。请使用“擦拭回抽”设置来控制擦拭脚本将在其中工作的图层回抽。"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
-msgstr ""
+msgstr "擦拭之间的材料量"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr ""
+msgstr "开始下一轮喷嘴擦拭前，可挤出的最大材料量。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
 msgid "Wipe Retraction Enable"
-msgstr ""
+msgstr "启用擦拭回抽"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "当喷嘴移动到非打印区域上方时回抽耗材。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
 msgid "Wipe Retraction Distance"
-msgstr ""
+msgstr "擦拭回抽距离"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr ""
+msgstr "耗材回抽量，可避免耗材在擦拭期间渗出。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr ""
+msgstr "擦拭回抽额外装填量"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
-msgstr ""
+msgstr "有些材料可能会在擦拭空驶过程中渗出，可以在这里进行补偿。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
-msgstr ""
+msgstr "擦拭回抽速度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
-msgstr ""
+msgstr "擦拭回抽移动期间耗材回抽和装填的速度。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr ""
+msgstr "擦拭回抽期间的回抽速度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a wipe retraction move."
-msgstr ""
+msgstr "擦拭回抽移动期间耗材回抽的速度。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr ""
+msgstr "回抽装填速度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a wipe retraction move."
-msgstr ""
+msgstr "擦拭回抽移动期间耗材装填的速度。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause label"
 msgid "Wipe Pause"
-msgstr ""
+msgstr "擦拭暂停"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr ""
+msgstr "在未回抽后暂停。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop When Retracted"
-msgstr ""
+msgstr "回抽后擦拭 Z 抬升"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "回抽完成时，打印平台会下降以便在喷嘴和打印品之间形成空隙。进而防止喷嘴在空驶过程中撞到打印品，降低打印品滑出打印平台的几率。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr ""
+msgstr "擦拭 Z 抬升高度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr ""
+msgstr "执行 Z 抬升的高度差。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr ""
+msgstr "擦拭抬升速度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr ""
+msgstr "抬升期间移动 Z 轴的速度。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x label"
 msgid "Wipe Brush X Position"
-msgstr ""
+msgstr "擦拭刷 X 轴坐标"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x description"
 msgid "X location where wipe script will start."
-msgstr ""
+msgstr "擦拭开始处的 X 轴坐标。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count label"
 msgid "Wipe Repeat Count"
-msgstr ""
+msgstr "擦拭重复计数"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
-msgstr ""
+msgstr "在擦拭刷上移动喷嘴的次数。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance label"
 msgid "Wipe Move Distance"
-msgstr ""
+msgstr "擦拭移动距离"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
-msgstr ""
+msgstr "在擦拭刷上来回移动喷嘴头的距离。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6173,6 +6163,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "在开始后执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -6185,6 +6176,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "在结束前执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -6241,6 +6233,7 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
+
 #~ "skirt 和打印第一层之间的水平距离。\n"
 #~ "这是最小距离，多个 skirt 走线将从此距离向外延伸。"
 

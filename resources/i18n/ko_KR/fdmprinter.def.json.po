@@ -58,9 +58,7 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr ""
-"시작과 동시에형실행될 G 코드 명령어 \n"
-"."
+msgstr "시작과 동시에형실행될 G 코드 명령어 \n."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,9 +70,7 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr ""
-"맨 마지막에 실행될 G 코드 명령 \n"
-"."
+msgstr "맨 마지막에 실행될 G 코드 명령 \n."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -239,7 +235,7 @@ msgstr "익스트루더의 수. 익스트루더는 피더, 보우 덴 튜브 및
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
 msgid "Number of Extruders That Are Enabled"
-msgstr ""
+msgstr "활성화된 익스트루더의 수"
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count description"
@@ -249,7 +245,7 @@ msgstr "사용 가능한 익스트루더 수; 소프트웨어로 자동 설정"
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
 msgid "Outer Nozzle Diameter"
-msgstr ""
+msgstr "외부 노즐의 외경"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -259,7 +255,7 @@ msgstr "노즐 끝의 외경."
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
 msgid "Nozzle Length"
-msgstr ""
+msgstr "노즐 길이"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -269,7 +265,7 @@ msgstr "노즐의 끝과 프린트 헤드의 가장 낮은 부분 사이의 높�
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
 msgid "Nozzle Angle"
-msgstr ""
+msgstr "노즐 각도"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -279,7 +275,7 @@ msgstr "노즐 끝 바로 위의 수평면과 원뿔 부분 사이의 각도입�
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
 msgid "Heat Zone Length"
-msgstr ""
+msgstr "가열 영역 길이"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -309,7 +305,7 @@ msgstr "Cura에서 온도를 제어할지 여부. Cura 외부에서 노즐 온�
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
 msgid "Heat Up Speed"
-msgstr ""
+msgstr "가열 속도"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -319,7 +315,7 @@ msgstr "노즐이 가열되는 속도 (°C/s)는 일반적인 프린팅 온도�
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
 msgid "Cool Down Speed"
-msgstr ""
+msgstr "냉각 속도"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -339,7 +335,7 @@ msgstr "노즐이 냉각되기 전에 익스트루더가 비활성이어야하�
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavour"
-msgstr ""
+msgstr "G-code Flavour"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -404,7 +400,7 @@ msgstr "재료를 리트렉션하는 G1 명령어에서 E 속성을 사용하는
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
-msgstr ""
+msgstr "허용되지 않는 지역"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -424,7 +420,7 @@ msgstr "노즐이 위치할 수 없는 구역의 목록입니다."
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
 msgid "Machine Head Polygon"
-msgstr ""
+msgstr "머신 헤드 폴리곤"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -434,7 +430,7 @@ msgstr "프린트 헤드의 2D 실루엣 (팬 캡 제외)."
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
 msgid "Machine Head & Fan Polygon"
-msgstr ""
+msgstr "머신 헤드 및 팬 폴리곤"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -444,7 +440,7 @@ msgstr "프린트 헤드의 2D 실루엣 (팬 뚜껑 포함)."
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
 msgid "Gantry Height"
-msgstr ""
+msgstr "갠트리 높이"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -474,7 +470,7 @@ msgstr "노즐의 내경. 비표준 노즐 크기를 사용할 때 이 설정을
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
 msgid "Offset with Extruder"
-msgstr ""
+msgstr "익스트루더로 오프셋"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -1636,9 +1632,7 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr ""
-"내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n"
-"이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
+msgstr "내부채움 영역 주변에 여분의 벽을 추가합니다. 이러한 벽은 상단/하단 스킨 라인이 늘어지는 것을 줄여줄 수 있습니다. 일부 여분 재료를 사용해도 같은 품질을 유지하는 데 필요한 필요한 상단/하단 스킨 층이 감소한다는 의미입니다.\n이 기능을 올바르게 구성하는 경우 내부채움 다각형 연결과 함께 사용해 이동 또는 리트랙션없이 모든 내부채움을 단일 돌출 경로에 연결할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1873,12 +1867,12 @@ msgstr "프린팅에 사용되는 기본 온도입니다. 이것은 재료의 \"
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature label"
 msgid "Build Volume Temperature"
-msgstr ""
+msgstr "빌드 볼륨 온도"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "빌드 볼륨에 사용되는 온도입니다. 0인 경우 빌드 볼륨 온도는 조정되지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2943,12 +2937,12 @@ msgstr "기기가 하나의 익스트루더에서 다른 익스트루더로 전�
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height label"
 msgid "Z Hop After Extruder Switch Height"
-msgstr ""
+msgstr "익스트루더 스위치 높이 후 Z 홉"
 
 #: fdmprinter.def.json
 msgctxt "retraction_hop_after_extruder_switch_height description"
 msgid "The height difference when performing a Z Hop after extruder switch."
-msgstr ""
+msgstr "익스트루더 스위치 후 Z 홉을 수행할 때의 높이 차이."
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -3223,7 +3217,7 @@ msgstr "십자"
 #: fdmprinter.def.json
 msgctxt "support_pattern option gyroid"
 msgid "Gyroid"
-msgstr ""
+msgstr "자이로이드"
 
 #: fdmprinter.def.json
 msgctxt "support_wall_count label"
@@ -3930,9 +3924,7 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr ""
-"프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n"
-"이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
+msgstr "프린트의 스커트와 첫 번째 레이어 사이의 수평 거리입니다.\n이것은 최소 거리입니다. 여러 개의 스커트 선이 이 거리에서 바깥쪽으로 연장됩니다."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4377,12 +4369,12 @@ msgstr "하나의 노즐로 프라임 타워를 프린팅 한 후, 다른 타워
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr ""
+msgstr "프라임 타워 브림"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr ""
+msgstr "프라임 타워는 모델이 제공하지 않더라도 브림이 제공하는 추가 접착이 필요할 수 있습니다. 현재 '래프트' 접착 유형을 사용할 수 없습니다."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4902,12 +4894,12 @@ msgstr "슬라이딩 후의 이동 선분의 최소 크기입니다. 이 값을 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation label"
 msgid "Maximum Deviation"
-msgstr ""
+msgstr "최대 편차"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr ""
+msgstr "최대 해상도 설정에 대한 해상도를 낮추면 최대 편차를 사용할 수 있습니다. 최대 편차를 높이면 프린트의 정확도는 감소하지만, G 코드도 감소합니다."
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5509,7 +5501,7 @@ msgstr "노즐과 수평 아래쪽 라인 사이의 거리. 거리가 클수록 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
 msgid "Use Adaptive Layers"
-msgstr ""
+msgstr "어댑티브 레이어 사용"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled description"
@@ -5519,7 +5511,7 @@ msgstr "어댑티브 레이어는 모델의 모양에 따라 레이어의 높이
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
 msgid "Adaptive Layers Maximum Variation"
-msgstr ""
+msgstr "어댑티브 레이어 최대 변화"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation description"
@@ -5529,7 +5521,7 @@ msgstr "기본 레이어 높이와 다른 최대 허용 높이."
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
 msgid "Adaptive Layers Variation Step Size"
-msgstr ""
+msgstr "어댑티브 레이어 변화 단계 크기"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step description"
@@ -5539,7 +5531,7 @@ msgstr "이전 높이와 비교되는 다음 레이어 높이의 차이."
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Threshold"
-msgstr ""
+msgstr "어댑티브 레이어 임계 값"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
@@ -5759,152 +5751,152 @@ msgstr "세번째 브리지 벽과 스킨을 인쇄 할 때 사용하는 팬 속
 #: fdmprinter.def.json
 msgctxt "clean_between_layers label"
 msgid "Wipe Nozzle Between Layers"
-msgstr ""
+msgstr "레이어 사이의 와이프 노즐"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "레이어 사이에 노즐 와이프 G 코드를 포함할지 여부를 결정합니다. 이 설정을 활성화하면 레이어 변경 시 리트렉트 동작에 영향을 줄 수 있습니다. 와이프 스크립트가 작동하는 레이어에서 리트랙션을 제어하려면 와이프 리트렉션 설정을 사용하십시오."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
 msgid "Material Volume Between Wipes"
-msgstr ""
+msgstr "와이프 사이의 재료 볼륨"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr ""
+msgstr "다른 노즐 와이프를 시작하기 전에 압출할 수 있는 최대 재료입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
 msgid "Wipe Retraction Enable"
-msgstr ""
+msgstr "와이프 리트랙션 활성화"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "노즐이 프린팅되지 않은 영역 위로 움직일 때 필라멘트를 리트렉션합니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount label"
 msgid "Wipe Retraction Distance"
-msgstr ""
+msgstr "와이프 리트랙션 거리"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_amount description"
 msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
-msgstr ""
+msgstr "필라멘트를 리트렉션하는 양으로 와이프 순서 동안 새어 나오지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr ""
+msgstr "와이프 리트랙션 추가 초기 양"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
 msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
-msgstr ""
+msgstr "와이프 이동 중에 재료가 새어 나올 수 있습니다. 이 재료는 여기에서 보상받을 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed label"
 msgid "Wipe Retraction Speed"
-msgstr ""
+msgstr "와이프 리트랙션 속도"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_speed description"
 msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
-msgstr ""
+msgstr "와이프 리트랙션 이동 중에 필라멘트가 리트렉션 및 준비되는 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed label"
 msgid "Wipe Retraction Retract Speed"
-msgstr ""
+msgstr "와이프 리트랙션 리트렉트 속도"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_retract_speed description"
 msgid "The speed at which the filament is retracted during a wipe retraction move."
-msgstr ""
+msgstr "와이프 리트랙션 이동 중에 필라멘트가 리트렉트되는 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr ""
+msgstr "리트렉션 초기 속도"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
 msgid "The speed at which the filament is primed during a wipe retraction move."
-msgstr ""
+msgstr "와이프 리트랙션 이동 중에 필라멘트가 초기화되는 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause label"
 msgid "Wipe Pause"
-msgstr ""
+msgstr "와이프 일시 정지"
 
 #: fdmprinter.def.json
 msgctxt "wipe_pause description"
 msgid "Pause after the unretract."
-msgstr ""
+msgstr "리트랙트를 실행 취소한 후 일시 정지합니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop When Retracted"
-msgstr ""
+msgstr "리트렉션했을 때의 와이프 Z 홉"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "리트렉션이 일어날 때마다 빌드 플레이트가 낮아져 노즐과 출력물 사이에 여유 공간이 생깁니다. 이동 중에 노즐이 인쇄물에 부딪치지 않도록 하여 인쇄물이 빌드 플레이트와 부딪힐 가능성을 줄여줍니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
 msgid "Wipe Z Hop Height"
-msgstr ""
+msgstr "화이프 Z 홉 높이"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount description"
 msgid "The height difference when performing a Z Hop."
-msgstr ""
+msgstr "Z 홉을 수행할 때의 높이 차이."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed label"
 msgid "Wipe Hop Speed"
-msgstr ""
+msgstr "와이프 홉 속도"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_speed description"
 msgid "Speed to move the z-axis during the hop."
-msgstr ""
+msgstr "홉 중에 z축을 이동하는 속도입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x label"
 msgid "Wipe Brush X Position"
-msgstr ""
+msgstr "와이프 브러시 X 위치"
 
 #: fdmprinter.def.json
 msgctxt "wipe_brush_pos_x description"
 msgid "X location where wipe script will start."
-msgstr ""
+msgstr "와이프 스크립트가 시작되는 X 위치입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count label"
 msgid "Wipe Repeat Count"
-msgstr ""
+msgstr "와이프 반복 횟수"
 
 #: fdmprinter.def.json
 msgctxt "wipe_repeat_count description"
 msgid "Number of times to move the nozzle across the brush."
-msgstr ""
+msgstr "브러시 전체에 노즐을 이동하는 횟수입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance label"
 msgid "Wipe Move Distance"
-msgstr ""
+msgstr "와이프 이동 거리"
 
 #: fdmprinter.def.json
 msgctxt "wipe_move_distance description"
 msgid "The distance to move the head back and forth across the brush."
-msgstr ""
+msgstr "브러시 전체에 헤드를 앞뒤로 이동하는 거리입니다."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6171,6 +6163,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "시작과 동시에 실행될 G 코드 명령어 \n"
 #~ "."
 
@@ -6183,6 +6176,7 @@ msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬�
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
+
 #~ "맨 마지막에 실행될 G 코드 명령 \n"
 #~ "."
 

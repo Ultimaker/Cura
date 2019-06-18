@@ -3,6 +3,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 from UM.Settings.InstanceContainer import InstanceContainer
+from cura.Machines.QualityGroup import QualityGroup
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 
 @pytest.fixture
@@ -43,21 +44,44 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
             assert mocked_config_error.addFaultyContainers.called_with("NOPE")
 
 
-'''def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
     variant_manager = MagicMock(name = "Variant Manager")
+    quality_manager = MagicMock(name = "Quality Manager")
     global_variant_node = MagicMock( name = "global variant node")
     global_variant_node.getContainer = MagicMock(return_value = global_variant)
 
     variant_manager.getDefaultVariantNode = MagicMock(return_value = global_variant_node)
+    quality_group = QualityGroup(name = "zomg", quality_type = "normal")
+    quality_group.node_for_global = MagicMock(name = "Node for global")
+    quality_group.node_for_global.getContainer = MagicMock(return_value = quality_container)
+    quality_manager.getQualityGroups = MagicMock(return_value = {"normal": quality_group})
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
     application.getVariantManager = MagicMock(return_value = variant_manager)
+    application.getQualityManager = MagicMock(return_value = quality_manager)
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
     application.empty_quality_changes_container = quality_changes_container
 
-    definition_container.getMetaDataEntry = MagicMock(return_value = {}, name = "blarg")
-    print("DEF CONT", definition_container)
+    metadata = definition_container.getMetaData()
+    metadata["machine_extruder_trains"] = {}
+    metadata["preferred_quality_type"] = "normal"
+
     container_registry.addContainer(definition_container)
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        assert CuraStackBuilder.createMachine("Whatever", "Test Definition") is None'''
+        machine = CuraStackBuilder.createMachine("Whatever", "Test Definition")
+
+        assert machine.quality == quality_container
+        assert machine.definition == definition_container
+        assert machine.variant == global_variant
+
+
+def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+    application.empty_material_container = material_instance_container
+    application.empty_quality_container = quality_container
+    application.empty_quality_changes_container = quality_changes_container
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+        extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
+        assert extruder_stack.variant == global_variant
+        assert extruder_stack.material == material_instance_container
+        assert extruder_stack.quality == quality_container

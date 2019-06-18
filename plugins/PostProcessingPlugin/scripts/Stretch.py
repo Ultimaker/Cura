@@ -145,6 +145,7 @@ class Stretcher():
                     current.readStep(line)
                     onestep = GCodeStep(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
+                    onestep.comment = line
                 else:
                     onestep = GCodeStep(-1, in_relative_movement)
                     onestep.copyPosFrom(current)

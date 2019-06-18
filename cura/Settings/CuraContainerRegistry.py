@@ -103,13 +103,14 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param instance_ids \type{list} the IDs of the profiles to export.
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    def exportQualityProfile(self, container_list, file_name, file_type):
+    #   \return True if the export succeeded, false otherwise.
+    def exportQualityProfile(self, container_list, file_name, file_type) -> bool:
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
         if split < 0:  # Not found. Invalid format.
             Logger.log("e", "Invalid file format identifier %s", file_type)
-            return
+            return False
         description = file_type[:split]
         extension = file_type[split + 4:-1]  # Leave out the " (*." and ")".
         if not file_name.endswith("." + extension):  # Auto-fill the extension if the user did not provide any.
@@ -121,7 +122,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
-                    return
+                    return False
 
         profile_writer = self._findProfileWriter(extension, description)
         try:
@@ -132,17 +133,18 @@ class CuraContainerRegistry(ContainerRegistry):
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
             m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
                     title = catalog.i18nc("@info:title", "Export succeeded"))
         m.show()
+        return True
 
     ##  Gets the plugin object matching the criteria
     #   \param extension
@@ -169,9 +171,6 @@ class CuraContainerRegistry(ContainerRegistry):
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
 
-        plugin_registry = PluginRegistry.getInstance()
-        extension = file_name.split(".")[-1]
-
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
@@ -179,6 +178,9 @@ class CuraContainerRegistry(ContainerRegistry):
         machine_extruders = []
         for position in sorted(global_stack.extruders):
             machine_extruders.append(global_stack.extruders[position])
+
+        plugin_registry = PluginRegistry.getInstance()
+        extension = file_name.split(".")[-1]
 
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
@@ -281,7 +283,7 @@ class CuraContainerRegistry(ContainerRegistry):
                                         profile.addInstance(new_instance)
                                         profile.setDirty(True)
 
-                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit = True)
                         extruder_profiles.append(profile)
 
                     for profile in extruder_profiles:

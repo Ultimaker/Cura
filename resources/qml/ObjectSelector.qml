@@ -13,6 +13,13 @@ Item
     width: UM.Theme.getSize("objects_menu_size").width
     property bool opened: UM.Preferences.getValue("cura/show_list_of_objects")
 
+    // Eat up all the mouse events (we don't want the scene to react or have the scene context menu showing up)
+    MouseArea
+    {
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+    }
+
     Button
     {
         id: openCloseButton
