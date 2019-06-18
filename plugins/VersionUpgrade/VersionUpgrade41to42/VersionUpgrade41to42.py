@@ -12,6 +12,7 @@ _renamed_settings = {
 } #type: Dict[str, str]
 _removed_settings = ["prime_tower_circular"]  # type: List[str]
 
+
 ##  Upgrades configurations from the state they were in at version 4.1 to the
 #   state they should be in at version 4.2.
 class VersionUpgrade41to42(VersionUpgrade):
