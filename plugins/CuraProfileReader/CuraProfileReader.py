@@ -35,9 +35,12 @@ class CuraProfileReader(ProfileReader):
                 for profile_id in archive.namelist():
                     with archive.open(profile_id) as f:
                         serialized = f.read()
-                    profile = self._loadProfile(serialized.decode("utf-8"), profile_id)
-                    if profile is not None:
-                        results.append(profile)
+                    upgraded_profiles = self._upgradeProfile(serialized.decode("utf-8"), profile_id) #After upgrading it may split into multiple profiles.
+                    for upgraded_profile in upgraded_profiles:
+                        serialization, new_id = upgraded_profile
+                        profile = self._loadProfile(serialization, new_id)
+                        if profile is not None:
+                            results.append(profile)
                 return results
 
         except zipfile.BadZipFile:
