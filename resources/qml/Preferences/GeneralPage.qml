@@ -374,7 +374,7 @@ UM.PreferencesPage
                 {
                     id: zoomToMouseCheckbox
                     text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
-                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
+                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
                     enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
                 }
@@ -390,6 +390,7 @@ UM.PreferencesPage
                             return;
                         }
                         zoomToMouseCheckbox.enabled = UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal";
+                        zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled;
                     }
                 }
             }
