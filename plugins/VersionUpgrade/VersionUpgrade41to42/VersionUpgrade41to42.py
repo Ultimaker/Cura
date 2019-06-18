@@ -10,6 +10,8 @@ from UM.VersionUpgrade import VersionUpgrade
 _renamed_settings = {
     "support_minimal_diameter": "support_tower_maximum_supported_diameter"
 } #type: Dict[str, str]
+_removed_settings = ["prime_tower_circular"]  # type: List[str]
+
 
 ##  Upgrades configurations from the state they were in at version 4.1 to the
 #   state they should be in at version 4.2.
@@ -40,7 +42,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number.
+        #Update version number.
         parser["metadata"]["setting_version"] = "8"
 
         #Rename settings.
@@ -49,6 +51,10 @@ class VersionUpgrade41to42(VersionUpgrade):
                 if old_name in parser["values"]:
                     parser["values"][new_name] = parser["values"][old_name]
                     del parser["values"][old_name]
+            #Remove settings.
+            for key in _removed_settings:
+                if key in parser["values"]:
+                    del parser["values"][key]
 
         result = io.StringIO()
         parser.write(result)
@@ -67,12 +73,15 @@ class VersionUpgrade41to42(VersionUpgrade):
         #Renamed settings.
         if "visible_settings" in parser["general"]:
             visible_settings = parser["general"]["visible_settings"]
-            visible_settings_set = set(visible_settings.split(";"))
+            visible_setting_set = set(visible_settings.split(";"))
             for old_name, new_name in _renamed_settings.items():
-                if old_name in visible_settings_set:
-                    visible_settings_set.remove(old_name)
-                    visible_settings_set.add(new_name)
-            parser["general"]["visible_settings"] = ";".join(visible_settings_set)
+                if old_name in visible_setting_set:
+                    visible_setting_set.remove(old_name)
+                    visible_setting_set.add(new_name)
+            for removed_key in _removed_settings:
+                if removed_key in visible_setting_set:
+                    visible_setting_set.remove(removed_key)
+            parser["general"]["visible_settings"] = ";".join(visible_setting_set)
 
         result = io.StringIO()
         parser.write(result)
@@ -83,7 +92,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        # Update version number.
+        #Update version number.
         parser["metadata"]["setting_version"] = "8"
 
         result = io.StringIO()

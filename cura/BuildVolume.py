@@ -847,17 +847,10 @@ class BuildVolume(SceneNode):
                 prime_tower_x -= brim_size
                 prime_tower_y += brim_size
 
-            if self._global_container_stack.getProperty("prime_tower_circular", "value"):
-                radius = prime_tower_size / 2
-                prime_tower_area = Polygon.approximatedCircle(radius)
-                prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
-            else:
-                prime_tower_area = Polygon([
-                    [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                    [prime_tower_x, prime_tower_y - prime_tower_size],
-                    [prime_tower_x, prime_tower_y],
-                    [prime_tower_x - prime_tower_size, prime_tower_y],
-                ])
+            radius = prime_tower_size / 2
+            prime_tower_area = Polygon.approximatedCircle(radius)
+            prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
@@ -1163,7 +1156,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
