@@ -56,8 +56,4 @@ def getMetaData() -> Dict[str, Any]:
 
 
 def register(app: "Application") -> Dict[str, Any]:
-<<<<<<< HEAD
-    return {"version_upgrade": upgrade}
-=======
     return { "version_upgrade": upgrade }
->>>>>>> master
