@@ -73,8 +73,6 @@ Item
     MouseArea
     {
         anchors.fill: manageQueueLabel
-        enabled: !cloudConnection
-        hoverEnabled: !cloudConnection
         onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
         onEntered:
         {

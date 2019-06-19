@@ -6,6 +6,7 @@ from time import time
 from typing import Dict, List, Optional, Set, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtGui import QDesktopServices
 
 from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
@@ -399,6 +400,22 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state != "queued"]
 
+    def setJobState(self, print_job_uuid: str, state: str) -> None:
+        self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, state)
+
+    @pyqtSlot(str)
+    def sendJobToTop(self, print_job_uuid: str) -> None:
+        self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "move",
+                                   {"list": "queued", "to_position": 0})
+
+    @pyqtSlot(str)
+    def deleteJobFromQueue(self, print_job_uuid: str) -> None:
+        self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "remove")
+
+    @pyqtSlot(str)
+    def forceSendJob(self, print_job_uuid: str) -> None:
+        self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "force")
+
     @pyqtSlot(int, result = str)
     def formatDuration(self, seconds: int) -> str:
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
@@ -411,6 +428,18 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
     def getDateCompleted(self, time_remaining: int) -> str:
         return formatDateCompleted(time_remaining)
 
+    @pyqtProperty(bool, notify=printJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return bool(self._print_jobs)
+
+    @pyqtSlot()
+    def openPrintJobControlPanel(self) -> None:
+        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+
+    @pyqtSlot()
+    def openPrinterControlPanel(self) -> None:
+        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+
     ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
     #   TODO: We fake the methods here to not break the monitor page.
 
@@ -420,30 +449,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     @pyqtSlot(QUrl)
     def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
-        pass
-
-    @pyqtProperty(bool, notify = printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return bool(self._print_jobs)
-
-    @pyqtSlot()
-    def openPrintJobControlPanel(self) -> None:
-        pass
-
-    @pyqtSlot()
-    def openPrinterControlPanel(self) -> None:
-        pass
-
-    @pyqtSlot(str)
-    def sendJobToTop(self, print_job_uuid: str) -> None:
-        pass
-
-    @pyqtSlot(str)
-    def deleteJobFromQueue(self, print_job_uuid: str) -> None:
-        pass
-
-    @pyqtSlot(str)
-    def forceSendJob(self, print_job_uuid: str) -> None:
         pass
 
     @pyqtProperty("QVariantList", notify = _clusterPrintersChanged)
