@@ -89,6 +89,7 @@ class IntentManager:
     def selectIntent(self, intent_category, quality_type):
         for extruder in all_extruders:
             extruder_stack.intent = ContainerRegistry.getInstance().findContainers(type = "intent", definition = current_definition_id, variant = extruder_nozzle_id, material = extruder_material_id)[0]
+            extruder_stack.quality = ContainerRegistry.getInstance().findContainers(type = "quality", quality_type = quality_type)
 
     def selectDefaultIntent(self) -> None:
         category, quality_type = self.defaultIntent()
