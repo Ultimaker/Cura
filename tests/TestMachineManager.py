@@ -62,3 +62,12 @@ def test_hasUserSettings(machine_manager, application):
 
     assert machine_manager.numUserSettings == 12
     assert machine_manager.hasUserSettings
+
+
+def test_totalNumberOfSettings(machine_manager):
+    registry = MagicMock()
+    mocked_definition = MagicMock()
+    mocked_definition.getAllKeys = MagicMock(return_value = ["omg", "zomg", "foo"])
+    registry.findDefinitionContainers = MagicMock(return_value = [mocked_definition])
+    with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
+        assert machine_manager.totalNumberOfSettings == 3

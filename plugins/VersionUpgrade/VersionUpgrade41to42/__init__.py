@@ -14,10 +14,19 @@ def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
             # From                           To                              Upgrade function
-            ("machine_stack", 4000007):      ("machine_stack", 5000007,      upgrade.upgradeStack),
-            ("extruder_train", 4000007):     ("extruder_train", 5000007,     upgrade.upgradeStack)
+            ("preferences", 6000007):        ("preferences", 6000008,        upgrade.upgradePreferences),
+            ("machine_stack", 4000007):      ("machine_stack", 4000008,      upgrade.upgradeStack),
+            ("extruder_train", 4000007):     ("extruder_train", 4000008,     upgrade.upgradeStack),
+            ("definition_changes", 4000007): ("definition_changes", 4000008, upgrade.upgradeInstanceContainer),
+            ("quality_changes", 4000007):    ("quality_changes", 4000008,    upgrade.upgradeInstanceContainer),
+            ("quality", 4000007):            ("quality", 4000008,            upgrade.upgradeInstanceContainer),
+            ("user", 4000007):               ("user", 4000008,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
+            "preferences": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"."}
+            },
             "machine_stack": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./machine_instances"}
@@ -25,10 +34,30 @@ def getMetaData() -> Dict[str, Any]:
             "extruder_train": {
                 "get_version": upgrade.getCfgVersion,
                 "location": {"./extruders"}
+            },
+            "definition_changes": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./definition_changes"}
+            },
+            "quality_changes": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./quality_changes"}
+            },
+            "quality": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./quality"}
+            },
+            "user": {
+                "get_version": upgrade.getCfgVersion,
+                "location": {"./user"}
             }
         }
     }
 
 
 def register(app: "Application") -> Dict[str, Any]:
+<<<<<<< HEAD
     return {"version_upgrade": upgrade}
+=======
+    return { "version_upgrade": upgrade }
+>>>>>>> master

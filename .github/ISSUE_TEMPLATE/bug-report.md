@@ -21,7 +21,7 @@ To upload a project, try changing the extension to e.g. .curaproject.3mf.zip so 
 Thank you for using Cura!
 -->
 
-**Application Version**
+**Application version**
 <!-- The version of the application this issue occurs with -->
 
 **Platform**
@@ -30,11 +30,14 @@ Thank you for using Cura!
 **Printer**
 <!-- Which printer was selected in Cura? If possible, please attach project file as .curaproject.3mf.zip -->
 
-**Actual Results**
+**Reproduction steps**
+<!-- How did you encounter the bug? -->
+
+**Actual results**
 <!-- What happens after the above steps have been followed -->
 
 **Expected results**
 <!-- What should happen after the above steps have been followed -->
 
-**Additional Information**
+**Additional information**
 <!-- Extra information relevant to the issue, like screenshots -->
