@@ -172,7 +172,7 @@ Item
             }
             width: 36 * screenScaleFactor // TODO: Theme!
             height: 36 * screenScaleFactor // TODO: Theme!
-            
+            enabled: OutputDevice.supportsPrintJobActions
             onClicked: enabled ? contextMenu.switchPopupState() : {}
             visible:
             {
@@ -205,7 +205,7 @@ Item
         MonitorInfoBlurb
         {
             id: contextMenuDisabledInfo
-            text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
             target: contextMenuButton
         }
 
@@ -242,7 +242,6 @@ Item
             target: cameraButton
         }
     }
-
 
     // Divider
     Rectangle

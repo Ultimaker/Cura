@@ -16,6 +16,7 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
+from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
@@ -48,6 +49,9 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 10.0  # seconds
+
+    # The minimum version of firmware that support print job actions over cloud.
+    PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.3.0")
 
     # Signal triggered when the print jobs in the queue were changed.
     printJobsChanged = pyqtSignal()
@@ -359,6 +363,13 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
             lifetime = 5
         ).show()
         self.writeFinished.emit()
+
+    ##  Whether the printer that this output device represents supports print job actions via the cloud.
+    @pyqtProperty(bool, notify = _clusterPrintersChanged)
+    def supportsPrintJobActions(self) -> bool:
+        version_number = self.printers[0].firmwareVersion.split(".")
+        firmware_version = Version([version_number[0], version_number[1], version_number[2]])
+        return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
     ##  Gets the number of printers in the cluster.
     #   We use a minimum of 1 because cloud devices are always a cluster and printer discovery needs it.
