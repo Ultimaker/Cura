@@ -1,13 +1,14 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.MachineManager import MachineManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.InstanceContainer import InstanceContainer
 
 if TYPE_CHECKING:
     from UM.Settings.InstanceContainer import InstanceContainer
@@ -17,11 +18,12 @@ if TYPE_CHECKING:
 #
 #   CURRENTLY THIS CLASS CONTAINS ONLY SOME PSEUDOCODE OF WHAT WE ARE SUPPOSED
 #   TO IMPLEMENT.
-class IntentManager:
+class IntentManager(QObject):
     __instance = None
 
     def __init__(self) -> None:
-        MachineManager.activeStackChanged.connect(self.configurationChanged)
+        super().__init__()
+        CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
         self.configurationChanged.connect(self.selectDefaultIntent)
         pass
 
@@ -32,7 +34,7 @@ class IntentManager:
             cls.__instance = IntentManager()
         return cls.__instance
 
-    configurationChanged = pyqtSignal
+    configurationChanged = pyqtSignal()
 
     ##  Gets the metadata dictionaries of all intent profiles for a given
     #   configuration.
@@ -41,7 +43,7 @@ class IntentManager:
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
-        registry = ContainerRegistry.getInstance()
+        registry = CuraApplication.getInstance().getContainerRegistry()
         return registry.findContainersMetadata(definition = definition_id, variant = nozzle_name, material_id = material_id)
 
     ##
@@ -74,7 +76,7 @@ class IntentManager:
 
         result = set()
         for intent_id in final_intent_ids:
-            intent_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = intent_id)[0]
+            intent_metadata = application.getContainerRegistry().findContainersMetadata(id = intent_id)[0]
             result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
         return list(result)
 
@@ -109,7 +111,7 @@ class IntentManager:
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
-            intent = ContainerRegistry.getInstance().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
+            intent = application.getContainerRegistry().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
             if intent:
                 extruder_stack.intent = intent[0]
             else:
