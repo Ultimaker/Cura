@@ -118,5 +118,5 @@ class IntentManager:
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
 
     def selectDefaultIntent(self) -> None:
-        category, quality_type = self.defaultIntent()
-        self.selectIntent(category, quality_type)
+        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+            extruder_stack.intent = self.defaultIntent()
