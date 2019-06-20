@@ -5,6 +5,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import QualityManager
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.MachineManager import MachineManager
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -59,15 +60,22 @@ class IntentManager:
     #   \return A list of tuples of intent_category and quality_type. The actual
     #   instance may vary per extruder.
     def currentAvailableIntents(self) -> List[Tuple[str, str]]:
-        final_intent_ids = {metadata["id"] for metadata in ContainerRegistry.getInstance().findContainersMetadata(type = "intent", definition = current_definition_id)} #All intents that match the global stack.
-        for extruder in all_extruders:
-            extruder_intent_ids = {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, extruder_nozzle_id, extruder_material_id)}
-            final_intent_ids = final_intent_ids.intersection(extruder_intent_ids)
+        application = CuraApplication.getInstance()
+        quality_groups = application.getQualityManager().getQualityGroups(application.getGlobalContainerStack())
+        available_quality_types = {quality_group.quality_type for quality_group in quality_groups if quality_group.node_for_global is not None}
+
+        final_intent_ids = set()
+        global_stack = application.getGlobalContainerStack()
+        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+            nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
+            material_id = extruder_stack.material.getMetaDataEntry("base_file")
+            final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata["quality_type"] in available_quality_types}
 
         result = set()
         for intent_id in final_intent_ids:
-            intent = ContainerRegistry.getInstance().findContainers(id = intent_id)[0]
-            result.add((intent.getMetaDataEntry("intent_category"), intent.getMetaDataEntry("quality_type")))
+            intent_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = intent_id)[0]
+            result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
         return list(result)
 
     ##  List of intent categories to be displayed in the interface.
