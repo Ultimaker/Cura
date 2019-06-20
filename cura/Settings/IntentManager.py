@@ -2,7 +2,7 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
-from typing import List, Tuple, TYPE_CHECKING
+from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import QualityManager
 from cura.Settings.MachineManager import MachineManager
@@ -24,6 +24,7 @@ class IntentManager:
         self.configurationChanged.connect(self.selectDefaultIntent)
         pass
 
+    ##  This class is a singleton.
     @classmethod
     def getInstance(cls):
         if not cls.__instance:
@@ -32,15 +33,22 @@ class IntentManager:
 
     configurationChanged = pyqtSignal
 
-    def intentMetadatas(self, definition_id: str, nozzle_id: str, material_id: str) -> List[str]:
-        #Return list of available intent profiles for any configuration.
-        #Use ContainerRegistry.findContainersMetadata for this.
-        return []
+    ##  Gets the metadata dictionaries of all intent profiles for a given
+    #   configuration.
+    #
+    #   \param definition_id: ID of the printer.
+    #   \return A list of metadata dictionaries matching the search criteria, or
+    #   an empty list if nothing was found.
+    def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
+        registry = ContainerRegistry.getInstance()
+        return registry.findContainersMetadata(definition = definition_id, variant = nozzle_name, material_id = material_id)
 
+    ##
     def intentCategories(self, definition_id: str, nozzle_id: str, material_id: str) -> List[str]:
         categories = set()
         for intent in self.intentMetadatas(definition_id, nozzle_id, material_id):
             categories.add(intent["intent_category"])
+        categories.add("default") #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
         return list(categories)
 
     ##  List of intents to be displayed in the interface.
@@ -50,7 +58,6 @@ class IntentManager:
     #
     #   \return A list of tuples of intent_category and quality_type. The actual
     #   instance may vary per extruder.
-    @pyqtProperty("QVariantList", notify = configurationChanged)
     def currentAvailableIntents(self) -> List[Tuple[str, str]]:
         final_intent_ids = {metadata["id"] for metadata in ContainerRegistry.getInstance().findContainersMetadata(type = "intent", definition = current_definition_id)} #All intents that match the global stack.
         for extruder in all_extruders:
