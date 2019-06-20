@@ -95,20 +95,11 @@ class IntentManager:
             final_intent_categories |= self.intentCategories(current_definition_id, nozzle_name, material_id)
         return list(final_intent_categories)
 
-    def defaultIntent(self) -> Tuple[str, str]:
-        default_quality_type = QualityManager.getInstance().getDefaultQualityType().quality_type
-        for intent in self.currentAvailableIntents():
-            if intent.getMetaDataEntry("intent_category") == "default" and intent.getMetaDataEntry("quality_type") == default_quality_type:
-                return intent
-        else: #Fallback: Preferred quality type is not available for default category.
-            for intent in self.currentAvailableIntents():
-                if intent.getMetaDataEntry("intent_category") == "default":
-                    return intent
-            else: #Fallback: No default category.
-                if self.currentAvailableIntents():
-                    return self.currentAvailableIntents()[0]
-                else:
-                    return CuraApplication.empty_intent_container
+    ##  The intent that gets selected by default when no intent is available for
+    #   the configuration, an extruder can't match the intent that the user
+    #   selects, or just when creating a new printer.
+    def defaultIntent(self) -> InstanceContainer:
+        return CuraApplication.getInstance().empty_intent_container
 
     def selectIntent(self, intent_category, quality_type):
         for extruder in all_extruders:
