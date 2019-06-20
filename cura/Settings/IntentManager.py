@@ -101,10 +101,21 @@ class IntentManager:
     def defaultIntent(self) -> InstanceContainer:
         return CuraApplication.getInstance().empty_intent_container
 
-    def selectIntent(self, intent_category, quality_type):
-        for extruder in all_extruders:
-            extruder_stack.intent = ContainerRegistry.getInstance().findContainers(type = "intent", definition = current_definition_id, variant = extruder_nozzle_id, material = extruder_material_id)[0]
-            extruder_stack.quality = ContainerRegistry.getInstance().findContainers(type = "quality", quality_type = quality_type)
+    ##  Apply intent on the stacks.
+    def selectIntent(self, intent_category, quality_type) -> None:
+        application = CuraApplication.getInstance()
+        global_stack = application.getGlobalContainerStack()
+        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+            nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
+            material_id = extruder_stack.material.getMetaDataEntry("base_file")
+            intent = ContainerRegistry.getInstance().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
+            if intent:
+                extruder_stack.intent = intent[0]
+            else:
+                extruder_stack.intent = self.defaultIntent()
+
+        application.getMachineManager().setQualityGroupByQualityType(quality_type)
 
     def selectDefaultIntent(self) -> None:
         category, quality_type = self.defaultIntent()
