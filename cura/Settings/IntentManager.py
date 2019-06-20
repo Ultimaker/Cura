@@ -78,12 +78,21 @@ class IntentManager:
             result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
         return list(result)
 
-    ##  List of intent categories to be displayed in the interface.
-    @pyqtProperty("QVariantList", notify = configurationChanged)
+    ##  List of intent categories available in either of the extruders.
+    #
+    #   This is purposefully inconsistent with the way that the quality types
+    #   are listed. The quality types will show all quality types available in
+    #   the printer using any configuration. This will only list the intent
+    #   categories that are available using the current configuration (but the
+    #   union over the extruders).
     def currentAvailableIntentCategories(self) -> List[str]:
-        final_intent_categories = {metadata["intent_category"] for metadata in ContainerRegistry.getInstance().findContainersMetadata(type = "intent", definition = current_definition_id)}
-        for extruder in all_extruders:
-            final_intent_categories = final_intent_categories.intersection(self.intentCategories())
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        final_intent_categories = set()
+        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+            nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
+            material_id = extruder_stack.material.getMetaDataEntry("base_file")
+            final_intent_categories |= self.intentCategories(current_definition_id, nozzle_name, material_id)
         return list(final_intent_categories)
 
     def defaultIntent(self) -> Tuple[str, str]:
