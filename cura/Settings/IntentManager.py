@@ -87,6 +87,8 @@ class IntentManager(QObject):
     #   the printer using any configuration. This will only list the intent
     #   categories that are available using the current configuration (but the
     #   union over the extruders).
+    #   \return List of all categories in the current configurations of all
+    #   extruders.
     def currentAvailableIntentCategories(self) -> List[str]:
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
@@ -119,6 +121,7 @@ class IntentManager(QObject):
 
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
 
+    ##  Selects the default intents on every extruder.
     def selectDefaultIntent(self) -> None:
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             extruder_stack.intent = self.defaultIntent()
