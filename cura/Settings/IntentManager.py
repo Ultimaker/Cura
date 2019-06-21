@@ -2,7 +2,7 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
-from typing import Any, Dict, List, Tuple, TYPE_CHECKING
+from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
 from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -74,15 +74,17 @@ class IntentManager(QObject):
         quality_groups = application.getQualityManager().getQualityGroups(application.getGlobalContainerStack())
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups if quality_group.node_for_global is not None}
 
-        final_intent_ids = set()
+        final_intent_ids = set() #type: Set[str]
         global_stack = application.getGlobalContainerStack()
+        if global_stack is None:
+            return [("default", "normal")]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata["quality_type"] in available_quality_types}
 
-        result = set()
+        result = set() #type: Set[Tuple[str, str]]
         for intent_id in final_intent_ids:
             intent_metadata = application.getContainerRegistry().findContainersMetadata(id = intent_id)[0]
             result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
@@ -99,12 +101,14 @@ class IntentManager(QObject):
     #   extruders.
     def currentAvailableIntentCategories(self) -> List[str]:
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return ["default"]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
-        final_intent_categories = set()
+        final_intent_categories = set() #type: Set[str]
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
-            final_intent_categories |= self.intentCategories(current_definition_id, nozzle_name, material_id)
+            final_intent_categories.update(self.intentCategories(current_definition_id, nozzle_name, material_id))
         return list(final_intent_categories)
 
     ##  The intent that gets selected by default when no intent is available for
@@ -117,6 +121,8 @@ class IntentManager(QObject):
     def selectIntent(self, intent_category, quality_type) -> None:
         application = CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
+        if global_stack is None:
+            return
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
