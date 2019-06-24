@@ -32,7 +32,7 @@ class CuraProfileReader(ProfileReader):
     def read(self, file_name: str) -> List[Optional[InstanceContainer]]:
         try:
             with zipfile.ZipFile(file_name, "r") as archive:
-                results = [] #type: List[Optional[InstanceContainer]]
+                results = []  # type: List[Optional[InstanceContainer]]
                 for profile_id in archive.namelist():
                     with archive.open(profile_id) as f:
                         serialized = f.read()
@@ -107,9 +107,11 @@ class CuraProfileReader(ProfileReader):
                                  if source_format in plugin["version_upgrade"] and plugin["version_upgrade"][source_format][1] == InstanceContainer.Version]
 
         if not profile_convert_funcs:
+            Logger.log("w", "Unable to find an upgrade path for the profile [%s]", profile_id)
             return []
 
         filenames, outputs = profile_convert_funcs[0](serialized, profile_id)
         if filenames is None and outputs is None:
+            Logger.log("w", "The conversion failed to return any usable data for [%s]", profile_id)
             return []
         return list(zip(outputs, filenames))
