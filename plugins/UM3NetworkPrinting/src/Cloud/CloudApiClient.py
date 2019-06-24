@@ -100,7 +100,7 @@ class CloudApiClient:
     #  \param cluster_id: The ID of the cluster.
     #  \param cluster_job_id: The ID of the print job within the cluster.
     #  \param action: The name of the action to execute.
-    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str, data: Dict[str, Any] = None) -> None:
+    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str, data: Optional[Dict[str, Any]] = None) -> None:
         body = b""
         if data:
             try:
