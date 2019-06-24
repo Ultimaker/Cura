@@ -8,7 +8,6 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.CuraApplication import CuraApplication #To get the current setting version.
 from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
@@ -68,7 +67,7 @@ class CuraProfileReader(ProfileReader):
             return []
 
         version = int(parser["general"]["version"])
-        if InstanceContainer.Version != version or "metadata" not in parser or "setting_version" not in parser["metadata"] or parser["metadata"]["setting_version"] != str(CuraApplication.SettingVersion):
+        if InstanceContainer.Version != version:
             name = parser["general"]["name"]
             return self._upgradeProfileVersion(serialized, name, version)
         else:
