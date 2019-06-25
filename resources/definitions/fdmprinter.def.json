@@ -4635,11 +4635,11 @@
                     "label": "Enable Prime Blob",
                     "description": "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time.",
                     "type": "bool",
-                    "resolve": "any(extruderValues('prime_blob_enable'))",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "enabled": false,
+                    "warning_value": "True if resolveOrValue('print_sequence') == 'one_at_a_time' else None"
                 },
                 "extruder_prime_pos_x":
                 {
