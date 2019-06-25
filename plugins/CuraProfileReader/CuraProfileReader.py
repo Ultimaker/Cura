@@ -8,7 +8,6 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
-from cura.CuraApplication import CuraApplication #To get the current setting version.
 from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
@@ -32,7 +31,7 @@ class CuraProfileReader(ProfileReader):
     def read(self, file_name: str) -> List[Optional[InstanceContainer]]:
         try:
             with zipfile.ZipFile(file_name, "r") as archive:
-                results = [] #type: List[Optional[InstanceContainer]]
+                results = []  # type: List[Optional[InstanceContainer]]
                 for profile_id in archive.namelist():
                     with archive.open(profile_id) as f:
                         serialized = f.read()
@@ -68,7 +67,7 @@ class CuraProfileReader(ProfileReader):
             return []
 
         version = int(parser["general"]["version"])
-        if InstanceContainer.Version != version or "metadata" not in parser or "setting_version" not in parser["metadata"] or parser["metadata"]["setting_version"] != str(CuraApplication.SettingVersion):
+        if InstanceContainer.Version != version:
             name = parser["general"]["name"]
             return self._upgradeProfileVersion(serialized, name, version)
         else:
@@ -107,9 +106,11 @@ class CuraProfileReader(ProfileReader):
                                  if source_format in plugin["version_upgrade"] and plugin["version_upgrade"][source_format][1] == InstanceContainer.Version]
 
         if not profile_convert_funcs:
+            Logger.log("w", "Unable to find an upgrade path for the profile [%s]", profile_id)
             return []
 
         filenames, outputs = profile_convert_funcs[0](serialized, profile_id)
         if filenames is None and outputs is None:
+            Logger.log("w", "The conversion failed to return any usable data for [%s]", profile_id)
             return []
         return list(zip(outputs, filenames))

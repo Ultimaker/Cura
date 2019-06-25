@@ -27,7 +27,7 @@ from UM.Version import Version
 
 from . import ClusterUM3OutputDevice, LegacyUM3OutputDevice
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
-from .Cloud.CloudOutputDevice import CloudOutputDevice # typing
+from .Cloud.CloudOutputDevice import CloudOutputDevice  # typing
 
 if TYPE_CHECKING:
     from PyQt5.QtNetwork import QNetworkReply
