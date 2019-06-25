@@ -71,13 +71,13 @@ class IntentManager(QObject):
     #   instance may vary per extruder.
     def currentAvailableIntents(self) -> List[Tuple[str, str]]:
         application = CuraApplication.getInstance()
-        quality_groups = application.getQualityManager().getQualityGroups(application.getGlobalContainerStack())
-        available_quality_types = {quality_group.quality_type for quality_group in quality_groups if quality_group.node_for_global is not None}
-
-        final_intent_ids = set() #type: Set[str]
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return [("default", "normal")]
+        quality_groups = application.getQualityManager().getQualityGroups(global_stack)
+        available_quality_types = {quality_group.quality_type for quality_group in quality_groups if quality_group.node_for_global is not None}
+
+        final_intent_ids = set() #type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
