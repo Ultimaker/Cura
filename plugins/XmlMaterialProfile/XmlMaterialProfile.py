@@ -1196,11 +1196,11 @@ class XmlMaterialProfile(InstanceContainer):
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
         "build volume temperature": "build_volume_temperature",
-        "anti ooze retract position": "material_anti_ooze_retraction_distance",
+        "anti ooze retracted position": "material_anti_ooze_retracted_position",
         "anti ooze retract speed": "material_anti_ooze_retraction_speed",
-        "break preparation position": "material_break_preparation_distance",
+        "break preparation retracted position": "material_break_preparation_retracted_position",
         "break preparation speed": "material_break_preparation_speed",
-        "break position": "material_break_distance",
+        "break retracted position": "material_break_retracted_position",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
     }

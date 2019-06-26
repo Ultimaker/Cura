@@ -2244,7 +2244,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_anti_ooze_retraction_distance":
+                "material_anti_ooze_retracted_position":
                 {
                     "label": "Anti-ooze Retraction Distance",
                     "description": "How far the material needs to be retracted before it stops oozing.",
@@ -2270,7 +2270,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_break_preparation_distance":
+                "material_break_preparation_retracted_position":
                 {
                     "label": "Break Preparation Retraction Distance",
                     "description": "How far the filament can be stretched before it breaks, while heated.",
@@ -2296,7 +2296,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "material_break_distance":
+                "material_break_retracted_position":
                 {
                     "label": "Break Retraction Distance",
                     "description": "How far to retract the filament in order to break it cleanly.",
