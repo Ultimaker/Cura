@@ -2246,7 +2246,7 @@
                 },
                 "material_anti_ooze_retracted_position":
                 {
-                    "label": "Anti-ooze Retraction Distance",
+                    "label": "Anti-ooze Retracted Position",
                     "description": "How far the material needs to be retracted before it stops oozing.",
                     "type": "float",
                     "unit": "mm",
@@ -2272,7 +2272,7 @@
                 },
                 "material_break_preparation_retracted_position":
                 {
-                    "label": "Break Preparation Retraction Distance",
+                    "label": "Break Preparation Retracted Position",
                     "description": "How far the filament can be stretched before it breaks, while heated.",
                     "type": "float",
                     "unit": "mm",
@@ -2298,7 +2298,7 @@
                 },
                 "material_break_retracted_position":
                 {
-                    "label": "Break Retraction Distance",
+                    "label": "Break Retracted Position",
                     "description": "How far to retract the filament in order to break it cleanly.",
                     "type": "float",
                     "unit": "mm",
