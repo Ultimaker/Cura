@@ -1,13 +1,10 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
 from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
 from cura.CuraApplication import CuraApplication
-from cura.Machines.QualityManager import QualityManager
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.MachineManager import MachineManager
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 
 if TYPE_CHECKING:
@@ -75,7 +72,8 @@ class IntentManager(QObject):
         if global_stack is None:
             return [("default", "normal")]
         quality_groups = application.getQualityManager().getQualityGroups(global_stack)
-        available_quality_types = {quality_group.quality_type for quality_group in quality_groups if quality_group.node_for_global is not None}
+        available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
+        # available_quality_types could just be 'quality_group.keys()', except for that the node_for_global may be None
 
         final_intent_ids = set() #type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
