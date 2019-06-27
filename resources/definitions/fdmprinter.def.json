@@ -2234,6 +2234,107 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_crystallinity":
+                {
+                    "label": "Crystalline Material",
+                    "description": "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_anti_ooze_retracted_position":
+                {
+                    "label": "Anti-ooze Retracted Position",
+                    "description": "How far the material needs to be retracted before it stops oozing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 4,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "retraction_amount",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_anti_ooze_retraction_speed":
+                {
+                    "label": "Anti-ooze Retraction Speed",
+                    "description": "How fast the material needs to be retracted during a filament switch to prevent oozing.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 5,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_preparation_retracted_position":
+                {
+                    "label": "Break Preparation Retracted Position",
+                    "description": "How far the filament can be stretched before it breaks, while heated.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 16,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "retraction_amount * 4",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_preparation_speed":
+                {
+                    "label": "Break Preparation Retraction Speed",
+                    "description": "How fast the filament needs to be retracted just before breaking it off in a retraction.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 2,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_retracted_position":
+                {
+                    "label": "Break Retracted Position",
+                    "description": "How far to retract the filament in order to break it cleanly.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 50,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_speed":
+                {
+                    "label": "Break Retraction Speed",
+                    "description": "The speed at which to retract the filament in order to break it cleanly.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 25,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_temperature":
+                {
+                    "label": "Break Temperature",
+                    "description": "The temperature at which the filament is broken for a clean break.",
+                    "type": "float",
+                    "unit": "°C",
+                    "default_value": 50,
+                    "enabled": false,
+                    "minimum_value": "-273.15",
+                    "maximum_value_warning": "300",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow":
                 {
                     "label": "Flow",
