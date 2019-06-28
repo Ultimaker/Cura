@@ -49,31 +49,39 @@ def test_intentCategories(application, intent_manager, container_registry):
             assert "smooth" in categories, "smooth should be in categories"
 
 
-def test_currentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry):
+def test_currentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
     mocked_qualitygroup_metadata = {
         "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
         "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
 
-    def mockIntentMetadatas(**kwargs) -> List[Dict[str, Any]]:
+    def mockFindMetadata(**kwargs) -> List[Dict[str, Any]]:
         if "id" in kwargs:
             return [x for x in mocked_intent_metadata if x["id"] == kwargs["id"]]
         else:
-            # TODO? switch on 'kwargs["definition_id"]', "nozzle_name", "material_id" -> ... or go 1 deeper
-            return mocked_intent_metadata
-    container_registry.findContainersMetadata = MagicMock(side_effect=mockIntentMetadatas)
+            result = []
+            for data in mocked_intent_metadata:
+                should_add = True
+                for key, value in kwargs.items():
+                    should_add &= (data[key] == value)
+                if should_add:
+                    result.append(data)
+            return result
+    container_registry.findContainersMetadata = MagicMock(side_effect=mockFindMetadata)
 
     quality_manager.getQualityGroups = MagicMock(return_value=mocked_qualitygroup_metadata)
     for _, qualitygroup in mocked_qualitygroup_metadata.items():
         qualitygroup.node_for_global = MagicMock(name="Node for global")
     application.getQualityManager = MagicMock(return_value=quality_manager)
 
-    extruder_stack_a = MockContainer({"id": "A"})
-    extruder_stack_a.variant = MockContainer({"id": "A_variant"})
-    extruder_stack_a.material = MockContainer({"id": "A_material"})
-    extruder_stack_b = MockContainer({"id": "B"})
-    extruder_stack_b.variant = MockContainer({"id": "B_variant"})
-    extruder_stack_b.material = MockContainer({"id": "B_material"})
-    # See previous TODO, the above doesn't really matter if intentmetadatas is mocked out the way it is, but it should.
+    global_stack.definition = MockContainer({"id": "ultimaker3"})
+    application.getGlobalContainerStack = MagicMock(return_value=global_stack)
+
+    extruder_stack_a = MockContainer({"id": "Extruder The First"})
+    extruder_stack_a.variant = MockContainer({"name": "AA 0.4"})
+    extruder_stack_a.material = MockContainer({"base_file": "generic_pla"})
+    extruder_stack_b = MockContainer({"id": "Extruder II: Plastic Boogaloo"})
+    extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
+    extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
 
     extruder_manager.getUsedExtruderStacks = MagicMock(return_value=[extruder_stack_a, extruder_stack_b])
 
