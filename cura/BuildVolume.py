@@ -749,28 +749,24 @@ class BuildVolume(SceneNode):
                 result_areas_no_brim[extruder_id].append(polygon)  # No brim
 
         # Add prime tower location as disallowed area.
-        if len(used_extruders) > 1:  # No prime tower in single-extrusion.
-
-            if len([x for x in used_extruders if x.isEnabled]) > 1: # No prime tower if only one extruder is enabled
-                prime_tower_collision = False
-                prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
-                for extruder_id in prime_tower_areas:
-                    for i_area, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
-                        for area in result_areas[extruder_id]:
-                            if prime_tower_area.intersectsPolygon(area) is not None:
-                                prime_tower_collision = True
-                                break
-                        if prime_tower_collision:  # Already found a collision.
+        if len([x for x in used_extruders if x.isEnabled]) > 1:  # No prime tower if only one extruder is enabled
+            prime_tower_collision = False
+            prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
+            for extruder_id in prime_tower_areas:
+                for area_index, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
+                    for area in result_areas[extruder_id]:
+                        if prime_tower_area.intersectsPolygon(area) is not None:
+                            prime_tower_collision = True
                             break
-                        if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                            ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
-                            prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
-                                Polygon.approximatedCircle(disallowed_border_size))
-                    if not prime_tower_collision:
-                        result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
-                        result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
-                    else:
-                        self._error_areas.extend(prime_tower_areas[extruder_id])
+                    if prime_tower_collision:  # Already found a collision.
+                        break
+                    if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                if not prime_tower_collision:
+                    result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
+                else:
+                    self._error_areas.extend(prime_tower_areas[extruder_id])
 
         self._has_errors = len(self._error_areas) > 0
 
@@ -794,8 +790,8 @@ class BuildVolume(SceneNode):
         for extruder in used_extruders:
             result[extruder.getId()] = []
 
-        #Currently, the only normally printed object is the prime tower.
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable"):
+        # Currently, the only normally printed object is the prime tower.
+        if self._global_container_stack.getProperty("prime_tower_enable"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -805,8 +801,7 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
+            if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                 brim_size = (
                     extruder.getProperty("brim_line_count", "value") *
                     extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
