@@ -50,6 +50,8 @@ def test_intentCategories(application, intent_manager, container_registry):
 
 
 def test_currentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
+    # This also tests 'currentAvailableIntentCategories' and 'selectIntent' since the methods are so similar
+
     mocked_qualitygroup_metadata = {
         "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
         "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
@@ -88,17 +90,22 @@ def test_currentAvailableIntents(application, extruder_manager, quality_manager,
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value=extruder_manager)):
+
                 intents = intent_manager.currentAvailableIntents()
                 assert ("smooth", "normal") in intents
                 assert ("strong", "abnorm") in intents
-                assert len(intents) == 2
+                #assert ("default", "normal") in intents  # Pending to-do in 'IntentManager'.
+                #assert ("default", "abnorm") in intents  # Pending to-do in 'IntentManager'.
+                assert len(intents) == 2  # Or 4? pending to-do in 'IntentManager'.
 
+                categories = intent_manager.currentAvailableIntentCategories()
+                assert "default" in categories  # Currently inconsistent with 'currentAvailableIntents'!
+                assert "smooth" in categories
+                assert "strong" in categories
+                assert len(categories) == 3
 
-def test_currentAvailableIntentCategories(application, quality_manager, intent_manager, container_registry):
-    # def currentAvailableIntentCategories(self) -> List[str]:
-    pass
-
-
-def test_selectIntent(application, intent_manager, container_registry):
-    # def selectIntent(self, intent_category, quality_type) -> None:
-    pass
+                for intent, quality in intents:
+                    intent_manager.selectIntent(intent, quality)
+                    assert extruder_stack_a.intent is not None
+                    assert extruder_stack_b.intent is not None
+                    # ... need MachineManager for this, split up methods anyway -> make into class, see examples others

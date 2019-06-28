@@ -71,9 +71,11 @@ class IntentManager(QObject):
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return [("default", "normal")]
+            # TODO: We now do this (return a default) if the global stack is missing, but not in the code below,
+            #       even though there should always be defaults. The problem then is what to do with the quality_types.
+            #       Currently _also_ inconsistent with 'currentAvailableIntentCategoreis', which _does_ return default.
         quality_groups = application.getQualityManager().getQualityGroups(global_stack)
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
-        # available_quality_types could just be 'quality_group.keys()', except for that the node_for_global may be None
 
         final_intent_ids = set() #type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
