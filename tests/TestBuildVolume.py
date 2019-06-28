@@ -43,6 +43,50 @@ def test_buildGridMesh(build_volume):
     assert numpy.array_equal(result_vertices, mesh.getVertices())
 
 
+class TestComputeDisallowedAreasStatic:
+    setting_property_dict = {"machine_disallowed_areas": {"value": [[[-200,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]]]},
+                             "machine_width": {"value": 200},
+                             "machine_depth": {"value": 200},
+                            }
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestComputeDisallowedAreasStatic.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def test_computeDisallowedAreasStaticNoExtruder(self, build_volume: BuildVolume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_stack
+        assert build_volume._computeDisallowedAreasStatic(0, []) == {}
+
+    def test_computeDisalowedAreasStaticSingleExtruder(self, build_volume: BuildVolume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_extruder.getId = MagicMock(return_value = "zomg")
+
+        build_volume._global_container_stack = mocked_stack
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
+            result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
+            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
+
+    def test_computeDisalowedAreasMutliExtruder(self, build_volume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_extruder.getId = MagicMock(return_value="zomg")
+        extruder_manager = MagicMock()
+        extruder_manager.getActiveExtruderStacks = MagicMock(return_value = [mocked_stack])
+        build_volume._global_container_stack = mocked_stack
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value = extruder_manager)):
+            result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
+            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
 
 class TestUpdateRaftThickness:
     setting_property_dict = {"raft_base_thickness": {"value": 1},
