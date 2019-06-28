@@ -43,6 +43,65 @@ def test_buildGridMesh(build_volume):
     assert numpy.array_equal(result_vertices, mesh.getVertices())
 
 
+def test_clamp(build_volume):
+    assert build_volume._clamp(0, 0, 200) == 0
+    assert build_volume._clamp(0, -200, 200) == 0
+    assert build_volume._clamp(300, -200, 200) == 200
+
+
+class TestCalculateBedAdhesionSize:
+    setting_property_dict = {"adhesion_type": {"value": "brim"},
+                             "skirt_brim_line_width": {"value": 0},
+                             "initial_layer_line_width_factor": {"value": 0},
+                             "brim_line_count": {"value": 0},
+                             "machine_width": {"value": 200},
+                             "machine_depth": {"value": 200},
+                             "skirt_line_count": {"value": 0},
+                             "skirt_gap": {"value": 0},
+                             "raft_margin": {"value": 0}
+                             }
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestCalculateBedAdhesionSize.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def createAndSetGlobalStack(self, build_volume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_stack
+
+    def test_noGlobalStack(self, build_volume: BuildVolume):
+        assert build_volume._calculateBedAdhesionSize([]) is None
+
+    @pytest.mark.parametrize("setting_dict, result", [
+        ({}, 0),
+        ({"adhesion_type": {"value": "skirt"}}, 0),
+        ({"adhesion_type": {"value": "raft"}}, 0),
+        ({"adhesion_type": {"value": "none"}}, 0),
+        ({"adhesion_type": {"value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0.02),
+        # Even though it's marked as skirt, it should behave as a brim as the prime tower has a brim (skirt line count is still at 0!)
+        ({"adhesion_type": {"value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, -0.06),
+        ({"brim_line_count": {"value": 1}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
+        ({"brim_line_count": {"value": 2}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0.06),
+        ({"brim_line_count": {"value": 9000000}, "skirt_brim_line_width": {"value": 90000}, "initial_layer_line_width_factor": {"value": 9000}}, 100),  # Clamped at half the max size of buildplate
+    ])
+    def test_singleExtruder(self, build_volume: BuildVolume, setting_dict, result):
+        self.createAndSetGlobalStack(build_volume)
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary.update(setting_dict)
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            assert build_volume._calculateBedAdhesionSize([]) == result
+
+    def test_unknownBedAdhesion(self, build_volume: BuildVolume):
+        self.createAndSetGlobalStack(build_volume)
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary.update({"adhesion_type": {"value": "OMGZOMGBBQ"}})
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            with pytest.raises(Exception):
+                build_volume._calculateBedAdhesionSize([])
+
 class TestComputeDisallowedAreasStatic:
     setting_property_dict = {"machine_disallowed_areas": {"value": [[[-200,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]]]},
                              "machine_width": {"value": 200},
