@@ -727,16 +727,8 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
-        extruder_manager = ExtruderManager.getInstance()
-        used_extruders = extruder_manager.getUsedExtruderStacks()
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         disallowed_border_size = self.getEdgeDisallowedSize()
-
-        if not used_extruders:
-            # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
-            if extruder_manager.getActiveExtruderStack():
-                used_extruders = [extruder_manager.getActiveExtruderStack()]
-            else:
-                used_extruders = [self._global_container_stack]
 
         result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)  # Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
