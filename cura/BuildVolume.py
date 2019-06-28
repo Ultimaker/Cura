@@ -908,9 +908,12 @@ class BuildVolume(SceneNode):
     #   for.
     #   \return A dictionary with for each used extruder ID the disallowed areas
     #   where that extruder may not print.
-    def _computeDisallowedAreasStatic(self, border_size, used_extruders):
-        #Convert disallowed areas to polygons and dilate them.
+    def _computeDisallowedAreasStatic(self, border_size:float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        # Convert disallowed areas to polygons and dilate them.
         machine_disallowed_polygons = []
+        if self._global_container_stack is None:
+            return {}
+
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
             polygon = Polygon(numpy.array(area, numpy.float32))
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
@@ -921,7 +924,7 @@ class BuildVolume(SceneNode):
         nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
             "nozzle_offsetting_for_disallowed_areas", True)
 
-        result = {}
+        result = {}  # type: Dict[str, List[Polygon]]
         for extruder in used_extruders:
             extruder_id = extruder.getId()
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
@@ -930,13 +933,13 @@ class BuildVolume(SceneNode):
             offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
-            offset_y = -offset_y #Y direction of g-code is the inverse of Y direction of Cura's scene space.
+            offset_y = -offset_y  # Y direction of g-code is the inverse of Y direction of Cura's scene space.
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
-                result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
+                result[extruder_id].append(polygon.translate(offset_x, offset_y))  # Compensate for the nozzle offset of this extruder.
 
-            #Add the border around the edge of the build volume.
+            # Add the border around the edge of the build volume.
             left_unreachable_border = 0
             right_unreachable_border = 0
             top_unreachable_border = 0
@@ -944,7 +947,8 @@ class BuildVolume(SceneNode):
 
             # Only do nozzle offsetting if needed
             if nozzle_offsetting_for_disallowed_areas:
-                #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
+                # The build volume is defined as the union of the area that all extruders can reach, so we need to know
+                # the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
                     if other_offset_x is None:
@@ -1028,8 +1032,8 @@ class BuildVolume(SceneNode):
                         [ half_machine_width - border_size, 0]
                     ], numpy.float32)))
                     result[extruder_id].append(Polygon(numpy.array([
-                        [ half_machine_width,-half_machine_depth],
-                        [-half_machine_width,-half_machine_depth],
+                        [ half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
                         [ 0, -half_machine_depth + border_size]
                     ], numpy.float32)))
 
