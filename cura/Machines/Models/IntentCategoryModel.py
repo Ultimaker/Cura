@@ -19,14 +19,14 @@ class IntentCategoryModel(ListModel):
 
     #Translations to user-visible string. Ordered by weight.
     #TODO: Create a solution for this name and weight to be used dynamically.
-    name_translation = collections.OrderedDict()
+    name_translation = collections.OrderedDict() #type: "collections.OrderedDict[str,str]"
     name_translation["default"] = catalog.i18nc("@label", "Default")
     name_translation["engineering"] = catalog.i18nc("@label", "Engineering")
     name_translation["smooth"] = catalog.i18nc("@label", "Smooth")
 
     ##  Creates a new model for a certain intent category.
     #   \param The category to list the intent profiles for.
-    def __init__(self, intent_category: str):
+    def __init__(self, intent_category: str) -> None:
         super().__init__()
         self._intent_category = intent_category
 
@@ -35,7 +35,7 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.WeightRole, "weight")
 
     ##  Updates the list of intents.
-    def update(self):
+    def update(self) -> None:
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
