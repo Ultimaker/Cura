@@ -48,7 +48,7 @@ class ShapeArray:
     #   \param min_offset offset for the offset ShapeArray
     #   \param scale scale the coordinates
     @classmethod
-    def fromNode(cls, node: SceneNode, min_offset: float, scale: float = 0.5, include_children: bool = False) -> Tuple[Optional["ShapeArray"], Optional["ShapeArray"]]:
+    def fromNode(cls, node: "SceneNode", min_offset: float, scale: float = 0.5, include_children: bool = False) -> Tuple[Optional["ShapeArray"], Optional["ShapeArray"]]:
         transform = node._transformation
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
