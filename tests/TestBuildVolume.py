@@ -1,9 +1,9 @@
 from unittest.mock import MagicMock, patch
-
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 import pytest
 
 from UM.Math.Polygon import Polygon
-from UM.Settings.SettingInstance import InstanceState
+from UM.Math.Vector import Vector
 from cura.BuildVolume import BuildVolume, PRIME_CLEARANCE
 import numpy
 
@@ -303,6 +303,25 @@ class TestRebuild:
         build_volume._onEngineCreated()
         build_volume.rebuild()
         assert build_volume.getMeshData() is None
+
+    def test_updateBoundingBox(self, build_volume: BuildVolume):
+        build_volume.setWidth(10)
+        build_volume.setHeight(10)
+        build_volume.setDepth(10)
+
+        mocked_global_stack = MagicMock()
+        build_volume._global_container_stack = mocked_global_stack
+        build_volume.getEdgeDisallowedSize = MagicMock(return_value = 0)
+        build_volume.updateNodeBoundaryCheck = MagicMock()
+
+        # Fake the the "engine is created callback"
+        build_volume._onEngineCreated()
+        build_volume.rebuild()
+
+        bounding_box = build_volume.getBoundingBox()
+        assert bounding_box.minimum == Vector(-5.0, -1.0, -5.0)
+        assert bounding_box.maximum == Vector(5.0, 10.0, 5.0)
+
 
 class TestUpdateMachineSizeProperties:
     setting_property_dict = {"machine_width": {"value": 50},
