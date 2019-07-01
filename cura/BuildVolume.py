@@ -791,7 +791,7 @@ class BuildVolume(SceneNode):
             result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
-        if self._global_container_stack.getProperty("prime_tower_enable"):
+        if self._global_container_stack.getProperty("prime_tower_enable", "value"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
