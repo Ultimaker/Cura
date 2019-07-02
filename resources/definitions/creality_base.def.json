@@ -129,7 +129,6 @@
         "visible": false,
         "author": "trouch.com",
         "manufacturer": "CreawsomeMod",
-        "category": "CreawsomeMod",
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
 
