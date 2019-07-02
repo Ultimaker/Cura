@@ -3,6 +3,7 @@
 
 import configparser
 import io
+import os.path #To get the file ID.
 from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
@@ -189,6 +190,27 @@ _default_variants = {
     "creality_ender3_extruder_0": "creality_ender3_0.4"
 }
 
+#Whether the quality changes profile belongs to one of the upgraded printers can only be recognised by how they start.
+#If they are, they must use the creality base definition so that they still belong to those printers.
+_quality_changes_to_creality_base = {
+    "creality_cr10_extruder_0",
+    "creality_cr10s4_extruder_0",
+    "creality_cr10s5_extruder_0",
+    "creality_ender3_extruder_0"
+    "creality_cr10",
+    "creality_cr10s4",
+    "creality_cr10s5",
+    "creality_ender3",
+}
+_creality_limited_quality_type = {
+    "high": "super",
+    "normal": "super",
+    "fast": "super",
+    "draft": "draft",
+    "extra_fast": "draft",
+    "coarse": "draft",
+    "extra_coarse": "draft"
+}
 
 ##  Upgrades configurations from the state they were in at version 4.1 to the
 #   state they should be in at version 4.2.
@@ -232,6 +254,14 @@ class VersionUpgrade41to42(VersionUpgrade):
             for key in _removed_settings:
                 if key in parser["values"]:
                     del parser["values"][key]
+
+        #For quality-changes profiles made for Creality printers, change the definition to the creality_base and make sure that the quality is something we have a profile for.
+        if parser["metadata"].get("type", "") == "quality_changes":
+            for possible_printer in _quality_changes_to_creality_base:
+                if os.path.basename(filename).startswith(possible_printer + "_"):
+                    parser["general"]["definition"] = "creality_base"
+                    parser["metadata"]["quality_type"] = _creality_limited_quality_type.get(parser["metadata"]["quality_type"], "draft")
+                    break
 
         result = io.StringIO()
         parser.write(result)
