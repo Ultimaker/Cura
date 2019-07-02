@@ -91,7 +91,6 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
     def createOutputModel(self, controller: CloudOutputController) -> UM3PrintJobOutputModel:
         model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
         self.updateOutputModel(model)
-
         return model
 
     ## Creates a new configuration model

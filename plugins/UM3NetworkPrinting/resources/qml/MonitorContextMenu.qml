@@ -81,7 +81,7 @@ Item
                     enabled: visible && !(printJob.state == "pausing" || printJob.state == "resuming");
                     onClicked: {
                         if (printJob.state == "paused") {
-                            printJob.setState("print");
+                            printJob.setState("resume");
                             popUp.close();
                             return;
                         }

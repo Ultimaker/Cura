@@ -22,10 +22,6 @@ Item
     // The print job which all other data is derived from
     property var printJob: null
 
-    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
-    // they might not need to though.
-    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
-
     width: parent.width
     height: childrenRect.height
 
@@ -217,7 +213,7 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        enabled: !cloudConnection
+        enabled: OutputDevice.supportsPrintJobActions
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
@@ -250,7 +246,7 @@ Item
     MonitorInfoBlurb
     {
         id: contextMenuDisabledInfo
-        text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
+        text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
         target: contextMenuButton
     }
 }

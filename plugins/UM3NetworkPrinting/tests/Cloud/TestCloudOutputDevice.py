@@ -72,9 +72,9 @@ class TestCloudOutputDevice(TestCase):
 
         controller_fields = {
             "_output_device": self.device,
-            "can_abort": False,
+            "can_abort": True,
             "can_control_manually": False,
-            "can_pause": False,
+            "can_pause": True,
             "can_pre_heat_bed": False,
             "can_pre_heat_hotends": False,
             "can_send_raw_gcode": False,

@@ -9,7 +9,6 @@ DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
-DEFAULT_CURA_SDK_VERSION = "6.1.0"
 
 try:
     from cura.CuraVersion import CuraAppName  # type: ignore
@@ -42,9 +41,4 @@ try:
 except ImportError:
     CuraDebugMode = DEFAULT_CURA_DEBUG_MODE
 
-try:
-    from cura.CuraVersion import CuraSDKVersion  # type: ignore
-    if CuraSDKVersion == "":
-        CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
-except ImportError:
-    CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
+from cura.CuraVersion import CuraSDKVersion  # type: ignore

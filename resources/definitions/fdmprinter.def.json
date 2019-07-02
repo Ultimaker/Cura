@@ -963,20 +963,20 @@
                             "maximum_value_warning": "2 * machine_nozzle_size",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
-                        },
-                        "initial_layer_line_width_factor":
-                        {
-                            "label": "Initial Layer Line Width",
-                            "description": "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion.",
-                            "type": "float",
-                            "unit": "%",
-                            "default_value": 100.0,
-                            "minimum_value": "0.001",
-                            "maximum_value_warning": "150",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
                         }
                     }
+                },
+                "initial_layer_line_width_factor":
+                {
+                    "label": "Initial Layer Line Width",
+                    "description": "Multiplier of the line width on the first layer. Increasing this could improve bed adhesion.",
+                    "type": "float",
+                    "unit": "%",
+                    "default_value": 100.0,
+                    "minimum_value": "0.001",
+                    "maximum_value_warning": "150",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -2234,6 +2234,107 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_crystallinity":
+                {
+                    "label": "Crystalline Material",
+                    "description": "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_anti_ooze_retracted_position":
+                {
+                    "label": "Anti-ooze Retracted Position",
+                    "description": "How far the material needs to be retracted before it stops oozing.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 4,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "retraction_amount",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_anti_ooze_retraction_speed":
+                {
+                    "label": "Anti-ooze Retraction Speed",
+                    "description": "How fast the material needs to be retracted during a filament switch to prevent oozing.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 5,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_preparation_retracted_position":
+                {
+                    "label": "Break Preparation Retracted Position",
+                    "description": "How far the filament can be stretched before it breaks, while heated.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 16,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "retraction_amount * 4",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_preparation_speed":
+                {
+                    "label": "Break Preparation Retraction Speed",
+                    "description": "How fast the filament needs to be retracted just before breaking it off in a retraction.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 2,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_retracted_position":
+                {
+                    "label": "Break Retracted Position",
+                    "description": "How far to retract the filament in order to break it cleanly.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 50,
+                    "enabled": false,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_speed":
+                {
+                    "label": "Break Retraction Speed",
+                    "description": "The speed at which to retract the filament in order to break it cleanly.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "default_value": 25,
+                    "enabled": false,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_max_feedrate_e",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "material_break_temperature":
+                {
+                    "label": "Break Temperature",
+                    "description": "The temperature at which the filament is broken for a clean break.",
+                    "type": "float",
+                    "unit": "°C",
+                    "default_value": 50,
+                    "enabled": false,
+                    "minimum_value": "-273.15",
+                    "maximum_value_warning": "300",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_flow":
                 {
                     "label": "Flow",
@@ -2245,7 +2346,195 @@
                     "minimum_value_warning": "50",
                     "maximum_value_warning": "150",
                     "enabled": "machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_material_flow":
+                        {
+                            "label": "Wall Flow",
+                            "description": "Flow compensation on wall lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "wall_0_extruder_nr if wall_x_extruder_nr == wall_0_extruder_nr else -1",
+                            "settable_per_mesh": true,
+                            "children":
+                            {
+                                "wall_0_material_flow":
+                                {
+                                    "label": "Outer Wall Flow",
+                                    "description": "Flow compensation on the outermost wall line.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_material_flow",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_0_extruder_nr",
+                                    "settable_per_mesh": true
+                                },
+                                "wall_x_material_flow":
+                                {
+                                    "label": "Inner Wall(s) Flow",
+                                    "description": "Flow compensation on wall lines for all wall lines except the outermost one.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "wall_material_flow",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "limit_to_extruder": "wall_x_extruder_nr",
+                                    "settable_per_mesh": true
+                                }
+                            }
+                        },
+                        "skin_material_flow":
+                        {
+                            "label": "Top/Bottom Flow",
+                            "description": "Flow compensation on top/bottom lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "top_layers > 0 or bottom_layers > 0",
+                            "limit_to_extruder": "top_bottom_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "roofing_material_flow":
+                        {
+                            "label": "Top Surface Skin Flow",
+                            "description": "Flow compensation on lines of the areas at the top of the print.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "skin_material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "roofing_extruder_nr",
+                            "settable_per_mesh": true,
+                            "enabled": "roofing_layer_count > 0 and top_layers > 0"
+                        },
+                        "infill_material_flow":
+                        {
+                            "label": "Infill Flow",
+                            "description": "Flow compensation on infill lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "infill_sparse_density > 0",
+                            "limit_to_extruder": "infill_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "skirt_brim_material_flow":
+                        {
+                            "label": "Skirt/Brim Flow",
+                            "description": "Flow compensation on skirt or brim lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "resolveOrValue('adhesion_type') == 'skirt' or resolveOrValue('adhesion_type') == 'brim'",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_material_flow":
+                        {
+                            "label": "Support Flow",
+                            "description": "Flow compensation on support structure lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "limit_to_extruder": "support_infill_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "support_interface_material_flow":
+                        {
+                            "label": "Support Interface Flow",
+                            "description": "Flow compensation on lines of support roof or floor.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "enabled": "support_enable and support_interface_enable",
+                            "limit_to_extruder": "support_interface_extruder_nr",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true,
+                            "children":
+                            {
+                                "support_roof_material_flow":
+                                {
+                                    "label": "Support Roof Flow",
+                                    "description": "Flow compensation on support roof lines.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "extruderValue(support_roof_extruder_nr, 'support_interface_material_flow')",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "enabled": "support_enable and support_roof_enable",
+                                    "limit_to_extruder": "support_roof_extruder_nr",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                },
+                                "support_bottom_material_flow":
+                                {
+                                    "label": "Support Floor Flow",
+                                    "description": "Flow compensation on support floor lines.",
+                                    "unit": "%",
+                                    "type": "float",
+                                    "default_value": 100,
+                                    "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_material_flow')",
+                                    "minimum_value": "5",
+                                    "minimum_value_warning": "50",
+                                    "maximum_value_warning": "150",
+                                    "enabled": "support_enable and support_bottom_enable",
+                                    "limit_to_extruder": "support_bottom_extruder_nr",
+                                    "settable_per_mesh": false,
+                                    "settable_per_extruder": true
+                                }
+                            }
+                        },
+                        "prime_tower_flow":
+                        {
+                            "label": "Prime Tower Flow",
+                            "description": "Flow compensation on prime tower lines.",
+                            "unit": "%",
+                            "type": "float",
+                            "default_value": 100,
+                            "value": "material_flow",
+                            "minimum_value": "5",
+                            "minimum_value_warning": "50",
+                            "maximum_value_warning": "150",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
                 },
                 "material_flow_layer_0":
                 {
@@ -2253,7 +2542,6 @@
                     "description": "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value.",
                     "unit": "%",
                     "default_value": 100,
-                    "value": "material_flow",
                     "type": "float",
                     "minimum_value": "0.0001",
                     "minimum_value_warning": "50",
@@ -4635,11 +4923,11 @@
                     "label": "Enable Prime Blob",
                     "description": "Whether to prime the filament with a blob before printing. Turning this setting on will ensure that the extruder will have material ready at the nozzle before printing. Printing Brim or Skirt can act like priming too, in which case turning this setting off saves some time.",
                     "type": "bool",
-                    "resolve": "any(extruderValues('prime_blob_enable'))",
                     "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
-                    "enabled": false
+                    "enabled": false,
+                    "warning_value": "True if resolveOrValue('print_sequence') == 'one_at_a_time' else None"
                 },
                 "extruder_prime_pos_x":
                 {
@@ -5305,7 +5593,7 @@
                     "type": "float",
                     "default_value": 6,
                     "minimum_value": "0",
-                    "maximum_value_warning": "((resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
+                    "maximum_value_warning": "(resolveOrValue('prime_tower_size') * 0.5) ** 2 * 3.14159 * resolveOrValue('layer_height')",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -5337,21 +5625,6 @@
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
-                },
-                "prime_tower_flow":
-                {
-                    "label": "Prime Tower Flow",
-                    "description": "Flow compensation: the amount of material extruded is multiplied by this value.",
-                    "type": "float",
-                    "unit": "%",
-                    "enabled": "resolveOrValue('prime_tower_enable')",
-                    "default_value": 100,
-                    "value": "material_flow",
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "50",
-                    "maximum_value_warning": "150",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
                 },
                 "prime_tower_wipe_enabled":
                 {

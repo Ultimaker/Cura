@@ -42,7 +42,6 @@ Item
         }
         height: 18 * screenScaleFactor // TODO: Theme!
         width: childrenRect.width
-        visible: !cloudConnection
 
         UM.RecolorImage
         {
@@ -65,7 +64,7 @@ Item
             color: UM.Theme.getColor("monitor_text_link")
             font: UM.Theme.getFont("medium") // 14pt, regular
             linkColor: UM.Theme.getColor("monitor_text_link")
-            text: catalog.i18nc("@label link to connect manager", "Go to Cura Connect")
+            text: catalog.i18nc("@label link to connect manager", "Manage in browser")
             renderType: Text.NativeRendering
         }
     }
@@ -73,9 +72,7 @@ Item
     MouseArea
     {
         anchors.fill: manageQueueLabel
-        enabled: !cloudConnection
-        hoverEnabled: !cloudConnection
-        onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+        onClicked: OutputDevice.openPrintJobControlPanel()
         onEntered:
         {
             manageQueueText.font.underline = true
@@ -198,8 +195,7 @@ Item
         color: UM.Theme.getColor("monitor_card_background")
         border.color: UM.Theme.getColor("monitor_card_border")
         radius: 2 * screenScaleFactor // TODO: Theme!
-
-        visible: printJobList.model.length == 0
+        visible: OutputDevice.printJobs.length == 0
 
         Row
         {
@@ -249,14 +245,14 @@ Item
                     color: UM.Theme.getColor("monitor_text_link")
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     linkColor: UM.Theme.getColor("monitor_text_link")
-                    text: catalog.i18nc("@label link to connect manager", "View print history")
+                    text: catalog.i18nc("@label link to connect manager", "Manage in browser")
                     renderType: Text.NativeRendering
                 }
                 MouseArea
                 {
                     anchors.fill: parent
                     hoverEnabled: true
-                    onClicked: Cura.MachineManager.printerOutputDevices[0].openPrintJobControlPanel()
+                    onClicked: OutputDevice.openPrintJobControlPanel()
                     onEntered:
                     {
                         viewPrintHistoryText.font.underline = true

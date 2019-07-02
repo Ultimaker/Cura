@@ -8,11 +8,11 @@ assignees: ''
 ---
 
 <!--
-The following template is useful for filing new issues. Processing an issue will go much faster when this is filled out, and issues which do not use this template WILL BE REMOVED.
+Processing an issue will go much faster when this is filled out, and issues which do not use this template WILL BE REMOVED and no fix will be considered!
 
 Before filing, PLEASE check if the issue already exists (either open or closed) by using the search bar on the issues page. If it does, comment there. Even if it's closed, we can reopen it based on your comment.
 
-Also, please note the application version in the title of the issue. For example: "[3.2.1] Cannot connect to 3rd-party printer". Please do not write things like "Request:" or "[BUG]" in the title; this is what labels are for.
+Also, please note the application version in the title of the issue. For example: "[3.2.1] Cannot connect to 3rd-party printer". Please do NOT write things like "Request:" or "[BUG]" in the title; this is what labels are for.
 
 It is also helpful to attach a project (.3mf or .curaproject) file and Cura log file so we can debug issues quicker. Information about how to find the log file can be found at https://github.com/Ultimaker/Cura#logging-issues 
 
@@ -40,4 +40,4 @@ Thank you for using Cura!
 <!-- What should happen after the above steps have been followed -->
 
 **Additional information**
-<!-- Extra information relevant to the issue, like screenshots -->
+<!-- Extra information relevant to the issue, like screenshots. Don't forget to attach the log files with this issue report. -->
