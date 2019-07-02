@@ -69,6 +69,13 @@
         "machine_end_gcode":
         {
             "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84"
-        }
+        },
+
+        "acceleration_enabled": {"value": "False"},
+        "acceleration_print": {"value": "1500"},
+        "z_seam_type": {"default_value": "back"},
+        "z_seam_x": {"value": "127.5"},
+        "z_seam_y": {"value": "250"},
+        "retraction_combing": {"default_value": "off"}
     }
 }
