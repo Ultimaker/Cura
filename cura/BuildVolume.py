@@ -787,7 +787,10 @@ class BuildVolume(SceneNode):
     #   where that extruder may not print.
     def _computeDisallowedAreasPrinted(self, used_extruders):
         result = {}
+        adhesion_extruder = None #type: ExtruderStack
         for extruder in used_extruders:
+            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value")):
+                adhesion_extruder = extruder
             result[extruder.getId()] = []
 
         # Currently, the only normally printed object is the prime tower.
@@ -801,11 +804,11 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
+            if adhesion_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                 brim_size = (
-                    extruder.getProperty("brim_line_count", "value") *
-                    extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
-                    extruder.getProperty("initial_layer_line_width_factor", "value")
+                    adhesion_extruder.getProperty("brim_line_count", "value") *
+                    adhesion_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    adhesion_extruder.getProperty("initial_layer_line_width_factor", "value")
                 )
                 prime_tower_x -= brim_size
                 prime_tower_y += brim_size
