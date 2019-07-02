@@ -49,14 +49,24 @@ def mockFindMetadata(**kwargs) -> List[Dict[str, Any]]:
         for data in mocked_intent_metadata:
             should_add = True
             for key, value in kwargs.items():
-                should_add &= (data[key] == value)
+                if key in data.keys():
+                    should_add &= (data[key] == value)
             if should_add:
                 result.append(data)
         return result
 
 
+def mockFindContainers(**kwargs) -> List[MockContainer]:
+    result = []
+    metadatas = mockFindMetadata(**kwargs)
+    for metadata in metadatas:
+        result.append(MockContainer(metadata))
+    return result
+
+
 def doSetup(application, extruder_manager, quality_manager, container_registry, global_stack) -> None:
     container_registry.findContainersMetadata = MagicMock(side_effect=mockFindMetadata)
+    container_registry.findContainers = MagicMock(side_effect=mockFindContainers)
 
     quality_manager.getQualityGroups = MagicMock(return_value=mocked_qualitygroup_metadata)
     for _, qualitygroup in mocked_qualitygroup_metadata.items():
@@ -115,7 +125,7 @@ def test_currentAvailableIntentCategories(application, extruder_manager, quality
                 assert len(categories) == 3
 
 
-def test_currentAvailableIntentCategories(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
+def test_selectIntent(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
     doSetup(application, extruder_manager, quality_manager, container_registry, global_stack)
 
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
@@ -124,8 +134,7 @@ def test_currentAvailableIntentCategories(application, extruder_manager, quality
                 intents = intent_manager.currentAvailableIntents()
                 for intent, quality in intents:
                     intent_manager.selectIntent(intent, quality)
-                    extruder_stacks =  extruder_manager.getUsedExtruderStacks()
+                    extruder_stacks = extruder_manager.getUsedExtruderStacks()
                     assert len(extruder_stacks) == 2
-                    assert extruder_stacks[0].intent is not None
-                    assert extruder_stacks[1].intent is not None
-                    # ... need MachineManager for this, split up methods anyway -> make into class, see examples others
+                    assert extruder_stacks[0].intent.getMetaDataEntry("intent_category") == intent
+                    assert extruder_stacks[1].intent.getMetaDataEntry("intent_category") == intent
