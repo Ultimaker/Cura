@@ -45,7 +45,7 @@ fragment =
         mediump vec4 finalColor = vec4(0.0);
         mediump vec4 diffuseColor = u_vertical_stripes ?
             (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
-            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
+            ((mod(((-v_vertex.x + v_vertex.y + v_vertex.z) * 4.), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
@@ -118,7 +118,7 @@ fragment41core =
         mediump vec4 finalColor = vec4(0.0);
         mediump vec4 diffuseColor = u_vertical_stripes ?
             (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
-            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
+            ((mod(((-v_vertex.x + v_vertex.y + v_vertex.z) * 4.), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
