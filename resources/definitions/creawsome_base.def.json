@@ -1,5 +1,4 @@
 {
-    "id": "creawsome_base",
     "name": "Custom Machine",
     "version": 2,
     "inherits": "fdmprinter",
