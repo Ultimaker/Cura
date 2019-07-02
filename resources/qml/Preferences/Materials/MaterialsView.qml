@@ -29,6 +29,8 @@ TabView
     property double spoolLength: calculateSpoolLength()
     property real costPerMeter: calculateCostPerMeter()
 
+    signal resetSelectedMaterial()
+
     property bool reevaluateLinkedMaterials: false
     property string linkedMaterialNames:
     {
@@ -111,6 +113,7 @@ TabView
                     {
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                        base.resetSelectedMaterial()
                     }
 
                     onNo:

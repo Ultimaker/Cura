@@ -82,6 +82,7 @@ Item
             }
 
             editingEnabled: currentItem != null && !currentItem.is_read_only
+            onResetSelectedMaterial: base.resetExpandedActiveMaterial()
 
             properties: materialProperties
             containerId: currentItem != null ? currentItem.id : ""
