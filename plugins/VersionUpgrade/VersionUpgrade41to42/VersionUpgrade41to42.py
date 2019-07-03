@@ -11,7 +11,7 @@ from UM.VersionUpgrade import VersionUpgrade
 _renamed_settings = {
     "support_minimal_diameter": "support_tower_maximum_supported_diameter"
 } #type: Dict[str, str]
-_removed_settings = ["prime_tower_circular"]  # type: List[str]
+_removed_settings = ["prime_tower_circular", "max_feedrate_z_override"]  # type: List[str]
 _renamed_profiles = {
     #Include CreawsomeMod profiles here as well for the people who installed that.
     #Definitions.
