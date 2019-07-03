@@ -89,7 +89,7 @@ Item
                 {
                     id: machineDefinitionsModel
                     filter: { "visible": true }
-                    sectionProperty: "category"
+                    sectionProperty: "manufacturer"
                     preferredSectionValue: preferredCategory
                 }
 
