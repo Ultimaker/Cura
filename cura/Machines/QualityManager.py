@@ -194,9 +194,9 @@ class QualityManager(QObject):
         return quality_changes_group_dict
 
     #
-    # Gets all quality groups for the given machine. Both available and none available ones will be included.
+    # Gets all quality groups for the given machine. Both available and unavailable ones will be included.
     # It returns a dictionary with "quality_type"s as keys and "QualityGroup"s as values.
-    # Whether a QualityGroup is available can be unknown via the field QualityGroup.is_available.
+    # Whether a QualityGroup is available can be known via the field QualityGroup.is_available.
     # For more details, see QualityGroup.
     #
     def getQualityGroups(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
