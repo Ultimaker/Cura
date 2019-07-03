@@ -320,7 +320,7 @@ class VersionUpgrade41to42(VersionUpgrade):
             if material_id in _creality_quality_per_material and old_quality_id in _creality_quality_per_material[material_id]:
                 parser["containers"]["2"] = _creality_quality_per_material[material_id][old_quality_id]
 
-            stack_copy = {} #Make a copy so that we don't modify the dict we're iterating over.
+            stack_copy = {}  # type: Dict[str, str] #Make a copy so that we don't modify the dict we're iterating over.
             stack_copy.update(parser["containers"])
             for position, profile_id in stack_copy.items():
                 if profile_id in _renamed_profiles:
