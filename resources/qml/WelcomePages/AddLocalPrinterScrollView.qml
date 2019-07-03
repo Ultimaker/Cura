@@ -24,7 +24,7 @@ Item
     // The currently active (expanded) section/category, where section/category is the grouping of local machine items.
     property string currentSection: preferredCategory
     // By default (when this list shows up) we always expand the "Ultimaker" section.
-    property string preferredCategory: "Ultimaker"
+    property string preferredCategory: "Ultimaker B.V."
 
     property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
 
@@ -89,7 +89,7 @@ Item
                 {
                     id: machineDefinitionsModel
                     filter: { "visible": true }
-                    sectionProperty: "category"
+                    sectionProperty: "manufacturer"
                     preferredSectionValue: preferredCategory
                 }
 

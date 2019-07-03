@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "Chris Petersen",
-        "manufacturer": "OpenBeam",
+        "manufacturer": "Johann",
         "file_formats": "text/x-gcode",
         "platform": "kossel_pro_build_platform.stl",
         "platform_offset": [0, -0.25, 0],
