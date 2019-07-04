@@ -105,7 +105,7 @@ class IntentManager(QObject):
             return ["default"]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         final_intent_categories = set()  # type: Set[str]
-        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             final_intent_categories.update(self.intentCategories(current_definition_id, nozzle_name, material_id))
@@ -124,7 +124,7 @@ class IntentManager(QObject):
         if global_stack is None:
             return
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
-        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             intent = application.getContainerRegistry().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
@@ -137,5 +137,5 @@ class IntentManager(QObject):
 
     ##  Selects the default intents on every extruder.
     def selectDefaultIntent(self) -> None:
-        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             extruder_stack.intent = self.getDefaultIntent()
