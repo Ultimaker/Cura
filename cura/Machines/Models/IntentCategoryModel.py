@@ -58,6 +58,6 @@ class IntentCategoryModel(ListModel):
             result.append({
                 "name": self.name_translation.get(category, catalog.i18nc("@label", "Unknown")),
                 "intent_category": category,
-                "weight": list(self.name_translation.items()).index(category)
+                "weight": list(self.name_translation.keys()).index(category)
             })
         super().update(result)
