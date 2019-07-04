@@ -35,9 +35,9 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.IntentCategoryRole, "intent_category")
         self.addRoleName(self.WeightRole, "weight")
 
-        ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
-        ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
-        IntentManager.getInstance().configurationChanged.connect(self._onChanged)
+        ContainerRegistry.getInstance().containerAdded.connect(self.update)
+        ContainerRegistry.getInstance().containerRemoved.connect(self.update)
+        IntentManager.getInstance().configurationChanged.connect(self.update)
 
         self.update()
 
