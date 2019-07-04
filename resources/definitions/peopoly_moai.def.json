@@ -126,9 +126,6 @@
         "adhesion_type": {
             "value": "'none'"
         },
-        "acceleration_enabled": {
-            "value": "False"
-        },
         "print_sequence": {
             "enabled": false
         },
@@ -250,10 +247,6 @@
         },
         "expand_skins_expand_distance": {
             "value": "( wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x ) / 2"
-        },
-        "max_feedrate_z_override": {
-            "value": 0,
-            "enabled": false
         },
         "flow_rate_max_extrusion_offset": {
             "enabled": false

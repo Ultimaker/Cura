@@ -3085,19 +3085,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "max_feedrate_z_override":
-                {
-                    "label": "Maximum Z Speed",
-                    "description": "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "299792458000",
-                    "maximum_value_warning": "machine_max_feedrate_z",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "speed_slowdown_layers":
                 {
                     "label": "Number of Slower Layers",
@@ -6672,7 +6659,7 @@
                     "type": "float",
                     "default_value": 5,
                     "minimum_value": "0.1",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                     "maximum_value_warning": "50",
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
@@ -6704,7 +6691,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",
@@ -6720,7 +6707,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",
