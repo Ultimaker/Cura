@@ -3,10 +3,14 @@
 
 from PyQt5.QtCore import Qt
 import collections
+from typing import TYPE_CHECKING
 
 from cura.Settings.IntentManager import IntentManager
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
+
+if TYPE_CHECKING:
+    from UM.Settings.ContainerRegistry import ContainerInterface
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -35,11 +39,16 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.IntentCategoryRole, "intent_category")
         self.addRoleName(self.WeightRole, "weight")
 
-        ContainerRegistry.getInstance().containerAdded.connect(self.update)
-        ContainerRegistry.getInstance().containerRemoved.connect(self.update)
+        ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
+        ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
         IntentManager.getInstance().configurationChanged.connect(self.update)
 
         self.update()
+
+    ##  Updates the list of intents if an intent profile was added or removed.
+    def _onContainerChange(self, container: "ContainerInterface") -> None:
+        if container.getMetaDataEntry("type") == "intent":
+            self.update()
 
     ##  Updates the list of intents.
     def update(self) -> None:
