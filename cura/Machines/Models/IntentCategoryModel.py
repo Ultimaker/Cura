@@ -6,6 +6,7 @@ import collections
 
 from cura.Settings.IntentManager import IntentManager
 from UM.Qt.ListModel import ListModel
+from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -33,6 +34,12 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IntentCategoryRole, "intent_category")
         self.addRoleName(self.WeightRole, "weight")
+
+        ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
+        ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
+        IntentManager.getInstance().configurationChanged.connect(self._onChanged)
+
+        self.update()
 
     ##  Updates the list of intents.
     def update(self) -> None:
