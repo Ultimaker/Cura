@@ -60,4 +60,4 @@ class IntentCategoryModel(ListModel):
                 "intent_category": category,
                 "weight": list(self.name_translation.keys()).index(category)
             })
-        super().update(result)
+        self.setItems(result)
