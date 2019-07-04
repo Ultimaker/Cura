@@ -43,7 +43,7 @@ class IntentManager(QObject):
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
         registry = CuraApplication.getInstance().getContainerRegistry()
-        return registry.findContainersMetadata(definition = definition_id, variant = nozzle_name, material_id = material_id)
+        return registry.findContainersMetadata(definition = definition_id, variant = nozzle_name, material = material_id)
 
     ##  Collects and returns all intent categories available for the given
     #   parameters. Note that the 'default' category is always available.
