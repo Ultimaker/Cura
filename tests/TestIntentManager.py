@@ -12,8 +12,8 @@ from tests.Settings.MockContainer import MockContainer
 @pytest.fixture()
 def quality_manager(application, container_registry, global_stack) -> QualityManager:
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             manager = QualityManager(application)
     return manager
 
@@ -24,8 +24,8 @@ def intent_manager(application, extruder_manager, machine_manager, quality_manag
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     application.getMachineManager = MagicMock(return_value = machine_manager)
     application.getQualityManager = MagicMock(return_value = quality_manager)
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             manager = IntentManager()
     return manager
 
@@ -65,16 +65,16 @@ def mockFindContainers(**kwargs) -> List[MockContainer]:
 
 
 def doSetup(application, extruder_manager, quality_manager, container_registry, global_stack) -> None:
-    container_registry.findContainersMetadata = MagicMock(side_effect=mockFindMetadata)
-    container_registry.findContainers = MagicMock(side_effect=mockFindContainers)
+    container_registry.findContainersMetadata = MagicMock(side_effect = mockFindMetadata)
+    container_registry.findContainers = MagicMock(side_effect = mockFindContainers)
 
-    quality_manager.getQualityGroups = MagicMock(return_value=mocked_qualitygroup_metadata)
+    quality_manager.getQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
     for _, qualitygroup in mocked_qualitygroup_metadata.items():
-        qualitygroup.node_for_global = MagicMock(name="Node for global")
-    application.getQualityManager = MagicMock(return_value=quality_manager)
+        qualitygroup.node_for_global = MagicMock(name = "Node for global")
+    application.getQualityManager = MagicMock(return_value = quality_manager)
 
     global_stack.definition = MockContainer({"id": "ultimaker3"})
-    application.getGlobalContainerStack = MagicMock(return_value=global_stack)
+    application.getGlobalContainerStack = MagicMock(return_value = global_stack)
 
     extruder_stack_a = MockContainer({"id": "Extruder The First"})
     extruder_stack_a.variant = MockContainer({"name": "AA 0.4"})
@@ -83,15 +83,15 @@ def doSetup(application, extruder_manager, quality_manager, container_registry, 
     extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
     extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
 
-    extruder_manager.getUsedExtruderStacks = MagicMock(return_value=[extruder_stack_a, extruder_stack_b])
+    extruder_manager.getUsedExtruderStacks = MagicMock(return_value = [extruder_stack_a, extruder_stack_b])
 
 
 def test_intentCategories(application, intent_manager, container_registry):
     # Mock .findContainersMetadata so we also test .intentMetadatas (the latter is mostly a wrapper around the former).
-    container_registry.findContainersMetadata = MagicMock(return_value=mocked_intent_metadata)
+    container_registry.findContainersMetadata = MagicMock(return_value = mocked_intent_metadata)
 
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             categories = intent_manager.intentCategories("ultimaker3", "AA 0.4", "generic_pla")  # type:List[str]
             assert "default" in categories, "default should always be in categories"
             assert "strong" in categories, "strong should be in categories"
