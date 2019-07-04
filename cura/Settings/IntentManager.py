@@ -1,7 +1,7 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -31,7 +31,8 @@ class IntentManager(QObject):
             cls.__instance = IntentManager()
         return cls.__instance
 
-    configurationChanged = pyqtSignal()
+    configurationChanged = pyqtSignal() #Triggered when something changed in the rest of the stack.
+    intentCategoryChanged = pyqtSignal() #Triggered when we switch categories.
 
     ##  Gets the metadata dictionaries of all intent profiles for a given
     #   configuration.
@@ -117,8 +118,14 @@ class IntentManager(QObject):
     def getDefaultIntent(self) -> InstanceContainer:
         return cura.CuraApplication.CuraApplication.getInstance().empty_intent_container
 
+    @pyqtProperty(str, notify = intentCategoryChanged)
+    def getCurrentIntentCategory(self) -> str:
+        return ExtruderManager.getInstance().getActiveExtruderStack().intent.getMetaDataEntry("intent_category")
+
     ##  Apply intent on the stacks.
+    @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
+        old_intent_category = self.getCurrentIntentCategory()
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
@@ -134,6 +141,8 @@ class IntentManager(QObject):
                 extruder_stack.intent = self.getDefaultIntent()
 
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
+        if old_intent_category != intent_category:
+            self.intentCategoryChanged.emit()
 
     ##  Selects the default intents on every extruder.
     def selectDefaultIntent(self) -> None:
