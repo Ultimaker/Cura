@@ -73,13 +73,13 @@ class IntentManager(QObject):
             return [("default", "normal")]
             # TODO: We now do this (return a default) if the global stack is missing, but not in the code below,
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
-            #       Currently _also_ inconsistent with 'currentAvailableIntentCategoreis', which _does_ return default.
+            #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
         quality_groups = application.getQualityManager().getQualityGroups(global_stack)
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
-        for extruder_stack in ExtruderManager.getInstance().getUsedExtruderStacks():
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata["quality_type"] in available_quality_types}
