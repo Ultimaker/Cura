@@ -7,18 +7,18 @@ from UM.Qt.ListModel import ListModel
 from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Settings.IntentManager import IntentManager
+import cura.CuraApplication
 
 class IntentModel(ListModel):
     NameRole = Qt.UserRole + 1
-    IdRole = Qt.UserRole + 2
-    ContainerRole = Qt.UserRole + 3
+    QualityTypeRole = Qt.UserRole + 2
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
-        self.addRoleName(self.IdRole, "id")
-        self.addRoleName(self.ContainerRole, "container")
+        self.addRoleName(self.QualityTypeRole, "quality_type")
 
         self._intent_category = "engineering"
 
@@ -34,7 +34,7 @@ class IntentModel(ListModel):
             self._intent_category = new_category
             self._intent_category_changed.emit()
 
-    @pyqtProperty(str, fset=setIntentCategory, notify=_intent_category_changed)
+    @pyqtProperty(str, fset = setIntentCategory, notify = _intent_category_changed)
     def intentCategory(self) -> str:
         return self._intent_category
 
@@ -44,7 +44,12 @@ class IntentModel(ListModel):
 
     def _update(self) -> None:
         new_items = []
-        for container in ContainerRegistry.getInstance().findInstanceContainers(type = "intent", intent_category = self._intent_category):
-            new_items.append({"name": container.getName(), "id": container.getId(), "container": container})
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        quality_manager = application.getQualityManager()
+        global_stack = application.getGlobalContainerStack()
+
+        for intent_category, quality_type in IntentManager.getInstance().currentAvailableIntents():
+            if intent_category == self._intent_category:
+                new_items.append({"name": quality_manager.getQualityGroups(global_stack)[quality_type].name, "quality_type": quality_type})
 
         self.setItems(new_items)
