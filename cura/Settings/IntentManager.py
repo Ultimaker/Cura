@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import QObject, pyqtSignal
 from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
-from cura.CuraApplication import CuraApplication
+import cura.CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
 from UM.Settings.InstanceContainer import InstanceContainer
 
@@ -20,7 +20,7 @@ class IntentManager(QObject):
 
     def __init__(self) -> None:
         super().__init__()
-        CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
         self.configurationChanged.connect(self.selectDefaultIntent)
         pass
 
@@ -42,7 +42,7 @@ class IntentManager(QObject):
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
-        registry = CuraApplication.getInstance().getContainerRegistry()
+        registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         return registry.findContainersMetadata(definition = definition_id, variant = nozzle_name, material_id = material_id)
 
     ##  Collects and returns all intent categories available for the given
@@ -67,7 +67,7 @@ class IntentManager(QObject):
     #   \return A list of tuples of intent_category and quality_type. The actual
     #   instance may vary per extruder.
     def currentAvailableIntents(self) -> List[Tuple[str, str]]:
-        application = CuraApplication.getInstance()
+        application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return [("default", "normal")]
@@ -100,7 +100,7 @@ class IntentManager(QObject):
     #   \return List of all categories in the current configurations of all
     #   extruders.
     def currentAvailableIntentCategories(self) -> List[str]:
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return ["default"]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
@@ -115,11 +115,11 @@ class IntentManager(QObject):
     #   the configuration, an extruder can't match the intent that the user
     #   selects, or just when creating a new printer.
     def getDefaultIntent(self) -> InstanceContainer:
-        return CuraApplication.getInstance().empty_intent_container
+        return cura.CuraApplication.CuraApplication.getInstance().empty_intent_container
 
     ##  Apply intent on the stacks.
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
-        application = CuraApplication.getInstance()
+        application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return
