@@ -125,7 +125,7 @@ class IntentManager(QObject):
     ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
-        old_intent_category = self.getCurrentIntentCategory()
+        old_intent_category = self.getCurrentIntentCategory
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
