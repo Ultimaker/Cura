@@ -2686,7 +2686,7 @@
                 "limit_support_retractions":
                 {
                     "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure.",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "retraction_enable and (support_enable or support_tree_enable)",
@@ -5916,7 +5916,7 @@
                 "smooth_spiralized_contours":
                 {
                     "label": "Smooth Spiralized Contours",
-                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "magic_spiralize",
