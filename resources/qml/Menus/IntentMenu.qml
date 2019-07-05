@@ -26,7 +26,7 @@ Menu
         MenuItem //Section header.
         {
             text: model.name
-            checkable: false
+            enabled: false
             checked: false
 
             property var per_category_intents: Cura.IntentModel
