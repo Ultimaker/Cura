@@ -117,8 +117,8 @@ TabView
 
                     onNo:
                     {
-                        properties.diameter = old_diameter_value;
-                        diameterSpinBox.value = properties.diameter;
+                        base.properties.diameter = old_diameter_value;
+                        diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
                     }
 
                     onRejected: no()
