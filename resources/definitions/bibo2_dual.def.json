@@ -5,7 +5,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "na",
+        "author": "unknown",
         "manufacturer": "BIBO",
         "category": "Other",
         "file_formats": "text/x-gcode",
