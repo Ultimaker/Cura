@@ -1,14 +1,16 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
-from PyQt5.QtCore import QObject
-from UM.Qt.ListModel import ListModel
-from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
+from typing import Optional, List, Dict, Any
 
+from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
+
+from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
+
 from cura.Settings.IntentManager import IntentManager
 import cura.CuraApplication
+
 
 class IntentModel(ListModel):
     NameRole = Qt.UserRole + 1
@@ -44,7 +46,7 @@ class IntentModel(ListModel):
             self._update()
 
     def _update(self) -> None:
-        new_items = []
+        new_items = []  # type: List[Dict[str, Any]]
         application = cura.CuraApplication.CuraApplication.getInstance()
         quality_manager = application.getQualityManager()
         global_stack = application.getGlobalContainerStack()
