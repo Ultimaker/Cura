@@ -51,9 +51,13 @@ class IntentModel(ListModel):
         if not global_stack:
             self.setItems(new_items)
             return
+        quality_groups = quality_manager.getQualityGroups(global_stack)
 
         for intent_category, quality_type in IntentManager.getInstance().currentAvailableIntents():
             if intent_category == self._intent_category:
-                new_items.append({"name": quality_manager.getQualityGroups(global_stack)[quality_type].name, "quality_type": quality_type})
+                new_items.append({"name": quality_groups[quality_type].name, "quality_type": quality_type})
+        if self._intent_category == "default": #For Default we always list all quality types. We can't filter on available profiles since the empty intent is not a specific quality type.
+            for quality_type in quality_groups.keys():
+                new_items.append({"name": quality_groups[quality_type].name, "quality_type": quality_type})
 
         self.setItems(new_items)
