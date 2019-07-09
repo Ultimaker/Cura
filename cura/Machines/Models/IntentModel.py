@@ -50,6 +50,7 @@ class IntentModel(ListModel):
         global_stack = application.getGlobalContainerStack()
         if not global_stack:
             self.setItems(new_items)
+            return
 
         for intent_category, quality_type in IntentManager.getInstance().currentAvailableIntents():
             if intent_category == self._intent_category:
