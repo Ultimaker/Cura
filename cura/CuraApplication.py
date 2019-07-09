@@ -61,7 +61,6 @@ from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ShapeArray import ShapeArray
-from cura.Machines.Models.IntentModel import IntentModel
 
 from cura.Operations.SetParentOperation import SetParentOperation
 
@@ -92,6 +91,8 @@ from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfile
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 from cura.Machines.Models.UserChangesModel import UserChangesModel
+from cura.Machines.Models.IntentModel import IntentModel
+from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
@@ -104,6 +105,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.MachineNameValidator import MachineNameValidator
+from cura.Settings.IntentManager import IntentManager
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
@@ -937,6 +939,9 @@ class CuraApplication(QtApplication):
     def getQualityManager(self, *args) -> "QualityManager":
         return self._quality_manager
 
+    def getIntentManager(self, *args) -> IntentManager:
+        return IntentManager.getInstance()
+
     def getObjectsModel(self, *args):
         if self._object_manager is None:
             self._object_manager = ObjectsModel(self)
@@ -1036,6 +1041,7 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, "SceneController", self.getCuraSceneController)
         qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
+        qmlRegisterSingletonType(IntentManager, "Cura", 1, 6, "IntentManager", self.getIntentManager)
         qmlRegisterSingletonType(SettingInheritanceManager, "Cura", 1, 0, "SettingInheritanceManager", self.getSettingInheritanceManager)
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
@@ -1070,6 +1076,7 @@ class CuraApplication(QtApplication):
                                  "CustomQualityProfilesDropDownMenuModel", self.getCustomQualityProfilesDropDownMenuModel)
         qmlRegisterType(NozzleModel, "Cura", 1, 0, "NozzleModel")
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
+        qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
 
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")

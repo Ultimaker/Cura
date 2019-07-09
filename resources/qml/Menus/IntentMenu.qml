@@ -14,27 +14,47 @@ Menu
 
     property int extruderIndex: 0
 
-    Cura.IntentModel
+    Cura.IntentCategoryModel
     {
-        id: intentModel
+        id: intentCategoryModel
     }
 
     Instantiator
     {
-        model: intentModel
+        model: intentCategoryModel
 
-        MenuItem
+        MenuItem //Section header.
         {
             text: model.name
-            checkable: true
+            enabled: false
             checked: false
-            Binding on checked
+
+            property var per_category_intents: Cura.IntentModel
             {
-                when: Cura.MachineManager.activeStack != null
-                value: Cura.MachineManager.activeStack.intent == model.container
+                id: intentModel
+                intentCategory: model.intent_category
             }
-            exclusiveGroup: group
-            onTriggered: Cura.MachineManager.activeStack.intent = model.container
+
+            property var intent_instantiator: Instantiator
+            {
+                model: intentModel
+                MenuItem
+                {
+                    text: model.name
+                    checkable: true
+                    checked: false
+                    Binding on checked
+                    {
+                        when: Cura.MachineManager.activeStack != null
+                        value: Cura.MachineManager.activeStack.intent.metaData["intent_category"] == intentModel.intentCategory && Cura.MachineManager.activeStack.quality.metaData["quality_type"] == model.quality_type
+                    }
+                    exclusiveGroup: group
+                    onTriggered: Cura.IntentManager.selectIntent(intentModel.intentCategory, model.quality_type)
+                }
+
+                onObjectAdded: menu.insertItem(index, object)
+                onObjectRemoved: menu.removeItem(object)
+            }
         }
 
         onObjectAdded: menu.insertItem(index, object)
