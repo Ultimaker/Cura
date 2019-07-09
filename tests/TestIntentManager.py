@@ -83,6 +83,7 @@ def doSetup(application, extruder_manager, quality_manager, container_registry, 
     extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
     extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
 
+    application.getGlobalContainerStack().extruderList = [extruder_stack_a, extruder_stack_b]
     extruder_manager.getUsedExtruderStacks = MagicMock(return_value = [extruder_stack_a, extruder_stack_b])
 
 
@@ -98,18 +99,17 @@ def test_intentCategories(application, intent_manager, container_registry):
             assert "smooth" in categories, "smooth should be in categories"
 
 
-def test_currentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
+def test_getCurrentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
     doSetup(application, extruder_manager, quality_manager, container_registry, global_stack)
 
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
-            with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value=extruder_manager)):
-                intents = intent_manager.currentAvailableIntents()
-                assert ("smooth", "normal") in intents
-                assert ("strong", "abnorm") in intents
-                #assert ("default", "normal") in intents  # Pending to-do in 'IntentManager'.
-                #assert ("default", "abnorm") in intents  # Pending to-do in 'IntentManager'.
-                assert len(intents) == 2  # Or 4? pending to-do in 'IntentManager'.
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+            intents = intent_manager.getCurrentAvailableIntents()
+            assert ("smooth", "normal") in intents
+            assert ("strong", "abnorm") in intents
+            #assert ("default", "normal") in intents  # Pending to-do in 'IntentManager'.
+            #assert ("default", "abnorm") in intents  # Pending to-do in 'IntentManager'.
+            assert len(intents) == 2  # Or 4? pending to-do in 'IntentManager'.
 
 
 def test_currentAvailableIntentCategories(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
@@ -131,7 +131,7 @@ def test_selectIntent(application, extruder_manager, quality_manager, intent_man
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value=extruder_manager)):
-                intents = intent_manager.currentAvailableIntents()
+                intents = intent_manager.getCurrentAvailableIntents()
                 for intent, quality in intents:
                     intent_manager.selectIntent(intent, quality)
                     extruder_stacks = extruder_manager.getUsedExtruderStacks()

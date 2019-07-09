@@ -67,7 +67,7 @@ class IntentManager(QObject):
     #
     #   \return A list of tuples of intent_category and quality_type. The actual
     #   instance may vary per extruder.
-    def currentAvailableIntents(self) -> List[Tuple[str, str]]:
+    def getCurrentAvailableIntents(self) -> List[Tuple[str, str]]:
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
