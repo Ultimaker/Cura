@@ -2,9 +2,9 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
-from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
+from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
-from cura.Settings.ExtruderManager import ExtruderManager
+from cura.Settings.cura_empty_instance_containers import empty_intent_container
 from UM.Settings.InstanceContainer import InstanceContainer
 
 if TYPE_CHECKING:
@@ -80,7 +80,7 @@ class IntentManager(QObject):
 
         final_intent_ids = set()  # type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
-        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata["quality_type"] in available_quality_types}
@@ -106,7 +106,7 @@ class IntentManager(QObject):
             return ["default"]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         final_intent_categories = set()  # type: Set[str]
-        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             final_intent_categories.update(self.intentCategories(current_definition_id, nozzle_name, material_id))
@@ -116,22 +116,26 @@ class IntentManager(QObject):
     #   the configuration, an extruder can't match the intent that the user
     #   selects, or just when creating a new printer.
     def getDefaultIntent(self) -> InstanceContainer:
-        return cura.CuraApplication.CuraApplication.getInstance().empty_intent_container
+        return empty_intent_container
 
     @pyqtProperty(str, notify = intentCategoryChanged)
-    def getCurrentIntentCategory(self) -> str:
-        return ExtruderManager.getInstance().getActiveExtruderStack().intent.getMetaDataEntry("intent_category")
+    def currentIntentCategory(self) -> str:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        active_extruder_stack = application.getMachineManager().activeStack
+        if active_extruder_stack is None:
+            return ""
+        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
 
     ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
-        old_intent_category = self.getCurrentIntentCategory
+        old_intent_category = self.currentIntentCategory
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
-        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
             intent = application.getContainerRegistry().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
@@ -146,5 +150,9 @@ class IntentManager(QObject):
 
     ##  Selects the default intents on every extruder.
     def selectDefaultIntent(self) -> None:
-        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = application.getGlobalContainerStack()
+        if global_stack is None:
+            return
+        for extruder_stack in global_stack.extruderList:
             extruder_stack.intent = self.getDefaultIntent()
