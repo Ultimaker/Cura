@@ -27,15 +27,15 @@ class IntentModel(ListModel):
 
         self._update()
 
-    _intent_category_changed = pyqtSignal()
+    intentCategoryChanged = pyqtSignal()
 
     def setIntentCategory(self, new_category: str) -> None:
         if self._intent_category != new_category:
             self._intent_category = new_category
-            self._intent_category_changed.emit()
+            self.intentCategoryChanged.emit()
             self._update()
 
-    @pyqtProperty(str, fset = setIntentCategory, notify = _intent_category_changed)
+    @pyqtProperty(str, fset = setIntentCategory, notify = intentCategoryChanged)
     def intentCategory(self) -> str:
         return self._intent_category
 
