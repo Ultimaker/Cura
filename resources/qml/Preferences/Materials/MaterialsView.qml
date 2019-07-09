@@ -107,7 +107,6 @@ TabView
                     property var new_diameter_value: null;
                     property var old_diameter_value: null;
                     property var old_approximate_diameter_value: null;
-                    property bool keyPressed: false
 
                     onYes:
                     {
@@ -118,19 +117,11 @@ TabView
 
                     onNo:
                     {
-                        properties.diameter = old_diameter_value;
-                        diameterSpinBox.value = properties.diameter;
+                        base.properties.diameter = old_diameter_value;
+                        diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
                     }
 
-                    onVisibilityChanged:
-                    {
-                        if (!visible && !keyPressed)
-                        {
-                            // If the user closes this dialog without clicking on any button, it's the same as clicking "No".
-                            no();
-                        }
-                        keyPressed = false;
-                    }
+                    onRejected: no()
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
