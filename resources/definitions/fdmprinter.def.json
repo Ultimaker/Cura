@@ -2063,7 +2063,7 @@
                     "description": "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
-                    "default_value": 35,
+                    "default_value": 0,
                     "resolve": "min(extruderValues('build_volume_temperature'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
