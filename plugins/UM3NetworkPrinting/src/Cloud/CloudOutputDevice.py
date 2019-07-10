@@ -256,7 +256,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         remote_printers_keys = [printer_data.uuid for printer_data in remote_printers]
         removed_printers = [printer for printer in self._printers if printer.key not in remote_printers_keys]
         for removed_printer in removed_printers:
-            if self._active_printer.key == removed_printer.key:
+            if self._active_printer and self._active_printer.key == removed_printer.key:
                 self.setActivePrinter(None)
 
         self._printers = new_printers
