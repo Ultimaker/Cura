@@ -46,9 +46,6 @@ Item
 
                 spacing: Math.floor(UM.Theme.getSize("default_margin").height / 2)
 
-                // Due to an issue with the ordering if print jobs caused by the Qt list models,
-                // we hide the 'move to top' feature for now as it's not displayed on the appropriate elements.
-                // Solving the ordering issue will cost more time than we currently have available.
                 PrintJobContextMenuItem {
                     onClicked: {
                         sendToTopConfirmationDialog.visible = true;
@@ -56,11 +53,11 @@ Item
                     }
                     text: catalog.i18nc("@label", "Move to top");
                     visible: {
-//                        if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
-//                            if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
-//                                return OutputDevice.queuedPrintJobs[0].key != printJob.key;
-//                            }
-//                        }
+                        if (printJob && (printJob.state == "queued" || printJob.state == "error") && !isAssigned(printJob)) {
+                            if (OutputDevice && OutputDevice.queuedPrintJobs[0]) {
+                                return OutputDevice.queuedPrintJobs[0].key != printJob.key;
+                            }
+                        }
                         return false;
                     }
                 }
