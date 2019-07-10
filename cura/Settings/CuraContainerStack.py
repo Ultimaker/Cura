@@ -37,8 +37,6 @@ from . import Exceptions
 #   This also means that operations on the stack that modifies the container ordering is prohibited and
 #   will raise an exception.
 class CuraContainerStack(ContainerStack):
-    Version = 5  # type: int
-
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
