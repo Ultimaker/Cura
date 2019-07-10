@@ -1,0 +1,83 @@
+{
+    "version": 1,
+    "name": "Vertex K8600",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "manufacturer": "Velleman N.V.",
+        "file_formats": "text/x-gcode",
+        "supports_usb_connection": true,
+        "supported_actions": ["MachineSettingsAction"],
+        "machine_extruder_trains": {
+            "0": "vertex_nano_k8600_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Vertex K8600"
+        },
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "material_bed_temperature": {
+            "default_value": 0
+        },
+        "material_bed_temperature_layer_0": {
+            "default_value": 0
+        },
+        "machine_width": {
+            "default_value": 80
+        },
+        "machine_height": {
+            "default_value": 75
+        },
+        "machine_depth": {
+            "default_value": 80
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "; Vertex Nano Start G-code M0 is my nozzle clean M400 G28 ; Home extruder G90 ; Absolute positioning M82 ; Extruder in absolute mode M104 T0 S{material_print_temperature} G92 E0 ; Reset extruder position G1 Z1 F800 M109 T0 S{material_print_temperature} M117 Priming nozzle... M83 G1 E20 F100 ; purge/prime nozzle M82 G92 E0 ; Reset extruder position G4 S3 ; Wait 3 seconds G1 Z5 F2000 M117 Vertex Nano is printing"
+        },
+        "machine_end_gcode": {
+            "default_value": "; Vertex Nano end G-Code G91 ; Relative positioning T0 G1 E-1 F1500; Reduce filament pressure M104 T0 S0 G90 ; Absolute positioning G92 E0 ; Reset extruder position G28 M84 ; Turn steppers off"
+        },
+        "line_width": {
+            "value": 0.35
+        },
+        "infill_line_width": {
+            "value": 0.35
+        },
+        "wall_thickness": {
+            "value": 0.7
+        },
+        "top_bottom_thickness": {
+            "value": 0.6
+        },
+        "infill_sparse_density": {
+            "value": 40
+        },
+        "infill_overlap": {
+            "value": 5
+        },
+        "min_infill_area": {
+            "value": 0.1
+        },
+        "retract_at_layer_change": {
+            "value": true
+        },
+        "retraction_min_travel": {
+            "value": 1
+        },
+        "retraction_count_max": {
+            "value": 15
+        },
+        "retraction_extrusion_window": {
+            "value": 1
+        }
+    }
+}
