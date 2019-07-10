@@ -1454,8 +1454,8 @@
                 },
                 "skin_no_small_gaps_heuristic":
                 {
-                    "label": "Ignore Small Z Gaps",
-                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
+                    "label": "No Skin in Z Gaps",
+                    "description": "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "top_layers > 0 or bottom_layers > 0",
