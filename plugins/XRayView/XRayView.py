@@ -10,20 +10,21 @@ from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
 from UM.Platform import Platform
 from UM.Event import Event
-from UM.View.View import View
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.CuraApplication import CuraApplication
+from cura.CuraView import CuraView
+from cura.Scene.ConvexHullNode import ConvexHullNode
 
 from . import XRayPass
 
 ## View used to display a see-through version of objects with errors highlighted.
-class XRayView(View):
+class XRayView(CuraView):
     def __init__(self):
-        super().__init__()
+        super().__init__(parent = None, use_empty_menu_placeholder = True)
 
         self._xray_shader = None
         self._xray_pass = None
@@ -41,6 +42,10 @@ class XRayView(View):
             self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         for node in BreadthFirstIterator(scene.getRoot()):
+            # We do not want to render ConvexHullNode as it conflicts with the bottom of the X-Ray (z-fighting).
+            if type(node) is ConvexHullNode:
+                continue
+
             if not node.render(renderer):
                 if node.getMeshData() and node.isVisible():
                     renderer.queueNode(node,

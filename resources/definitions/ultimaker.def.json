@@ -6,7 +6,8 @@
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
         "category": "Ultimaker",
-        "visible": false
+        "visible": false,
+        "exclude_materials": [ "generic_hips", "generic_petg", "structur3d_dap100silicone" ]
     },
     "overrides": {
         "machine_max_feedrate_e": {

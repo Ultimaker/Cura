@@ -2,11 +2,11 @@ from UM.Scene.SceneNodeDecorator import SceneNodeDecorator
 
 
 class SliceableObjectDecorator(SceneNodeDecorator):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         
-    def isSliceable(self):
+    def isSliceable(self) -> bool:
         return True
 
-    def __deepcopy__(self, memo):
+    def __deepcopy__(self, memo) -> "SliceableObjectDecorator":
         return type(self)()

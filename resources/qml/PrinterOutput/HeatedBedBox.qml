@@ -1,7 +1,10 @@
-import QtQuick 2.2
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Layouts 1.1
+// Copyright (c) 2017 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -9,11 +12,13 @@ import Cura 1.0 as Cura
 Item
 {
     implicitWidth: parent.width
-    height: visible ? UM.Theme.getSize("sidebar_extruder_box").height : 0
+    height: visible ? UM.Theme.getSize("print_setup_extruder_box").height : 0
     property var printerModel
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     Rectangle
     {
-        color: UM.Theme.getColor("sidebar")
+        color: UM.Theme.getColor("main_background")
         anchors.fill: parent
 
         Label //Build plate label.
@@ -30,7 +35,7 @@ Item
         {
             id: bedTargetTemperature
             text: printerModel != null ? printerModel.targetBedTemperature + "°C" : ""
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -62,7 +67,7 @@ Item
         {
             id: bedCurrentTemperature
             text: printerModel != null ? printerModel.bedTemperature + "°C" : ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             color: UM.Theme.getColor("text")
             anchors.right: bedTargetTemperature.left
             anchors.top: parent.top
@@ -110,25 +115,28 @@ Item
                 {
                     return false; //Can't preheat if not connected.
                 }
-                if (!connectedPrinter.acceptsCommands)
+                if (connectedPrinter == null || !connectedPrinter.acceptsCommands)
                 {
                     return false; //Not allowed to do anything.
                 }
-                if (connectedPrinter.jobState == "printing" || connectedPrinter.jobState == "pre_print" || connectedPrinter.jobState == "resuming" || connectedPrinter.jobState == "pausing" || connectedPrinter.jobState == "paused" || connectedPrinter.jobState == "error" || connectedPrinter.jobState == "offline")
+                if (connectedPrinter.activePrinter && connectedPrinter.activePrinter.activePrintJob)
                 {
-                    return false; //Printer is in a state where it can't react to pre-heating.
+                    if((["printing", "pre_print", "resuming", "pausing", "paused", "error", "offline"]).indexOf(connectedPrinter.activePrinter.activePrintJob.state) != -1)
+                    {
+                        return false; //Printer is in a state where it can't react to pre-heating.
+                    }
                 }
                 return true;
             }
             border.width: UM.Theme.getSize("default_lining").width
             border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : preheatTemperatureInputMouseArea.containsMouse ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
-            anchors.left: parent.left
-            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            anchors.right: preheatButton.left
+            anchors.rightMargin: UM.Theme.getSize("default_margin").width
             anchors.bottom: parent.bottom
             anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            width: UM.Theme.getSize("setting_control").width
-            height: UM.Theme.getSize("setting_control").height
-            visible: printerModel != null ? printerModel.canPreHeatBed: true
+            width: UM.Theme.getSize("monitor_preheat_temperature_control").width
+            height: UM.Theme.getSize("monitor_preheat_temperature_control").height
+            visible: printerModel != null ? enabled && printerModel.canPreHeatBed && !printerModel.isPreheating : true
             Rectangle //Highlight of input field.
             {
                 anchors.fill: parent
@@ -159,18 +167,29 @@ Item
                     }
                 }
             }
+            Label
+            {
+                id: unit
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
+                anchors.verticalCenter: parent.verticalCenter
+
+                text: "°C";
+                color: UM.Theme.getColor("setting_unit")
+                font: UM.Theme.getFont("default")
+            }
             TextInput
             {
                 id: preheatTemperatureInput
                 font: UM.Theme.getFont("default")
                 color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
                 selectByMouse: true
-                maximumLength: 10
+                maximumLength: 5
                 enabled: parent.enabled
                 validator: RegExpValidator { regExp: /^-?[0-9]{0,9}[.,]?[0-9]{0,10}$/ } //Floating point regex.
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
-                anchors.right: parent.right
+                anchors.right: unit.left
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
@@ -195,7 +214,7 @@ Item
             }
         }
 
-        Button //The pre-heat button.
+        Button // The pre-heat button.
         {
             id: preheatButton
             height: UM.Theme.getSize("setting_control").height
@@ -301,7 +320,7 @@ Item
                                 return UM.Theme.getColor("action_button_text");
                             }
                         }
-                        font: UM.Theme.getFont("action_button")
+                        font: UM.Theme.getFont("medium")
                         text:
                         {
                             if(printerModel == null)

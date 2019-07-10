@@ -1,0 +1,60 @@
+{
+    "version": 2,
+    "name": "TiZYX K25",
+    "inherits": "fdmprinter",
+    "metadata":
+    {
+        "visible": true,
+        "author": "TiZYX",
+        "manufacturer": "TiZYX",
+        "file_formats": "text/x-gcode",
+        "platform": "tizyx_k25_platform.stl",
+        "platform_offset": [0, -4, 0],
+        "exclude_materials": ["chromatik_pla", "dsm_arnitel2045_175", "dsm_novamid1070_175", "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu", "fiberlogy_hd_pla", "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red", "generic_abs", "generic_abs_175", "generic_bam", "generic_cpe", "generic_cpe_175", "generic_cpe_plus", "generic_hips", "generic_hips_175", "generic_nylon", "generic_nylon_175", "generic_pc", "generic_pc_175", "generic_petg", "generic_petg_175", "generic_pla", "generic_pla_175", "generic_pp", "generic_pva", "generic_pva_175", "generic_tough_pla", "generic_tpu", "generic_tpu_175", "imade3d_petg_green", "imade3d_petg_pink", "imade3d_pla_green", "imade3d_pla_pink", "innofill_innoflex60_175", "octofiber_pla", "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla", "ultimaker_abs_black", "ultimaker_abs_blue", "ultimaker_abs_green", "ultimaker_abs_grey", "ultimaker_abs_orange", "ultimaker_abs_pearl-gold", "ultimaker_abs_red", "ultimaker_abs_silver-metallic", "ultimaker_abs_white", "ultimaker_abs_yellow", "ultimaker_bam", "ultimaker_cpe_black", "ultimaker_cpe_blue", "ultimaker_cpe_dark-grey", "ultimaker_cpe_green", "ultimaker_cpe_light-grey", "ultimaker_cpe_plus_black", "ultimaker_cpe_plus_transparent", "ultimaker_cpe_plus_white", "ultimaker_cpe_red", "ultimaker_cpe_transparent", "ultimaker_cpe_white", "ultimaker_cpe_yellow", "ultimaker_nylon_black", "ultimaker_nylon_transparent", "ultimaker_pc_black", "ultimaker_pc_transparent", "ultimaker_pc_white", "ultimaker_pla_black", "ultimaker_pla_blue", "ultimaker_pla_green", "ultimaker_pla_magenta", "ultimaker_pla_orange", "ultimaker_pla_pearl-white", "ultimaker_pla_red", "ultimaker_pla_silver-metallic", "ultimaker_pla_transparent", "ultimaker_pla_white", "ultimaker_pla_yellow", "ultimaker_pp_transparent", "ultimaker_pva", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "ultimaker_tpu_black", "ultimaker_tpu_blue", "ultimaker_tpu_red", "ultimaker_tpu_white", "verbatim_bvoh_175", "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_TPU", "zyyx_pro_flex", "zyyx_pro_pla" ],
+        "preferred_material": "tizyx_pla",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": true,
+        "preferred_variant_name": "0.4 mm",
+        "machine_extruder_trains":
+        {
+            "0": "tizyx_k25_extruder_0"
+        }
+    },
+
+    "overrides":
+    {
+        "machine_name": { "default_value": "TiZYX K25" },
+        "machine_heated_bed":          {   "default_value": true            },
+        "machine_width":               {   "default_value": 255             },
+        "machine_height":              {   "default_value": 255             },
+        "machine_depth":               {   "default_value": 255             },
+        "machine_center_is_zero":      {   "default_value": false           },
+        "gantry_height":               {   "value": "500" },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [25, 49],
+                [25, -49],
+                [-25, -49],
+                [25, 49]
+            ]
+        },
+        "machine_gcode_flavor":        {   "default_value": "RepRap (Marlin/Sprinter)"      },
+        "machine_start_gcode":
+        {
+            "default_value": "M82\nG90\nG28 X\nG28 Y\nG28 Z\nG29\nG91\nG1 Z0\nG90\nM82\nG92 E0\nG1 X125 Y245 F3000\nG1 Z0"
+        },
+        "machine_end_gcode":
+        {
+            "default_value": "M104 S0\nM140 S0\nG91\nG1 E-5 F300\nG1 Z+3 F3000\nG1 Y245 F3000\nM84"
+        },
+
+
+        "acceleration_enabled": {"value": "False"},
+        "acceleration_print": {"value": "1500"},
+        "z_seam_type": {"default_value": "back"},
+        "z_seam_x": {"value": "127.5"},
+        "z_seam_y": {"value": "250"},
+        "retraction_combing": {"default_value": "off"}
+    }
+}

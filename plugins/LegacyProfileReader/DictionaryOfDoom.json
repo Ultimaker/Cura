@@ -1,6 +1,6 @@
 {
     "source_version": "15.04",
-    "target_version": 2,
+    "target_version": "4.5",
 
     "translation": {
         "machine_nozzle_size": "nozzle_size",

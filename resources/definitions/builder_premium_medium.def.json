@@ -12,23 +12,20 @@
         "platform": "builder_premium_platform.stl",
         "platform_offset": [-126, -36, 117],
         "has_machine_quality": true,
-        "preferred_quality": "*Normal*",
+        "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
             "0": "builder_premium_medium_rear",
             "1": "builder_premium_medium_front"
         }
     },
-	
-	
-	
+
     "overrides": {
         "machine_name": { "default_value": "Builder Premium Medium" },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 215 },
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 205 },
-        "material_diameter": { "default_value": 1.75 },
 
         "infill_pattern": {"value": "'triangles'" },
         "infill_before_walls": {"value": false },
@@ -36,7 +33,7 @@
         "default_material_print_temperature": { "value": "215" },
         "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_standby_temperature": { "value": "material_print_temperature" },
-		
+
         "switch_extruder_retraction_speeds": {"default_value": 15 },
         "switch_extruder_retraction_speed": {"default_value": 15 },
         "switch_extruder_prime_speed": {"default_value": 15 },
@@ -57,10 +54,9 @@
         "prime_tower_position_y": { "default_value": 178 },
         "prime_tower_wipe_enabled": { "default_value": false },
         "prime_tower_min_volume": { "default_value": 50 },
-        "dual_pre_wipe": { "default_value": false },
-		
+
         "prime_blob_enable": { "enabled": true },
-		
+
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
         "acceleration_prime_tower": { "value": "math.ceil(acceleration_print * 2000 / 4000)" },
@@ -71,7 +67,7 @@
         "acceleration_travel": { "value": "acceleration_print" },
         "acceleration_wall": { "value": "math.ceil(acceleration_print * 1000 / 3000)" },
         "acceleration_wall_0": { "value": "math.ceil(acceleration_wall * 1000 / 1000)" },
-		
+
         "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
         "cool_min_layer_time": { "default_value": 10 },
 
@@ -84,9 +80,9 @@
         "jerk_topbottom": { "value": "math.ceil(jerk_print * 5 / 25)" },
         "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 25)" },
         "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
-		
+
         "wall_thickness": { "value": "1.2" },
-		
+
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 15 },
         "retraction_retract_speed": { "default_value": 15 },
@@ -97,7 +93,7 @@
         "machine_nozzle_heat_up_speed": { "default_value": 2 },
         "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_polygon": { "default_value": [[-75, -18],[-75, 35],[18, 35],[18, -18]] },
-        "gantry_height": { "default_value": 55 },
+        "gantry_height": { "value": "55" },
         "machine_max_feedrate_x": { "default_value": 300 },
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },

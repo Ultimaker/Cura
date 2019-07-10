@@ -15,7 +15,7 @@ class BuildPlateDecorator(SceneNodeDecorator):
         self._build_plate_number = nr
         if isinstance(self._node, CuraSceneNode):
             self._node.transformChanged()  # trigger refresh node without introducing a new signal
-        if self._node and self._node.callDecoration("isGroup"):
+        if self._node:
             for child in self._node.getChildren():
                 child.callDecoration("setBuildPlateNumber", nr)
 

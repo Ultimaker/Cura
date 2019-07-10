@@ -8,11 +8,13 @@
         "manufacturer": "Deltaprintr",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0],
-        "platform": ""
+        "machine_extruder_trains":
+        {
+            "0": "delta_go_extruder_0"
+        }
     },
     "overrides": {
         "machine_name":                       { "default_value": "Delta Go" },
-        "material_diameter":                  { "default_value": 1.75 },
         "default_material_print_temperature": { "default_value": 210 },
         "speed_travel":                       { "default_value": 150 },
         "prime_tower_size":                   { "default_value": 8.66 },

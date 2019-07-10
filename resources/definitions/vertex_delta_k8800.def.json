@@ -3,17 +3,18 @@
   "version": 2,
   "inherits": "fdmprinter",
   "metadata": {
-    "manufacturer": "Velleman nv",
+    "manufacturer": "Velleman N.V.",
     "file_formats": "text/x-gcode",
     "visible": true,
-    "author": "Velleman",
+    "author": "Velleman N.V.",
     "has_machine_quality": true,
-    "has_materials": true
+    "has_materials": true,
+    "machine_extruder_trains":
+    {
+      "0": "vertex_delta_k8800_extruder_0"
+    }
   },
   "overrides": {
-    "material_diameter": {
-      "default_value": 1.75
-    },
     "machine_width": {
       "default_value": 200
     },
@@ -29,29 +30,8 @@
     "machine_shape": {
       "default_value": "elliptic"
     },
-    "machine_nozzle_size": {
-      "default_value": 0.35
-    },
-    "machine_head_shape_min_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_min_y": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_y": {
-      "default_value": 0
-    },
     "gantry_height": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_x_1": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_y_1": {
-      "default_value": 0
+      "value": "0"
     },
     "machine_gcode_flavor": {
       "default_value": "RepRap (Marlin/Sprinter)"

@@ -1,13 +1,13 @@
 # Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2017-11-21 16:58+0000\n"
+"Project-Id-Version: Cura 4.1\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-05-14 12:48+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -48,31 +48,27 @@ msgstr "Näytetäänkö laitteen eri variantit, jotka kuvataan erillisissä json
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode label"
-msgid "Start GCode"
-msgstr "Aloitus-GCode"
+msgid "Start G-code"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_start_gcode description"
 msgid ""
-"Gcode commands to be executed at the very start - separated by \n"
+"G-code commands to be executed at the very start - separated by \n"
 "."
 msgstr ""
-"GCode-komennot, jotka suoritetaan aivan alussa – eroteltuina merkillä \n"
-"."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
-msgid "End GCode"
-msgstr "Lopetus-GCode"
+msgid "End G-code"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode description"
 msgid ""
-"Gcode commands to be executed at the very end - separated by \n"
+"G-code commands to be executed at the very end - separated by \n"
 "."
 msgstr ""
-"GCode-komennot, jotka suoritetaan aivan lopussa – eroteltuina merkillä \n"
-"."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -83,6 +79,16 @@ msgstr "Materiaalin GUID"
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically. "
 msgstr "Materiaalin GUID. Tämä määritetään automaattisesti. "
+
+#: fdmprinter.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "Läpimitta"
+
+#: fdmprinter.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "Säätää käytetyn tulostuslangan halkaisijaa. Määritä tämä arvo vastaamaan käytetyn tulostuslangan halkaisijaa."
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temp_wait label"
@@ -165,6 +171,26 @@ msgid "Elliptic"
 msgstr "Soikea"
 
 #: fdmprinter.def.json
+msgctxt "machine_buildplate_type label"
+msgid "Build Plate Material"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_buildplate_type description"
+msgid "The material of the build plate installed on the printer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_buildplate_type option glass"
+msgid "Glass"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_buildplate_type option aluminum"
+msgid "Aluminum"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_height label"
 msgid "Machine Height"
 msgstr "Laitteen korkeus"
@@ -205,9 +231,19 @@ msgid "Number of extruder trains. An extruder train is the combination of a feed
 msgstr "Suulakeryhmien määrä. Suulakeryhmä on syöttölaitteen, Bowden-putken ja suuttimen yhdistelmä."
 
 #: fdmprinter.def.json
+msgctxt "extruders_enabled_count label"
+msgid "Number of Extruders That Are Enabled"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "extruders_enabled_count description"
+msgid "Number of extruder trains that are enabled; automatically set in software"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
-msgid "Outer nozzle diameter"
-msgstr "Suuttimen ulkoläpimitta"
+msgid "Outer Nozzle Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter description"
@@ -216,8 +252,8 @@ msgstr "Suuttimen kärjen ulkoläpimitta."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle length"
-msgstr "Suuttimen pituus"
+msgid "Nozzle Length"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance description"
@@ -226,8 +262,8 @@ msgstr "Suuttimen kärjen ja tulostuspään alimman osan välinen korkeusero."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
-msgid "Nozzle angle"
-msgstr "Suuttimen kulma"
+msgid "Nozzle Angle"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle description"
@@ -236,8 +272,8 @@ msgstr "Vaakatason ja suuttimen kärjen yllä olevan kartiomaisen osan välinen 
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
-msgid "Heat zone length"
-msgstr "Lämpöalueen pituus"
+msgid "Heat Zone Length"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length description"
@@ -266,8 +302,8 @@ msgstr "Lämpötilan hallinta Curan kautta. Kytke tämä pois, niin voit hallita
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
-msgid "Heat up speed"
-msgstr "Lämpenemisnopeus"
+msgid "Heat Up Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed description"
@@ -276,8 +312,8 @@ msgstr "Nopeus (°C/s), jolla suutin lämpenee, mitattuna keskiarvona normaaleis
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
-msgid "Cool down speed"
-msgstr "Jäähdytysnopeus"
+msgid "Cool Down Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed description"
@@ -296,13 +332,13 @@ msgstr "Minimiaika, jonka suulakkeen on oltava ei-aktiivinen, ennen kuin suutin 
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
-msgid "Gcode flavour"
-msgstr "GCode-tyyppi"
+msgid "G-code Flavour"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
-msgid "The type of gcode to be generated."
-msgstr "Luotavan GCoden tyyppi."
+msgid "The type of g-code to be generated."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor option RepRap (Marlin/Sprinter)"
@@ -350,9 +386,19 @@ msgid "Repetier"
 msgstr "Repetier"
 
 #: fdmprinter.def.json
+msgctxt "machine_firmware_retract label"
+msgid "Firmware Retraction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_firmware_retract description"
+msgid "Whether to use firmware retract commands (G10/G11) instead of using the E property in G1 commands to retract the material."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
-msgid "Disallowed areas"
-msgstr "Kielletyt alueet"
+msgid "Disallowed Areas"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas description"
@@ -371,8 +417,8 @@ msgstr "Monikulmioluettelo, jossa on alueet, joihin suutin ei saa siirtyä."
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
-msgid "Machine head polygon"
-msgstr "Laiteen pään monikulmio"
+msgid "Machine Head Polygon"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon description"
@@ -381,8 +427,8 @@ msgstr "2D-siluetti tulostuspäästä (tuulettimen kannattimet pois lukien)"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
-msgid "Machine head & Fan polygon"
-msgstr "Laiteen pään ja tuulettimen monikulmio"
+msgid "Machine Head & Fan Polygon"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon description"
@@ -391,8 +437,8 @@ msgstr "2D-siluetti tulostuspäästä (tuulettimen päät mukaan lukien)"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
-msgid "Gantry height"
-msgstr "Korokkeen korkeus"
+msgid "Gantry Height"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "gantry_height description"
@@ -421,8 +467,8 @@ msgstr "Suuttimen sisäläpimitta. Muuta tätä asetusta, kun käytössä on muu
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
-msgid "Offset With Extruder"
-msgstr "Suulakkeen siirtymä"
+msgid "Offset with Extruder"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords description"
@@ -570,6 +616,76 @@ msgid "Default jerk for the motor of the filament."
 msgstr "Tulostuslangan moottorin oletusnykäisy."
 
 #: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_x label"
+msgid "Steps per Millimeter (X)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_x description"
+msgid "How many steps of the stepper motor will result in one millimeter of movement in the X direction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_y label"
+msgid "Steps per Millimeter (Y)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_y description"
+msgid "How many steps of the stepper motor will result in one millimeter of movement in the Y direction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_z label"
+msgid "Steps per Millimeter (Z)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_z description"
+msgid "How many steps of the stepper motor will result in one millimeter of movement in the Z direction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_e label"
+msgid "Steps per Millimeter (E)"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_steps_per_mm_e description"
+msgid "How many steps of the stepper motors will result in one millimeter of extrusion."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_x label"
+msgid "X Endstop in Positive Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_x description"
+msgid "Whether the endstop of the X axis is in the positive direction (high X coordinate) or negative (low X coordinate)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_y label"
+msgid "Y Endstop in Positive Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_y description"
+msgid "Whether the endstop of the Y axis is in the positive direction (high Y coordinate) or negative (low Y coordinate)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_z label"
+msgid "Z Endstop in Positive Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_endstop_positive_direction_z description"
+msgid "Whether the endstop of the Z axis is in the positive direction (high Z coordinate) or negative (low Z coordinate)."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_minimum_feedrate label"
 msgid "Minimum Feedrate"
 msgstr "Minimisyöttönopeus"
@@ -578,6 +694,16 @@ msgstr "Minimisyöttönopeus"
 msgctxt "machine_minimum_feedrate description"
 msgid "The minimal movement speed of the print head."
 msgstr "Tulostuspään liikkeen miniminopeus."
+
+#: fdmprinter.def.json
+msgctxt "machine_feeder_wheel_diameter label"
+msgid "Feeder Wheel Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_feeder_wheel_diameter description"
+msgid "The diameter of the wheel that drives the material in the feeder."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "resolution label"
@@ -608,31 +734,6 @@ msgstr "Alkukerroksen korkeus"
 msgctxt "layer_height_0 description"
 msgid "The height of the initial layer in mm. A thicker initial layer makes adhesion to the build plate easier."
 msgstr "Alkukerroksen korkeus milleinä. Paksumpi alkukerros helpottaa alustaan kiinnittymistä."
-
-#: fdmprinter.def.json
-msgctxt "slicing_tolerance label"
-msgid "Slicing Tolerance"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "slicing_tolerance description"
-msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "slicing_tolerance option middle"
-msgid "Middle"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "slicing_tolerance option exclusive"
-msgid "Exclusive"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "slicing_tolerance option inclusive"
-msgid "Inclusive"
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "line_width label"
@@ -673,16 +774,6 @@ msgstr "Sisäseinämien linjaleveys"
 msgctxt "wall_line_width_x description"
 msgid "Width of a single wall line for all wall lines except the outermost one."
 msgstr "Yhden seinämälinjan leveys. Koskee kaikkia muita paitsi ulommaista seinämää."
-
-#: fdmprinter.def.json
-msgctxt "roofing_line_width label"
-msgid "Top Surface Skin Line Width"
-msgstr "Yläpinnan pintakalvon linjan leveys"
-
-#: fdmprinter.def.json
-msgctxt "roofing_line_width description"
-msgid "Width of a single line of the areas at the top of the print."
-msgstr "Tulosteen yläosan alueiden yhden linjan leveys."
 
 #: fdmprinter.def.json
 msgctxt "skin_line_width label"
@@ -865,41 +956,6 @@ msgid "The number of top most skin layers. Usually only one top most layer is su
 msgstr "Ylimpien pintakalvokerrosten määrä. Yleensä vain yksi ylin kerros riittää tuottamaan korkeampilaatuisia yläpintoja."
 
 #: fdmprinter.def.json
-msgctxt "roofing_pattern label"
-msgid "Top Surface Skin Pattern"
-msgstr "Yläpinnan pintakalvokuvio"
-
-#: fdmprinter.def.json
-msgctxt "roofing_pattern description"
-msgid "The pattern of the top most layers."
-msgstr "Ylimpien kerrosten kuvio."
-
-#: fdmprinter.def.json
-msgctxt "roofing_pattern option lines"
-msgid "Lines"
-msgstr "Linjat"
-
-#: fdmprinter.def.json
-msgctxt "roofing_pattern option concentric"
-msgid "Concentric"
-msgstr "Samankeskinen"
-
-#: fdmprinter.def.json
-msgctxt "roofing_pattern option zigzag"
-msgid "Zig Zag"
-msgstr "Siksak"
-
-#: fdmprinter.def.json
-msgctxt "roofing_angles label"
-msgid "Top Surface Skin Line Directions"
-msgstr "Yläpinnan pintakalvon linjojen suunnat"
-
-#: fdmprinter.def.json
-msgctxt "roofing_angles description"
-msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
-msgstr "Luettelo käytettävistä linjojen kokonaislukusuunnista, kun yläpinnan pintakalvokerroksilla käytetään linja- tai siksak-kuviota. Tämän luettelon elementtejä käytetään järjestyksessä kerrosten edetessä, ja kun luettelon loppu saavutetaan, aloitetaan taas alusta. Luettelon kohteet on erotettu pilkuilla, ja koko luettelo on hakasulkeiden sisällä. Oletusarvo on tyhjä luettelo, jolloin käytetään perinteisiä oletuskulmia (45 ja 135 astetta)."
-
-#: fdmprinter.def.json
 msgctxt "top_bottom_extruder_nr label"
 msgid "Top/Bottom Extruder"
 msgstr "Ylä- ja alapuolen suulake"
@@ -1010,6 +1066,16 @@ msgid "Zig Zag"
 msgstr "Siksak"
 
 #: fdmprinter.def.json
+msgctxt "connect_skin_polygons label"
+msgid "Connect Top/Bottom Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_skin_polygons description"
+msgid "Connect top/bottom skin paths where they run next to each other. For the concentric pattern enabling this setting greatly reduces the travel time, but because the connections can happen midway over infill this feature can reduce the top surface quality."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "skin_angles label"
 msgid "Top/Bottom Line Directions"
 msgstr "Yläosan/alaosan linjojen suunnat"
@@ -1028,6 +1094,16 @@ msgstr "Ulkoseinämän liitos"
 msgctxt "wall_0_inset description"
 msgid "Inset applied to the path of the outer wall. If the outer wall is smaller than the nozzle, and printed after the inner walls, use this offset to get the hole in the nozzle to overlap with the inner walls instead of the outside of the model."
 msgstr "Ulkoseinämän reitille asetettu liitos. Jos ulkoseinämä on pienempi kuin suutin ja se tulostetaan sisäseinämien jälkeen, tällä siirtymällä saadaan suuttimen reikä limittymään sisäseinämiin mallin ulkopuolen sijaan."
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order label"
+msgid "Optimize Wall Printing Order"
+msgstr "Optimoi seinämien tulostusjärjestys"
+
+#: fdmprinter.def.json
+msgctxt "optimize_wall_printing_order description"
+msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization. First layer is not optimized when choosing brim as build plate adhesion type."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "outer_inset_first label"
@@ -1080,6 +1156,26 @@ msgid "Compensate the flow for parts of an inner wall being printed where there 
 msgstr "Kompensoi tulostettaessa virtausta niiden sisäseinämien osien kohdalla, joissa on jo olemassa seinämä."
 
 #: fdmprinter.def.json
+msgctxt "wall_min_flow label"
+msgid "Minimum Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow description"
+msgid "Minimum allowed percentage flow for a wall line. The wall overlap compensation reduces a wall's flow when it lies close to an existing wall. Walls whose flow is less than this value will be replaced with a travel move. When using this setting, you must enable the wall overlap compensation and print the outer wall before inner walls."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract label"
+msgid "Prefer Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_min_flow_retract description"
+msgid "If enabled, retraction is used rather than combing for travel moves that replace walls whose flow is below the minimum flow threshold."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "fill_perimeter_gaps label"
 msgid "Fill Gaps Between Walls"
 msgstr "Täytä seinämien väliset raot"
@@ -1098,6 +1194,16 @@ msgstr "Ei missään"
 msgctxt "fill_perimeter_gaps option everywhere"
 msgid "Everywhere"
 msgstr "Kaikkialla"
+
+#: fdmprinter.def.json
+msgctxt "filter_out_tiny_gaps label"
+msgid "Filter Out Tiny Gaps"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "filter_out_tiny_gaps description"
+msgid "Filter out tiny gaps to reduce blobs on outside of model."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "fill_outline_gaps label"
@@ -1386,7 +1492,7 @@ msgstr "Täyttökuvio"
 
 #: fdmprinter.def.json
 msgctxt "infill_pattern description"
-msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
+msgid "The pattern of the infill material of the print. The line and zig zag infill swap direction on alternate layers, reducing material cost. The grid, triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric patterns are fully printed every layer. Gyroid, cubic, quarter cubic and octet infill change with every layer to provide a more equal distribution of strength over each direction."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1435,11 +1541,6 @@ msgid "Concentric"
 msgstr "Samankeskinen"
 
 #: fdmprinter.def.json
-msgctxt "infill_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "Samankeskinen 3D"
-
-#: fdmprinter.def.json
 msgctxt "infill_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Siksak"
@@ -1455,6 +1556,11 @@ msgid "Cross 3D"
 msgstr "Risti 3D"
 
 #: fdmprinter.def.json
+msgctxt "infill_pattern option gyroid"
+msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "zig_zaggify_infill label"
 msgid "Connect Infill Lines"
 msgstr "Yhdistä täyttölinjat"
@@ -1462,6 +1568,16 @@ msgstr "Yhdistä täyttölinjat"
 #: fdmprinter.def.json
 msgctxt "zig_zaggify_infill description"
 msgid "Connect the ends where the infill pattern meets the inner wall using a line which follows the shape of the inner wall. Enabling this setting can make the infill adhere to the walls better and reduce the effects of infill on the quality of vertical surfaces. Disabling this setting reduces the amount of material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons label"
+msgid "Connect Infill Polygons"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "connect_infill_polygons description"
+msgid "Connect infill paths where they run next to each other. For infill patterns which consist of several closed polygons, enabling this setting greatly reduces the travel time."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1481,7 +1597,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_x description"
-msgid "The infill pattern is offset this distance along the X axis."
+msgid "The infill pattern is moved this distance along the X axis."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1491,7 +1607,29 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_offset_y description"
-msgid "The infill pattern is offset this distance along the Y axis."
+msgid "The infill pattern is moved this distance along the Y axis."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier label"
+msgid "Infill Line Multiplier"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_multiplier description"
+msgid "Convert each infill line to this many lines. The extra lines do not cross over each other, but avoid each other. This makes the infill stiffer, but increases print time and material usage."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count label"
+msgid "Extra Infill Wall Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_wall_line_count description"
+msgid ""
+"Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
+"This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1511,8 +1649,8 @@ msgstr "Täytön limityksen prosentti"
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap description"
-msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
-msgstr "Limityksen määrä täytön ja seinämien välillä. Pienellä limityksellä seinämät liittyvät tukevasti täyttöön."
+msgid "The amount of overlap between the infill and the walls as a percentage of the infill line width. A slight overlap allows the walls to connect firmly to the infill."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_overlap_mm label"
@@ -1531,8 +1669,8 @@ msgstr "Pintakalvon limityksen prosentti"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap description"
-msgid "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
-msgstr "Limityksen määrä pintakalvon ja seinämien välillä linjaleveyden prosenttina. Pienellä limityksellä seinämät liittyvät tukevasti pintakalvoon. Tämä on pintakalvon linjojen ja sisimmän seinämän keskimääräisten linjaleveyksien prosenttiluku."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm label"
@@ -1541,8 +1679,8 @@ msgstr "Pintakalvon limitys"
 
 #: fdmprinter.def.json
 msgctxt "skin_overlap_mm description"
-msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
-msgstr "Limityksen määrä pintakalvon ja seinämien välillä. Pienellä limityksellä seinämät liittyvät tukevasti pintakalvoon."
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1603,6 +1741,26 @@ msgstr "Minimitäyttöalue"
 msgctxt "min_infill_area description"
 msgid "Don't generate areas of infill smaller than this (use skin instead)."
 msgstr "Älä muodosta tätä pienempiä täyttöalueita (käytä sen sijaan pintakalvoa)."
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled label"
+msgid "Infill Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_enabled description"
+msgid "Print infill structures only where tops of the model should be supported. Enabling this reduces print time and material usage, but leads to ununiform object strength."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle label"
+msgid "Infill Overhang Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_support_angle description"
+msgid "The minimum angle of internal overhangs for which infill is added. At a value of 0° objects are totally filled with infill, 90° will not provide any infill."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_preshrink label"
@@ -1695,16 +1853,6 @@ msgid "Material"
 msgstr "Materiaali"
 
 #: fdmprinter.def.json
-msgctxt "material_flow_dependent_temperature label"
-msgid "Auto Temperature"
-msgstr "Automaattinen lämpötila"
-
-#: fdmprinter.def.json
-msgctxt "material_flow_dependent_temperature description"
-msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
-msgstr "Muuta kunkin kerroksen lämpötilaa automaattisesti kyseisen kerroksen keskimääräisen virtausnopeuden mukaan."
-
-#: fdmprinter.def.json
 msgctxt "default_material_print_temperature label"
 msgid "Default Printing Temperature"
 msgstr "Oletustulostuslämpötila"
@@ -1713,6 +1861,16 @@ msgstr "Oletustulostuslämpötila"
 msgctxt "default_material_print_temperature description"
 msgid "The default temperature used for printing. This should be the \"base\" temperature of a material. All other print temperatures should use offsets based on this value"
 msgstr "Tulostuksessa käytettävä oletuslämpötila. Tämän tulee olla materiaalin ”pohjalämpötila”. Kaikkien muiden tulostuslämpötilojen tulee käyttää tähän arvoon perustuvia siirtymiä."
+
+#: fdmprinter.def.json
+msgctxt "build_volume_temperature label"
+msgid "Build Volume Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "build_volume_temperature description"
+msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1755,16 +1913,6 @@ msgid "The temperature to which to already start cooling down just before the en
 msgstr "Lämpötila, johon jäähdytetään jo ennen tulostuksen loppumista."
 
 #: fdmprinter.def.json
-msgctxt "material_flow_temp_graph label"
-msgid "Flow Temperature Graph"
-msgstr "Virtauksen lämpötilakaavio"
-
-#: fdmprinter.def.json
-msgctxt "material_flow_temp_graph description"
-msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
-msgstr "Tiedot, jotka yhdistävät materiaalivirran (mm3 sekunnissa) lämpötilaan (celsiusastetta)."
-
-#: fdmprinter.def.json
 msgctxt "material_extrusion_cool_down_speed label"
 msgid "Extrusion Cool Down Speed Modifier"
 msgstr "Pursotuksen jäähtymisnopeuden lisämääre"
@@ -1775,14 +1923,24 @@ msgid "The extra speed by which the nozzle cools while extruding. The same value
 msgstr "Lisänopeus, jonka verran suutin jäähtyy pursotuksen aikana. Samaa arvoa käytetään merkitsemään menetettyä kuumentumisnopeutta pursotuksen aikaisen kuumennuksen aikana."
 
 #: fdmprinter.def.json
+msgctxt "default_material_bed_temperature label"
+msgid "Default Build Plate Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "default_material_bed_temperature description"
+msgid "The default temperature used for the heated build plate. This should be the \"base\" temperature of a build plate. All other print temperatures should use offsets based on this value"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_bed_temperature label"
 msgid "Build Plate Temperature"
 msgstr "Alustan lämpötila"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature description"
-msgid "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print."
-msgstr "Lämmitettävän alustan lämpötila. Jos tämä on 0, pöytä ei lämpene tätä tulostusta varten."
+msgid "The temperature used for the heated build plate. If this is 0, the bed temperature will not be adjusted."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
@@ -1793,16 +1951,6 @@ msgstr "Alustan lämpötila (alkukerros)"
 msgctxt "material_bed_temperature_layer_0 description"
 msgid "The temperature used for the heated build plate at the first layer."
 msgstr "Lämmitettävän alustan lämpötila ensimmäistä kerrosta tulostettaessa."
-
-#: fdmprinter.def.json
-msgctxt "material_diameter label"
-msgid "Diameter"
-msgstr "Läpimitta"
-
-#: fdmprinter.def.json
-msgctxt "material_diameter description"
-msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
-msgstr "Säätää käytetyn tulostuslangan halkaisijaa. Määritä tämä arvo vastaamaan käytetyn tulostuslangan halkaisijaa."
 
 #: fdmprinter.def.json
 msgctxt "material_adhesion_tendency label"
@@ -1825,6 +1973,16 @@ msgid "Surface energy."
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage label"
+msgid "Shrinkage Ratio"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_shrinkage_percentage description"
+msgid "Shrinkage ratio in percentage."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow label"
 msgid "Flow"
 msgstr "Virtaus"
@@ -1833,6 +1991,16 @@ msgstr "Virtaus"
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Virtauksen kompensointi: pursotetun materiaalin määrä kerrotaan tällä arvolla."
+
+#: fdmprinter.def.json
+msgctxt "material_flow_layer_0 label"
+msgid "Initial Layer Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flow_layer_0 description"
+msgid "Flow compensation for the first layer: the amount of material extruded on the initial layer is multiplied by this value."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable label"
@@ -1935,6 +2103,16 @@ msgid "The window in which the maximum retraction count is enforced. This value 
 msgstr "Ikkuna, jossa takaisinvedon maksimiluku otetaan käyttöön. Tämän ikkunan tulisi olla suunnilleen takaisinvetoetäisyyden kokoinen, jotta saman kohdan sivuuttavien takaisinvetojen lukumäärää saadaan rajoitettua."
 
 #: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr "Valmiuslämpötila"
@@ -1951,8 +2129,8 @@ msgstr "Suuttimen vaihdon takaisinvetoetäisyys"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "Takaisinvedon määrä: 0 tarkoittaa, että takaisinvetoa ei ole lainkaan. Tämän on yleensä oltava sama kuin lämpöalueen pituus."
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_retraction_speeds label"
@@ -2611,8 +2789,8 @@ msgstr "Pyyhkäisytila"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing description"
-msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
-msgstr "Pyyhkäisy pitää suuttimen aiemmin tulostetuilla alueilla siirtoliikkeitä tehtäessä. Tämä johtaa hieman pidempiin siirtoliikkeisiin, mutta vähentää takaisinvedon tarvetta. Jos pyyhkäisy on poistettu käytöstä, materiaalille tehdään takaisinveto ja suutin liikkuu suoraan seuraavaan pisteeseen. On myös mahdollista välttää pyyhkäisy ylä- tai alapintakalvojen yli pyyhkäisemällä vain täytössä."
+msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas or to only comb within the infill."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option off"
@@ -2626,8 +2804,23 @@ msgstr "Kaikki"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing option noskin"
-msgid "No Skin"
-msgstr "Ei pintakalvoa"
+msgid "Not in Skin"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing option infill"
+msgid "Within Infill"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance label"
+msgid "Max Comb Distance With No Retract"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_combing_max_distance description"
+msgid "When non-zero, combing travel moves that are longer than this distance will use retraction."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_retract_before_outer_wall label"
@@ -2648,6 +2841,16 @@ msgstr "Vältä tulostettuja osia siirtoliikkeen yhteydessä"
 msgctxt "travel_avoid_other_parts description"
 msgid "The nozzle avoids already printed parts when traveling. This option is only available when combing is enabled."
 msgstr "Suutin välttää aiemmin tulostettuja osia siirtoliikkeiden yhteydessä. Tämä vaihtoehto on valittavissa vain, kun pyyhkäisy on käytössä."
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports label"
+msgid "Avoid Supports When Traveling"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "travel_avoid_supports description"
+msgid "The nozzle avoids already printed supports when traveling. This option is only available when combing is enabled."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "travel_avoid_distance label"
@@ -2728,6 +2931,16 @@ msgstr "Z-hyppy suulakkeen vaihdon jälkeen"
 msgctxt "retraction_hop_after_extruder_switch description"
 msgid "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print."
 msgstr "Alustaa lasketaan koneen vaihdettua yhdestä suulakkeesta toiseen, jotta suuttimen ja tulosteen väliin jää tilaa. Tämä estää suutinta jättämästä tihkunutta ainetta tulosteen ulkopuolelle."
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height label"
+msgid "Z Hop After Extruder Switch Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height description"
+msgid "The height difference when performing a Z Hop after extruder switch."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "cooling label"
@@ -2990,11 +3203,6 @@ msgid "Concentric"
 msgstr "Samankeskinen"
 
 #: fdmprinter.def.json
-msgctxt "support_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "Samankeskinen 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Siksak"
@@ -3003,6 +3211,31 @@ msgstr "Siksak"
 msgctxt "support_pattern option cross"
 msgid "Cross"
 msgstr "Risti"
+
+#: fdmprinter.def.json
+msgctxt "support_pattern option gyroid"
+msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count label"
+msgid "Support Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_wall_count description"
+msgid "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "zig_zaggify_support label"
+msgid "Connect Support Lines"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "zig_zaggify_support description"
+msgid "Connect the ends of the support lines together. Enabling this setting can make your support more sturdy and reduce underextrusion, but it will cost more material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_connect_zigzags label"
@@ -3033,6 +3266,56 @@ msgstr "Tukilinjojen etäisyys"
 msgctxt "support_line_distance description"
 msgid "Distance between the printed support structure lines. This setting is calculated by the support density."
 msgstr "Tulostettujen tukirakenteiden linjojen välinen etäisyys. Tämä asetus lasketaan tuen tiheyden perusteella."
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance label"
+msgid "Initial Layer Support Line Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_initial_layer_line_distance description"
+msgid "Distance between the printed initial layer support structure lines. This setting is calculated by the support density."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle label"
+msgid "Support Infill Line Direction"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_infill_angle description"
+msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable label"
+msgid "Enable Support Brim"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_enable description"
+msgid "Generate a brim within the support infill regions of the first layer. This brim is printed underneath the support, not around it. Enabling this setting increases the adhesion of support to the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width label"
+msgid "Support Brim Width"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_width description"
+msgid "The width of the brim to print underneath the support. A larger brim enhances adhesion to the build plate, at the cost of some extra material."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count label"
+msgid "Support Brim Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_brim_line_count description"
+msgid "The number of lines used for the support brim. More brim lines enhance adhesion to the build plate, at the cost of some extra material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_z_distance label"
@@ -3173,6 +3456,16 @@ msgstr "Asteittaisen tuen täyttöarvon korkeus"
 msgctxt "gradual_support_infill_step_height description"
 msgid "The height of support infill of a given density before switching to half the density."
 msgstr "Tietyn tiheysarvon tuen täytön korkeus ennen puoleen tiheyteen vaihtamista."
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area label"
+msgid "Minimum Support Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_support_area description"
+msgid "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_interface_enable label"
@@ -3325,11 +3618,6 @@ msgid "Concentric"
 msgstr "Samankeskinen"
 
 #: fdmprinter.def.json
-msgctxt "support_interface_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "Samankeskinen 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_interface_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Siksak"
@@ -3363,11 +3651,6 @@ msgstr "Kolmiot"
 msgctxt "support_roof_pattern option concentric"
 msgid "Concentric"
 msgstr "Samankeskinen"
-
-#: fdmprinter.def.json
-msgctxt "support_roof_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "Samankeskinen 3D"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_pattern option zigzag"
@@ -3405,14 +3688,89 @@ msgid "Concentric"
 msgstr "Samankeskinen"
 
 #: fdmprinter.def.json
-msgctxt "support_bottom_pattern option concentric_3d"
-msgid "Concentric 3D"
-msgstr "Samankeskinen 3D"
-
-#: fdmprinter.def.json
 msgctxt "support_bottom_pattern option zigzag"
 msgid "Zig Zag"
 msgstr "Siksak"
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area label"
+msgid "Minimum Support Interface Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_interface_area description"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area label"
+msgid "Minimum Support Roof Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_roof_area description"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area label"
+msgid "Minimum Support Floor Area"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_bottom_area description"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset label"
+msgid "Support Interface Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_offset description"
+msgid "Amount of offset applied to the support interface polygons."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset label"
+msgid "Support Roof Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_offset description"
+msgid "Amount of offset applied to the roofs of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset label"
+msgid "Support Floor Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_offset description"
+msgid "Amount of offset applied to the floors of the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable label"
+msgid "Fan Speed Override"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_fan_enable description"
+msgid "When enabled, the print cooling fan speed is altered for the skin regions immediately above the support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed label"
+msgid "Supported Skin Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_supported_skin_fan_speed description"
+msgid "Percentage fan speed to use when printing the skin regions immediately above the support. Using a high fan speed can make the support easier to remove."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_use_towers label"
@@ -3453,6 +3811,16 @@ msgstr "Tornin kattokulma"
 msgctxt "support_tower_roof_angle description"
 msgid "The angle of a rooftop of a tower. A higher value results in pointed tower roofs, a lower value results in flattened tower roofs."
 msgstr "Tornin katon kulma. Korkeampi arvo johtaa teräväkärkisiin tornien kattoihin, matalampi arvo litteämpiin tornien kattoihin."
+
+#: fdmprinter.def.json
+msgctxt "support_mesh_drop_down label"
+msgid "Drop Down Support Mesh"
+msgstr "Tukiverkon pudottaminen alaspäin"
+
+#: fdmprinter.def.json
+msgctxt "support_mesh_drop_down description"
+msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
+msgstr "Muodosta tukea kaikkialle tukiverkon alla, niin ettei tukiverkossa ole ulokkeita."
 
 #: fdmprinter.def.json
 msgctxt "platform_adhesion label"
@@ -3585,6 +3953,16 @@ msgstr "Reunuksen linjaluku"
 msgctxt "brim_line_count description"
 msgid "The number of lines used for a brim. More brim lines enhance adhesion to the build plate, but also reduces the effective print area."
 msgstr "Reunukseen käytettävien linjojen lukumäärä. Useampi reunuslinja parantaa kiinnitystä alustaan, mutta rajoittaa tehokasta tulostusaluetta."
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support label"
+msgid "Brim Replaces Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_replaces_support description"
+msgid "Enforce brim to be printed around the model even if that space would otherwise be occupied by support. This replaces some regions of the first layer of support by brim regions."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
@@ -3728,8 +4106,8 @@ msgstr "Pohjaristikon pohjakerroksen linjojen leveys. Näiden tulisi olla paksuj
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing label"
-msgid "Raft Line Spacing"
-msgstr "Pohjaristikon linjajako"
+msgid "Raft Base Line Spacing"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "raft_base_line_spacing description"
@@ -3917,6 +4295,16 @@ msgid "Print a tower next to the print which serves to prime the material after 
 msgstr "Tulosta tulosteen viereen torni, jolla materiaali esitäytetään aina suuttimen vaihdon jälkeen."
 
 #: fdmprinter.def.json
+msgctxt "prime_tower_circular label"
+msgid "Circular Prime Tower"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_circular description"
+msgid "Make the prime tower as a circular shape."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Esitäyttötornin koko"
@@ -3935,16 +4323,6 @@ msgstr "Esitäyttötornin minimiainemäärä"
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
 msgstr "Esitäyttötornin kunkin kerroksen minimitilavuus, jotta voidaan poistaa riittävästi materiaalia."
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness label"
-msgid "Prime Tower Thickness"
-msgstr "Esitäyttötornin paksuus"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_wall_thickness description"
-msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-msgstr "Onton esitäyttötornin paksuus. Jos paksuus ylittää puolet esitäyttötornin minimitilavuudesta, tuloksena on tiheä esitäyttötorni."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
@@ -3987,24 +4365,14 @@ msgid "After printing the prime tower with one nozzle, wipe the oozed material f
 msgstr "Kun esitäyttötorni on tulostettu yhdellä suuttimella, pyyhi toisesta suuttimesta tihkunut materiaali pois esitäyttötornissa."
 
 #: fdmprinter.def.json
-msgctxt "dual_pre_wipe label"
-msgid "Wipe Nozzle After Switch"
-msgstr "Pyyhi suutin vaihdon jälkeen"
+msgctxt "prime_tower_brim_enable label"
+msgid "Prime Tower Brim"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "dual_pre_wipe description"
-msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
-msgstr "Pyyhi suuttimen vaihdon jälkeen tihkunut materiaali pois suuttimesta, kun ensimmäinen kappale on tulostettu. Näin saadaan aikaan turvallinen ja hidas pyyhkäisyliike kohdassa, jossa tihkunut materiaali vaurioittaa mahdollisimman vähän tulostuksen pinnan laatua."
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume label"
-msgid "Prime Tower Purge Volume"
-msgstr "Esitäyttötornin poistoainemäärä"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_purge_volume description"
-msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-msgstr "Poistettavan tulostuslangan määrä esitäyttötornia pyyhittäessä. Poisto on hyödyllinen menetetyn tulostuslangan kompensointiin, silloin kun sitä tihkuu suuttimen ollessa ei-aktiivinen."
+msgctxt "prime_tower_brim_enable description"
+msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4083,17 +4451,7 @@ msgstr "Pidä erilliset pinnat"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_keep_open_polygons description"
-msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode."
-msgstr "Normaalisti Cura yrittää silmukoida umpeen pieniä reikiä verkosta ja poistaa kerroksesta osat, joissa on isoja reikiä. Tämän vaihtoehdon käyttöönotto pitää ne osat, joita ei voida silmukoida. Tätä tulisi pitää viimeisenä vaihtoehtona, kun millään muulla ei saada aikaan kunnollista GCodea."
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution label"
-msgid "Maximum Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution description"
-msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper g-code."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4247,16 +4605,6 @@ msgid "Use this mesh to specify support areas. This can be used to generate supp
 msgstr "Käytä tätä verkkoa tukialueiden valintaan. Sen avulla voidaan luoda tukirakenne."
 
 #: fdmprinter.def.json
-msgctxt "support_mesh_drop_down label"
-msgid "Drop Down Support Mesh"
-msgstr "Tukiverkon pudottaminen alaspäin"
-
-#: fdmprinter.def.json
-msgctxt "support_mesh_drop_down description"
-msgid "Make support everywhere below the support mesh, so that there's no overhang in the support mesh."
-msgstr "Muodosta tukea kaikkialle tukiverkon alla, niin ettei tukiverkossa ole ulokkeita."
-
-#: fdmprinter.def.json
 msgctxt "anti_overhang_mesh label"
 msgid "Anti Overhang Mesh"
 msgstr "Verkko ulokkeiden estoon"
@@ -4318,8 +4666,8 @@ msgstr "Suhteellinen pursotus"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion description"
-msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
-msgstr "Käytä suhteellista pursotusta absoluuttisen pursotuksen sijaan. Suhteellisten E-askelten käyttö helpottaa Gcoden jälkikäsittelyä. Kaikki tulostimet eivät kuitenkaan tue sitä, ja se saattaa aiheuttaa hyvin vähäisiä poikkeamia materiaalin määrässä absoluuttisiin E-askeliin verrattuna. Tästä asetuksesta riippumatta pursotustila on aina absoluuttinen, ennen kuin mitään Gcode-komentosarjaa tuotetaan."
+msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the g-code. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any g-code script is output."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "experimental label"
@@ -4332,14 +4680,224 @@ msgid "experimental!"
 msgstr "kokeellinen!"
 
 #: fdmprinter.def.json
-msgctxt "optimize_wall_printing_order label"
-msgid "Optimize Wall Printing Order"
-msgstr "Optimoi seinämien tulostusjärjestys"
+msgctxt "support_tree_enable label"
+msgid "Tree Support"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "optimize_wall_printing_order description"
-msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
-msgstr "Optimoi seinämien tulostusjärjestys takaisinvetojen ja kuljetun etäisyyden vähentämiseksi. Useimmat osat hyötyvät tämän asetuksen käytöstä, mutta joissakin saattaa kestää kauemmin, joten vertaa tulostusajan arvioita optimointia käytettäessä ja ilman sitä."
+msgctxt "support_tree_enable description"
+msgid "Generate a tree-like support with branches that support your print. This may reduce material usage and print time, but greatly increases slicing time."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle label"
+msgid "Tree Support Branch Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_angle description"
+msgid "The angle of the branches. Use a lower angle to make them more vertical and more stable. Use a higher angle to be able to have more reach."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance label"
+msgid "Tree Support Branch Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_distance description"
+msgid "How far apart the branches need to be when they touch the model. Making this distance small will cause the tree support to touch the model at more points, causing better overhang but making support harder to remove."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter label"
+msgid "Tree Support Branch Diameter"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter description"
+msgid "The diameter of the thinnest branches of tree support. Thicker branches are more sturdy. Branches towards the base will be thicker than this."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle label"
+msgid "Tree Support Branch Diameter Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_branch_diameter_angle description"
+msgid "The angle of the branches' diameter as they gradually become thicker towards the bottom. An angle of 0 will cause the branches to have uniform thickness over their length. A bit of an angle can increase stability of the tree support."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution label"
+msgid "Tree Support Collision Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_collision_resolution description"
+msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_wall_thickness label"
+msgid "Tree Support Wall Thickness"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_wall_thickness description"
+msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_wall_count label"
+msgid "Tree Support Wall Line Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_tree_wall_count description"
+msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance label"
+msgid "Slicing Tolerance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance description"
+msgid "How to slice layers with diagonal surfaces. The areas of a layer can be generated based on where the middle of the layer intersects the surface (Middle). Alternatively each layer can have the areas which fall inside of the volume throughout the height of the layer (Exclusive) or a layer has the areas which fall inside anywhere within the layer (Inclusive). Exclusive retains the most details, Inclusive makes for the best fit and Middle takes the least time to process."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option middle"
+msgid "Middle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option exclusive"
+msgid "Exclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "slicing_tolerance option inclusive"
+msgid "Inclusive"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_line_width label"
+msgid "Top Surface Skin Line Width"
+msgstr "Yläpinnan pintakalvon linjan leveys"
+
+#: fdmprinter.def.json
+msgctxt "roofing_line_width description"
+msgid "Width of a single line of the areas at the top of the print."
+msgstr "Tulosteen yläosan alueiden yhden linjan leveys."
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern label"
+msgid "Top Surface Skin Pattern"
+msgstr "Yläpinnan pintakalvokuvio"
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern description"
+msgid "The pattern of the top most layers."
+msgstr "Ylimpien kerrosten kuvio."
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern option lines"
+msgid "Lines"
+msgstr "Linjat"
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern option concentric"
+msgid "Concentric"
+msgstr "Samankeskinen"
+
+#: fdmprinter.def.json
+msgctxt "roofing_pattern option zigzag"
+msgid "Zig Zag"
+msgstr "Siksak"
+
+#: fdmprinter.def.json
+msgctxt "roofing_angles label"
+msgid "Top Surface Skin Line Directions"
+msgstr "Yläpinnan pintakalvon linjojen suunnat"
+
+#: fdmprinter.def.json
+msgctxt "roofing_angles description"
+msgid "A list of integer line directions to use when the top surface skin layers use the lines or zig zag pattern. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees)."
+msgstr "Luettelo käytettävistä linjojen kokonaislukusuunnista, kun yläpinnan pintakalvokerroksilla käytetään linja- tai siksak-kuviota. Tämän luettelon elementtejä käytetään järjestyksessä kerrosten edetessä, ja kun luettelon loppu saavutetaan, aloitetaan taas alusta. Luettelon kohteet on erotettu pilkuilla, ja koko luettelo on hakasulkeiden sisällä. Oletusarvo on tyhjä luettelo, jolloin käytetään perinteisiä oletuskulmia (45 ja 135 astetta)."
+
+#: fdmprinter.def.json
+msgctxt "infill_enable_travel_optimization label"
+msgid "Infill Travel Optimization"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_enable_travel_optimization description"
+msgid "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flow_dependent_temperature label"
+msgid "Auto Temperature"
+msgstr "Automaattinen lämpötila"
+
+#: fdmprinter.def.json
+msgctxt "material_flow_dependent_temperature description"
+msgid "Change the temperature for each layer automatically with the average flow speed of that layer."
+msgstr "Muuta kunkin kerroksen lämpötilaa automaattisesti kyseisen kerroksen keskimääräisen virtausnopeuden mukaan."
+
+#: fdmprinter.def.json
+msgctxt "material_flow_temp_graph label"
+msgid "Flow Temperature Graph"
+msgstr "Virtauksen lämpötilakaavio"
+
+#: fdmprinter.def.json
+msgctxt "material_flow_temp_graph description"
+msgid "Data linking material flow (in mm3 per second) to temperature (degrees Celsius)."
+msgstr "Tiedot, jotka yhdistävät materiaalivirran (mm3 sekunnissa) lämpötilaan (celsiusastetta)."
+
+#: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference label"
+msgid "Minimum Polygon Circumference"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "minimum_polygon_circumference description"
+msgid "Polygons in sliced layers that have a circumference smaller than this amount will be filtered out. Lower values lead to higher resolution mesh at the cost of slicing time. It is meant mostly for high resolution SLA printers and very tiny 3D models with a lot of details."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -4502,14 +5060,24 @@ msgid "The size of pockets at four-way crossings in the cross 3D pattern at heig
 msgstr "Taskujen koko nelisuuntaisissa risteyksissä risti 3D -kuviossa korkeuksissa, joissa kuvio koskettaa itseään."
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly label"
-msgid "Alternate Cross 3D Pockets"
-msgstr "Vuoroittaiset risti 3D -taskut"
+msgctxt "cross_infill_density_image label"
+msgid "Cross Infill Density Image"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "cross_infill_apply_pockets_alternatingly description"
-msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
-msgstr "Käytä taskuja vain puolessa nelisuuntaisista risteyksistä risti 3D -kuviossa ja vuorottele taskujen sijainnit sellaisten korkeuksien välillä, joissa kuvio koskettaa itseään."
+msgctxt "cross_infill_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the infill of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image label"
+msgid "Cross Fill Density Image for Support"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "cross_support_density_image description"
+msgid "The file location of an image of which the brightness values determine the minimal density at the corresponding location in the support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "spaghetti_infill_enabled label"
@@ -4610,16 +5178,6 @@ msgstr "Kartioimaisen tuen minimileveys"
 msgctxt "support_conical_min_width description"
 msgid "Minimum width to which the base of the conical support area is reduced. Small widths can lead to unstable support structures."
 msgstr "Minimileveys, johon kartiomaisen tukialueen perusta pienennetään. Pienet leveydet voivat johtaa epävakaisiin tukirakenteisiin."
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow label"
-msgid "Hollow Out Objects"
-msgstr "Kappaleiden tekeminen ontoiksi"
-
-#: fdmprinter.def.json
-msgctxt "infill_hollow description"
-msgid "Remove all infill and make the inside of the object eligible for support."
-msgstr "Poistaa kaikki täytöt, jotta kappaletta voidaan käyttää tukena."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_enabled label"
@@ -4941,6 +5499,406 @@ msgid "Distance between the nozzle and horizontally downward lines. Larger clear
 msgstr "Suuttimen ja vaakasuoraan laskevien linjojen välinen etäisyys. Suurempi väli aiheuttaa vähemmän jyrkän kulman diagonaalisesti laskeviin linjoihin, mikä puolestaan johtaa harvempiin yläliitoksiin seuraavan kerroksen kanssa. Koskee vain rautalankamallin tulostusta."
 
 #: fdmprinter.def.json
+msgctxt "adaptive_layer_height_enabled label"
+msgid "Use Adaptive Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_enabled description"
+msgid "Adaptive layers computes the layer heights depending on the shape of the model."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_variation label"
+msgid "Adaptive Layers Maximum Variation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_variation description"
+msgid "The maximum allowed height different from the base layer height."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_variation_step label"
+msgid "Adaptive Layers Variation Step Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_variation_step description"
+msgid "The difference in height of the next layer height compared to the previous one."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_threshold label"
+msgid "Adaptive Layers Threshold"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "adaptive_layer_height_threshold description"
+msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_angle label"
+msgid "Overhanging Wall Angle"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_angle description"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor label"
+msgid "Overhanging Wall Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_overhang_speed_factor description"
+msgid "Overhanging walls will be printed at this percentage of their normal print speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_settings_enabled label"
+msgid "Enable Bridge Settings"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_settings_enabled description"
+msgid "Detect bridges and modify print speed, flow and fan settings while bridges are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_min_length label"
+msgid "Minimum Bridge Wall Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_min_length description"
+msgid "Unsupported walls shorter than this will be printed using the normal wall settings. Longer unsupported walls will be printed using the bridge wall settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_support_threshold label"
+msgid "Bridge Skin Support Threshold"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_support_threshold description"
+msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_coast label"
+msgid "Bridge Wall Coasting"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_coast description"
+msgid "This controls the distance the extruder should coast immediately before a bridge wall begins. Coasting before the bridge starts can reduce the pressure in the nozzle and may produce a flatter bridge."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_speed label"
+msgid "Bridge Wall Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_speed description"
+msgid "The speed at which the bridge walls are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_material_flow label"
+msgid "Bridge Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_wall_material_flow description"
+msgid "When printing bridge walls, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed label"
+msgid "Bridge Skin Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed description"
+msgid "The speed at which bridge skin regions are printed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow label"
+msgid "Bridge Skin Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow description"
+msgid "When printing bridge skin regions, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density label"
+msgid "Bridge Skin Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density description"
+msgid "The density of the bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed label"
+msgid "Bridge Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed description"
+msgid "Percentage fan speed to use when printing bridge walls and skin."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_enable_more_layers label"
+msgid "Bridge Has Multiple Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_enable_more_layers description"
+msgid "If enabled, the second and third layers above the air are printed using the following settings. Otherwise, those layers are printed using the normal settings."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed_2 label"
+msgid "Bridge Second Skin Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed_2 description"
+msgid "Print speed to use when printing the second bridge skin layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow_2 label"
+msgid "Bridge Second Skin Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow_2 description"
+msgid "When printing the second bridge skin layer, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density_2 label"
+msgid "Bridge Second Skin Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density_2 description"
+msgid "The density of the second bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed_2 label"
+msgid "Bridge Second Skin Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed_2 description"
+msgid "Percentage fan speed to use when printing the second bridge skin layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed_3 label"
+msgid "Bridge Third Skin Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_speed_3 description"
+msgid "Print speed to use when printing the third bridge skin layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow_3 label"
+msgid "Bridge Third Skin Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_material_flow_3 description"
+msgid "When printing the third bridge skin layer, the amount of material extruded is multiplied by this value."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density_3 label"
+msgid "Bridge Third Skin Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_skin_density_3 description"
+msgid "The density of the third bridge skin layer. Values less than 100 will increase the gaps between the skin lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed_3 label"
+msgid "Bridge Third Skin Fan Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_fan_speed_3 description"
+msgid "Percentage fan speed to use when printing the third bridge skin layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "clean_between_layers label"
+msgid "Wipe Nozzle Between Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "clean_between_layers description"
+msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe label"
+msgid "Material Volume Between Wipes"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe description"
+msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable label"
+msgid "Wipe Retraction Enable"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount label"
+msgid "Wipe Retraction Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount description"
+msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount label"
+msgid "Wipe Retraction Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed label"
+msgid "Wipe Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed label"
+msgid "Wipe Retraction Retract Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a wipe retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a wipe retraction move."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause label"
+msgid "Wipe Pause"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause description"
+msgid "Pause after the unretract."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable label"
+msgid "Wipe Z Hop When Retracted"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable description"
+msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount label"
+msgid "Wipe Z Hop Height"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount description"
+msgid "The height difference when performing a Z Hop."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed label"
+msgid "Wipe Hop Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed description"
+msgid "Speed to move the z-axis during the hop."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x label"
+msgid "Wipe Brush X Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x description"
+msgid "X location where wipe script will start."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count label"
+msgid "Wipe Repeat Count"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance label"
+msgid "Wipe Move Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance description"
+msgid "The distance to move the head back and forth across the brush."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Komentorivin asetukset"
@@ -4952,8 +5910,8 @@ msgstr "Asetukset, joita käytetään vain jos CuraEnginea ei kutsuta Cura-edust
 
 #: fdmprinter.def.json
 msgctxt "center_object label"
-msgid "Center object"
-msgstr "Keskitä kappale"
+msgid "Center Object"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "center_object description"
@@ -4962,8 +5920,8 @@ msgstr "Määrittää, keskitetäänkö kappale alustan keskelle (0,0) sen sijas
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x label"
-msgid "Mesh position x"
-msgstr "Verkon x-sijainti"
+msgid "Mesh Position X"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_x description"
@@ -4972,8 +5930,8 @@ msgstr "Siirtymää sovelletaan kohteeseen X-suunnassa."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y label"
-msgid "Mesh position y"
-msgstr "Verkon y-sijainti"
+msgid "Mesh Position Y"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_y description"
@@ -4982,8 +5940,8 @@ msgstr "Siirtymää sovelletaan kohteeseen Y-suunnassa."
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z label"
-msgid "Mesh position z"
-msgstr "Verkon z-sijainti"
+msgid "Mesh Position Z"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "mesh_position_z description"
@@ -4999,6 +5957,202 @@ msgstr "Verkon pyöritysmatriisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Mallissa käytettävä muunnosmatriisi, kun malli ladataan tiedostosta."
+
+#~ msgctxt "machine_nozzle_tip_outer_diameter label"
+#~ msgid "Outer nozzle diameter"
+#~ msgstr "Suuttimen ulkoläpimitta"
+
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle length"
+#~ msgstr "Suuttimen pituus"
+
+#~ msgctxt "machine_nozzle_expansion_angle label"
+#~ msgid "Nozzle angle"
+#~ msgstr "Suuttimen kulma"
+
+#~ msgctxt "machine_heat_zone_length label"
+#~ msgid "Heat zone length"
+#~ msgstr "Lämpöalueen pituus"
+
+#~ msgctxt "machine_nozzle_heat_up_speed label"
+#~ msgid "Heat up speed"
+#~ msgstr "Lämpenemisnopeus"
+
+#~ msgctxt "machine_nozzle_cool_down_speed label"
+#~ msgid "Cool down speed"
+#~ msgstr "Jäähdytysnopeus"
+
+#~ msgctxt "machine_disallowed_areas label"
+#~ msgid "Disallowed areas"
+#~ msgstr "Kielletyt alueet"
+
+#~ msgctxt "machine_head_polygon label"
+#~ msgid "Machine head polygon"
+#~ msgstr "Laiteen pään monikulmio"
+
+#~ msgctxt "machine_head_with_fans_polygon label"
+#~ msgid "Machine head & Fan polygon"
+#~ msgstr "Laiteen pään ja tuulettimen monikulmio"
+
+#~ msgctxt "gantry_height label"
+#~ msgid "Gantry height"
+#~ msgstr "Korokkeen korkeus"
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords label"
+#~ msgid "Offset With Extruder"
+#~ msgstr "Suulakkeen siirtymä"
+
+#~ msgctxt "skin_overlap_mm description"
+#~ msgid "The amount of overlap between the skin and the walls. A slight overlap allows the walls to connect firmly to the skin."
+#~ msgstr "Limityksen määrä pintakalvon ja seinämien välillä. Pienellä limityksellä seinämät liittyvät tukevasti pintakalvoon."
+
+#~ msgctxt "switch_extruder_retraction_amount description"
+#~ msgid "The amount of retraction: Set at 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+#~ msgstr "Takaisinvedon määrä: 0 tarkoittaa, että takaisinvetoa ei ole lainkaan. Tämän on yleensä oltava sama kuin lämpöalueen pituus."
+
+#~ msgctxt "infill_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "Samankeskinen 3D"
+
+#~ msgctxt "retraction_combing description"
+#~ msgid "Combing keeps the nozzle within already printed areas when traveling. This results in slightly longer travel moves but reduces the need for retractions. If combing is off, the material will retract and the nozzle moves in a straight line to the next point. It is also possible to avoid combing over top/bottom skin areas by combing within the infill only."
+#~ msgstr "Pyyhkäisy pitää suuttimen aiemmin tulostetuilla alueilla siirtoliikkeitä tehtäessä. Tämä johtaa hieman pidempiin siirtoliikkeisiin, mutta vähentää takaisinvedon tarvetta. Jos pyyhkäisy on poistettu käytöstä, materiaalille tehdään takaisinveto ja suutin liikkuu suoraan seuraavaan pisteeseen. On myös mahdollista välttää pyyhkäisy ylä- tai alapintakalvojen yli pyyhkäisemällä vain täytössä."
+
+#~ msgctxt "support_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "Samankeskinen 3D"
+
+#~ msgctxt "support_interface_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "Samankeskinen 3D"
+
+#~ msgctxt "support_roof_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "Samankeskinen 3D"
+
+#~ msgctxt "support_bottom_pattern option concentric_3d"
+#~ msgid "Concentric 3D"
+#~ msgstr "Samankeskinen 3D"
+
+#~ msgctxt "raft_base_line_spacing label"
+#~ msgid "Raft Line Spacing"
+#~ msgstr "Pohjaristikon linjajako"
+
+#~ msgctxt "prime_tower_wall_thickness label"
+#~ msgid "Prime Tower Thickness"
+#~ msgstr "Esitäyttötornin paksuus"
+
+#~ msgctxt "prime_tower_wall_thickness description"
+#~ msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
+#~ msgstr "Onton esitäyttötornin paksuus. Jos paksuus ylittää puolet esitäyttötornin minimitilavuudesta, tuloksena on tiheä esitäyttötorni."
+
+#~ msgctxt "dual_pre_wipe label"
+#~ msgid "Wipe Nozzle After Switch"
+#~ msgstr "Pyyhi suutin vaihdon jälkeen"
+
+#~ msgctxt "dual_pre_wipe description"
+#~ msgid "After switching extruder, wipe the oozed material off of the nozzle on the first thing printed. This performs a safe slow wipe move at a place where the oozed material causes least harm to the surface quality of your print."
+#~ msgstr "Pyyhi suuttimen vaihdon jälkeen tihkunut materiaali pois suuttimesta, kun ensimmäinen kappale on tulostettu. Näin saadaan aikaan turvallinen ja hidas pyyhkäisyliike kohdassa, jossa tihkunut materiaali vaurioittaa mahdollisimman vähän tulostuksen pinnan laatua."
+
+#~ msgctxt "prime_tower_purge_volume label"
+#~ msgid "Prime Tower Purge Volume"
+#~ msgstr "Esitäyttötornin poistoainemäärä"
+
+#~ msgctxt "prime_tower_purge_volume description"
+#~ msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
+#~ msgstr "Poistettavan tulostuslangan määrä esitäyttötornia pyyhittäessä. Poisto on hyödyllinen menetetyn tulostuslangan kompensointiin, silloin kun sitä tihkuu suuttimen ollessa ei-aktiivinen."
+
+#~ msgctxt "optimize_wall_printing_order description"
+#~ msgid "Optimize the order in which walls are printed so as to reduce the number of retractions and the distance travelled. Most parts will benefit from this being enabled but some may actually take longer so please compare the print time estimates with and without optimization."
+#~ msgstr "Optimoi seinämien tulostusjärjestys takaisinvetojen ja kuljetun etäisyyden vähentämiseksi. Useimmat osat hyötyvät tämän asetuksen käytöstä, mutta joissakin saattaa kestää kauemmin, joten vertaa tulostusajan arvioita optimointia käytettäessä ja ilman sitä."
+
+#~ msgctxt "retraction_combing option noskin"
+#~ msgid "No Skin"
+#~ msgstr "Ei pintakalvoa"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly label"
+#~ msgid "Alternate Cross 3D Pockets"
+#~ msgstr "Vuoroittaiset risti 3D -taskut"
+
+#~ msgctxt "cross_infill_apply_pockets_alternatingly description"
+#~ msgid "Only apply pockets at half of the four-way crossings in the cross 3D pattern and alternate the location of the pockets between heights where the pattern is touching itself."
+#~ msgstr "Käytä taskuja vain puolessa nelisuuntaisista risteyksistä risti 3D -kuviossa ja vuorottele taskujen sijainnit sellaisten korkeuksien välillä, joissa kuvio koskettaa itseään."
+
+#~ msgctxt "infill_hollow label"
+#~ msgid "Hollow Out Objects"
+#~ msgstr "Kappaleiden tekeminen ontoiksi"
+
+#~ msgctxt "infill_hollow description"
+#~ msgid "Remove all infill and make the inside of the object eligible for support."
+#~ msgstr "Poistaa kaikki täytöt, jotta kappaletta voidaan käyttää tukena."
+
+#~ msgctxt "center_object label"
+#~ msgid "Center object"
+#~ msgstr "Keskitä kappale"
+
+#~ msgctxt "mesh_position_x label"
+#~ msgid "Mesh position x"
+#~ msgstr "Verkon x-sijainti"
+
+#~ msgctxt "mesh_position_y label"
+#~ msgid "Mesh position y"
+#~ msgstr "Verkon y-sijainti"
+
+#~ msgctxt "mesh_position_z label"
+#~ msgid "Mesh position z"
+#~ msgstr "Verkon z-sijainti"
+
+#~ msgctxt "machine_start_gcode label"
+#~ msgid "Start GCode"
+#~ msgstr "Aloitus-GCode"
+
+#~ msgctxt "machine_start_gcode description"
+#~ msgid ""
+#~ "Gcode commands to be executed at the very start - separated by \n"
+#~ "."
+#~ msgstr ""
+#~ "GCode-komennot, jotka suoritetaan aivan alussa – eroteltuina merkillä \n"
+#~ "."
+
+#~ msgctxt "machine_end_gcode label"
+#~ msgid "End GCode"
+#~ msgstr "Lopetus-GCode"
+
+#~ msgctxt "machine_end_gcode description"
+#~ msgid ""
+#~ "Gcode commands to be executed at the very end - separated by \n"
+#~ "."
+#~ msgstr ""
+#~ "GCode-komennot, jotka suoritetaan aivan lopussa – eroteltuina merkillä \n"
+#~ "."
+
+#~ msgctxt "machine_gcode_flavor label"
+#~ msgid "Gcode flavour"
+#~ msgstr "GCode-tyyppi"
+
+#~ msgctxt "machine_gcode_flavor description"
+#~ msgid "The type of gcode to be generated."
+#~ msgstr "Luotavan GCoden tyyppi."
+
+#~ msgctxt "meshfix_keep_open_polygons description"
+#~ msgid "Normally Cura tries to stitch up small holes in the mesh and remove parts of a layer with big holes. Enabling this option keeps those parts which cannot be stitched. This option should be used as a last resort option when everything else fails to produce proper GCode."
+#~ msgstr "Normaalisti Cura yrittää silmukoida umpeen pieniä reikiä verkosta ja poistaa kerroksesta osat, joissa on isoja reikiä. Tämän vaihtoehdon käyttöönotto pitää ne osat, joita ei voida silmukoida. Tätä tulisi pitää viimeisenä vaihtoehtona, kun millään muulla ei saada aikaan kunnollista GCodea."
+
+#~ msgctxt "relative_extrusion description"
+#~ msgid "Use relative extrusion rather than absolute extrusion. Using relative E-steps makes for easier post-processing of the Gcode. However, it's not supported by all printers and it may produce very slight deviations in the amount of deposited material compared to absolute E-steps. Irrespective of this setting, the extrusion mode will always be set to absolute before any Gcode script is output."
+#~ msgstr "Käytä suhteellista pursotusta absoluuttisen pursotuksen sijaan. Suhteellisten E-askelten käyttö helpottaa Gcoden jälkikäsittelyä. Kaikki tulostimet eivät kuitenkaan tue sitä, ja se saattaa aiheuttaa hyvin vähäisiä poikkeamia materiaalin määrässä absoluuttisiin E-askeliin verrattuna. Tästä asetuksesta riippumatta pursotustila on aina absoluuttinen, ennen kuin mitään Gcode-komentosarjaa tuotetaan."
+
+#~ msgctxt "infill_overlap description"
+#~ msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
+#~ msgstr "Limityksen määrä täytön ja seinämien välillä. Pienellä limityksellä seinämät liittyvät tukevasti täyttöön."
+
+#~ msgctxt "skin_overlap description"
+#~ msgid "The amount of overlap between the skin and the walls as a percentage of the line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
+#~ msgstr "Limityksen määrä pintakalvon ja seinämien välillä linjaleveyden prosenttina. Pienellä limityksellä seinämät liittyvät tukevasti pintakalvoon. Tämä on pintakalvon linjojen ja sisimmän seinämän keskimääräisten linjaleveyksien prosenttiluku."
+
+#~ msgctxt "material_bed_temperature description"
+#~ msgid "The temperature used for the heated build plate. If this is 0, the bed will not heat up for this print."
+#~ msgstr "Lämmitettävän alustan lämpötila. Jos tämä on 0, pöytä ei lämpene tätä tulostusta varten."
 
 #~ msgctxt "wall_x_extruder_nr label"
 #~ msgid "Inner Walls Extruder"

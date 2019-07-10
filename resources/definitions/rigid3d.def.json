@@ -7,7 +7,11 @@
         "author": "Ultimaker",
         "manufacturer": "Rigid3D",
         "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0]
+        "platform_offset": [ 0, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "rigid3d_extruder_0"
+        }
     },
 
     "overrides": {
@@ -24,7 +28,6 @@
         "speed_wall_x": { "default_value": 40 },
         "speed_travel": { "default_value": 100 },
         "bottom_thickness": { "default_value": 0.75 },
-        "material_diameter": { "default_value": 1.75 },
         "layer_height_0": { "default_value": 0.25 },
         "support_angle": { "default_value": 45 },
         "material_bed_temperature": { "default_value": 100 },

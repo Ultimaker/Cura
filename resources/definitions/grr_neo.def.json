@@ -7,8 +7,11 @@
         "author": "Simon Cor",
         "manufacturer": "German RepRap",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
-        "platform": "grr_neo_platform.stl"
+        "platform": "grr_neo_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "grr_neo_extruder_0"
+        }
     },
 
     "overrides": {
@@ -25,9 +28,6 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.5
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-75, -18],
@@ -37,7 +37,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

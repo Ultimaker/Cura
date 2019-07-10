@@ -12,6 +12,7 @@ import numpy as np
 from UM.Logger import Logger
 from UM.Application import Application
 import re
+from cura.Settings.ExtruderManager import ExtruderManager
 
 def _getValue(line, key, default=None):
     """
@@ -34,25 +35,39 @@ class GCodeStep():
     Class to store the current value of each G_Code parameter
     for any G-Code step
     """
-    def __init__(self, step):
+    def __init__(self, step, in_relative_movement: bool = False):
         self.step = step
         self.step_x = 0
         self.step_y = 0
         self.step_z = 0
         self.step_e = 0
         self.step_f = 0
+
+        self.in_relative_movement = in_relative_movement
+
         self.comment = ""
 
     def readStep(self, line):
         """
         Reads gcode from line into self
         """
-        self.step_x = _getValue(line, "X", self.step_x)
-        self.step_y = _getValue(line, "Y", self.step_y)
-        self.step_z = _getValue(line, "Z", self.step_z)
-        self.step_e = _getValue(line, "E", self.step_e)
-        self.step_f = _getValue(line, "F", self.step_f)
-        return
+        if not self.in_relative_movement:
+            self.step_x = _getValue(line, "X", self.step_x)
+            self.step_y = _getValue(line, "Y", self.step_y)
+            self.step_z = _getValue(line, "Z", self.step_z)
+            self.step_e = _getValue(line, "E", self.step_e)
+            self.step_f = _getValue(line, "F", self.step_f)
+        else:
+            delta_step_x = _getValue(line, "X", 0)
+            delta_step_y = _getValue(line, "Y", 0)
+            delta_step_z = _getValue(line, "Z", 0)
+            delta_step_e = _getValue(line, "E", 0)
+
+            self.step_x += delta_step_x
+            self.step_y += delta_step_y
+            self.step_z += delta_step_z
+            self.step_e += delta_step_e
+            self.step_f = _getValue(line, "F", self.step_f)  # the feedrate is not relative
 
     def copyPosFrom(self, step):
         """
@@ -64,7 +79,9 @@ class GCodeStep():
         self.step_e = step.step_e
         self.step_f = step.step_f
         self.comment = step.comment
-        return
+
+    def setInRelativeMovement(self, value: bool) -> None:
+        self.in_relative_movement = value
 
 
 # Execution part of the stretch plugin
@@ -85,17 +102,19 @@ class Stretcher():
                                     # of already deposited material for current layer
         self.layer_z = 0            # Z position of the extrusion moves of the current layer
         self.layergcode = ""
+        self._in_relative_movement = False
 
     def execute(self, data):
         """
         Computes the new X and Y coordinates of all g-code steps
         """
-        Logger.log("d", "Post stretch with line width = " + str(self.line_width)
-                   + "mm wide circle stretch = " + str(self.wc_stretch)+ "mm"
-                   + "and push wall stretch = " + str(self.pw_stretch) + "mm")
+        Logger.log("d", "Post stretch with line width " + str(self.line_width)
+                   + "mm wide circle stretch " + str(self.wc_stretch)+ "mm"
+                   + " and push wall stretch " + str(self.pw_stretch) + "mm")
         retdata = []
         layer_steps = []
-        current = GCodeStep(0)
+        in_relative_movement = False
+        current = GCodeStep(0, in_relative_movement)
         self.layer_z = 0.
         current_e = 0.
         for layer in data:
@@ -106,20 +125,32 @@ class Stretcher():
                     current.comment = line[line.find(";"):]
                 if _getValue(line, "G") == 0:
                     current.readStep(line)
-                    onestep = GCodeStep(0)
+                    onestep = GCodeStep(0, in_relative_movement)
                     onestep.copyPosFrom(current)
                 elif _getValue(line, "G") == 1:
                     current.readStep(line)
-                    onestep = GCodeStep(1)
+                    onestep = GCodeStep(1, in_relative_movement)
                     onestep.copyPosFrom(current)
+
+                # end of relative movement
+                elif _getValue(line, "G") == 90:
+                    in_relative_movement = False
+                    current.setInRelativeMovement(in_relative_movement)
+                # start of relative movement
+                elif _getValue(line, "G") == 91:
+                    in_relative_movement = True
+                    current.setInRelativeMovement(in_relative_movement)
+
                 elif _getValue(line, "G") == 92:
                     current.readStep(line)
-                    onestep = GCodeStep(-1)
-                    onestep.copyPosFrom(current)
-                else:
-                    onestep = GCodeStep(-1)
+                    onestep = GCodeStep(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
                     onestep.comment = line
+                else:
+                    onestep = GCodeStep(-1, in_relative_movement)
+                    onestep.copyPosFrom(current)
+                    onestep.comment = line
+
                 if line.find(";LAYER:") >= 0 and len(layer_steps):
                     # Previous plugin "forgot" to separate two layers...
                     Logger.log("d", "Layer Z " + "{:.3f}".format(self.layer_z)
@@ -282,7 +313,7 @@ class Stretcher():
         dmin_tri is the minimum distance between two consecutive points
         of an acceptable triangle
         """
-        dmin_tri = self.line_width / 2.0
+        dmin_tri = 0.5
         iextra_base = np.floor_divide(len(orig_seq), 3) # Nb of extra points
         ibeg = 0 # Index of first point of the triangle
         iend = 0 # Index of the third point of the triangle
@@ -325,9 +356,10 @@ class Stretcher():
                 relpos = 0.5 # To avoid division by zero or precision loss
             projection = (pos_before[ibeg] + relpos * (pos_after[iend] - pos_before[ibeg]))
             dist_from_proj = np.sqrt(((projection - step) ** 2).sum(0))
-            if dist_from_proj > 0.001: # Move central point only if points are not aligned
+            if dist_from_proj > 0.0003: # Move central point only if points are not aligned
                 modif_seq[i] = (step - (self.wc_stretch / dist_from_proj)
                                 * (projection - step))
+
         return
 
     def wideTurn(self, orig_seq, modif_seq):
@@ -411,8 +443,6 @@ class Stretcher():
                 modif_seq[ibeg] = modif_seq[ibeg] + xperp * self.pw_stretch
             elif not materialleft and materialright:
                 modif_seq[ibeg] = modif_seq[ibeg] - xperp * self.pw_stretch
-            if materialleft and materialright:
-                modif_seq[ibeg] = orig_seq[ibeg] # Surrounded by walls, don't move
 
 # Setup part of the stretch plugin
 class Stretch(Script):
@@ -437,7 +467,7 @@ class Stretch(Script):
                     "description": "Distance by which the points are moved by the correction effect in corners. The higher this value, the higher the effect",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.08,
+                    "default_value": 0.1,
                     "minimum_value": 0,
                     "minimum_value_warning": 0,
                     "maximum_value_warning": 0.2
@@ -448,7 +478,7 @@ class Stretch(Script):
                     "description": "Distance by which the points are moved by the correction effect when two lines are nearby. The higher this value, the higher the effect",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0.08,
+                    "default_value": 0.1,
                     "minimum_value": 0,
                     "minimum_value_warning": 0,
                     "maximum_value_warning": 0.2
@@ -463,7 +493,7 @@ class Stretch(Script):
         the returned string is the list of modified g-code instructions
         """
         stretcher = Stretcher(
-            Application.getInstance().getGlobalContainerStack().getProperty("line_width", "value")
+            ExtruderManager.getInstance().getActiveExtruderStack().getProperty("machine_nozzle_size", "value")
             , self.getSettingValueByKey("wc_stretch"), self.getSettingValueByKey("pw_stretch"))
         return stretcher.execute(data)
 

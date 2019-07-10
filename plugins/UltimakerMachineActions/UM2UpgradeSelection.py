@@ -1,17 +1,16 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.InstanceContainer import InstanceContainer
-from cura.MachineAction import MachineAction
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSignal, pyqtProperty
 
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Util import parseBool
-catalog = i18nCatalog("cura")
 
-import UM.Settings.InstanceContainer
+from cura.MachineAction import MachineAction
+
+catalog = i18nCatalog("cura")
 
 
 ##  The Ultimaker 2 can have a few revisions & upgrades.
@@ -22,28 +21,35 @@ class UM2UpgradeSelection(MachineAction):
 
         self._container_registry = ContainerRegistry.getInstance()
 
+        self._current_global_stack = None
+
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalStackChanged)
+        self._reset()
+
     def _reset(self):
         self.hasVariantsChanged.emit()
 
+    def _onGlobalStackChanged(self):
+        if self._current_global_stack:
+            self._current_global_stack.metaDataChanged.disconnect(self._onGlobalStackMetaDataChanged)
+
+        self._current_global_stack = Application.getInstance().getGlobalContainerStack()
+        if self._current_global_stack:
+            self._current_global_stack.metaDataChanged.connect(self._onGlobalStackMetaDataChanged)
+        self._reset()
+
+    def _onGlobalStackMetaDataChanged(self):
+        self._reset()
+
     hasVariantsChanged = pyqtSignal()
 
-    @pyqtProperty(bool, notify = hasVariantsChanged)
-    def hasVariants(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            return parseBool(global_container_stack.getMetaDataEntry("has_variants", "false"))
-
-    @pyqtSlot(bool)
     def setHasVariants(self, has_variants = True):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
             variant_container = global_container_stack.extruders["0"].variant
 
             if has_variants:
-                if "has_variants" in global_container_stack.getMetaData():
-                    global_container_stack.setMetaDataEntry("has_variants", True)
-                else:
-                    global_container_stack.addMetaDataEntry("has_variants", True)
+                global_container_stack.setMetaDataEntry("has_variants", True)
 
                 # Set the variant container to a sane default
                 empty_container = ContainerRegistry.getInstance().getEmptyInstanceContainer()
@@ -62,3 +68,9 @@ class UM2UpgradeSelection(MachineAction):
                 global_container_stack.extruders["0"].variant = ContainerRegistry.getInstance().getEmptyInstanceContainer()
 
             Application.getInstance().globalContainerStackChanged.emit()
+            self._reset()
+
+    @pyqtProperty(bool, fset = setHasVariants, notify = hasVariantsChanged)
+    def hasVariants(self):
+        if self._current_global_stack:
+            return parseBool(self._current_global_stack.getMetaDataEntry("has_variants", "false"))

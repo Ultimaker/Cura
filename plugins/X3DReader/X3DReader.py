@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from math import pi, sin, cos, sqrt
+from typing import Dict
 
 import numpy
 
@@ -26,8 +27,8 @@ except ImportError:
 DEFAULT_SUBDIV = 16 # Default subdivision factor for spheres, cones, and cylinders
 EPSILON = 0.000001
 
-class Shape:
 
+class Shape:
     # Expects verts in MeshBuilder-ready format, as a n by 3 mdarray
     # with vertices stored in rows
     def __init__(self, verts, faces, index_base, name):
@@ -37,15 +38,16 @@ class Shape:
         self.index_base = index_base
         self.name = name
 
+
 class X3DReader(MeshReader):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self._supported_extensions = [".x3d"]
-        self._namespaces = {}
+        self._namespaces = {}   # type: Dict[str, str]
 
     # Main entry point
     # Reads the file, returns a SceneNode (possibly with nested ones), or None
-    def read(self, file_name):
+    def _read(self, file_name):
         try:
             self.defs = {}
             self.shapes = []

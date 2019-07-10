@@ -108,7 +108,22 @@ UM.Dialog
                     text: catalog.i18nc("@info:tooltip", "How should the conflict in the machine be resolved?")
                     ComboBox
                     {
-                        model: resolveStrategiesModel
+                        model: ListModel
+                        {
+                            Component.onCompleted:
+                            {
+                                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName});
+                                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
+                            }
+                        }
+                        Connections
+                        {
+                            target: manager
+                            onMachineNameChanged:
+                            {
+                                machineResolveComboBox.model.get(0).label = catalog.i18nc("@action:ComboBox option", "Update") + " " + manager.machineName;
+                            }
+                        }
                         textRole: "label"
                         id: machineResolveComboBox
                         width: parent.width
@@ -141,7 +156,7 @@ UM.Dialog
                 height: childrenRect.height
                 Label
                 {
-                    text: catalog.i18nc("@action:label", "Name")
+                    text: catalog.i18nc("@action:label", manager.isPrinterGroup ? "Printer Group" : "Printer Name")
                     width: (parent.width / 3) | 0
                 }
                 Label
@@ -388,6 +403,13 @@ UM.Dialog
             anchors.bottom: parent.bottom
             anchors.right: parent.right
         }
+    }
+
+    function accept() {
+        manager.closeBackend();
+        manager.onOkButtonClicked();
+        base.visible = false;
+        base.accept();
     }
 
     function reject() {

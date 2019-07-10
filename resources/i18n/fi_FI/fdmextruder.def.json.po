@@ -1,13 +1,13 @@
 # Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2017-11-21 16:58+0000\n"
+"Project-Id-Version: Cura 4.1\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-05-14 12:48+0000\n"
 "PO-Revision-Date: 2017-08-11 14:31+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -83,8 +83,8 @@ msgstr "Suulakkeen aloitus-GCode"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
-msgid "Start g-code to execute whenever turning the extruder on."
-msgstr "Aloitus-GCode, joka suoritetaan suulakkeen käynnistyksen yhteydessä."
+msgid "Start g-code to execute when switching to this extruder."
+msgstr ""
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
@@ -123,8 +123,8 @@ msgstr "Suulakkeen lopetus-GCode"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
-msgid "End g-code to execute whenever turning the extruder off."
-msgstr "Lopetus-GCode, joka suoritetaan, kun suulake poistetaan käytöstä."
+msgid "End g-code to execute when switching away from this extruder."
+msgstr ""
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"
@@ -167,6 +167,16 @@ msgid "The Z coordinate of the position where the nozzle primes at the start of 
 msgstr "Z-koordinaatti sijainnille, jossa suutin esitäytetään tulostusta aloitettaessa."
 
 #: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr ""
+
+#: fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "Alustan tarttuvuus"
@@ -195,3 +205,31 @@ msgstr "Suulakkeen esitäytön Y-sijainti"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "Y-koordinaatti sijainnille, jossa suutin esitäytetään tulostusta aloitettaessa."
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr ""
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr ""
+
+#~ msgctxt "machine_extruder_start_code description"
+#~ msgid "Start g-code to execute whenever turning the extruder on."
+#~ msgstr "Aloitus-GCode, joka suoritetaan suulakkeen käynnistyksen yhteydessä."
+
+#~ msgctxt "machine_extruder_end_code description"
+#~ msgid "End g-code to execute whenever turning the extruder off."
+#~ msgstr "Lopetus-GCode, joka suoritetaan, kun suulake poistetaan käytöstä."

@@ -1,8 +1,0 @@
-{
-    "name": "Changelog",
-    "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "description": "Shows changes since latest checked version.",
-    "api": 4,
-    "i18n-catalog": "cura"
-}

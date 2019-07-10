@@ -1,111 +1,149 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Scene.Iterator import Iterator
-from UM.Scene.SceneNode import SceneNode
-from functools import cmp_to_key
-from UM.Application import Application
+import sys
 
-## Iterator that returns a list of nodes in the order that they need to be printed
-#  If there is no solution an empty list is returned.
-#  Take note that the list of nodes can have children (that may or may not contain mesh data)
-class OneAtATimeIterator(Iterator.Iterator):
+from shapely import affinity
+from shapely.geometry import Polygon
+
+from UM.Scene.Iterator.Iterator import Iterator
+from UM.Scene.SceneNode import SceneNode
+
+
+# Iterator that determines the object print order when one-at a time mode is enabled.
+#
+# In one-at-a-time mode, only one extruder can be enabled to print. In order to maximize the number of objects we can
+# print, we need to print from the corner that's closest to the extruder that's being used. Here is an illustration:
+#
+#  +--------------------------------+
+#  |                                |
+#  |                                |
+#  |                                |          - Rectangle represents the complete print head including fans, etc.
+#  |       X                X       |    y     - X's are the nozzles
+#  |      (1)              (2)      |    ^
+#  |                                |    |
+#  +--------------------------------+    +--> x
+#
+# In this case, the nozzles are symmetric, nozzle (1) is closer to the bottom left corner while (2) is closer to the
+# bottom right. If we use nozzle (1) to print, then we better off printing from the bottom left corner so the print
+# head will not collide into an object on its top-right side, which is a very large unused area. Following the same
+# logic, if we are printing with nozzle (2), then it's better to print from the bottom-right side.
+#
+# This iterator determines the print order following the rules above.
+#
+class OneAtATimeIterator(Iterator):
+
     def __init__(self, scene_node):
-        super().__init__(scene_node) # Call super to make multiple inheritence work.
-        self._hit_map = [[]]
+        from cura.CuraApplication import CuraApplication
+        self._global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         self._original_node_list = []
-    
-    def _fillStack(self):
-        node_list = []
+
+        super().__init__(scene_node)  # Call super to make multiple inheritance work.
+
+    def getMachineNearestCornerToExtruder(self, global_stack):
+        head_and_fans_coordinates = global_stack.getHeadAndFansCoordinates()
+
+        used_extruder = None
+        for extruder in global_stack.extruders.values():
+            if extruder.isEnabled:
+                used_extruder = extruder
+                break
+
+        extruder_offsets = [used_extruder.getProperty("machine_nozzle_offset_x", "value"),
+                            used_extruder.getProperty("machine_nozzle_offset_y", "value")]
+
+        # find the corner that's closest to the origin
+        min_distance2 = sys.maxsize
+        min_coord = None
+        for coord in head_and_fans_coordinates:
+            x = coord[0] - extruder_offsets[0]
+            y = coord[1] - extruder_offsets[1]
+
+            distance2 = x**2 + y**2
+            if distance2 <= min_distance2:
+                min_distance2 = distance2
+                min_coord = coord
+
+        return min_coord
+
+    def _checkForCollisions(self) -> bool:
+        all_nodes = []
         for node in self._scene_node.getChildren():
-            if not isinstance(node, SceneNode):
+            if not issubclass(type(node), SceneNode):
+                continue
+            convex_hull = node.callDecoration("getConvexHullHead")
+            if not convex_hull:
                 continue
 
-            if node.callDecoration("getConvexHull"):
-                node_list.append(node)
+            bounding_box = node.getBoundingBox()
+            if not bounding_box:
+                continue
+            from UM.Math.Polygon import Polygon
+            bounding_box_polygon = Polygon([[bounding_box.left, bounding_box.front],
+                                            [bounding_box.left, bounding_box.back],
+                                            [bounding_box.right, bounding_box.back],
+                                            [bounding_box.right, bounding_box.front]])
 
-        if len(node_list) < 2:
-            self._node_stack = node_list[:]
-            return 
+            all_nodes.append({"node": node,
+                              "bounding_box": bounding_box_polygon,
+                              "convex_hull": convex_hull})
 
-        # Copy the list
-        self._original_node_list = node_list[:]
+        has_collisions = False
+        for i, node_dict in enumerate(all_nodes):
+            for j, other_node_dict in enumerate(all_nodes):
+                if i == j:
+                    continue
+                if node_dict["bounding_box"].intersectsPolygon(other_node_dict["convex_hull"]):
+                    has_collisions = True
+                    break
 
-        ## Initialise the hit map (pre-compute all hits between all objects)
-        self._hit_map = [[self._checkHit(i,j) for i in node_list] for j in node_list]
+            if has_collisions:
+                break
 
-        # Check if we have to files that block eachother. If this is the case, there is no solution!
-        for a in range(0,len(node_list)):
-            for b in range(0,len(node_list)):
-                if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
-                    return 
+        return has_collisions
 
-        # Sort the original list so that items that block the most other objects are at the beginning.
-        # This does not decrease the worst case running time, but should improve it in most cases.
-        sorted(node_list, key = cmp_to_key(self._calculateScore))
+    def _fillStack(self):
+        min_coord = self.getMachineNearestCornerToExtruder(self._global_stack)
+        transform_x = -int(round(min_coord[0] / abs(min_coord[0])))
+        transform_y = -int(round(min_coord[1] / abs(min_coord[1])))
 
-        todo_node_list = [_ObjectOrder([], node_list)]
-        while len(todo_node_list) > 0:
-            current = todo_node_list.pop()
-            for node in current.todo:
-                # Check if the object can be placed with what we have and still allows for a solution in the future
-                if not self._checkHitMultiple(node, current.order) and not self._checkBlockMultiple(node, current.todo):
-                    # We found a possible result. Create new todo & order list.
-                    new_todo_list = current.todo[:]
-                    new_todo_list.remove(node)
-                    new_order = current.order[:] + [node]
-                    if len(new_todo_list) == 0: 
-                        # We have no more nodes to check, so quit looking.
-                        todo_node_list = None
-                        self._node_stack = new_order
+        machine_size = [self._global_stack.getProperty("machine_width", "value"),
+                        self._global_stack.getProperty("machine_depth", "value")]
 
-                        return
-                    todo_node_list.append(_ObjectOrder(new_order, new_todo_list))
-        self._node_stack = [] #No result found!
+        def flip_x(polygon):
+            tm2 = [-1, 0, 0, 1, 0, 0]
+            return affinity.affine_transform(affinity.translate(polygon, xoff = -machine_size[0]), tm2)
 
+        def flip_y(polygon):
+            tm2 = [1, 0, 0, -1, 0, 0]
+            return affinity.affine_transform(affinity.translate(polygon, yoff = -machine_size[1]), tm2)
 
-    # Check if first object can be printed before the provided list (using the hit map)
-    def _checkHitMultiple(self, node, other_nodes):
-        node_index = self._original_node_list.index(node)
-        for other_node in other_nodes:
-            other_node_index = self._original_node_list.index(other_node)
-            if self._hit_map[node_index][other_node_index]:
-                return True
-        return False
+        if self._checkForCollisions():
+            self._node_stack = []
+            return
 
-    def _checkBlockMultiple(self, node, other_nodes):
-        node_index = self._original_node_list.index(node)
-        for other_node in other_nodes:
-            other_node_index = self._original_node_list.index(other_node)
-            if self._hit_map[other_node_index][node_index] and node_index != other_node_index:
-                return True
-        return False
+        node_list = []
+        for node in self._scene_node.getChildren():
+            if not issubclass(type(node), SceneNode):
+                continue
 
-    ##  Calculate score simply sums the number of other objects it 'blocks'
-    def _calculateScore(self, a, b):
-        score_a = sum(self._hit_map[self._original_node_list.index(a)])
-        score_b = sum(self._hit_map[self._original_node_list.index(b)])
-        return score_a - score_b
+            convex_hull = node.callDecoration("getConvexHull")
+            if convex_hull:
+                xmin = min(x for x, _ in convex_hull._points)
+                xmax = max(x for x, _ in convex_hull._points)
+                ymin = min(y for _, y in convex_hull._points)
+                ymax = max(y for _, y in convex_hull._points)
 
-    #   Checks if A can be printed before B
-    def _checkHit(self, a, b):
-        if a == b:
-            return False
+                convex_hull_polygon = Polygon.from_bounds(xmin, ymin, xmax, ymax)
+                if transform_x < 0:
+                    convex_hull_polygon = flip_x(convex_hull_polygon)
+                if transform_y < 0:
+                    convex_hull_polygon = flip_y(convex_hull_polygon)
 
-        overlap = a.callDecoration("getConvexHullBoundary").intersectsPolygon(b.callDecoration("getConvexHullHeadFull"))
-        if overlap:
-            return True
-        else: 
-            return False
+                node_list.append({"node": node,
+                                  "min_coord": [convex_hull_polygon.bounds[0], convex_hull_polygon.bounds[1]],
+                                  })
 
+        node_list = sorted(node_list, key = lambda d: d["min_coord"])
 
-## Internal object used to keep track of a possible order in which to print objects.      
-class _ObjectOrder():
-    def __init__(self, order, todo):
-        """
-        :param order:   List of indexes in which to print objects, ordered by printing order.
-        :param todo:    List of indexes which are not yet inserted into the order list.
-        """
-        self.order = order
-        self.todo = todo
-
+        self._node_stack = [d["node"] for d in node_list]

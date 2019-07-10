@@ -7,43 +7,36 @@ from UM.Mesh.MeshBuilder import MeshBuilder
 from .LayerData import LayerData
 
 import numpy
+from typing import Dict, Optional
 
 
 ## Builder class for constructing a LayerData object
 class LayerDataBuilder(MeshBuilder):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self._layers = {}
-        self._element_counts = {}
+        self._layers = {}  # type: Dict[int, Layer]
+        self._element_counts = {}  # type: Dict[int, int]
 
-    def addLayer(self, layer):
+    def addLayer(self, layer: int) -> None:
         if layer not in self._layers:
             self._layers[layer] = Layer(layer)
 
-    def addPolygon(self, layer, polygon_type, data, line_width, line_thickness, line_feedrate):
-        if layer not in self._layers:
-            self.addLayer(layer)
+    def getLayer(self, layer: int) -> Optional[Layer]:
+        return self._layers.get(layer)
 
-        p = LayerPolygon(self, polygon_type, data, line_width, line_thickness, line_feedrate)
-        self._layers[layer].polygons.append(p)
-
-    def getLayer(self, layer):
-        if layer in self._layers:
-            return self._layers[layer]
-
-    def getLayers(self):
+    def getLayers(self) -> Dict[int, Layer]:
         return self._layers
 
-    def getElementCounts(self):
+    def getElementCounts(self) -> Dict[int, int]:
         return self._element_counts
 
-    def setLayerHeight(self, layer, height):
+    def setLayerHeight(self, layer: int, height: float) -> None:
         if layer not in self._layers:
             self.addLayer(layer)
 
         self._layers[layer].setHeight(height)
 
-    def setLayerThickness(self, layer, thickness):
+    def setLayerThickness(self, layer: int, thickness: float) -> None:
         if layer not in self._layers:
             self.addLayer(layer)
 
@@ -71,7 +64,7 @@ class LayerDataBuilder(MeshBuilder):
         vertex_offset = 0
         index_offset = 0
         for layer, data in sorted(self._layers.items()):
-            ( vertex_offset, index_offset ) = data.build( vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
+            vertex_offset, index_offset = data.build(vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices)
             self._element_counts[layer] = data.elementCount
 
         self.addVertices(vertices)

@@ -13,7 +13,7 @@ def readHex(filename):
     """
     data = []
     extra_addr = 0
-    f = io.open(filename, "r")
+    f = io.open(filename, "r", encoding = "utf-8")
     for line in f:
         line = line.strip()
         if len(line) < 1:

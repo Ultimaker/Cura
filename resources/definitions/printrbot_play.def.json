@@ -7,7 +7,11 @@
         "author": "Chris Pearson",
         "manufacturer": "Printrbot",
         "file_formats": "text/x-gcode",
-        "platform": "printrbot_play.stl"
+        "platform": "printrbot_play.stl",
+        "machine_extruder_trains":
+        {
+            "0": "printrbot_play_extruder_0"
+        }
     },
 
     "overrides": {
@@ -17,15 +21,13 @@
         "machine_depth": { "default_value": 100 },
         "machine_height": { "default_value": 130 },
         "machine_center_is_zero": { "default_value": false },
-        "material_diameter": { "default_value": 1.75 },
-        "machine_nozzle_size": { "default_value": 0.4 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.3 },
         "retraction_amount": { "default_value": 0.7 },
         "retraction_speed": { "default_value": 45},
         "adhesion_type": { "default_value": "skirt" },
         "machine_head_with_fans_polygon": { "default_value": [[-32,999],[37,999],[37,-32],[-32,-32]] },
-        "gantry_height": { "default_value": 55 },
+        "gantry_height": { "value": "55" },
         "speed_print": { "default_value": 50 },
         "speed_travel": { "default_value": 55 },
         "machine_max_feedrate_x": {"default_value": 125},

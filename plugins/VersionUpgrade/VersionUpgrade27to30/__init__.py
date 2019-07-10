@@ -1,11 +1,16 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+from typing import Any, Dict, TYPE_CHECKING
 
 from . import VersionUpgrade27to30
 
+if TYPE_CHECKING:
+    from UM.Application import Application
+
 upgrade = VersionUpgrade27to30.VersionUpgrade27to30()
 
-def getMetaData():
+def getMetaData() -> Dict[str, Any]:
     return {
         "version_upgrade": {
             # From                    To                       Upgrade function
@@ -16,7 +21,6 @@ def getMetaData():
 
             ("quality_changes", 2000002):    ("quality_changes", 2000003,    upgrade.upgradeQualityChangesContainer),
             ("user", 2000002):               ("user", 2000003,               upgrade.upgradeOtherContainer),
-            ("quality", 2000002):            ("quality", 2000003,            upgrade.upgradeOtherContainer),
             ("definition_changes", 2000002): ("definition_changes", 2000003, upgrade.upgradeOtherContainer),
             ("variant", 2000002):            ("variant", 2000003,            upgrade.upgradeOtherContainer)
         },
@@ -52,5 +56,5 @@ def getMetaData():
         }
     }
 
-def register(app):
+def register(app: "Application") -> Dict[str, Any]:
     return { "version_upgrade": upgrade }

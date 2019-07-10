@@ -1,7 +1,10 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Application import Application
+from UM.Math.Polygon import Polygon
+from UM.Qt.QtApplication import QtApplication
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
 from UM.Math.Color import Color
@@ -16,7 +19,7 @@ class ConvexHullNode(SceneNode):
     #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
     #   then displayed as a transparent shadow. If the adhesion type is set to raft, the area is extruded
     #   to represent the raft as well.
-    def __init__(self, node, hull, thickness, parent = None):
+    def __init__(self, node: SceneNode, hull: Optional[Polygon], thickness: float, parent: Optional[SceneNode] = None) -> None:
         super().__init__(parent)
 
         self.setCalculateBoundingBox(False)
@@ -24,7 +27,14 @@ class ConvexHullNode(SceneNode):
         self._original_parent = parent
 
         # Color of the drawn convex hull
-        self._color = Color(*Application.getInstance().getTheme().getColor("convex_hull").getRgb())
+        if not Application.getInstance().getIsHeadLess():
+            theme = QtApplication.getInstance().getTheme()
+            if theme:
+                self._color = Color(*theme.getColor("convex_hull").getRgb())
+            else:
+                self._color = Color(0, 0, 0)
+        else:
+            self._color = Color(0, 0, 0)
 
         # The y-coordinate of the convex hull mesh. Must not be 0, to prevent z-fighting.
         self._mesh_height = 0.1
@@ -44,7 +54,7 @@ class ConvexHullNode(SceneNode):
 
             if hull_mesh_builder.addConvexPolygonExtrusion(
                 self._hull.getPoints()[::-1],  # bottom layer is reversed
-                self._mesh_height-thickness, self._mesh_height, color=self._color):
+                self._mesh_height - thickness, self._mesh_height, color = self._color):
 
                 hull_mesh = hull_mesh_builder.build()
                 self.setMeshData(hull_mesh)
@@ -65,14 +75,14 @@ class ConvexHullNode(SceneNode):
             ConvexHullNode.shader.setUniformValue("u_opacity", 0.6)
 
         if self.getParent():
-            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getBuildPlateModel().activeBuildPlate:
+            if self.getMeshData() and isinstance(self._node, SceneNode) and self._node.callDecoration("getBuildPlateNumber") == Application.getInstance().getMultiBuildPlateModel().activeBuildPlate:
                 renderer.queueNode(self, transparent = True, shader = ConvexHullNode.shader, backface_cull = True, sort = -8)
                 if self._convex_hull_head_mesh:
                     renderer.queueNode(self, shader = ConvexHullNode.shader, transparent = True, mesh = self._convex_hull_head_mesh, backface_cull = True, sort = -8)
 
         return True
 
-    def _onNodeDecoratorsChanged(self, node):
+    def _onNodeDecoratorsChanged(self, node: SceneNode) -> None:
         convex_hull_head = self._node.callDecoration("getConvexHullHead")
         if convex_hull_head:
             convex_hull_head_builder = MeshBuilder()

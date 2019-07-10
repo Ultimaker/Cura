@@ -34,6 +34,8 @@ Item
         anchors.fill: parent
 
         onEditingFinished: base.editingFinished()
+        Keys.onEnterPressed: spinBox.focus = false
+        Keys.onReturnPressed: spinBox.focus = false
     }
 
     Label

@@ -6,7 +6,7 @@
         <glob-deleteall/>
         <glob pattern="*.3mf"/>
     </mime-type>
-    <mime-type type="application/sla">
+    <mime-type type="model/stl">
         <comment>Computer-aided design and manufacturing format</comment>
         <icon name="unknown"/>
         <glob-deleteall/>
@@ -18,5 +18,13 @@
         <icon name="unknown"/>
         <glob-deleteall/>
         <glob pattern="*.obj"/>
+    </mime-type>
+    <mime-type type="text/x-gcode">
+        <sub-class-of type="text/plain"/>
+        <comment>Gcode file</comment>
+        <icon name="unknown"/>
+        <glob-deleteall/>
+        <glob pattern="*.gcode"/>
+        <glob pattern="*.g"/>
     </mime-type>
 </mime-info>

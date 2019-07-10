@@ -4,11 +4,10 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "NA",
-        "manufacturer": "NA",
+        "author": "unknown",
+        "manufacturer": "MAKEiT 3D",
         "file_formats": "text/x-gcode",
         "has_materials": false,
-        "supported_actions": [ "MachineSettingsAction", "UpgradeFirmware" ],
         "machine_extruder_trains":
         {
             "0": "makeit_dual_1st",
@@ -30,9 +29,6 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "machine_head_with_fans_polygon":
         {
             "default_value": [
@@ -43,7 +39,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 200
+            "value": "200"
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
@@ -68,9 +64,6 @@
         },
         "prime_tower_position_y": {
             "value": "160"
-        },
-        "material_diameter": {
-          "default_value": 1.75
         },
         "layer_height": {
           "default_value": 0.2

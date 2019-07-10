@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Type A Machines Series 1 2014",
+    "name": "Series 1 2014",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -10,7 +10,10 @@
         "platform": "tam_series1.stl",
         "platform_offset": [-580.0, -6.23, 253.5],
         "has_materials": false,
-        "supported_actions":["UpgradeFirmware"]
+        "machine_extruder_trains":
+        {
+            "0": "tam_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "TypeAMachines" },
@@ -29,8 +32,8 @@
 
         "machine_heated_bed": { "default_value": true },
         "machine_head_with_fans_polygon": { "default_value": [ [ -35, 65 ], [ -35, -55 ], [ 55, 65 ], [ 55, -55 ] ] },
-        "gantry_height": { "default_value": 35 },
-				"machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "gantry_height": { "value": "35" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_center_is_zero": { "default_value": false },
 
         "speed_print": { "default_value": 60 },
@@ -43,7 +46,6 @@
 
         "machine_use_extruder_offset_to_offset_coords": { "default_value": true },
 
-        "material_diameter": { "default_value": 1.75 },
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_nozzle_head_distance": { "default_value": 3 },
         "machine_nozzle_expansion_angle": { "default_value": 45 },

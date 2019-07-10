@@ -1,7 +1,9 @@
 [shaders]
 vertex =
     uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewProjectionMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
+
     uniform highp mat4 u_normalMatrix;
 
     attribute highp vec4 a_vertex;
@@ -15,7 +17,7 @@ vertex =
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
-        gl_Position = u_viewProjectionMatrix * world_space_vert;
+        gl_Position = u_projectionMatrix * u_viewMatrix * world_space_vert;
 
         v_position = gl_Position.xyz;
         v_vertex = world_space_vert.xyz;
@@ -32,7 +34,7 @@ fragment =
     uniform highp vec3 u_viewPosition;
 
     uniform mediump float u_width;
-    uniform mediump bool u_vertical_stripes;
+    uniform bool u_vertical_stripes;
 
     varying highp vec3 v_position;
     varying highp vec3 v_vertex;
@@ -43,7 +45,7 @@ fragment =
         mediump vec4 finalColor = vec4(0.0);
         mediump vec4 diffuseColor = u_vertical_stripes ?
             (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
-            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
+            ((mod(((-v_vertex.x + v_vertex.y + v_vertex.z) * 4.), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
@@ -69,7 +71,9 @@ fragment =
 vertex41core =
     #version 410
     uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewProjectionMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
+
     uniform highp mat4 u_normalMatrix;
 
     in highp vec4 a_vertex;
@@ -83,7 +87,7 @@ vertex41core =
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
-        gl_Position = u_viewProjectionMatrix * world_space_vert;
+        gl_Position = u_projectionMatrix * u_viewMatrix * world_space_vert;
 
         v_position = gl_Position.xyz;
         v_vertex = world_space_vert.xyz;
@@ -114,7 +118,7 @@ fragment41core =
         mediump vec4 finalColor = vec4(0.0);
         mediump vec4 diffuseColor = u_vertical_stripes ?
             (((mod(v_vertex.x, u_width) < (u_width / 2.)) ^^ (mod(v_vertex.z, u_width) < (u_width / 2.))) ? u_diffuseColor1 : u_diffuseColor2) :
-            ((mod((-v_position.x + v_position.y), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
+            ((mod(((-v_vertex.x + v_vertex.y + v_vertex.z) * 4.), u_width) < (u_width / 2.)) ? u_diffuseColor1 : u_diffuseColor2);
 
         /* Ambient Component */
         finalColor += u_ambientColor;
@@ -148,7 +152,8 @@ u_vertical_stripes = 0
 
 [bindings]
 u_modelMatrix = model_matrix
-u_viewProjectionMatrix = view_projection_matrix
+u_viewMatrix = view_matrix
+u_projectionMatrix = projection_matrix
 u_normalMatrix = normal_matrix
 u_viewPosition = view_position
 u_lightPosition = light_0_position

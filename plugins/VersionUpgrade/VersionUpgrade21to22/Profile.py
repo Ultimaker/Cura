@@ -1,10 +1,9 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
-from typing import Dict
-from typing import List
+from typing import Dict, List, Optional, Tuple
 
 import UM.VersionUpgrade
 from UM.Logger import Logger
@@ -15,7 +14,7 @@ from UM.Logger import Logger
 #   \param serialised The serialised form of a profile in version 1.
 #   \param filename The supposed filename of the profile, without extension.
 #   \return A profile instance, or None if the file format is incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["Profile"]:
     try:
         return Profile(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
@@ -44,20 +43,18 @@ class Profile:
 
         # Parse the general section.
         self._name = parser.get("general", "name")
-        self._type = parser.get("general", "type", fallback = None)
+        self._type = parser.get("general", "type")
+        self._weight = None
         if "weight" in parser["general"]:
             self._weight = int(parser.get("general", "weight"))
-        else:
-            self._weight = None
-        self._machine_type_id = parser.get("general", "machine_type", fallback = None)
-        self._machine_variant_name = parser.get("general", "machine_variant", fallback = None)
-        self._machine_instance_name = parser.get("general", "machine_instance", fallback = None)
+        self._machine_type_id = parser.get("general", "machine_type")
+        self._machine_variant_name = parser.get("general", "machine_variant")
+        self._machine_instance_name = parser.get("general", "machine_instance")
+        self._material_name = None
         if "material" in parser["general"]: #Note: Material name is unused in this upgrade.
             self._material_name = parser.get("general", "material")
         elif self._type == "material":
-            self._material_name = parser.get("general", "name", fallback = None)
-        else:
-            self._material_name = None
+            self._material_name = parser.get("general", "name")
 
         # Parse the settings.
         self._settings = {} # type: Dict[str,str]
@@ -79,11 +76,11 @@ class Profile:
     #
     #   \return A tuple containing the new filename and a serialised form of
     #   this profile, serialised in version 2 of the file format.
-    def export(self):
+    def export(self) -> Optional[Tuple[List[str], List[str]]]:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
 
         if self._name == "Current settings":
-            return None, None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
+            return None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
 
         config = configparser.ConfigParser(interpolation = None)
 

@@ -41,7 +41,7 @@ class WorkspaceDialog(QObject):
         self._num_user_settings = 0
         self._active_mode = ""
         self._quality_name = ""
-        self._num_settings_overriden_by_quality_changes = 0
+        self._num_settings_overridden_by_quality_changes = 0
         self._quality_type = ""
         self._machine_name = ""
         self._machine_type = ""
@@ -49,10 +49,10 @@ class WorkspaceDialog(QObject):
         self._material_labels = []
         self._extruders = []
         self._objects_on_plate = False
+        self._is_printer_group = False
 
     machineConflictChanged = pyqtSignal()
     qualityChangesConflictChanged = pyqtSignal()
-    definitionChangesConflictChanged = pyqtSignal()
     materialConflictChanged = pyqtSignal()
     numVisibleSettingsChanged = pyqtSignal()
     activeModeChanged = pyqtSignal()
@@ -67,6 +67,16 @@ class WorkspaceDialog(QObject):
     machineTypeChanged = pyqtSignal()
     variantTypeChanged = pyqtSignal()
     extrudersChanged = pyqtSignal()
+    isPrinterGroupChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = isPrinterGroupChanged)
+    def isPrinterGroup(self) -> bool:
+        return self._is_printer_group
+
+    def setIsPrinterGroup(self, value: bool):
+        if value != self._is_printer_group:
+            self._is_printer_group = value
+            self.isPrinterGroupChanged.emit()
 
     @pyqtProperty(str, notify=variantTypeChanged)
     def variantType(self):
@@ -141,10 +151,10 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
     def numSettingsOverridenByQualityChanges(self):
-        return self._num_settings_overriden_by_quality_changes
+        return self._num_settings_overridden_by_quality_changes
 
-    def setNumSettingsOverridenByQualityChanges(self, num_settings_overriden_by_quality_changes):
-        self._num_settings_overriden_by_quality_changes = num_settings_overriden_by_quality_changes
+    def setNumSettingsOverriddenByQualityChanges(self, num_settings_overridden_by_quality_changes):
+        self._num_settings_overridden_by_quality_changes = num_settings_overridden_by_quality_changes
         self.numSettingsOverridenByQualityChangesChanged.emit()
 
     @pyqtProperty(str, notify=qualityNameChanged)
@@ -177,7 +187,10 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(int, constant = True)
     def totalNumberOfSettings(self):
-        return len(ContainerRegistry.getInstance().findDefinitionContainers(id="fdmprinter")[0].getAllKeys())
+        general_definition_containers = ContainerRegistry.getInstance().findDefinitionContainers(id = "fdmprinter")
+        if not general_definition_containers:
+            return 0
+        return len(general_definition_containers[0].getAllKeys())
 
     @pyqtProperty(int, notify = numVisibleSettingsChanged)
     def numVisibleSettings(self):
@@ -195,10 +208,6 @@ class WorkspaceDialog(QObject):
     @pyqtProperty(bool, notify=qualityChangesConflictChanged)
     def qualityChangesConflict(self):
         return self._has_quality_changes_conflict
-
-    @pyqtProperty(bool, notify=definitionChangesConflictChanged)
-    def definitionChangesConflict(self):
-        return self._has_definition_changes_conflict
 
     @pyqtProperty(bool, notify=materialConflictChanged)
     def materialConflict(self):
@@ -229,18 +238,11 @@ class WorkspaceDialog(QObject):
             self._has_quality_changes_conflict = quality_changes_conflict
             self.qualityChangesConflictChanged.emit()
 
-    def setDefinitionChangesConflict(self, definition_changes_conflict):
-        if self._has_definition_changes_conflict != definition_changes_conflict:
-            self._has_definition_changes_conflict = definition_changes_conflict
-            self.definitionChangesConflictChanged.emit()
-
     def getResult(self):
         if "machine" in self._result and not self._has_machine_conflict:
             self._result["machine"] = None
         if "quality_changes" in self._result and not self._has_quality_changes_conflict:
             self._result["quality_changes"] = None
-        if "definition_changes" in self._result and not self._has_definition_changes_conflict:
-            self._result["definition_changes"] = None
         if "material" in self._result and not self._has_material_conflict:
             self._result["material"] = None
 

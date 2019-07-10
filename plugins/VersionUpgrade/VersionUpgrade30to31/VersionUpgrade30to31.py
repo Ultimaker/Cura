@@ -1,19 +1,15 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
-import os
-from urllib.parse import quote_plus
+from typing import Dict, List, Set, Tuple
 
-from UM.Resources import Resources
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
-
-from cura.CuraApplication import CuraApplication
 
 
 # a list of all legacy "Not Supported" quality profiles
-_OLD_NOT_SUPPORTED_PROFILES = [
+_OLD_NOT_SUPPORTED_PROFILES = {
     "um2p_pp_0.25_normal",
     "um2p_tpu_0.8_normal",
     "um3_bb0.4_ABS_Fast_Print",
@@ -47,7 +43,7 @@ _OLD_NOT_SUPPORTED_PROFILES = [
     "um3_bb0.8_PP_Superdraft_Print",
     "um3_bb0.8_TPU_Fast_print",
     "um3_bb0.8_TPU_Superdraft_Print",
-]
+} # type: Set[str]
 
 
 # Some containers have their specific empty containers, those need to be set correctly.
@@ -56,7 +52,13 @@ _EMPTY_CONTAINER_DICT = {
     "2": "empty_quality",
     "3": "empty_material",
     "4": "empty_variant",
-}
+} # type: Dict[str, str]
+
+
+# Renamed definition files
+_RENAMED_DEFINITION_DICT = {
+    "jellybox": "imade3d_jellybox",
+} # type: Dict[str, str]
 
 
 class VersionUpgrade30to31(VersionUpgrade):
@@ -71,19 +73,19 @@ class VersionUpgrade30to31(VersionUpgrade):
     #   \raises ValueError The format of the version number in the file is
     #   incorrect.
     #   \raises KeyError The format of the file is incorrect.
-    def getCfgVersion(self, serialised):
+    def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
     ##  Upgrades a preferences file from version 3.0 to 3.1.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
-    def upgradePreferences(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         # Update version numbers
@@ -103,24 +105,17 @@ class VersionUpgrade30to31(VersionUpgrade):
     #
     #   \param serialised The serialised form of the container file.
     #   \param filename The name of the file to upgrade.
-    def upgradeInstanceContainer(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradeInstanceContainer(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         for each_section in ("general", "metadata"):
             if not parser.has_section(each_section):
                 parser.add_section(each_section)
 
-        # Copy global quality changes to extruder quality changes for single extrusion machines
-        if parser["metadata"]["type"] == "quality_changes":
-            all_quality_changes = self._getSingleExtrusionMachineQualityChanges(parser)
-            # Note that DO NOT!!! use the quality_changes returned from _getSingleExtrusionMachineQualityChanges().
-            # Those are loaded from the hard drive which are original files that haven't been upgraded yet.
-            # NOTE 2: The number can be 0 or 1 depends on whether you are loading it from the qualities folder or
-            #         from a project file. When you load from a project file, the custom profile may not be in cura
-            #         yet, so you will get 0.
-            if len(all_quality_changes) <= 1 and not parser.has_option("metadata", "extruder"):
-                self._createExtruderQualityChangesForSingleExtrusionMachine(filename, parser)
+        # Check renamed definitions
+        if "definition" in parser["general"] and parser["general"]["definition"] in _RENAMED_DEFINITION_DICT:
+            parser["general"]["definition"] = _RENAMED_DEFINITION_DICT[parser["general"]["definition"]]
 
         # Update version numbers
         parser["general"]["version"] = "2"
@@ -131,13 +126,12 @@ class VersionUpgrade30to31(VersionUpgrade):
         parser.write(output)
         return [filename], [output.getvalue()]
 
-
     ##  Upgrades a container stack from version 3.0 to 3.1.
     #
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.
-    def upgradeStack(self, serialised, filename):
-        parser = configparser.ConfigParser(interpolation=None)
+    def upgradeStack(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
         for each_section in ("general", "metadata"):
@@ -156,6 +150,10 @@ class VersionUpgrade30to31(VersionUpgrade):
                 if parser.has_option("containers", key) and parser["containers"][key] == "empty":
                     parser["containers"][key] = specific_empty_container
 
+            # check renamed definition
+            if parser.has_option("containers", "6") and parser["containers"]["6"] in _RENAMED_DEFINITION_DICT:
+                parser["containers"]["6"] = _RENAMED_DEFINITION_DICT[parser["containers"]["6"]]
+
         # Update version numbers
         if "general" not in parser:
             parser["general"] = {}
@@ -169,67 +167,3 @@ class VersionUpgrade30to31(VersionUpgrade):
         output = io.StringIO()
         parser.write(output)
         return [filename], [output.getvalue()]
-
-    def _getSingleExtrusionMachineQualityChanges(self, quality_changes_container):
-        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-        quality_changes_containers = []
-
-        for item in os.listdir(quality_changes_dir):
-            file_path = os.path.join(quality_changes_dir, item)
-            if not os.path.isfile(file_path):
-                continue
-
-            parser = configparser.ConfigParser(interpolation = None)
-            try:
-                parser.read([file_path])
-            except:
-                # skip, it is not a valid stack file
-                continue
-
-            if not parser.has_option("metadata", "type"):
-                continue
-            if "quality_changes" != parser["metadata"]["type"]:
-                continue
-
-            if not parser.has_option("general", "name"):
-                continue
-            if quality_changes_container["general"]["name"] != parser["general"]["name"]:
-                continue
-
-            quality_changes_containers.append(parser)
-
-        return quality_changes_containers
-
-    def _createExtruderQualityChangesForSingleExtrusionMachine(self, filename, global_quality_changes):
-        suffix = "_" + quote_plus(global_quality_changes["general"]["name"].lower())
-        machine_name = os.path.os.path.basename(filename).replace(".inst.cfg", "").replace(suffix, "")
-
-        # Why is this here?!
-        # When we load a .curaprofile file the deserialize will trigger a version upgrade, creating a dangling file.
-        # This file can be recognized by it's lack of a machine name in the target filename.
-        # So when we detect that situation here, we don't create the file and return.
-        if machine_name == "":
-            return
-
-        new_filename = machine_name + "_" + "fdmextruder" + suffix
-
-        extruder_quality_changes_parser = configparser.ConfigParser(interpolation = None)
-        extruder_quality_changes_parser.add_section("general")
-        extruder_quality_changes_parser["general"]["version"] = str(2)
-        extruder_quality_changes_parser["general"]["name"] = global_quality_changes["general"]["name"]
-        extruder_quality_changes_parser["general"]["definition"] = global_quality_changes["general"]["definition"]
-
-        extruder_quality_changes_parser.add_section("metadata")
-        extruder_quality_changes_parser["metadata"]["quality_type"] = global_quality_changes["metadata"]["quality_type"]
-        extruder_quality_changes_parser["metadata"]["type"] = global_quality_changes["metadata"]["type"]
-        extruder_quality_changes_parser["metadata"]["setting_version"] = str(4)
-        extruder_quality_changes_parser["metadata"]["extruder"] = "fdmextruder"
-
-        extruder_quality_changes_output = io.StringIO()
-        extruder_quality_changes_parser.write(extruder_quality_changes_output)
-        extruder_quality_changes_filename = quote_plus(new_filename) + ".inst.cfg"
-
-        quality_changes_dir = Resources.getPath(CuraApplication.ResourceTypes.QualityInstanceContainer)
-
-        with open(os.path.join(quality_changes_dir, extruder_quality_changes_filename), "w") as f:
-            f.write(extruder_quality_changes_output.getvalue())

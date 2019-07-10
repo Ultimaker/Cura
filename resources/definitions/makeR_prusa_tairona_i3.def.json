@@ -7,9 +7,12 @@
         "author": "makeR",
         "manufacturer": "makeR",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "makeR_prusa_tairona_i3_platform.stl",
-        "platform_offset": [-2, 0, 0]
+        "platform_offset": [-2, 0, 0],
+        "machine_extruder_trains":
+        {
+            "0": "makeR_prusa_tairona_i3_extruder_0"
+        }
     },
 
     "overrides": {
@@ -29,12 +32,6 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
-        "material_diameter": {
-            "default_value": 1.75
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-75, -18],
@@ -44,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

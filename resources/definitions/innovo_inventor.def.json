@@ -8,7 +8,11 @@
         "manufacturer": "Innovo",
         "file_formats": "text/x-gcode",
         "platform": "inventor_platform.stl",
-        "platform_offset": [-180, -0.25, 160]
+        "platform_offset": [-180, -0.25, 160],
+        "machine_extruder_trains":
+        {
+            "0": "innovo_inventor_extruder_0"
+        }
     },
 
     "overrides": {
@@ -28,9 +32,6 @@
         "machine_center_is_zero": {
             "default_value": true
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "machine_head_polygon": {
             "default_value": [
                 [-43.7, -19.2],
@@ -40,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 82.3
+            "value": "82.3"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -65,9 +66,6 @@
         },
         "material_bed_temperature": {
             "default_value": 60
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 50

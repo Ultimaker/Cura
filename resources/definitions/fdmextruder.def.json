@@ -6,7 +6,7 @@
         "type": "extruder",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 1,
+        "setting_version": 8,
         "visible": false,
         "position": "0"
     },
@@ -78,7 +78,7 @@
                 "machine_extruder_start_code":
                 {
                     "label": "Extruder Start G-Code",
-                    "description": "Start g-code to execute whenever turning the extruder on.",
+                    "description": "Start g-code to execute when switching to this extruder.",
                     "type": "str",
                     "default_value": "",
                     "settable_per_mesh": false,
@@ -124,7 +124,7 @@
                 "machine_extruder_end_code":
                 {
                     "label": "Extruder End G-Code",
-                    "description": "End g-code to execute whenever turning the extruder off.",
+                    "description": "End g-code to execute when switching away from this extruder.",
                     "type": "str",
                     "default_value": "",
                     "settable_per_mesh": false,
@@ -178,28 +178,19 @@
                     "maximum_value": "machine_height",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                }
-            }
-        },
-        "material": {
-            "label": "Material",
-            "icon": "category_material",
-            "description": "Material",
-            "type": "category",
-            "children": {
-                "material_diameter": {
-                    "label": "Diameter",
-                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 2.85,
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "0.4",
-                    "maximum_value_warning": "3.5",
-                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                },
+               "machine_extruder_cooling_fan_number":
+                {
+                    "label": "Extruder Print Cooling Fan",
+                    "description": "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder.",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "0",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                }
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false,
+                    "settable_globally": false
+               }
             }
         },
         "platform_adhesion":
@@ -235,6 +226,30 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "enabled": false
+                }
+            }
+        },
+        "material":
+        {
+            "label": "Material",
+            "icon": "category_material",
+            "description": "Material",
+            "type": "category",
+            "children":
+            {
+                "material_diameter":
+                {
+                    "label": "Diameter",
+                    "description": "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 2.85,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "0.4",
+                    "maximum_value_warning": "3.5",
+                    "enabled": "machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         }

@@ -7,8 +7,12 @@
         "author": "tvlgiao",
         "manufacturer": "3DMaker",
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj",
-        "icon": "icon_ultimaker2.png",
-        "platform": "makerstarter_platform.stl"
+        "platform": "makerstarter_platform.stl",
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "maker_starter_extruder_0"
+        }
     },
 
     "overrides": {
@@ -28,11 +32,8 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -48,9 +49,6 @@
         },
         "machine_nozzle_expansion_angle": {
             "default_value": 45
-        },
-        "layer_height": {
-            "default_value": 0.2
         },
         "layer_height_0": {
             "default_value": 0.2
@@ -134,7 +132,7 @@
             "default_value": "ZigZag"
         },
         "support_infill_rate": {
-            "default_value": 15
+            "value": "15 if support_enable else 0 if support_tree_enable else 15"
         },
         "adhesion_type": {
             "default_value": "raft"

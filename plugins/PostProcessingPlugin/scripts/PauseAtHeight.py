@@ -1,5 +1,9 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from ..Script import Script
-# from cura.Settings.ExtruderManager import ExtruderManager
+
+from UM.Application import Application #To get the current printer's settings.
 
 class PauseAtHeight(Script):
     def __init__(self):
@@ -7,19 +11,40 @@ class PauseAtHeight(Script):
 
     def getSettingDataString(self):
         return """{
-            "name":"Pause at height",
+            "name": "Pause at height",
             "key": "PauseAtHeight",
             "metadata": {},
             "version": 2,
             "settings":
             {
+                "pause_at":
+                {
+                    "label": "Pause at",
+                    "description": "Whether to pause at a certain height or at a certain layer.",
+                    "type": "enum",
+                    "options": {"height": "Height", "layer_no": "Layer No."},
+                    "default_value": "height"
+                },
                 "pause_height":
                 {
                     "label": "Pause Height",
-                    "description": "At what height should the pause occur",
+                    "description": "At what height should the pause occur?",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 5.0
+                    "default_value": 5.0,
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0.27",
+                    "enabled": "pause_at == 'height'"
+                },
+                "pause_layer":
+                {
+                    "label": "Pause Layer",
+                    "description": "At what layer should the pause occur?",
+                    "type": "int",
+                    "value": "math.floor((pause_height - 0.27) / 0.1) + 1",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "1",
+                    "enabled": "pause_at == 'layer_no'"
                 },
                 "head_park_x":
                 {
@@ -84,26 +109,28 @@ class PauseAtHeight(Script):
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
-                },
-                "resume_temperature":
-                {
-                    "label": "Resume Temperature",
-                    "description": "Change the temperature after the pause",
-                    "unit": "°C",
-                    "type": "int",
-                    "default_value": 0
                 }
             }
         }"""
 
+    def getNextXY(self, layer: str):
+        """
+        Get the X and Y values for a layer (will be used to get X and Y of
+        the layer after the pause
+        """
+        lines = layer.split("\n")
+        for line in lines:
+            if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
+                x = self.getValue(line, "X")
+                y = self.getValue(line, "Y")
+                return x, y
+        return 0, 0
+
     def execute(self, data: list):
-
         """data is a list. Each index contains a layer"""
-
-        x = 0.
-        y = 0.
-        current_z = 0.
+        pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
+        pause_layer = self.getSettingValueByKey("pause_layer")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
@@ -113,109 +140,193 @@ class PauseAtHeight(Script):
         layers_started = False
         redo_layers = self.getSettingValueByKey("redo_layers")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
-        resume_temperature = self.getSettingValueByKey("resume_temperature")
+        firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
+        control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
+        initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
+
+        is_griffin = False
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
-        # with open("out.txt", "w") as f:
-            # f.write(T)
 
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
-        layer_0_z = 0.
+        layer_0_z = 0
+        current_z = 0
         got_first_g_cmd_on_layer_0 = False
-        for layer in data:
+        current_t = 0 #Tracks the current extruder for tracking the target temperature.
+        target_temperature = {} #Tracks the current target temperature for each extruder.
+
+        nbr_negative_layers = 0
+
+        for index, layer in enumerate(data):
             lines = layer.split("\n")
+
+            # Scroll each line of instruction for each layer in the G-code
             for line in lines:
+                if ";FLAVOR:Griffin" in line:
+                    is_griffin = True
+                # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
-                    continue
+                # Count nbr of negative layers (raft)
+                elif ";LAYER:-" in line:
+                    nbr_negative_layers += 1
+
+                #Track the latest printing temperature in order to resume at the correct temperature.
+                if line.startswith("T"):
+                    current_t = self.getValue(line, "T")
+                m = self.getValue(line, "M")
+                if m is not None and (m == 104 or m == 109) and self.getValue(line, "S") is not None:
+                    extruder = current_t
+                    if self.getValue(line, "T") is not None:
+                        extruder = self.getValue(line, "T")
+                    target_temperature[extruder] = self.getValue(line, "S")
 
                 if not layers_started:
                     continue
 
-                if self.getValue(line, 'G') == 1 or self.getValue(line, 'G') == 0:
-                    current_z = self.getValue(line, 'Z')
+                # If a Z instruction is in the line, read the current Z
+                if self.getValue(line, "Z") is not None:
+                    current_z = self.getValue(line, "Z")
+
+                if pause_at == "height":
+                    # Ignore if the line is not G1 or G0
+                    if self.getValue(line, "G") != 1 and self.getValue(line, "G") != 0:
+                        continue
+
+                    # This block is executed once, the first time there is a G
+                    # command, to get the z offset (z for first positive layer)
                     if not got_first_g_cmd_on_layer_0:
-                        layer_0_z = current_z
+                        layer_0_z = current_z - initial_layer_height
                         got_first_g_cmd_on_layer_0 = True
 
-                    x = self.getValue(line, 'X', x)
-                    y = self.getValue(line, 'Y', y)
-                    if current_z is not None:
-                        current_height = current_z - layer_0_z
-                        if current_height >= pause_height:
-                            index = data.index(layer)
-                            prevLayer = data[index - 1]
-                            prevLines = prevLayer.split("\n")
-                            current_e = 0.
-                            for prevLine in reversed(prevLines):
-                                current_e = self.getValue(prevLine, 'E', -1)
-                                if current_e >= 0:
-                                    break
+                    current_height = current_z - layer_0_z
+                    if current_height < pause_height:
+                        break  # Try the next layer.
 
-                            # include a number of previous layers
-                            for i in range(1, redo_layers + 1):
-                                prevLayer = data[index - i]
-                                layer = prevLayer + layer
+                # Pause at layer
+                else:
+                    if not line.startswith(";LAYER:"):
+                        continue
+                    current_layer = line[len(";LAYER:"):]
+                    try:
+                        current_layer = int(current_layer)
 
-                            prepend_gcode = ";TYPE:CUSTOM\n"
-                            prepend_gcode += ";added code by post processing\n"
-                            prepend_gcode += ";script: PauseAtHeight.py\n"
-                            prepend_gcode += ";current z: %f \n" % current_z
-                            prepend_gcode += ";current height: %f \n" % current_height
+                    # Couldn't cast to int. Something is wrong with this
+                    # g-code data
+                    except ValueError:
+                        continue
+                    if current_layer < pause_layer - nbr_negative_layers:
+                        continue
 
-                            # Retraction
-                            prepend_gcode += "M83\n"
-                            if retraction_amount != 0:
-                                prepend_gcode += "G1 E-%f F%f\n" % (retraction_amount, retraction_speed * 60)
+                # Get X and Y from the next layer (better position for
+                # the nozzle)
+                next_layer = data[index + 1]
+                x, y = self.getNextXY(next_layer)
 
-                            # Move the head away
-                            prepend_gcode += "G1 Z%f F300\n" % (current_z + 1)
-                            prepend_gcode += "G1 X%f Y%f F9000\n" % (park_x, park_y)
-                            if current_z < 15:
-                                prepend_gcode += "G1 Z15 F300\n"
+                prev_layer = data[index - 1]
+                prev_lines = prev_layer.split("\n")
+                current_e = 0.
 
-                            # Disable the E steppers
-                            prepend_gcode += "M84 E0\n"
-
-                            # Set extruder standby temperature
-                            prepend_gcode += "M104 S%i; standby temperature\n" % (standby_temperature)
-
-                            # Wait till the user continues printing
-                            prepend_gcode += "M0 ;Do the actual pause\n"
-
-                            # Set extruder resume temperature
-                            prepend_gcode += "M109 S%i; resume temperature\n" % (resume_temperature)
-
-                            # Push the filament back,
-                            if retraction_amount != 0:
-                                prepend_gcode += "G1 E%f F%f\n" % (retraction_amount, retraction_speed * 60)
-
-                            # Optionally extrude material
-                            if extrude_amount != 0:
-                                prepend_gcode += "G1 E%f F%f\n" % (extrude_amount, extrude_speed * 60)
-
-                            # and retract again, the properly primes the nozzle
-                            # when changing filament.
-                            if retraction_amount != 0:
-                                prepend_gcode += "G1 E-%f F%f\n" % (retraction_amount, retraction_speed * 60)
-
-                            # Move the head back
-                            prepend_gcode += "G1 Z%f F300\n" % (current_z + 1)
-                            prepend_gcode += "G1 X%f Y%f F9000\n" % (x, y)
-                            if retraction_amount != 0:
-                                prepend_gcode += "G1 E%f F%f\n" % (retraction_amount, retraction_speed * 60)
-                            prepend_gcode += "G1 F9000\n"
-                            prepend_gcode += "M82\n"
-
-                            # reset extrude value to pre pause value
-                            prepend_gcode += "G92 E%f\n" % (current_e)
-
-                            layer = prepend_gcode + layer
-
-
-                            # Override the data of this layer with the
-                            # modified data
-                            data[index] = layer
-                            return data
+                # Access last layer, browse it backwards to find
+                # last extruder absolute position
+                for prevLine in reversed(prev_lines):
+                    current_e = self.getValue(prevLine, "E", -1)
+                    if current_e >= 0:
                         break
+
+                # include a number of previous layers
+                for i in range(1, redo_layers + 1):
+                    prev_layer = data[index - i]
+                    layer = prev_layer + layer
+
+                    # Get extruder's absolute position at the
+                    # beginning of the first layer redone
+                    # see https://github.com/nallath/PostProcessingPlugin/issues/55
+                    if i == redo_layers:
+                        # Get X and Y from the next layer (better position for
+                        # the nozzle)
+                        x, y = self.getNextXY(layer)
+                        prev_lines = prev_layer.split("\n")
+                        for line in prev_lines:
+                            new_e = self.getValue(line, 'E', current_e)
+                            if new_e != current_e:
+                                current_e = new_e
+                                break
+
+                prepend_gcode = ";TYPE:CUSTOM\n"
+                prepend_gcode += ";added code by post processing\n"
+                prepend_gcode += ";script: PauseAtHeight.py\n"
+                if pause_at == "height":
+                    prepend_gcode += ";current z: {z}\n".format(z = current_z)
+                    prepend_gcode += ";current height: {height}\n".format(height = current_height)
+                else:
+                    prepend_gcode += ";current layer: {layer}\n".format(layer = current_layer)
+
+                if not is_griffin:
+                    # Retraction
+                    prepend_gcode += self.putValue(M = 83) + "\n"
+                    if retraction_amount != 0:
+                        if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
+                            retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
+                            for i in range(retraction_count):
+                                prepend_gcode += self.putValue(G = 10) + "\n"
+                        else:
+                            prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+
+                    # Move the head away
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+
+                    # This line should be ok
+                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+
+                    if current_z < 15:
+                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + "\n"
+
+                    if control_temperatures:
+                        # Set extruder standby temperature
+                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + "; standby temperature\n"
+
+                # Wait till the user continues printing
+                prepend_gcode += self.putValue(M = 0) + ";Do the actual pause\n"
+
+                if not is_griffin:
+                    if control_temperatures:
+                        # Set extruder resume temperature
+                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+
+                    # Push the filament back,
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+
+                    # Optionally extrude material
+                    if extrude_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = extrude_speed * 60) + "\n"
+
+                    # and retract again, the properly primes the nozzle
+                    # when changing filament.
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
+
+                    # Move the head back
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    if retraction_amount != 0:
+                        if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
+                            retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
+                            for i in range(retraction_count):
+                                prepend_gcode += self.putValue(G = 11) + "\n"
+                        else:
+                            prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
+                    prepend_gcode += self.putValue(G = 1, F = 9000) + "\n"
+                    prepend_gcode += self.putValue(M = 82) + "\n"
+
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+
+                layer = prepend_gcode + layer
+
+                # Override the data of this layer with the
+                # modified data
+                data[index] = layer
+                return data
         return data

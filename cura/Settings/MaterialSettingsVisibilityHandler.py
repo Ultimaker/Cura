@@ -3,13 +3,14 @@
 
 import UM.Settings.Models.SettingVisibilityHandler
 
+
 class MaterialSettingsVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 
         material_settings = {
             "default_material_print_temperature",
-            "material_bed_temperature",
+            "default_material_bed_temperature",
             "material_standby_temperature",
             #"material_flow_temp_graph",
             "cool_fan_speed",

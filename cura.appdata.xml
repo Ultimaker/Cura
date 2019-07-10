@@ -3,7 +3,7 @@
 <component type="desktop">
   <id>cura.desktop</id>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>AGPL-3.0 and CC-BY-SA-4.0</project_license>
+  <project_license>LGPL-3.0 and CC-BY-SA-4.0</project_license>
   <name>Cura</name>
   <summary>The world's most advanced 3d printer software</summary>
   <description>
@@ -15,7 +15,7 @@
     </p>
     <ul>
       <li>Novices can start printing right away</li>
-      <li>Experts are able to customize 200 settings to achieve the best results</li>
+      <li>Experts are able to customize 300 settings to achieve the best results</li>
       <li>Optimized profiles for Ultimaker materials</li>
       <li>Supported by a global network of Ultimaker certified service partners</li>
       <li>Print multiple objects at once with different settings for each object</li>
@@ -26,6 +26,6 @@
   <screenshots>
     <screenshot type="default" width="1280" height="720">http://software.ultimaker.com/Cura.png</screenshot>
   </screenshots>
-  <url type="homepage">https://ultimaker.com/en/products/cura-software</url>
+  <url type="homepage">https://ultimaker.com/en/products/cura-software?utm_source=cura&amp;utm_medium=software&amp;utm_campaign=resources</url>
   <translation type="gettext">Cura</translation>
 </component>

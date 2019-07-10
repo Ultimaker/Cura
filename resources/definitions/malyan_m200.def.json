@@ -9,13 +9,18 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "malyan_m200_platform.stl",
+        "platform_offset": [0, -0.25, 0],
         "has_machine_quality": true,
         "has_materials": true,
-        "preferred_quality": "*normal*",
+        "preferred_quality_type": "normal",
         "supports_usb_connection": true,
         "visible": true,
         "first_start_actions": ["MachineSettingsAction"],
-        "supported_actions": ["MachineSettingsAction"]    
+        "supported_actions": ["MachineSettingsAction"],
+        "machine_extruder_trains":
+        {
+            "0": "malyan_m200_extruder_0"
+        }
    },
 
     "overrides": {
@@ -30,7 +35,12 @@
         "speed_infill": { "value": "speed_print" },
         "speed_topbottom": {"value": "speed_print / 2"},
 
-        "layer_height": { "minimum_value": "0.04375", "maximum_value": "machine_nozzle_size * 0.875", "maximum_value_warning": "machine_nozzle_size * 0.48125 + 0.0875",  "default_value": 0.13125 },
+        "layer_height":
+        {
+            "minimum_value_warning": "0.04375",
+            "maximum_value_warning": "machine_nozzle_size * 0.48125 + 0.0875",
+            "default_value": 0.13125
+        },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
 
         "material_print_temperature": { "minimum_value": "0" },
@@ -51,11 +61,6 @@
         "machine_height": { "default_value": 120 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
-        "material_diameter": { "value": 1.75 },
-        "machine_nozzle_size": {
-            "default_value": 0.4,
-            "minimum_value": 0.15
-        },
         "machine_max_feedrate_x": { "default_value": 150 },
         "machine_max_feedrate_y": { "default_value": 150 },
         "machine_max_feedrate_z": { "default_value": 1.5 },

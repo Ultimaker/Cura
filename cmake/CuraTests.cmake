@@ -1,10 +1,23 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-enable_testing()
+include(CTest)
 include(CMakeParseArguments)
 
-find_package(PythonInterp 3.5.0 REQUIRED)
+# FIXME: Remove the code for CMake <3.12 once we have switched over completely.
+# FindPython3 is a new module since CMake 3.12. It deprecates FindPythonInterp and FindPythonLibs. The FindPython3
+# module is copied from the CMake repository here so in CMake <3.12 we can still use it.
+if(${CMAKE_VERSION} VERSION_LESS 3.12)
+    # Use FindPythonInterp and FindPythonLibs for CMake <3.12
+    find_package(PythonInterp 3 REQUIRED)
+
+    set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
+else()
+    # Use FindPython3 for CMake >=3.12
+    find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
+endif()
+
+add_custom_target(test-verbose COMMAND ${CMAKE_CTEST_COMMAND} --verbose)
 
 function(cura_add_test)
     set(_single_args NAME DIRECTORY PYTHONPATH)
@@ -34,7 +47,7 @@ function(cura_add_test)
     if (NOT ${test_exists})
         add_test(
             NAME ${_NAME}
-            COMMAND ${PYTHON_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+            COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --full-trace --capture=no --no-print-log --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
         )
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")
@@ -53,3 +66,17 @@ foreach(_plugin ${_plugins})
         cura_add_test(NAME pytest-${_plugin_name} DIRECTORY ${_plugin_directory} PYTHONPATH "${_plugin_directory}|${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
     endif()
 endforeach()
+
+#Add code style test.
+add_test(
+    NAME "code-style"
+    COMMAND ${Python3_EXECUTABLE} run_mypy.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+#Add test for whether the shortcut alt-keys are unique in every translation.
+add_test(
+    NAME "shortcut-keys"
+    COMMAND ${Python3_EXECUTABLE} scripts/check_shortcut_keys.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)

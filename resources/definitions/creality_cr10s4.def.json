@@ -1,22 +1,32 @@
 {
-    "name": "Creality CR-10 S4",
+    "name": "Creality CR-10S4",
     "version": 2,
-    "inherits": "creality_cr10",
-    "metadata": {
-        "visible": true,
-        "author": "Michael Wildermuth",
-        "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode"
-    },
+    "inherits": "creality_base",
     "overrides": {
-        "machine_width": {
-            "default_value": 400
+        "machine_name": { "default_value": "Creality CR-10S4" },
+        "machine_width": { "default_value": 400 },
+        "machine_depth": { "default_value": 400 },
+        "machine_height": { "default_value": 400 },
+        "machine_head_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [22, -32],
+                [22, 34]
+            ]
         },
-        "machine_height": {
-            "default_value": 400
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
         },
-        "machine_depth": {
-            "default_value": 400
-        }
+
+        "gantry_height": { "value": 25 }
+
+    },
+    "metadata": {
+        "quality_definition": "creality_base",
+        "visible": true
     }
 }

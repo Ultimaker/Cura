@@ -7,7 +7,11 @@
         "author": "RBC",
         "manufacturer": "RigidBot",
         "file_formats": "text/x-gcode",
-        "platform": "rigidbot_platform.stl"
+        "platform": "rigidbot_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "rigidbot_extruder_0"
+        }
     },
 
     "overrides": {
@@ -25,7 +29,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 0
+            "value": "0"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -50,9 +54,6 @@
         },
         "material_bed_temperature": {
             "default_value": 60
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 60

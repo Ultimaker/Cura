@@ -1,9 +1,9 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from . import FlavorParser
 
-# This parser is intented for interpret the RepRap Firmware flavor
+##  This parser is intended to interpret the RepRap Firmware g-code flavor.
 class RepRapFlavorParser(FlavorParser.FlavorParser):
 
     def __init__(self):
@@ -18,10 +18,10 @@ class RepRapFlavorParser(FlavorParser.FlavorParser):
             self._is_absolute_extrusion = False
 
     ##  Set the absolute positioning
-    #   RepRapFlavor code G90 sets position of X, Y, Z, and E to absolute
+    #   RepRapFlavor code G90 sets position of X, Y, Z to absolute
+    #   For absolute E, M82 is used
     def _gCode90(self, position, params, path):
         self._is_absolute_positioning = True
-        self._is_absolute_extrusion = True
         return position
 
     ##  Set the relative positioning

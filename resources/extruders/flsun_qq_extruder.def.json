@@ -1,0 +1,15 @@
+{
+    "id": "flsun_qq_extruder",
+    "version": 2,
+    "name": "Extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "flsun_qq",
+        "position": "0"
+    },
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+    }
+}

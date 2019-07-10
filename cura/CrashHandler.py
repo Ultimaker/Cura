@@ -1,7 +1,6 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import sys
 import platform
 import traceback
 import faulthandler
@@ -13,15 +12,18 @@ import json
 import ssl
 import urllib.request
 import urllib.error
+import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QCoreApplication
-from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
+from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Platform import Platform
+from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
 
@@ -34,25 +36,22 @@ else:
     except ImportError:
         CuraDebugMode = False  # [CodeStyle: Reflecting imported value]
 
-# List of exceptions that should be considered "fatal" and abort the program.
-# These are primarily some exception types that we simply cannot really recover from
-# (MemoryError and SystemError) and exceptions that indicate grave errors in the
-# code that cause the Python interpreter to fail (SyntaxError, ImportError).
-fatal_exception_types = [
-    MemoryError,
-    SyntaxError,
-    ImportError,
-    SystemError,
+# List of exceptions that should not be considered "fatal" and abort the program.
+# These are primarily some exception types that we simply skip
+skip_exception_types = [
+    SystemExit,
+    KeyboardInterrupt,
+    GeneratorExit
 ]
-
 
 class CrashHandler:
     crash_url = "https://stats.ultimaker.com/api/cura"
 
-    def __init__(self, exception_type, value, tb):
+    def __init__(self, exception_type, value, tb, has_started = True):
         self.exception_type = exception_type
         self.value = value
         self.traceback = tb
+        self.has_started = has_started
         self.dialog = None # Don't create a QDialog before there is a QApplication
 
         # While we create the GUI, the information will be stored for sending afterwards
@@ -64,21 +63,90 @@ class CrashHandler:
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
 
-        if not CuraDebugMode and exception_type not in fatal_exception_types:
+        # If Cura has fully started, we only show fatal errors.
+        # If Cura has not fully started yet, we always show the early crash dialog. Otherwise, Cura will just crash
+        # without any information.
+        if has_started and exception_type in skip_exception_types:
             return
 
-        application = QCoreApplication.instance()
-        if not application:
-            sys.exit(1)
+        if not has_started:
+            self._send_report_checkbox = None
+            self.early_crash_dialog = self._createEarlyCrashDialog()
 
         self.dialog = QDialog()
         self._createDialog()
+
+    def _createEarlyCrashDialog(self):
+        dialog = QDialog()
+        dialog.setMinimumWidth(500)
+        dialog.setMinimumHeight(170)
+        dialog.setWindowTitle(catalog.i18nc("@title:window", "Cura can't start"))
+        dialog.finished.connect(self._closeEarlyCrashDialog)
+
+        layout = QVBoxLayout(dialog)
+
+        label = QLabel()
+        label.setText(catalog.i18nc("@label crash message", """<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>
+                    <p>We encountered an unrecoverable error during start up. It was possibly caused by some incorrect configuration files. We suggest to backup and reset your configuration.</p>
+                    <p>Backups can be found in the configuration folder.</p>
+                    <p>Please send us this Crash Report to fix the problem.</p>
+                """))
+        label.setWordWrap(True)
+        layout.addWidget(label)
+
+        # "send report" check box and show details
+        self._send_report_checkbox = QCheckBox(catalog.i18nc("@action:button", "Send crash report to Ultimaker"), dialog)
+        self._send_report_checkbox.setChecked(True)
+
+        show_details_button = QPushButton(catalog.i18nc("@action:button", "Show detailed crash report"), dialog)
+        show_details_button.setMaximumWidth(200)
+        show_details_button.clicked.connect(self._showDetailedReport)
+
+        show_configuration_folder_button = QPushButton(catalog.i18nc("@action:button", "Show configuration folder"), dialog)
+        show_configuration_folder_button.setMaximumWidth(200)
+        show_configuration_folder_button.clicked.connect(self._showConfigurationFolder)
+
+        layout.addWidget(self._send_report_checkbox)
+        layout.addWidget(show_details_button)
+        layout.addWidget(show_configuration_folder_button)
+
+        # "backup and start clean" and "close" buttons
+        buttons = QDialogButtonBox()
+        buttons.addButton(QDialogButtonBox.Close)
+        buttons.addButton(catalog.i18nc("@action:button", "Backup and Reset Configuration"), QDialogButtonBox.AcceptRole)
+        buttons.rejected.connect(self._closeEarlyCrashDialog)
+        buttons.accepted.connect(self._backupAndStartClean)
+
+        layout.addWidget(buttons)
+
+        return dialog
+
+    def _closeEarlyCrashDialog(self):
+        if self._send_report_checkbox.isChecked():
+            self._sendCrashReport()
+        os._exit(1)
+
+    ##  Backup the current resource directories and create clean ones.
+    def _backupAndStartClean(self):
+        Resources.factoryReset()
+        self.early_crash_dialog.close()
+
+    def _showConfigurationFolder(self):
+        path = Resources.getConfigStoragePath()
+        QDesktopServices.openUrl(QUrl.fromLocalFile( path ))
+
+    def _showDetailedReport(self):
+        self.dialog.exec_()
 
     ##  Creates a modal dialog.
     def _createDialog(self):
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
+        # if the application has not fully started, this will be a detailed report dialog which should not
+        # close the application when it's closed.
+        if self.has_started:
+            self.dialog.finished.connect(self._close)
 
         layout = QVBoxLayout(self.dialog)
 
@@ -89,9 +157,12 @@ class CrashHandler:
         layout.addWidget(self._userDescriptionWidget())
         layout.addWidget(self._buttonsWidget())
 
+    def _close(self):
+        os._exit(1)
+
     def _messageWidget(self):
         label = QLabel()
-        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred. Please send us this Crash Report to fix the problem</p></b>
+        label.setText(catalog.i18nc("@label crash message", """<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>
             <p>Please use the "Send report" button to post a bug report automatically to our servers</p>
         """))
 
@@ -130,7 +201,7 @@ class CrashHandler:
         opengl_instance = OpenGL.getInstance()
         if not opengl_instance:
             self.data["opengl"] = {"version": "n/a", "vendor": "n/a", "type": "n/a"}
-            return catalog.i18nc("@label", "not yet initialised<br/>")
+            return catalog.i18nc("@label", "Not yet initialized<br/>")
 
         info = "<ul>"
         info += catalog.i18nc("@label OpenGL version", "<li>OpenGL Version: {version}</li>").format(version = opengl_instance.getOpenGLVersion())
@@ -148,8 +219,8 @@ class CrashHandler:
         layout = QVBoxLayout()
 
         text_area = QTextEdit()
-        trace_dict = traceback.format_exception(self.exception_type, self.value, self.traceback)
-        trace = "".join(trace_dict)
+        trace_list = traceback.format_exception(self.exception_type, self.value, self.traceback)
+        trace = "".join(trace_list)
         text_area.setText(trace)
         text_area.setReadOnly(True)
 
@@ -157,14 +228,28 @@ class CrashHandler:
         group.setLayout(layout)
 
         # Parsing all the information to fill the dictionary
-        summary = trace_dict[len(trace_dict)-1].rstrip("\n")
-        module = trace_dict[len(trace_dict)-2].rstrip("\n").split("\n")
+        summary = ""
+        if len(trace_list) >= 1:
+            summary = trace_list[len(trace_list)-1].rstrip("\n")
+        module = [""]
+        if len(trace_list) >= 2:
+            module = trace_list[len(trace_list)-2].rstrip("\n").split("\n")
         module_split = module[0].split(", ")
-        filepath = module_split[0].split("\"")[1]
+
+        filepath_directory_split = module_split[0].split("\"")
+        filepath = ""
+        if len(filepath_directory_split) > 1:
+            filepath = filepath_directory_split[1]
         directory, filename = os.path.split(filepath)
-        line = int(module_split[1].lstrip("line "))
-        function = module_split[2].lstrip("in ")
-        code = module[1].lstrip(" ")
+        line = ""
+        if len(module_split) > 1:
+            line = int(module_split[1].lstrip("line "))
+        function = ""
+        if len(module_split) > 2:
+            function = module_split[2].lstrip("in ")
+        code = ""
+        if len(module) > 1:
+            code = module[1].lstrip(" ")
 
         # Using this workaround for a cross-platform path splitting
         split_path = []
@@ -189,7 +274,7 @@ class CrashHandler:
 
             json_metadata_file = os.path.join(directory, "plugin.json")
             try:
-                with open(json_metadata_file, "r") as f:
+                with open(json_metadata_file, "r", encoding = "utf-8") as f:
                     try:
                         metadata = json.loads(f.read())
                         module_version = metadata["version"]
@@ -217,9 +302,9 @@ class CrashHandler:
         text_area = QTextEdit()
         tmp_file_fd, tmp_file_path = tempfile.mkstemp(prefix = "cura-crash", text = True)
         os.close(tmp_file_fd)
-        with open(tmp_file_path, "w") as f:
+        with open(tmp_file_path, "w", encoding = "utf-8") as f:
             faulthandler.dump_traceback(f, all_threads=True)
-        with open(tmp_file_path, "r") as f:
+        with open(tmp_file_path, "r", encoding = "utf-8") as f:
             logdata = f.read()
 
         text_area.setText(logdata)
@@ -234,7 +319,8 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
+                                     " (Note: Developers may not speak your language, please use English if possible)"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected
@@ -249,9 +335,13 @@ class CrashHandler:
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
         buttons.addButton(QDialogButtonBox.Close)
-        buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+        # Like above, this will be served as a separate detailed report dialog if the application has not yet been
+        # fully loaded. In this case, "send report" will be a check box in the early crash dialog, so there is no
+        # need for this extra button.
+        if self.has_started:
+            buttons.addButton(catalog.i18nc("@action:button", "Send report"), QDialogButtonBox.AcceptRole)
+            buttons.accepted.connect(self._sendCrashReport)
         buttons.rejected.connect(self.dialog.close)
-        buttons.accepted.connect(self._sendCrashReport)
 
         return buttons
 
@@ -269,15 +359,23 @@ class CrashHandler:
             kwoptions["context"] = ssl._create_unverified_context()
 
         Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
+        if not self.has_started:
+            print("Sending crash report info to [%s]...\n" % self.crash_url)
 
         try:
             f = urllib.request.urlopen(self.crash_url, **kwoptions)
             Logger.log("i", "Sent crash report info.")
+            if not self.has_started:
+                print("Sent crash report info.\n")
             f.close()
-        except urllib.error.HTTPError:
+        except urllib.error.HTTPError as e:
             Logger.logException("e", "An HTTP error occurred while trying to send crash report")
-        except Exception:  # We don't want any exception to cause problems
+            if not self.has_started:
+                print("An HTTP error occurred while trying to send crash report: %s" % e)
+        except Exception as e:  # We don't want any exception to cause problems
             Logger.logException("e", "An exception occurred while trying to send crash report")
+            if not self.has_started:
+                print("An exception occurred while trying to send crash report: %s" % e)
 
         os._exit(1)
 
@@ -286,7 +384,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        # When the exception is in the skip_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
             self.dialog.exec_()
         os._exit(1)

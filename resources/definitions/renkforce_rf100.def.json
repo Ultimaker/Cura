@@ -6,7 +6,11 @@
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
         "file_formats": "text/x-gcode",
         "manufacturer": "Renkforce",
-        "visible": true
+        "visible": true,
+        "machine_extruder_trains":
+        {
+            "0": "renkforce_rf100_extruder_0"
+        }
     },
 
     "overrides": {
@@ -75,9 +79,6 @@
         },
         "material_bed_temperature": {
             "enabled": false
-        },
-        "material_diameter": {
-            "value": "1.75"
         },
         "material_flow": {
             "value": "110"
@@ -182,7 +183,7 @@
             "value": "False"
         },
         "support_infill_rate": {
-            "value": "15.0"
+            "value": "15 if support_enable else 0 if support_tree_enable else 15"
         },
         "support_pattern": {
             "default_value": "lines"

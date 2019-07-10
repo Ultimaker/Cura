@@ -93,7 +93,7 @@ class SimulationPass(RenderPass):
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
-        active_build_plate = Application.getInstance().getBuildPlateModel().activeBuildPlate
+        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 

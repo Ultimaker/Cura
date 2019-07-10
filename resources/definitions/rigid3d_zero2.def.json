@@ -9,7 +9,11 @@
         "has_materials": false,
         "file_formats": "text/x-gcode",
         "platform": "rigid3d_zero2_platform.stl",
-        "platform_offset": [ 5, 0, -35]
+        "platform_offset": [ 5, 0, -35],
+        "machine_extruder_trains":
+        {
+            "0": "rigid3d_zero2_extruder_0"
+        }
     },
     "overrides": {
         "machine_name": { "default_value": "Rigid3D Zero2" },
@@ -42,9 +46,6 @@
         },
         "material_bed_temperature": {
             "default_value": 100
-        },
-        "material_diameter": {
-            "default_value": 1.75
         },
         "speed_print": {
             "default_value": 40
@@ -79,11 +80,8 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_nozzle_size": {
-            "default_value": 0.4
-        },
         "gantry_height": {
-            "default_value": 25
+            "value": "25"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap"

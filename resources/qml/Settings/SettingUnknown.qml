@@ -11,9 +11,10 @@ SettingItem
     contents: Label
     {
         anchors.fill: parent
-        text: value + " " + unit;
-        color: UM.Theme.getColor("setting_control_text")
-
-        verticalAlignment: Qt.AlignVCenter
+        text: propertyProvider.properties.value + " " + unit
+        renderType: Text.NativeRendering
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
+        verticalAlignment: Text.AlignVCenter
     }
 }

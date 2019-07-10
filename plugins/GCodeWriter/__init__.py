@@ -13,7 +13,7 @@ def getMetaData():
         "mesh_writer": {
             "output": [{
                 "extension": "gcode",
-                "description": catalog.i18nc("@item:inlistbox", "GCode File"),
+                "description": catalog.i18nc("@item:inlistbox", "G-code File"),
                 "mime_type": "text/x-gcode",
                 "mode": GCodeWriter.GCodeWriter.OutputMode.TextMode
             }]

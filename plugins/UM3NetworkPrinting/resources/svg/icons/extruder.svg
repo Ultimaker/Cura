@@ -1,0 +1,5 @@
+<svg width="32px" height="32px" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M24,24 L16,32 L8,24 L2,24 C0.8954305,24 1.3527075e-16,23.1045695 0,22 L0,2 C-1.3527075e-16,0.8954305 0.8954305,2.02906125e-16 2,0 L30,0 C31.1045695,-2.02906125e-16 32,0.8954305 32,2 L32,22 C32,23.1045695 31.1045695,24 30,24 L24,24 Z M16,21 C20.418278,21 24,17.418278 24,13 C24,8.581722 20.418278,5 16,5 C11.581722,5 8,8.581722 8,13 C8,17.418278 11.581722,21 16,21 Z" id="Combined-Shape" fill="#D8D8D8" fill-rule="nonzero"></path>
+    </g>
+</svg>

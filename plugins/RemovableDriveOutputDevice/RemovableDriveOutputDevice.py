@@ -1,4 +1,4 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -7,7 +7,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.FileHandler.WriteFileJob import WriteFileJob
-from UM.Mesh.MeshWriter import MeshWriter
+from UM.FileHandler.FileWriter import FileWriter #To check against the write modes (text vs. binary).
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.OutputDevice.OutputDevice import OutputDevice
 from UM.OutputDevice import OutputDeviceError
@@ -39,7 +39,7 @@ class RemovableDriveOutputDevice(OutputDevice):
     #   MIME types available to the currently active machine?
     #
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
-        filter_by_machine = True # This plugin is indended to be used by machine (regardless of what it was told to do)
+        filter_by_machine = True # This plugin is intended to be used by machine (regardless of what it was told to do)
         if self._writing:
             raise OutputDeviceError.DeviceBusyError()
 
@@ -56,19 +56,21 @@ class RemovableDriveOutputDevice(OutputDevice):
             machine_file_formats = [file_type.strip() for file_type in container.getMetaDataEntry("file_formats").split(";")]
 
             # Take the intersection between file_formats and machine_file_formats.
-            file_formats = list(filter(lambda file_format: file_format["mime_type"] in machine_file_formats, file_formats))
+            format_by_mimetype = {format["mime_type"]: format for format in file_formats}
+            file_formats = [format_by_mimetype[mimetype] for mimetype in machine_file_formats] #Keep them ordered according to the preference in machine_file_formats.
 
         if len(file_formats) == 0:
             Logger.log("e", "There are no file formats available to write with!")
-            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("There are no file formats available to write with!"))
+            raise OutputDeviceError.WriteRequestFailedError(catalog.i18nc("@info:status", "There are no file formats available to write with!"))
+        preferred_format = file_formats[0]
 
         # Just take the first file format available.
         if file_handler is not None:
-            writer = file_handler.getWriterByMimeType(file_formats[0]["mime_type"])
+            writer = file_handler.getWriterByMimeType(preferred_format["mime_type"])
         else:
-            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(file_formats[0]["mime_type"])
+            writer = Application.getInstance().getMeshFileHandler().getWriterByMimeType(preferred_format["mime_type"])
 
-        extension = file_formats[0]["extension"]
+        extension = preferred_format["extension"]
 
         if file_name is None:
             file_name = self._automaticFileName(nodes)
@@ -80,8 +82,11 @@ class RemovableDriveOutputDevice(OutputDevice):
         try:
             Logger.log("d", "Writing to %s", file_name)
             # Using buffering greatly reduces the write time for many lines of gcode
-            self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
-            job = WriteFileJob(writer, self._stream, nodes, MeshWriter.OutputMode.TextMode)
+            if preferred_format["mode"] == FileWriter.OutputMode.TextMode:
+                self._stream = open(file_name, "wt", buffering = 1, encoding = "utf-8")
+            else: #Binary mode.
+                self._stream = open(file_name, "wb", buffering = 1)
+            job = WriteFileJob(writer, self._stream, nodes, preferred_format["mode"])
             job.setFileName(file_name)
             job.progress.connect(self._onProgress)
             job.finished.connect(self._onFinished)

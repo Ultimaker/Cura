@@ -13,6 +13,8 @@ UM.PreferencesPage
 {
     title: catalog.i18nc("@title:tab", "Setting Visibility");
 
+    property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
+
     property int scrollToIndex: 0
 
     signal scrollToSection( string key )
@@ -23,7 +25,7 @@ UM.PreferencesPage
 
     function reset()
     {
-        UM.Preferences.resetPreference("general/visible_settings")
+        settingVisibilityPresetsModel.setActivePreset("basic")
     }
     resetEnabled: true;
 
@@ -48,7 +50,7 @@ UM.PreferencesPage
                 {
                     return Qt.Unchecked
                 }
-                else if(definitionsModel.visibleCount == definitionsModel.rowCount(null))
+                else if(definitionsModel.visibleCount == definitionsModel.count)
                 {
                     return Qt.Checked
                 }
@@ -66,11 +68,11 @@ UM.PreferencesPage
                 {
                     if(parent.checkedState == Qt.Unchecked || parent.checkedState == Qt.PartiallyChecked)
                     {
-                        definitionsModel.setAllVisible(true)
+                        definitionsModel.setAllExpandedVisible(true)
                     }
                     else
                     {
-                        definitionsModel.setAllVisible(false)
+                        definitionsModel.setAllExpandedVisible(false)
                     }
                 }
             }
@@ -85,12 +87,47 @@ UM.PreferencesPage
                 top: parent.top
                 left: toggleVisibleSettings.right
                 leftMargin: UM.Theme.getSize("default_margin").width
-                right: parent.right
+                right: visibilityPreset.left
+                rightMargin: UM.Theme.getSize("default_margin").width
             }
 
             placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
             onTextChanged: definitionsModel.filter = {"i18n_label": "*" + text}
+        }
+
+        ComboBox
+        {
+            id: visibilityPreset
+            width: 150 * screenScaleFactor
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+            }
+
+            model: settingVisibilityPresetsModel.items
+            textRole: "name"
+
+            currentIndex:
+            {
+                var idx = -1;
+                for(var i = 0; i < settingVisibilityPresetsModel.items.length; ++i)
+                {
+                    if(settingVisibilityPresetsModel.items[i].presetId == settingVisibilityPresetsModel.activePreset)
+                    {
+                        idx = i;
+                        break;
+                    }
+                }
+                return idx;
+            }
+
+            onActivated:
+            {
+                var preset_id = settingVisibilityPresetsModel.items[index].presetId
+                settingVisibilityPresetsModel.setActivePreset(preset_id)
+            }
         }
 
         ScrollView
@@ -114,12 +151,12 @@ UM.PreferencesPage
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     showAll: true
                     exclude: ["machine_settings", "command_line_settings"]
                     showAncestors: true
                     expanded: ["*"]
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
+                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                 }
 
                 delegate: Loader

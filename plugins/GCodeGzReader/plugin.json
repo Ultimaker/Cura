@@ -1,0 +1,8 @@
+{
+    "name": "Compressed G-code Reader",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.1",
+    "description": "Reads g-code from a compressed archive.",
+    "api": "6.0",
+    "i18n-catalog": "cura"
+}

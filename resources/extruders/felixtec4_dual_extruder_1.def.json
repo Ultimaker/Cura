@@ -1,0 +1,28 @@
+{
+    "id": "felixtec4_dual_extruder_1",
+    "version": 2,
+    "name": "Right Extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "felixtec4dual",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "2"
+        },
+        "machine_nozzle_offset_x": { "default_value": 13 },
+        "machine_nozzle_offset_y": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.35 },
+        "material_diameter": { "default_value": 1.75 },
+
+        "machine_extruder_start_pos_abs": { "default_value": true },
+        "machine_extruder_start_pos_x": { "value": "prime_tower_position_x" },
+        "machine_extruder_start_pos_y": { "value": "prime_tower_position_y" },
+        "machine_extruder_end_pos_abs": { "default_value": true },
+        "machine_extruder_end_pos_x": { "value": "prime_tower_position_x" },
+        "machine_extruder_end_pos_y": { "value": "prime_tower_position_y" }
+    }
+}

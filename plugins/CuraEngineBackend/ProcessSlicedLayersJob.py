@@ -2,11 +2,11 @@
 #Cura is released under the terms of the LGPLv3 or higher.
 
 import gc
+import sys
 
 from UM.Job import Job
 from UM.Application import Application
 from UM.Mesh.MeshData import MeshData
-from UM.Preferences import Preferences
 from UM.View.GL.OpenGLContext import OpenGLContext
 
 from UM.Message import Message
@@ -24,7 +24,7 @@ from cura import LayerPolygon
 
 import numpy
 from time import time
-from cura.Settings.ExtrudersModel import ExtrudersModel
+from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 catalog = i18nCatalog("cura")
 
 
@@ -81,7 +81,8 @@ class ProcessSlicedLayersJob(Job):
 
         Application.getInstance().getController().activeViewChanged.connect(self._onActiveViewChanged)
 
-        new_node = CuraSceneNode()
+        # The no_setting_override is here because adding the SettingOverrideDecorator will trigger a reslice
+        new_node = CuraSceneNode(no_setting_override = True)
         new_node.addDecorator(BuildPlateDecorator(self._build_plate_number))
 
         # Force garbage collection.
@@ -95,23 +96,35 @@ class ProcessSlicedLayersJob(Job):
         layer_count = len(self._layers)
 
         # Find the minimum layer number
+        # When disabling the remove empty first layers setting, the minimum layer number will be a positive
+        # value. In that case the first empty layers will be discarded and start processing layers from the
+        # first layer with data.
         # When using a raft, the raft layers are sent as layers < 0. Instead of allowing layers < 0, we
-        # instead simply offset all other layers so the lowest layer is always 0. It could happens that
-        # the first raft layer has value -8 but there are just 4 raft (negative) layers.
-        min_layer_number = 0
+        # simply offset all other layers so the lowest layer is always 0. It could happens that the first
+        # raft layer has value -8 but there are just 4 raft (negative) layers.
+        min_layer_number = sys.maxsize
         negative_layers = 0
         for layer in self._layers:
-            if layer.id < min_layer_number:
-                min_layer_number = layer.id
-            if layer.id < 0:
-                negative_layers += 1
+            if layer.repeatedMessageCount("path_segment") > 0:
+                if layer.id < min_layer_number:
+                    min_layer_number = layer.id
+                if layer.id < 0:
+                    negative_layers += 1
 
         current_layer = 0
 
         for layer in self._layers:
-            # Negative layers are offset by the minimum layer number, but the positive layers are just
-            # offset by the number of negative layers so there is no layer gap between raft and model
-            abs_layer_number = layer.id + abs(min_layer_number) if layer.id < 0 else layer.id + negative_layers
+            # If the layer is below the minimum, it means that there is no data, so that we don't create a layer
+            # data. However, if there are empty layers in between, we compute them.
+            if layer.id < min_layer_number:
+                continue
+
+            # Layers are offset by the minimum layer number. In case the raft (negative layers) is being used,
+            # then the absolute layer number is adjusted by removing the empty layers that can be in between raft
+            # and the model
+            abs_layer_number = layer.id - min_layer_number
+            if layer.id >= 0 and negative_layers != 0:
+                abs_layer_number += (min_layer_number + negative_layers)
 
             layer_data.addLayer(abs_layer_number)
             this_layer = layer_data.getLayer(abs_layer_number)
@@ -124,6 +137,7 @@ class ProcessSlicedLayersJob(Job):
                 extruder = polygon.extruder
 
                 line_types = numpy.fromstring(polygon.line_type, dtype="u1")  # Convert bytearray to numpy array
+
                 line_types = line_types.reshape((-1,1))
 
                 points = numpy.fromstring(polygon.points, dtype="f4")  # Convert bytearray to numpy array
@@ -178,11 +192,11 @@ class ProcessSlicedLayersJob(Job):
         # Find out colors per extruder
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         manager = ExtruderManager.getInstance()
-        extruders = list(manager.getMachineExtruders(global_container_stack.getId()))
+        extruders = manager.getActiveExtruderStacks()
         if extruders:
             material_color_map = numpy.zeros((len(extruders), 4), dtype=numpy.float32)
             for extruder in extruders:
-                position = int(extruder.getMetaDataEntry("position", default="0"))  # Get the position
+                position = int(extruder.getMetaDataEntry("position", default = "0"))
                 try:
                     default_color = ExtrudersModel.defaultColors[position]
                 except IndexError:
@@ -198,7 +212,7 @@ class ProcessSlicedLayersJob(Job):
             material_color_map[0, :] = color
 
         # We have to scale the colors for compatibility mode
-        if OpenGLContext.isLegacyOpenGL() or bool(Preferences.getInstance().getValue("view/force_layer_view_compatibility_mode")):
+        if OpenGLContext.isLegacyOpenGL() or bool(Application.getInstance().getPreferences().getValue("view/force_layer_view_compatibility_mode")):
             line_type_brightness = 0.5  # for compatibility mode
         else:
             line_type_brightness = 1.0

@@ -1,8 +1,8 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
-import QtQuick.Controls 1.1
+import QtQuick 2.7
+import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -13,49 +13,61 @@ Menu
 
     Instantiator
     {
-        model: Cura.ProfilesModel 
+        model: Cura.QualityProfilesDropDownMenuModel
 
         MenuItem
         {
-            text: (model.layer_height != "") ? model.name + " - " + model.layer_height : model.name
+            text:
+            {
+                var full_text = (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
+                full_text += model.is_experimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
+                return full_text
+            }
             checkable: true
-            checked: Cura.MachineManager.activeQualityId == model.id
+            checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            onTriggered: Cura.MachineManager.setQualityGroup(model.quality_group)
             visible: model.available
         }
 
-        onObjectAdded: menu.insertItem(index, object);
-        onObjectRemoved: menu.removeItem(object);
+        onObjectAdded: menu.insertItem(index, object)
+        onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator { id: customSeparator }
+    MenuSeparator
+    {
+        id: customSeparator
+        visible: Cura.CustomQualityProfilesDropDownMenuModel.count > 0
+    }
 
     Instantiator
     {
         id: customProfileInstantiator
-        model: Cura.UserProfilesModel
+        model: Cura.CustomQualityProfilesDropDownMenuModel
+
+        Connections
         {
-            onModelReset: customSeparator.visible = rowCount() > 0
+            target: Cura.CustomQualityProfilesDropDownMenuModel
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.count > 0
         }
 
         MenuItem
         {
             text: model.name
             checkable: true
-            checked: Cura.MachineManager.activeQualityChangesId == model.id
+            checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
-            onTriggered: Cura.MachineManager.setActiveQuality(model.id)
+            onTriggered: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
         }
 
         onObjectAdded:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.insertItem(index, object);
         }
         onObjectRemoved:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.removeItem(object);
         }
     }
@@ -69,23 +81,4 @@ Menu
     MenuItem { action: Cura.Actions.resetProfile }
     MenuSeparator { }
     MenuItem { action: Cura.Actions.manageProfiles }
-
-    function getFilter(initial_conditions)
-    {
-        var result = initial_conditions;
-
-        if(Cura.MachineManager.filterQualityByMachine)
-        {
-            result.definition = Cura.MachineManager.activeQualityDefinitionId;
-            if(Cura.MachineManager.hasMaterials)
-            {
-                result.material = Cura.MachineManager.activeQualityMaterialId;
-            }
-        }
-        else
-        {
-            result.definition = "fdmprinter"
-        }
-        return result
-    }
 }

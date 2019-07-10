@@ -1,0 +1,147 @@
+{
+    "name": "Rigid3D Mucit",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Rigid3D",
+        "manufacturer": "Rigid3D",
+        "has_materials": false,
+        "file_formats": "text/x-gcode",
+        "platform": "rigid3d_mucit_platform.stl",
+        "platform_offset": [ 0, -19, 0],
+        "preferred_quality_type": "draft",
+        "machine_extruder_trains":
+        {
+            "0": "rigid3d_mucit_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "Rigid3D Mucit" },
+        "z_seam_type": {
+            "default_value": "random"
+        },
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "wall_thickness": {
+            "default_value": 0.8
+        },
+        "top_bottom_thickness": {
+            "default_value": 0.8
+        },
+        "xy_offset": {
+             "default_value": -0.2
+        },
+        "material_print_temperature": {
+            "value": "205"
+        },
+        "speed_print": {
+            "default_value": 40
+        },
+        "speed_layer_0": {
+            "value": "15"
+        },
+        "speed_travel": {
+            "value": "100"
+        },
+        "support_enable": {
+            "default_value": false
+        },
+        "infill_sparse_density": {
+            "default_value": 15
+        },
+        "infill_pattern": {
+            "value": "'lines'"
+        },
+        "retraction_amount": {
+            "default_value": 1
+        },
+        "machine_width": {
+            "default_value": 150
+        },
+        "machine_height": {
+            "default_value": 150
+        },
+        "machine_depth": {
+            "default_value": 150
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap"
+        },
+        "cool_fan_enabled": {
+            "default_value": true
+        },
+        "cool_fan_speed": {
+            "default_value": 100,
+            "value": "100"
+        },
+        "cool_fan_speed_min": {
+            "default_value": 0
+        },
+        "cool_fan_full_at_height": {
+            "default_value": 0.5,
+            "value": "0.5"
+        },
+        "support_z_distance": {
+            "default_value": 0.2
+        },
+        "support_interface_enable": {
+            "default_value": true
+        },
+        "support_interface_height": {
+            "default_value": 0.8
+        },
+        "support_interface_density": {
+            "default_value": 70
+        },
+        "support_interface_pattern": {
+            "default_value": "grid"
+        },
+        "fill_outline_gaps": {
+            "default_value": true
+        },
+        "ironing_enabled": {
+            "default_value": true
+        },
+        "ironing_only_highest_layer": {
+            "default_value": true
+        },
+        "material_initial_print_temperature": {
+            "value": "205"
+        },
+        "optimize_wall_printing_order": {
+            "default_value": true
+        },
+        "retraction_speed": {
+            "value": "40"
+        },
+        "roofing_layer_count": {
+            "value": "1"
+        },
+        "speed_equalize_flow_enabled": {
+            "default_value": true
+        },
+        "speed_topbottom": {
+            "value": "40"
+        },
+        "speed_travel_layer_0": {
+            "value": "15"
+        },
+        "speed_wall_0": {
+            "value": "30"
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21\nG28 ; Home extruder\nM420 S1 ; Enable MBL\nM107 ; Turn off fan\nG91 ; Relative positioning\nG1 Z5 F180;\nG1 X30 Y30 F3000;\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG92 E0 ; Reset extruder position\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "G1 X0 Y145 ; Get extruder out of way.\nM107 ; Turn off fan\nG91 ; Relative positioning\nG0 Z20 ; Lift extruder up\nT0\nG1 E-1 ; Reduce filament pressure\nM104 T0 S0 ; Turn extruder heater off\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n"
+        }
+    }
+}

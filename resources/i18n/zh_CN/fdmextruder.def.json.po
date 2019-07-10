@@ -1,14 +1,14 @@
-# Cura JSON setting files
-# Copyright (C) 2017 Ultimaker
+# Cura
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
-# 
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.0\n"
-"Report-Msgid-Bugs-To: http://github.com/ultimaker/uranium\n"
-"POT-Creation-Date: 2017-11-21 16:58+0000\n"
-"PO-Revision-Date: 2017-11-30 13:05+0100\n"
+"Project-Id-Version: Cura 4.1\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-05-14 12:48+0000\n"
+"PO-Revision-Date: 2019-03-13 14:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
 "Language: zh_CN\n"
@@ -21,12 +21,12 @@ msgstr ""
 #: fdmextruder.def.json
 msgctxt "machine_settings label"
 msgid "Machine"
-msgstr "机型"
+msgstr "﻿机器"
 
 #: fdmextruder.def.json
 msgctxt "machine_settings description"
 msgid "Machine specific settings"
-msgstr "机器详细设置"
+msgstr "﻿机器详细设置"
 
 #: fdmextruder.def.json
 msgctxt "extruder_nr label"
@@ -46,7 +46,7 @@ msgstr "喷嘴 ID"
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_id description"
 msgid "The nozzle ID for an extruder train, such as \"AA 0.4\" and \"BB 0.8\"."
-msgstr "挤出机组的喷嘴 ID，比如 \"AA 0.4\" 和 \"BB 0.8\"。"
+msgstr "挤出机组的喷嘴 ID，比如\"AA 0.4\"和\"BB 0.8\"。"
 
 #: fdmextruder.def.json
 msgctxt "machine_nozzle_size label"
@@ -81,12 +81,12 @@ msgstr "喷嘴 Y 轴坐标偏移。"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code label"
 msgid "Extruder Start G-Code"
-msgstr "挤出机 Gcode 开始部分"
+msgstr "挤出机的开始 G-code"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
-msgid "Start g-code to execute whenever turning the extruder on."
-msgstr "打开挤出机将执行此段 G-code。"
+msgid "Start g-code to execute when switching to this extruder."
+msgstr "在切换到此挤出机时执行的开始 G-code。"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
@@ -121,12 +121,12 @@ msgstr "打开挤压机时的起始位置 Y 坐标。"
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code label"
 msgid "Extruder End G-Code"
-msgstr "挤出机 Gcode 结束部分"
+msgstr "挤出机的结束 G-code"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
-msgid "End g-code to execute whenever turning the extruder off."
-msgstr "在关闭挤出机时，执行结束 G-code。"
+msgid "End g-code to execute when switching away from this extruder."
+msgstr "在切离此挤出机时执行的结束 G-code。"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"
@@ -169,6 +169,16 @@ msgid "The Z coordinate of the position where the nozzle primes at the start of 
 msgstr "打印开始时，喷头在 Z 轴坐标上的起始位置."
 
 #: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr "挤出机打印冷却风扇"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr "打印冷却风扇的数量与该挤出机有关。仅在每个挤出机都对应不同的打印冷却风扇时，对默认值 0 进行更改。"
+
+#: fdmextruder.def.json
 msgctxt "platform_adhesion label"
 msgid "Build Plate Adhesion"
 msgstr "打印平台附着"
@@ -197,3 +207,31 @@ msgstr "挤出机 Y 轴起始位置"
 msgctxt "extruder_prime_pos_y description"
 msgid "The Y coordinate of the position where the nozzle primes at the start of printing."
 msgstr "打印开始时，喷头在 Y 轴坐标上初始位置。"
+
+#: fdmextruder.def.json
+msgctxt "material label"
+msgid "Material"
+msgstr "材料"
+
+#: fdmextruder.def.json
+msgctxt "material description"
+msgid "Material"
+msgstr "材料"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter label"
+msgid "Diameter"
+msgstr "直径"
+
+#: fdmextruder.def.json
+msgctxt "material_diameter description"
+msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
+msgstr "调整所用耗材的直径。 将此值与所用耗材的直径匹配。"
+
+#~ msgctxt "machine_extruder_start_code description"
+#~ msgid "Start g-code to execute whenever turning the extruder on."
+#~ msgstr "打开挤出机将执行此段 G-code。"
+
+#~ msgctxt "machine_extruder_end_code description"
+#~ msgid "End g-code to execute whenever turning the extruder off."
+#~ msgstr "在关闭挤出机时，执行结束 G-code。"

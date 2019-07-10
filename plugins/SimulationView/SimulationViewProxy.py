@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
@@ -117,7 +117,7 @@ class SimulationViewProxy(QObject):
     def setSimulationViewType(self, layer_view_type):
         active_view = self._controller.getActiveView()
         if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setSimulationViewisinstance(layer_view_type)
+            active_view.setSimulationViewType(layer_view_type)
 
     @pyqtSlot(result=int)
     def getSimulationViewType(self):

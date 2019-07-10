@@ -1,0 +1,40 @@
+{
+    "version": 2,
+    "name": "Printrbot Simple Maker's Kit (1405)",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Timur Tabi",
+        "manufacturer": "Printrbot",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "printrbot_simple_makers_kit_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Printrbot Simple Maker's Kit (1405)" },
+        "machine_heated_bed": { "default_value": false },
+        "machine_width": { "default_value": 100 },
+        "machine_depth": { "default_value": 100 },
+        "machine_height": { "default_value": 115 },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [-40, 1000],
+                [-40, -10],
+                [60, 1000],
+                [60, -10]
+            ]
+        },
+        "gantry_height": { "value": "1000" },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+
+        "machine_start_gcode": {
+            "default_value": "G21       ;metric values\nG90       ;absolute positioning\nM82       ;set extruder to absolute mode\nM107      ;start with the fan off\nG28 X0 Y0 ;home X/Y\nG28 Z0    ;home Z\nG92 E0    ;zero the extruded length\nG29       ;initiate auto bed leveling sequence"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0     ;extruder heater off\nM140 S0     ;heated bed heater off (if you have it)\nM106 S0     ;fan off\nG91         ;relative positioning\nG1 E-1 F300 ;retract the filament a bit\nG1 Z+1 E-5 F9000 ;move Z up a bit and retract even more\nG28 X0 Y0   ;home X/Y, so the head is out of the way\nM84         ;steppers off\nG90         ;absolute positioning"
+        }
+    }
+}

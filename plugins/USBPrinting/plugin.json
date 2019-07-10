@@ -1,8 +1,8 @@
 {
     "name": "USB printing",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "api": 4,
+    "version": "1.0.2",
+    "api": "6.0",
     "description": "Accepts G-Code and sends them to a printer. Plugin can also update firmware.",
     "i18n-catalog": "cura"
 }

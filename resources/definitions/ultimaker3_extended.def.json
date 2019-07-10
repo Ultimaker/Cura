@@ -7,16 +7,15 @@
         "manufacturer": "Ultimaker B.V.",
         "quality_definition": "ultimaker3",
         "visible": true,
-        "file_formats": "text/x-gcode",
+        "file_formats": "application/gzip;text/x-gcode",
         "platform": "ultimaker3_platform.obj",
         "platform_texture": "Ultimaker3Extendedbackplate.png",
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,
         "has_machine_materials": true,
-        "has_variant_materials": true,
         "has_materials": true,
         "has_variants": true,
-        "preferred_variant": "*aa04*",
+        "preferred_variant_name": "AA 0.4",
         "variants_name": "Print core",
         "machine_extruder_trains":
         {
@@ -24,7 +23,15 @@
             "1": "ultimaker3_extended_extruder_right"
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
-        "supported_actions": [ "DiscoverUM3Action" ]
+        "supported_actions": [ "DiscoverUM3Action" ],
+        "firmware_update_info": {
+            "id": 9511,
+            "check_urls":
+            [
+                "http://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version"
+            ],
+            "update_url": "https://ultimaker.com/firmware"
+        }
     },
 
     "overrides": {

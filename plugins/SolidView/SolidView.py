@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.View.View import View
@@ -6,14 +6,11 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from UM.Application import Application
-from UM.Preferences import Preferences
 from UM.View.RenderBatch import RenderBatch
-from UM.Settings.Validator import ValidatorState
 from UM.Math.Color import Color
 from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.ExtrudersModel import ExtrudersModel
 
 import math
 
@@ -22,20 +19,55 @@ import math
 class SolidView(View):
     def __init__(self):
         super().__init__()
-
-        Preferences.getInstance().addPreference("view/show_overhang", True)
-
+        application = Application.getInstance()
+        application.getPreferences().addPreference("view/show_overhang", True)
+        application.globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._enabled_shader = None
         self._disabled_shader = None
         self._non_printing_shader = None
         self._support_mesh_shader = None
 
-        self._extruders_model = ExtrudersModel()
+        self._extruders_model = None
         self._theme = None
+        self._support_angle = 90
+
+        self._global_stack = None
+
+        Application.getInstance().engineCreatedSignal.connect(self._onGlobalContainerChanged)
+
+    def _onGlobalContainerChanged(self) -> None:
+        if self._global_stack:
+            try:
+                self._global_stack.propertyChanged.disconnect(self._onPropertyChanged)
+            except TypeError:
+                pass
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+                extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
+
+        self._global_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_stack:
+            self._global_stack.propertyChanged.connect(self._onPropertyChanged)
+            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+                extruder_stack.propertyChanged.connect(self._onPropertyChanged)
+            self._onPropertyChanged("support_angle", "value")  # Force an re-evaluation
+
+    def _onPropertyChanged(self, key: str, property_name: str) -> None:
+        if key != "support_angle" or property_name != "value":
+            return
+        # As the rendering is called a *lot* we really, dont want to re-evaluate the property every time. So we store em!
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack:
+            support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
+            support_angle_stack = global_container_stack.extruders.get(str(support_extruder_nr))
+            if support_angle_stack:
+                self._support_angle = support_angle_stack.getProperty("support_angle", "value")
 
     def beginRendering(self):
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+
+        if not self._extruders_model:
+            self._extruders_model = Application.getInstance().getExtrudersModel()
 
         if not self._theme:
             self._theme = Application.getInstance().getTheme()
@@ -62,15 +94,10 @@ class SolidView(View):
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            support_extruder_nr = global_container_stack.getProperty("support_extruder_nr", "value")
-            support_angle_stack = Application.getInstance().getExtruderManager().getExtruderStack(support_extruder_nr)
-
-            if support_angle_stack is not None and Preferences.getInstance().getValue("view/show_overhang"):
-                angle = support_angle_stack.getProperty("support_angle", "value")
+            if Application.getInstance().getPreferences().getValue("view/show_overhang"):
                 # Make sure the overhang angle is valid before passing it to the shader
-                # Note: if the overhang angle is set to its default value, it does not need to get validated (validationState = None)
-                if angle is not None and global_container_stack.getProperty("support_angle", "validationState") in [None, ValidatorState.Valid]:
-                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - angle)))
+                if self._support_angle is not None and self._support_angle >= 0 and self._support_angle <= 90:
+                    self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(90 - self._support_angle)))
                 else:
                     self._enabled_shader.setUniformValue("u_overhangAngle", math.cos(math.radians(0))) #Overhang angle of 0 causes no area at all to be marked as overhang.
             else:
@@ -78,22 +105,21 @@ class SolidView(View):
 
         for node in DepthFirstIterator(scene.getRoot()):
             if not node.render(renderer):
-                if node.getMeshData() and node.isVisible():
+                if node.getMeshData() and node.isVisible() and not node.callDecoration("getLayerData"):
                     uniforms = {}
                     shade_factor = 1.0
 
                     per_mesh_stack = node.callDecoration("getStack")
 
-                    # Get color to render this mesh in from ExtrudersModel
-                    extruder_index = 0
-                    extruder_id = node.callDecoration("getActiveExtruder")
-                    if extruder_id:
-                        extruder_index = max(0, self._extruders_model.find("id", extruder_id))
+                    extruder_index = node.callDecoration("getActiveExtruderPosition")
+                    if extruder_index is None:
+                        extruder_index = "0"
+                    extruder_index = int(extruder_index)
 
                     # Use the support extruder instead of the active extruder if this is a support_mesh
                     if per_mesh_stack:
                         if per_mesh_stack.getProperty("support_mesh", "value"):
-                            extruder_index = int(global_container_stack.getProperty("support_extruder_nr", "value"))
+                            extruder_index = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
 
                     try:
                         material_color = self._extruders_model.getItem(extruder_index)["color"]
