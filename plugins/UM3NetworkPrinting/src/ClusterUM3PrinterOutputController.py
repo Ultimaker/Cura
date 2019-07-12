@@ -16,5 +16,5 @@ class ClusterUM3PrinterOutputController(PrinterOutputController):
         self.can_control_manually = False
         self.can_send_raw_gcode = False
 
-    def setJobState(self, job: "PrintJobOutputModel", state: str):
+    def setJobState(self, job: "PrintJobOutputModel", state: str) -> None:
         self._output_device.setJobState(job.key, state)
