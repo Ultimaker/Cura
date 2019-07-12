@@ -422,6 +422,7 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state != "queued"]
 
+    ##  Set the remote print job state.
     def setJobState(self, print_job_uuid: str, state: str) -> None:
         self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, state)
 
