@@ -1591,7 +1591,37 @@
                     "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
-                }
+                },
+                "skin_overlap":
+                {
+                    "label": "Skin Overlap Percentage",
+                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "100",
+                    "value": "5 if top_bottom_pattern != 'concentric' else 0",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "skin_overlap_mm":
+                        {
+                            "label": "Skin Overlap",
+                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.02,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "machine_nozzle_size",
+                            "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
             }
         },
         "infill":
@@ -1786,36 +1816,6 @@
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "0.5 * (infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                             "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "skin_overlap":
-                {
-                    "label": "Skin Overlap Percentage",
-                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 5,
-                    "minimum_value_warning": "-50",
-                    "maximum_value_warning": "100",
-                    "value": "5 if top_bottom_pattern != 'concentric' else 0",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "skin_overlap_mm":
-                        {
-                            "label": "Skin Overlap",
-                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 0.02,
-                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
-                            "maximum_value_warning": "machine_nozzle_size",
-                            "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
-                            "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
                     }
