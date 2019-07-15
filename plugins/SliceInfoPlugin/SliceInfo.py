@@ -126,16 +126,7 @@ class SliceInfo(QObject, Extension):
             else:
                 data["active_mode"] = "custom"
 
-            camera_view = application.getPreferences().getValue("general/camera_perspective_mode")
-            from UM.Scene.Camera import Camera
-            if camera_view == Camera.PerspectiveMode.PERSPECTIVE.value:
-                camera_view_string = "perspective"
-            elif camera_view == Camera.PerspectiveMode.ORTHOGONAL.value:
-                camera_view_string = "orthographic"
-            else:
-                Logger.log("w", "Unexpected perspective mode [%s], use 'perspective' as the default value.", camera_view)
-                camera_view_string = "perspective"
-            data["camera_view"] = camera_view_string
+            data["camera_view"] = application.getPreferences().getValue("general/camera_perspective_mode")
 
             definition_changes = global_stack.definitionChanges
             machine_settings_changed_by_user = False
