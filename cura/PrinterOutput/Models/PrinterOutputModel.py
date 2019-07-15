@@ -2,13 +2,13 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, TYPE_CHECKING
 from UM.Math.Vector import Vector
+from cura.PrinterOutput.Peripheral import Peripheral
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
 
-MYPY = False
-if MYPY:
+if TYPE_CHECKING:
     from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
@@ -45,6 +45,7 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate = ""
+        self._peripherals = []  # type: List[Peripheral]
 
         self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                               self._extruders]
@@ -295,3 +296,17 @@ class PrinterOutputModel(QObject):
         if self._printer_configuration.isValid():
             return self._printer_configuration
         return None
+
+    peripheralsChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = peripheralsChanged)
+    def peripherals(self) -> str:
+        return ", ".join(*[peripheral.name for peripheral in self._peripherals])
+
+    def addPeripheral(self, peripheral: Peripheral) -> None:
+        self._peripherals.append(peripheral)
+        self.peripheralsChanged.emit()
+
+    def removePeripheral(self, peripheral: Peripheral) -> None:
+        self._peripherals.remove(peripheral)
+        self.peripheralsChanged.emit()
