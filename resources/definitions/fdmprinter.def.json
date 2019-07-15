@@ -1621,7 +1621,7 @@
                             "settable_per_mesh": true
                         }
                     }
-                },
+                }
             }
         },
         "infill":
