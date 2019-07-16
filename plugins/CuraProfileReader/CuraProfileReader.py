@@ -8,6 +8,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
+from cura.CuraApplication import CuraApplication
 from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
@@ -111,9 +112,10 @@ class CuraProfileReader(ProfileReader):
         if "general" not in parser:
             Logger.log("w", "Missing required section 'general'.")
             return []
-        if "version" not in parser["general"]:
-            Logger.log("w", "Missing required 'version' property")
-            return []
+
+        new_source_version = results.version
+        if int(new_source_version / 1000000) != InstanceContainer.Version or new_source_version % 1000000 != CuraApplication.SettingVersion:
+            Logger.log("e", "Failed to upgrade profile [%s]", profile_id)
 
         if int(parser["general"]["version"]) != InstanceContainer.Version:
             Logger.log("e", "Failed to upgrade profile [%s]", profile_id)
