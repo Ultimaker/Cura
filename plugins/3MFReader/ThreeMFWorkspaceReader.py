@@ -728,7 +728,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         application = CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
+        intent_manager = application.getIntentManager()
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
@@ -755,7 +755,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     if position is not None:
                         extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type,
+                    container = intent_manager._createQualityChanges(quality_changes_quality_type,
                                                                       quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
@@ -788,7 +788,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
-                container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
+                container = intent_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                   global_stack, extruder_stack)
                 container_info.container = container
                 container.setDirty(True)
@@ -817,7 +817,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if container_info.container is None:
                     extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
+                    container = intent_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
                     container.setDirty(True)
@@ -978,15 +978,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager = Application.getInstance().getMachineManager()
         material_manager = Application.getInstance().getMaterialManager()
         quality_manager = Application.getInstance().getQualityManager()
+        intent_manager = Application.getInstance().getIntentManager()
 
         # Force update the lookup maps first
         material_manager.initialize()
         quality_manager.initialize()
+        intent_manager.initialize()
 
         machine_manager.setActiveMachine(global_stack.getId())
 
         if self._quality_changes_to_apply:
-            quality_changes_group_dict = quality_manager.getQualityChangesGroups(global_stack)
+            quality_changes_group_dict = intent_manager.getQualityChangesGroups(global_stack)
             if self._quality_changes_to_apply not in quality_changes_group_dict:
                 Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
                 return

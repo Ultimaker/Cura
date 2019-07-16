@@ -15,6 +15,7 @@ Item
     id: base
 
     property QtObject qualityManager: CuraApplication.getQualityManager()
+    property QtObject intentManager: CuraApplication.getIntentManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
     property var extrudersModel: CuraApplication.getExtrudersModel()
 
@@ -185,7 +186,7 @@ Item
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
             base.toActivateNewQuality = true;
-            base.qualityManager.createQualityChanges(newName);
+            base.intentManager.createQualityChanges(newName);
         }
     }
 
@@ -240,7 +241,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            base.qualityManager.duplicateQualityChanges(newName, base.currentItem);
+            base.intentManager.duplicateQualityChanges(newName, base.currentItem);
         }
     }
 
@@ -257,7 +258,7 @@ Item
 
         onYes:
         {
-            base.qualityManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            base.intentManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
             qualityListView.currentIndex = -1;  // Reset selection.
         }
@@ -271,7 +272,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            var actualNewName = base.qualityManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            var actualNewName = base.intentManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
             base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
         }
     }

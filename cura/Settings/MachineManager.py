@@ -314,7 +314,7 @@ class MachineManager(QObject):
         quality_groups = self._application.getQualityManager().getQualityGroups(global_stack)
 
         if global_quality_changes.getId() != "empty_quality_changes":
-            quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
+            quality_changes_groups = self._application.getIntentManager().getQualityChangesGroups(global_stack)
             new_quality_changes_group = quality_changes_groups.get(global_quality_changes_name)
             if new_quality_changes_group is not None:
                 self._setQualityChangesGroup(new_quality_changes_group)

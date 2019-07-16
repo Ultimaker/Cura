@@ -289,7 +289,7 @@ class ContainerManager(QObject):
             quality_changes = stack.qualityChanges
 
             if quality_changes.getId() == "empty_quality_changes":
-                quality_changes = self._quality_manager._createQualityChanges(current_quality_type, current_quality_changes_name,
+                quality_changes = self._intent_manager._createQualityChanges(current_quality_type, current_quality_changes_name,
                                                                               global_stack, stack)
                 self._container_registry.addContainer(quality_changes)
                 stack.qualityChanges = quality_changes

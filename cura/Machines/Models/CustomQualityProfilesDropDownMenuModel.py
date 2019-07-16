@@ -20,7 +20,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
             Logger.log("d", "No active GlobalStack, set %s as empty.", self.__class__.__name__)
             return
 
-        quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(active_global_stack)
+        quality_changes_group_dict = self._application.getIntentManager().getQualityChangesGroups(active_global_stack)
 
         item_list = []
         for key in sorted(quality_changes_group_dict, key = lambda name: name.upper()):

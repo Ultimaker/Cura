@@ -750,6 +750,9 @@ class CuraApplication(QtApplication):
         self._quality_manager = QualityManager(self, parent = self)
         self._quality_manager.initialize()
 
+        Logger.log("i", "Initializing intent mananager")
+        IntentManager.getInstance().initialize()
+
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self, parent = self)
 
