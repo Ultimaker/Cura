@@ -390,6 +390,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
         data = "{\"force\": true}"
         self.put("print_jobs/{uuid}".format(uuid=print_job_uuid), data, on_finished=None)
 
+    # Set the remote print job state.
+    def setJobState(self, print_job_uuid: str, state: str) -> None:
+        # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
+        action = "print" if state == "resume" else state
+        data = "{\"action\": \"%s\"}" % action
+        self.put("print_jobs/%s/action" % print_job_uuid, data, on_finished=None)
+
     def _printJobStateChanged(self) -> None:
         username = self._getUserName()
 
