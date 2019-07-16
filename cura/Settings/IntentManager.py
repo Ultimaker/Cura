@@ -12,9 +12,6 @@ if TYPE_CHECKING:
 
 ##  Front-end for querying which intents are available for a certain
 #   configuration.
-#
-#   CURRENTLY THIS CLASS CONTAINS ONLY SOME PSEUDOCODE OF WHAT WE ARE SUPPOSED
-#   TO IMPLEMENT.
 class IntentManager(QObject):
     __instance = None
 
