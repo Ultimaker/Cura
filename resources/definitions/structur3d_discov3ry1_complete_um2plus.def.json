@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Discov3ry Complete (Ultimaker 2+)",
+    "name": "Discov3ry Complete",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Andrew Finkle, CTO",

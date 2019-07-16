@@ -1112,9 +1112,17 @@ class MachineManager(QObject):
     def _onRootMaterialChanged(self) -> None:
         self._current_root_material_id = {}
 
+        changed = False
+
         if self._global_container_stack:
             for position in self._global_container_stack.extruders:
-                self._current_root_material_id[position] = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
+                material_id = self._global_container_stack.extruders[position].material.getMetaDataEntry("base_file")
+                if position not in self._current_root_material_id or material_id != self._current_root_material_id[position]:
+                    changed = True
+                    self._current_root_material_id[position] = material_id
+
+        if changed:
+            self.activeMaterialChanged.emit()
 
     @pyqtProperty("QVariant", notify = rootMaterialChanged)
     def currentRootMaterialId(self) -> Dict[str, str]:

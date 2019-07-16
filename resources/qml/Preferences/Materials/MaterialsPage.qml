@@ -41,8 +41,22 @@ Item
         name: "cura"
     }
 
+    function resetExpandedActiveMaterial()
+    {
+        materialListView.expandActiveMaterial(active_root_material_id)
+    }
+
     // When loaded, try to select the active material in the tree
-    Component.onCompleted: materialListView.expandActiveMaterial(active_root_material_id)
+    Component.onCompleted: resetExpandedActiveMaterial()
+
+    Connections
+    {
+        target: Cura.MachineManager
+        onActiveMaterialChanged:
+        {
+            resetExpandedActiveMaterial()
+        }
+    }
 
     // Every time the selected item has changed, notify to the details panel
     onCurrentItemChanged:

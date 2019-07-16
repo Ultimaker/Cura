@@ -1454,8 +1454,8 @@
                 },
                 "skin_no_small_gaps_heuristic":
                 {
-                    "label": "Ignore Small Z Gaps",
-                    "description": "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting.",
+                    "label": "No Skin in Z Gaps",
+                    "description": "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air.",
                     "type": "bool",
                     "default_value": false,
                     "enabled": "top_layers > 0 or bottom_layers > 0",
@@ -1591,6 +1591,36 @@
                     "enabled": "resolveOrValue('jerk_enabled') and ironing_enabled",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true
+                },
+                "skin_overlap":
+                {
+                    "label": "Skin Overlap Percentage",
+                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 5,
+                    "minimum_value_warning": "-50",
+                    "maximum_value_warning": "100",
+                    "value": "5 if top_bottom_pattern != 'concentric' else 0",
+                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                    "limit_to_extruder": "top_bottom_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "skin_overlap_mm":
+                        {
+                            "label": "Skin Overlap",
+                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.02,
+                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
+                            "maximum_value_warning": "machine_nozzle_size",
+                            "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
+                            "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
+                            "settable_per_mesh": true
+                        }
+                    }
                 }
             }
         },
@@ -1786,36 +1816,6 @@
                             "maximum_value_warning": "machine_nozzle_size",
                             "value": "0.5 * (infill_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * infill_overlap / 100 if infill_sparse_density < 95 and infill_pattern != 'concentric' else 0",
                             "enabled": "infill_sparse_density > 0 and infill_pattern != 'concentric'",
-                            "settable_per_mesh": true
-                        }
-                    }
-                },
-                "skin_overlap":
-                {
-                    "label": "Skin Overlap Percentage",
-                    "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                    "unit": "%",
-                    "type": "float",
-                    "default_value": 5,
-                    "minimum_value_warning": "-50",
-                    "maximum_value_warning": "100",
-                    "value": "5 if top_bottom_pattern != 'concentric' else 0",
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true,
-                    "children":
-                    {
-                        "skin_overlap_mm":
-                        {
-                            "label": "Skin Overlap",
-                            "description": "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall.",
-                            "unit": "mm",
-                            "type": "float",
-                            "default_value": 0.02,
-                            "minimum_value_warning": "-0.5 * machine_nozzle_size",
-                            "maximum_value_warning": "machine_nozzle_size",
-                            "value": "0.5 * (skin_line_width + (wall_line_width_x if wall_line_count > 1 else wall_line_width_0)) * skin_overlap / 100 if top_bottom_pattern != 'concentric' else 0",
-                            "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
                             "settable_per_mesh": true
                         }
                     }
@@ -2063,7 +2063,7 @@
                     "description": "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted.",
                     "unit": "°C",
                     "type": "float",
-                    "default_value": 35,
+                    "default_value": 0,
                     "resolve": "min(extruderValues('build_volume_temperature'))",
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
@@ -2686,7 +2686,7 @@
                 "limit_support_retractions":
                 {
                     "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure.",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "retraction_enable and (support_enable or support_tree_enable)",
@@ -3082,19 +3082,6 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_max_feedrate_z",
                     "enabled": "retraction_enable and retraction_hop_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "max_feedrate_z_override":
-                {
-                    "label": "Maximum Z Speed",
-                    "description": "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
-                    "maximum_value": "299792458000",
-                    "maximum_value_warning": "machine_max_feedrate_z",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -5929,7 +5916,7 @@
                 "smooth_spiralized_contours":
                 {
                     "label": "Smooth Spiralized Contours",
-                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
+                    "description": "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details.",
                     "type": "bool",
                     "default_value": true,
                     "enabled": "magic_spiralize",
@@ -6672,7 +6659,7 @@
                     "type": "float",
                     "default_value": 5,
                     "minimum_value": "0.1",
-                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                    "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                     "maximum_value_warning": "50",
                     "enabled": "wireframe_enabled",
                     "settable_per_mesh": false,
@@ -6704,7 +6691,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",
@@ -6720,7 +6707,7 @@
                             "type": "float",
                             "default_value": 5,
                             "minimum_value": "0.1",
-                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + max(max_feedrate_z_override, machine_max_feedrate_z) ** 2)",
+                            "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2 + machine_max_feedrate_z ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
                             "value": "wireframe_printspeed",
