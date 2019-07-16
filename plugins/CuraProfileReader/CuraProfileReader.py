@@ -68,7 +68,7 @@ class CuraProfileReader(ProfileReader):
             return []
 
         version = int(parser["general"]["version"])
-        setting_version = int(parser["metadata"].get("setting_version", 0))
+        setting_version = int(parser["metadata"].get("setting_version", "0"))
         if InstanceContainer.Version != version:
             name = parser["general"]["name"]
             return self._upgradeProfileVersion(serialized, name, version, setting_version)
@@ -105,6 +105,9 @@ class CuraProfileReader(ProfileReader):
 
         from UM.VersionUpgradeManager import VersionUpgradeManager
         results = VersionUpgradeManager.getInstance().updateFilesData("quality_changes", source_version, [serialized], [profile_id])
+        if results is None:
+            return []
+
         serialized = results.files_data[0]
 
         parser = configparser.ConfigParser(interpolation = None)
