@@ -1,6 +1,5 @@
 {
-    "id": "vertex_nano_k8600_extruder_0",
-    "version": 1,
+    "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {

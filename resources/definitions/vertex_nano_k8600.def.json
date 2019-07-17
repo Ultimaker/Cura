@@ -1,5 +1,5 @@
 {
-    "version": 1,
+    "version": 2,
     "name": "Vertex K8600",
     "inherits": "fdmprinter",
     "metadata": {
