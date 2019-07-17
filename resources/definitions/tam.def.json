@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Type A Machines Series 1 2014",
+    "name": "Series 1 2014",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

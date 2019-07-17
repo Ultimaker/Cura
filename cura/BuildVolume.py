@@ -727,47 +727,16 @@ class BuildVolume(SceneNode):
 
         self._error_areas = []
 
-        extruder_manager = ExtruderManager.getInstance()
-        used_extruders = extruder_manager.getUsedExtruderStacks()
+        used_extruders = ExtruderManager.getInstance().getUsedExtruderStacks()
         disallowed_border_size = self.getEdgeDisallowedSize()
 
-        if not used_extruders:
-            # If no extruder is used, assume that the active extruder is used (else nothing is drawn)
-            if extruder_manager.getActiveExtruderStack():
-                used_extruders = [extruder_manager.getActiveExtruderStack()]
-            else:
-                used_extruders = [self._global_container_stack]
-
-        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders) #Normal machine disallowed areas can always be added.
+        result_areas = self._computeDisallowedAreasStatic(disallowed_border_size, used_extruders)  # Normal machine disallowed areas can always be added.
         prime_areas = self._computeDisallowedAreasPrimeBlob(disallowed_border_size, used_extruders)
-        result_areas_no_brim = self._computeDisallowedAreasStatic(0, used_extruders) #Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
-        prime_disallowed_areas = copy.deepcopy(result_areas_no_brim)
+        result_areas_no_brim = self._computeDisallowedAreasStatic(0, used_extruders)  # Where the priming is not allowed to happen. This is not added to the result, just for collision checking.
 
-        #Check if prime positions intersect with disallowed areas.
+        # Check if prime positions intersect with disallowed areas.
         for extruder in used_extruders:
             extruder_id = extruder.getId()
-
-            collision = False
-            for prime_polygon in prime_areas[extruder_id]:
-                for disallowed_polygon in prime_disallowed_areas[extruder_id]:
-                    if prime_polygon.intersectsPolygon(disallowed_polygon) is not None:
-                        collision = True
-                        break
-                if collision:
-                    break
-
-                #Also check other prime positions (without additional offset).
-                for other_extruder_id in prime_areas:
-                    if extruder_id == other_extruder_id: #It is allowed to collide with itself.
-                        continue
-                    for other_prime_polygon in prime_areas[other_extruder_id]:
-                        if prime_polygon.intersectsPolygon(other_prime_polygon):
-                            collision = True
-                            break
-                    if collision:
-                        break
-                if collision:
-                    break
 
             result_areas[extruder_id].extend(prime_areas[extruder_id])
             result_areas_no_brim[extruder_id].extend(prime_areas[extruder_id])
@@ -776,37 +745,32 @@ class BuildVolume(SceneNode):
             for area in nozzle_disallowed_areas:
                 polygon = Polygon(numpy.array(area, numpy.float32))
                 polygon_disallowed_border = polygon.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
-                result_areas[extruder_id].append(polygon_disallowed_border) #Don't perform the offset on these.
-                #polygon_minimal_border = polygon.getMinkowskiHull(5)
-                result_areas_no_brim[extruder_id].append(polygon)  # no brim
+                result_areas[extruder_id].append(polygon_disallowed_border)  # Don't perform the offset on these.
+                result_areas_no_brim[extruder_id].append(polygon)  # No brim
 
         # Add prime tower location as disallowed area.
-        if len(used_extruders) > 1: #No prime tower in single-extrusion.
-
-            if len([x for x in used_extruders if x.isEnabled]) > 1: #No prime tower if only one extruder is enabled
-                prime_tower_collision = False
-                prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
-                for extruder_id in prime_tower_areas:
-                    for i_area, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
-                        for area in result_areas[extruder_id]:
-                            if prime_tower_area.intersectsPolygon(area) is not None:
-                                prime_tower_collision = True
-                                break
-                        if prime_tower_collision: #Already found a collision.
+        if len([x for x in used_extruders if x.isEnabled]) > 1:  # No prime tower if only one extruder is enabled
+            prime_tower_collision = False
+            prime_tower_areas = self._computeDisallowedAreasPrinted(used_extruders)
+            for extruder_id in prime_tower_areas:
+                for area_index, prime_tower_area in enumerate(prime_tower_areas[extruder_id]):
+                    for area in result_areas[extruder_id]:
+                        if prime_tower_area.intersectsPolygon(area) is not None:
+                            prime_tower_collision = True
                             break
-                        if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                            ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
-                            prime_tower_areas[extruder_id][i_area] = prime_tower_area.getMinkowskiHull(
-                                Polygon.approximatedCircle(disallowed_border_size))
-                    if not prime_tower_collision:
-                        result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
-                        result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
-                    else:
-                        self._error_areas.extend(prime_tower_areas[extruder_id])
+                    if prime_tower_collision:  # Already found a collision.
+                        break
+                    if self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
+                        prime_tower_areas[extruder_id][area_index] = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(disallowed_border_size))
+                if not prime_tower_collision:
+                    result_areas[extruder_id].extend(prime_tower_areas[extruder_id])
+                    result_areas_no_brim[extruder_id].extend(prime_tower_areas[extruder_id])
+                else:
+                    self._error_areas.extend(prime_tower_areas[extruder_id])
 
         self._has_errors = len(self._error_areas) > 0
 
-        self._disallowed_areas = []
+        self._disallowed_areas = []  # type: List[Polygon]
         for extruder_id in result_areas:
             self._disallowed_areas.extend(result_areas[extruder_id])
         self._disallowed_areas_no_brim = []
@@ -823,11 +787,14 @@ class BuildVolume(SceneNode):
     #   where that extruder may not print.
     def _computeDisallowedAreasPrinted(self, used_extruders):
         result = {}
+        adhesion_extruder = None #type: ExtruderStack
         for extruder in used_extruders:
+            if int(extruder.getProperty("extruder_nr", "value")) == int(self._global_container_stack.getProperty("adhesion_extruder_nr", "value")):
+                adhesion_extruder = extruder
             result[extruder.getId()] = []
 
-        #Currently, the only normally printed object is the prime tower.
-        if ExtruderManager.getInstance().getResolveOrValue("prime_tower_enable"):
+        # Currently, the only normally printed object is the prime tower.
+        if self._global_container_stack.getProperty("prime_tower_enable", "value"):
             prime_tower_size = self._global_container_stack.getProperty("prime_tower_size", "value")
             machine_width = self._global_container_stack.getProperty("machine_width", "value")
             machine_depth = self._global_container_stack.getProperty("machine_depth", "value")
@@ -837,27 +804,19 @@ class BuildVolume(SceneNode):
                 prime_tower_x = prime_tower_x - machine_width / 2 #Offset by half machine_width and _depth to put the origin in the front-left.
                 prime_tower_y = prime_tower_y + machine_depth / 2
 
-            if (ExtruderManager.getInstance().getResolveOrValue("prime_tower_brim_enable") and
-                ExtruderManager.getInstance().getResolveOrValue("adhesion_type") != "raft"):
+            if adhesion_extruder is not None and self._global_container_stack.getProperty("prime_tower_brim_enable", "value") and self._global_container_stack.getProperty("adhesion_type", "value") != "raft":
                 brim_size = (
-                    extruder.getProperty("brim_line_count", "value") *
-                    extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
-                    extruder.getProperty("initial_layer_line_width_factor", "value")
+                    adhesion_extruder.getProperty("brim_line_count", "value") *
+                    adhesion_extruder.getProperty("skirt_brim_line_width", "value") / 100.0 *
+                    adhesion_extruder.getProperty("initial_layer_line_width_factor", "value")
                 )
                 prime_tower_x -= brim_size
                 prime_tower_y += brim_size
 
-            if self._global_container_stack.getProperty("prime_tower_circular", "value"):
-                radius = prime_tower_size / 2
-                prime_tower_area = Polygon.approximatedCircle(radius)
-                prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
-            else:
-                prime_tower_area = Polygon([
-                    [prime_tower_x - prime_tower_size, prime_tower_y - prime_tower_size],
-                    [prime_tower_x, prime_tower_y - prime_tower_size],
-                    [prime_tower_x, prime_tower_y],
-                    [prime_tower_x - prime_tower_size, prime_tower_y],
-                ])
+            radius = prime_tower_size / 2
+            prime_tower_area = Polygon.approximatedCircle(radius)
+            prime_tower_area = prime_tower_area.translate(prime_tower_x - radius, prime_tower_y - radius)
+
             prime_tower_area = prime_tower_area.getMinkowskiHull(Polygon.approximatedCircle(0))
             for extruder in used_extruders:
                 result[extruder.getId()].append(prime_tower_area) #The prime tower location is the same for each extruder, regardless of offset.
@@ -915,9 +874,12 @@ class BuildVolume(SceneNode):
     #   for.
     #   \return A dictionary with for each used extruder ID the disallowed areas
     #   where that extruder may not print.
-    def _computeDisallowedAreasStatic(self, border_size, used_extruders):
-        #Convert disallowed areas to polygons and dilate them.
+    def _computeDisallowedAreasStatic(self, border_size:float, used_extruders: List["ExtruderStack"]) -> Dict[str, List[Polygon]]:
+        # Convert disallowed areas to polygons and dilate them.
         machine_disallowed_polygons = []
+        if self._global_container_stack is None:
+            return {}
+
         for area in self._global_container_stack.getProperty("machine_disallowed_areas", "value"):
             polygon = Polygon(numpy.array(area, numpy.float32))
             polygon = polygon.getMinkowskiHull(Polygon.approximatedCircle(border_size))
@@ -928,7 +890,7 @@ class BuildVolume(SceneNode):
         nozzle_offsetting_for_disallowed_areas = self._global_container_stack.getMetaDataEntry(
             "nozzle_offsetting_for_disallowed_areas", True)
 
-        result = {}
+        result = {}  # type: Dict[str, List[Polygon]]
         for extruder in used_extruders:
             extruder_id = extruder.getId()
             offset_x = extruder.getProperty("machine_nozzle_offset_x", "value")
@@ -937,13 +899,13 @@ class BuildVolume(SceneNode):
             offset_y = extruder.getProperty("machine_nozzle_offset_y", "value")
             if offset_y is None:
                 offset_y = 0
-            offset_y = -offset_y #Y direction of g-code is the inverse of Y direction of Cura's scene space.
+            offset_y = -offset_y  # Y direction of g-code is the inverse of Y direction of Cura's scene space.
             result[extruder_id] = []
 
             for polygon in machine_disallowed_polygons:
-                result[extruder_id].append(polygon.translate(offset_x, offset_y)) #Compensate for the nozzle offset of this extruder.
+                result[extruder_id].append(polygon.translate(offset_x, offset_y))  # Compensate for the nozzle offset of this extruder.
 
-            #Add the border around the edge of the build volume.
+            # Add the border around the edge of the build volume.
             left_unreachable_border = 0
             right_unreachable_border = 0
             top_unreachable_border = 0
@@ -951,7 +913,8 @@ class BuildVolume(SceneNode):
 
             # Only do nozzle offsetting if needed
             if nozzle_offsetting_for_disallowed_areas:
-                #The build volume is defined as the union of the area that all extruders can reach, so we need to know the relative offset to all extruders.
+                # The build volume is defined as the union of the area that all extruders can reach, so we need to know
+                # the relative offset to all extruders.
                 for other_extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
                     other_offset_x = other_extruder.getProperty("machine_nozzle_offset_x", "value")
                     if other_offset_x is None:
@@ -1035,8 +998,8 @@ class BuildVolume(SceneNode):
                         [ half_machine_width - border_size, 0]
                     ], numpy.float32)))
                     result[extruder_id].append(Polygon(numpy.array([
-                        [ half_machine_width,-half_machine_depth],
-                        [-half_machine_width,-half_machine_depth],
+                        [ half_machine_width, -half_machine_depth],
+                        [-half_machine_width, -half_machine_depth],
                         [ 0, -half_machine_depth + border_size]
                     ], numpy.float32)))
 
@@ -1163,7 +1126,7 @@ class BuildVolume(SceneNode):
     _raft_settings = ["adhesion_type", "raft_base_thickness", "raft_interface_thickness", "raft_surface_layers", "raft_surface_thickness", "raft_airgap", "layer_0_z_overlap"]
     _extra_z_settings = ["retraction_hop_enabled", "retraction_hop"]
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "extruder_prime_pos_z", "prime_blob_enable"]
-    _tower_settings = ["prime_tower_enable", "prime_tower_circular", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
+    _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
     _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.

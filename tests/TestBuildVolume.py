@@ -1,9 +1,9 @@
 from unittest.mock import MagicMock, patch
-
+from UM.Math.AxisAlignedBox import AxisAlignedBox
 import pytest
 
 from UM.Math.Polygon import Polygon
-from UM.Settings.SettingInstance import InstanceState
+from UM.Math.Vector import Vector
 from cura.BuildVolume import BuildVolume, PRIME_CLEARANCE
 import numpy
 
@@ -43,6 +43,109 @@ def test_buildGridMesh(build_volume):
     assert numpy.array_equal(result_vertices, mesh.getVertices())
 
 
+def test_clamp(build_volume):
+    assert build_volume._clamp(0, 0, 200) == 0
+    assert build_volume._clamp(0, -200, 200) == 0
+    assert build_volume._clamp(300, -200, 200) == 200
+
+
+class TestCalculateBedAdhesionSize:
+    setting_property_dict = {"adhesion_type": {"value": "brim"},
+                             "skirt_brim_line_width": {"value": 0},
+                             "initial_layer_line_width_factor": {"value": 0},
+                             "brim_line_count": {"value": 0},
+                             "machine_width": {"value": 200},
+                             "machine_depth": {"value": 200},
+                             "skirt_line_count": {"value": 0},
+                             "skirt_gap": {"value": 0},
+                             "raft_margin": {"value": 0}
+                             }
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestCalculateBedAdhesionSize.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def createAndSetGlobalStack(self, build_volume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_stack
+
+    def test_noGlobalStack(self, build_volume: BuildVolume):
+        assert build_volume._calculateBedAdhesionSize([]) is None
+
+    @pytest.mark.parametrize("setting_dict, result", [
+        ({}, 0),
+        ({"adhesion_type": {"value": "skirt"}}, 0),
+        ({"adhesion_type": {"value": "raft"}}, 0),
+        ({"adhesion_type": {"value": "none"}}, 0),
+        ({"adhesion_type": {"value": "skirt"}, "skirt_line_count": {"value": 2}, "initial_layer_line_width_factor": {"value": 1}, "skirt_brim_line_width": {"value": 2}}, 0.02),
+        # Even though it's marked as skirt, it should behave as a brim as the prime tower has a brim (skirt line count is still at 0!)
+        ({"adhesion_type": {"value": "skirt"}, "prime_tower_brim_enable": {"value": True}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, -0.06),
+        ({"brim_line_count": {"value": 1}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0),
+        ({"brim_line_count": {"value": 2}, "skirt_brim_line_width": {"value": 2}, "initial_layer_line_width_factor": {"value": 3}}, 0.06),
+        ({"brim_line_count": {"value": 9000000}, "skirt_brim_line_width": {"value": 90000}, "initial_layer_line_width_factor": {"value": 9000}}, 100),  # Clamped at half the max size of buildplate
+    ])
+    def test_singleExtruder(self, build_volume: BuildVolume, setting_dict, result):
+        self.createAndSetGlobalStack(build_volume)
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary.update(setting_dict)
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            assert build_volume._calculateBedAdhesionSize([]) == result
+
+    def test_unknownBedAdhesion(self, build_volume: BuildVolume):
+        self.createAndSetGlobalStack(build_volume)
+        patched_dictionary = self.setting_property_dict.copy()
+        patched_dictionary.update({"adhesion_type": {"value": "OMGZOMGBBQ"}})
+        with patch.dict(self.setting_property_dict, patched_dictionary):
+            with pytest.raises(Exception):
+                build_volume._calculateBedAdhesionSize([])
+
+class TestComputeDisallowedAreasStatic:
+    setting_property_dict = {"machine_disallowed_areas": {"value": [[[-200,  112.5], [ -82,  112.5], [ -84,  102.5], [-115,  102.5]]]},
+                             "machine_width": {"value": 200},
+                             "machine_depth": {"value": 200},
+                            }
+
+    def getPropertySideEffect(*args, **kwargs):
+        properties = TestComputeDisallowedAreasStatic.setting_property_dict.get(args[1])
+        if properties:
+            return properties.get(args[2])
+
+    def test_computeDisallowedAreasStaticNoExtruder(self, build_volume: BuildVolume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        build_volume._global_container_stack = mocked_stack
+        assert build_volume._computeDisallowedAreasStatic(0, []) == {}
+
+    def test_computeDisalowedAreasStaticSingleExtruder(self, build_volume: BuildVolume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_extruder.getId = MagicMock(return_value = "zomg")
+
+        build_volume._global_container_stack = mocked_stack
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance"):
+            result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
+            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
+
+    def test_computeDisalowedAreasMutliExtruder(self, build_volume):
+        mocked_stack = MagicMock()
+        mocked_stack.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+
+        mocked_extruder = MagicMock()
+        mocked_extruder.getProperty = MagicMock(side_effect=self.getPropertySideEffect)
+        mocked_extruder.getId = MagicMock(return_value="zomg")
+        extruder_manager = MagicMock()
+        extruder_manager.getActiveExtruderStacks = MagicMock(return_value = [mocked_stack])
+        build_volume._global_container_stack = mocked_stack
+        with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value = extruder_manager)):
+            result = build_volume._computeDisallowedAreasStatic(0, [mocked_extruder])
+            assert result == {"zomg": [Polygon([[-84.0, 102.5], [-115.0, 102.5], [-200.0, 112.5], [-82.0, 112.5]])]}
 
 class TestUpdateRaftThickness:
     setting_property_dict = {"raft_base_thickness": {"value": 1},
@@ -200,6 +303,25 @@ class TestRebuild:
         build_volume._onEngineCreated()
         build_volume.rebuild()
         assert build_volume.getMeshData() is None
+
+    def test_updateBoundingBox(self, build_volume: BuildVolume):
+        build_volume.setWidth(10)
+        build_volume.setHeight(10)
+        build_volume.setDepth(10)
+
+        mocked_global_stack = MagicMock()
+        build_volume._global_container_stack = mocked_global_stack
+        build_volume.getEdgeDisallowedSize = MagicMock(return_value = 0)
+        build_volume.updateNodeBoundaryCheck = MagicMock()
+
+        # Fake the the "engine is created callback"
+        build_volume._onEngineCreated()
+        build_volume.rebuild()
+
+        bounding_box = build_volume.getBoundingBox()
+        assert bounding_box.minimum == Vector(-5.0, -1.0, -5.0)
+        assert bounding_box.maximum == Vector(5.0, 10.0, 5.0)
+
 
 class TestUpdateMachineSizeProperties:
     setting_property_dict = {"machine_width": {"value": 50},

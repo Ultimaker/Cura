@@ -283,7 +283,7 @@ class CuraContainerRegistry(ContainerRegistry):
                                         profile.addInstance(new_instance)
                                         profile.setDirty(True)
 
-                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit = True)
                         extruder_profiles.append(profile)
 
                     for profile in extruder_profiles:

@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "guigashm",
-        "manufacturer": "Prusajr",
+        "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
         "platform": "prusai3_xl_platform.stl",
         "machine_extruder_trains":

@@ -63,9 +63,19 @@ class XmlMaterialProfile(InstanceContainer):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
 
+        # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
+        # "properties" field and apply the new values to SettingInstances as well.
+        new_setting_values_dict = {}
+        if key == "properties":
+            for k, v in value.items():
+                if k in self.__material_properties_setting_map:
+                    new_setting_values_dict[self.__material_properties_setting_map[k]] = v
+
         # Prevent recursion
         if not apply_to_all:
             super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
             return
 
         # Get the MaterialGroup
@@ -74,17 +84,23 @@ class XmlMaterialProfile(InstanceContainer):
         material_group = material_manager.getMaterialGroup(root_material_id)
         if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
             super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
             return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
             root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
+            for k, v in new_setting_values_dict.items():
+                root_material_container.setProperty(k, "value", v)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
             if container is not None:
                 container.setMetaDataEntry(key, value, apply_to_all = False)
+                for k, v in new_setting_values_dict.items():
+                    container.setProperty(k, "value", v)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -1180,6 +1196,13 @@ class XmlMaterialProfile(InstanceContainer):
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
         "build volume temperature": "build_volume_temperature",
+        "anti ooze retracted position": "material_anti_ooze_retracted_position",
+        "anti ooze retract speed": "material_anti_ooze_retraction_speed",
+        "break preparation retracted position": "material_break_preparation_retracted_position",
+        "break preparation speed": "material_break_preparation_speed",
+        "break retracted position": "material_break_retracted_position",
+        "break speed": "material_break_speed",
+        "break temperature": "material_break_temperature"
     }
     __unmapped_settings = [
         "hardware compatible",

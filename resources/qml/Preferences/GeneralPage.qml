@@ -368,14 +368,30 @@ UM.PreferencesPage
             {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?")
+                text: zoomToMouseCheckbox.enabled ? catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?") : catalog.i18nc("@info:tooltip", "Zooming towards the mouse is not supported in the orthogonal perspective.")
 
                 CheckBox
                 {
                     id: zoomToMouseCheckbox
-                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction");
-                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
+                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
+                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
+                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
+                }
+
+                //Because there is no signal for individual preferences, we need to manually link to the onPreferenceChanged signal.
+                Connections
+                {
+                    target: UM.Preferences
+                    onPreferenceChanged:
+                    {
+                        if(preference != "general/camera_perspective_mode")
+                        {
+                            return;
+                        }
+                        zoomToMouseCheckbox.enabled = UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal";
+                        zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled;
+                    }
                 }
             }
 

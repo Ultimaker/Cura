@@ -97,7 +97,7 @@ Rectangle
                 horizontalCenter: parent.horizontalCenter
             }
             visible: isNetworkConfigured && !isConnected
-            text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.")
+            text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("monitor_text_primary")
             wrapMode: Text.WordWrap

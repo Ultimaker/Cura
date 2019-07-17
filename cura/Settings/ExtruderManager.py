@@ -205,7 +205,7 @@ class ExtruderManager(QObject):
     #   list.
     #
     #   \return A list of extruder stacks.
-    def getUsedExtruderStacks(self) -> List["ContainerStack"]:
+    def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = self._application.getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
 
