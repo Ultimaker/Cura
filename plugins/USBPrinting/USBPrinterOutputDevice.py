@@ -112,11 +112,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Request the current scene to be sent to a USB-connected printer.
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
-    #   \param file_name \type{string} A suggestion for a file name to write.
+    #   \param file_name A suggestion for a file name to write.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+    def requestWrite(self, nodes, file_name: str = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._is_printing:
             return  # Already printing
         self.writeStarted.emit(self)
@@ -181,7 +181,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
             except SerialException:
-                Logger.log("w", "An exception occured while trying to create serial connection")
+                Logger.log("w", "An exception occurred while trying to create serial connection")
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
