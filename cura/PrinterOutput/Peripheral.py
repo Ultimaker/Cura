@@ -11,6 +11,6 @@ class Peripheral:
     ##  Constructs the peripheral.
     #   \param type A unique ID for the type of peripheral.
     #   \param name A human-readable name for the peripheral.
-    def __init__(self, peripheral_type: str, name: str):
+    def __init__(self, peripheral_type: str, name: str) -> None:
         self.type = peripheral_type
         self.name = name
