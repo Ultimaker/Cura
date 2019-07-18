@@ -3890,7 +3890,7 @@
                     "value": "retraction_hop",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch",
+                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
