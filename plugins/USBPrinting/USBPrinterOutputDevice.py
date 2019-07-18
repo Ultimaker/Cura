@@ -6,6 +6,7 @@ import os
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #To get the g-code output.
+from UM.Message import Message #Show an error when already printing.
 from UM.PluginRegistry import PluginRegistry #To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
@@ -118,6 +119,8 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes, file_name: str = None, filter_by_machine = False, file_handler = None, **kwargs):
         if self._is_printing:
+            message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
+            message.show()
             return  # Already printing
         self.writeStarted.emit(self)
         # cancel any ongoing preheat timer before starting a print
