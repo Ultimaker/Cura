@@ -63,6 +63,19 @@ def test_getMachine():
         assert MachineManager.getMachine("test") == mocked_global_stack
 
 
+def test_addMachine(machine_manager):
+    registry = MagicMock()
+
+    mocked_stack = MagicMock()
+    mocked_stack.getId = MagicMock(return_value="newlyCreatedStack")
+    mocked_create_machine = MagicMock(name="createMachine", return_value = mocked_stack)
+    machine_manager.setActiveMachine = MagicMock()
+    with patch("cura.Settings.CuraStackBuilder.CuraStackBuilder.createMachine", mocked_create_machine):
+        with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
+            machine_manager.addMachine("derp")
+    machine_manager.setActiveMachine.assert_called_with("newlyCreatedStack")
+
+
 def test_hasUserSettings(machine_manager, application):
     mocked_stack = application.getGlobalContainerStack()
 
