@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import List, TYPE_CHECKING, cast
+from typing import List, cast
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
@@ -23,9 +23,8 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 
-if TYPE_CHECKING:
-    from UM.Scene.SceneNode import SceneNode
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
