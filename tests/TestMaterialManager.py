@@ -4,8 +4,8 @@ from cura.Machines.MaterialManager import MaterialManager
 
 
 mocked_registry = MagicMock()
-material_1 = {"id": "test", "GUID":"TEST!", "base_file": "base_material", "definition": "fdmmachine", "approximate_diameter": 3, "brand": "generic"}
-material_2 = {"id": "base_material", "GUID": "TEST2!", "base_file": "test", "definition": "fdmmachine", "approximate_diameter": 3}
+material_1 = {"id": "test", "GUID":"TEST!", "base_file": "base_material", "definition": "fdmmachine", "approximate_diameter": "3", "brand": "generic", "material": "pla"}
+material_2 = {"id": "base_material", "GUID": "TEST2!", "base_file": "test", "definition": "fdmmachine", "approximate_diameter": "3", "material": "pla"}
 mocked_registry.findContainersMetadata = MagicMock(return_value = [material_1, material_2])
 
 
@@ -113,6 +113,21 @@ class TestAvailableMaterials:
             available_materials = manager.getAvailableMaterials(mocked_definition, None, None, 3)
         assert "base_material" in available_materials
         assert "test" not in available_materials
+
+
+class Test_getFallbackMaterialIdByMaterialType:
+    def test_happyFlow(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+        manager.initialize()
+
+        assert manager.getFallbackMaterialIdByMaterialType("pla") == "test"
+
+    def test_unknownMaterial(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+        manager.initialize()
+        assert manager.getFallbackMaterialIdByMaterialType("OMGZOMG") is None
 
 
 def test_getMaterialNode(application):
