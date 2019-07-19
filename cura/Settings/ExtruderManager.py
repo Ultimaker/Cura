@@ -12,7 +12,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
-from UM.Settings.ContainerStack import ContainerStack
+from UM.Decorators import deprecated
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -95,6 +95,7 @@ class ExtruderManager(QObject):
     #
     #   \param index The index of the extruder whose name to get.
     @pyqtSlot(int, result = str)
+    @deprecated("Use Cura.MachineManager.activeMachine.extruders[index].name instead", "4.3")
     def getExtruderName(self, index: int) -> str:
         try:
             return self.getActiveExtruderStacks()[index].getName()
