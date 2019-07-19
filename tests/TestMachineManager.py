@@ -94,3 +94,24 @@ def test_totalNumberOfSettings(machine_manager):
     registry.findDefinitionContainers = MagicMock(return_value = [mocked_definition])
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=registry)):
         assert machine_manager.totalNumberOfSettings == 3
+
+
+def createMockedExtruder(extruder_id):
+    extruder = MagicMock()
+    extruder.getId = MagicMock(return_value = extruder_id)
+    return extruder
+
+
+def createMockedMaterial(material_id):
+    material = MagicMock()
+    material.getId = MagicMock(return_value=material_id)
+    return material
+
+
+def test_allActiveMaterialIds(machine_manager, extruder_manager):
+    extruder_1 = createMockedExtruder("extruder_1")
+    extruder_2 = createMockedExtruder("extruder_2")
+    extruder_1.material = createMockedMaterial("material_1")
+    extruder_2.material = createMockedMaterial("material_2")
+    extruder_manager.getActiveExtruderStacks = MagicMock(return_value = [extruder_1, extruder_2])
+    assert machine_manager.allActiveMaterialIds == {"extruder_1": "material_1", "extruder_2": "material_2"}
