@@ -4,8 +4,6 @@ import pytest
 
 from cura.Machines.QualityManager import QualityManager
 
-
-
 mocked_stack = MagicMock()
 mocked_extruder = MagicMock()
 
@@ -58,3 +56,14 @@ def test_getQualityChangesGroup(quality_mocked_application):
     manager.initialize()
 
     assert "herp" in manager.getQualityChangesGroups(mocked_stack)
+
+
+def test_getDefaultQualityType(quality_mocked_application):
+    manager = QualityManager(quality_mocked_application)
+    manager.initialize()
+    mocked_stack = MagicMock()
+    mocked_stack.definition.getMetaDataEntry = MagicMock(return_value = "normal")
+    assert manager.getDefaultQualityType(mocked_stack).quality_type == "normal"
+
+
+    
