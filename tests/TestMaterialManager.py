@@ -24,21 +24,101 @@ def test_initialize(application):
     assert manager.getMaterialGroup("test").name == "test"
 
 
-def test_getAvailableMaterials(application):
+def test_getMaterialGroupListByGUID(application):
     with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
         manager = MaterialManager(mocked_registry)
     manager.initialize()
 
-    available_materials = manager.getAvailableMaterials(mocked_definition, None, None, 3)
+    assert manager.getMaterialGroupListByGUID("TEST!")[0].name == "test"
+    assert manager.getMaterialGroupListByGUID("TEST2!")[0].name == "base_material"
 
-    assert "base_material" in available_materials
-    assert "test" in available_materials
+
+def test_getRootMaterialIDforDiameter(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+
+    assert manager.getRootMaterialIDForDiameter("base_material", "3") == "base_material"
+
+
+def test_getMaterialNodeByTypeMachineHasNoMaterials(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+
+    mocked_stack = MagicMock()
+    assert manager.getMaterialNodeByType(mocked_stack, "0", "nozzle", "", "") is None
+
+
+def test_getMaterialNodeByTypeMachineHasMaterialsButNoMaterialFound(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+
+    mocked_stack = MagicMock()
+    mocked_stack.definition.getMetaDataEntry = MagicMock(return_value = True)  # For the "has_materials" metadata
+
+    assert manager.getMaterialNodeByType(mocked_stack, "0", "nozzle", "", "") is None
+
+
+def test_getMaterialNodeByTypeMachineHasMaterialsAndMaterialExists(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+    mocked_result = MagicMock()
+    manager.getMaterialNode = MagicMock(return_value = mocked_result)
+    mocked_stack = MagicMock()
+    mocked_stack.definition.getMetaDataEntry = MagicMock(return_value = True)  # For the "has_materials" metadata
+
+    assert manager.getMaterialNodeByType(mocked_stack, "0", "nozzle", "", "TEST!") is mocked_result
+
+
+def test_getAllMaterialGroups(application):
+    with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+        manager = MaterialManager(mocked_registry)
+    manager.initialize()
+
+    material_groups = manager.getAllMaterialGroups()
+
+    assert "base_material" in material_groups
+    assert "test" in material_groups
+    assert material_groups["base_material"].name == "base_material"
+    assert material_groups["test"].name == "test"
+
+
+class TestAvailableMaterials:
+    def test_happy(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+        manager.initialize()
+
+        available_materials = manager.getAvailableMaterials(mocked_definition, None, None, 3)
+
+        assert "base_material" in available_materials
+        assert "test" in available_materials
+
+    def test_wrongDiameter(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+        manager.initialize()
+
+        available_materials = manager.getAvailableMaterials(mocked_definition, None, None, 200)
+        assert available_materials == {} # Nothing found.
+
+    def test_excludedMaterials(self, application):
+        with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
+            manager = MaterialManager(mocked_registry)
+        manager.initialize()
+        with patch.object(mocked_definition, "getMetaDataEntry", MagicMock(return_value = ["test"])):
+            available_materials = manager.getAvailableMaterials(mocked_definition, None, None, 3)
+        assert "base_material" in available_materials
+        assert "test" not in available_materials
 
 
 def test_getMaterialNode(application):
     with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
         manager = MaterialManager(mocked_registry)
-    manager.initialize()
+    manager._updateMaps()
 
     assert manager.getMaterialNode("fdmmachine", None, None, 3, "base_material").getMetaDataEntry("id") == "test"
 
