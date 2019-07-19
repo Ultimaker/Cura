@@ -244,6 +244,12 @@ class VersionUpgrade41to42(VersionUpgrade):
         #Update version number.
         parser["metadata"]["setting_version"] = "8"
 
+        # Certain instance containers (such as definition changes) reference to a certain definition container
+        # Since a number of those changed name, we also need to update those.
+        old_definition = parser["general"]["definition"]
+        if old_definition in _renamed_profiles:
+            parser["general"]["definition"] = _renamed_profiles[old_definition]
+
         #Rename settings.
         if "values" in parser:
             for old_name, new_name in _renamed_settings.items():
