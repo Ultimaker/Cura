@@ -60,8 +60,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         self._gcode = []                    # type: List[str]
         self._connection_state_before_timeout = None    # type: Optional[ConnectionState]
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     def setAuthenticationState(self, authentication_state: AuthState) -> None:

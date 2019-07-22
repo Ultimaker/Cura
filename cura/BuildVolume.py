@@ -258,7 +258,7 @@ class BuildVolume(SceneNode):
                     node.setOutsideBuildArea(True)
                     continue
 
-                if node.collidesWithArea(self.getDisallowedAreas()):
+                if node.collidesWithAreas(self.getDisallowedAreas()):
                     node.setOutsideBuildArea(True)
                     continue
                 # If the entire node is below the build plate, still mark it as outside.
@@ -312,7 +312,7 @@ class BuildVolume(SceneNode):
                 node.setOutsideBuildArea(True)
                 return
 
-            if node.collidesWithArea(self.getDisallowedAreas()):
+            if node.collidesWithAreas(self.getDisallowedAreas()):
                 node.setOutsideBuildArea(True)
                 return
 

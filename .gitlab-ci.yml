@@ -10,3 +10,10 @@ build-and-test:
   artifacts:
     paths:
       - build
+
+build-and-test_merge-requests:
+  stage: build
+  script:
+    - docker/build.sh
+  only:
+    - merge_requests
