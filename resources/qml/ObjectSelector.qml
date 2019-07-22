@@ -116,10 +116,15 @@ Item
 
                 delegate: ObjectItemButton
                 {
+                    id: modelButton
+                    Binding
+                    {
+                        target: modelButton
+                        property: "checked"
+                        value: model.selected
+                    }
                     text: model.name
                     width: listView.width
-
-                    checked: model.selected
                 }
             }
         }
