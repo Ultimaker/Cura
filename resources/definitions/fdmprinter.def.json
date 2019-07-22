@@ -1477,7 +1477,7 @@
                 "ironing_enabled":
                 {
                     "label": "Enable Ironing",
-                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "description": "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material.",
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
