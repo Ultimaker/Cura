@@ -171,8 +171,8 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
 
     ##  Called when Cura requests an output device to receive a (G-code) file.
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:

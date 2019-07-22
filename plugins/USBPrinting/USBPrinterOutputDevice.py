@@ -24,10 +24,14 @@ from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time
-from typing import Union, Optional, List, cast
+from typing import Union, Optional, List, cast, TYPE_CHECKING
 
 import re
 import functools  # Used for reduce
+
+if TYPE_CHECKING:
+    from UM.FileHandler.FileHandler import FileHandler
+    from UM.Scene.SceneNode import SceneNode
 
 catalog = i18nCatalog("cura")
 
@@ -117,14 +121,16 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
-    def requestWrite(self, nodes, file_name: str = None, filter_by_machine = False, file_handler = None, **kwargs):
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         if self._is_printing:
             message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
             message.show()
             return  # Already printing
         self.writeStarted.emit(self)
         # cancel any ongoing preheat timer before starting a print
-        self._printers[0].getController().stopPreheatTimers()
+        controller = cast(GenericOutputController, self._printers[0].getController())
+        controller.stopPreheatTimers()
 
         CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
