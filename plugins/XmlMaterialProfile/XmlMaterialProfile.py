@@ -190,13 +190,16 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Name Block
 
         for key, value in metadata.items():
-            builder.start(key) # type: ignore
+            key_to_use = key
+            if key in self._metadata_tags_that_have_cura_namespace:
+                key_to_use = "cura:" + key_to_use
+            builder.start(key_to_use) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
                 value = str(value)
             builder.data(value)
-            builder.end(key)
+            builder.end(key_to_use)
 
         builder.end("metadata")
         ## End Metadata Block
@@ -1182,6 +1185,8 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Small string representation for debugging.
     def __str__(self):
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
+
+    _metadata_tags_that_have_cura_namespace = ["pva_compatible", "breakaway_compatible"]
 
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
