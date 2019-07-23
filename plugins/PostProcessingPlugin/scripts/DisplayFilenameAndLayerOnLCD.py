@@ -49,6 +49,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
         }"""
     
     def execute(self, data):
+        max_layer = 0
         if self.getSettingValueByKey("name") != "":
             name = self.getSettingValueByKey("name")
         else:
