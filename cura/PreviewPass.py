@@ -3,6 +3,8 @@
 
 from typing import Optional, TYPE_CHECKING
 
+from numpy import cast
+
 from UM.Application import Application
 from UM.Resources import Resources
 
@@ -12,6 +14,7 @@ from UM.View.RenderBatch import RenderBatch
 
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 if TYPE_CHECKING:
     from UM.View.GL.ShaderProgram import ShaderProgram
@@ -44,9 +47,9 @@ class PreviewPass(RenderPass):
 
         self._renderer = Application.getInstance().getRenderer()
 
-        self._shader = None #type: Optional[ShaderProgram]
-        self._non_printing_shader = None #type: Optional[ShaderProgram]
-        self._support_mesh_shader = None #type: Optional[ShaderProgram]
+        self._shader = None  # type: Optional[ShaderProgram]
+        self._non_printing_shader = None  # type: Optional[ShaderProgram]
+        self._support_mesh_shader = None  # type: Optional[ShaderProgram]
         self._scene = Application.getInstance().getController().getScene()
 
     #   Set the camera to be used by this render pass
@@ -83,8 +86,8 @@ class PreviewPass(RenderPass):
         batch_support_mesh = RenderBatch(self._support_mesh_shader)
 
         # Fill up the batch with objects that can be sliced.
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-            if hasattr(node, "_outside_buildarea") and not node._outside_buildarea:
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if hasattr(node, "_outside_buildarea") and not getattr(node, "_outside_buildarea"):
                 if node.callDecoration("isSliceable") and node.getMeshData() and node.isVisible():
                     per_mesh_stack = node.callDecoration("getStack")
                     if node.callDecoration("isNonThumbnailVisibleMesh"):
@@ -94,7 +97,7 @@ class PreviewPass(RenderPass):
                         # Support mesh
                         uniforms = {}
                         shade_factor = 0.6
-                        diffuse_color = node.getDiffuseColor()
+                        diffuse_color = cast(CuraSceneNode, node).getDiffuseColor()
                         diffuse_color2 = [
                             diffuse_color[0] * shade_factor,
                             diffuse_color[1] * shade_factor,
@@ -106,7 +109,7 @@ class PreviewPass(RenderPass):
                     else:
                         # Normal scene node
                         uniforms = {}
-                        uniforms["diffuse_color"] = prettier_color(node.getDiffuseColor())
+                        uniforms["diffuse_color"] = prettier_color(cast(CuraSceneNode, node).getDiffuseColor())
                         batch.addItem(node.getWorldTransformation(), node.getMeshData(), uniforms = uniforms)
 
         self.bind()

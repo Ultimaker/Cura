@@ -949,7 +949,7 @@ class MachineManager(QObject):
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = self._application.getController().getScene().getRoot()
-        for node in DepthFirstIterator(root_node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(root_node):
             if node.getMeshData():
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 

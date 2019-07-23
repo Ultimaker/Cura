@@ -115,7 +115,7 @@ class ExtruderManager(QObject):
             selected_nodes = []  # type: List["SceneNode"]
             for node in Selection.getAllSelectedObjects():
                 if node.callDecoration("isGroup"):
-                    for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                    for grouped_node in BreadthFirstIterator(node):
                         if grouped_node.callDecoration("isGroup"):
                             continue
 

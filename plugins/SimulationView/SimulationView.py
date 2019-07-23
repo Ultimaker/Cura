@@ -218,10 +218,10 @@ class SimulationView(CuraView):
             if theme is not None:
                 self._ghost_shader.setUniformValue("u_color", Color(*theme.getColor("layerview_ghost").getRgb()))
 
-        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+        for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
             # However, it is somewhat relevant when the node is selected, so do render it then.
-            if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
+            if type(node) is ConvexHullNode and not Selection.isSelected(cast(ConvexHullNode, node).getWatchedNode()):
                 continue
 
             if not node.render(renderer):
