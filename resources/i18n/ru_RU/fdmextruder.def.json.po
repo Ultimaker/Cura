@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.0\n"
+"Project-Id-Version: Cura 4.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"POT-Creation-Date: 2019-07-16 14:38+0000\n"
 "PO-Revision-Date: 2019-03-13 14:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Ruslan Popov <ruslan.popov@gmail.com>, Russian <info@bothof.nl>\n"
@@ -1277,7 +1277,6 @@ msgstr "Укажите диаметр используемой нити."
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
-
 #~ "Расстояние по горизонтали между юбкой и первым слоем печатаемого объекта.\n"
 #~ "Это минимальное расстояние, следующие линии юбки будут печататься наружу."
 
@@ -1674,7 +1673,6 @@ msgstr "Укажите диаметр используемой нити."
 #~ "Distance of an upward move which is extruded with half speed.\n"
 #~ "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
 #~ msgstr ""
-
 #~ "Расстояние движения вверх, при котором выдавливание идёт на половине скорости.\n"
 #~ "Это может улучшить прилипание к предыдущим слоям, не перегревая материал тех слоёв. Применяется только при нитевой печати."
 

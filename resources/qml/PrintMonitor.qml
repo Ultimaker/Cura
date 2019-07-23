@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -48,11 +48,6 @@ Item
     property var connectedDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
     property var activePrinter: connectedDevice != null ? connectedDevice.activePrinter : null
     property var activePrintJob: activePrinter != null ? activePrinter.activePrintJob: null
-
-    PrintSetupTooltip
-    {
-        id: tooltip
-    }
 
     Column
     {
@@ -182,5 +177,10 @@ Item
             }
             width: base.width
         }
+    }
+
+    PrintSetupTooltip
+    {
+        id: tooltip
     }
 }

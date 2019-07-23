@@ -144,7 +144,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return None
 
     def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)

@@ -1,3 +1,76 @@
+[4.1.0]
+*Draggable settings panels
+There was a lot of feedback from the 4.0 release about the collapsible settings panels. Based on this feedback, we decided to make them completely draggable. The print settings panel (prepare stage) and the color scheme panel (preview stage) can now be dragged and positioned anywhere in the 3D viewer. A double click of the header will reset each to their default position.
+
+*Updated onboarding flow.
+The onboarding flow on first startup has been updated with a look and feel more in line with the new interface. A series of setup steps will be shown, including Welcome, User agreement, Change log, the option to add a (networked) printer, and the option to sign up/sign in with an Ultimaker account.
+
+*Add printer menu.
+Various updates in the ‘Add printer menu’. The machine settings menu has been updated in line with the new look and feel of the interface, and it's now possible to directly add machines from discovered network printers.
+
+*Expert settings visibility.
+Previously, new settings weren't displayed in the expert preset even though they were expert-level settings. The latest features (e.g. Prime tower brim) are now included in the expert preset, for easy access.
+
+*Experimental print profile indicator.
+When an experimental print profile is activated, the settings panel header will now display an "Experimental" tag.
+
+*Printing guidelines.
+More information about how to print advanced materials can be quickly and easily accessed via the interface. When a material is chosen in the configuration selector, an icon will appear next to it, which when clicked will direct the user to a 'Printing Guidelines' page specified by the print profile supplier.
+
+*Increased rendering speed.
+Rendering speed improvements that should be quite noticeable with multiple objects on the build plate.
+
+*Layer change script.
+This new post-processing script injects custom Gcode on a layer change, so that manual commands can be defined, e.g. park the print head. Contributed by wporter82. https://github.com/wporter82
+
+*Prime tower brim.
+Prime towers might need the extra adhesion of a brim even when the model doesn’t, so an option for a prime tower to print with a brim independently of the model has been added. This setting is available when the adhesion type is set to 'None', 'Skirt' or 'Brim', and the prime tower is enabled. Currently this option doesn’t work with rafts.
+
+*Prime tower Gcode comments.
+Gcode now contains comments to indicate when a prime tower is printed, like so: {code};TYPE:PRIME-TOWER{code}
+
+*Maximum deviation setting.
+Previously, the maximum deviation was hard-coded in CuraEngine to be half of the maximum resolution. A new setting has been added that sets the maximum allowed deviation from the original polygon when reducing model resolution. If line segments are shorter than the maximum resolution, they are removed, unless this introduces a deviation greater than the maximum deviation.
+
+*Gyroid support.
+Smartavionics has contributed a new option for a gyroid support pattern, similar to his gyroid infill contribution. A gyroid pattern is relatively efficient with material, so gyroid patterns permeable to water can dissolve faster. It’s also easier to pull gyroid structures off your model with pliers compared to some other support patterns. https://github.com/smartavionics
+
+*Purchase materials.
+The Marketplace now includes a direct link to a site where users can buy specific materials to work with the corresponding print profile. The link is specified by the print profile supplier through the contributor portal.
+
+*Marketplace notifications.
+When a plugin or print profile in the Marketplace has updates, a badge notification will appear over the Marketplace button and installed packages tab, prompting you to update.
+
+* New third-party definitions:
+- NWA3D A5. Contributed by DragonJe. https://github.com/DragonJe
+- Anycubic Chiron. Contributed by BluefireXD. https://github.com/BluefireXD
+- Alfawise u30. Contributed by NicolasNSSM. https://github.com/NicolasNSSM
+- Cubicon. Contributed by Hyvision. https://github.com/Hyvision
+- Wanhao Duplicator 9. Contributed by matshch. https://github.com/matshch
+- Creality 3D-X. Contributed by steverc1572 https://github.com/steverc1572
+- Z-Bolt. Contributed by alexkv. https://github.com/alexkv
+- TiZYX Evy. Contributed by ValentinPitre. https://github.com/ValentinPitre
+- FLSUN QQ. Contributed by ranfahrer. https://github.com/radfahrer
+- Structur3D Silicone. Contributed by afinkle. https://github.com/afinkle
+- TiZYX Evy Dual. Contributed by ValentinPitre. https://github.com/ValentinPitre
+
+*Bug fixes:
+- Fixed an issue where the application crashed when opening the Ultimaker Marketplace after being logged in for more than 10 minutes. This was due to an expired token when checking network requests.
+- For PLA-PLA support combinations, the horizontal expansion value has changed from 0.2 to 0 by default. This fixes an issue where unnecessary support is generated. The default value for PVA remains the same.
+- Fixed an issue where choosing to "Update Existing" profile during project file loading did not overwrite the current settings with what was in the project file.
+- Removed the GFF and CFF materials from this version onwards. These materials are intended only for testing and are incompatible with the Ultimaker 2+
+- Fixed an issue where the maximum resolution setting removed more vertices than necessary.
+- Improved gyroid infill to stop very small (less than 10 uM) line segments being created when the gyroid infill lines are connected, increasing print consistency and reliability. Contributed by smartavionics https://github.com/smartavionics
+- Previously, disabling build plate adhesion would also disable support brim settings. A support brim can now be enabled independently of build plate adhesion.
+- Improved combing moves over thin model areas. Contributed by smartavionics https://github.com/smartavionics
+- Fixed an issue where the printer selector panel text would exceed the boundaries of popups in languages other than English.
+- Removed the ability to create print profiles with duplicate names in the print profile manager. Print profiles with the equal names would eventually lead to crashes or undefined behavior.
+- Fixed an issue where the application would not remember the previous save path after saving again in the same session.
+- Older machines running Mac OS X don't always support OpenGL 4.0+. For better performance the software can now detect if a machine doesn’t support it, and use OpenGL 2.0 instead. Contributed by fieldOfview. https://github.com/fieldofview
+- Fixed an issue where the application would crash when selecting the support eraser tool.
+- Fixed an issue where Z seams didn’t snap to the sharpest corner.
+- Fixed issues where prints would have imperfections and on vertical surfaces.
+
 [4.0.0]
 *Updated user interface
 Ultimaker Cura is a very powerful tool with many features to support users’ needs. In the new UI, we present these features in a better, more intuitive way based on the workflow of our users. The Marketplace and user account control have been integrated into the main interface to easily access material profiles and plugins. Three stages are shown in the header to give a clear guidance of the flow. The stage menu is populated with collapsible panels that allow users to focus on the 3D view when needed, while still showing important information at the same time, such as slicing configuration and settings. Users can now easily go to the preview stage to examine the layer view after slicing the model, which previously was less obvious or hidden. The new UI also creates more distinction between recommended and custom mode. Novice users or users who are not interested in all the settings can easily prepare a file, relying on the strength of expert-configured print profiles. Experienced users who want greater control can configure over 300 settings to their needs.

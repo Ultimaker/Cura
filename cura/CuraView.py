@@ -18,8 +18,8 @@ class CuraView(View):
     def __init__(self, parent = None, use_empty_menu_placeholder: bool = False) -> None:
         super().__init__(parent)
 
-        self._empty_menu_placeholder_url = QUrl(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
-                                                                  "EmptyViewMenuComponent.qml"))
+        self._empty_menu_placeholder_url = QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
+                                                                                "EmptyViewMenuComponent.qml"))
         self._use_empty_menu_placeholder = use_empty_menu_placeholder
 
     @pyqtProperty(QUrl, constant = True)

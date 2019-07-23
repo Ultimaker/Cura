@@ -6,6 +6,7 @@ import os
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #To get the g-code output.
+from UM.Message import Message #Show an error when already printing.
 from UM.PluginRegistry import PluginRegistry #To get the g-code output.
 from UM.Qt.Duration import DurationFormat
 
@@ -23,10 +24,14 @@ from queue import Queue
 from serial import Serial, SerialException, SerialTimeoutException
 from threading import Thread, Event
 from time import time
-from typing import Union, Optional, List, cast
+from typing import Union, Optional, List, cast, TYPE_CHECKING
 
 import re
 import functools  # Used for reduce
+
+if TYPE_CHECKING:
+    from UM.FileHandler.FileHandler import FileHandler
+    from UM.Scene.SceneNode import SceneNode
 
 catalog = i18nCatalog("cura")
 
@@ -112,16 +117,20 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     ##  Request the current scene to be sent to a USB-connected printer.
     #
     #   \param nodes A collection of scene nodes to send. This is ignored.
-    #   \param file_name \type{string} A suggestion for a file name to write.
+    #   \param file_name A suggestion for a file name to write.
     #   \param filter_by_machine Whether to filter MIME types by machine. This
     #   is ignored.
     #   \param kwargs Keyword arguments.
-    def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         if self._is_printing:
+            message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
+            message.show()
             return  # Already printing
         self.writeStarted.emit(self)
         # cancel any ongoing preheat timer before starting a print
-        self._printers[0].getController().stopPreheatTimers()
+        controller = cast(GenericOutputController, self._printers[0].getController())
+        controller.stopPreheatTimers()
 
         CuraApplication.getInstance().getController().setActiveStage("MonitorStage")
 
@@ -181,7 +190,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
             except SerialException:
-                Logger.log("w", "An exception occured while trying to create serial connection")
+                Logger.log("w", "An exception occurred while trying to create serial connection")
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()

@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.0\n"
+"Project-Id-Version: Cura 4.1\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-02-26 16:36+0000\n"
+"POT-Creation-Date: 2019-07-16 14:38+0000\n"
 "PO-Revision-Date: 2019-03-13 14:00+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: PCDotFan <pc@edu.ax>, Bothof <info@bothof.nl>\n"
@@ -58,7 +58,9 @@ msgctxt "machine_start_gcode description"
 msgid ""
 "G-code commands to be executed at the very start - separated by \n"
 "."
-msgstr "在开始时执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在开始时执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -70,7 +72,9 @@ msgctxt "machine_end_gcode description"
 msgid ""
 "G-code commands to be executed at the very end - separated by \n"
 "."
-msgstr "在结束前执行的 G-code 命令 - 以 \n 分行。"
+msgstr ""
+"在结束前执行的 G-code 命令 - 以 \n"
+" 分行。"
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -234,7 +238,7 @@ msgstr "挤出机组数目。 挤出机组是指进料装置、鲍登管和喷�
 
 #: fdmprinter.def.json
 msgctxt "extruders_enabled_count label"
-msgid "Number of Extruders that are enabled"
+msgid "Number of Extruders That Are Enabled"
 msgstr "已启用的挤出机数目"
 
 #: fdmprinter.def.json
@@ -244,7 +248,7 @@ msgstr "已启用的挤出机组数目；软件自动设置"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_tip_outer_diameter label"
-msgid "Outer nozzle diameter"
+msgid "Outer Nozzle Diameter"
 msgstr "喷嘴外径"
 
 #: fdmprinter.def.json
@@ -254,7 +258,7 @@ msgstr "喷嘴尖端的外径。"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_head_distance label"
-msgid "Nozzle length"
+msgid "Nozzle Length"
 msgstr "喷嘴长度"
 
 #: fdmprinter.def.json
@@ -264,7 +268,7 @@ msgstr "喷嘴尖端与打印头最低部分之间的高度差。"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_expansion_angle label"
-msgid "Nozzle angle"
+msgid "Nozzle Angle"
 msgstr "喷嘴角度"
 
 #: fdmprinter.def.json
@@ -274,7 +278,7 @@ msgstr "水平面与喷嘴尖端上部圆锥形之间的角度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_heat_zone_length label"
-msgid "Heat zone length"
+msgid "Heat Zone Length"
 msgstr "加热区长度"
 
 #: fdmprinter.def.json
@@ -304,7 +308,7 @@ msgstr "是否从 Cura 控制温度。 关闭此选项，从 Cura 外部控制�
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_heat_up_speed label"
-msgid "Heat up speed"
+msgid "Heat Up Speed"
 msgstr "升温速度"
 
 #: fdmprinter.def.json
@@ -314,7 +318,7 @@ msgstr "喷嘴升温到平均超过正常打印温度和待机温度范围的速
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_cool_down_speed label"
-msgid "Cool down speed"
+msgid "Cool Down Speed"
 msgstr "冷却速度"
 
 #: fdmprinter.def.json
@@ -334,8 +338,8 @@ msgstr "挤出机必须保持不活动以便喷嘴冷却的最短时间。 挤�
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
-msgid "G-code flavour"
-msgstr "G-code 风格"
+msgid "G-code Flavor"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -399,7 +403,7 @@ msgstr "是否使用固件收回命令 (G10/G11) 而不是使用 G1 命令中的
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
-msgid "Disallowed areas"
+msgid "Disallowed Areas"
 msgstr "不允许区域"
 
 #: fdmprinter.def.json
@@ -419,7 +423,7 @@ msgstr "包含不允许喷嘴进入区域的多边形列表。"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_polygon label"
-msgid "Machine head polygon"
+msgid "Machine Head Polygon"
 msgstr "机器头多边形"
 
 #: fdmprinter.def.json
@@ -429,7 +433,7 @@ msgstr "打印头 2D 轮廓图（不包含风扇盖）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
-msgid "Machine head & Fan polygon"
+msgid "Machine Head & Fan Polygon"
 msgstr "机器头和风扇多边形"
 
 #: fdmprinter.def.json
@@ -439,7 +443,7 @@ msgstr "打印头 2D 轮廓图（包含风扇盖）。"
 
 #: fdmprinter.def.json
 msgctxt "gantry_height label"
-msgid "Gantry height"
+msgid "Gantry Height"
 msgstr "十字轴高度"
 
 #: fdmprinter.def.json
@@ -469,7 +473,7 @@ msgstr "喷嘴内径，在使用非标准喷嘴尺寸时需更改此设置。"
 
 #: fdmprinter.def.json
 msgctxt "machine_use_extruder_offset_to_offset_coords label"
-msgid "Offset With Extruder"
+msgid "Offset with Extruder"
 msgstr "挤出机偏移量"
 
 #: fdmprinter.def.json
@@ -1294,8 +1298,8 @@ msgstr "缝隙角偏好设置"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr "控制模型轮廓上的各个角是否影响缝隙的位置。 “无”意味着各个角不影响缝隙位置。 “隐藏缝隙”会使缝隙更可能出现在内侧角上。 “外露缝隙”会使缝隙更可能出现在外侧角上。 “隐藏或外露缝隙”会使缝隙更可能出现在内侧或外侧角上。"
+msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
@@ -1318,6 +1322,11 @@ msgid "Hide or Expose Seam"
 msgstr "隐藏或外露缝隙"
 
 #: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_weighted"
+msgid "Smart Hiding"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
 msgstr "Z 缝相对"
@@ -1329,13 +1338,13 @@ msgstr "启用时，Z 缝坐标为相对于各个部分中心的值。 禁用时
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
-msgid "Ignore Small Z Gaps"
-msgstr "忽略小 Z 间隙"
+msgid "No Skin in Z Gaps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
-msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
-msgstr "当模型具有小的垂直间隙时，可能会花费大约 5％ 的额外计算时间来生成这些狭窄空间中的顶部和底部皮肤。 这种情况下，禁用该设置。"
+msgid "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
@@ -1632,7 +1641,9 @@ msgctxt "infill_wall_line_count description"
 msgid ""
 "Add extra walls around the infill area. Such walls can make top/bottom skin lines sag down less which means you need less top/bottom skin layers for the same quality at the cost of some extra material.\n"
 "This feature can combine with the Connect Infill Polygons to connect all the infill into a single extrusion path without the need for travels or retractions if configured right."
-msgstr "在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
+msgstr ""
+"在填充区域周围添加额外壁。此类壁可减少顶部/底部皮肤走线，这意味着只要付出一些额外的材料就可以使用更少的顶部/底部皮肤层达到相同的质量。\n"
+"在适当配置的情况下，此功能可结合连接填充多边形以将所有填充物连接到单一挤出路径而无需空驶或回抽。"
 
 #: fdmprinter.def.json
 msgctxt "sub_div_rad_add label"
@@ -1865,6 +1876,16 @@ msgid "The default temperature used for printing. This should be the \"base\" te
 msgstr "用于打印的默认温度。 应为材料的\"基本\"温度。 所有其他打印温度均应使用基于此值的偏移量"
 
 #: fdmprinter.def.json
+msgctxt "build_volume_temperature label"
+msgid "Build Volume Temperature"
+msgstr "打印体积温度"
+
+#: fdmprinter.def.json
+msgctxt "build_volume_temperature description"
+msgid "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_print_temperature label"
 msgid "Printing Temperature"
 msgstr "打印温度"
@@ -1975,6 +1996,86 @@ msgid "Shrinkage ratio in percentage."
 msgstr "百分比收缩率。"
 
 #: fdmprinter.def.json
+msgctxt "material_crystallinity label"
+msgid "Crystalline Material"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_crystallinity description"
+msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position label"
+msgid "Anti-ooze Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position description"
+msgid "How far the material needs to be retracted before it stops oozing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed label"
+msgid "Anti-ooze Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed description"
+msgid "How fast the material needs to be retracted during a filament switch to prevent oozing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position label"
+msgid "Break Preparation Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position description"
+msgid "How far the filament can be stretched before it breaks, while heated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed label"
+msgid "Break Preparation Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed description"
+msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position label"
+msgid "Break Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position description"
+msgid "How far to retract the filament in order to break it cleanly."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed label"
+msgid "Break Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed description"
+msgid "The speed at which to retract the filament in order to break it cleanly."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature label"
+msgid "Break Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature description"
+msgid "The temperature at which the filament is broken for a clean break."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow label"
 msgid "Flow"
 msgstr "流量"
@@ -1983,6 +2084,126 @@ msgstr "流量"
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "流量补偿：挤出的材料量乘以此值。"
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow label"
+msgid "Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow description"
+msgid "Flow compensation on wall lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow label"
+msgid "Outer Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow description"
+msgid "Flow compensation on the outermost wall line."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow label"
+msgid "Inner Wall(s) Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow description"
+msgid "Flow compensation on wall lines for all wall lines except the outermost one."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow label"
+msgid "Top/Bottom Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow description"
+msgid "Flow compensation on top/bottom lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow label"
+msgid "Top Surface Skin Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow description"
+msgid "Flow compensation on lines of the areas at the top of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow label"
+msgid "Infill Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow description"
+msgid "Flow compensation on infill lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow label"
+msgid "Skirt/Brim Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow description"
+msgid "Flow compensation on skirt or brim lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow label"
+msgid "Support Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow description"
+msgid "Flow compensation on support structure lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow label"
+msgid "Support Interface Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow description"
+msgid "Flow compensation on lines of support roof or floor."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow label"
+msgid "Support Roof Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow description"
+msgid "Flow compensation on support roof lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow label"
+msgid "Support Floor Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow description"
+msgid "Flow compensation on support floor lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow label"
+msgid "Prime Tower Flow"
+msgstr "装填塔流量"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow description"
+msgid "Flow compensation on prime tower lines."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2101,8 +2322,8 @@ msgstr "支撑限制被撤销"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr "当从支撑移动到支撑直线时，省略撤回。启用这个设置可以节省打印时间，但是可以在支撑结构中产生出色的字符串。"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2153,6 +2374,16 @@ msgstr "喷嘴切换装填速度"
 msgctxt "switch_extruder_prime_speed description"
 msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
 msgstr "喷嘴切换回抽后耗材被推回的速度。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -2345,14 +2576,14 @@ msgid "The speed at which the skirt and brim are printed. Normally this is done 
 msgstr "打印 skirt 和 brim 的速度。 一般情况是以起始层速度打印这些部分，但有时候您可能想要以不同速度来打印 skirt 或 brim。"
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override label"
-msgid "Maximum Z Speed"
-msgstr "最大 Z 速度"
+msgctxt "speed_z_hop label"
+msgid "Z Hop Speed"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override description"
-msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
-msgstr "打印平台移动的最大速度。 将该值设为零会使打印为最大 Z 速度采用固件默认值。"
+msgctxt "speed_z_hop description"
+msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
@@ -2925,6 +3156,16 @@ msgid "After the machine switched from one extruder to the other, the build plat
 msgstr "当机器从一个挤出机切换到另一个时，打印平台会降低以便在喷嘴和打印品之间形成空隙。 这将防止喷嘴在打印品外部留下渗出物。"
 
 #: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height label"
+msgid "Z Hop After Extruder Switch Height"
+msgstr "挤出机切换后的 Z 抬升高度"
+
+#: fdmprinter.def.json
+msgctxt "retraction_hop_after_extruder_switch_height description"
+msgid "The height difference when performing a Z Hop after extruder switch."
+msgstr "挤出机切换后执行 Z 抬升的高度差。"
+
+#: fdmprinter.def.json
 msgctxt "cooling label"
 msgid "Cooling"
 msgstr "冷却"
@@ -3195,6 +3436,11 @@ msgid "Cross"
 msgstr "交叉"
 
 #: fdmprinter.def.json
+msgctxt "support_pattern option gyroid"
+msgid "Gyroid"
+msgstr "螺旋二十四面体"
+
+#: fdmprinter.def.json
 msgctxt "support_wall_count label"
 msgid "Support Wall Line Count"
 msgstr "支撑墙行数"
@@ -3391,8 +3637,8 @@ msgstr "支撑结合部距离"
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
-msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
-msgstr "支撑结构间在 X/Y 方向的最大距离。 当分离结构之间的距离小于此值时，这些结构将合并为一个。"
+msgid "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_offset label"
@@ -3770,14 +4016,14 @@ msgid "The diameter of a special tower."
 msgstr "特殊塔的直径。"
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter label"
-msgid "Minimum Diameter"
-msgstr "最小直径"
+msgctxt "support_tower_maximum_supported_diameter label"
+msgid "Maximum Tower-Supported Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter description"
-msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
-msgstr "将由专门的支撑塔支撑的小区域 X/Y 轴方向的最小直径。"
+msgctxt "support_tower_maximum_supported_diameter description"
+msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle label"
@@ -3899,7 +4145,9 @@ msgctxt "skirt_gap description"
 msgid ""
 "The horizontal distance between the skirt and the first layer of the print.\n"
 "This is the minimum distance. Multiple skirt lines will extend outwards from this distance."
-msgstr "skirt  和打印第一层之间的水平距离。\n这是最小距离。多个 skirt 走线将从此距离向外延伸。"
+msgstr ""
+"skirt  和打印第一层之间的水平距离。\n"
+"这是最小距离。多个 skirt 走线将从此距离向外延伸。"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
@@ -4272,16 +4520,6 @@ msgid "Print a tower next to the print which serves to prime the material after 
 msgstr "在打印品相邻处打印一个塔，用于在每个喷嘴切换后装填材料。"
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_circular label"
-msgid "Circular Prime Tower"
-msgstr "圆形装填塔"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_circular description"
-msgid "Make the prime tower as a circular shape."
-msgstr "使装填塔成圆形。"
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "装填塔尺寸"
@@ -4322,16 +4560,6 @@ msgid "The y coordinate of the position of the prime tower."
 msgstr "装填塔位置的 y 坐标。"
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_flow label"
-msgid "Prime Tower Flow"
-msgstr "装填塔流量"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value."
-msgstr "流量补偿：挤出的材料量乘以此值。"
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
 msgstr "擦拭装填塔上的不活动喷嘴"
@@ -4340,6 +4568,16 @@ msgstr "擦拭装填塔上的不活动喷嘴"
 msgctxt "prime_tower_wipe_enabled description"
 msgid "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower."
 msgstr "在用一个喷嘴打印装填塔后，从装填塔上的另一个喷嘴擦去渗出的材料。"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_brim_enable label"
+msgid "Prime Tower Brim"
+msgstr "装填塔 Brim"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_brim_enable description"
+msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
+msgstr "装填塔可能需要 Brim 提供额外附着力，无论模型是否需要。目前不可与 'Raft' 附着类型配合使用。"
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4623,8 +4861,8 @@ msgstr "平滑螺旋轮廓"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
-msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr "平滑螺旋轮廓以减少 Z 缝的可见性（Z 缝应在打印品上几乎看不到，但在层视图中仍然可见）。 请注意，平滑操作将倾向于模糊精细的表面细节。"
+msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
@@ -4855,6 +5093,16 @@ msgstr "空走的最大分辨率"
 msgctxt "meshfix_maximum_travel_resolution description"
 msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
 msgstr "切片后的旅行线路段的最小尺寸。如果你增加了这个，旅行的移动就会变得不那么平滑了。这可能使打印机能够跟上它处理g代码的速度，但是它可能导致模型的避免变得不那么准确。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr "最大偏移量"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
+msgstr "在最大分辨率设置中减小分辨率时，允许的最大偏移量。如果增加该值，打印作业的准确性将降低，G-code 将减小。"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5113,8 +5361,8 @@ msgstr "启用锥形支撑"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled description"
-msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
-msgstr "实验性功能： 让底部的支撑区域小于悬垂处的支撑区域。"
+msgid "Make support areas smaller at the bottom than at the overhang."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_conical_angle label"
@@ -5346,7 +5594,9 @@ msgctxt "wireframe_up_half_speed description"
 msgid ""
 "Distance of an upward move which is extruded with half speed.\n"
 "This can cause better adhesion to previous layers, while not heating the material in those layers too much. Only applies to Wire Printing."
-msgstr "以半速挤出的上行移动的距离。\n这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
+msgstr ""
+"以半速挤出的上行移动的距离。\n"
+"这会与之前的层产生更好的附着，而不会将这些层中的材料过度加热。 仅应用于单线打印。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_top_jump label"
@@ -5455,7 +5705,7 @@ msgstr "喷嘴和水平下行线之间的距离。 较大的间隙会让斜下�
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_enabled label"
-msgid "Use adaptive layers"
+msgid "Use Adaptive Layers"
 msgstr "使用自适应图层"
 
 #: fdmprinter.def.json
@@ -5465,7 +5715,7 @@ msgstr "自适应图层根据模型形状计算图层高度。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation label"
-msgid "Adaptive layers maximum variation"
+msgid "Adaptive Layers Maximum Variation"
 msgstr "自适应图层最大变化"
 
 #: fdmprinter.def.json
@@ -5475,7 +5725,7 @@ msgstr "最大允许高度与基层高度不同。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_variation_step label"
-msgid "Adaptive layers variation step size"
+msgid "Adaptive Layers Variation Step Size"
 msgstr "自适应图层变化步长"
 
 #: fdmprinter.def.json
@@ -5485,7 +5735,7 @@ msgstr "下一层与前一层的高度差。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
-msgid "Adaptive layers threshold"
+msgid "Adaptive Layers Threshold"
 msgstr "自适应图层阈值"
 
 #: fdmprinter.def.json
@@ -5704,6 +5954,156 @@ msgid "Percentage fan speed to use when printing the third bridge skin layer."
 msgstr "打印桥梁第三层表面时使用的风扇百分比速度。"
 
 #: fdmprinter.def.json
+msgctxt "clean_between_layers label"
+msgid "Wipe Nozzle Between Layers"
+msgstr "图层切换后擦拭喷嘴"
+
+#: fdmprinter.def.json
+msgctxt "clean_between_layers description"
+msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgstr "是否包括图层切换后擦拭喷嘴的 G-Code。启用此设置可能会影响图层变化时的回抽。请使用“擦拭回抽”设置来控制擦拭脚本将在其中工作的图层回抽。"
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe label"
+msgid "Material Volume Between Wipes"
+msgstr "擦拭之间的材料量"
+
+#: fdmprinter.def.json
+msgctxt "max_extrusion_before_wipe description"
+msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+msgstr "开始下一轮喷嘴擦拭前，可挤出的最大材料量。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable label"
+msgid "Wipe Retraction Enable"
+msgstr "启用擦拭回抽"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "当喷嘴移动到非打印区域上方时回抽耗材。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount label"
+msgid "Wipe Retraction Distance"
+msgstr "擦拭回抽距离"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_amount description"
+msgid "Amount to retract the filament so it does not ooze during the wipe sequence."
+msgstr "耗材回抽量，可避免耗材在擦拭期间渗出。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount label"
+msgid "Wipe Retraction Extra Prime Amount"
+msgstr "擦拭回抽额外装填量"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a wipe travel moves, which can be compensated for here."
+msgstr "有些材料可能会在擦拭空驶过程中渗出，可以在这里进行补偿。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed label"
+msgid "Wipe Retraction Speed"
+msgstr "擦拭回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a wipe retraction move."
+msgstr "擦拭回抽移动期间耗材回抽和装填的速度。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed label"
+msgid "Wipe Retraction Retract Speed"
+msgstr "擦拭回抽期间的回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a wipe retraction move."
+msgstr "擦拭回抽移动期间耗材回抽的速度。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "回抽装填速度"
+
+#: fdmprinter.def.json
+msgctxt "wipe_retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a wipe retraction move."
+msgstr "擦拭回抽移动期间耗材装填的速度。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause label"
+msgid "Wipe Pause"
+msgstr "擦拭暂停"
+
+#: fdmprinter.def.json
+msgctxt "wipe_pause description"
+msgid "Pause after the unretract."
+msgstr "在未回抽后暂停。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable label"
+msgid "Wipe Z Hop When Retracted"
+msgstr "回抽后擦拭 Z 抬升"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_enable description"
+msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgstr "回抽完成时，打印平台会下降以便在喷嘴和打印品之间形成空隙。进而防止喷嘴在空驶过程中撞到打印品，降低打印品滑出打印平台的几率。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount label"
+msgid "Wipe Z Hop Height"
+msgstr "擦拭 Z 抬升高度"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_amount description"
+msgid "The height difference when performing a Z Hop."
+msgstr "执行 Z 抬升的高度差。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed label"
+msgid "Wipe Hop Speed"
+msgstr "擦拭抬升速度"
+
+#: fdmprinter.def.json
+msgctxt "wipe_hop_speed description"
+msgid "Speed to move the z-axis during the hop."
+msgstr "抬升期间移动 Z 轴的速度。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x label"
+msgid "Wipe Brush X Position"
+msgstr "擦拭刷 X 轴坐标"
+
+#: fdmprinter.def.json
+msgctxt "wipe_brush_pos_x description"
+msgid "X location where wipe script will start."
+msgstr "擦拭开始处的 X 轴坐标。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count label"
+msgid "Wipe Repeat Count"
+msgstr "擦拭重复计数"
+
+#: fdmprinter.def.json
+msgctxt "wipe_repeat_count description"
+msgid "Number of times to move the nozzle across the brush."
+msgstr "在擦拭刷上移动喷嘴的次数。"
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance label"
+msgid "Wipe Move Distance"
+msgstr "擦拭移动距离"
+
+#: fdmprinter.def.json
+msgctxt "wipe_move_distance description"
+msgid "The distance to move the head back and forth across the brush."
+msgstr "在擦拭刷上来回移动喷嘴头的距离。"
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "命令行设置"
@@ -5762,6 +6162,138 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "machine_gcode_flavor label"
+#~ msgid "G-code Flavour"
+#~ msgstr "G-code 风格"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
+#~ msgstr "控制模型轮廓上的各个角是否影响缝隙的位置。 “无”意味着各个角不影响缝隙位置。 “隐藏缝隙”会使缝隙更可能出现在内侧角上。 “外露缝隙”会使缝隙更可能出现在外侧角上。 “隐藏或外露缝隙”会使缝隙更可能出现在内侧或外侧角上。"
+
+#~ msgctxt "skin_no_small_gaps_heuristic label"
+#~ msgid "Ignore Small Z Gaps"
+#~ msgstr "忽略小 Z 间隙"
+
+#~ msgctxt "skin_no_small_gaps_heuristic description"
+#~ msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
+#~ msgstr "当模型具有小的垂直间隙时，可能会花费大约 5％ 的额外计算时间来生成这些狭窄空间中的顶部和底部皮肤。 这种情况下，禁用该设置。"
+
+#~ msgctxt "build_volume_temperature description"
+#~ msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
+#~ msgstr "用于打印体积的温度。如果该值为 0，将不会调整打印体积温度。"
+
+#~ msgctxt "limit_support_retractions description"
+#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+#~ msgstr "当从支撑移动到支撑直线时，省略撤回。启用这个设置可以节省打印时间，但是可以在支撑结构中产生出色的字符串。"
+
+#~ msgctxt "max_feedrate_z_override label"
+#~ msgid "Maximum Z Speed"
+#~ msgstr "最大 Z 速度"
+
+#~ msgctxt "max_feedrate_z_override description"
+#~ msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
+#~ msgstr "打印平台移动的最大速度。 将该值设为零会使打印为最大 Z 速度采用固件默认值。"
+
+#~ msgctxt "support_join_distance description"
+#~ msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
+#~ msgstr "支撑结构间在 X/Y 方向的最大距离。 当分离结构之间的距离小于此值时，这些结构将合并为一个。"
+
+#~ msgctxt "support_minimal_diameter label"
+#~ msgid "Minimum Diameter"
+#~ msgstr "最小直径"
+
+#~ msgctxt "support_minimal_diameter description"
+#~ msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+#~ msgstr "将由专门的支撑塔支撑的小区域 X/Y 轴方向的最小直径。"
+
+#~ msgctxt "prime_tower_circular label"
+#~ msgid "Circular Prime Tower"
+#~ msgstr "圆形装填塔"
+
+#~ msgctxt "prime_tower_circular description"
+#~ msgid "Make the prime tower as a circular shape."
+#~ msgstr "使装填塔成圆形。"
+
+#~ msgctxt "prime_tower_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
+#~ msgstr "流量补偿：挤出的材料量乘以此值。"
+
+#~ msgctxt "smooth_spiralized_contours description"
+#~ msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+#~ msgstr "平滑螺旋轮廓以减少 Z 缝的可见性（Z 缝应在打印品上几乎看不到，但在层视图中仍然可见）。 请注意，平滑操作将倾向于模糊精细的表面细节。"
+
+#~ msgctxt "support_conical_enabled description"
+#~ msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
+#~ msgstr "实验性功能： 让底部的支撑区域小于悬垂处的支撑区域。"
+
+#~ msgctxt "extruders_enabled_count label"
+#~ msgid "Number of Extruders that are enabled"
+#~ msgstr "已启用的挤出机数目"
+
+#~ msgctxt "machine_nozzle_tip_outer_diameter label"
+#~ msgid "Outer nozzle diameter"
+#~ msgstr "喷嘴外径"
+
+#~ msgctxt "machine_nozzle_head_distance label"
+#~ msgid "Nozzle length"
+#~ msgstr "喷嘴长度"
+
+#~ msgctxt "machine_nozzle_expansion_angle label"
+#~ msgid "Nozzle angle"
+#~ msgstr "喷嘴角度"
+
+#~ msgctxt "machine_heat_zone_length label"
+#~ msgid "Heat zone length"
+#~ msgstr "加热区长度"
+
+#~ msgctxt "machine_nozzle_heat_up_speed label"
+#~ msgid "Heat up speed"
+#~ msgstr "升温速度"
+
+#~ msgctxt "machine_nozzle_cool_down_speed label"
+#~ msgid "Cool down speed"
+#~ msgstr "冷却速度"
+
+#~ msgctxt "machine_gcode_flavor label"
+#~ msgid "G-code flavour"
+#~ msgstr "G-code 风格"
+
+#~ msgctxt "machine_disallowed_areas label"
+#~ msgid "Disallowed areas"
+#~ msgstr "不允许区域"
+
+#~ msgctxt "machine_head_polygon label"
+#~ msgid "Machine head polygon"
+#~ msgstr "机器头多边形"
+
+#~ msgctxt "machine_head_with_fans_polygon label"
+#~ msgid "Machine head & Fan polygon"
+#~ msgstr "机器头和风扇多边形"
+
+#~ msgctxt "gantry_height label"
+#~ msgid "Gantry height"
+#~ msgstr "十字轴高度"
+
+#~ msgctxt "machine_use_extruder_offset_to_offset_coords label"
+#~ msgid "Offset With Extruder"
+#~ msgstr "挤出机偏移量"
+
+#~ msgctxt "adaptive_layer_height_enabled label"
+#~ msgid "Use adaptive layers"
+#~ msgstr "使用自适应图层"
+
+#~ msgctxt "adaptive_layer_height_variation label"
+#~ msgid "Adaptive layers maximum variation"
+#~ msgstr "自适应图层最大变化"
+
+#~ msgctxt "adaptive_layer_height_variation_step label"
+#~ msgid "Adaptive layers variation step size"
+#~ msgstr "自适应图层变化步长"
+
+#~ msgctxt "adaptive_layer_height_threshold label"
+#~ msgid "Adaptive layers threshold"
+#~ msgstr "自适应图层阈值"
 
 #~ msgctxt "skin_overlap description"
 #~ msgid "The amount of overlap between the skin and the walls as a percentage of the skin line width. A slight overlap allows the walls to connect firmly to the skin. This is a percentage of the average line widths of the skin lines and the innermost wall."
@@ -5900,7 +6432,6 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very start - separated by \n"
 #~ "."
 #~ msgstr ""
-
 #~ "在开始后执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -5913,7 +6444,6 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "Gcode commands to be executed at the very end - separated by \n"
 #~ "."
 #~ msgstr ""
-
 #~ "在结束前执行的 G-code 命令 - 以 \n"
 #~ " 分行"
 
@@ -5970,7 +6500,6 @@ msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
 #~ "The horizontal distance between the skirt and the first layer of the print.\n"
 #~ "This is the minimum distance, multiple skirt lines will extend outwards from this distance."
 #~ msgstr ""
-
 #~ "skirt 和打印第一层之间的水平距离。\n"
 #~ "这是最小距离，多个 skirt 走线将从此距离向外延伸。"
 

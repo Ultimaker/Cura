@@ -264,17 +264,17 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    def getHasMaterials(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasMaterials(self):
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    def getHasVariants(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasVariants(self):
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    def getHasVariantsBuildPlates(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
-
-    def getHasMachineQuality(self) -> bool:
-        return parseBool(self.getMetaDataEntry("has_machine_quality", False))
 
     ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)

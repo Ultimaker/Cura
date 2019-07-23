@@ -54,7 +54,7 @@ SettingItem
             {
                 // FIXME this needs to go away once 'resolve' is combined with 'value' in our data model.
                 var value = undefined
-                if ((base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
+                if ((base.resolve !== undefined && base.resolve != "None") && (base.stackLevel != 0) && (base.stackLevel != 1))
                 {
                     // We have a resolve function. Indicates that the setting is not settable per extruder and that
                     // we have to choose between the resolved value (default) and the global value

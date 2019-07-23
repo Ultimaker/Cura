@@ -12,7 +12,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
-from UM.Settings.ContainerStack import ContainerStack
+from UM.Decorators import deprecated
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -95,6 +95,7 @@ class ExtruderManager(QObject):
     #
     #   \param index The index of the extruder whose name to get.
     @pyqtSlot(int, result = str)
+    @deprecated("Use Cura.MachineManager.activeMachine.extruders[index].name instead", "4.3")
     def getExtruderName(self, index: int) -> str:
         try:
             return self.getActiveExtruderStacks()[index].getName()
@@ -131,7 +132,7 @@ class ExtruderManager(QObject):
                 elif current_extruder_trains:
                     object_extruders.add(current_extruder_trains[0].getId())
 
-            self._selected_object_extruders = list(object_extruders)  # type: List[Union[str, "ExtruderStack"]]
+            self._selected_object_extruders = list(object_extruders)
 
         return self._selected_object_extruders
 
@@ -140,7 +141,7 @@ class ExtruderManager(QObject):
     #   This will trigger a recalculation of the extruders used for the
     #   selection.
     def resetSelectedObjectExtruders(self) -> None:
-        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
+        self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
     @pyqtSlot(result = QObject)
@@ -180,7 +181,7 @@ class ExtruderManager(QObject):
     #   \param setting_key  \type{str} The setting to get the property of.
     #   \param property  \type{str} The property to get.
     #   \return \type{List} the list of results
-    def getAllExtruderSettings(self, setting_key: str, prop: str) -> List:
+    def getAllExtruderSettings(self, setting_key: str, prop: str) -> List[Any]:
         result = []
 
         for extruder_stack in self.getActiveExtruderStacks():
@@ -205,7 +206,7 @@ class ExtruderManager(QObject):
     #   list.
     #
     #   \return A list of extruder stacks.
-    def getUsedExtruderStacks(self) -> List["ContainerStack"]:
+    def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = self._application.getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
 
@@ -279,7 +280,8 @@ class ExtruderManager(QObject):
             extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
-            used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
+            if extruder_str_nr in self.extruderIds:
+                used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
         try:
             return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]

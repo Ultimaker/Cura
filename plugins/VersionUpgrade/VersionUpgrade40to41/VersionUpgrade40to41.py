@@ -52,7 +52,7 @@ class VersionUpgrade40to41(VersionUpgrade):
         parser["metadata"]["setting_version"] = "7"
 
         # Limit Maximum Deviation instead of Maximum Resolution. This should have approximately the same effect as before the algorithm change, only more consistent.
-        if "meshfix_maximum_resolution" in parser["values"]:
+        if "values" in parser and "meshfix_maximum_resolution" in parser["values"]:
             resolution = parser["values"]["meshfix_maximum_resolution"]
             if resolution.startswith("="):
                 resolution = resolution[1:]

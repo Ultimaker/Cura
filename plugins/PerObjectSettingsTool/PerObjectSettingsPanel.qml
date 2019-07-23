@@ -160,7 +160,7 @@ Item {
                     model: UM.SettingDefinitionsModel
                     {
                         id: addedSettingsModel;
-                        containerId: Cura.MachineManager.activeDefinitionId
+                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         expanded: [ "*" ]
                         filter:
                         {
@@ -467,7 +467,7 @@ Item {
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel;
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
                     exclude:

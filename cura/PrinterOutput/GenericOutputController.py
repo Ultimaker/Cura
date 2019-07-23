@@ -55,7 +55,7 @@ class GenericOutputController(PrinterOutputController):
                 self._preheat_hotends_timer.stop()
                 for extruder in self._preheat_hotends:
                     extruder.updateIsPreheating(False)
-                self._preheat_hotends = set()  # type: Set[ExtruderOutputModel]
+                self._preheat_hotends = set()
 
     def moveHead(self, printer: "PrinterOutputModel", x, y, z, speed) -> None:
         self._output_device.sendCommand("G91")
@@ -159,7 +159,7 @@ class GenericOutputController(PrinterOutputController):
     def _onPreheatHotendsTimerFinished(self) -> None:
         for extruder in self._preheat_hotends:
             self.setTargetHotendTemperature(extruder.getPrinter(), extruder.getPosition(), 0)
-        self._preheat_hotends = set() #type: Set[ExtruderOutputModel]
+        self._preheat_hotends = set()
 
     # Cancel any ongoing preheating timers, without setting back the temperature to 0
     # This can be used eg at the start of a print
@@ -167,7 +167,7 @@ class GenericOutputController(PrinterOutputController):
         if self._preheat_hotends_timer.isActive():
             for extruder in self._preheat_hotends:
                 extruder.updateIsPreheating(False)
-            self._preheat_hotends = set() #type: Set[ExtruderOutputModel]
+            self._preheat_hotends = set()
 
             self._preheat_hotends_timer.stop()
 

@@ -114,6 +114,7 @@ from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
 from cura.UI.TextManager import TextManager
 from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
+from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
 
@@ -143,7 +144,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 7
+    SettingVersion = 8
 
     Created = False
 
@@ -260,7 +261,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = False
 
         # Backups
-        self._auto_save = None
+        self._auto_save = None  # type: Optional[AutoSave]
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -420,7 +421,7 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container  # type: EmptyInstanceContainer
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
         self._container_registry.addContainer(
             cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
@@ -523,6 +524,7 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
+        preferences.addPreference("cura/show_list_of_objects", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
         preferences.addPreference("view/settings_xpos", 0)
@@ -837,7 +839,6 @@ class CuraApplication(QtApplication):
         if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
             diagonal = 375
         camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
-        camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
@@ -929,7 +930,7 @@ class CuraApplication(QtApplication):
 
     def getObjectsModel(self, *args):
         if self._object_manager is None:
-            self._object_manager = ObjectsModel.createObjectsModel()
+            self._object_manager = ObjectsModel(self)
         return self._object_manager
 
     @pyqtSlot(result = QObject)
@@ -988,7 +989,7 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
-    def getAutoSave(self):
+    def getAutoSave(self) -> Optional[AutoSave]:
         return self._auto_save
 
     ##  Get print information (duration / material used)
@@ -1036,10 +1037,11 @@ class CuraApplication(QtApplication):
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
+        qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
-        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
+        qmlRegisterType(ObjectsModel, "Cura", 1, 0, "ObjectsModel")
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")

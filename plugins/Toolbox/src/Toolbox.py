@@ -278,7 +278,7 @@ class Toolbox(QObject, Extension):
         for plugin_id in old_plugin_ids:
             # Neither the installed packages nor the packages that are scheduled to remove are old plugins
             if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
-                Logger.log("i", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
+                Logger.log("d", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
@@ -526,7 +526,7 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("i", "Requesting %s metadata from server.", request_type)
+        Logger.log("d", "Requesting %s metadata from server.", request_type)
         request = QNetworkRequest(self._request_urls[request_type])
         for header_name, header_value in self._request_headers:
             request.setRawHeader(header_name, header_value)

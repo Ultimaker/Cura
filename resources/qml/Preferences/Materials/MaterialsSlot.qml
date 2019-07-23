@@ -19,8 +19,18 @@ Rectangle
 
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
-    color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
-
+    //color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
+    color:
+    {
+        if(material !== null && base.currentItem !== null)
+        {
+            if(base.currentItem.root_material_id === material.root_material_id)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+        }
+        return "transparent"
+    }
     Rectangle
     {
         id: swatch
@@ -41,7 +51,7 @@ Rectangle
         anchors.left: swatch.right
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        font.italic: Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
+        font.italic: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
     }
     MouseArea
     {

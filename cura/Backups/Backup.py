@@ -148,5 +148,9 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        archive.extractall(target_path)
+        try:
+            archive.extractall(target_path)
+        except PermissionError:
+            Logger.logException("e", "Unable to extract the backup due to permission errors")
+            return False
         return True

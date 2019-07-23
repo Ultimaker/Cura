@@ -18,14 +18,14 @@ UM.ManagementPage
 
     sectionRole: "discoverySource"
 
-    activeId: Cura.MachineManager.activeMachineId
+    activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
 
     function activeMachineIndex()
     {
         for(var i = 0; i < model.count; i++)
         {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId)
+            if (model.getItem(i).id == base.activeId)
             {
                 return i;
             }
@@ -104,10 +104,11 @@ UM.ManagementPage
                         text: machineActionRepeater.model[index].label
                         onClicked:
                         {
-                            actionDialog.content = machineActionRepeater.model[index].displayItem;
-                            machineActionRepeater.model[index].displayItem.reset();
-                            actionDialog.title = machineActionRepeater.model[index].label;
-                            actionDialog.show();
+                            var currentItem = machineActionRepeater.model[index]
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
                         }
                     }
                 }
@@ -117,13 +118,7 @@ UM.ManagementPage
         UM.Dialog
         {
             id: actionDialog
-            property var content
-            onContentChanged:
-            {
-                contents = content;
-                content.onCompleted.connect(hide)
-                content.dialog = actionDialog
-            }
+
             rightButtons: Button
             {
                 text: catalog.i18nc("@action:button", "Close")

@@ -62,6 +62,14 @@ class DiscoveredPrinter(QObject):
             self._machine_type = machine_type
             self.machineTypeChanged.emit()
 
+    # Checks if the given machine type name in the available machine list.
+    # The machine type is a code name such as "ultimaker_3", while the machine type name is the human-readable name of
+    # the machine type, which is "Ultimaker 3" for "ultimaker_3".
+    def _hasHumanReadableMachineTypeName(self, machine_type_name: str) -> bool:
+        from cura.CuraApplication import CuraApplication
+        results = CuraApplication.getInstance().getContainerRegistry().findDefinitionContainersMetadata(name = machine_type_name)
+        return len(results) > 0
+
     # Human readable machine type string
     @pyqtProperty(str, notify = machineTypeChanged)
     def readableMachineType(self) -> str:
@@ -70,23 +78,29 @@ class DiscoveredPrinter(QObject):
         # In ClusterUM3OutputDevice, when it updates a printer information, it updates the machine type using the field
         # "machine_variant", and for some reason, it's not the machine type ID/codename/... but a human-readable string
         # like "Ultimaker 3". The code below handles this case.
-        if machine_manager.hasHumanReadableMachineTypeName(self._machine_type):
+        if self._hasHumanReadableMachineTypeName(self._machine_type):
             readable_type = self._machine_type
         else:
-            readable_type = machine_manager.getMachineTypeNameFromId(self._machine_type)
+            readable_type = self._getMachineTypeNameFromId(self._machine_type)
             if not readable_type:
                 readable_type = catalog.i18nc("@label", "Unknown")
         return readable_type
 
     @pyqtProperty(bool, notify = machineTypeChanged)
     def isUnknownMachineType(self) -> bool:
-        from cura.CuraApplication import CuraApplication
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        if machine_manager.hasHumanReadableMachineTypeName(self._machine_type):
+        if self._hasHumanReadableMachineTypeName(self._machine_type):
             readable_type = self._machine_type
         else:
-            readable_type = machine_manager.getMachineTypeNameFromId(self._machine_type)
+            readable_type = self._getMachineTypeNameFromId(self._machine_type)
         return not readable_type
+
+    def _getMachineTypeNameFromId(self, machine_type_id: str) -> str:
+        machine_type_name = ""
+        from cura.CuraApplication import CuraApplication
+        results = CuraApplication.getInstance().getContainerRegistry().findDefinitionContainersMetadata(id = machine_type_id)
+        if results:
+            machine_type_name = results[0]["name"]
+        return machine_type_name
 
     @pyqtProperty(QObject, constant = True)
     def device(self) -> "NetworkedPrinterOutputDevice":

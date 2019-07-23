@@ -1,12 +1,11 @@
 {
     "version": 2,
-    "name": "Discov3ry Complete (Ultimaker 2+)",
+    "name": "Discov3ry Complete",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Andrew Finkle, CTO",
         "manufacturer": "Structur3d.io",
         "visible": true,
-        "weight": 1,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
@@ -77,7 +76,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 52
+            "value": "52"
         },
         "machine_nozzle_head_distance": {
             "default_value": 5

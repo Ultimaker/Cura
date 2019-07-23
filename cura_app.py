@@ -32,7 +32,8 @@ if not known_args["debug"]:
         elif Platform.isOSX():
             return os.path.expanduser("~/Library/Logs/" + CuraAppName)
 
-    if hasattr(sys, "frozen"):
+    # Do not redirect stdout and stderr to files if we are running CLI.
+    if hasattr(sys, "frozen") and "cli" not in os.path.basename(sys.argv[0]).lower():
         dirpath = get_cura_dir_path()
         os.makedirs(dirpath, exist_ok = True)
         sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")

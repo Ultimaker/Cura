@@ -106,8 +106,8 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self._active_camera_url = QUrl()  # type: QUrl
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         self.writeStarted.emit(self)
 
         self.sendMaterialProfiles()
@@ -139,6 +139,11 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
                 self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()
+
+    ##  Whether the printer that this output device represents supports print job actions via the local network.
+    @pyqtProperty(bool, constant=True)
+    def supportsPrintJobActions(self) -> bool:
+        return True
 
     @pyqtProperty(int, constant=True)
     def clusterSize(self) -> int:
@@ -384,6 +389,13 @@ class ClusterUM3OutputDevice(NetworkedPrinterOutputDevice):
     def forceSendJob(self, print_job_uuid: str) -> None:
         data = "{\"force\": true}"
         self.put("print_jobs/{uuid}".format(uuid=print_job_uuid), data, on_finished=None)
+
+    # Set the remote print job state.
+    def setJobState(self, print_job_uuid: str, state: str) -> None:
+        # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
+        action = "print" if state == "resume" else state
+        data = "{\"action\": \"%s\"}" % action
+        self.put("print_jobs/%s/action" % print_job_uuid, data, on_finished=None)
 
     def _printJobStateChanged(self) -> None:
         username = self._getUserName()

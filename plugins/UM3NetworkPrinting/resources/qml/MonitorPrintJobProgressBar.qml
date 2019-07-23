@@ -28,9 +28,12 @@ Item
         anchors
         {
             verticalCenter: parent.verticalCenter
+            left: parent.left
         }
         value: printJob ? printJob.progress : 0
+        width: UM.Theme.getSize("monitor_column").width
     }
+
     Label
     {
         id: percentLabel
@@ -38,6 +41,7 @@ Item
         {
             left: progressBar.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
@@ -56,6 +60,7 @@ Item
         {
             left: percentLabel.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
         font: UM.Theme.getFont("medium") // 14pt, regular
