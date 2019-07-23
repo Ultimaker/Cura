@@ -10,6 +10,7 @@ from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
 
+from cura.Machines.QualityGroup import DEFAULT_INTENT_CATEGORY
 from cura.Settings.ExtruderStack import ExtruderStack
 
 from .QualityGroup import QualityGroup
@@ -160,7 +161,7 @@ class QualityManager(QObject):
     # Whether a QualityGroup is available can be known via the field QualityGroup.is_available.
     # For more details, see QualityGroup.
     #
-    def getQualityGroups(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
+    def getDefaultIntentQualityGroups(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
@@ -193,7 +194,7 @@ class QualityManager(QObject):
                     continue
 
                 for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
                     quality_group.setGlobalNode(quality_node)
                     quality_group_dict[quality_type] = quality_group
                 break
@@ -291,7 +292,7 @@ class QualityManager(QObject):
 
                     for quality_type, quality_node in node.quality_type_map.items():
                         if quality_type not in quality_group_dict:
-                            quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
+                            quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
                             quality_group_dict[quality_type] = quality_group
 
                         quality_group = quality_group_dict[quality_type]
@@ -309,7 +310,7 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
+    def getDefaultIntentQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
@@ -325,7 +326,7 @@ class QualityManager(QObject):
         for node in nodes_to_check:
             if node and node.quality_type_map:
                 for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
                     quality_group.setGlobalNode(quality_node)
                     quality_group_dict[quality_type] = quality_group
                 break

@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Optional, List, Set
+from typing import Dict, Optional, List, Set, Tuple
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
@@ -9,6 +9,7 @@ from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
 
+DEFAULT_INTENT_CATEGORY = "default"
 
 #
 # A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
@@ -25,18 +26,24 @@ from cura.Machines.ContainerNode import ContainerNode
 #
 class QualityGroup(QObject):
 
-    def __init__(self, name: str, quality_type: str, parent = None) -> None:
+    def __init__(self, name: str, quality_tuple: Tuple[str, str], parent = None) -> None:
         super().__init__(parent)
         self.name = name
         self.node_for_global = None  # type: Optional[ContainerNode]
         self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]
-        self.quality_type = quality_type
+        self.quality_tuple = quality_tuple
         self.is_available = False
         self.is_experimental = False
 
     @pyqtSlot(result = str)
     def getName(self) -> str:
         return self.name
+
+    def getQualityType(self) -> str:
+        return self.quality_tuple[1]
+
+    def getIntentCategory(self) -> str:
+        return self.quality_tuple[0]
 
     def getAllKeys(self) -> Set[str]:
         result = set()  # type: Set[str]

@@ -27,6 +27,12 @@ def quality_container():
 
     return container
 
+@pytest.fixture
+def intent_container():
+    container = InstanceContainer(container_id="intent container")
+    container.setMetaDataEntry("type", "intent")
+
+    return container
 
 @pytest.fixture
 def quality_changes_container():
@@ -44,23 +50,27 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
             assert mocked_config_error.addFaultyContainers.called_with("NOPE")
 
 
-def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container, quality_container, intent_container, quality_changes_container):
     variant_manager = MagicMock(name = "Variant Manager")
     quality_manager = MagicMock(name = "Quality Manager")
+    intent_manager = MagicMock(name = "Intent Manager")
     global_variant_node = MagicMock( name = "global variant node")
     global_variant_node.getContainer = MagicMock(return_value = global_variant)
 
     variant_manager.getDefaultVariantNode = MagicMock(return_value = global_variant_node)
-    quality_group = QualityGroup(name = "zomg", quality_type = "normal")
+    quality_group = QualityGroup(name = "zomg", quality_tuple = ("default", "normal"))
     quality_group.node_for_global = MagicMock(name = "Node for global")
     quality_group.node_for_global.getContainer = MagicMock(return_value = quality_container)
-    quality_manager.getQualityGroups = MagicMock(return_value = {"normal": quality_group})
+    quality_manager.getDefaultIntentQualityGroups = MagicMock(return_value = {"normal": quality_group})
+    intent_manager.getQualityGroups = MagicMock(return_value = {("default", "normal"): quality_group})
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
     application.getVariantManager = MagicMock(return_value = variant_manager)
     application.getQualityManager = MagicMock(return_value = quality_manager)
+    application.getIntentManager = MagicMock(return_value = intent_manager)
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
+    application.empty_intent_container = intent_container
     application.empty_quality_changes_container = quality_changes_container
 
     metadata = definition_container.getMetaData()
@@ -76,12 +86,12 @@ def test_createMachine(application, container_registry, definition_container, gl
         assert machine.variant == global_variant
 
 
-def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, intent_container, quality_changes_container):
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
     application.empty_quality_changes_container = quality_changes_container
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
+        extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container, intent_container)
         assert extruder_stack.variant == global_variant
         assert extruder_stack.material == material_instance_container
         assert extruder_stack.quality == quality_container

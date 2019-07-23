@@ -37,8 +37,8 @@ mocked_intent_metadata = [
      "material_id": "generic_pla", "intent_category": "strong", "quality_type": "abnorm"}]  # type:List[Dict[str, str]]
 
 mocked_qualitygroup_metadata = {
-    "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
-    "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
+    "normal": QualityGroup("um3_aa4_pla_normal", ("default", "normal")),
+    "abnorm": QualityGroup("um3_aa4_pla_abnorm", ("default", "abnorm"))}  # type:Dict[str, QualityGroup]
 
 
 def mockFindMetadata(**kwargs) -> List[Dict[str, Any]]:
@@ -68,7 +68,7 @@ def doSetup(application, extruder_manager, quality_manager, container_registry, 
     container_registry.findContainersMetadata = MagicMock(side_effect = mockFindMetadata)
     container_registry.findContainers = MagicMock(side_effect = mockFindContainers)
 
-    quality_manager.getQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
+    quality_manager.getDefaultIntentQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
     for _, qualitygroup in mocked_qualitygroup_metadata.items():
         qualitygroup.node_for_global = MagicMock(name = "Node for global")
     application.getQualityManager = MagicMock(return_value = quality_manager)

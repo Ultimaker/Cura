@@ -30,6 +30,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
 from cura.Settings.CuraContainerStack import _ContainerIndexes
+from cura.Machines.QualityGroup import DEFAULT_INTENT_CATEGORY
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
@@ -60,6 +61,7 @@ class MachineInfo:
         self.name = None
         self.definition_id = None
         self.quality_type = None
+        self.intent_category = None
         self.custom_quality_name = None
         self.quality_changes_info = None
         self.variant_info = None
@@ -359,13 +361,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     break
             self._is_same_machine_type = global_stack.definition.getId() == machine_definition_id
 
-        # Get quality type
+        # Get quality type, intent category
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
         quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
             quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
+        intent_container_id = parser["containers"][str(_ContainerIndexes.Intent)]
+        intent_category = "empty_intent"
+        if intent_container_id not in ("empty", "empty_intent"):
+            intent_category = instance_container_info_dict[intent_container_id].parser["metadata"]["intent_category"]
 
         # Get machine info
         serialized = archive.open(global_stack_file).read().decode("utf-8")
@@ -494,6 +500,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.name = machine_name
         self._machine_info.definition_id = machine_definition_id
         self._machine_info.quality_type = quality_type
+        self._machine_info.intent_category = intent_category
         self._machine_info.custom_quality_name = quality_name
 
         if machine_conflict and not self._is_same_machine_type:
@@ -515,6 +522,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
+        self._dialog.setIntentCategory(intent_category)
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
@@ -743,6 +751,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
+            quality_changes_intent_category = quality_changes_info.global_info.parser["metadata"]["intent_category"]
+            quality_changes_quality_tuple = (quality_changes_intent_category, quality_changes_quality_type)
 
             quality_changes_name = quality_changes_info.name
             create_new = self._resolve_strategies.get("quality_changes") != "override"
@@ -755,7 +765,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     if position is not None:
                         extruder_stack = global_stack.extruders[position]
-                    container = intent_manager._createQualityChanges(quality_changes_quality_type,
+                    container = intent_manager._createQualityChanges( quality_changes_quality_tuple,
                                                                       quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
@@ -788,7 +798,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
-                container = intent_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
+                container = intent_manager._createQualityChanges(quality_changes_quality_tuple, quality_changes_name,
                                                                   global_stack, extruder_stack)
                 container_info.container = container
                 container.setDirty(True)
@@ -817,7 +827,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if container_info.container is None:
                     extruder_stack = global_stack.extruders[position]
-                    container = intent_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
+                    container = intent_manager._createQualityChanges(quality_changes_quality_tuple, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
                     container.setDirty(True)
@@ -958,11 +968,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # prepare the quality to select
         self._quality_changes_to_apply = None
-        self._quality_type_to_apply = None
+        self._quality_tuple_to_apply = None
         if self._machine_info.quality_changes_info is not None:
             self._quality_changes_to_apply = self._machine_info.quality_changes_info.name
         else:
-            self._quality_type_to_apply = self._machine_info.quality_type
+            self._quality_tuple_to_apply = (self._machine_info.intent_category, self._machine_info.quality_type)
 
         # Set enabled/disabled for extruders
         for position, extruder_stack in extruder_stack_dict.items():
@@ -995,17 +1005,19 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             quality_changes_group = quality_changes_group_dict[self._quality_changes_to_apply]
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
-            self._quality_type_to_apply = self._quality_type_to_apply.lower()
-            quality_group_dict = quality_manager.getQualityGroups(global_stack)
-            if self._quality_type_to_apply in quality_group_dict:
-                quality_group = quality_group_dict[self._quality_type_to_apply]
+            self._quality_tuple_to_apply = (self._quality_tuple_to_apply[0].lower(), self._quality_tuple_to_apply[1].lower())
+            quality_group_dict = intent_manager.getQualityGroups(global_stack)
+            if self._quality_tuple_to_apply in quality_group_dict:
+                quality_group = quality_group_dict[self._quality_tuple_to_apply]
             else:
-                Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
+                Logger.log("i", "Could not find quality type [I: %s, Q: %s], switch to default", self._quality_tuple_to_apply[0], self._quality_tuple_to_apply[1])
                 preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-                quality_group_dict = quality_manager.getQualityGroups(global_stack)
-                quality_group = quality_group_dict.get(preferred_quality_type)
+                preferred_intent_category = global_stack.getMetaDataEntry("preferred_intent_category", default=DEFAULT_INTENT_CATEGORY)
+                preferred_quality_tuple = (preferred_intent_category, preferred_quality_type)
+                quality_group_dict = intent_manager.getQualityGroups(global_stack)
+                quality_group = quality_group_dict.get(preferred_quality_tuple)
                 if quality_group is None:
-                    Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
+                    Logger.log("e", "Could not get preferred quality type [I: %s, Q: %s]", preferred_quality_tuple[0], preferred_quality_tuple[1])
 
             if quality_group is not None:
                 machine_manager.setQualityGroup(quality_group, no_dialog = True)

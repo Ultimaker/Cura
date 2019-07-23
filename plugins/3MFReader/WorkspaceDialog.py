@@ -149,6 +149,15 @@ class WorkspaceDialog(QObject):
             self._quality_type = quality_type
             self.qualityTypeChanged.emit()
 
+    @pyqtProperty(str, notify=qualityTypeChanged)
+    def intentCategory(self):
+        return self._intentCategory
+
+    def setIntentCategory(self, intent_category: str):
+        if self._intent_category != intent_category:
+            self._intent_category = intent_category
+            self.qualityTypeChanged.emit()  # TODO: Use qualityTypeChanged for now?
+
     @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
     def numSettingsOverridenByQualityChanges(self):
         return self._num_settings_overridden_by_quality_changes

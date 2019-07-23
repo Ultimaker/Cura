@@ -72,7 +72,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
+        quality_group_dict = self._quality_manager.getDefaultIntentQualityGroups(global_stack)
 
         item_list = []
         for key in sorted(quality_group_dict):
@@ -81,7 +81,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
             layer_height = self._fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
-                    "quality_type": quality_group.quality_type,
+                    "quality_type": quality_group.getQualityType(),
                     "layer_height": layer_height,
                     "layer_height_unit": self._layer_height_unit,
                     "available": quality_group.is_available,

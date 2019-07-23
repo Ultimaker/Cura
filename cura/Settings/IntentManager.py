@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
+from cura.Machines.QualityGroup import DEFAULT_INTENT_CATEGORY
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.Machines.QualityNode import QualityNode
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
@@ -28,13 +29,13 @@ class IntentManager(QObject):
         # For quality_changes lookup
         self._machine_quality_type_to_quality_changes_dict = {}  # type: Dict[str, QualityNode]
 
-        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
-        self.configurationChanged.connect(self.selectDefaultIntent)
-        pass
-
-    # TODO: Maybe this can be moved to __init__?
+    # TODO: Maybe this can be moved to __init__? --> probably not, we get loops then
     def initialize(self) -> None:
-        registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        application.getMachineManager().activeStackChanged.connect(self.configurationChanged)
+        self.configurationChanged.connect(self.selectDefaultIntent)
+
+        registry = application.getInstance().getContainerRegistry()
 
         # Initialize the lookup tree for quality_changes profiles with following structure:
         # <machine> -> <quality_type> -> <name>
@@ -86,7 +87,7 @@ class IntentManager(QObject):
         categories = set()
         for intent in self.intentMetadatas(definition_id, nozzle_id, material_id):
             categories.add(intent["intent_category"])
-        categories.add("default") #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
+        categories.add(DEFAULT_INTENT_CATEGORY) #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
         return list(categories)
 
     ##  List of intents to be displayed in the interface.
@@ -100,12 +101,12 @@ class IntentManager(QObject):
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
-            return [("default", "normal")]
+            return [(DEFAULT_INTENT_CATEGORY, "normal")]
             # TODO: We now do this (return a default) if the global stack is missing, but not in the code below,
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
             #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
-        quality_groups = application.getQualityManager().getQualityGroups(global_stack)
-        available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
+        quality_groups = application.getQualityManager().getDefaultIntentQualityGroups(global_stack)
+        available_quality_types = {quality_group.getQualityType() for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
@@ -132,7 +133,7 @@ class IntentManager(QObject):
     def currentAvailableIntentCategories(self) -> List[str]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
-            return ["default"]
+            return [DEFAULT_INTENT_CATEGORY]
         current_definition_id = global_stack.definition.getMetaDataEntry("id")
         final_intent_categories = set()  # type: Set[str]
         for extruder_stack in global_stack.extruderList:
@@ -152,8 +153,8 @@ class IntentManager(QObject):
         application = cura.CuraApplication.CuraApplication.getInstance()
         active_extruder_stack = application.getMachineManager().activeStack
         if active_extruder_stack is None:
-            return ""
-        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
+            return ""  # TODO: should this return "" or DEFAULT_INTENT_CATEGORY?
+        return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")  # TODO: see above
 
     ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
@@ -171,9 +172,10 @@ class IntentManager(QObject):
             if intent:
                 extruder_stack.intent = intent[0]
             else:
+                intent_category = DEFAULT_INTENT_CATEGORY
                 extruder_stack.intent = self.getDefaultIntent()
 
-        application.getMachineManager().setQualityGroupByQualityType(quality_type)
+        application.getMachineManager().setQualityGroupByQualityTuple(quality_type, intent_category)
         if old_intent_category != intent_category:
             self.intentCategoryChanged.emit()
 
@@ -198,7 +200,7 @@ class IntentManager(QObject):
 
         # Update availability for each QualityChangesGroup:
         # A custom profile is always available as long as the quality_type it's based on is available
-        quality_group_dict = application.getQualityManager().getQualityGroups(machine)
+        quality_group_dict = application.getQualityManager().getDefaultIntentQualityGroups(machine)
         available_quality_type_list = [qt for qt, qg in quality_group_dict.items() if qg.is_available]
 
         # Iterate over all quality_types in the machine node
@@ -210,6 +212,18 @@ class IntentManager(QObject):
 
         return quality_changes_group_dict
 
+    def getQualityGroups(self, machine: "GlobalStack") -> dict:
+        # raise NotImplementedError("SHOULD BE IMPLEMENTED")  ## still TODO! :: **temporary** code below!
+
+        application = cura.CuraApplication.CuraApplication.getInstance()
+
+        quality_groups_dict = dict()  ### type: Dict[Tuple[str, str], "QualityGroup"]  TODO: typing wrong?
+
+        only_default_groups = application.getQualityManager().getDefaultIntentQualityGroups(machine)
+        for quality_type, quality_group in only_default_groups.items():
+            quality_groups_dict[(DEFAULT_INTENT_CATEGORY, quality_type)] = quality_group
+
+        return quality_groups_dict
 
     # TODO: Some (all)? of  these where labeled 'Methods for GUI' in QualityManager where they where copied from, probably should move [most|all] of them.
 
@@ -338,8 +352,7 @@ class IntentManager(QObject):
     #
     # Create a quality changes container with the given setup.
     #
-    def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack",
-                              extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
+    def _createQualityChanges(self, quality_tuple: Tuple[str, str], new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
         base_id = machine.definition.getId() if extruder_stack is None else extruder_stack.getId()
         new_id = base_id + "_" + new_name
         new_id = new_id.lower().replace(" ", "_")
@@ -349,7 +362,8 @@ class IntentManager(QObject):
         quality_changes = InstanceContainer(new_id)
         quality_changes.setName(new_name)
         quality_changes.setMetaDataEntry("type", "quality_changes")
-        quality_changes.setMetaDataEntry("quality_type", quality_type)
+        quality_changes.setMetaDataEntry("quality_type", quality_tuple[1])
+        quality_changes.setMetaDataEntry("intent_category", quality_tuple[0])
 
         # If we are creating a container for an extruder, ensure we add that to the container
         if extruder_stack is not None:

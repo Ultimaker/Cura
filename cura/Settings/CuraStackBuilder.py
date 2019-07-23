@@ -9,6 +9,7 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.VariantType import VariantType
+from cura.Machines.QualityGroup import DEFAULT_INTENT_CATEGORY
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
@@ -28,6 +29,7 @@ class CuraStackBuilder:
         application = CuraApplication.getInstance()
         variant_manager = application.getVariantManager()
         quality_manager = application.getQualityManager()
+        intent_manager = application.getIntentManager()
         registry = application.getContainerRegistry()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
@@ -59,6 +61,7 @@ class CuraStackBuilder:
             variant_container = global_variant_container,
             material_container = application.empty_material_container,
             quality_container = application.empty_quality_container,
+            intent_container = application.empty_intent_container
         )
         new_global_stack.setName(generated_name)
 
@@ -71,19 +74,23 @@ class CuraStackBuilder:
             registry.addContainer(new_extruder)
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = quality_manager.getQualityGroups(new_global_stack)
+        preferred_intent_category = machine_definition.getMetaDataEntry("preferred_intent_category", DEFAULT_INTENT_CATEGORY)
+        preferred_quality_tuple = (preferred_intent_category, preferred_quality_type)
+        quality_group_dict = intent_manager.getQualityGroups(new_global_stack)
         if not quality_group_dict:
-            # There is no available quality group, set all quality containers to empty.
+            # There is no available quality group, set all quality & intent containers to empty.
             new_global_stack.quality = application.empty_quality_container
+            new_global_stack.intent = application.empty_intent_container
             for extruder_stack in new_global_stack.extruders.values():
                 extruder_stack.quality = application.empty_quality_container
+                extruder_stack.intent = application.empty_intent_container
         else:
             # Set the quality containers to the preferred quality type if available, otherwise use the first quality
             # type that's available.
-            if preferred_quality_type not in quality_group_dict:
+            if preferred_quality_tuple not in quality_group_dict:
                 Logger.log("w", "The preferred quality {quality_type} doesn't exist for this set-up. Choosing a random one.".format(quality_type = preferred_quality_type))
-                preferred_quality_type = next(iter(quality_group_dict))
-            quality_group = quality_group_dict.get(preferred_quality_type)
+                preferred_quality_tuple = next(iter(quality_group_dict))
+            quality_group = quality_group_dict.get(preferred_quality_tuple)
 
             new_global_stack.quality = quality_group.node_for_global.getContainer()
             if not new_global_stack.quality:
@@ -162,6 +169,7 @@ class CuraStackBuilder:
     #   \param variant_container The variant selected for the current extruder.
     #   \param material_container The material selected for the current extruder.
     #   \param quality_container The quality selected for the current extruder.
+    #   \param intent_container The intent selected for the current extruder.
     #
     #   \return A new Extruder stack instance with the specified parameters.
     @classmethod
@@ -170,7 +178,8 @@ class CuraStackBuilder:
                             position: int,
                             variant_container: "InstanceContainer",
                             material_container: "InstanceContainer",
-                            quality_container: "InstanceContainer") -> ExtruderStack:
+                            quality_container: "InstanceContainer",
+                            intent_container: "InstanceContainer") -> ExtruderStack:
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
@@ -189,6 +198,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 
@@ -214,13 +224,15 @@ class CuraStackBuilder:
     #   \param variant_container The variant selected for the current stack.
     #   \param material_container The material selected for the current stack.
     #   \param quality_container The quality selected for the current stack.
+    #   \param intent_container The intent selected for the current stack.
     #
     #   \return A new Global stack instance with the specified parameters.
     @classmethod
     def createGlobalStack(cls, new_stack_id: str, definition: DefinitionContainerInterface,
                           variant_container: "InstanceContainer",
                           material_container: "InstanceContainer",
-                          quality_container: "InstanceContainer") -> GlobalStack:
+                          quality_container: "InstanceContainer",
+                          intent_container: "InstanceContainer") -> GlobalStack:
 
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
@@ -237,6 +249,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 

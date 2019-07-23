@@ -30,6 +30,7 @@ from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.IntentManager import IntentManager, DEFAULT_INTENT_CATEGORY
 from cura.Settings.cura_empty_instance_containers import (empty_definition_changes_container, empty_variant_container,
                                                           empty_material_container, empty_quality_container,
                                                           empty_quality_changes_container)
@@ -122,6 +123,7 @@ class MachineManager(QObject):
         self._material_manager = self._application.getMaterialManager()  # type: MaterialManager
         self._variant_manager = self._application.getVariantManager()  # type: VariantManager
         self._quality_manager = self._application.getQualityManager()  # type: QualityManager
+        self._intent_manager = self._application.getIntentManager()  # type: IntentManager
 
         # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
         # be reflected on the GUI. This signal emission makes sure that it happens.
@@ -135,13 +137,15 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # self._intent_manager.intentCategoryChanged(self.activeQualityChanged)   # TODO ?!?
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
     globalContainerChanged = pyqtSignal()  # Emitted whenever the global stack is changed (ie: when changing between printers, changing a global profile, but not when changing a value)
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
-    activeQualityChanged = pyqtSignal()
+    activeQualityChanged = pyqtSignal()  # Used for Intent as well.
     activeStackChanged = pyqtSignal()  # Emitted whenever the active stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
     extruderChanged = pyqtSignal()
 
@@ -305,13 +309,15 @@ class MachineManager(QObject):
 
         global_quality = global_stack.quality
         quality_type = global_quality.getMetaDataEntry("quality_type")
+        intent_category = global_quality.getMetaDataEntry("intent_category", DEFAULT_INTENT_CATEGORY)
+        quality_tuple = (intent_category, quality_type)
         global_quality_changes = global_stack.qualityChanges
         global_quality_changes_name = global_quality_changes.getName()
 
         # Try to set the same quality/quality_changes as the machine specified.
         # If the quality/quality_changes is not available, switch to the default or the first quality that's available.
         same_quality_found = False
-        quality_groups = self._application.getQualityManager().getQualityGroups(global_stack)
+        quality_groups = self._application.getIntentManager().getQualityGroups(global_stack)
 
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application.getIntentManager().getQualityChangesGroups(global_stack)
@@ -322,12 +328,12 @@ class MachineManager(QObject):
                 Logger.log("i", "Machine '%s' quality changes set to '%s'",
                            global_stack.getName(), new_quality_changes_group.name)
         else:
-            new_quality_group = quality_groups.get(quality_type)
+            new_quality_group = quality_groups.get(quality_tuple)
             if new_quality_group is not None:
                 self._setQualityGroup(new_quality_group, empty_quality_changes = True)
                 same_quality_found = True
                 Logger.log("i", "Machine '%s' quality set to '%s'",
-                           global_stack.getName(), new_quality_group.quality_type)
+                           global_stack.getName(), new_quality_group.getQualityType())
 
         # Could not find the specified quality/quality_changes, switch to the preferred quality if available,
         # otherwise the first quality that's available, otherwise empty (not supported).
@@ -335,9 +341,10 @@ class MachineManager(QObject):
             Logger.log("i", "Machine '%s' could not find quality_type '%s' and quality_changes '%s'. "
                        "Available quality types are [%s]. Switching to default quality.",
                        global_stack.getName(), quality_type, global_quality_changes_name,
-                       ", ".join(quality_groups.keys()))
+                       ", ".join(str(quality_groups.keys())))
             preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-            quality_group = quality_groups.get(preferred_quality_type)
+            preferred_intent_category = global_stack.getMetaDataEntry("preferred_intent_category", DEFAULT_INTENT_CATEGORY)
+            quality_group = quality_groups.get((preferred_intent_category, preferred_quality_type))
             if quality_group is None:
                 if quality_groups:
                     quality_group = list(quality_groups.values())[0]
@@ -659,8 +666,16 @@ class MachineManager(QObject):
         quality_type = ""
         if self._active_container_stack:
             if self._current_quality_group:
-                quality_type = self._current_quality_group.quality_type
+                quality_type = self._current_quality_group.getQualityType()
         return quality_type
+
+    @pyqtProperty(str, notify = activeQualityGroupChanged)
+    def activeIntentCategory(self) -> str:
+        intent_category = ""
+        if self._active_container_stack:
+            if self._current_quality_group:
+                intent_category = self._current_quality_group.getIntentCategory()
+        return intent_category
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualitySupported(self) -> bool:
@@ -1197,18 +1212,18 @@ class MachineManager(QObject):
         for container in containers:
             if container:
                 container.setMetaDataEntry("quality_type", "not_supported")
-        quality_changes_group.quality_type = "not_supported"
+        quality_changes_group.quality_tuple = (DEFAULT_INTENT_CATEGORY, "not_supported")
 
     def _setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         if self._global_container_stack is None:
             return  # Can't change that.
-        quality_type = quality_changes_group.quality_type
+        quality_tuple = quality_changes_group.quality_tuple
         # A custom quality can be created based on "not supported".
         # In that case, do not set quality containers to empty.
         quality_group = None
-        if quality_type != "not_supported":
-            quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
-            quality_group = quality_group_dict.get(quality_type)
+        if quality_changes_group.getQualityType() != "not_supported":
+            quality_group_dict = self._intent_manager.getQualityGroups(self._global_container_stack)
+            quality_group = quality_group_dict.get(quality_tuple)
             if quality_group is None:
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
@@ -1286,15 +1301,15 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         Logger.log("d", "Updating quality/quality_changes due to material change")
-        current_quality_type = None
+        current_quality_tuple = None
         if self._current_quality_group:
-            current_quality_type = self._current_quality_group.quality_type
-        candidate_quality_groups = self._quality_manager.getQualityGroups(self._global_container_stack)
+            current_quality_tuple = self._current_quality_group.quality_tuple
+        candidate_quality_groups = self._intent_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
-        Logger.log("d", "Current quality type = [%s]", current_quality_type)
+        Logger.log("d", "Current quality type = [I: %s, Q: %s]", current_quality_tuple[0], current_quality_tuple[1])
         if not self.activeMaterialsCompatible():
-            if current_quality_type is not None:
+            if current_quality_tuple is not None:
                 Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
                 self._setEmptyQuality()
             return
@@ -1305,21 +1320,23 @@ class MachineManager(QObject):
                 self._setEmptyQuality()
             return
 
-        if current_quality_type in available_quality_types:
-            Logger.log("i", "Current available quality type [%s] is available, applying changes.", current_quality_type)
-            self._setQualityGroup(candidate_quality_groups[current_quality_type], empty_quality_changes = False)
+        if current_quality_tuple in available_quality_types:
+            Logger.log("i", "Current available quality type [I: %s, Q: %s] is available, applying changes.", current_quality_tuple[0], current_quality_tuple[1])
+            self._setQualityGroup(candidate_quality_groups[current_quality_tuple], empty_quality_changes = False)
             return
 
         # The current quality type is not available so we use the preferred quality type if it's available,
         # otherwise use one of the available quality types.
-        quality_type = sorted(list(available_quality_types))[0]
+        quality_tuple = sorted(list(available_quality_types))[0]
         preferred_quality_type = self._global_container_stack.getMetaDataEntry("preferred_quality_type")
-        if preferred_quality_type in available_quality_types:
-            quality_type = preferred_quality_type
+        preferred_intent_category = self._global_container_stack.getMetaDataEntry("preferred_intent_category", default = DEFAULT_INTENT_CATEGORY)
+        preferred_quality_tuple = (preferred_intent_category, preferred_quality_type)
+        if preferred_quality_tuple in available_quality_types:
+            quality_tuple = preferred_quality_tuple
 
         Logger.log("i", "The current quality type [%s] is not available, switching to [%s] instead",
-                   current_quality_type, quality_type)
-        self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
+                   current_quality_tuple, quality_tuple)
+        self._setQualityGroup(candidate_quality_groups[quality_tuple], empty_quality_changes = True)
 
     def updateMaterialWithVariant(self, position: Optional[str]) -> None:
         if self._global_container_stack is None:
@@ -1549,12 +1566,12 @@ class MachineManager(QObject):
             self._application.discardOrKeepProfileChanges()
 
     @pyqtSlot(str)
-    def setQualityGroupByQualityType(self, quality_type: str) -> None:
+    def setQualityGroupByQualityTuple(self, quality_type: str, intent_category: str) -> None:
         if self._global_container_stack is None:
             return
         # Get all the quality groups for this global stack and filter out by quality_type
-        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
-        quality_group = quality_group_dict[quality_type]
+        quality_group_dict = self._intent_manager.getQualityGroups(self._global_container_stack)
+        quality_group = quality_group_dict[(intent_category, quality_type)]  # TODO?: Check if actually in there, just to be sure?
         self.setQualityGroup(quality_group)
 
     ##  Optionally provide global_stack if you want to use your own

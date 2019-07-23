@@ -48,18 +48,14 @@ class IntentModel(ListModel):
     def _update(self) -> None:
         new_items = []  # type: List[Dict[str, Any]]
         application = cura.CuraApplication.CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
+        intent_manager = application.getIntentManager()
         global_stack = application.getGlobalContainerStack()
         if not global_stack:
             self.setItems(new_items)
             return
-        quality_groups = quality_manager.getQualityGroups(global_stack)
+        quality_groups = intent_manager.getQualityGroups(global_stack)
 
-        for intent_category, quality_type in IntentManager.getInstance().getCurrentAvailableIntents():
-            if intent_category == self._intent_category:
-                new_items.append({"name": quality_groups[quality_type].name, "quality_type": quality_type})
-        if self._intent_category == "default": #For Default we always list all quality types. We can't filter on available profiles since the empty intent is not a specific quality type.
-            for quality_type in quality_groups.keys():
-                new_items.append({"name": quality_groups[quality_type].name, "quality_type": quality_type})
+        for quality_tuple, quality_group in quality_groups.items():
+            new_items.append({"name": quality_group.name, "quality_type": quality_tuple[1]})
 
         self.setItems(new_items)

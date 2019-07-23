@@ -43,16 +43,16 @@ def test_getQualityGroups(quality_mocked_application):
     manager = QualityManager(quality_mocked_application)
     manager.initialize()
 
-    assert "normal" in manager.getQualityGroups(mocked_stack)
+    assert "normal" in manager.getDefaultIntentQualityGroups(mocked_stack)
 
 
 def test_getQualityGroupsForMachineDefinition(quality_mocked_application):
     manager = QualityManager(quality_mocked_application)
     manager.initialize()
 
-    assert "normal" in manager.getQualityGroupsForMachineDefinition(mocked_stack)
+    assert "normal" in manager.getDefaultIntentQualityGroupsForMachineDefinition(mocked_stack)
 
-
+@pytest.mark.skip  ## TODO: Should be moved to TestIntentManager!
 def test_getQualityChangesGroup(quality_mocked_application):
     manager = QualityManager(quality_mocked_application)
     manager.initialize()

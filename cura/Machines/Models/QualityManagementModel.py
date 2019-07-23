@@ -28,7 +28,7 @@ class QualityManagementModel(ListModel):
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
         self._quality_manager = CuraApplication.getInstance().getQualityManager()
-        self._intent_manager = CuraApplication.getInstance().getIntentManager()  # TODO: Class should probably not rely on intent-manager.
+        self._intent_manager = CuraApplication.getInstance().getIntentManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
         self._quality_manager.qualitiesUpdated.connect(self._update)
@@ -44,9 +44,9 @@ class QualityManagementModel(ListModel):
             return
 
         quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
-        quality_changes_group_dict = self._intent_manager.getQualityChangesGroups(global_stack)  # TODO: Class should probably not rely on intent-manager.
+        quality_changes_group_dict = self._intent_manager.getQualityChangesGroups(global_stack)
 
-        available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
+        available_quality_types = set(quality_tuple for quality_tuple, quality_group in quality_group_dict.items()
                                       if quality_group.is_available)
         if not available_quality_types and not quality_changes_group_dict:
             # Nothing to show
