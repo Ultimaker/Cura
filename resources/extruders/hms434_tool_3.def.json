@@ -17,10 +17,10 @@
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": "\n;start Tool 3\n\n"         
+          "default_value": "\n;changing to tool3"
         },
         "machine_extruder_end_code": {
-           "default_value": "\n;end Tool 3\n\n"
+           "default_value": "\n;ending tool3"
         }
     }
 }

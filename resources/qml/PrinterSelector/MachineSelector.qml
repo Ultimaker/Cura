@@ -32,9 +32,9 @@ Cura.ExpandablePopup
             {
                 return Cura.MachineManager.activeMachineNetworkGroupName
             }
-            if(Cura.MachineManager.activeStack != null)
+            if(Cura.MachineManager.activeMachine != null)
             {
-                return Cura.MachineManager.activeStack.name
+                return Cura.MachineManager.activeMachine.name
             }
             return ""
         }
@@ -135,7 +135,6 @@ Cura.ExpandablePopup
                     scroll.height = Math.min(contentHeight, maximumHeight)
                     popup.height = scroll.height + buttonRow.height
                 }
-
             }
         }
 

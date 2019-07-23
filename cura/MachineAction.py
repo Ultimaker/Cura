@@ -2,8 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+from typing import Optional
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, QUrl, pyqtSlot, pyqtProperty, pyqtSignal
 
 from UM.Logger import Logger
 from UM.PluginObject import PluginObject
@@ -72,18 +73,26 @@ class MachineAction(QObject, PluginObject):
         return self._finished
 
     ##  Protected helper to create a view object based on provided QML.
-    def _createViewFromQML(self) -> None:
+    def _createViewFromQML(self) -> Optional["QObject"]:
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
             Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
-            return
+            return None
         path = os.path.join(plugin_path, self._qml_url)
 
         from cura.CuraApplication import CuraApplication
-        self._view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        view = CuraApplication.getInstance().createQmlComponent(path, {"manager": self})
+        return view
 
-    @pyqtProperty(QObject, constant = True)
-    def displayItem(self):
-        if not self._view:
-            self._createViewFromQML()
-        return self._view
+    @pyqtProperty(QUrl, constant = True)
+    def qmlPath(self) -> "QUrl":
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if plugin_path is None:
+            Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())
+            return QUrl("")
+        path = os.path.join(plugin_path, self._qml_url)
+        return QUrl.fromLocalFile(path)
+
+    @pyqtSlot(result = QObject)
+    def getDisplayItem(self) -> Optional["QObject"]:
+        return self._createViewFromQML()

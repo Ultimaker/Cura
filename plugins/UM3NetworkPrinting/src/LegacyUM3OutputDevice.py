@@ -178,7 +178,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # NotImplementedError. We can simply ignore these.
                 pass
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         if not self.activePrinter:
             # No active printer. Unable to write
             return

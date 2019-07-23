@@ -63,7 +63,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "default_value": 60 },
+        "gantry_height": { "value": "60" },
         "machine_disallowed_areas": { "default_value": [
             [[92.8, -53.4], [92.8, -97.5], [116.5, -97.5], [116.5, -53.4]],
             [[73.8, 107.5], [73.8, 100.5], [116.5, 100.5], [116.5, 107.5]],
@@ -79,7 +79,7 @@
         "prime_tower_position_x": { "value": "machine_depth - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) - 30" },
         "prime_tower_wipe_enabled": { "default_value": false },
 
-        "prime_blob_enable": { "enabled": true, "default_value": true },
+        "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
 
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },

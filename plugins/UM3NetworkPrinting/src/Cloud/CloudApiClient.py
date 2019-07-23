@@ -96,6 +96,21 @@ class CloudApiClient:
         reply = self._manager.post(self._createEmptyRequest(url), b"")
         self._addCallback(reply, on_finished, CloudPrintResponse)
 
+    ##  Send a print job action to the cluster for the given print job.
+    #  \param cluster_id: The ID of the cluster.
+    #  \param cluster_job_id: The ID of the print job within the cluster.
+    #  \param action: The name of the action to execute.
+    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str, data: Optional[Dict[str, Any]] = None) -> None:
+        body = b""
+        if data:
+            try:
+                body = json.dumps({"data": data}).encode()
+            except JSONDecodeError as err:
+                Logger.log("w", "Could not encode body: %s", err)
+                return
+        url = "{}/clusters/{}/print_jobs/{}/action/{}".format(self.CLUSTER_API_ROOT, cluster_id, cluster_job_id, action)
+        self._manager.post(self._createEmptyRequest(url), body)
+
     ##  We override _createEmptyRequest in order to add the user credentials.
     #   \param url: The URL to request
     #   \param content_type: The type of the body contents.
@@ -159,9 +174,13 @@ class CloudApiClient:
                      model: Type[CloudApiClientModel],
                      ) -> None:
         def parse() -> None:
+            # Don't try to parse the reply if we didn't get one
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+                return
             status_code, response = self._parseReply(reply)
             self._anti_gc_callbacks.remove(parse)
-            return self._parseModels(response, on_finished, model)
+            self._parseModels(response, on_finished, model)
+            return
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)

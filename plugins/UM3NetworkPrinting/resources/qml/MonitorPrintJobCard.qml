@@ -22,10 +22,6 @@ Item
     // The print job which all other data is derived from
     property var printJob: null
 
-    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
-    // they might not need to though.
-    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
-
     width: parent.width
     height: childrenRect.height
 
@@ -51,7 +47,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                width: UM.Theme.getSize("monitor_column").width
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
@@ -79,7 +75,7 @@ Item
             {
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
+                width: UM.Theme.getSize("monitor_column").width
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
@@ -217,7 +213,7 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        enabled: !cloudConnection
+        enabled: OutputDevice.supportsPrintJobActions
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
@@ -247,10 +243,11 @@ Item
         enabled: !contextMenuButton.enabled
     }
 
-    MonitorInfoBlurb
-    {
-        id: contextMenuDisabledInfo
-        text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
-        target: contextMenuButton
-    }
+	// TODO: uncomment this tooltip as soon as the required firmware is released
+    // MonitorInfoBlurb
+    // {
+    //     id: contextMenuDisabledInfo
+    //     text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+    //     target: contextMenuButton
+    // }
 }

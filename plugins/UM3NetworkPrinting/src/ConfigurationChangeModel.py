@@ -3,11 +3,16 @@
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
 
+BLOCKING_CHANGE_TYPES = [
+    "material_insert", "buildplate_change"
+]
+
 class ConfigurationChangeModel(QObject):
     def __init__(self, type_of_change: str, index: int, target_name: str, origin_name: str) -> None:
         super().__init__()
         self._type_of_change = type_of_change
                                     # enum = ["material", "print_core_change"]
+        self._can_override = self._type_of_change not in BLOCKING_CHANGE_TYPES
         self._index = index
         self._target_name = target_name
         self._origin_name = origin_name
@@ -27,3 +32,7 @@ class ConfigurationChangeModel(QObject):
     @pyqtProperty(str, constant = True)
     def originName(self) -> str:
         return self._origin_name
+
+    @pyqtProperty(bool, constant = True)
+    def canOverride(self) -> bool:
+        return self._can_override

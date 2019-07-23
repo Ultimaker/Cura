@@ -22,11 +22,11 @@ Item
 
     property int labelWidth: 210 * screenScaleFactor
     property int controlWidth: (UM.Theme.getSize("setting_control").width * 3 / 4) | 0
-    property var labelFont: UM.Theme.getFont("medium")
+    property var labelFont: UM.Theme.getFont("default")
 
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
-    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
+    property int propertyStoreIndex: manager ? manager.storeContainerIndex : 1  // definition_changes
 
     property string extruderStackId: ""
     property int extruderPosition: 0
@@ -107,6 +107,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -121,6 +122,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 

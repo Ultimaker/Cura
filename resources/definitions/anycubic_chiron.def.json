@@ -52,7 +52,7 @@
         },
         "gantry_height":
         {
-            "default_value": 35
+            "value": "35"
         },
         "machine_head_with_fans_polygon":
         {

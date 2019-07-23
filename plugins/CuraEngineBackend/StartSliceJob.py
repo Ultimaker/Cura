@@ -11,6 +11,7 @@ import Arcus #For typing.
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
@@ -107,7 +108,7 @@ class StartSliceJob(Job):
 
         for key in stack.getAllKeys():
             validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
                 Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
                 return True
             Job.yieldThread()
@@ -150,7 +151,7 @@ class StartSliceJob(Job):
 
 
         # Don't slice if there is a per object setting with an error value.
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.isSelectable():
                 continue
 
@@ -160,15 +161,16 @@ class StartSliceJob(Job):
 
         with self._scene.getSceneLock():
             # Remove old layer data.
-            for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for node in DepthFirstIterator(self._scene.getRoot()):
                 if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                    node.getParent().removeChild(node)
+                    # Singe we walk through all nodes in the scene, they always have a parent.
+                    cast(SceneNode, node.getParent()).removeChild(node)
                     break
 
             # Get the objects in their groups to print.
             object_groups = []
             if stack.getProperty("print_sequence", "value") == "one_at_a_time":
-                for node in OneAtATimeIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                for node in OneAtATimeIterator(self._scene.getRoot()):
                     temp_list = []
 
                     # Node can't be printed, so don't bother sending it.
@@ -183,7 +185,8 @@ class StartSliceJob(Job):
                     children = node.getAllChildren()
                     children.append(node)
                     for child_node in children:
-                        if child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                        mesh_data = child_node.getMeshData()
+                        if mesh_data and mesh_data.getVertices() is not None:
                             temp_list.append(child_node)
 
                     if temp_list:
@@ -194,8 +197,9 @@ class StartSliceJob(Job):
             else:
                 temp_list = []
                 has_printing_mesh = False
-                for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-                    if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
+                for node in DepthFirstIterator(self._scene.getRoot()):
+                    mesh_data = node.getMeshData()
+                    if node.callDecoration("isSliceable") and mesh_data and mesh_data.getVertices() is not None:
                         is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
                         # Find a reason not to add the node
@@ -210,7 +214,7 @@ class StartSliceJob(Job):
 
                     Job.yieldThread()
 
-                #If the list doesn't have any model with suitable settings then clean the list
+                # If the list doesn't have any model with suitable settings then clean the list
                 # otherwise CuraEngine will crash
                 if not has_printing_mesh:
                     temp_list.clear()
@@ -261,10 +265,14 @@ class StartSliceJob(Job):
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
-                    self._handlePerObjectSettings(group[0].getParent(), group_message)
+                parent = group[0].getParent()
+                if parent is not None and parent.callDecoration("isGroup"):
+                    self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
+
                 for object in group:
                     mesh_data = object.getMeshData()
+                    if mesh_data is None:
+                        continue
                     rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                     translate = object.getWorldTransformation().getData()[:3, 3]
 
@@ -288,7 +296,7 @@ class StartSliceJob(Job):
 
                     obj.vertices = flat_verts
 
-                    self._handlePerObjectSettings(object, obj)
+                    self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                     Job.yieldThread()
 

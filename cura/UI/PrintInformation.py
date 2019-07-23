@@ -81,6 +81,7 @@ class PrintInformation(QObject):
             "support_interface": catalog.i18nc("@tooltip", "Support Interface"),
             "support": catalog.i18nc("@tooltip", "Support"),
             "skirt": catalog.i18nc("@tooltip", "Skirt"),
+            "prime_tower": catalog.i18nc("@tooltip", "Prime Tower"),
             "travel": catalog.i18nc("@tooltip", "Travel"),
             "retract": catalog.i18nc("@tooltip", "Retractions"),
             "none": catalog.i18nc("@tooltip", "Other")

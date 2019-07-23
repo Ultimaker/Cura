@@ -219,6 +219,7 @@ class PostProcessingPlugin(QObject, Extension):
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): # Missing or empty.
             self.scriptListChanged.emit() # Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
+            self.setSelectedScriptIndex(-1)
             return
 
         self._script_list.clear()

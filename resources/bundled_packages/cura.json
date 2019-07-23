@@ -764,6 +764,23 @@
             }
         }
     },
+    "VersionUpgrade41to42": {
+        "package_info": {
+            "package_id": "VersionUpgrade41to42",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.1 to 4.2",
+            "description": "Upgrades configurations from Cura 4.1 to Cura 4.2.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "X3DReader": {
         "package_info": {
             "package_id": "X3DReader",
