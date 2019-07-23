@@ -132,7 +132,7 @@ class ExtruderManager(QObject):
                 elif current_extruder_trains:
                     object_extruders.add(current_extruder_trains[0].getId())
 
-            self._selected_object_extruders = list(object_extruders)  # type: List[Union[str, "ExtruderStack"]]
+            self._selected_object_extruders = list(object_extruders)
 
         return self._selected_object_extruders
 
@@ -141,7 +141,7 @@ class ExtruderManager(QObject):
     #   This will trigger a recalculation of the extruders used for the
     #   selection.
     def resetSelectedObjectExtruders(self) -> None:
-        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
+        self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
     @pyqtSlot(result = QObject)
