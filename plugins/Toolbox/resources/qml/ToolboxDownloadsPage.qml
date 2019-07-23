@@ -7,7 +7,6 @@ import UM 1.1 as UM
 
 ScrollView
 {
-    id: base
     clip: true
     width: parent.width
     height: parent.height
