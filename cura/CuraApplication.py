@@ -1262,7 +1262,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def arrangeObjectsToAllBuildPlates(self) -> None:
         nodes_to_arrange = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1339,9 +1339,9 @@ class CuraApplication(QtApplication):
             return
 
         for node in nodes:
-            file_name = node.getMeshData().getFileName()
-            if file_name:
-                job = ReadMeshJob(file_name)
+            mesh_data = node.getMeshData()
+            if mesh_data and mesh_data.getFileName():
+                job = ReadMeshJob(mesh_data.getFileName())
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
