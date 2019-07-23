@@ -81,7 +81,7 @@ Item
                     mipmap: true
                 }
             }
-            
+
 
             Item
             {
@@ -99,7 +99,7 @@ Item
                     height: 18 * screenScaleFactor // TODO: Theme!
                     width: parent.width
                     radius: 2 * screenScaleFactor // TODO: Theme!
-                    
+
                     Label
                     {
                         text: printer && printer.name ? printer.name : ""
@@ -202,12 +202,13 @@ Item
             enabled: !contextMenuButton.enabled
         }
 
-        MonitorInfoBlurb
-        {
-            id: contextMenuDisabledInfo
-            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
-            target: contextMenuButton
-        }
+		// TODO: uncomment this tooltip as soon as the required firmware is released
+        // MonitorInfoBlurb
+        // {
+        //     id: contextMenuDisabledInfo
+        //     text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+        //     target: contextMenuButton
+        // }
 
         CameraButton
         {
