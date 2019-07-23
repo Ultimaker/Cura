@@ -655,8 +655,12 @@ class Toolbox(QObject, Extension):
                 
                 # Check if the download was sucessfull
                 if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                    Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
-                    return
+                    try:
+                        Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
+                    except json.decoder.JSONDecodeError:
+                        Logger.logException("w", "Failed to download package and failed to parse a response from it")
+                    finally:
+                        return
                 # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
