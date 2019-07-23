@@ -96,7 +96,7 @@ class QualityManager(QObject):
 
             if is_global_quality:
                 # For global qualities, save data in the machine node
-                machine_node.addQualityMetadata(quality_type, metadata)
+                machine_node.addQualityMetadata((DEFAULT_INTENT_CATEGORY, quality_type), metadata)
                 continue
 
             current_node = machine_node
@@ -114,7 +114,7 @@ class QualityManager(QObject):
 
                 current_intermediate_node_info_idx += 1
 
-            current_node.addQualityMetadata(quality_type, metadata)
+            current_node.addQualityMetadata((DEFAULT_INTENT_CATEGORY, quality_type), metadata)
 
         # TODO: Moved QualityChanges to IntentManager: put signals right!
 
@@ -193,10 +193,12 @@ class QualityManager(QObject):
                 if not is_global_quality:
                     continue
 
-                for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
+                for quality_tuple, quality_node in node.quality_type_map.items():
+                    if quality_tuple[0] != DEFAULT_INTENT_CATEGORY:
+                        continue
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_tuple)
                     quality_group.setGlobalNode(quality_node)
-                    quality_group_dict[quality_type] = quality_group
+                    quality_group_dict[quality_tuple[1]] = quality_group
                 break
 
         buildplate_name = machine.getBuildplateName()
@@ -290,12 +292,14 @@ class QualityManager(QObject):
                         if is_global_quality:
                             continue
 
-                    for quality_type, quality_node in node.quality_type_map.items():
-                        if quality_type not in quality_group_dict:
-                            quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
-                            quality_group_dict[quality_type] = quality_group
+                    for quality_tuple, quality_node in node.quality_type_map.items():
+                        if quality_tuple[0] != DEFAULT_INTENT_CATEGORY:
+                            continue
+                        if quality_tuple not in quality_group_dict:
+                            quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_tuple)
+                            quality_group_dict[quality_tuple[1]] = quality_group
 
-                        quality_group = quality_group_dict[quality_type]
+                        quality_group = quality_group_dict[quality_tuple[1]]
                         if position not in quality_group.nodes_for_extruders:
                             quality_group.setExtruderNode(position, quality_node)
 
@@ -325,17 +329,19 @@ class QualityManager(QObject):
         quality_group_dict = dict()
         for node in nodes_to_check:
             if node and node.quality_type_map:
-                for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), (DEFAULT_INTENT_CATEGORY, quality_type))
+                for quality_tuple, quality_node in node.quality_type_map.items():
+                    if quality_tuple[0] != DEFAULT_INTENT_CATEGORY:
+                        continue
+                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_tuple)
                     quality_group.setGlobalNode(quality_node)
-                    quality_group_dict[quality_type] = quality_group
+                    quality_group_dict[quality_tuple[1]] = quality_group
                 break
 
         return quality_group_dict
 
     def getDefaultQualityType(self, machine: "GlobalStack") -> Optional[QualityGroup]:
         preferred_quality_type = machine.definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = self.getQualityGroups(machine)
+        quality_group_dict = self.getDefaultIntentQualityGroups(machine)
         quality_group = quality_group_dict.get(preferred_quality_type)
         return quality_group
 

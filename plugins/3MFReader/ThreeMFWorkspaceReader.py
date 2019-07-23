@@ -1010,14 +1010,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if self._quality_tuple_to_apply in quality_group_dict:
                 quality_group = quality_group_dict[self._quality_tuple_to_apply]
             else:
-                Logger.log("i", "Could not find quality type [I: %s, Q: %s], switch to default", self._quality_tuple_to_apply[0], self._quality_tuple_to_apply[1])
+                Logger.log("i", "Could not find quality type [%s], switch to default", str(self._quality_tuple_to_apply))
                 preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
                 preferred_intent_category = global_stack.getMetaDataEntry("preferred_intent_category", default=DEFAULT_INTENT_CATEGORY)
                 preferred_quality_tuple = (preferred_intent_category, preferred_quality_type)
                 quality_group_dict = intent_manager.getQualityGroups(global_stack)
                 quality_group = quality_group_dict.get(preferred_quality_tuple)
                 if quality_group is None:
-                    Logger.log("e", "Could not get preferred quality type [I: %s, Q: %s]", preferred_quality_tuple[0], preferred_quality_tuple[1])
+                    Logger.log("e", "Could not get preferred quality type [%s]", str(preferred_quality_tuple))
 
             if quality_group is not None:
                 machine_manager.setQualityGroup(quality_group, no_dialog = True)

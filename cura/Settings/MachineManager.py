@@ -317,7 +317,7 @@ class MachineManager(QObject):
         # Try to set the same quality/quality_changes as the machine specified.
         # If the quality/quality_changes is not available, switch to the default or the first quality that's available.
         same_quality_found = False
-        quality_groups = self._application.getIntentManager().getQualityGroups(global_stack)
+        quality_groups = self._intent_manager.getQualityGroups(global_stack)
 
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application.getIntentManager().getQualityChangesGroups(global_stack)
@@ -1307,7 +1307,7 @@ class MachineManager(QObject):
         candidate_quality_groups = self._intent_manager.getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
-        Logger.log("d", "Current quality type = [I: %s, Q: %s]", current_quality_tuple[0], current_quality_tuple[1])
+        Logger.log("d", "Current quality type = [%s]", str(current_quality_tuple))
         if not self.activeMaterialsCompatible():
             if current_quality_tuple is not None:
                 Logger.log("i", "Active materials are not compatible, setting all qualities to empty (Not Supported).")
@@ -1321,7 +1321,7 @@ class MachineManager(QObject):
             return
 
         if current_quality_tuple in available_quality_types:
-            Logger.log("i", "Current available quality type [I: %s, Q: %s] is available, applying changes.", current_quality_tuple[0], current_quality_tuple[1])
+            Logger.log("i", "Current available quality type [%s] is available, applying changes.", str(current_quality_tuple))
             self._setQualityGroup(candidate_quality_groups[current_quality_tuple], empty_quality_changes = False)
             return
 
@@ -1335,7 +1335,7 @@ class MachineManager(QObject):
             quality_tuple = preferred_quality_tuple
 
         Logger.log("i", "The current quality type [%s] is not available, switching to [%s] instead",
-                   current_quality_tuple, quality_tuple)
+                   str(current_quality_tuple), str(quality_tuple))
         self._setQualityGroup(candidate_quality_groups[quality_tuple], empty_quality_changes = True)
 
     def updateMaterialWithVariant(self, position: Optional[str]) -> None:

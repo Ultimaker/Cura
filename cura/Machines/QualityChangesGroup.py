@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Tuple
 
 from UM.Application import Application
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
@@ -13,8 +13,8 @@ if TYPE_CHECKING:
 
 
 class QualityChangesGroup(QualityGroup):
-    def __init__(self, name: str, quality_type: str, parent = None) -> None:
-        super().__init__(name, quality_type, parent)
+    def __init__(self, name: str, quality_tuple: Tuple[str, str], parent = None) -> None:
+        super().__init__(name, quality_tuple, parent)
         self._container_registry = Application.getInstance().getContainerRegistry()
 
     def addNode(self, node: "QualityNode") -> None:

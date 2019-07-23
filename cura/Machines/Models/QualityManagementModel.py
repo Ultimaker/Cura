@@ -43,7 +43,7 @@ class QualityManagementModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
+        quality_group_dict = self._intent_manager.getQualityGroups(global_stack)
         quality_changes_group_dict = self._intent_manager.getQualityChangesGroups(global_stack)
 
         available_quality_types = set(quality_tuple for quality_tuple, quality_group in quality_group_dict.items()
@@ -70,7 +70,7 @@ class QualityManagementModel(ListModel):
         # Create quality_changes group items
         quality_changes_item_list = []
         for quality_changes_group in quality_changes_group_dict.values():
-            quality_group = quality_group_dict.get(quality_changes_group.quality_type)
+            quality_group = quality_group_dict.get(quality_changes_group.quality_tuple)
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
