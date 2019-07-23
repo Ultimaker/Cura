@@ -1289,7 +1289,7 @@ class CuraApplication(QtApplication):
     def arrangeAll(self) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1327,7 +1327,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         has_merged_nodes = False
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 if node.getName() == "MergedMesh":
                     has_merged_nodes = True
