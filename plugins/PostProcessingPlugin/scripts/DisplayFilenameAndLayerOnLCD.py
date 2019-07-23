@@ -38,6 +38,15 @@ class DisplayFilenameAndLayerOnLCD(Script):
                     "type": "str",
                     "default_value": ""
                 },
+                "startNum":
+                {
+                    "label": "Initial layer number:",
+                    "description": "Choose which number you prefer for the initial layer, 0 or 1",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": 0,
+                    "maximum_value": 1                    
+                },
                 "maxlayer":
                 {
                     "label": "Display max layer?:",
@@ -61,9 +70,9 @@ class DisplayFilenameAndLayerOnLCD(Script):
                 lcd_text = "M117 Printing Layer "
         else:
             lcd_text = "M117 Printing " + name + " - Layer "   
-        i = 0
+        i = self.getSettingValueByKey("startNum")
         for layer in data:
-            display_text = lcd_text + str(i)
+            display_text = lcd_text + str(i) + " " + name
             layer_index = data.index(layer)
             lines = layer.split("\n")
             for line in lines:
