@@ -4,7 +4,15 @@ from typing import Tuple, List
 
 from UM.VersionUpgrade import VersionUpgrade
 
-_renamed_profiles = { }
+_renamed_profiles = {"generic_pla_0.4_coarse": "jbo_generic_pla_0.4_coarse",
+                     "generic_pla_0.4_fine": "jbo_generic_pla_fine",
+                     "generic_pla_0.4_medium": "jbo_generic_pla_medium",
+                     "generic_pla_0.4_ultrafine": "jbo_generic_pla_ultrafine",
+
+                     "generic_petg_0.4_coarse": "jbo_generic_petg_0.4_coarse",
+                     "generic_petg_0.4_fine": "jbo_generic_petg_fine",
+                     "generic_petg_0.4_medium": "jbo_generic_petg_medium",
+                     }
 
 
 ##  Upgrades configurations from the state they were in at version 4.2 to the
@@ -58,6 +66,9 @@ class VersionUpgrade42to43(VersionUpgrade):
             quality_id = parser["containers"]["2"]
             if quality_id.endswith("_2-fans"):
                 parser["containers"]["2"] = quality_id.replace("_2-fans", "")
+
+            if parser["containers"]["2"] in _renamed_profiles:
+                parser["containers"]["2"] = _renamed_profiles[parser["containers"]["2"]]
 
             material_id = parser["containers"]["3"]
             if material_id.endswith("_2-fans"):
