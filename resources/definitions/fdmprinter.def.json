@@ -1426,7 +1426,7 @@
                 "z_seam_corner":
                 {
                     "label": "Seam Corner Preference",
-                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner.",
+                    "description": "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate.",
                     "type": "enum",
                     "options":
                     {
@@ -1477,7 +1477,7 @@
                 "ironing_enabled":
                 {
                     "label": "Enable Ironing",
-                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "description": "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material.",
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2252,8 +2252,8 @@
                     "unit": "mm",
                     "default_value": 4,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "retraction_amount",
+                    "minimum_value_warning": "-retraction_amount",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2278,8 +2278,8 @@
                     "unit": "mm",
                     "default_value": 16,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "retraction_amount * 4",
+                    "minimum_value_warning": "-retraction_amount * 4",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2304,8 +2304,8 @@
                     "unit": "mm",
                     "default_value": 50,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
+                    "minimum_value_warning": "-100",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },

@@ -425,13 +425,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if parser.has_option("metadata", "enabled"):
                 extruder_info.enabled = parser["metadata"]["enabled"]
             if variant_id not in ("empty", "empty_variant"):
-                extruder_info.variant_info = instance_container_info_dict[variant_id]
+                if variant_id in instance_container_info_dict:
+                    extruder_info.variant_info = instance_container_info_dict[variant_id]
+
             if material_id not in ("empty", "empty_material"):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
+
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
+
             user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
@@ -915,6 +919,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 continue
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
+                # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
+                node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE, global_stack)
+                if node is not None and node.getContainer() is not None:
+                    extruder_stack.variant = node.getContainer()
                 continue
             parser = extruder_info.variant_info.parser
 

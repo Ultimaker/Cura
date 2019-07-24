@@ -3,18 +3,18 @@
 
 import configparser
 import io
-import os.path #To get the file ID.
+import os.path  # To get the file ID.
 from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade
 
 _renamed_settings = {
     "support_minimal_diameter": "support_tower_maximum_supported_diameter"
-} #type: Dict[str, str]
+}  # type: Dict[str, str]
 _removed_settings = ["prime_tower_circular", "max_feedrate_z_override"]  # type: List[str]
 _renamed_profiles = {
-    #Include CreawsomeMod profiles here as well for the people who installed that.
-    #Definitions.
+    # Include CreawsomeMod profiles here as well for the people who installed that.
+    # Definitions.
     "creawsome_base": "creality_base",
     "creawsome_cr10": "creality_cr10",
     "creawsome_cr10mini": "creality_cr10mini",
@@ -29,10 +29,10 @@ _renamed_profiles = {
     "creawsome_ender4": "creality_ender4",
     "creawsome_ender5": "creality_ender5",
 
-    #Extruder definitions.
+    # Extruder definitions.
     "creawsome_base_extruder_0": "creality_base_extruder_0",
 
-    #Variants.
+    # Variants.
     "creawsome_base_0.2": "creality_base_0.2",
     "creawsome_base_0.3": "creality_base_0.3",
     "creawsome_base_0.4": "creality_base_0.4",
@@ -125,16 +125,16 @@ _renamed_profiles = {
     "creawsome_ender5_0.8": "creality_ender5_0.8",
     "creawsome_ender5_1.0": "creality_ender5_1.0",
 
-    #Upgrade for people who had the original Creality profiles from 4.1 and earlier.
+    # Upgrade for people who had the original Creality profiles from 4.1 and earlier.
     "creality_cr10_extruder_0": "creality_base_extruder_0",
     "creality_cr10s4_extruder_0": "creality_base_extruder_0",
     "creality_cr10s5_extruder_0": "creality_base_extruder_0",
     "creality_ender3_extruder_0": "creality_base_extruder_0"
 }
 
-#For legacy Creality printers, select the correct quality profile depending on the material.
+# For legacy Creality printers, select the correct quality profile depending on the material.
 _creality_quality_per_material = {
-    #Since legacy Creality printers didn't have different variants, we always pick the 0.4mm variant.
+    # Since legacy Creality printers didn't have different variants, we always pick the 0.4mm variant.
     "generic_abs_175": {
         "high": "base_0.4_ABS_super",
         "normal": "base_0.4_ABS_super",
@@ -171,7 +171,7 @@ _creality_quality_per_material = {
         "coarse": "base_0.4_TPU_standard",
         "extra_coarse": "base_0.4_TPU_standard"
     },
-    "empty_material": { #For the global stack.
+    "empty_material": {  # For the global stack.
         "high": "base_global_super",
         "normal": "base_global_super",
         "fast": "base_global_super",
@@ -182,7 +182,7 @@ _creality_quality_per_material = {
     }
 }
 
-#Default variant to select for legacy Creality printers, now that we have variants.
+# Default variant to select for legacy Creality printers, now that we have variants.
 _default_variants = {
     "creality_cr10_extruder_0": "creality_cr10_0.4",
     "creality_cr10s4_extruder_0": "creality_cr10s4_0.4",
@@ -190,8 +190,8 @@ _default_variants = {
     "creality_ender3_extruder_0": "creality_ender3_0.4"
 }
 
-#Whether the quality changes profile belongs to one of the upgraded printers can only be recognised by how they start.
-#If they are, they must use the creality base definition so that they still belong to those printers.
+# Whether the quality changes profile belongs to one of the upgraded printers can only be recognised by how they start.
+# If they are, they must use the creality base definition so that they still belong to those printers.
 _quality_changes_to_creality_base = {
     "creality_cr10_extruder_0",
     "creality_cr10s4_extruder_0",
@@ -229,7 +229,7 @@ class VersionUpgrade41to42(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
+        format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
         setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
@@ -241,21 +241,27 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        #Update version number.
+        # Update version number.
         parser["metadata"]["setting_version"] = "8"
 
-        #Rename settings.
+        # Certain instance containers (such as definition changes) reference to a certain definition container
+        # Since a number of those changed name, we also need to update those.
+        old_definition = parser["general"]["definition"]
+        if old_definition in _renamed_profiles:
+            parser["general"]["definition"] = _renamed_profiles[old_definition]
+
+        # Rename settings.
         if "values" in parser:
             for old_name, new_name in _renamed_settings.items():
                 if old_name in parser["values"]:
                     parser["values"][new_name] = parser["values"][old_name]
                     del parser["values"][old_name]
-            #Remove settings.
+            # Remove settings.
             for key in _removed_settings:
                 if key in parser["values"]:
                     del parser["values"][key]
 
-        #For quality-changes profiles made for Creality printers, change the definition to the creality_base and make sure that the quality is something we have a profile for.
+        # For quality-changes profiles made for Creality printers, change the definition to the creality_base and make sure that the quality is something we have a profile for.
         if parser["metadata"].get("type", "") == "quality_changes":
             for possible_printer in _quality_changes_to_creality_base:
                 if os.path.basename(filename).startswith(possible_printer + "_"):
@@ -274,10 +280,10 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        #Update version number.
+        # Update version number.
         parser["metadata"]["setting_version"] = "8"
 
-        #Renamed settings.
+        # Renamed settings.
         if "visible_settings" in parser["general"]:
             visible_settings = parser["general"]["visible_settings"]
             visible_setting_set = set(visible_settings.split(";"))
@@ -299,7 +305,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
-        #Update version number.
+        # Update version number.
         parser["metadata"]["setting_version"] = "8"
         parser["general"]["version"] = "5"
 
@@ -314,25 +320,25 @@ class VersionUpgrade41to42(VersionUpgrade):
         parser["containers"]["3"] = parser["containers"]["2"]
         parser["containers"]["2"] = "empty_intent"
 
-        #Change renamed profiles.
+        # Change renamed profiles.
         if "containers" in parser:
-            #For legacy Creality printers, change the variant to 0.4.
+            # For legacy Creality printers, change the variant to 0.4.
             definition_id = parser["containers"]["6"]
             if parser["metadata"].get("type", "machine") == "extruder_train":
-                if parser["containers"]["4"] == "empty_variant": #Necessary for people entering from CreawsomeMod who already had a variant.
+                if parser["containers"]["4"] == "empty_variant":  # Necessary for people entering from CreawsomeMod who already had a variant.
                     if definition_id in _default_variants:
                         parser["containers"]["4"] = _default_variants[definition_id]
-                        if definition_id == "creality_cr10_extruder_0": #We can't disambiguate between Creality CR-10 and Creality-CR10S since they share the same extruder definition. Have to go by the name.
-                            if "cr-10s" in parser["metadata"].get("machine", "Creality CR-10").lower(): #Not perfect, since the user can change this name :(
+                        if definition_id == "creality_cr10_extruder_0":  # We can't disambiguate between Creality CR-10 and Creality-CR10S since they share the same extruder definition. Have to go by the name.
+                            if "cr-10s" in parser["metadata"].get("machine", "Creality CR-10").lower():  # Not perfect, since the user can change this name :(
                                 parser["containers"]["4"] = "creality_cr10s_0.4"
 
-            #Also change the quality to go along with it.
+            # Also change the quality to go along with it.
             material_id = parser["containers"]["3"]
             old_quality_id = parser["containers"]["2"]
             if material_id in _creality_quality_per_material and old_quality_id in _creality_quality_per_material[material_id]:
                 parser["containers"]["2"] = _creality_quality_per_material[material_id][old_quality_id]
 
-            stack_copy = {}  # type: Dict[str, str] #Make a copy so that we don't modify the dict we're iterating over.
+            stack_copy = {}  # type: Dict[str, str]  # Make a copy so that we don't modify the dict we're iterating over.
             stack_copy.update(parser["containers"])
             for position, profile_id in stack_copy.items():
                 if profile_id in _renamed_profiles:
