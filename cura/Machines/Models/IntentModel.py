@@ -56,6 +56,6 @@ class IntentModel(ListModel):
         quality_groups = intent_manager.getQualityGroups(global_stack)
 
         for quality_tuple, quality_group in quality_groups.items():
-            new_items.append({"name": quality_group.name, "quality_type": quality_tuple[1]})
+            new_items.append({"name": quality_group.name, "intent_category": quality_tuple[0], "quality_type": quality_tuple[1]})
 
         self.setItems(new_items)

@@ -154,7 +154,8 @@ class CuraStackBuilder:
             position = extruder_position,
             variant_container = extruder_variant_container,
             material_container = material_container,
-            quality_container = application.empty_quality_container
+            quality_container = application.empty_quality_container,
+            intent_container = application.empty_intent_container
         )
         new_extruder.setNextStack(global_stack)
 

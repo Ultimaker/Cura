@@ -942,6 +942,7 @@ class CuraApplication(QtApplication):
     def getQualityManager(self, *args) -> "QualityManager":
         return self._quality_manager
 
+    @pyqtSlot(result=QObject)
     def getIntentManager(self, *args) -> IntentManager:
         return IntentManager.getInstance()
 

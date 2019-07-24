@@ -221,7 +221,7 @@ class IntentManager(QObject):
 
             if intent_category != DEFAULT_INTENT_CATEGORY:
                 new_quality_group = QualityGroup(intent_metadata["name"], quality_tuple)
-                # TODO: Properly make a new QualityGroup _and_ check what's still wrong.
+                # TODO: Properly make a new QualityGroup
                 quality_group = new_quality_group
 
             quality_group_dict[quality_tuple] = quality_group

@@ -1570,7 +1570,10 @@ class MachineManager(QObject):
             return
         # Get all the quality groups for this global stack and filter out by quality_type
         quality_group_dict = self._intent_manager.getQualityGroups(self._global_container_stack)
-        quality_group = quality_group_dict[(intent_category, quality_type)]  # TODO?: Check if actually in there, just to be sure?
+        if (intent_category, quality_type) not in quality_group_dict:
+            Logger.log("e", "Could not find quality group for quality-tuple {0} {1}".format(intent_category, quality_type))
+            return
+        quality_group = quality_group_dict[(intent_category, quality_type)]
         self.setQualityGroup(quality_group)
 
     ##  Optionally provide global_stack if you want to use your own
