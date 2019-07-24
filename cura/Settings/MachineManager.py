@@ -599,7 +599,7 @@ class MachineManager(QObject):
     def activeStack(self) -> Optional["ExtruderStack"]:
         return self._active_container_stack
 
-    @pyqtProperty(str, notify=activeMaterialChanged)
+    @pyqtProperty(str, notify = activeMaterialChanged)
     def activeMaterialId(self) -> str:
         if self._active_container_stack:
             material = self._active_container_stack.material
