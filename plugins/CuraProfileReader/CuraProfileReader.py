@@ -85,7 +85,7 @@ class CuraProfileReader(ProfileReader):
         profile = InstanceContainer(profile_id)
         profile.setMetaDataEntry("type", "quality_changes")
         try:
-            profile.deserialize(serialized)
+            profile.deserialize(serialized, file_name = profile_id)
         except ContainerFormatError as e:
             Logger.log("e", "Error in the format of a container: %s", str(e))
             return None
