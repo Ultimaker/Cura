@@ -37,6 +37,9 @@ UM.RecolorImage
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
+        contentWidth: printJobInformation.width
+        contentHeight: printJobInformation.implicitHeight
+
         contentItem: PrintJobInformation
         {
             id: printJobInformation
