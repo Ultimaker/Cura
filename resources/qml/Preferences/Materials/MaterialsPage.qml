@@ -48,15 +48,6 @@ Item
     // When loaded, try to select the active material in the tree
     Component.onCompleted: resetExpandedActiveMaterial()
 
-    Connections
-    {
-        target: Cura.MachineManager
-        onActiveMaterialChanged:
-        {
-            resetExpandedActiveMaterial()
-        }
-    }
-
     // Every time the selected item has changed, notify to the details panel
     onCurrentItemChanged:
     {
