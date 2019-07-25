@@ -5,7 +5,7 @@ import os
 from queue import Queue
 from threading import Event, Thread
 from time import time
-from typing import Optional, TYPE_CHECKING, Dict, Callable
+from typing import Optional, TYPE_CHECKING, Dict, Callable, Union, Any
 
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
@@ -67,7 +67,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     def __init__(self):
         super().__init__()
-        
+
         self._zero_conf = None
         self._zero_conf_browser = None
 
@@ -83,7 +83,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._application.globalContainerStackChanged.connect(self.refreshConnections)
 
         self._discovered_devices = {}
-        
+
         self._network_manager = QNetworkAccessManager()
         self._network_manager.finished.connect(self._onNetworkRequestFinished)
 
@@ -124,7 +124,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Check if cloud flow is possible when user switches machines
         self._application.globalContainerStackChanged.connect(self._onMachineSwitched)
 
-        # Listen for when cloud flow is possible 
+        # Listen for when cloud flow is possible
         self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
 
         # Listen if cloud cluster was added
@@ -168,7 +168,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if address:
                 self.addManualDevice(address)
         self.resetLastManualDevice()
-    
+
     # TODO: CHANGE TO HOSTNAME
     def refreshConnections(self):
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
@@ -395,17 +395,28 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             self._application.getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
             self.discoveredDevicesChanged.emit()
 
+    ##  Returns a dict of printer BOM numbers to machine types.
+    #   These numbers are available in the machine definition already so we just search for them here.
+    def _getPrinterTypeIdentifiers(self) -> Dict[str, str]:
+        container_registry = self._application.getContainerRegistry()
+        ultimaker_machines = container_registry.findContainersMetadata(type="machine", manufacturer="Ultimaker B.V.")
+
+        found_machine_type_identifiers = {}  # type: Dict[str, str]
+        for machine in ultimaker_machines:
+            machine_bom_number = machine.get("firmware_update_info", {}).get("id", None)
+            machine_type = machine.get("id", None)
+            if machine_bom_number and machine_type:
+                found_machine_type_identifiers[str(machine_bom_number)] = machine_type
+
+        return found_machine_type_identifiers
+
     def _onAddDevice(self, name, address, properties):
         # Check what kind of device we need to add; Depending on the firmware we either add a "Connect"/"Cluster"
         # or "Legacy" UM3 device.
         cluster_size = int(properties.get(b"cluster_size", -1))
 
         printer_type = properties.get(b"machine", b"").decode("utf-8")
-        printer_type_identifiers = {
-            "9066": "ultimaker3",
-            "9511": "ultimaker3_extended",
-            "9051": "ultimaker_s5"
-        }
+        printer_type_identifiers = self._getPrinterTypeIdentifiers()
 
         for key, value in printer_type_identifiers.items():
             if printer_type.startswith(key):
@@ -517,7 +528,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if ConnectionType.CloudConnection.value in active_machine.configuredConnectionTypes:
                 Logger.log("d", "Active machine was already configured for cloud.")
                 return
-            
+
             # Check 1B: Printer isn't already configured for cloud
             if active_machine.getMetaDataEntry("cloud_flow_complete", False):
                 Logger.log("d", "Active machine was already configured for cloud.")
@@ -527,7 +538,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if active_machine.getMetaDataEntry("do_not_show_cloud_message", False):
                 Logger.log("d", "Active machine shouldn't ask about cloud anymore.")
                 return
-        
+
             # Check 3: User is logged in with an Ultimaker account
             if not self._account.isLoggedIn:
                 Logger.log("d", "Cloud Flow not possible: User not logged in!")
@@ -537,7 +548,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
             if not self._application.getMachineManager().activeMachineHasNetworkConnection:
                 Logger.log("d", "Cloud Flow not possible: Machine is not connected!")
                 return
-            
+
             # Check 5: Machine has correct firmware version
             firmware_version = self._application.getMachineManager().activeMachineFirmwareVersion # type: str
             if not Version(firmware_version) > self._min_cloud_version:
@@ -545,7 +556,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                                 firmware_version,
                                 self._min_cloud_version)
                 return
-            
+
             Logger.log("d", "Cloud flow is possible!")
             self.cloudFlowIsPossible.emit()
 
@@ -554,20 +565,20 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         if not self._start_cloud_flow_message:
             self._createCloudFlowStartMessage()
         if self._start_cloud_flow_message and not self._start_cloud_flow_message.visible:
-            self._start_cloud_flow_message.show()        
+            self._start_cloud_flow_message.show()
 
     def _onCloudPrintingConfigured(self, device) -> None:
         # Hide the cloud flow start message if it was hanging around already
         # For example: if the user already had the browser openen and made the association themselves
         if self._start_cloud_flow_message and self._start_cloud_flow_message.visible:
             self._start_cloud_flow_message.hide()
-        
+
         # Cloud flow is complete, so show the message
         if not self._cloud_flow_complete_message:
             self._createCloudFlowCompleteMessage()
         if self._cloud_flow_complete_message and not self._cloud_flow_complete_message.visible:
             self._cloud_flow_complete_message.show()
-        
+
         # Set the machine's cloud flow as complete so we don't ask the user again and again for cloud connected printers
         active_machine = self._application.getMachineManager().activeMachine
         if active_machine:
@@ -580,7 +591,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
             if added_host_name == saved_host_name:
                 active_machine.setMetaDataEntry("do_not_show_cloud_message", True)
-            
+
         return
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
@@ -599,7 +610,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
                 self._start_cloud_flow_message.hide()
                 self._start_cloud_flow_message = None
         return
-    
+
     def _onReviewCloudConnection(self, messageId: str, actionId: str) -> None:
         address = self._application.getMachineManager().activeMachineAddress # type: str
         if address:
