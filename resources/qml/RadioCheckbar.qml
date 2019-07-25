@@ -70,7 +70,7 @@ Item
                     id: activeComponent
                     sourceComponent: isEnabled? checkboxComponent : disabledComponent
                     // Ensure the inactive markers that are not the first / last one align with the center of the checkboxes
-                    x: isEnabled && index !== 0 && index + 1 !== repeater.count ? -(checkboxSize - inactiveMarkerSize) / 2: 0
+                    x: !isEnabled && index !== 0 && index + 1 !== repeater.count ? (checkboxSize - inactiveMarkerSize) / 2: 0
                 }
             }
         }
