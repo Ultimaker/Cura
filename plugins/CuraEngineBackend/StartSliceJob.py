@@ -133,6 +133,14 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.BuildPlateError)
             return
 
+        # Wait for error checker to be done.
+        while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
+            time.sleep(0.1)
+
+        if CuraApplication.getInstance().getMachineErrorChecker().hasError:
+            self.setResult(StartJobResult.SettingError)
+            return
+
         # Don't slice if the buildplate or the nozzle type is incompatible with the materials
         if not CuraApplication.getInstance().getMachineManager().variantBuildplateCompatible and \
                 not CuraApplication.getInstance().getMachineManager().variantBuildplateUsable:
