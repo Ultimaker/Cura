@@ -31,6 +31,7 @@ Item
     RowLayout
     {
         id: buttonBar
+        anchors.centerIn: parent
         height: childrenRect.height
         width: parent.width
         spacing: 0
@@ -46,7 +47,6 @@ Item
                 // the horizontal bar. The others should essentially not be limited.
                 Layout.maximumWidth: index + 1 === repeater.count ? activeComponent.width: 200000000
                 height: activeComponent.height
-
                 property bool isEnabled: model.enabled
                 // The horizontal bar between the checkable options.
                 // Note that the horizontal bar points towards the previous item.
@@ -55,7 +55,7 @@ Item
                     property Item previousItem: repeater.itemAt(index - 1)
 
                     height: barSize
-                    width: parent.width - activeComponent.width
+                    width: buttonBar.width / (repeater.count - 1) - activeComponent.width - 2
                     color: defaultItemColor
 
                     anchors
@@ -63,7 +63,7 @@ Item
                         right: activeComponent.left
                         verticalCenter: activeComponent.verticalCenter
                     }
-                    visible:  previousItem !== null && previousItem.isEnabled && isEnabled
+                    visible: previousItem !== null && previousItem.isEnabled && isEnabled
                 }
                 Loader
                 {
