@@ -770,7 +770,7 @@ class BuildVolume(SceneNode):
 
         self._has_errors = len(self._error_areas) > 0
 
-        self._disallowed_areas = []  # type: List[Polygon]
+        self._disallowed_areas = []
         for extruder_id in result_areas:
             self._disallowed_areas.extend(result_areas[extruder_id])
         self._disallowed_areas_no_brim = []

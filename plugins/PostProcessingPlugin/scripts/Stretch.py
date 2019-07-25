@@ -128,9 +128,26 @@ class Stretcher():
                     onestep = GCodeStep(0, in_relative_movement)
                     onestep.copyPosFrom(current)
                 elif _getValue(line, "G") == 1:
+                    last_x = current.step_x
+                    last_y = current.step_y
+                    last_z = current.step_z
+                    last_e = current.step_e
                     current.readStep(line)
-                    onestep = GCodeStep(1, in_relative_movement)
-                    onestep.copyPosFrom(current)
+                    if (current.step_x == last_x and current.step_y == last_y and
+                        current.step_z == last_z and current.step_e != last_e
+                    ):
+                        # It's an extruder only move. Preserve it rather than process it as an
+                        # extruded move. Otherwise, the stretched output might contain slight
+                        # motion in X and Y in addition to E. This can cause problems with
+                        # firmwares that implement pressure advance.
+                        onestep = GCodeStep(-1, in_relative_movement)
+                        onestep.copyPosFrom(current)
+                        # Rather than copy the original line, write a new one with consistent
+                        # extruder coordinates
+                        onestep.comment = "G1 F{} E{}".format(onestep.step_f, onestep.step_e)
+                    else:
+                        onestep = GCodeStep(1, in_relative_movement)
+                        onestep.copyPosFrom(current)
 
                 # end of relative movement
                 elif _getValue(line, "G") == 90:

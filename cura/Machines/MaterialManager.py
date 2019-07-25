@@ -93,7 +93,7 @@ class MaterialManager(QObject):
                               self._container_registry.findContainersMetadata(type = "material") if
                               metadata.get("GUID")} # type: Dict[str, Dict[str, Any]]
 
-        self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
+        self._material_group_map = dict()
                 
         # Map #1
         #    root_material_id -> MaterialGroup
@@ -120,7 +120,7 @@ class MaterialManager(QObject):
 
         # Map #1.5
         #    GUID -> material group list
-        self._guid_material_groups_map = defaultdict(list)  # type: Dict[str, List[MaterialGroup]]
+        self._guid_material_groups_map = defaultdict(list)
         for root_material_id, material_group in self._material_group_map.items():
             guid = material_group.root_material_node.getMetaDataEntry("GUID", "")
             self._guid_material_groups_map[guid].append(material_group)
@@ -202,7 +202,7 @@ class MaterialManager(QObject):
 
         # Map #4
         # "machine" -> "nozzle name" -> "buildplate name" -> "root material ID" -> specific material InstanceContainer
-        self._diameter_machine_nozzle_buildplate_material_map = dict()  # type: Dict[str, Dict[str, MaterialNode]]
+        self._diameter_machine_nozzle_buildplate_material_map = dict()
         for material_metadata in material_metadatas.values():
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 

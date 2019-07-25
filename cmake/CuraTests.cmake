@@ -47,7 +47,7 @@ function(cura_add_test)
     if (NOT ${test_exists})
         add_test(
             NAME ${_NAME}
-            COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --full-trace --capture=no --no-print-log --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
+            COMMAND ${Python3_EXECUTABLE} -m pytest --junitxml=${CMAKE_BINARY_DIR}/junit-${_NAME}.xml ${_DIRECTORY}
         )
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT LANG=C)
         set_tests_properties(${_NAME} PROPERTIES ENVIRONMENT "PYTHONPATH=${_PYTHONPATH}")

@@ -6,7 +6,7 @@ import pytest
 from unittest.mock import patch
 
 
-class TestConvexHullDecorator(SceneNodeDecorator):
+class MockedConvexHullDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
 
@@ -14,7 +14,7 @@ class TestConvexHullDecorator(SceneNodeDecorator):
         return Polygon([[5, 5], [-5, 5], [-5, -5], [5, -5]])
 
 
-class TestInvalidConvexHullDecorator(SceneNodeDecorator):
+class InvalidConvexHullDecorator(SceneNodeDecorator):
     def __init__(self):
         super().__init__()
 
@@ -34,16 +34,16 @@ class TestCollidesWithAreas:
         assert not cura_scene_node.collidesWithAreas([Polygon([[10, 10], [-10, 10], [-10, -10], [10, -10]])])
 
     def test_convexHullIntersects(self, cura_scene_node):
-        cura_scene_node.addDecorator(TestConvexHullDecorator())
+        cura_scene_node.addDecorator(MockedConvexHullDecorator())
         assert cura_scene_node.collidesWithAreas([Polygon([[10, 10], [-10, 10], [-10, -10], [10, -10]])])
 
     def test_convexHullNoIntersection(self, cura_scene_node):
-        cura_scene_node.addDecorator(TestConvexHullDecorator())
+        cura_scene_node.addDecorator(MockedConvexHullDecorator())
 
         assert not cura_scene_node.collidesWithAreas([Polygon([[60, 60], [40, 60], [40, 40], [60, 40]])])
 
     def test_invalidConvexHull(self, cura_scene_node):
-        cura_scene_node.addDecorator(TestInvalidConvexHullDecorator())
+        cura_scene_node.addDecorator(InvalidConvexHullDecorator())
         assert not cura_scene_node.collidesWithAreas([Polygon([[10, 10], [-10, 10], [-10, -10], [10, -10]])])
 
 

@@ -369,7 +369,7 @@ class CuraEngineBackend(QObject, Backend):
 
         elif job.getResult() == StartJobResult.ObjectSettingError:
             errors = {}
-            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):
                 stack = node.callDecoration("getStack")
                 if not stack:
                     continue
@@ -438,7 +438,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if not self._application.getPreferences().getValue("general/auto_slice"):
             enable_timer = False
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):
                 enable_timer = False
                 self.setState(BackendState.Disabled)
@@ -460,7 +460,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Return a dict with number of objects per build plate
     def _numObjectsPerBuildPlate(self) -> Dict[int, int]:
         num_objects = defaultdict(int) #type: Dict[int, int]
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
@@ -548,10 +548,11 @@ class CuraEngineBackend(QObject, Backend):
         # Clear out any old gcode
         self._scene.gcode_dict = {}  # type: ignore
 
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    node.getParent().removeChild(node)
+                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
         for build_plate_number in range(self._application.getMultiBuildPlateModel().maxBuildPlate + 1):

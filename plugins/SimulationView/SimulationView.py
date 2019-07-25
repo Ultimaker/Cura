@@ -218,10 +218,10 @@ class SimulationView(CuraView):
             if theme is not None:
                 self._ghost_shader.setUniformValue("u_color", Color(*theme.getColor("layerview_ghost").getRgb()))
 
-        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+        for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
             # However, it is somewhat relevant when the node is selected, so do render it then.
-            if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
+            if type(node) is ConvexHullNode and not Selection.isSelected(cast(ConvexHullNode, node).getWatchedNode()):
                 continue
 
             if not node.render(renderer):
@@ -572,14 +572,14 @@ class SimulationView(CuraView):
             self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
-        self._top_layers_job = None  # type: Optional["_CreateTopLayersJob"]
+        self._top_layers_job = None
 
     def _updateWithPreferences(self) -> None:
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self.setSimulationViewType(int(float(Application.getInstance().getPreferences().getValue("layerview/layer_view_type"))));
+        self.setSimulationViewType(int(float(Application.getInstance().getPreferences().getValue("layerview/layer_view_type"))))
 
         for extruder_nr, extruder_opacity in enumerate(Application.getInstance().getPreferences().getValue("layerview/extruder_opacities").split("|")):
             try:
