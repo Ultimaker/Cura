@@ -986,10 +986,13 @@ class MachineManager(QObject):
         self._application.globalContainerStackChanged.emit()
         self.forceUpdateAllSettings()
 
-    # Note that this function is deprecated, but the decorators for this don't play well together!
-    # @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int) -> Optional[ExtruderStack]:
+        return self._getExtruder(position)
+
+    # This is a workaround for the deprecated decorator and the pyqtSlot not playing well together.
+    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
+    def _getExtruder(self, position) -> Optional[ExtruderStack]:
         if self._global_container_stack:
             return self._global_container_stack.extruders.get(str(position))
         return None
