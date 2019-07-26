@@ -24,6 +24,7 @@ from .Utils import findChanges
 #   API spec is available on https://api.ultimaker.com/docs/connect/spec/.
 #
 class CloudOutputDeviceManager:
+
     META_CLUSTER_ID = "um_cloud_cluster_id"
 
     # The interval with which the remote clusters are checked

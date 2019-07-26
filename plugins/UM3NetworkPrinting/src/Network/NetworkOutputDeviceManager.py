@@ -1,18 +1,21 @@
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 from queue import Queue
 from threading import Thread, Event
 from time import time
-from typing import Dict, Optional, Callable, List
+from typing import Dict, Optional, Callable
 
-from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply, QNetworkRequest
 from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
+from UM import i18nCatalog
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.Signal import Signal
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+from plugins.UM3NetworkPrinting.src.Network.ClusterApiClient import ClusterApiClient
 from plugins.UM3NetworkPrinting.src.Network.ClusterUM3OutputDevice import ClusterUM3OutputDevice
 from plugins.UM3NetworkPrinting.src.Network.ManualPrinterRequest import ManualPrinterRequest
 
@@ -20,30 +23,22 @@ from plugins.UM3NetworkPrinting.src.Network.ManualPrinterRequest import ManualPr
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
 class NetworkOutputDeviceManager:
 
-    PRINTER_API_VERSION = "1"
-    PRINTER_API_PREFIX = "/api/v" + PRINTER_API_VERSION
-
-    CLUSTER_API_VERSION = "1"
-    CLUSTER_API_PREFIX = "/cluster-api/v" + CLUSTER_API_VERSION
-
     ZERO_CONF_NAME = u"_ultimaker._tcp.local."
-
     MANUAL_DEVICES_PREFERENCE_KEY = "um3networkprinting/manual_instances"
-
     MIN_SUPPORTED_CLUSTER_VERSION = Version("4.0.0")
+
+    # The translation catalog for this device.
+    I18N_CATALOG = i18nCatalog("cura")
 
     discoveredDevicesChanged = Signal()
     addedNetworkCluster = Signal()
     removedNetworkCluster = Signal()
 
-    def __init__(self):
+    def __init__(self) -> None:
 
         # Persistent dict containing the networked clusters.
         self._discovered_devices = {}  # type: Dict[str, ClusterUM3OutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
-        self._network_manager = QNetworkAccessManager()
-        # In order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
         self._zero_conf = None  # type: Optional[Zeroconf]
         self._zero_conf_browser = None  # type: Optional[ServiceBrowser]
@@ -58,18 +53,6 @@ class NetworkOutputDeviceManager:
         # Hook up the signals for discovery.
         self.addedNetworkCluster.connect(self._onAddDevice)
         self.removedNetworkCluster.connect(self._onRemoveDevice)
-
-    # # Get all discovered devices in the local network.
-    # def getDiscoveredDevices(self) -> Dict[str, ClusterUM3OutputDevice]:
-    #     return self._discovered_devices
-
-    # ## Get the key of the last manually added device.
-    # def getLastManualDevice(self) -> str:
-    #     return self._last_manual_entry_key
-
-    # ## Reset the last manually added device key.
-    # def resetLastManualDevice(self) -> None:
-    #     self._last_manual_entry_key = ""
 
     ## Force reset all network device connections.
     def refreshConnections(self):
@@ -93,7 +76,8 @@ class NetworkOutputDeviceManager:
                 if self._discovered_devices[key].isConnected():
                     Logger.log("d", "Attempting to close connection with [%s]" % key)
                     self._discovered_devices[key].close()
-                    self._discovered_devices[key].connectionStateChanged.disconnect(self._onDeviceConnectionStateChanged)
+                    self._discovered_devices[key].connectionStateChanged.disconnect(
+                        self._onDeviceConnectionStateChanged)
 
     ## Start the network discovery.
     def start(self):
@@ -117,7 +101,6 @@ class NetworkOutputDeviceManager:
         for address in self._manual_instances:
             if address:
                 self.addManualDevice(address)
-        # TODO: self.resetLastManualDevice()
 
     ## Stop network discovery and clean up discovered devices.
     def stop(self):
@@ -172,14 +155,22 @@ class NetworkOutputDeviceManager:
             if manual_printer_request.callback is not None:
                 CuraApplication.getInstance().callLater(manual_printer_request.callback, False, address)
 
+    ## Handles an API error received from the cloud.
+    #  \param errors: The errors received
+    def _onApiError(self, errors) -> None:
+        Logger.log("w", str(errors))
+        message = Message(
+            text=self.I18N_CATALOG.i18nc("@info:description", "There was an error connecting to the printer."),
+            title=self.I18N_CATALOG.i18nc("@info:title", "Error"),
+            lifetime=10
+        )
+        message.show()
+
     ## Checks if a networked printer exists at the given address.
     #  If the printer responds it will replace the preliminary printer created from the stored manual instances.
     def _checkManualDevice(self, address: str, on_finished: Callable) -> None:
-        Logger.log("d", "checking manual device: {}".format(address))
-        url = QUrl(f"http://{address}/{self.PRINTER_API_PREFIX}/system")
-        request = QNetworkRequest(url)
-        reply = self._network_manager.get(request)
-        self._addCallback(reply, on_finished)
+        api_client = ClusterApiClient(address, self._onApiError)
+        api_client.getSystem(on_finished)
 
     ## Callback for when a manual device check request was responded to.
     def _onCheckManualDeviceResponse(self, status_code: int, address: str) -> None:
@@ -355,7 +346,7 @@ class NetworkOutputDeviceManager:
         self.removedNetworkCluster.emit(str(name))
         return True
 
-    def _associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
+    def _associateActiveMachineWithPrinterDevice(self, printer_device: Optional[PrinterOutputDevice]) -> None:
         if not printer_device:
             return
 
@@ -399,23 +390,6 @@ class NetworkOutputDeviceManager:
         self._associateActiveMachineWithPrinterDevice(discovered_device)
         # ensure that the connection states are refreshed.
         self.refreshConnections()
-
-    ## Creates a callback function so that it includes the parsing of the response into the correct model.
-    #  The callback is added to the 'finished' signal of the reply.
-    #  \param reply: The reply that should be listened to.
-    #  \param on_finished: The callback in case the response is successful.
-    def _addCallback(self, reply: QNetworkReply, on_finished: Callable) -> None:
-        def parse() -> None:
-            # Don't try to parse the reply if we didn't get one
-            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
-                return
-            status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
-            response = bytes(reply.readAll()).decode()
-            self._anti_gc_callbacks.remove(parse)
-            on_finished(int(status_code), response)
-            return
-        self._anti_gc_callbacks.append(parse)
-        reply.finished.connect(parse)
 
     ## Load the user-configured manual devices from Cura preferences.
     def _getStoredManualInstances(self) -> Dict[str, ManualPrinterRequest]:
