@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 from typing import Dict, Union, TypeVar, Type, List, Any
 
-from ...Models import BaseModel
+from plugins.UM3NetworkPrinting.src.Models.BaseModel import BaseModel
 
 
 ## Base class for the models used in the interface with the Ultimaker cloud APIs.

@@ -25,16 +25,16 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
-from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
-from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudPrintJobResponse import CloudPrintJobResponse
-from .Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
-from .Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintResponse import CloudPrintResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
 from .Utils import formatDateCompleted, formatTimeCompleted
 
 I18N_CATALOG = i18nCatalog("cura")

@@ -3,9 +3,9 @@
 from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
-from ...UM3PrintJobOutputModel import UM3PrintJobOutputModel
-from ...ConfigurationChangeModel import ConfigurationChangeModel
-from ..CloudOutputController import CloudOutputController
+from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from plugins.UM3NetworkPrinting.src.Models.ConfigurationChangeModel import ConfigurationChangeModel
+from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
 from .BaseCloudModel import BaseCloudModel
 from .CloudClusterBuildPlate import CloudClusterBuildPlate
 from .CloudClusterPrintJobConfigurationChange import CloudClusterPrintJobConfigurationChange

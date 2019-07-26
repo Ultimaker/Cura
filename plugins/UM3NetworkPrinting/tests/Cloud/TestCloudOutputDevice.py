@@ -9,7 +9,7 @@ from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
-from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
 from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
@@ -46,7 +46,7 @@ class TestCloudOutputDevice(TestCase):
         self.onError = MagicMock()
         with patch.object(CloudApiClient, "QNetworkAccessManager", return_value = self.network):
             self._api = CloudApiClient.CloudApiClient(self.account, self.onError)
-        
+
         self.device = CloudOutputDevice(self._api, self.cluster)
         self.cluster_status = parseFixture("getClusterStatusResponse")
         self.network.prepareReply("GET", self.STATUS_URL, 200, readFixture("getClusterStatusResponse"))
@@ -138,7 +138,7 @@ class TestCloudOutputDevice(TestCase):
         }, {
             "extension": "gcode.gz",
             "mime_type": "application/gzip",
-            "mode": 2, 
+            "mode": 2,
         }]
         file_handler.getWriterByMimeType.return_value.write.side_effect = \
             lambda stream, nodes: stream.write(str(nodes).encode())

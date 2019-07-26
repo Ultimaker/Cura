@@ -1,11 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, pyqtSlot
+from PyQt5.QtCore import pyqtProperty, QObject
 
 BLOCKING_CHANGE_TYPES = [
     "material_insert", "buildplate_change"
 ]
+
 
 class ConfigurationChangeModel(QObject):
     def __init__(self, type_of_change: str, index: int, target_name: str, origin_name: str) -> None:

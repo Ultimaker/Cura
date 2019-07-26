@@ -6,7 +6,7 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from typing import Optional, Callable, Any, Tuple, cast
 
 from UM.Logger import Logger
-from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## Class responsible for uploading meshes to the cloud in separate requests.
@@ -53,7 +53,7 @@ class ToolPathUploader:
     def _createRequest(self) -> QNetworkRequest:
         request = QNetworkRequest(QUrl(self._print_job.upload_url))
         request.setHeader(QNetworkRequest.ContentTypeHeader, self._print_job.content_type)
-        
+
         first_byte, last_byte = self._chunkRange()
         content_range = "bytes {}-{}/{}".format(first_byte, last_byte - 1, len(self._data))
         request.setRawHeader(b"Content-Range", content_range.encode())

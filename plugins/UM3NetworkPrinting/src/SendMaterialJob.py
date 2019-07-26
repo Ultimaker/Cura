@@ -9,12 +9,11 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 from UM.Job import Job
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
-
-# Absolute imports don't work in plugins
-from .Models import ClusterMaterial, LocalMaterial
+from plugins.UM3NetworkPrinting.src.Models.ClusterMaterial import ClusterMaterial
+from plugins.UM3NetworkPrinting.src.Models.LocalMaterial import LocalMaterial
 
 if TYPE_CHECKING:
-    from .ClusterUM3OutputDevice import ClusterUM3OutputDevice
+    from plugins.UM3NetworkPrinting.src.Network.ClusterUM3OutputDevice import ClusterUM3OutputDevice
 
 
 ##  Asynchronous job to send material profiles to the printer.

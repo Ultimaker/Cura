@@ -13,8 +13,8 @@ from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
-from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudError import CloudError
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
 from .Utils import findChanges
 
 
@@ -52,7 +52,11 @@ class CloudOutputDeviceManager:
 
         self._running = False
 
-    #  Called when the uses logs in or out
+    ## Force refreshing connections.
+    def refreshConnections(self) -> None:
+        pass
+
+    ## Called when the uses logs in or out
     def _onLoginStateChanged(self, is_logged_in: bool) -> None:
         Logger.log("d", "Log in state changed to %s", is_logged_in)
         if is_logged_in:
@@ -66,12 +70,12 @@ class CloudOutputDeviceManager:
             # Notify that all clusters have disappeared
             self._onGetRemoteClustersFinished([])
 
-    ##  Gets all remote clusters from the API.
+    ## Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
         Logger.log("d", "Retrieving remote clusters")
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
-    ##  Callback for when the request for getting the clusters. is finished.
+    ## Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
@@ -115,19 +119,19 @@ class CloudOutputDeviceManager:
             )
 
         self._connectToActiveMachine()
-        
+
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
         device = self._remote_clusters[key]  # type: CloudOutputDevice
         if not device:
             Logger.log("e", "Could not find discovered device with key [%s]", key)
             return
-        
+
         group_name = device.clusterData.friendly_name
         machine_type_id = device.printerType
-    
+
         Logger.log("i", "Creating machine from cloud device with key = [%s], group name = [%s],  printer type = [%s]",
                    key, group_name, machine_type_id)
-    
+
         # The newly added machine is automatically activated.
         self._application.getMachineManager().addMachine(machine_type_id, group_name)
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()

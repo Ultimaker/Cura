@@ -7,7 +7,7 @@ from UM.OutputDevice.OutputDeviceManager import OutputDeviceManager
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud import CloudOutputDeviceManager
-from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
 from .Fixtures import parseFixture, readFixture
 from .NetworkManagerMock import NetworkManagerMock, FakeSignal
 

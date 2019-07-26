@@ -12,17 +12,17 @@ from UM.Logger import Logger
 from cura import UltimakerCloudAuthentication
 from cura.API import Account
 from .ToolPathUploader import ToolPathUploader
-from ..Models import BaseModel
-from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudError import CloudError
-from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.BaseModel import BaseModel
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintResponse import CloudPrintResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The generic type variable used to document the methods below.
-CloudApiClientModel = TypeVar("CloudApiClientModel", bound = BaseModel)
+CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.

@@ -7,11 +7,11 @@ from unittest.mock import patch, MagicMock
 
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from ...src.Cloud import CloudApiClient
-from ...src.Cloud.Models.CloudClusterResponse import CloudClusterResponse
-from ...src.Cloud.Models.CloudClusterStatus import CloudClusterStatus
-from ...src.Cloud.Models.CloudPrintJobResponse import CloudPrintJobResponse
-from ...src.Cloud.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from ...src.Cloud.Models.CloudError import CloudError
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
+from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
 from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 
@@ -60,7 +60,7 @@ class TestCloudApiClient(TestCase):
         self.assertEqual([CloudClusterStatus(**data)], result)
 
     def test_requestUpload(self):
-        
+
         results = []
 
         response = readFixture("putJobUploadResponse")
@@ -74,7 +74,7 @@ class TestCloudApiClient(TestCase):
         self.assertEqual(["uploading"], [r.status for r in results])
 
     def test_uploadToolPath(self):
-        
+
         results = []
         progress = MagicMock()
 
@@ -94,7 +94,7 @@ class TestCloudApiClient(TestCase):
         self.assertEqual(["sent"], results)
 
     def test_requestPrint(self):
-        
+
         results = []
 
         response = readFixture("postJobPrintResponse")

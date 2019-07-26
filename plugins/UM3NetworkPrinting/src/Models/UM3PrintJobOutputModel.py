@@ -1,13 +1,12 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from typing import List
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-from .ConfigurationChangeModel import ConfigurationChangeModel
+from plugins.UM3NetworkPrinting.src.Models.ConfigurationChangeModel import ConfigurationChangeModel
 
 
 class UM3PrintJobOutputModel(PrintJobOutputModel):
