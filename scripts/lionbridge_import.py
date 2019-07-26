@@ -39,7 +39,8 @@ def lionbridge_import(source: str) -> None:
             with open(destination_file) as f:
                 destination_str = f.read()
             result = merge(source_str, destination_str)
-            print(result) #DEBUG! Instead we should write this to a file.
+            with open(destination_file, "w") as f:
+                f.write(result)
 
 ##  Gets the destination path to copy the translations for Cura to.
 #   \return Destination path for Cura.
@@ -65,10 +66,11 @@ def destination_uranium() -> str:
 #   \param source The contents of the source .po file.
 #   \param destination The contents of the destination .po file.
 def merge(source: str, destination: str) -> str:
+    result_lines = []
     last_destination = {
-        "msgctxt": "",
-        "msgid": "",
-        "msgstr": ""
+        "msgctxt": "\"\"\n",
+        "msgid": "\"\"\n",
+        "msgstr": "\"\"\n"
     }
 
     current_state = "none"
@@ -87,10 +89,22 @@ def merge(source: str, destination: str) -> str:
             last_destination[current_state] = ""
 
         if line.startswith("\"") and line.endswith("\""):
-            last_destination[current_state] += line[1:-1]
-        else: #White lines trigger us to search for the translation in the source file.
-            if last_destination["msgstr"] == "" and last_destination["msgid"] != "": #No translation for this yet!
-                translation = find_translation(source, last_destination["msgctxt"], last_destination["msgid"])
+            last_destination[current_state] += line + "\n"
+        else: #White lines or comment lines trigger us to search for the translation in the source file.
+            if last_destination["msgstr"] == "\"\"\n" and last_destination["msgid"] != "\"\"\n": #No translation for this yet!
+                last_destination["msgstr"] = find_translation(source, last_destination["msgctxt"], last_destination["msgid"]) #Actually place the translation in.
+            if last_destination["msgctxt"] != "\"\"\n" or last_destination["msgid"] != "\"\"\n" or last_destination["msgstr"] != "\"\"\n":
+                result_lines.append("msgctxt {msgctxt}".format(msgctxt = last_destination["msgctxt"][:-1])) #The [:-1] to strip the last newline.
+                result_lines.append("msgid {msgid}".format(msgid = last_destination["msgid"][:-1]))
+                result_lines.append("msgstr {msgstr}".format(msgstr = last_destination["msgstr"][:-1]))
+                last_destination = {
+                    "msgctxt": "\"\"\n",
+                    "msgid": "\"\"\n",
+                    "msgstr": "\"\"\n"
+                }
+
+            result_lines.append(line) #This line itself.
+    return "\n".join(result_lines)
 
 ##  Finds a translation in the source file.
 #   \param source The contents of the source .po file.
@@ -98,9 +112,9 @@ def merge(source: str, destination: str) -> str:
 #   \param msgid The id of the translation to find.
 def find_translation(source: str, msgctxt: str, msgid: str) -> str:
     last_source = {
-        "msgctxt": "",
-        "msgid": "",
-        "msgstr": ""
+        "msgctxt": "\"\"\n",
+        "msgid": "\"\"\n",
+        "msgstr": "\"\"\n"
     }
 
     current_state = "none"
@@ -119,15 +133,16 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
             last_source[current_state] = ""
 
         if line.startswith("\"") and line.endswith("\""):
-            last_source[current_state] += line[1:-1]
+            last_source[current_state] += line + "\n"
         else: #White lines trigger us to process this translation. Is it the correct one?
             if last_source["msgctxt"] == msgctxt and last_source["msgid"] == msgid:
-                if last_source["msgstr"] == "":
+                if last_source["msgstr"] == "\"\"\n":
                     print("!!! Empty translation for {" + msgctxt + "}", msgid, "!!!")
                 return last_source["msgstr"]
 
     #Still here? Then the entire msgctxt+msgid combination was not found at all.
     print("!!! Missing translation for {" + msgctxt + "}", msgid, "!!!")
+    return "\"\"\n"
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description = "Import translation files from Lionbridge.")
