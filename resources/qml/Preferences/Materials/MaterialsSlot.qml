@@ -82,10 +82,10 @@ Rectangle
         {
             if (materialSlot.is_favorite)
             {
-                base.materialManager.removeFavorite(material.root_material_id)
+                CuraApplication.getMaterialManager().removeFavorite(material.root_material_id)
                 return
             }
-            base.materialManager.addFavorite(material.root_material_id)
+            CuraApplication.getMaterialManager().addFavorite(material.root_material_id)
             return
         }
         style: ButtonStyle
