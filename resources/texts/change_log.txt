@@ -1,3 +1,66 @@
+[4.2.0]
+*Orthographic view. 
+When preparing prints, professional users wanted more control over the 3D view type, so this version introduces an orthographic view, which is the same view type used by most professional CAD software packages. Find the orthographic view in View > Camera view > Orthographic, and compare the dimensions of your model to your CAD design with ease.
+
+*Object list. 
+Easily identify corresponding filenames and models with this new popup list. Click a model in the viewport and its filename will highlight, or click a filename in the list and the corresponding model will highlight. The open or hidden state of the list will persist between sessions. How convenient.
+
+*Print previews. 
+Some improvements have been made to print previews displayed in the monitor tab, Ultimaker Connect, or the Ultimaker S5 interface. In some instances, previews were clipped at the bottom or side, and sometimes models outside of the build plate area were visible. This is all fixed now.
+
+*AMF file compatibility. 
+Ultimaker Cura now supports AMF (Additive manufacturing file format) files out-of-the-box, thanks to an AMF file reader contributed by fieldOfView.
+
+*Slice button delay. 
+After clicking ‘Slice’, a lack of response could lead to frustrated buttonclicking. This version changes the button text to read ‘Processing’ during any pre-slicing delay.
+
+*Layer view line type. 
+The line type color scheme in the layer view has been tweaked with new colors for infill and support interfaces so that they can be distinguished better. 
+
+*Nozzle switch prime distance. 
+Certain materials “ooze” more than others during retraction and long moves. vgribinchuk has contributed a new setting that lets you finetune the restart distance, so that the full extrusion width is achieved when resuming a print.
+
+*Smart Z seam. 
+A new option to increase the aesthetic quality of your prints has been added to custom mode, under Z seam settings. Smart Z seam works by analyzing your model’s geometry and automatically choosing when to hide or expose the seam, so that visible seams on outer walls are kept to a minimum.
+
+*Separate Z axis movements. 
+Z axis movement handling has been improved to reduce the chance of print head collisions with prints.
+
+*Flow per feature. 
+You can now adjust material flow for specific features of your print, such as walls, infill, support, prime towers, and adhesion. This allows line spacing to be controlled separately from flow settings.
+
+*Merge infill lines. 
+We did some finetuning of the CuraEngine to improve print quality by filling thin infill areas more precisely and efficiently, and reducing movements that caused excessive gantry vibration.
+
+*Z hop speed. 
+The Z hop speed for printers with no specific speed value would default to ‘299792458000’ (light speed!) The new Z hop speed setting ensures that all Z hops are performed at a more sensible speed, which you can control.
+
+*Support tower diameter. 
+The ‘Minimum diameter’ setting for support towers has been renamed to ‘Maximum Tower-Supported Diameter’, which is more accurate and more specific because it mentions towers.
+
+*Square prime towers. 
+Circular prime towers are now the default option. Square prime towers have been eradicated forever.
+
+*Third-party printer order. 
+The ‘add printer’ menu now includes third-party printers that are ordered by manufacturer, so that specific machines can be found easily. Printer definitions. New machine definitions added for:
+- Anet A6 contributed by markbernard
+- Stereotech ST320 and START contributed by frylock34
+- Erzay3D contributed by Robokinetics
+- FL Sun QQ contributed by curso007
+- GeeTech A30 contributed by curso007
+
+*Creawsome mod. 
+This version has pulled the Creawsome mod, made by trouch, which adds a lot of print profiles for Creality printers. It includes definitions for Creality CR10 Mini, CR10s, CR10s Pro, CR20, CR20 Pro, Ender 2, Ender 4 and Ender 5, and updates the definitions for CR10, CR10s4, CR10s5 and Ender3. The CRX is untouched. Pull requests are now submitted that merge the mod into mainline Cura.
+
+* Bug fixes
+- Noto Sans. Noto Sans was introduced as the default font in Ultimaker Cura some versions ago, but until now it wouldn’t render properly in the application unless already installed on your computer. This release forces the application to render Noto Sans even when it’s not installed as a font on your computer. Fun fact: Ultimaker recently rebranded, and we made Noto Sans our corporate font as well.
+- Reslice with per-model settings. When slicing a model with per-model settings, a change of one of the per model settings would not trigger a reslice. This has been fixed. Serial port interruptions. This version adds a way to stop serial connections if you add command line parameters.
+- Print one-at-a-time blob. In print-one-at-a-time mode, prime blobs could cause obstructions and cause prints to fail. This has been fixed.
+- Prime tower brim overlap fix. Fixed an issue where models on the build plate could overlap with brims of other models.
+- Wrong printer name. Fixed an issue where Ultimaker 3D printers that are synchronized over the network would display ‘Extruder 1’ in place of the printer’s hostname.
+- Unnecessary travel at print start. Fixed an issue where printing without a prime blob would cause the print head to make a 10 mm travel move for no reason.
+- Stair step height. This version fixes support stair step height, which influences the adhesion between the model and support printed on top (supports everywhere). For now, this bug has had no influence on PVA supported prints.
+
 [4.1.0]
 *Draggable settings panels
 There was a lot of feedback from the 4.0 release about the collapsible settings panels. Based on this feedback, we decided to make them completely draggable. The print settings panel (prepare stage) and the color scheme panel (preview stage) can now be dragged and positioned anywhere in the 3D viewer. A double click of the header will reset each to their default position.
