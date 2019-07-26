@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, TYPE_CHECKING, Callable
+from typing import Optional, Callable
 
 from cura.CuraApplication import CuraApplication
 
@@ -9,9 +9,6 @@ from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from plugins.UM3NetworkPrinting.src.Network.NetworkOutputDeviceManager import NetworkOutputDeviceManager
 
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
-
-if TYPE_CHECKING:
-    from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
 
 ## This plugin handles the discovery and networking for Ultimaker 3D printers that support network and cloud printing.
