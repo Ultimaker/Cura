@@ -25,7 +25,13 @@ Item
         color: inactiveColor
         anchors.verticalCenter: buttonBar.verticalCenter
         height: barSize
-        width: buttonBar.width
+        anchors
+        {
+            left: buttonBar.left
+            right: buttonBar.right
+            leftMargin: (checkboxSize - inactiveMarkerSize) / 2
+            rightMargin: (checkboxSize - inactiveMarkerSize) / 2
+        }
     }
 
     RowLayout
@@ -69,8 +75,6 @@ Item
                 {
                     id: activeComponent
                     sourceComponent: isEnabled? checkboxComponent : disabledComponent
-                    // Ensure the inactive markers that are not the first / last one align with the center of the checkboxes
-                    x: !isEnabled && index !== 0 && index + 1 !== repeater.count ? (checkboxSize - inactiveMarkerSize) / 2: 0
                 }
             }
         }
@@ -82,12 +86,12 @@ Item
         Item
         {
             height: checkboxSize
-            width: inactiveMarkerSize
+            width: checkboxSize
             Rectangle
             {
                 anchors.centerIn: parent
-                height: parent.width
-                width: parent.width
+                height: inactiveMarkerSize
+                width: inactiveMarkerSize
                 radius: width / 2
                 color: inactiveColor
             }
