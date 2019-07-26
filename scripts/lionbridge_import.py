@@ -124,7 +124,8 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
     last_source = {
         "msgctxt": "\"\"\n",
         "msgid": "\"\"\n",
-        "msgstr": "\"\"\n"
+        "msgstr": "\"\"\n",
+        "msgid_plural": "\"\"\n"
     }
 
     current_state = "none"
@@ -141,6 +142,10 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
             current_state = "msgstr"
             line = line[7:]
             last_source[current_state] = ""
+        elif line.startswith("msgid_plural \""):
+            current_state = "msgid_plural"
+            line = line[13:]
+            last_source[current_state] = ""
 
         if line.startswith("\"") and line.endswith("\""):
             last_source[current_state] += line + "\n"
@@ -152,9 +157,16 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
             dest_id = "".join((line.strip()[1:-1] for line in msgid.split("\n")))
 
             if source_ctxt == dest_ctxt and source_id == dest_id:
-                if last_source["msgstr"] == "\"\"\n":
+                if last_source["msgstr"] == "\"\"\n" and last_source["msgid_plural"] == "\"\"\n":
                     print("!!! Empty translation for {" + dest_ctxt + "}", dest_id, "!!!")
                 return last_source["msgstr"]
+
+            last_source = {
+                "msgctxt": "\"\"\n",
+                "msgid": "\"\"\n",
+                "msgstr": "\"\"\n",
+                "msgid_plural": "\"\"\n"
+            }
 
     #Still here? Then the entire msgctxt+msgid combination was not found at all.
     print("!!! Missing translation for {" + msgctxt.strip() + "}", msgid.strip(), "!!!")
