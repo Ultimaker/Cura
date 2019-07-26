@@ -14,6 +14,9 @@ _renamed_profiles = {"generic_pla_0.4_coarse": "jbo_generic_pla_0.4_coarse",
                      "generic_petg_0.4_medium": "jbo_generic_petg_medium",
                      }
 
+_removed_settings = {
+    "start_layers_at_same_position"
+}
 
 ##  Upgrades configurations from the state they were in at version 4.2 to the
 #   state they should be in at version 4.3.
@@ -41,11 +44,16 @@ class VersionUpgrade42to43(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         # Update version number.
         parser["metadata"]["setting_version"] = "9"
+
+        if "values" in parser:
+            for key in _removed_settings:
+                if key in parser["values"]:
+                    del parser["values"][key]
 
         result = io.StringIO()
         parser.write(result)
@@ -53,7 +61,7 @@ class VersionUpgrade42to43(VersionUpgrade):
 
     ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         # Update version number.
