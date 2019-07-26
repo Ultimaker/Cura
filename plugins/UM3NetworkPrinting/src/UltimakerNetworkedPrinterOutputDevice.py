@@ -2,10 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Dict
 
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot, QUrl
 
+from UM.Qt.Duration import Duration, DurationFormat
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
+from plugins.UM3NetworkPrinting.src.Utils import formatTimeCompleted, formatDateCompleted
 from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 
@@ -30,6 +32,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address, properties, connection_type, parent=None) -> None:
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
+
+        # Trigger the printersChanged signal when the private signal is triggered.
+        self.printersChanged.connect(self._clusterPrintersChanged)
 
         # Keeps track of all print jobs in the cluster.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -56,10 +61,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state not in self.QUEUED_PRINT_JOBS_STATES]
 
+    @pyqtProperty(bool, notify=printJobsChanged)
+    def receivedPrintJobs(self) -> bool:
+        return bool(self._print_jobs)
+
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
-        return self._cluster_size
+        return max(1, len(self._printers))
 
     # Get the amount of printer in the cluster per type.
     @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
@@ -93,6 +102,27 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         self._active_printer = printer
         self.activePrinterChanged.emit()
 
+    ##  Whether the printer that this output device represents supports print job actions via the local network.
+    @pyqtProperty(bool, constant=True)
+    def supportsPrintJobActions(self) -> bool:
+        return True
+
+    ##  Set the remote print job state.
+    def setJobState(self, print_job_uuid: str, state: str) -> None:
+        raise NotImplementedError("setJobState must be implemented")
+
+    @pyqtSlot(str, name="sendJobToTop")
+    def sendJobToTop(self, print_job_uuid: str) -> None:
+        raise NotImplementedError("sendJobToTop must be implemented")
+
+    @pyqtSlot(str, name="deleteJobFromQueue")
+    def deleteJobFromQueue(self, print_job_uuid: str) -> None:
+        raise NotImplementedError("deleteJobFromQueue must be implemented")
+
+    @pyqtSlot(str, name="forceSendJob")
+    def forceSendJob(self, print_job_uuid: str) -> None:
+        raise NotImplementedError("forceSendJob must be implemented")
+
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
         raise NotImplementedError("openPrintJobControlPanel must be implemented")
@@ -100,3 +130,23 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
         raise NotImplementedError("openPrinterControlPanel must be implemented")
+
+    @pyqtProperty(QUrl, notify=_clusterPrintersChanged)
+    def activeCameraUrl(self) -> QUrl:
+        return QUrl()
+
+    @pyqtSlot(QUrl, name="setActiveCameraUrl")
+    def setActiveCameraUrl(self, camera_url: QUrl) -> None:
+        pass
+
+    @pyqtSlot(int, result=str, name="getTimeCompleted")
+    def getTimeCompleted(self, time_remaining: int) -> str:
+        return formatTimeCompleted(time_remaining)
+
+    @pyqtSlot(int, result=str, name="getDateCompleted")
+    def getDateCompleted(self, time_remaining: int) -> str:
+        return formatDateCompleted(time_remaining)
+
+    @pyqtSlot(int, result=str, name="formatDuration")
+    def formatDuration(self, seconds: int) -> str:
+        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)

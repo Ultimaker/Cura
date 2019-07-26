@@ -1,6 +1,5 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from typing import Any, cast, Tuple, Union, Optional, Dict, List
 from time import time
 
@@ -14,7 +13,6 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
-from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode  # For typing.
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
@@ -27,7 +25,6 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from plugins.UM3NetworkPrinting.src.Factories.PrinterModelFactory import PrinterModelFactory
 from plugins.UM3NetworkPrinting.src.UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 
-from plugins.UM3NetworkPrinting.src.Cloud.Utils import formatTimeCompleted, formatDateCompleted
 from plugins.UM3NetworkPrinting.src.Network.ClusterUM3PrinterOutputController import ClusterUM3PrinterOutputController
 from plugins.UM3NetworkPrinting.src.MeshFormatHandler import MeshFormatHandler
 from plugins.UM3NetworkPrinting.src.SendMaterialJob import SendMaterialJob
@@ -43,7 +40,6 @@ i18n_catalog = i18nCatalog("cura")
 class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
-    receivedPrintJobsChanged = pyqtSignal()
 
     def __init__(self, device_id, address, properties, parent = None) -> None:
         super().__init__(device_id = device_id, address = address, properties=properties, connection_type = ConnectionType.NetworkConnection, parent = parent)
@@ -56,8 +52,6 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._dummy_lambdas = (
             "", {}, io.BytesIO()
         )  # type: Tuple[Optional[str], Dict[str, Union[str, int, bool]], Union[io.StringIO, io.BytesIO]]
-
-        self._received_print_jobs = False # type: bool
 
         if PluginRegistry.getInstance() is not None:
             plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
@@ -113,10 +107,9 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
             if len(self._printers) > 1:  # We need to ask the user.
                 self._spawnPrinterSelectionDialog()
-                is_job_sent = True
             else:  # Just immediately continue.
                 self._sending_job.send("")  # No specifically selected printer.
-                is_job_sent = self._sending_job.send(None)
+                self._sending_job.send(None)
 
     def _spawnPrinterSelectionDialog(self):
         if self._printer_selection_dialog is None:
@@ -128,11 +121,6 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
                 self._printer_selection_dialog = self._application.createQmlComponent(path, {"OutputDevice": self})
         if self._printer_selection_dialog is not None:
             self._printer_selection_dialog.show()
-
-    ##  Whether the printer that this output device represents supports print job actions via the local network.
-    @pyqtProperty(bool, constant=True)
-    def supportsPrintJobActions(self) -> bool:
-        return True
 
     ##  Allows the user to choose a printer to print with from the printer
     #   selection dialogue.
@@ -225,26 +213,26 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
                                                             on_finished = self._onPostPrintJobFinished,
                                                             on_progress = self._onUploadPrintJobProgress)
 
-    @pyqtProperty(QUrl, notify = activeCameraUrlChanged)
-    def activeCameraUrl(self) -> "QUrl":
+    @pyqtProperty(QUrl, notify=activeCameraUrlChanged)
+    def activeCameraUrl(self) -> QUrl:
         return self._active_camera_url
 
-    @pyqtSlot(QUrl)
-    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
+    @pyqtSlot(QUrl, name="setActiveCameraUrl")
+    def setActiveCameraUrl(self, camera_url: QUrl) -> None:
         if self._active_camera_url != camera_url:
             self._active_camera_url = camera_url
             self.activeCameraUrlChanged.emit()
+
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant = True)
+    def address(self) -> str:
+        return self._address
 
     def _onPostPrintJobFinished(self, reply: QNetworkReply) -> None:
         if self._progress_message:
             self._progress_message.hide()
         self._compressing_gcode = False
         self._sending_gcode = False
-
-    ##  The IP address of the printer.
-    @pyqtProperty(str, constant = True)
-    def address(self) -> str:
-        return self._address
 
     def _onUploadPrintJobProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:
@@ -294,44 +282,26 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        Logger.log("d", "Opening print job control panel...")
         QDesktopServices.openUrl(QUrl("http://" + self._address + "/print_jobs"))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        Logger.log("d", "Opening printer control panel...")
         QDesktopServices.openUrl(QUrl("http://" + self._address + "/printers"))
 
-    @pyqtProperty(bool, notify = receivedPrintJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return self._received_print_jobs
-
-    @pyqtSlot(int, result = str)
-    def getTimeCompleted(self, time_remaining: int) -> str:
-        return formatTimeCompleted(time_remaining)
-
-    @pyqtSlot(int, result = str)
-    def getDateCompleted(self, time_remaining: int) -> str:
-        return formatDateCompleted(time_remaining)
-
-    @pyqtSlot(int, result = str)
-    def formatDuration(self, seconds: int) -> str:
-        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
-
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
         # This function is part of the output device (and not of the printjob output model) as this type of operation
         # is a modification of the cluster queue and not of the actual job.
         data = "{\"to_position\": 0}"
         self.put("print_jobs/{uuid}/move_to_position".format(uuid = print_job_uuid), data, on_finished=None)
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="deleteJobFromQueue")
     def deleteJobFromQueue(self, print_job_uuid: str) -> None:
         # This function is part of the output device (and not of the printjob output model) as this type of operation
         # is a modification of the cluster queue and not of the actual job.
         self.delete("print_jobs/{uuid}".format(uuid = print_job_uuid), on_finished=None)
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
         data = "{\"force\": true}"
         self.put("print_jobs/{uuid}".format(uuid=print_job_uuid), data, on_finished=None)
@@ -392,9 +362,6 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
                 self.get("print_jobs/{uuid}/preview_image".format(uuid=print_job.key), on_finished=self._onGetPreviewImageFinished)
 
     def _onGetPrintJobsFinished(self, reply: QNetworkReply) -> None:
-        self._received_print_jobs = True
-        self.receivedPrintJobsChanged.emit()
-
         if not checkValidGetReply(reply):
             return
 
@@ -633,6 +600,7 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def sendMaterialProfiles(self) -> None:
         job = SendMaterialJob(device = self)
         job.run()
+
 
 def loadJsonFromReply(reply: QNetworkReply) -> Optional[List[Dict[str, Any]]]:
     try:

@@ -3,7 +3,7 @@
 import os
 
 from time import time
-from typing import Dict, List, Optional, Set, cast
+from typing import List, Optional, Set, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QDesktopServices
@@ -14,14 +14,13 @@ from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
-from UM.Qt.Duration import Duration, DurationFormat
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState, NetworkedPrinterOutputDevice
-from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 
 from .CloudOutputController import CloudOutputController
 from ..MeshFormatHandler import MeshFormatHandler
@@ -35,7 +34,7 @@ from plugins.UM3NetworkPrinting.src.Models.CloudPrintResponse import CloudPrintR
 from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
 from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
 from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
-from .Utils import formatDateCompleted, formatTimeCompleted
+
 
 I18N_CATALOG = i18nCatalog("cura")
 
@@ -44,7 +43,8 @@ I18N_CATALOG = i18nCatalog("cura")
 #   Currently it only supports viewing the printer and print job status and adding a new job to the queue.
 #   As such, those methods have been implemented here.
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
-class CloudOutputDevice(NetworkedPrinterOutputDevice):
+class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
+
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 10.0  # seconds
 
@@ -81,11 +81,10 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         super().__init__(device_id=cluster.cluster_id, address="",
                          connection_type=ConnectionType.CloudConnection, properties=properties, parent=parent)
         self._api = api_client
+        self._account = api_client.account
         self._cluster = cluster
 
         self._setInterfaceElements()
-
-        self._account = api_client.account
 
         # We use the Cura Connect monitor tab to get most functionality right away.
         if PluginRegistry.getInstance() is not None:
@@ -97,13 +96,6 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
-
-        # We keep track of which printer is visible in the monitor page.
-        self._active_printer = None  # type: Optional[PrinterOutputModel]
-
-        # Properties to populate later on with received cloud data.
-        self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
-        self._number_of_extruders = 2  # All networked printers are dual-extrusion Ultimaker machines.
 
         # We only allow a single upload at a time.
         self._progress = CloudProgressMessage()
@@ -382,98 +374,27 @@ class CloudOutputDevice(NetworkedPrinterOutputDevice):
         firmware_version = Version([version_number[0], version_number[1], version_number[2]])
         return firmware_version >= self.PRINT_JOB_ACTIONS_MIN_VERSION
 
-    ##  Gets the number of printers in the cluster.
-    #   We use a minimum of 1 because cloud devices are always a cluster and printer discovery needs it.
-    @pyqtProperty(int, notify=_clusterPrintersChanged)
-    def clusterSize(self) -> int:
-        return max(1, len(self._printers))
-
-    ##  Gets the remote printers.
-    @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
-    def printers(self) -> List[PrinterOutputModel]:
-        return self._printers
-
-    ##  Get the active printer in the UI (monitor page).
-    @pyqtProperty(QObject, notify=activePrinterChanged)
-    def activePrinter(self) -> Optional[PrinterOutputModel]:
-        return self._active_printer
-
-    ## Set the active printer in the UI (monitor page).
-    @pyqtSlot(QObject)
-    def setActivePrinter(self, printer: Optional[PrinterOutputModel] = None) -> None:
-        if printer != self._active_printer:
-            self._active_printer = printer
-            self.activePrinterChanged.emit()
-
-    ##  Get remote print jobs.
-    @pyqtProperty("QVariantList", notify=printJobsChanged)
-    def printJobs(self) -> List[UM3PrintJobOutputModel]:
-        return self._print_jobs
-
-    ##  Get remote print jobs that are still in the print queue.
-    @pyqtProperty("QVariantList", notify=printJobsChanged)
-    def queuedPrintJobs(self) -> List[UM3PrintJobOutputModel]:
-        return [print_job for print_job in self._print_jobs
-                if print_job.state == "queued" or print_job.state == "error"]
-
-    ##  Get remote print jobs that are assigned to a printer.
-    @pyqtProperty("QVariantList", notify=printJobsChanged)
-    def activePrintJobs(self) -> List[UM3PrintJobOutputModel]:
-        return [print_job for print_job in self._print_jobs if
-                print_job.assignedPrinter is not None and print_job.state != "queued"]
-
     ##  Set the remote print job state.
     def setJobState(self, print_job_uuid: str, state: str) -> None:
         self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, state)
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
         self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "move",
                                    {"list": "queued", "to_position": 0})
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="deleteJobFromQueue")
     def deleteJobFromQueue(self, print_job_uuid: str) -> None:
         self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "remove")
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
         self._api.doPrintJobAction(self._cluster.cluster_id, print_job_uuid, "force")
 
-    @pyqtSlot(int, result=str)
-    def formatDuration(self, seconds: int) -> str:
-        return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
-
-    @pyqtSlot(int, result=str)
-    def getTimeCompleted(self, time_remaining: int) -> str:
-        return formatTimeCompleted(time_remaining)
-
-    @pyqtSlot(int, result=str)
-    def getDateCompleted(self, time_remaining: int) -> str:
-        return formatDateCompleted(time_remaining)
-
-    @pyqtProperty(bool, notify=printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return bool(self._print_jobs)
-
-    @pyqtSlot()
+    @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
         QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
 
-    @pyqtSlot()
+    @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
         QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
-
-    ##  TODO: The following methods are required by the monitor page QML, but are not actually available using cloud.
-    #   TODO: We fake the methods here to not break the monitor page.
-
-    @pyqtProperty(QUrl, notify=_clusterPrintersChanged)
-    def activeCameraUrl(self) -> "QUrl":
-        return QUrl()
-
-    @pyqtSlot(QUrl)
-    def setActiveCameraUrl(self, camera_url: "QUrl") -> None:
-        pass
-
-    @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
-    def connectedPrintersTypeCount(self) -> List[Dict[str, str]]:
-        return []

@@ -15,7 +15,7 @@ from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
 from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
-from .Utils import findChanges
+from plugins.UM3NetworkPrinting.src.Utils import findChanges
 
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
