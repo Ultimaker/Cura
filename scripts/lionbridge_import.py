@@ -5,6 +5,9 @@ import argparse #To get the source directory from command line arguments.
 import os #To find files from the source.
 import os.path #To find files from the source and the destination path.
 
+cura_files = {"cura", "fdmprinter.def.json", "fdmextruder.def.json"}
+uranium_files = {"uranium"}
+
 ##  Imports translation files from Lionbridge.
 #
 #   Lionbridge has a bit of a weird export feature. It exports it to the same
@@ -16,6 +19,27 @@ def lionbridge_import(source: str) -> None:
     print("Importing from:", source)
     print("Importing to Cura:", destination_cura())
     print("Importing to Uranium:", destination_uranium())
+
+    for language in (directory for directory in os.listdir(source) if os.path.isdir(os.path.join(source, directory))):
+        print("================ Processing language:", language, "================")
+        directory = os.path.join(source, language)
+        for file_pot in (file for file in os.listdir(directory) if file.endswith(".pot")):
+            source_file = file_pot[:-4] #Strip extension.
+            if source_file in cura_files:
+                destination_file = os.path.join(destination_cura(), language.replace("-", "_"), source_file + ".po")
+                print("Merging", source_file, "(Cura) into", destination_file)
+            elif source_file in uranium_files:
+                destination_file = os.path.join(destination_uranium(), language.replace("-", "_"), source_file + ".po")
+                print("Merging", source_file, "(Uranium) into", destination_file)
+            else:
+                raise Exception("Unknown file: " + source_file + "... Is this Cura or Uranium?")
+
+            with open(os.path.join(directory, file_pot)) as f:
+                source_str = f.read()
+            with open(destination_file) as f:
+                destination_str = f.read()
+            result = merge(source_str, destination_str)
+            print(result) #DEBUG! Instead we should write this to a file.
 
 ##  Gets the destination path to copy the translations for Cura to.
 def destination_cura() -> str:
@@ -33,6 +57,9 @@ def destination_uranium() -> str:
         else:
             raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder.")
     return os.path.abspath(os.path.join(UM.__file__, "..", "..", "resources", "i18n"))
+
+def merge(source: str, destination: str) -> str:
+    return "TODO"
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description = "Import translation files from Lionbridge.")
