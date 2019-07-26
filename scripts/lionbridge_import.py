@@ -42,10 +42,12 @@ def lionbridge_import(source: str) -> None:
             print(result) #DEBUG! Instead we should write this to a file.
 
 ##  Gets the destination path to copy the translations for Cura to.
+#   \return Destination path for Cura.
 def destination_cura() -> str:
     return os.path.abspath(os.path.join(__file__, "..", "..", "resources", "i18n"))
 
 ##  Gets the destination path to copy the translations for Uranium to.
+#   \return Destination path for Uranium.
 def destination_uranium() -> str:
     try:
         import UM
@@ -58,6 +60,10 @@ def destination_uranium() -> str:
             raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder.")
     return os.path.abspath(os.path.join(UM.__file__, "..", "..", "resources", "i18n"))
 
+##  Merges translations from the source file into the destination file if they
+#   were missing in the destination file.
+#   \param source The contents of the source .po file.
+#   \param destination The contents of the destination .po file.
 def merge(source: str, destination: str) -> str:
     last_destination = {
         "msgctxt": "",
@@ -86,7 +92,11 @@ def merge(source: str, destination: str) -> str:
             if last_destination["msgstr"] == "" and last_destination["msgid"] != "": #No translation for this yet!
                 translation = find_translation(source, last_destination["msgctxt"], last_destination["msgid"])
 
-def find_translation(source: str, msgctxt, msgid):
+##  Finds a translation in the source file.
+#   \param source The contents of the source .po file.
+#   \param msgctxt The ctxt of the translation to find.
+#   \param msgid The id of the translation to find.
+def find_translation(source: str, msgctxt: str, msgid: str) -> str:
     last_source = {
         "msgctxt": "",
         "msgid": "",
