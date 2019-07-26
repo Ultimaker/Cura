@@ -59,7 +59,65 @@ def destination_uranium() -> str:
     return os.path.abspath(os.path.join(UM.__file__, "..", "..", "resources", "i18n"))
 
 def merge(source: str, destination: str) -> str:
-    return "TODO"
+    last_destination = {
+        "msgctxt": "",
+        "msgid": "",
+        "msgstr": ""
+    }
+
+    current_state = "none"
+    for line in destination.split("\n"):
+        if line.startswith("msgctxt \""):
+            current_state = "msgctxt"
+            line = line[8:]
+            last_destination[current_state] = ""
+        elif line.startswith("msgid \""):
+            current_state = "msgid"
+            line = line[6:]
+            last_destination[current_state] = ""
+        elif line.startswith("msgstr \""):
+            current_state = "msgstr"
+            line = line[7:]
+            last_destination[current_state] = ""
+
+        if line.startswith("\"") and line.endswith("\""):
+            last_destination[current_state] += line[1:-1]
+        else: #White lines trigger us to search for the translation in the source file.
+            if last_destination["msgstr"] == "" and last_destination["msgid"] != "": #No translation for this yet!
+                translation = find_translation(source, last_destination["msgctxt"], last_destination["msgid"])
+
+def find_translation(source: str, msgctxt, msgid):
+    last_source = {
+        "msgctxt": "",
+        "msgid": "",
+        "msgstr": ""
+    }
+
+    current_state = "none"
+    for line in source.split("\n"):
+        if line.startswith("msgctxt \""):
+            current_state = "msgctxt"
+            line = line[8:]
+            last_source[current_state] = ""
+        elif line.startswith("msgid \""):
+            current_state = "msgid"
+            line = line[6:]
+            last_source[current_state] = ""
+        elif line.startswith("msgstr \""):
+            current_state = "msgstr"
+            line = line[7:]
+            last_source[current_state] = ""
+
+        if line.startswith("\"") and line.endswith("\""):
+            last_source[current_state] += line[1:-1]
+        else: #White lines trigger us to process this translation. Is it the correct one?
+            if last_source["msgctxt"] == msgctxt and last_source["msgid"] == msgid:
+                if last_source["msgstr"] == "":
+                    print("!!! Empty translation for {" + msgctxt + "}", msgid, "!!!")
+                return last_source["msgstr"]
+
+    #Still here? Then the entire msgctxt+msgid combination was not found at all.
+    print("!!! Missing translation for {" + msgctxt + "}", msgid, "!!!")
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser(description = "Import translation files from Lionbridge.")
