@@ -146,10 +146,11 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
             last_source[current_state] += line + "\n"
         else: #White lines trigger us to process this translation. Is it the correct one?
             #Process the source and destination keys for comparison independent of newline technique.
-            source_ctxt = "".join((line.strip()[1:-1].strip() for line in last_source["msgctxt"].split("\n")))
-            source_id = "".join((line.strip()[1:-1].strip() for line in last_source["msgid"].split("\n")))
-            dest_ctxt = "".join((line.strip()[1:-1].strip() for line in msgctxt.split("\n")))
-            dest_id = "".join((line.strip()[1:-1].strip() for line in msgid.split("\n")))
+            source_ctxt = "".join((line.strip()[1:-1] for line in last_source["msgctxt"].split("\n")))
+            source_id = "".join((line.strip()[1:-1] for line in last_source["msgid"].split("\n")))
+            dest_ctxt = "".join((line.strip()[1:-1] for line in msgctxt.split("\n")))
+            dest_id = "".join((line.strip()[1:-1] for line in msgid.split("\n")))
+
             if source_ctxt == dest_ctxt and source_id == dest_id:
                 if last_source["msgstr"] == "\"\"\n":
                     print("!!! Empty translation for {" + dest_ctxt + "}", dest_id, "!!!")
