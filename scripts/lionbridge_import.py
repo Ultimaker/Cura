@@ -70,7 +70,8 @@ def merge(source: str, destination: str) -> str:
     last_destination = {
         "msgctxt": "\"\"\n",
         "msgid": "\"\"\n",
-        "msgstr": "\"\"\n"
+        "msgstr": "\"\"\n",
+        "msgid_plural": "\"\"\n"
     }
 
     current_state = "none"
@@ -87,21 +88,30 @@ def merge(source: str, destination: str) -> str:
             current_state = "msgstr"
             line = line[7:]
             last_destination[current_state] = ""
+        elif line.startswith("msgid_plural \""):
+            current_state = "msgid_plural"
+            line = line[13:]
+            last_destination[current_state] = ""
 
         if line.startswith("\"") and line.endswith("\""):
             last_destination[current_state] += line + "\n"
         else: #White lines or comment lines trigger us to search for the translation in the source file.
             if last_destination["msgstr"] == "\"\"\n" and last_destination["msgid"] != "\"\"\n": #No translation for this yet!
                 last_destination["msgstr"] = find_translation(source, last_destination["msgctxt"], last_destination["msgid"]) #Actually place the translation in.
-            if last_destination["msgctxt"] != "\"\"\n" or last_destination["msgid"] != "\"\"\n" or last_destination["msgstr"] != "\"\"\n":
-                result_lines.append("msgctxt {msgctxt}".format(msgctxt = last_destination["msgctxt"][:-1])) #The [:-1] to strip the last newline.
+            if last_destination["msgctxt"] != "\"\"\n" or last_destination["msgid"] != "\"\"\n" or last_destination["msgid_plural"] != "\"\"\n" or last_destination["msgstr"] != "\"\"\n":
+                if last_destination["msgctxt"] != "\"\"\n":
+                    result_lines.append("msgctxt {msgctxt}".format(msgctxt = last_destination["msgctxt"][:-1])) #The [:-1] to strip the last newline.
                 result_lines.append("msgid {msgid}".format(msgid = last_destination["msgid"][:-1]))
-                result_lines.append("msgstr {msgstr}".format(msgstr = last_destination["msgstr"][:-1]))
-                last_destination = {
-                    "msgctxt": "\"\"\n",
-                    "msgid": "\"\"\n",
-                    "msgstr": "\"\"\n"
-                }
+                if last_destination["msgid_plural"] != "\"\"\n":
+                    result_lines.append("msgid_plural {msgid_plural}".format(msgid_plural = last_destination["msgid_plural"][:-1]))
+                else:
+                    result_lines.append("msgstr {msgstr}".format(msgstr = last_destination["msgstr"][:-1]))
+            last_destination = {
+                "msgctxt": "\"\"\n",
+                "msgid": "\"\"\n",
+                "msgstr": "\"\"\n",
+                "msgid_plural": "\"\"\n"
+            }
 
             result_lines.append(line) #This line itself.
     return "\n".join(result_lines)
@@ -135,13 +145,18 @@ def find_translation(source: str, msgctxt: str, msgid: str) -> str:
         if line.startswith("\"") and line.endswith("\""):
             last_source[current_state] += line + "\n"
         else: #White lines trigger us to process this translation. Is it the correct one?
-            if last_source["msgctxt"] == msgctxt and last_source["msgid"] == msgid:
+            #Process the source and destination keys for comparison independent of newline technique.
+            source_ctxt = "".join((line.strip()[1:-1].strip() for line in last_source["msgctxt"].split("\n")))
+            source_id = "".join((line.strip()[1:-1].strip() for line in last_source["msgid"].split("\n")))
+            dest_ctxt = "".join((line.strip()[1:-1].strip() for line in msgctxt.split("\n")))
+            dest_id = "".join((line.strip()[1:-1].strip() for line in msgid.split("\n")))
+            if source_ctxt == dest_ctxt and source_id == dest_id:
                 if last_source["msgstr"] == "\"\"\n":
-                    print("!!! Empty translation for {" + msgctxt + "}", msgid, "!!!")
+                    print("!!! Empty translation for {" + dest_ctxt + "}", dest_id, "!!!")
                 return last_source["msgstr"]
 
     #Still here? Then the entire msgctxt+msgid combination was not found at all.
-    print("!!! Missing translation for {" + msgctxt + "}", msgid, "!!!")
+    print("!!! Missing translation for {" + msgctxt.strip() + "}", msgid.strip(), "!!!")
     return "\"\"\n"
 
 if __name__ == "__main__":
