@@ -4,6 +4,7 @@ from typing import Optional, Dict, List, Any
 
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob
@@ -167,11 +168,15 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     #  It can now be sent over the network.
     def _onPrintJobCreated(self, job: WriteFileJob) -> None:
         self._progress.show()
+        # TODO: extract multi-part stuff
         parts = []
         parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
         output = job.getStream().getvalue()
+        if isinstance(output, str):
+            # Ensure that our output is bytes
+            output = output.encode("utf-8")
         parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % job.getFileName(), output))
-        self.postFormWithParts("print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
+        self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
                                on_progress=self._onPrintJobUploadProgress)
 
     ## Handler for print job upload progress.
@@ -181,7 +186,7 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeProgress.emit()
 
     ## Handler for when the print job was fully uploaded to the cluster.
-    def _onPrintUploadCompleted(self) -> None:
+    def _onPrintUploadCompleted(self, reply: QNetworkReply) -> None:
         self._progress.hide()
         Message(
             text=I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
