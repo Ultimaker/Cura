@@ -17,7 +17,6 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
-from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..MeshFormatHandler import MeshFormatHandler
@@ -84,14 +83,10 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._account = api_client.account
         self._cluster = cluster
         self.setAuthenticationState(AuthState.NotAuthenticated)
-
         self._setInterfaceElements()
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
-
-        # We only allow a single upload at a time.
-        self._progress = CloudProgressMessage()
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[ClusterPrinterStatus]]
@@ -143,15 +138,14 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
 
     ##  Called when Cura requests an output device to receive a (G-code) file.
-    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
+    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional[FileHandler] = None, filter_by_machine: bool = False, **kwargs) -> None:
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
             message = Message(
-                text=I18N_CATALOG.i18nc("@info:status",
-                                        "Sending new jobs (temporarily) blocked, still sending the previous print job."),
-                title=I18N_CATALOG.i18nc("@info:title", "Cloud error"),
+                text=I18N_CATALOG.i18nc("@info:status", "Please wait until the current job has been sent."),
+                title=I18N_CATALOG.i18nc("@info:title", "Print error"),
                 lifetime=10
             )
             message.show()
@@ -170,8 +164,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             Logger.log("e", "Missing file or mesh writer!")
             return self._onUploadError(I18N_CATALOG.i18nc("@info:status", "Could not export print job."))
 
+        # TODO: use stream just like the network output device
         mesh = mesh_format.getBytes(nodes)
-
         self._tool_path = mesh
         request = CloudPrintJobUploadRequest(
             job_name=file_name or mesh_format.file_extension,
@@ -236,7 +230,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Shows a message when the upload has succeeded
     #  \param response: The response from the cloud API.
     def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
-        Logger.log("d", "The cluster will be printing this print job with the ID %s", response.cluster_job_id)
         self._progress.hide()
         Message(
             text=I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),

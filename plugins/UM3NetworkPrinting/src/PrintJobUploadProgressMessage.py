@@ -8,11 +8,11 @@ I18N_CATALOG = i18nCatalog("cura")
 
 
 ## Class responsible for showing a progress message while a mesh is being uploaded to the cloud.
-class CloudProgressMessage(Message):
+class PrintJobUploadProgressMessage(Message):
     def __init__(self):
         super().__init__(
             title = I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
-            text = I18N_CATALOG.i18nc("@info:status", "Uploading via Ultimaker Cloud"),
+            text = I18N_CATALOG.i18nc("@info:status", "Uploading print job to printer."),
             progress = -1,
             lifetime = 0,
             dismissable = False,

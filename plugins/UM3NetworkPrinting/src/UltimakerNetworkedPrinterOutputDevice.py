@@ -14,6 +14,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
+from .PrintJobUploadProgressMessage import PrintJobUploadProgressMessage
 from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -59,6 +60,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Load the Monitor UI elements.
         self._loadMonitorTab()
+
+        # The job upload progress message modal.
+        self._progress = PrintJobUploadProgressMessage()
 
     ##  The IP address of the printer.
     @pyqtProperty(str, constant=True)
