@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0200\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2019-07-29 16:09+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:27
 msgctxt "@action"
@@ -929,7 +929,7 @@ msgstr "유효하지 않은 파일 URL:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr "익스트루더의 현재 가용성과 일치하도록 설정이 변경되었습니다."
+msgstr "익스트루더의 현재 가용성과 일치하도록 설정이 변경되었습니다:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
@@ -2040,7 +2040,7 @@ msgstr "네트워크를 통해 프린터로 직접 프린팅하려면 네트워�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr "아래 목록에서 프린터를 선택하십시오."
+msgstr "아래 목록에서 프린터를 선택하십시오:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2338,7 +2338,9 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr "프린터에 연결이 있는지 확인하십시오.⏎- 프린터가 켜져 있는지 확인하십시오.\n- 프린터가 네트워크에 연결되어 있는지 확인하십시오.⏎- 클라우드로 연결된 프린터를 탐색할 수 있도록 로그인되어 있는지 확인하십시오."
+msgstr ""
+"프린터에 연결이 있는지 확인하십시오.⏎- 프린터가 켜져 있는지 확인하십시오.\n"
+"- 프린터가 네트워크에 연결되어 있는지 확인하십시오.⏎- 클라우드로 연결된 프린터를 탐색할 수 있도록 로그인되어 있는지 확인하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
