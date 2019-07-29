@@ -11,12 +11,12 @@ from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
 from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
+from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
 
 ## Output device class that forms the basis of Ultimaker networked printer output devices.
@@ -211,8 +211,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         self.printersChanged.emit()
 
-    ## Updates the local list of print jobs with the list received from the cloud.
-    #  \param remote_jobs: The print jobs received from the cloud.
+    ## Updates the local list of print jobs with the list received from the cluster.
+    #  \param remote_jobs: The print jobs received from the cluster.
     def _updatePrintJobs(self, remote_jobs: List[ClusterPrintJobStatus]) -> None:
 
         # Keep track of the new print jobs to show.
@@ -250,6 +250,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
         return model
+
+    def _onPrintJobStateChanged(self) -> None:
+        pass
 
     ## Updates the printer assignment for the given print job model.
     def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:

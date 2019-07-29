@@ -6,8 +6,8 @@ from cura.CuraApplication import CuraApplication
 
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
-from plugins.UM3NetworkPrinting.src.Network.NetworkOutputDeviceManager import NetworkOutputDeviceManager
 
+from .Network.NetworkOutputDeviceManager import NetworkOutputDeviceManager
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 
@@ -72,16 +72,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
     ## Remove a manually connected networked printer.
     def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
         self._network_output_device_manager.removeManualDevice(key, address)
-
-    # ## Get the last manual device attempt.
-    # #  Used by the DiscoverUM3Action.
-    # def getLastManualDevice(self) -> str:
-    #     return self._network_output_device_manager.getLastManualDevice()
-
-    # ## Reset the last manual device attempt.
-    # #  Used by the DiscoverUM3Action.
-    # def resetLastManualDevice(self) -> None:
-    #     self._network_output_device_manager.resetLastManualDevice()
 
     # ## Check if the prerequsites are in place to start the cloud flow
     # def checkCloudFlowIsPossible(self, cluster: Optional[CloudOutputDevice]) -> None:

@@ -6,13 +6,14 @@ from PyQt5.QtCore import pyqtProperty, pyqtSignal
 
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
-from plugins.UM3NetworkPrinting.src.Models.ConfigurationChangeModel import ConfigurationChangeModel
+
+from .ConfigurationChangeModel import ConfigurationChangeModel
 
 
 class UM3PrintJobOutputModel(PrintJobOutputModel):
     configurationChangesChanged = pyqtSignal()
 
-    def __init__(self, output_controller: "PrinterOutputController", key: str = "", name: str = "", parent=None) -> None:
+    def __init__(self, output_controller: PrinterOutputController, key: str = "", name: str = "", parent=None) -> None:
         super().__init__(output_controller, key, name, parent)
         self._configuration_changes = []    # type: List[ConfigurationChangeModel]
 

@@ -15,9 +15,10 @@ from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
-from plugins.UM3NetworkPrinting.src.Network.ClusterApiClient import ClusterApiClient
-from plugins.UM3NetworkPrinting.src.Network.ClusterUM3OutputDevice import ClusterUM3OutputDevice
-from plugins.UM3NetworkPrinting.src.Network.ManualPrinterRequest import ManualPrinterRequest
+
+from .ClusterApiClient import ClusterApiClient
+from .LocalClusterOutputDevice import LocalClusterOutputDevice
+from .ManualPrinterRequest import ManualPrinterRequest
 
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
@@ -37,7 +38,7 @@ class NetworkOutputDeviceManager:
     def __init__(self) -> None:
 
         # Persistent dict containing the networked clusters.
-        self._discovered_devices = {}  # type: Dict[str, ClusterUM3OutputDevice]
+        self._discovered_devices = {}  # type: Dict[str, LocalClusterOutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
         self._zero_conf = None  # type: Optional[Zeroconf]
@@ -211,7 +212,7 @@ class NetworkOutputDeviceManager:
         if cluster_size == -1:
             return
 
-        device = ClusterUM3OutputDevice(key, address, properties)
+        device = LocalClusterOutputDevice(key, address, properties)
 
         CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
             ip_address=address,

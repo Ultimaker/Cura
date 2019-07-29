@@ -8,12 +8,13 @@ from PyQt5.QtCore import QUrl
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
-from plugins.UM3NetworkPrinting.src.Models.BaseModel import BaseModel
+
+from ..Models.BaseModel import BaseModel
+from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
+from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 
 
 ## The generic type variable used to document the methods below.
-from plugins.UM3NetworkPrinting.src.Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
-
 ClusterApiClientModel = TypeVar("ClusterApiClientModel", bound=BaseModel)
 
 
@@ -53,13 +54,23 @@ class ClusterApiClient:
 
     ## Get the print jobs in the cluster.
     #  \param on_finished: The callback in case the response is successful.
-    def getPrintJobs(self, on_finished: Callable) -> None:
+    def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
         url = f"{self.CLUSTER_API_PREFIX}/print_jobs/"
-        # reply = self._manager.get(self._createEmptyRequest(url))
-        # self._addCallback(reply, on_finished)
+        reply = self._manager.get(self._createEmptyRequest(url))
+        self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
     def requestPrint(self) -> None:
-        pass
+        pass  # TODO
+
+    ## Move a print job to the top of the queue.
+    def movePrintJobToTop(self, print_job_uuid: str) -> None:
+        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action/move"
+        self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+
+    ## Delete a print job from the queue.
+    def deletePrintJob(self, print_job_uuid: str) -> None:
+        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}"
+        self._manager.deleteResource(self._createEmptyRequest(url))
 
     ## Send a print job action to the cluster.
     #  \param print_job_uuid: The UUID of the print job to perform the action on.
@@ -68,7 +79,7 @@ class ClusterApiClient:
     def doPrintJobAction(self, print_job_uuid: str, action: str, data: Optional[Dict[str, Union[str, int]]] = None
                          ) -> None:
         url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action/{action}/"
-        body = json.loads(data).encode() if data else b""
+        body = json.dumps(data).encode() if data else b""
         self._manager.put(self._createEmptyRequest(url), body)
 
     ## We override _createEmptyRequest in order to add the user credentials.

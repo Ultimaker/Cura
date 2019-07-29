@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from PyQt5.QtCore import pyqtProperty, QObject
+
 
 BLOCKING_CHANGE_TYPES = [
     "material_insert", "buildplate_change"
@@ -11,8 +11,7 @@ BLOCKING_CHANGE_TYPES = [
 class ConfigurationChangeModel(QObject):
     def __init__(self, type_of_change: str, index: int, target_name: str, origin_name: str) -> None:
         super().__init__()
-        self._type_of_change = type_of_change
-                                    # enum = ["material", "print_core_change"]
+        self._type_of_change = type_of_change  # enum = ["material", "print_core_change"]
         self._can_override = self._type_of_change not in BLOCKING_CHANGE_TYPES
         self._index = index
         self._target_name = target_name

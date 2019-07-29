@@ -9,7 +9,7 @@ from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from ...src.Cloud import CloudApiClient
 from ...src.Cloud.CloudOutputDevice import CloudOutputDevice
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
+from ...src.Models.Http.CloudClusterResponse import CloudClusterResponse
 from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 

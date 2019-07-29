@@ -1,5 +1,5 @@
 ##  Class representing a material that was fetched from the cluster API.
-from plugins.UM3NetworkPrinting.src.Models.BaseModel import BaseModel
+from .BaseModel import BaseModel
 
 
 class ClusterMaterial(BaseModel):

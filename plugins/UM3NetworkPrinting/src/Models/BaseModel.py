@@ -3,6 +3,10 @@ from datetime import datetime, timezone
 from typing import TypeVar, Dict, List, Any, Type, Union
 
 
+# Type variable used in the parse methods below, which should be a subclass of BaseModel.
+T = TypeVar("T", bound="BaseModel")
+
+
 class BaseModel:
 
     def __init__(self, **kwargs) -> None:
@@ -28,9 +32,6 @@ class BaseModel:
     ## Converts the model into a serializable dictionary
     def toDict(self) -> Dict[str, Any]:
         return self.__dict__
-
-    # Type variable used in the parse methods below, which should be a subclass of BaseModel.
-    T = TypeVar("T", bound="BaseModel")
 
     ## Parses a single model.
     #  \param model_class: The model class.

@@ -6,12 +6,14 @@ from unittest import TestCase
 from unittest.mock import patch, MagicMock
 
 from cura.UltimakerCloudAuthentication import CuraCloudAPIRoot
+
 from ...src.Cloud import CloudApiClient
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
+from ...src.Models.Http.CloudClusterResponse import CloudClusterResponse
+from ...src.Models.Http.CloudClusterStatus import CloudClusterStatus
+from ...src.Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
+from ...src.Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ...src.Models.Http.CloudError import CloudError
+
 from .Fixtures import readFixture, parseFixture
 from .NetworkManagerMock import NetworkManagerMock
 

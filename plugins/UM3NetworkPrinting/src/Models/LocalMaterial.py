@@ -1,5 +1,5 @@
 ##  Class representing a local material that was fetched from the container registry.
-from plugins.UM3NetworkPrinting.src.Models.BaseModel import BaseModel
+from .BaseModel import BaseModel
 
 
 class LocalMaterial(BaseModel):

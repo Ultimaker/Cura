@@ -1,6 +1,5 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 import json
 import os
 from typing import Dict, TYPE_CHECKING, Set, Optional
@@ -9,11 +8,12 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 from UM.Job import Job
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
-from plugins.UM3NetworkPrinting.src.Models.ClusterMaterial import ClusterMaterial
-from plugins.UM3NetworkPrinting.src.Models.LocalMaterial import LocalMaterial
+
+from .Models.ClusterMaterial import ClusterMaterial
+from .Models.LocalMaterial import LocalMaterial
 
 if TYPE_CHECKING:
-    from plugins.UM3NetworkPrinting.src.Network.ClusterUM3OutputDevice import ClusterUM3OutputDevice
+    from .Network.LocalClusterOutputDevice import LocalClusterOutputDevice
 
 
 ##  Asynchronous job to send material profiles to the printer.
@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 #   This way it won't freeze up the interface while sending those materials.
 class SendMaterialJob(Job):
 
-    def __init__(self, device: "ClusterUM3OutputDevice") -> None:
+    def __init__(self, device: "LocalClusterOutputDevice") -> None:
         super().__init__()
-        self.device = device  # type: ClusterUM3OutputDevice
+        self.device = device  # type: LocalClusterOutputDevice
 
     ##  Send the request to the printer and register a callback
     def run(self) -> None:

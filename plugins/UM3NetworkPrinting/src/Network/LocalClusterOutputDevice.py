@@ -20,7 +20,7 @@ from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOut
 I18N_CATALOG = i18nCatalog("cura")
 
 
-class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
+class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
 
@@ -88,11 +88,11 @@ class ClusterUM3OutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
-        self._cluster_api.doPrintJobAction(print_job_uuid, "move", {"to_position": 0, "list": "queued"})
+        self._cluster_api.movePrintJobToTop(print_job_uuid)
 
     @pyqtSlot(str, name="deleteJobFromQueue")
     def deleteJobFromQueue(self, print_job_uuid: str) -> None:
-        self._cluster_api.doPrintJobAction(print_job_uuid, "delete")
+        self._cluster_api.deletePrintJob(print_job_uuid)
 
     @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
