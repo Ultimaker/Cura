@@ -26,6 +26,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._cloud_output_device_manager = CloudOutputDeviceManager()
 
         # Refresh network connections when another machine was selected in Cura.
+        # This ensures no output devices are still connected that do not belong to the new active machine.
         CuraApplication.getInstance().globalContainerStackChanged.connect(self.refreshConnections)
 
         # TODO: re-write cloud messaging
