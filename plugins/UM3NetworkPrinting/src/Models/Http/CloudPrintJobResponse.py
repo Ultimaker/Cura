@@ -2,12 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from .BaseCloudModel import BaseCloudModel
+from ..BaseModel import BaseModel
 
 
 # Model that represents the response received from the cloud after requesting to upload a print job
-#  Spec: https://api-staging.ultimaker.com/cura/v1/spec
-class CloudPrintJobResponse(BaseCloudModel):
+class CloudPrintJobResponse(BaseModel):
+
     ## Creates a new print job response model.
     #  \param job_id: The job unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
     #  \param status: The status of the print job.

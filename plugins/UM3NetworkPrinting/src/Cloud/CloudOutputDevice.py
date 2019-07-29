@@ -1,7 +1,5 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-import os
-
 from time import time
 from typing import List, Optional, Set, cast
 
@@ -13,27 +11,24 @@ from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.PluginRegistry import PluginRegistry
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 
-from .CloudOutputController import CloudOutputController
-from ..MeshFormatHandler import MeshFormatHandler
-from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .CloudProgressMessage import CloudProgressMessage
 from .CloudApiClient import CloudApiClient
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintResponse import CloudPrintResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrinterStatus import CloudClusterPrinterStatus
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterPrintJobStatus import CloudClusterPrintJobStatus
+from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
+from ..MeshFormatHandler import MeshFormatHandler
+from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ..Models.Http.CloudPrintResponse import CloudPrintResponse
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
+from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
 
 I18N_CATALOG = i18nCatalog("cura")
@@ -78,21 +73,20 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             b"cluster_size": b"1"  # cloud devices are always clusters of at least one
         }
 
-        super().__init__(device_id=cluster.cluster_id, address="",
-                         connection_type=ConnectionType.CloudConnection, properties=properties, parent=parent)
+        super().__init__(
+            device_id=cluster.cluster_id,
+            address="",
+            connection_type=ConnectionType.CloudConnection,
+            properties=properties,
+            parent=parent
+        )
+
         self._api = api_client
         self._account = api_client.account
         self._cluster = cluster
+        self.setAuthenticationState(AuthState.NotAuthenticated)
 
         self._setInterfaceElements()
-
-        # We use the Cura Connect monitor tab to get most functionality right away.
-        if PluginRegistry.getInstance() is not None:
-            plugin_path = PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting")
-            if plugin_path is None:
-                Logger.log("e", "Cloud not find plugin path for plugin UM3NetworkPrnting")
-                raise RuntimeError("Cloud not find plugin path for plugin UM3NetworkPrnting")
-            self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
@@ -101,11 +95,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._progress = CloudProgressMessage()
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
-        self._received_printers = None  # type: Optional[List[CloudClusterPrinterStatus]]
-        self._received_print_jobs = None  # type: Optional[List[CloudClusterPrintJobStatus]]
-
-        # A set of the user's job IDs that have finished
-        self._finished_jobs = set()  # type: Set[str]
+        self._received_printers = None  # type: Optional[List[ClusterPrinterStatus]]
+        self._received_print_jobs = None  # type: Optional[List[ClusterPrintJobStatus]]
 
         # Reference to the uploaded print job / mesh
         self._tool_path = None  # type: Optional[bytes]
@@ -130,33 +121,21 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._tool_path = None
         self._uploaded_print_job = None
 
-    ## Gets the cluster response from which this device was created.
-    @property
-    def clusterData(self) -> CloudClusterResponse:
-        return self._cluster
-
-    ## Updates the cluster data from the cloud.
-    @clusterData.setter
-    def clusterData(self, value: CloudClusterResponse) -> None:
-        self._cluster = value
-
     ## Checks whether the given network key is found in the cloud's host name
     def matchesNetworkKey(self, network_key: str) -> bool:
         # Typically, a network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
         if network_key.startswith(self.clusterData.host_name):
             return True
-
         # However, for manually added printers, the local IP address is used in lieu of a proper
         # network key, so check for that as well
         if self.clusterData.host_internal_ip is not None and network_key.find(self.clusterData.host_internal_ip):
             return True
-
         return False
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
-        self.setPriority(2)  # Make sure we end up below the local networking and above 'save to file'
+        self.setPriority(2)  # Make sure we end up below the local networking and above 'save to file'.
         self.setName(self._id)
         self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
         self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
@@ -226,105 +205,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if status.print_jobs != self._received_print_jobs:
             self._received_print_jobs = status.print_jobs
             self._updatePrintJobs(status.print_jobs)
-
-    ## Updates the local list of printers with the list received from the cloud.
-    #  \param remote_printers: The printers received from the cloud.
-    def _updatePrinters(self, remote_printers: List[CloudClusterPrinterStatus]) -> None:
-
-        # Keep track of the new printers to show.
-        # We create a new list instead of changing the existing one to get the correct order.
-        new_printers = []
-
-        # Check which printers need to be created or updated.
-        for index, printer_data in enumerate(remote_printers):
-            printer = next(iter(printer for printer in self._printers if printer.key == printer_data.uuid), None)
-            if not printer:
-                new_printers.append(printer_data.createOutputModel(CloudOutputController(self)))
-            else:
-                printer_data.updateOutputModel(printer)
-                new_printers.append(printer)
-
-        # Check which printers need to be removed (de-referenced).
-        remote_printers_keys = [printer_data.uuid for printer_data in remote_printers]
-        removed_printers = [printer for printer in self._printers if printer.key not in remote_printers_keys]
-        for removed_printer in removed_printers:
-            if self._active_printer and self._active_printer.key == removed_printer.key:
-                self.setActivePrinter(None)
-
-        self._printers = new_printers
-        if self._printers and not self.activePrinter:
-            self.setActivePrinter(self._printers[0])
-
-        self.printersChanged.emit()
-
-    ## Updates the local list of print jobs with the list received from the cloud.
-    #  \param remote_jobs: The print jobs received from the cloud.
-    def _updatePrintJobs(self, remote_jobs: List[CloudClusterPrintJobStatus]) -> None:
-
-        # Keep track of the new print jobs to show.
-        # We create a new list instead of changing the existing one to get the correct order.
-        new_print_jobs = []
-
-        # Check which print jobs need to be created or updated.
-        for index, print_job_data in enumerate(remote_jobs):
-            print_job = next(
-                iter(print_job for print_job in self._print_jobs if print_job.key == print_job_data.uuid), None)
-            if not print_job:
-                new_print_jobs.append(self._createPrintJobModel(print_job_data))
-            else:
-                print_job_data.updateOutputModel(print_job)
-                if print_job_data.printer_uuid:
-                    self._updateAssignedPrinter(print_job, print_job_data.printer_uuid)
-                new_print_jobs.append(print_job)
-
-        # Check which print job need to be removed (de-referenced).
-        remote_job_keys = [print_job_data.uuid for print_job_data in remote_jobs]
-        removed_jobs = [print_job for print_job in self._print_jobs if print_job.key not in remote_job_keys]
-        for removed_job in removed_jobs:
-            if removed_job.assignedPrinter:
-                removed_job.assignedPrinter.updateActivePrintJob(None)
-                removed_job.stateChanged.disconnect(self._onPrintJobStateChanged)
-
-        self._print_jobs = new_print_jobs
-        self.printJobsChanged.emit()
-
-    ## Create a new print job model based on the remote status of the job.
-    #  \param remote_job: The remote print job data.
-    def _createPrintJobModel(self, remote_job: CloudClusterPrintJobStatus) -> UM3PrintJobOutputModel:
-        model = remote_job.createOutputModel(CloudOutputController(self))
-        model.stateChanged.connect(self._onPrintJobStateChanged)
-        if remote_job.printer_uuid:
-            self._updateAssignedPrinter(model, remote_job.printer_uuid)
-        return model
-
-    ## Handles the event of a change in a print job state
-    def _onPrintJobStateChanged(self) -> None:
-        user_name = self._getUserName()
-        # TODO: confirm that notifications in Cura are still required
-        for job in self._print_jobs:
-            if job.state == "wait_cleanup" and job.key not in self._finished_jobs and job.owner == user_name:
-                self._finished_jobs.add(job.key)
-                Message(
-                    title=I18N_CATALOG.i18nc("@info:status", "Print finished"),
-                    text=(I18N_CATALOG.i18nc("@info:status",
-                                             "Printer '{printer_name}' has finished printing '{job_name}'.").format(
-                        printer_name=job.assignedPrinter.name,
-                        job_name=job.name
-                    ) if job.assignedPrinter else
-                          I18N_CATALOG.i18nc("@info:status", "The print job '{job_name}' was finished.").format(
-                              job_name=job.name
-                          )),
-                ).show()
-
-    ## Updates the printer assignment for the given print job model.
-    def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
-        printer = next((p for p in self._printers if printer_uuid == p.key), None)
-        if not printer:
-            Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
-                       [p.key for p in self._printers])
-            return
-        printer.updateActivePrintJob(model)
-        model.updateAssignedPrinter(printer)
 
     ## Uploads the mesh when the print job was registered with the cloud API.
     #  \param job_response: The response received from the cloud API.
@@ -398,3 +278,13 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
         QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+
+    ## Gets the cluster response from which this device was created.
+    @property
+    def clusterData(self) -> CloudClusterResponse:
+        return self._cluster
+
+    ## Updates the cluster data from the cloud.
+    @clusterData.setter
+    def clusterData(self, value: CloudClusterResponse) -> None:
+        self._cluster = value

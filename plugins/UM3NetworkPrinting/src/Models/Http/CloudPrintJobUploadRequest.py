@@ -1,11 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from .BaseCloudModel import BaseCloudModel
+from ..BaseModel import BaseModel
 
 
 # Model that represents the request to upload a print job to the cloud
-#  Spec: https://api-staging.ultimaker.com/cura/v1/spec
-class CloudPrintJobUploadRequest(BaseCloudModel):
+class CloudPrintJobUploadRequest(BaseModel):
+
     ## Creates a new print job upload request.
     #  \param job_name: The name of the print job.
     #  \param file_size: The size of the file in bytes.

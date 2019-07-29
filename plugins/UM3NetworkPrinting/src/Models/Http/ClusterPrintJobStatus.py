@@ -3,20 +3,21 @@
 from typing import List, Optional, Union, Dict, Any
 
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
-from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
-from plugins.UM3NetworkPrinting.src.Models.ConfigurationChangeModel import ConfigurationChangeModel
-from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputController import CloudOutputController
-from .BaseCloudModel import BaseCloudModel
-from .CloudClusterBuildPlate import CloudClusterBuildPlate
-from .CloudClusterPrintJobConfigurationChange import CloudClusterPrintJobConfigurationChange
-from .CloudClusterPrintJobImpediment import CloudClusterPrintJobImpediment
-from .CloudClusterPrintCoreConfiguration import CloudClusterPrintCoreConfiguration
-from .CloudClusterPrintJobConstraint import CloudClusterPrintJobConstraints
+
+from .ClusterBuildPlate import ClusterBuildPlate
+from .ClusterPrintJobConfigurationChange import ClusterPrintJobConfigurationChange
+from .ClusterPrintJobImpediment import ClusterPrintJobImpediment
+from .ClusterPrintCoreConfiguration import ClusterPrintCoreConfiguration
+from .ClusterPrintJobConstraint import ClusterPrintJobConstraints
+from ..UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from ..ConfigurationChangeModel import ConfigurationChangeModel
+from ..BaseModel import BaseModel
+from ...ClusterOutputController import ClusterOutputController
 
 
 ## Model for the status of a single print job in a cluster.
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterPrintJobStatus(BaseCloudModel):
+class ClusterPrintJobStatus(BaseModel):
+
     ## Creates a new cloud print job status model.
     #  \param assigned_to: The name of the printer this job is assigned to while being queued.
     #  \param configuration: The required print core configurations of this print job.
@@ -45,21 +46,21 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
     #       printer
     def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
                  time_total: int, uuid: str,
-                 configuration: List[Union[Dict[str, Any], CloudClusterPrintCoreConfiguration]],
-                 constraints: List[Union[Dict[str, Any], CloudClusterPrintJobConstraints]],
+                 configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
+                 constraints: List[Union[Dict[str, Any], ClusterPrintJobConstraints]],
                  last_seen: Optional[float] = None, network_error_count: Optional[int] = None,
                  owner: Optional[str] = None, printer_uuid: Optional[str] = None, time_elapsed: Optional[int] = None,
                  assigned_to: Optional[str] = None, deleted_at: Optional[str] = None,
                  printed_on_uuid: Optional[str] = None,
                  configuration_changes_required: List[
-                     Union[Dict[str, Any], CloudClusterPrintJobConfigurationChange]] = None,
-                 build_plate: Union[Dict[str, Any], CloudClusterBuildPlate] = None,
+                     Union[Dict[str, Any], ClusterPrintJobConfigurationChange]] = None,
+                 build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  compatible_machine_families: List[str] = None,
-                 impediments_to_printing: List[Union[Dict[str, Any], CloudClusterPrintJobImpediment]] = None,
+                 impediments_to_printing: List[Union[Dict[str, Any], ClusterPrintJobImpediment]] = None,
                  **kwargs) -> None:
         self.assigned_to = assigned_to
-        self.configuration = self.parseModels(CloudClusterPrintCoreConfiguration, configuration)
-        self.constraints = self.parseModels(CloudClusterPrintJobConstraints, constraints)
+        self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
+        self.constraints = self.parseModels(ClusterPrintJobConstraints, constraints)
         self.created_at = created_at
         self.force = force
         self.last_seen = last_seen
@@ -76,19 +77,19 @@ class CloudClusterPrintJobStatus(BaseCloudModel):
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
 
-        self.configuration_changes_required = self.parseModels(CloudClusterPrintJobConfigurationChange,
+        self.configuration_changes_required = self.parseModels(ClusterPrintJobConfigurationChange,
                                                                configuration_changes_required) \
             if configuration_changes_required else []
-        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate) if build_plate else None
+        self.build_plate = self.parseModel(ClusterBuildPlate, build_plate) if build_plate else None
         self.compatible_machine_families = compatible_machine_families if compatible_machine_families else []
-        self.impediments_to_printing = self.parseModels(CloudClusterPrintJobImpediment, impediments_to_printing) \
+        self.impediments_to_printing = self.parseModels(ClusterPrintJobImpediment, impediments_to_printing) \
             if impediments_to_printing else []
 
         super().__init__(**kwargs)
 
     ## Creates an UM3 print job output model based on this cloud cluster print job.
     #  \param printer: The output model of the printer
-    def createOutputModel(self, controller: CloudOutputController) -> UM3PrintJobOutputModel:
+    def createOutputModel(self, controller: ClusterOutputController) -> UM3PrintJobOutputModel:
         model = UM3PrintJobOutputModel(controller, self.uuid, self.name)
         self.updateOutputModel(model)
         return model

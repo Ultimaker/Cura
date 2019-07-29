@@ -1,14 +1,22 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+import os
 from typing import List, Optional, Dict
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot, QUrl
 
+from UM.Logger import Logger
 from UM.Qt.Duration import Duration, DurationFormat
+from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from plugins.UM3NetworkPrinting.src.Utils import formatTimeCompleted, formatDateCompleted
-from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
+
+from .Utils import formatTimeCompleted, formatDateCompleted
+from .ClusterOutputController import ClusterOutputController
+from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
+from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 
 
 ## Output device class that forms the basis of Ultimaker networked printer output devices.
@@ -29,12 +37,16 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
 
-    def __init__(self, device_id, address, properties, connection_type, parent=None) -> None:
+    def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
+                 parent=None) -> None:
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
+
+        # Keeps track of all printers in the cluster.
+        self._printers = []  # type: List[PrinterOutputModel]
 
         # Keeps track of all print jobs in the cluster.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -44,6 +56,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # By default we are not authenticated. This state will be changed later.
         self._authentication_state = AuthState.NotAuthenticated
+
+        # Load the Monitor UI elements.
+        self._loadMonitorTab()
+
+    ##  The IP address of the printer.
+    @pyqtProperty(str, constant=True)
+    def address(self) -> str:
+        return self._address
 
     # Get all print jobs for this cluster.
     @pyqtProperty("QVariantList", notify=printJobsChanged)
@@ -150,3 +170,93 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtSlot(int, result=str, name="formatDuration")
     def formatDuration(self, seconds: int) -> str:
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
+
+    ## Load Monitor tab QML.
+    def _loadMonitorTab(self):
+        plugin_registry = CuraApplication.getInstance().getPluginRegistry()
+        if not plugin_registry:
+            Logger.log("e", "Could not get plugin registry")
+            return
+        plugin_path = plugin_registry.getPluginPath("UM3NetworkPrinting")
+        if not plugin_path:
+            Logger.log("e", "Could not get plugin path")
+            return
+        self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
+
+    def _updatePrinters(self, remote_printers: List[ClusterPrinterStatus]) -> None:
+
+        # Keep track of the new printers to show.
+        # We create a new list instead of changing the existing one to get the correct order.
+        new_printers = []
+
+        # Check which printers need to be created or updated.
+        for index, printer_data in enumerate(remote_printers):
+            printer = next(iter(printer for printer in self._printers if printer.key == printer_data.uuid), None)
+            if not printer:
+                printer = printer_data.createOutputModel(ClusterOutputController(self))
+            else:
+                printer_data.updateOutputModel(printer)
+            new_printers.append(printer)
+
+        # Check which printers need to be removed (de-referenced).
+        remote_printers_keys = [printer_data.uuid for printer_data in remote_printers]
+        removed_printers = [printer for printer in self._printers if printer.key not in remote_printers_keys]
+        for removed_printer in removed_printers:
+            if self._active_printer and self._active_printer.key == removed_printer.key:
+                self.setActivePrinter(None)
+
+        self._printers = new_printers
+        if self._printers and not self.activePrinter:
+            self.setActivePrinter(self._printers[0])
+
+        self.printersChanged.emit()
+
+    ## Updates the local list of print jobs with the list received from the cloud.
+    #  \param remote_jobs: The print jobs received from the cloud.
+    def _updatePrintJobs(self, remote_jobs: List[ClusterPrintJobStatus]) -> None:
+
+        # Keep track of the new print jobs to show.
+        # We create a new list instead of changing the existing one to get the correct order.
+        new_print_jobs = []
+
+        # Check which print jobs need to be created or updated.
+        for index, print_job_data in enumerate(remote_jobs):
+            print_job = next(
+                iter(print_job for print_job in self._print_jobs if print_job.key == print_job_data.uuid), None)
+            if not print_job:
+                new_print_jobs.append(self._createPrintJobModel(print_job_data))
+            else:
+                print_job_data.updateOutputModel(print_job)
+                if print_job_data.printer_uuid:
+                    self._updateAssignedPrinter(print_job, print_job_data.printer_uuid)
+                new_print_jobs.append(print_job)
+
+        # Check which print job need to be removed (de-referenced).
+        remote_job_keys = [print_job_data.uuid for print_job_data in remote_jobs]
+        removed_jobs = [print_job for print_job in self._print_jobs if print_job.key not in remote_job_keys]
+        for removed_job in removed_jobs:
+            if removed_job.assignedPrinter:
+                removed_job.assignedPrinter.updateActivePrintJob(None)
+                removed_job.stateChanged.disconnect(self._onPrintJobStateChanged)
+
+        self._print_jobs = new_print_jobs
+        self.printJobsChanged.emit()
+
+    ## Create a new print job model based on the remote status of the job.
+    #  \param remote_job: The remote print job data.
+    def _createPrintJobModel(self, remote_job: ClusterPrintJobStatus) -> UM3PrintJobOutputModel:
+        model = remote_job.createOutputModel(ClusterOutputController(self))
+        model.stateChanged.connect(self._onPrintJobStateChanged)
+        if remote_job.printer_uuid:
+            self._updateAssignedPrinter(model, remote_job.printer_uuid)
+        return model
+
+    ## Updates the printer assignment for the given print job model.
+    def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
+        printer = next((p for p in self._printers if printer_uuid == p.key), None)
+        if not printer:
+            Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
+                       [p.key for p in self._printers])
+            return
+        printer.updateActivePrintJob(model)
+        model.updateAssignedPrinter(printer)

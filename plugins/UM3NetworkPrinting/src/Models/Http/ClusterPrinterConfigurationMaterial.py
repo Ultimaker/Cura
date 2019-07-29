@@ -3,12 +3,13 @@ from typing import Optional
 from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
-from .BaseCloudModel import BaseCloudModel
+
+from ..BaseModel import BaseModel
 
 
-##  Class representing a cloud cluster printer configuration
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterPrinterConfigurationMaterial(BaseCloudModel):
+## Class representing a cloud cluster printer configuration
+class ClusterPrinterConfigurationMaterial(BaseModel):
+
     ## Creates a new material configuration model.
     #  \param brand: The brand of material in this print core, e.g. 'Ultimaker'.
     #  \param color: The color of material in this print core, e.g. 'Blue'.

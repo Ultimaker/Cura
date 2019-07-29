@@ -11,14 +11,15 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from UM.Logger import Logger
 from cura import UltimakerCloudAuthentication
 from cura.API import Account
+
 from .ToolPathUploader import ToolPathUploader
 from ..Models.BaseModel import BaseModel
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterStatus import CloudClusterStatus
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintResponse import CloudPrintResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudError import CloudError
+from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ..Models.Http.CloudPrintResponse import CloudPrintResponse
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The generic type variable used to document the methods below.

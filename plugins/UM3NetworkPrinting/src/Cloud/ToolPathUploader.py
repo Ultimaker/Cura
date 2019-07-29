@@ -6,7 +6,8 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from typing import Optional, Callable, Any, Tuple, cast
 
 from UM.Logger import Logger
-from plugins.UM3NetworkPrinting.src.Models.CloudPrintJobResponse import CloudPrintJobResponse
+
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## Class responsible for uploading meshes to the cloud in separate requests.

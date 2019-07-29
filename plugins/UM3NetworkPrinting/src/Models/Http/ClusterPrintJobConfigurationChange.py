@@ -2,12 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from .BaseCloudModel import BaseCloudModel
+from ..BaseModel import BaseModel
 
 
 ## Model for the types of changes that are needed before a print job can start
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterPrintJobConfigurationChange(BaseCloudModel):
+class ClusterPrintJobConfigurationChange(BaseModel):
+
     ## Creates a new print job constraint.
     #  \param type_of_change: The type of configuration change, one of: "material", "print_core_change"
     #  \param index: The hotend slot or extruder index to change

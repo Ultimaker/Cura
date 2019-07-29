@@ -11,11 +11,12 @@ from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.GlobalStack import GlobalStack
+
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
-from plugins.UM3NetworkPrinting.src.Models.CloudClusterResponse import CloudClusterResponse
-from plugins.UM3NetworkPrinting.src.Models.CloudError import CloudError
-from plugins.UM3NetworkPrinting.src.Utils import findChanges
+from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudError import CloudError
+from ..Utils import findChanges
 
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
@@ -186,14 +187,9 @@ class CloudOutputDeviceManager:
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
-    def _onApiError(self, errors: List[CloudError] = None) -> None:
+    @staticmethod
+    def _onApiError(errors: List[CloudError] = None) -> None:
         Logger.log("w", str(errors))
-        message = Message(
-            text = self.I18N_CATALOG.i18nc("@info:description", "There was an error connecting to the cloud."),
-            title = self.I18N_CATALOG.i18nc("@info:title", "Error"),
-            lifetime = 10
-        )
-        message.show()
 
     ## Starts running the cloud output device manager, thus periodically requesting cloud data.
     def start(self):

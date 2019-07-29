@@ -4,14 +4,14 @@ from typing import List, Union, Dict, Optional, Any
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
-from .CloudClusterBuildPlate import CloudClusterBuildPlate
-from .CloudClusterPrintCoreConfiguration import CloudClusterPrintCoreConfiguration
-from .BaseCloudModel import BaseCloudModel
+from .ClusterBuildPlate import ClusterBuildPlate
+from .ClusterPrintCoreConfiguration import ClusterPrintCoreConfiguration
+from ..BaseModel import BaseModel
 
 
 ##  Class representing a cluster printer
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterPrinterStatus(BaseCloudModel):
+class ClusterPrinterStatus(BaseModel):
+
     ## Creates a new cluster printer status
     #  \param enabled: A printer can be disabled if it should not receive new jobs. By default every printer is enabled.
     #  \param firmware_version: Firmware version installed on the printer. Can differ for each printer in a cluster.
@@ -30,12 +30,12 @@ class CloudClusterPrinterStatus(BaseCloudModel):
     #  \param build_plate: The build plate that is on the printer
     def __init__(self, enabled: bool, firmware_version: str, friendly_name: str, ip_address: str, machine_variant: str,
                  status: str, unique_name: str, uuid: str,
-                 configuration: List[Union[Dict[str, Any], CloudClusterPrintCoreConfiguration]],
+                 configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
                  reserved_by: Optional[str] = None, maintenance_required: Optional[bool] = None,
                  firmware_update_status: Optional[str] = None, latest_available_firmware: Optional[str] = None,
-                 build_plate: Union[Dict[str, Any], CloudClusterBuildPlate] = None, **kwargs) -> None:
+                 build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None, **kwargs) -> None:
 
-        self.configuration = self.parseModels(CloudClusterPrintCoreConfiguration, configuration)
+        self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
         self.enabled = enabled
         self.firmware_version = firmware_version
         self.friendly_name = friendly_name
@@ -48,7 +48,7 @@ class CloudClusterPrinterStatus(BaseCloudModel):
         self.maintenance_required = maintenance_required
         self.firmware_update_status = firmware_update_status
         self.latest_available_firmware = latest_available_firmware
-        self.build_plate = self.parseModel(CloudClusterBuildPlate, build_plate) if build_plate else None
+        self.build_plate = self.parseModel(ClusterBuildPlate, build_plate) if build_plate else None
         super().__init__(**kwargs)
 
     ## Creates a new output model.

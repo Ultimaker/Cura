@@ -2,12 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from .BaseCloudModel import BaseCloudModel
+from ..BaseModel import BaseModel
 
 
 ##  Class representing a cloud connected cluster.
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterResponse(BaseCloudModel):
+class CloudClusterResponse(BaseModel):
+
     ## Creates a new cluster response object.
     #  \param cluster_id: The secret unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
     #  \param host_guid: The unique identifier of the print cluster host, e.g. 'e90ae0ac-1257-4403-91ee-a44c9b7e8050'.

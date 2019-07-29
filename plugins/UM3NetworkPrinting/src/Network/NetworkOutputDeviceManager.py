@@ -61,7 +61,6 @@ class NetworkOutputDeviceManager:
             return
 
         um_network_key = active_machine.getMetaDataEntry("um_network_key")
-
         for key in self._discovered_devices:
             if key == um_network_key:
                 if not self._discovered_devices[key].isConnected():
@@ -229,6 +228,7 @@ class NetworkOutputDeviceManager:
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack and device.getId() == global_container_stack.getMetaDataEntry("um_network_key"):
             # Ensure that the configured connection type is set.
+            CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
             global_container_stack.addConfiguredConnectionType(device.connectionType.value)
             device.connect()
             device.connectionStateChanged.connect(self._onDeviceConnectionStateChanged)
@@ -370,8 +370,6 @@ class NetworkOutputDeviceManager:
 
             # Ensure that these containers do know that they are configured for network connection
             machine.addConfiguredConnectionType(printer_device.connectionType.value)
-
-        self.refreshConnections()
 
     ## Create a machine instance based on the discovered network printer.
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:

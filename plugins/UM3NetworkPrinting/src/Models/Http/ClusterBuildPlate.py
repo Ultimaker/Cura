@@ -1,13 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from .BaseCloudModel import BaseCloudModel
+from ..BaseModel import BaseModel
 
 
-##  Class representing a cluster printer
-#  Spec: https://api-staging.ultimaker.com/connect/v1/spec
-class CloudClusterBuildPlate(BaseCloudModel):
+## Class representing a cluster printer
+class ClusterBuildPlate(BaseModel):
+
     ## Create a new build plate
-    #  \param type: The type of buildplate glass or aluminium
+    #  \param type: The type of build plate glass or aluminium
     def __init__(self, type: str = "glass", **kwargs) -> None:
         self.type = type
         super().__init__(**kwargs)
