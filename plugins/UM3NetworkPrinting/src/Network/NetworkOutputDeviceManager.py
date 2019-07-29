@@ -42,13 +42,14 @@ class NetworkOutputDeviceManager:
         self._discovered_devices = {}  # type: Dict[str, NetworkOutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
-        # TODO: move zeroconf stuff to own class
+        # TODO: move zeroconf stuff to own class?
         self._zero_conf = None  # type: Optional[Zeroconf]
         self._zero_conf_browser = None  # type: Optional[ServiceBrowser]
         self._service_changed_request_queue = None  # type: Optional[Queue]
         self._service_changed_request_event = None  # type: Optional[Event]
         self._service_changed_request_thread = None  # type: Optional[Thread]
 
+        # TODO: move manual device stuff to own class?
         # Persistent dict containing manually connected clusters.
         self._manual_instances = {}  # type: Dict[str, ManualPrinterRequest]
         self._last_manual_entry_key = None  # type: Optional[str]

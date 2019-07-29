@@ -47,6 +47,7 @@ class CloudOutputDeviceManager:
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
 
+        # Ensure we don't start twice.
         self._running = False
 
     ## Starts running the cloud output device manager, thus periodically requesting cloud data.
@@ -55,7 +56,7 @@ class CloudOutputDeviceManager:
             return
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
         self._update_timer.timeout.connect(self._getRemoteClusters)
-        self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
+        self._onLoginStateChanged(is_logged_in=self._account.isLoggedIn)
 
     ## Stops running the cloud output device manager.
     def stop(self):
@@ -63,7 +64,7 @@ class CloudOutputDeviceManager:
             return
         self._account.loginStateChanged.disconnect(self._onLoginStateChanged)
         self._update_timer.timeout.disconnect(self._getRemoteClusters)
-        self._onLoginStateChanged(is_logged_in = False)
+        self._onLoginStateChanged(is_logged_in=False)
 
     ## Force refreshing connections.
     def refreshConnections(self) -> None:
