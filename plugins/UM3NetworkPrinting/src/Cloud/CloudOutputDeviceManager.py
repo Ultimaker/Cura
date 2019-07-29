@@ -6,7 +6,6 @@ from PyQt5.QtCore import QTimer
 
 from UM import i18nCatalog
 from UM.Logger import Logger
-from UM.Message import Message
 from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
@@ -54,13 +53,32 @@ class CloudOutputDeviceManager:
 
         self._running = False
 
+    ## Starts running the cloud output device manager, thus periodically requesting cloud data.
+    def start(self):
+        if self._running:
+            return
+        self._account.loginStateChanged.connect(self._onLoginStateChanged)
+        # When switching machines we check if we have to activate a remote cluster.
+        self._application.globalContainerStackChanged.connect(self._connectToActiveMachine)
+        self._update_timer.timeout.connect(self._getRemoteClusters)
+        self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
+
+    ## Stops running the cloud output device manager.
+    def stop(self):
+        if not self._running:
+            return
+        self._account.loginStateChanged.disconnect(self._onLoginStateChanged)
+        # When switching machines we check if we have to activate a remote cluster.
+        self._application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
+        self._update_timer.timeout.disconnect(self._getRemoteClusters)
+        self._onLoginStateChanged(is_logged_in = False)
+
     ## Force refreshing connections.
     def refreshConnections(self) -> None:
-        pass
+        self._connectToActiveMachine()
 
     ## Called when the uses logs in or out
     def _onLoginStateChanged(self, is_logged_in: bool) -> None:
-        Logger.log("d", "Log in state changed to %s", is_logged_in)
         if is_logged_in:
             if not self._update_timer.isActive():
                 self._update_timer.start()
@@ -74,17 +92,12 @@ class CloudOutputDeviceManager:
 
     ## Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
-        Logger.log("d", "Retrieving remote clusters")
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
     ## Callback for when the request for getting the clusters. is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
-
         removed_devices, added_clusters, updates = findChanges(self._remote_clusters, online_clusters)
-
-        Logger.log("d", "Parsed remote clusters to %s", [cluster.toDict() for cluster in online_clusters.values()])
-        Logger.log("d", "Removed: %s, added: %s, updates: %s", len(removed_devices), len(added_clusters), len(updates))
 
         # Remove output devices that are gone
         for device in removed_devices:
@@ -136,12 +149,7 @@ class CloudOutputDeviceManager:
 
         # The newly added machine is automatically activated.
         self._application.getMachineManager().addMachine(machine_type_id, group_name)
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
-            return
-
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device, active_machine)
+        self._connectToActiveMachine()
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
@@ -182,31 +190,12 @@ class CloudOutputDeviceManager:
     ## Connects to an output device and makes sure it is registered in the output device manager.
     def _connectToOutputDevice(self, device: CloudOutputDevice, active_machine: GlobalStack) -> None:
         device.connect()
-        self._output_device_manager.addOutputDevice(device)
+        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         active_machine.addConfiguredConnectionType(device.connectionType.value)
+        self._output_device_manager.addOutputDevice(device)
 
     ## Handles an API error received from the cloud.
     #  \param errors: The errors received
     @staticmethod
     def _onApiError(errors: List[CloudError] = None) -> None:
         Logger.log("w", str(errors))
-
-    ## Starts running the cloud output device manager, thus periodically requesting cloud data.
-    def start(self):
-        if self._running:
-            return
-        self._account.loginStateChanged.connect(self._onLoginStateChanged)
-        # When switching machines we check if we have to activate a remote cluster.
-        self._application.globalContainerStackChanged.connect(self._connectToActiveMachine)
-        self._update_timer.timeout.connect(self._getRemoteClusters)
-        self._onLoginStateChanged(is_logged_in = self._account.isLoggedIn)
-
-    ## Stops running the cloud output device manager.
-    def stop(self):
-        if not self._running:
-            return
-        self._account.loginStateChanged.disconnect(self._onLoginStateChanged)
-        # When switching machines we check if we have to activate a remote cluster.
-        self._application.globalContainerStackChanged.disconnect(self._connectToActiveMachine)
-        self._update_timer.timeout.disconnect(self._getRemoteClusters)
-        self._onLoginStateChanged(is_logged_in = False)
