@@ -4,6 +4,7 @@ from typing import Union, Dict, Optional, Any
 
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
 from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
+
 from .ClusterPrinterConfigurationMaterial import ClusterPrinterConfigurationMaterial
 from ..BaseModel import BaseModel
 
