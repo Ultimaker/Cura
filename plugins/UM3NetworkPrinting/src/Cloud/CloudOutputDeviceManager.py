@@ -104,14 +104,14 @@ class CloudOutputDeviceManager:
             if not device:
                 device = CloudOutputDevice(self._api, cluster_data)
                 discovery.addDiscoveredPrinter(device.key, device.key, cluster_data.friendly_name,
-                                               self._createMachineFromDiscoveredPrinter, device.printerType, device)
+                                               self._createMachineFromDiscoveredDevice, device.printerType, device)
             else:
                 discovery.updateDiscoveredPrinter(device.key, cluster_data.friendly_name, device.printerType)
             new_devices[device.key] = device
 
         # Remove output devices that disappeared.
-        remote_cluster_keys = self._remote_clusters.keys()
-        removed_devices = [cluster for cluster in self._remote_clusters.values() if cluster.key not in remote_cluster_keys]
+        keys = self._remote_clusters.keys()
+        removed_devices = [cluster for cluster in self._remote_clusters.values() if cluster.key not in keys]
         for device in removed_devices:
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
             discovery.removeDiscoveredPrinter(device.key)
@@ -120,7 +120,7 @@ class CloudOutputDeviceManager:
         self.discoveredDevicesChanged.emit()
         self._connectToActiveMachine()
 
-    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
+    def _createMachineFromDiscoveredDevice(self, key: str) -> None:
         device = self._remote_clusters[key]  # type: CloudOutputDevice
         if not device:
             Logger.log("e", "Could not find discovered device with key [%s]", key)

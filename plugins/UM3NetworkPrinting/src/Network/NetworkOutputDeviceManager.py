@@ -36,17 +36,15 @@ class NetworkOutputDeviceManager:
 
         # Hook up ZeroConf client.
         self._zero_conf_client = ZeroConfClient()
-        self._zero_conf_client.addedNetworkCluster.connect(self._onAddDevice)
-        self._zero_conf_client.removedNetworkCluster.connect(self._onRemoveDevice)
+        self._zero_conf_client.addedNetworkCluster.connect(self._onDeviceDiscovered)
+        self._zero_conf_client.removedNetworkCluster.connect(self._onDiscoveredDeviceRemoved)
 
-        # TODO: move manual device stuff to own class?
         # Persistent dict containing manually connected clusters.
         self._manual_instances = {}  # type: Dict[str, Callable]
 
     ## Start the network discovery.
     def start(self) -> None:
         self._zero_conf_client.start()
-
         # Load all manual devices.
         self._manual_instances = self._getStoredManualInstances()
         for address in self._manual_instances:
@@ -55,10 +53,9 @@ class NetworkOutputDeviceManager:
     ## Stop network discovery and clean up discovered devices.
     def stop(self) -> None:
         self._zero_conf_client.stop()
-
         # Cleanup all manual devices.
         for instance_name in list(self._discovered_devices):
-            self._onRemoveDevice(instance_name)
+            self._onDiscoveredDeviceRemoved(instance_name)
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
@@ -66,9 +63,9 @@ class NetworkOutputDeviceManager:
         new_manual_devices = ",".join(self._manual_instances.keys())
         CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
 
-        key = f"manual:{address}"
-        if key not in self._discovered_devices:
-            self._onAddDevice(key, address, {
+        device_id = f"manual:{address}"
+        if device_id not in self._discovered_devices:
+            self._onDeviceDiscovered(device_id, address, {
                 b"name": address.encode("utf-8"),
                 b"address": address.encode("utf-8"),
                 b"manual": b"true",
@@ -80,20 +77,18 @@ class NetworkOutputDeviceManager:
         self._checkManualDevice(address, response_callback)
 
     ## Remove a manually added networked printer.
-    def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
-        if key not in self._discovered_devices and address is not None:
-            key = f"manual:{address}"
+    def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
+        if device_id not in self._discovered_devices and address is not None:
+            device_id = f"manual:{address}"
 
-        if key in self._discovered_devices:
-            if not address:
-                address = self._discovered_devices[key].ipAddress
-            self._onRemoveDevice(key)
+        if device_id in self._discovered_devices:
+            address = address or self._discovered_devices[device_id].ipAddress
+            self._onDiscoveredDeviceRemoved(device_id)
 
         if address in self._manual_instances:
             manual_instance_callback = self._manual_instances.pop(address)
-            new_manual_devices = ",".join(self._manual_instances.keys())
-            CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY,
-                                                                    new_manual_devices)
+            new_devices = ",".join(self._manual_instances.keys())
+            CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_devices)
             if manual_instance_callback:
                 CuraApplication.getInstance().callLater(manual_instance_callback, False, address)
 
@@ -157,18 +152,17 @@ class NetworkOutputDeviceManager:
         return found_machine_type_identifiers
 
     ## Add a new device.
-    def _onAddDevice(self, key: str, address: str, properties: Dict[bytes, bytes]) -> None:
+    def _onDeviceDiscovered(self, key: str, address: str, properties: Dict[bytes, bytes]) -> None:
         cluster_size = int(properties.get(b"cluster_size", -1))
-        printer_type = properties.get(b"machine", b"").decode("utf-8")
+        machine_identifier = properties.get(b"machine", b"").decode("utf-8")
         printer_type_identifiers = self._getPrinterTypeIdentifiers()
 
         # Detect the machine type based on the BOM number that is sent over the network.
+        properties[b"printer_type"] = b"Unknown"
         for bom, p_type in printer_type_identifiers.items():
-            if printer_type.startswith(bom):
+            if machine_identifier.startswith(bom):
                 properties[b"printer_type"] = bytes(p_type, encoding="utf8")
                 break
-        else:
-            properties[b"printer_type"] = b"Unknown"
 
         # We no longer support legacy devices, so check that here.
         if cluster_size == -1:
@@ -179,7 +173,7 @@ class NetworkOutputDeviceManager:
             ip_address=address,
             key=device.getId(),
             name=device.getName(),
-            create_callback=self._createMachineFromDiscoveredPrinter,
+            create_callback=self._createMachineFromDiscoveredDevice,
             machine_type=device.printerType,
             device=device
         )
@@ -188,7 +182,7 @@ class NetworkOutputDeviceManager:
         self._connectToActiveMachine()
 
     ## Remove a device.
-    def _onRemoveDevice(self, device_id: str) -> None:
+    def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._discovered_devices.pop(device_id, None)
         if not device:
             return
@@ -196,10 +190,10 @@ class NetworkOutputDeviceManager:
         self.discoveredDevicesChanged.emit()
 
     ## Create a machine instance based on the discovered network printer.
-    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        device = self._discovered_devices.get(key)
+    def _createMachineFromDiscoveredDevice(self, device_id: str) -> None:
+        device = self._discovered_devices.get(device_id)
         if device is None:
-            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            Logger.log("e", "Could not find discovered device with device_id [%s]", device_id)
             return
 
         # The newly added machine is automatically activated.
