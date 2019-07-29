@@ -121,8 +121,7 @@ class ZeroConfClient:
                     address = '.'.join(map(lambda n: str(n), info.address))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
-                    Logger.log("w",
-                               "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device)
+                    Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)
         else:
             Logger.log("w", "Could not get information about %s" % name)
             return False
