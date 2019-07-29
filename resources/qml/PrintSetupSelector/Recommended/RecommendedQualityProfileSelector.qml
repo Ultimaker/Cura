@@ -128,6 +128,11 @@ Item
 
             function checkedFunction(modelItem)
             {
+                if(Cura.MachineManager.hasCustomQuality)
+                {
+                    // When user created profile is active, no quality tickbox should be active.
+                    return false
+                }
                 return Cura.MachineManager.activeQualityType == modelItem.quality_type
             }
 
