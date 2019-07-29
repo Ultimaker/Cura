@@ -72,15 +72,15 @@ class ClusterApiClient:
         url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}"
         self._manager.deleteResource(self._createEmptyRequest(url))
 
-    ## Send a print job action to the cluster.
-    #  \param print_job_uuid: The UUID of the print job to perform the action on.
-    #  \param action: The action to perform.
-    #  \param data: The optional data to send along, used for 'move' and 'duplicate'.
-    def doPrintJobAction(self, print_job_uuid: str, action: str, data: Optional[Dict[str, Union[str, int]]] = None
-                         ) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action/{action}/"
-        body = json.dumps(data).encode() if data else b""
-        self._manager.put(self._createEmptyRequest(url), body)
+    ## Set the state of a print job.
+    def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
+        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action"
+        # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
+        action = "print" if state == "resume" else state
+        self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
+
+    def forcePrintJob(self, print_job_uuid: str) -> None:
+        pass  # TODO
 
     ## We override _createEmptyRequest in order to add the user credentials.
     #  \param url: The URL to request
