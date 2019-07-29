@@ -3772,17 +3772,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "start_layers_at_same_position":
-                {
-                    "label": "Start Layers with the Same Part",
-                    "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
-                },
                 "layer_start_x":
                 {
                     "label": "Layer Start X",

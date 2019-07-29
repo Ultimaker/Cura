@@ -80,7 +80,6 @@
         "raft_surface_layers": { "default_value": 1 },
         "skirt_line_count": { "default_value": 2},
         "brim_width" : { "default_value": 5},
-        "start_layers_at_same_position": { "default_value": true},
         "retraction_combing": { "default_value": "noskin" },
         "retraction_amount" : { "default_value": 4.5},
         "retraction_speed" : { "default_value": 40},

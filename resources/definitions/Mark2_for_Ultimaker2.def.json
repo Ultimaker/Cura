@@ -201,12 +201,6 @@
         "extruder_prime_pos_x": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_y": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_z": { "default_value": 0.0, "enabled": false },
-        "start_layers_at_same_position":
-        {
-            "default_value": false,
-            "enabled": false,
-            "value": false
-        },
         "layer_start_x":
         {
             "default_value": 105.0,
