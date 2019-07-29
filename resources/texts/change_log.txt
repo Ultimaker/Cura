@@ -18,7 +18,7 @@ After clicking ‘Slice’, a lack of response could lead to frustrated buttoncl
 The line type color scheme in the layer view has been tweaked with new colors for infill and support interfaces so that they can be distinguished better. 
 
 *Nozzle switch prime distance. 
-Certain materials “ooze” more than others during retraction and long moves. vgribinchuk has contributed a new setting that lets you finetune the restart distance, so that the full extrusion width is achieved when resuming a print.
+Certain materials “ooze” more than others during retraction and long moves. Vgribinchuk has contributed a new setting that lets you finetune the restart distance, so that the full extrusion width is achieved when resuming a print.
 
 *Smart Z seam. 
 A new option to increase the aesthetic quality of your prints has been added to custom mode, under Z seam settings. Smart Z seam works by analyzing your model’s geometry and automatically choosing when to hide or expose the seam, so that visible seams on outer walls are kept to a minimum.

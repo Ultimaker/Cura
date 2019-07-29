@@ -39,20 +39,41 @@ Menu
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
-                onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
+                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
+                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
+                // onTriggered work directly again).
+                Component.onCompleted:
+                {
+                    var index = model.index
+                    triggered.connect(function(){Cura.ExtruderManager.setActiveExtruderIndex(index)})
+                }
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
-                onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
+                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
+                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
+                // onTriggered work directly again).
+                Component.onCompleted:
+                {
+                    var index = model.index
+                    triggered.connect(function(){Cura.MachineManager.setExtruderEnabled(index, true)})
+                }
                 visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
-                onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
+                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
+                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
+                // onTriggered work directly again).
+                Component.onCompleted:
+                {
+                    var index = model.index
+                    triggered.connect(function(){Cura.MachineManager.setExtruderEnabled(index, false)})
+                }
                 visible: Cura.MachineManager.getExtruder(model.index).isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }
