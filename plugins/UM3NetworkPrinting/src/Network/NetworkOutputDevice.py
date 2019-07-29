@@ -158,7 +158,7 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         # Export the file.
         stream = mesh_format.createStream()
-        job = WriteFileJob(mesh_format.writer, stream, nodes, mesh_format.file_mode)
+        job = WriteFileJob(writer=mesh_format.writer, stream=stream, data=nodes, mode=mesh_format.file_mode)
         job.setFileName(file_name)
         job.finished.connect(self._onPrintJobCreated)
         job.start()
