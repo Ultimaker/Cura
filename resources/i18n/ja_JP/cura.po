@@ -6,17 +6,17 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.2\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0200\n"
-"PO-Revision-Date: 2019-05-28 09:46+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Japanese\n"
+"PO-Revision-Date: 2019-07-29 16:09+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:27
 msgctxt "@action"
@@ -89,7 +89,7 @@ msgstr "プロファイルが平らになり、アクティベートされまし
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
-msgstr ""
+msgstr "AMF ファイル"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
 msgctxt "@item:inmenu"
@@ -930,7 +930,7 @@ msgstr "無効なファイルのURL:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr ""
+msgstr "現在利用可能な次のエクストルーダーに合わせて設定が変更されました:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
@@ -1395,7 +1395,7 @@ msgstr "ログ"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
 msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-msgstr ""
+msgstr "ユーザー説明 (注: 開発者はユーザーの言語を理解できない場合があるため、可能な限り英語を使用してください)"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
@@ -1931,7 +1931,7 @@ msgstr "ガラス"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
-msgstr ""
+msgstr "キューをリモートで管理するには、プリンターのファームウェアを更新してください。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
 msgctxt "@info"
@@ -1996,12 +1996,12 @@ msgstr "順番を待つ"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
-msgstr ""
+msgstr "ブラウザで管理する"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
-msgstr ""
+msgstr "キューに印刷ジョブがありません。追加するには、スライスしてジョブを送信します。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
 msgctxt "@label"
@@ -2036,12 +2036,12 @@ msgstr "ネットワーク上で繋がったプリンターに接続"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr ""
+msgstr "印刷ジョブをネットワークを介してプリンターに直接送信するには、ネットワークケーブルを使用してプリンターを確実にネットワークに接続するか、プリンターを WIFI ネットワークに接続します。Cura をプリンタに接続していない場合でも、USB ドライブを使用して g コードファイルをプリンターに転送することはできます。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr ""
+msgstr "以下のリストからプリンタを選択します:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2340,6 +2340,9 @@ msgid ""
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr ""
+"プリンタが接続されているか確認し、以下を行います。\n"
+"- プリンタの電源が入っているか確認します。\n"
+"- プリンタがネットワークに接続されているかどうかを確認します。- クラウドに接続されたプリンタを検出するためにサインインしているかどうかを確認します。"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -3259,7 +3262,7 @@ msgstr "ズームはマウスの方向に動くべきか？"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-msgstr ""
+msgstr "平行投影表示では、マウスの方向にズームする操作がサポートされていません。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3309,20 +3312,20 @@ msgstr "レイヤービューコンパティビリティモードを強制する
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
-msgstr ""
+msgstr "どのような種類のカメラレンダリングを使用する必要がありますか?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
 msgctxt "@window:text"
 msgid "Camera rendering: "
-msgstr ""
+msgstr "カメラレンダリング: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
 msgid "Perspective"
-msgstr ""
+msgstr "パースペクティブ表示"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgid "Orthogonal"
-msgstr ""
+msgstr "平行投影表示"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -3999,17 +4002,17 @@ msgstr "カメラ位置 (&C)"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
-msgstr ""
+msgstr "カメラビュー"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:47
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr ""
+msgstr "パースペクティブ表示"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
-msgstr ""
+msgstr "平行投影表示"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
@@ -4158,7 +4161,7 @@ msgstr "タイプ表示"
 #: /home/ruben/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
 msgid "Object list"
-msgstr ""
+msgstr "オブジェクトリスト"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
@@ -4229,7 +4232,7 @@ msgstr "スライスできません"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
 msgid "Processing"
-msgstr ""
+msgstr "処理"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
@@ -4299,7 +4302,7 @@ msgstr "留め金 フルスクリーン"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "全画面表示を終了する"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
@@ -5143,12 +5146,12 @@ msgstr "プロファイルフラッター"
 #: AMFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr ""
+msgstr "AMFファイルの読込みをサポートしています。"
 
 #: AMFReader/plugin.json
 msgctxt "name"
 msgid "AMF Reader"
-msgstr ""
+msgstr "AMFリーダー"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5413,12 +5416,12 @@ msgstr "3.0から3.1にバージョンアップグレート"
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr ""
+msgstr "コンフィギュレーションを Cura 4.1 から Cura 4.2 にアップグレートする。"
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
-msgstr ""
+msgstr "4.0 から 4.1 にバージョンアップグレート"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"

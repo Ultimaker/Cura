@@ -6,11 +6,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.2\n"
-"Report-Msgid-Bugs-To: \n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0200\n"
-"PO-Revision-Date: 2019-05-28 09:32+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: German\n"
+"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "Das Profil wurde geglättet und aktiviert."
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
-msgstr ""
+msgstr "AMF-Datei"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
 msgctxt "@item:inmenu"
@@ -929,7 +929,7 @@ msgstr "Ungültige Datei-URL:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr ""
+msgstr "Die Einstellungen wurden an die aktuell verfügbaren Extruder angepasst:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
@@ -1394,7 +1394,7 @@ msgstr "Protokolle"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
 msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-msgstr ""
+msgstr "Benutzerbeschreibung (Hinweis: Bitte schreiben Sie auf Englisch, da die Entwickler Ihre Sprache möglicherweise nicht beherrschen.)"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
@@ -1930,7 +1930,7 @@ msgstr "Glas"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
-msgstr ""
+msgstr "Damit Sie die Warteschlange aus der Ferne verwalten können, müssen Sie die Druckfirmware aktualisieren."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
 msgctxt "@info"
@@ -1995,12 +1995,12 @@ msgstr "In Warteschlange"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
-msgstr ""
+msgstr "Im Browser verwalten"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
-msgstr ""
+msgstr "Die Warteschlange enthält keine Druckaufträge. Slicen Sie einen Auftrag und schicken Sie ihn ab, um ihn zur Warteschlange hinzuzufügen."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
 msgctxt "@label"
@@ -2035,12 +2035,13 @@ msgstr "Anschluss an vernetzten Drucker"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr ""
+msgstr "Um direkt auf Ihrem Drucker über das Netzwerk zu drucken, muss der Drucker über ein Netzwerkkabel oder per WLAN mit dem Netzwerk verbunden sein. Wenn Sie"
+" Cura nicht mit Ihrem Drucker verbinden, können Sie G-Code-Dateien auf einen USB-Stick kopieren und diesen am Drucker anschließen."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr ""
+msgstr "Wählen Sie Ihren Drucker aus der folgenden Liste aus:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2339,7 +2340,8 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr ""
+msgstr "Stellen Sie sicher, dass der Drucker verbunden ist:\n– Prüfen Sie, ob der Drucker eingeschaltet ist.– Prüfen Sie, ob der Drucker mit dem Netzwerk verbunden"
+" ist.\n– Prüfen Sie, ob Sie angemeldet sind, falls Sie über die Cloud verbundene Drucker suchen möchten."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -3257,7 +3259,7 @@ msgstr "Soll das Zoomen in Richtung der Maus erfolgen?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-msgstr ""
+msgstr "Das Zoomen in Mausrichtung wird in der Orthogonalansicht nicht unterstützt."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3307,20 +3309,20 @@ msgstr "Schichtenansicht Kompatibilitätsmodus erzwingen (Neustart erforderlich)
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
-msgstr ""
+msgstr "Welches Kamera-Rendering sollte verwendet werden?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
 msgctxt "@window:text"
 msgid "Camera rendering: "
-msgstr ""
+msgstr "Kamera-Rendering: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
 msgid "Perspective"
-msgstr ""
+msgstr "Ansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgid "Orthogonal"
-msgstr ""
+msgstr "Orthogonal"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -4001,17 +4003,17 @@ msgstr "&Kameraposition"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
-msgstr ""
+msgstr "Kameraansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:47
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr ""
+msgstr "Ansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
-msgstr ""
+msgstr "Orthogonal"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
@@ -4160,7 +4162,7 @@ msgstr "Typ anzeigen"
 #: /home/ruben/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
 msgid "Object list"
-msgstr ""
+msgstr "Objektliste"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
@@ -4231,7 +4233,7 @@ msgstr "Slicing nicht möglich"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
 msgid "Processing"
-msgstr ""
+msgstr "Verarbeitung läuft"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
@@ -4301,7 +4303,7 @@ msgstr "Umschalten auf Vollbild-Modus"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Vollbildmodus beenden"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
@@ -5149,12 +5151,12 @@ msgstr "Profilglättfunktion"
 #: AMFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr ""
+msgstr "Ermöglicht das Lesen von AMF-Dateien."
 
 #: AMFReader/plugin.json
 msgctxt "name"
 msgid "AMF Reader"
-msgstr ""
+msgstr "AMF-Reader"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5419,12 +5421,12 @@ msgstr "Upgrade von Version 3.0 auf 3.1"
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr ""
+msgstr "Aktualisiert Konfigurationen von Cura 4.1 auf Cura 4.2."
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
-msgstr ""
+msgstr "Upgrade von Version 4.1 auf 4.2"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
