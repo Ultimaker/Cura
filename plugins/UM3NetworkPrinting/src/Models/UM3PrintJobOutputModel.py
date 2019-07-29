@@ -15,7 +15,7 @@ class UM3PrintJobOutputModel(PrintJobOutputModel):
 
     def __init__(self, output_controller: PrinterOutputController, key: str = "", name: str = "", parent=None) -> None:
         super().__init__(output_controller, key, name, parent)
-        self._configuration_changes = []    # type: List[ConfigurationChangeModel]
+        self._configuration_changes = []  # type: List[ConfigurationChangeModel]
 
     @pyqtProperty("QVariantList", notify=configurationChangesChanged)
     def configurationChanges(self) -> List[ConfigurationChangeModel]:

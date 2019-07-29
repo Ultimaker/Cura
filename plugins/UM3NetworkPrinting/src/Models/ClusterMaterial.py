@@ -1,4 +1,5 @@
-##  Class representing a material that was fetched from the cluster API.
+# Copyright (c) 2018 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 from .BaseModel import BaseModel
 
 

@@ -10,8 +10,8 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.GlobalStack import GlobalStack
-from plugins.UM3NetworkPrinting.src.Network.ZeroConfClient import ZeroConfClient
 
+from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .NetworkOutputDevice import NetworkOutputDevice
 

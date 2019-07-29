@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from time import time
-from typing import List, Optional, Set, cast
+from typing import List, Optional, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QDesktopServices
@@ -13,7 +13,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
-
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
