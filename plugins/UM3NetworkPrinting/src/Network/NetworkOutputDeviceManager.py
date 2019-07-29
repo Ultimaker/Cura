@@ -1,11 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from queue import Queue
-from threading import Thread, Event
-from time import time
 from typing import Dict, Optional, Callable
-
-from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
 from UM import i18nCatalog
 from UM.Logger import Logger
@@ -15,6 +10,7 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.GlobalStack import GlobalStack
+from plugins.UM3NetworkPrinting.src.Network.ZeroConfClient import ZeroConfClient
 
 from .ClusterApiClient import ClusterApiClient
 from .NetworkOutputDevice import NetworkOutputDevice
@@ -23,7 +19,6 @@ from .NetworkOutputDevice import NetworkOutputDevice
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
 class NetworkOutputDeviceManager:
 
-    ZERO_CONF_NAME = u"_ultimaker._tcp.local."
     MANUAL_DEVICES_PREFERENCE_KEY = "um3networkprinting/manual_instances"
     MIN_SUPPORTED_CLUSTER_VERSION = Version("4.0.0")
 
@@ -33,47 +28,24 @@ class NetworkOutputDeviceManager:
     # Signal emitted when the list of discovered devices changed.
     discoveredDevicesChanged = Signal()
 
-    # Signals emitted when new services were discovered or removed on the network.
-    addedNetworkCluster = Signal()
-    removedNetworkCluster = Signal()
-
     def __init__(self) -> None:
 
         # Persistent dict containing the networked clusters.
         self._discovered_devices = {}  # type: Dict[str, NetworkOutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
-        # TODO: move zeroconf stuff to own class?
-        self._zero_conf = None  # type: Optional[Zeroconf]
-        self._zero_conf_browser = None  # type: Optional[ServiceBrowser]
-        self._service_changed_request_queue = None  # type: Optional[Queue]
-        self._service_changed_request_event = None  # type: Optional[Event]
-        self._service_changed_request_thread = None  # type: Optional[Thread]
+        # Hook up ZeroConf client.
+        self._zero_conf_client = ZeroConfClient()
+        self._zero_conf_client.addedNetworkCluster.connect(self._onAddDevice)
+        self._zero_conf_client.removedNetworkCluster.connect(self._onRemoveDevice)
 
         # TODO: move manual device stuff to own class?
         # Persistent dict containing manually connected clusters.
         self._manual_instances = {}  # type: Dict[str, Callable]
 
-        # Hook up the signals for discovery.
-        self.addedNetworkCluster.connect(self._onAddDevice)
-        self.removedNetworkCluster.connect(self._onRemoveDevice)
-
     ## Start the network discovery.
-    def start(self):
-        # The ZeroConf service changed requests are handled in a separate thread so we don't block the UI.
-        # We can also re-schedule the requests when they fail to get detailed service info.
-        # Any new or re-reschedule requests will be appended to the request queue and the thread will process them.
-        self._service_changed_request_queue = Queue()
-        self._service_changed_request_event = Event()
-        self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
-        self._service_changed_request_thread.start()
-
-        # Start network discovery.
-        self.stop()
-        self._zero_conf = Zeroconf()
-        self._zero_conf_browser = ServiceBrowser(self._zero_conf, self.ZERO_CONF_NAME, [
-            self._appendServiceChangedRequest
-        ])
+    def start(self) -> None:
+        self._zero_conf_client.start()
 
         # Load all manual devices.
         self._manual_instances = self._getStoredManualInstances()
@@ -81,14 +53,8 @@ class NetworkOutputDeviceManager:
             self.addManualDevice(address)
 
     ## Stop network discovery and clean up discovered devices.
-    def stop(self):
-        # Cleanup ZeroConf resources.
-        if self._zero_conf is not None:
-            self._zero_conf.close()
-            self._zero_conf = None
-        if self._zero_conf_browser is not None:
-            self._zero_conf_browser.cancel()
-            self._zero_conf_browser = None
+    def stop(self) -> None:
+        self._zero_conf_client.stop()
 
         # Cleanup all manual devices.
         for instance_name in list(self._discovered_devices):
@@ -254,88 +220,3 @@ class NetworkOutputDeviceManager:
     @staticmethod
     def _onApiError(errors) -> None:
         Logger.log("w", str(errors))
-
-    ## Appends a service changed request so later the handling thread will pick it up and processes it.
-    def _appendServiceChangedRequest(self, zeroconf: Zeroconf, service_type, name: str,
-                                     state_change: ServiceStateChange) -> None:
-        item = (zeroconf, service_type, name, state_change)
-        self._service_changed_request_queue.put(item)
-        self._service_changed_request_event.set()
-
-    def _handleOnServiceChangedRequests(self) -> None:
-        while True:
-            # Wait for the event to be set
-            self._service_changed_request_event.wait(timeout=5.0)
-
-            # Stop if the application is shutting down
-            if CuraApplication.getInstance().isShuttingDown():
-                return
-
-            self._service_changed_request_event.clear()
-
-            # Handle all pending requests
-            reschedule_requests = []  # A list of requests that have failed so later they will get re-scheduled
-            while not self._service_changed_request_queue.empty():
-                request = self._service_changed_request_queue.get()
-                zeroconf, service_type, name, state_change = request
-                try:
-                    result = self._onServiceChanged(zeroconf, service_type, name, state_change)
-                    if not result:
-                        reschedule_requests.append(request)
-                except Exception:
-                    Logger.logException("e", "Failed to get service info for [%s] [%s], the request will be rescheduled",
-                                        service_type, name)
-                    reschedule_requests.append(request)
-
-            # Re-schedule the failed requests if any
-            if reschedule_requests:
-                for request in reschedule_requests:
-                    self._service_changed_request_queue.put(request)
-
-    ##  Handler for zeroConf detection.
-    #   Return True or False indicating if the process succeeded.
-    #   Note that this function can take over 3 seconds to complete. Be careful calling it from the main thread.
-    def _onServiceChanged(self, zero_conf: Zeroconf, service_type: str, name: str, state_change: ServiceStateChange
-                          ) -> bool:
-        if state_change == ServiceStateChange.Added:
-            return self._onServiceAdded(zero_conf, service_type, name)
-        elif state_change == ServiceStateChange.Removed:
-            return self._onServiceRemoved(name)
-        return True
-
-    ## Handler for when a ZeroConf service was added.
-    def _onServiceAdded(self, zero_conf: Zeroconf, service_type: str, name: str) -> bool:
-        # First try getting info from zero-conf cache
-        info = ServiceInfo(service_type, name, properties={})
-        for record in zero_conf.cache.entries_with_name(name.lower()):
-            info.update_record(zero_conf, time(), record)
-
-        for record in zero_conf.cache.entries_with_name(info.server):
-            info.update_record(zero_conf, time(), record)
-            if info.address:
-                break
-
-        # Request more data if info is not complete
-        if not info.address:
-            info = zero_conf.get_service_info(service_type, name)
-
-        if info:
-            type_of_device = info.properties.get(b"type", None)
-            if type_of_device:
-                if type_of_device == b"printer":
-                    address = '.'.join(map(lambda n: str(n), info.address))
-                    self.addedNetworkCluster.emit(str(name), address, info.properties)
-                else:
-                    Logger.log("w",
-                               "The type of the found device is '%s', not 'printer'! Ignoring.." % type_of_device)
-        else:
-            Logger.log("w", "Could not get information about %s" % name)
-            return False
-
-        return True
-
-    ## Handler for when a ZeroConf service was removed.
-    def _onServiceRemoved(self, name: str) -> bool:
-        Logger.log("d", "ZeroConf service removed: %s" % name)
-        self.removedNetworkCluster.emit(str(name))
-        return True
