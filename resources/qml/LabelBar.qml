@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
-
+import UM 1.2 as UM
 // The labelBar shows a set of labels that are evenly spaced from oneother.
 // The first item is aligned to the left, the last is aligned to the right.
 // It's intended to be used together with RadioCheckBar. As such, it needs
@@ -10,10 +10,14 @@ Item
 {
     id: base
     property var model: null
+    property string modelKey: ""
     property int itemSize: 14
+    height: childrenRect.height
     RowLayout
     {
-        anchors.fill: parent
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: childrenRect.height
         spacing: 0
         Repeater
         {
@@ -25,12 +29,14 @@ Item
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 Layout.maximumWidth: index + 1 === repeater.count ? itemSize: 200000000
-
+                height: childrenRect.height
                 Label
                 {
                     id: label
-                    text: model.text
-
+                    text: model[modelKey]
+                    color: UM.Theme.getColor("text")
+                    font: UM.Theme.getFont("default")
+                    height: contentHeight
                     anchors
                     {
                         // Some magic to ensure that the items are aligned properly.
