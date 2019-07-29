@@ -15,7 +15,6 @@ from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudError import CloudError
-from ..Utils import findChanges
 
 
 ##  The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
@@ -33,8 +32,8 @@ class CloudOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
-    addedCloudCluster = Signal()
-    removedCloudCluster = Signal()
+    # Signal emitted when the list of discovered devices changed.
+    discoveredDevicesChanged = Signal()
 
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
@@ -79,7 +78,6 @@ class CloudOutputDeviceManager:
         else:
             if self._update_timer.isActive():
                 self._update_timer.stop()
-
             # Notify that all clusters have disappeared
             self._onGetRemoteClustersFinished([])
 
@@ -87,45 +85,39 @@ class CloudOutputDeviceManager:
     def _getRemoteClusters(self) -> None:
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
-    ## Callback for when the request for getting the clusters. is finished.
+    ## Callback for when the request for getting the clusters is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
+
+        # Filter on clusters that are currently online.
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
-        removed_devices, added_clusters, updates = findChanges(self._remote_clusters, online_clusters)
 
-        # Remove output devices that are gone
+        # Keep track of the new cloud clusters to show.
+        # We create a new list instead of changing the existing one to prevent issues with ordering.
+        new_devices = {}  # type: Dict[str, CloudOutputDevice]
+
+        # Get the discovery mechanism of Cura.
+        discovery = CuraApplication.getInstance().getDiscoveredPrintersModel()
+
+        # Check which devices need to be created or updated.
+        for device_id, cluster_data in online_clusters.items():
+            device = next(iter(device for device in self._remote_clusters.values() if device.key == device_id), None)
+            if not device:
+                device = CloudOutputDevice(self._api, cluster_data)
+                discovery.addDiscoveredPrinter(device.key, device.key, cluster_data.friendly_name,
+                                               self._createMachineFromDiscoveredPrinter, device.printerType, device)
+            else:
+                discovery.updateDiscoveredPrinter(device.key, cluster_data.friendly_name, device.printerType)
+            new_devices[device.key] = device
+
+        # Remove output devices that disappeared.
+        remote_cluster_keys = self._remote_clusters.keys()
+        removed_devices = [cluster for cluster in self._remote_clusters.values() if cluster.key not in remote_cluster_keys]
         for device in removed_devices:
-            if device.isConnected():
-                device.disconnect()
-                device.close()
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
-            CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.key)
-            self.removedCloudCluster.emit(device)
-            del self._remote_clusters[device.key]
+            discovery.removeDiscoveredPrinter(device.key)
 
-        # Add an output device for each new remote cluster.
-        # We only add when is_online as we don't want the option in the drop down if the cluster is not online.
-        for cluster in added_clusters:
-            device = CloudOutputDevice(self._api, cluster)
-            self._remote_clusters[cluster.cluster_id] = device
-            CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
-                    device.key,
-                    device.key,
-                    cluster.friendly_name,
-                    self._createMachineFromDiscoveredPrinter,
-                    device.printerType,
-                    device
-            )
-            self.addedCloudCluster.emit(cluster)
-
-        # Update the output devices
-        for device, cluster in updates:
-            device.clusterData = cluster
-            CuraApplication.getInstance().getDiscoveredPrintersModel().updateDiscoveredPrinter(
-                    device.key,
-                    cluster.friendly_name,
-                    device.printerType,
-            )
-
+        self._remote_clusters = new_devices
+        self.discoveredDevicesChanged.emit()
         self._connectToActiveMachine()
 
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
@@ -151,10 +143,9 @@ class CloudOutputDeviceManager:
             return
 
         # Remove all output devices that we have registered.
-        # This is needed because when we switch machines we can only leave
-        # output devices that are meant for that machine.
-        for stored_cluster_id in self._remote_clusters:
-            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(stored_cluster_id)
+        # This is needed because when we switch we can only leave output devices that are meant for that machine.
+        for device_id in self._remote_clusters:
+            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device_id)
 
         # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
@@ -191,4 +182,5 @@ class CloudOutputDeviceManager:
     #  \param errors: The errors received
     @staticmethod
     def _onApiError(errors: List[CloudError] = None) -> None:
-        Logger.log("w", str(errors))
+        for error in errors:
+            Logger.log("w", str(error.toDict()))

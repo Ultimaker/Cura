@@ -9,7 +9,6 @@ from zeroconf import Zeroconf, ServiceBrowser, ServiceStateChange, ServiceInfo
 
 from UM import i18nCatalog
 from UM.Logger import Logger
-from UM.Message import Message
 from UM.Signal import Signal
 from UM.Version import Version
 
@@ -19,7 +18,6 @@ from cura.Settings.GlobalStack import GlobalStack
 
 from .ClusterApiClient import ClusterApiClient
 from .NetworkOutputDevice import NetworkOutputDevice
-from .ManualPrinterRequest import ManualPrinterRequest
 
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
@@ -32,7 +30,10 @@ class NetworkOutputDeviceManager:
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
+    # Signal emitted when the list of discovered devices changed.
     discoveredDevicesChanged = Signal()
+
+    # Signals emitted when new services were discovered or removed on the network.
     addedNetworkCluster = Signal()
     removedNetworkCluster = Signal()
 
@@ -51,8 +52,7 @@ class NetworkOutputDeviceManager:
 
         # TODO: move manual device stuff to own class?
         # Persistent dict containing manually connected clusters.
-        self._manual_instances = {}  # type: Dict[str, ManualPrinterRequest]
-        self._last_manual_entry_key = None  # type: Optional[str]
+        self._manual_instances = {}  # type: Dict[str, Callable]
 
         # Hook up the signals for discovery.
         self.addedNetworkCluster.connect(self._onAddDevice)
@@ -78,8 +78,7 @@ class NetworkOutputDeviceManager:
         # Load all manual devices.
         self._manual_instances = self._getStoredManualInstances()
         for address in self._manual_instances:
-            if address:
-                self.addManualDevice(address)
+            self.addManualDevice(address)
 
     ## Stop network discovery and clean up discovered devices.
     def stop(self):
@@ -97,7 +96,7 @@ class NetworkOutputDeviceManager:
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        self._manual_instances[address] = ManualPrinterRequest(address, callback=callback)
+        self._manual_instances[address] = callback
         new_manual_devices = ",".join(self._manual_instances.keys())
         CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
 
@@ -111,7 +110,6 @@ class NetworkOutputDeviceManager:
                 b"temporary": b"true"
             })
 
-        self._last_manual_entry_key = key
         response_callback = lambda status_code, response: self._onCheckManualDeviceResponse(status_code, address)
         self._checkManualDevice(address, response_callback)
 
@@ -126,12 +124,12 @@ class NetworkOutputDeviceManager:
             self._onRemoveDevice(key)
 
         if address in self._manual_instances:
-            manual_printer_request = self._manual_instances.pop(address)
+            manual_instance_callback = self._manual_instances.pop(address)
             new_manual_devices = ",".join(self._manual_instances.keys())
             CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY,
                                                                     new_manual_devices)
-            if manual_printer_request.callback is not None:
-                CuraApplication.getInstance().callLater(manual_printer_request.callback, False, address)
+            if manual_instance_callback:
+                CuraApplication.getInstance().callLater(manual_instance_callback, False, address)
 
     ## Force reset all network device connections.
     def refreshConnections(self):
@@ -143,13 +141,17 @@ class NetworkOutputDeviceManager:
         if not active_machine:
             return
 
+        # Remove all output devices that we have registered.
+        # This is needed because when we switch we can only leave output devices that are meant for that machine.
         for device_id in self._discovered_devices:
             CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device_id)
 
+        # Check if the stored network key for the active machine is in our list of discovered devices.
         stored_network_key = active_machine.getMetaDataEntry("um_network_key")
         if stored_network_key in self._discovered_devices:
             device = self._discovered_devices[stored_network_key]
             self._connectToOutputDevice(device, active_machine)
+            Logger.log("d", "Device connected by metadata network key %s", stored_network_key)
 
     ## Add a device to the current active machine.
     @staticmethod
@@ -159,17 +161,6 @@ class NetworkOutputDeviceManager:
         active_machine.setMetaDataEntry("group_name", device.name)
         active_machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
-
-    ## Handles an API error received from the cloud.
-    #  \param errors: The errors received
-    def _onApiError(self, errors) -> None:
-        Logger.log("w", str(errors))
-        message = Message(
-            text=self.I18N_CATALOG.i18nc("@info:description", "There was an error connecting to the printer."),
-            title=self.I18N_CATALOG.i18nc("@info:title", "Error"),
-            lifetime=10
-        )
-        message.show()
 
     ## Checks if a networked printer exists at the given address.
     #  If the printer responds it will replace the preliminary printer created from the stored manual instances.
@@ -181,12 +172,12 @@ class NetworkOutputDeviceManager:
     def _onCheckManualDeviceResponse(self, status_code: int, address: str) -> None:
         Logger.log("d", "manual device check response: {} {}".format(status_code, address))
         if address in self._manual_instances:
-            callback = self._manual_instances[address].callback
-            if callback:
+            callback = self._manual_instances[address]
+            if callback is not None:
                 CuraApplication.getInstance().callLater(callback, status_code == 200, address)
 
-    ##  Returns a dict of printer BOM numbers to machine types.
-    #   These numbers are available in the machine definition already so we just search for them here.
+    ## Returns a dict of printer BOM numbers to machine types.
+    #  These numbers are available in the machine definition already so we just search for them here.
     @staticmethod
     def _getPrinterTypeIdentifiers() -> Dict[str, str]:
         container_registry = CuraApplication.getInstance().getContainerRegistry()
@@ -218,16 +209,14 @@ class NetworkOutputDeviceManager:
             return
 
         device = NetworkOutputDevice(key, address, properties)
-
         CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
             ip_address=address,
             key=device.getId(),
-            name=properties[b"name"].decode("utf-8"),
+            name=device.getName(),
             create_callback=self._createMachineFromDiscoveredPrinter,
-            machine_type=properties[b"printer_type"].decode("utf-8"),
+            machine_type=device.printerType,
             device=device
         )
-
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
         self._connectToActiveMachine()
@@ -237,10 +226,34 @@ class NetworkOutputDeviceManager:
         device = self._discovered_devices.pop(device_id, None)
         if not device:
             return
-        if device.isConnected():
-            device.disconnect()
         CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
         self.discoveredDevicesChanged.emit()
+
+    ## Create a machine instance based on the discovered network printer.
+    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
+        discovered_device = self._discovered_devices.get(key)
+        if discovered_device is None:
+            Logger.log("e", "Could not find discovered device with key [%s]", key)
+            return
+        group_name = discovered_device.getProperty("name")
+        machine_type_id = discovered_device.getProperty("printer_type")
+        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
+                   key, group_name, machine_type_id)
+        CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
+        self._connectToActiveMachine()
+
+    ## Load the user-configured manual devices from Cura preferences.
+    def _getStoredManualInstances(self) -> Dict[str, Optional[Callable]]:
+        preferences = CuraApplication.getInstance().getPreferences()
+        preferences.addPreference(self.MANUAL_DEVICES_PREFERENCE_KEY, "")
+        manual_instances = preferences.getValue(self.MANUAL_DEVICES_PREFERENCE_KEY).split(",")
+        return {address: None for address in manual_instances}
+
+    ## Handles an API error received from the cloud.
+    #  \param errors: The errors received
+    @staticmethod
+    def _onApiError(errors) -> None:
+        Logger.log("w", str(errors))
 
     ## Appends a service changed request so later the handling thread will pick it up and processes it.
     def _appendServiceChangedRequest(self, zeroconf: Zeroconf, service_type, name: str,
@@ -323,26 +336,6 @@ class NetworkOutputDeviceManager:
 
     ## Handler for when a ZeroConf service was removed.
     def _onServiceRemoved(self, name: str) -> bool:
-        Logger.log("d", "Bonjour service removed: %s" % name)
+        Logger.log("d", "ZeroConf service removed: %s" % name)
         self.removedNetworkCluster.emit(str(name))
         return True
-
-    ## Create a machine instance based on the discovered network printer.
-    def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        discovered_device = self._discovered_devices.get(key)
-        if discovered_device is None:
-            Logger.log("e", "Could not find discovered device with key [%s]", key)
-            return
-        group_name = discovered_device.getProperty("name")
-        machine_type_id = discovered_device.getProperty("printer_type")
-        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
-                   key, group_name, machine_type_id)
-        CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
-        self._connectToActiveMachine()
-
-    ## Load the user-configured manual devices from Cura preferences.
-    def _getStoredManualInstances(self) -> Dict[str, ManualPrinterRequest]:
-        preferences = CuraApplication.getInstance().getPreferences()
-        preferences.addPreference(self.MANUAL_DEVICES_PREFERENCE_KEY, "")
-        manual_instances = preferences.getValue(self.MANUAL_DEVICES_PREFERENCE_KEY).split(",")
-        return {address: ManualPrinterRequest(address) for address in manual_instances}

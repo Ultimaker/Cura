@@ -112,6 +112,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     ## Disconnects the device
     def disconnect(self) -> None:
+        if not self.isConnected():
+            return
         super().disconnect()
         Logger.log("i", "Disconnected from cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.disconnect(self._onBackendStateChange)
@@ -201,7 +203,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         if self._received_printers != status.printers:
             self._received_printers = status.printers
             self._updatePrinters(status.printers)
-
         if status.print_jobs != self._received_print_jobs:
             self._received_print_jobs = status.print_jobs
             self._updatePrintJobs(status.print_jobs)
