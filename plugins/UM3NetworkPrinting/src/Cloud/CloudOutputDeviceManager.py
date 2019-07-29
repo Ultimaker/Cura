@@ -126,15 +126,12 @@ class CloudOutputDeviceManager:
             Logger.log("e", "Could not find discovered device with key [%s]", key)
             return
 
-        group_name = device.clusterData.friendly_name
-        machine_type_id = device.printerType
-
-        Logger.log("i", "Creating machine from cloud device with key = [%s], group name = [%s],  printer type = [%s]",
-                   key, group_name, machine_type_id)
-
         # The newly added machine is automatically activated.
-        CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
-        self._connectToActiveMachine()
+        CuraApplication.getInstance().getMachineManager().addMachine(device.printerType,
+                                                                     device.clusterData.friendly_name)
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if active_machine:
+            self._connectToOutputDevice(device, active_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:

@@ -231,16 +231,16 @@ class NetworkOutputDeviceManager:
 
     ## Create a machine instance based on the discovered network printer.
     def _createMachineFromDiscoveredPrinter(self, key: str) -> None:
-        discovered_device = self._discovered_devices.get(key)
-        if discovered_device is None:
+        device = self._discovered_devices.get(key)
+        if device is None:
             Logger.log("e", "Could not find discovered device with key [%s]", key)
             return
-        group_name = discovered_device.getProperty("name")
-        machine_type_id = discovered_device.getProperty("printer_type")
-        Logger.log("i", "Creating machine from network device with key = [%s], group name = [%s],  printer type = [%s]",
-                   key, group_name, machine_type_id)
-        CuraApplication.getInstance().getMachineManager().addMachine(machine_type_id, group_name)
-        self._connectToActiveMachine()
+
+        # The newly added machine is automatically activated.
+        CuraApplication.getInstance().getMachineManager().addMachine(device.printerType, device.name)
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if active_machine:
+            self._connectToOutputDevice(device, active_machine)
 
     ## Load the user-configured manual devices from Cura preferences.
     def _getStoredManualInstances(self) -> Dict[str, Optional[Callable]]:
