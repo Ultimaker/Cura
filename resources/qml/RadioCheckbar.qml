@@ -14,7 +14,7 @@ Item
     property int barSize: 2
 
     implicitWidth: 200
-    implicitHeight: buttonBar.height
+    implicitHeight: checkboxSize
 
     property var model: null
 
@@ -23,8 +23,12 @@ Item
     {
         id: inactiveLine
         color: inactiveColor
-        anchors.verticalCenter: buttonBar.verticalCenter
+
         height: barSize
+
+        // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
+        // but not when using the exact same QML in Cura.
+        y: 0.5 * checkboxSize
         anchors
         {
             left: buttonBar.left
@@ -37,15 +41,16 @@ Item
     RowLayout
     {
         id: buttonBar
-        anchors.centerIn: parent
-        height: childrenRect.height
+        anchors.top: parent.top
+        height: checkboxSize
         width: parent.width
         spacing: 0
+
         Repeater
         {
             id: repeater
             model: base.model
-
+            height: checkboxSize
             Item
             {
                 Layout.fillWidth: true
@@ -53,7 +58,7 @@ Item
                 // the horizontal bar. The others should essentially not be limited.
                 Layout.maximumWidth: index + 1 === repeater.count ? activeComponent.width: 200000000
                 height: activeComponent.height
-                property bool isEnabled: model.enabled
+                property bool isEnabled: model.available
                 // The horizontal bar between the checkable options.
                 // Note that the horizontal bar points towards the previous item.
                 Rectangle
@@ -67,7 +72,6 @@ Item
                     anchors
                     {
                         right: activeComponent.left
-                        verticalCenter: activeComponent.verticalCenter
                     }
                     visible: previousItem !== null && previousItem.isEnabled && isEnabled
                 }
@@ -75,6 +79,10 @@ Item
                 {
                     id: activeComponent
                     sourceComponent: isEnabled? checkboxComponent : disabledComponent
+                    width: checkboxSize
+                    // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
+                    // but not when using the exact same QML in Cura.
+                    y: -0.5 * checkboxSize
                 }
             }
         }
@@ -87,9 +95,13 @@ Item
         {
             height: checkboxSize
             width: checkboxSize
+
             Rectangle
             {
-                anchors.centerIn: parent
+                // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
+                // but not when using the exact same QML in Cura.
+                y: 0.5 * checkboxSize - 1
+                anchors.horizontalCenter: parent.horizontalCenter
                 height: inactiveMarkerSize
                 width: inactiveMarkerSize
                 radius: width / 2
@@ -109,11 +121,10 @@ Item
             height: checkboxSize
             indicator: Rectangle
             {
-                height: checkbox.height
-                width: checkbox.width
+                height: checkboxSize
+                width: checkboxSize
                 radius: width / 2
 
-                anchors.centerIn: checkbox
                 border.color: defaultItemColor
 
                 Rectangle
