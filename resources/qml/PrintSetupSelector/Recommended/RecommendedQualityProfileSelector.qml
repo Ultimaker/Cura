@@ -84,29 +84,44 @@ Item
         }
     }
 
-    Item
+    Column
     {
-        anchors.left: titleRow.right
-        anchors.right: parent.right
+        anchors
+        {
+            left: titleRow.right
+            right: parent.right
+        }
+
+        spacing: UM.Theme.getSize("default_margin").height
+
         Controls2.ButtonGroup
         {
             id: activeProfileButtonGroup
             exclusive: true
             onClicked: Cura.MachineManager.activeQualityGroup = button.identifier
         }
+
         Cura.LabelBar
         {
             id: labelbar
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+            }
+
             model: Cura.QualityProfilesDropDownMenuModel
             modelKey: "layer_height"
         }
+
         Cura.RadioCheckbar
         {
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: labelbar.bottom
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+            }
+
             model: Cura.QualityProfilesDropDownMenuModel
             buttonGroup: activeProfileButtonGroup
             modelKey: "quality_group"
