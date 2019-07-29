@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+
 Item
 {
     id: base
@@ -12,11 +13,17 @@ Item
     property int checkboxSize: 14
     property int inactiveMarkerSize: 4
     property int barSize: 2
+    property var isCheckedFunction // Function that accepts the modelItem and returns if the item should be active.
 
     implicitWidth: 200
     implicitHeight: checkboxSize
 
     property var model: null
+
+    // What key of the model should be used to set the identifier of the checkbox.
+    // This is used to figure out what checkbox just got toggled. Set a buttonGroup and listen to it's clicked signal.
+    // You can use button.identifier to figure out which button was clicked.
+    property string modelKey: "name"
 
     // The horizontal inactive bar that sits behind the buttons
     Rectangle
@@ -83,6 +90,7 @@ Item
                     // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
                     // but not when using the exact same QML in Cura.
                     y: -0.5 * checkboxSize
+                    property var modelItem: model
                 }
             }
         }
@@ -119,6 +127,8 @@ Item
             ButtonGroup.group: buttonGroup
             width: checkboxSize
             height: checkboxSize
+            property var identifier: modelItem[base.modelKey]
+            checked: isCheckedFunction(modelItem)
             indicator: Rectangle
             {
                 height: checkboxSize
