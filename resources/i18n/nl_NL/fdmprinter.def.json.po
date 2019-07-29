@@ -1298,10 +1298,10 @@ msgstr "Voorkeur van naad en hoek"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Instellen of hoeken in het model invloed hebben op de positie van de naad. <strong>Geen</strong> wil zeggen dat hoeken geen invloed hebben op de positie"
-" van de naad. Met <strong>Naad verbergen</strong> is de kans groter dat de naad op een binnenhoek komt. Met <strong>Naad zichtbaar maken</strong> is de"
-" kans groter dat de naad op een buitenhoek komt. Met <strong>Naad verbergen</strong> of <strong>Naad zichtbaar maken</strong> is de kans groter dat de"
-" naad op een binnen- of buitenhoek komt. Met <strong>Slim verbergen</strong> zijn zowel binnen- als buitenhoeken mogelijk, maar wordt er vaker (indien van"
+msgstr "Instellen of hoeken in het model invloed hebben op de positie van de naad. Geen wil zeggen dat hoeken geen invloed hebben op de positie"
+" van de naad. Met Naad Verbergen is de kans groter dat de naad op een binnenhoek komt. Met Naad Zichtbaar Maken is de"
+" kans groter dat de naad op een buitenhoek komt. Met Naad Verbergen of Naad Zichtbaar Maken is de kans groter dat de"
+" naad op een binnen- of buitenhoek komt. Met Slim Verbergen zijn zowel binnen- als buitenhoeken mogelijk, maar wordt er vaker (indien van"
 " toepassing) gebruikgemaakt van binnenhoeken."
 
 #: fdmprinter.def.json

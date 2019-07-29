@@ -1298,10 +1298,10 @@ msgstr "Dikiş Köşesi Tercihi"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. <strong>Hiçbiri</strong>, köşelerin dikişin konumunu"
-" etkilemediği anlamına gelir. <strong>Dikişi Gizle</strong>, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. <strong>Dikişi Açığa"
-" Çıkar</strong>, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. <strong>Dikişi Gizle veya Açığa Çıkar</strong>, dikişin daha büyük"
-" olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar. <strong>Akıllı Gizleme</strong>, hem iç hem de dış köşelere izin verir ancak uygun olduğu"
+msgstr "Modelin ana hatlarında yer alan köşelerin dikişin konumunu etkileyip etkilemediğini kontrol edin. Hiçbiri, köşelerin dikişin konumunu"
+" etkilemediği anlamına gelir. Dikişi Gizle, dikişin daha büyük olasılıkla bir iç köşe üzerinde oluşmasını sağlar. Dikişi Açığa"
+" Çıkar, dikişin daha büyük olasılıkla bir dış köşe üzerinde oluşmasını sağlar. Dikişi Gizle veya Açığa Çıkar, dikişin daha büyük"
+" olasılıkla bir iç veya dış köşe üzerinde oluşmasını sağlar. Akıllı Gizleme, hem iç hem de dış köşelere izin verir ancak uygun olduğu"
 " durumlarda iç köşeleri daha sık seçer."
 
 #: fdmprinter.def.json

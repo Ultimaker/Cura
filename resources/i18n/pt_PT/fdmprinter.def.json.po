@@ -1337,10 +1337,10 @@ msgstr "Preferência Canto Junta"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr "Controla se os cantos do contorno do modelo influenciam a posição da junta. <strong>Nenhum</strong> significa que os cantos não influenciam a posição da"
-" junta. <strong>Ocultar Junta</strong> faz com que seja mais provável que a junta surja num canto interior. <strong>Expor Junta</strong> faz com que seja"
-" mais provável que a junta aconteça num canto exterior. <strong>Ocultar ou Expor Junta</strong> faz com que seja mais provável que a junta aconteça num"
-" canto interior ou exterior. <strong>Ocultação Inteligente</strong> permite os cantos interiores e exteriores, mas opta pelos cantos interiores com mais"
+msgstr "Controla se os cantos do contorno do modelo influenciam a posição da junta. Nenhum significa que os cantos não influenciam a posição da"
+" junta. Ocultar Junta faz com que seja mais provável que a junta surja num canto interior. Expor Junta faz com que seja"
+" mais provável que a junta aconteça num canto exterior. Ocultar ou Expor Junta faz com que seja mais provável que a junta aconteça num"
+" canto interior ou exterior. Ocultação Inteligente permite os cantos interiores e exteriores, mas opta pelos cantos interiores com mais"
 " frequência, se apropriado."
 
 #: fdmprinter.def.json
