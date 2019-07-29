@@ -225,6 +225,7 @@ Item
             border.width: UM.Theme.getSize("default_lining").width
             border.color: UM.Theme.getColor("lining")
             radius: UM.Theme.getSize("default_radius").width
+            height: contentItem.implicitHeight || content.height
         }
 
         contentItem: Item {}
