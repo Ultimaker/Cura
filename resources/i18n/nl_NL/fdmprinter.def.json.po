@@ -4026,7 +4026,7 @@ msgstr "De diameter van een speciale pijler."
 #: fdmprinter.def.json
 msgctxt "support_tower_maximum_supported_diameter label"
 msgid "Maximum Tower-Supported Diameter"
-msgstr "Maximale door de pijler ondersteunde diameter"
+msgstr "Maximale pijler-ondersteunde diameter"
 
 #: fdmprinter.def.json
 msgctxt "support_tower_maximum_supported_diameter description"

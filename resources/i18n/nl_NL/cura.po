@@ -929,7 +929,7 @@ msgstr "Ongeldige bestands-URL:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr "De instellingen zijn gewijzigd zodat deze overeenkomen met de huidige beschikbaarheid van de extruders:"
+msgstr "De instellingen zijn gewijzigd zodat deze overeenkomen met de huidige beschikbaarheid van extruders:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
