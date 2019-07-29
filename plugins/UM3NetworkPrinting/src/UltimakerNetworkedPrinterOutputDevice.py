@@ -1,7 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
-from abc import ABC
 from typing import List, Optional, Dict
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot, QUrl
@@ -23,7 +22,7 @@ from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 ## Output device class that forms the basis of Ultimaker networked printer output devices.
 #  Currently used for local networking and cloud printing using Ultimaker Connect.
 #  This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
-class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice, ABC):
+class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     # Signal emitted when the status of the print jobs for this cluster were changed over the network.
     printJobsChanged = pyqtSignal()
