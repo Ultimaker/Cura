@@ -3,7 +3,6 @@
 from typing import Dict, Optional, Callable
 
 from UM import i18nCatalog
-from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Version import Version
 
@@ -14,7 +13,11 @@ from cura.Settings.GlobalStack import GlobalStack
 from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .NetworkOutputDevice import NetworkOutputDevice
+from ..CloudFlowMessage import CloudFlowMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
+
+
+I18N_CATALOG = i18nCatalog("cura")
 
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
@@ -65,7 +68,7 @@ class NetworkOutputDeviceManager:
         self._manual_instances[address] = callback
         new_manual_devices = ",".join(self._manual_instances.keys())
         CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
-        api_client = ClusterApiClient(address, self._onApiError)
+        api_client = ClusterApiClient(address, lambda error: print(error))
         api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status))
 
     ## Remove a manually added networked printer.
@@ -102,13 +105,6 @@ class NetworkOutputDeviceManager:
             else:
                 # Remove device if it is not meant for the active machine.
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
-
-    ## Add a device to the current active machine.
-    @staticmethod
-    def _connectToOutputDevice(device: PrinterOutputDevice, active_machine: GlobalStack) -> None:
-        device.connect()
-        active_machine.addConfiguredConnectionType(device.connectionType.value)
-        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
 
     ## Callback for when a manual device check request was responded to.
     def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus) -> None:
@@ -191,6 +187,7 @@ class NetworkOutputDeviceManager:
         active_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         active_machine.setMetaDataEntry("group_name", device.name)
         self._connectToOutputDevice(device, active_machine)
+        CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
 
     ## Load the user-configured manual devices from Cura preferences.
     def _getStoredManualInstances(self) -> Dict[str, Optional[Callable]]:
@@ -199,8 +196,9 @@ class NetworkOutputDeviceManager:
         manual_instances = preferences.getValue(self.MANUAL_DEVICES_PREFERENCE_KEY).split(",")
         return {address: None for address in manual_instances}
 
-    ## Handles an API error received from the cloud.
-    #  \param errors: The errors received
+    ## Add a device to the current active machine.
     @staticmethod
-    def _onApiError(errors) -> None:
-        Logger.log("w", str(errors))
+    def _connectToOutputDevice(device: PrinterOutputDevice, active_machine: GlobalStack) -> None:
+        device.connect()
+        active_machine.addConfiguredConnectionType(device.connectionType.value)
+        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
