@@ -167,10 +167,9 @@ class CloudOutputDeviceManager:
         device = next((c for c in self._remote_clusters.values() if c.matchesNetworkKey(local_network_key)), None)
         if not device:
             return
-        print("CONNECT BY NETWORK KEY", local_network_key, device.key, device.name)
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
-        # active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        # self._connectToOutputDevice(device, active_machine)
+        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        self._connectToOutputDevice(device, active_machine)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     @staticmethod
