@@ -2,6 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Union, Dict, Optional, Any
 
+from PyQt5.QtCore import QUrl
+
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from .ClusterBuildPlate import ClusterBuildPlate
@@ -66,6 +68,7 @@ class ClusterPrinterStatus(BaseModel):
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
+        model.setCameraUrl(QUrl(f"http://{self.ip_address}:8080/?action=stream"))
 
         for configuration, extruder_output, extruder_config in \
                 zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
