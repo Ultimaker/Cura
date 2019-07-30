@@ -19,13 +19,13 @@ class ExportFileJob(WriteFileJob):
             Logger.log("e", "Missing file or mesh writer!")
             return
 
+        super().__init__(self._mesh_format_handler.writer, self._mesh_format_handler.createStream(), nodes,
+                         self._mesh_format_handler.file_mode)
+
         # Determine the filename.
         job_name = CuraApplication.getInstance().getPrintInformation().jobName
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
         self.setFileName(f"{job_name}.{extension}")
-
-        super().__init__(self._mesh_format_handler.writer, self._mesh_format_handler.createStream(), nodes,
-                         self._mesh_format_handler.file_mode)
 
     ## Get the mime type of the selected export file type.
     def getMimeType(self) -> str:

@@ -194,7 +194,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Handler for when the print job was created locally.
     #  It can now be sent over the cloud.
     def _onPrintJobCreated(self, job: WriteFileJob) -> None:
-        self._progress.show()
         self._tool_path = job.getOutput()
         request = CloudPrintJobUploadRequest(
             job_name=job.getFileName(),
