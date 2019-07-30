@@ -15,6 +15,7 @@ from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.ExportFileJob import ExportFileJob
 
 from .ClusterApiClient import ClusterApiClient
 from ..MeshFormatHandler import MeshFormatHandler
@@ -45,7 +46,6 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.setAuthenticationState(AuthState.Authenticated)
         self._setInterfaceElements()
         self._active_camera_url = QUrl()  # type: QUrl
-
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
@@ -146,21 +146,8 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         # Make sure the printer is aware of all new materials as the new print job might contain one.
         self.sendMaterialProfiles()
 
-        # Detect the correct export format depending on printer type and firmware version.
-        mesh_format = MeshFormatHandler(file_handler, self.firmwareVersion)
-        if not mesh_format.is_valid:
-            Logger.log("e", "Missing file or mesh writer!")
-            return self._onUploadError(I18N_CATALOG.i18nc("@info:status", "Could not export print job."))
-
-        # Determine the filename.
-        job_name = CuraApplication.getInstance().getPrintInformation().jobName
-        extension = mesh_format.preferred_format.get("extension", "")
-        file_name = f"{job_name}.{extension}"
-
-        # Export the file.
-        stream = mesh_format.createStream()
-        job = WriteFileJob(writer=mesh_format.writer, stream=stream, data=nodes, mode=mesh_format.file_mode)
-        job.setFileName(file_name)
+        # Export the scene to the correct file type.
+        job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
         job.finished.connect(self._onPrintJobCreated)
         job.start()
 
@@ -168,14 +155,10 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     #  It can now be sent over the network.
     def _onPrintJobCreated(self, job: WriteFileJob) -> None:
         self._progress.show()
-        # TODO: extract multi-part stuff
-        parts = []
-        parts.append(self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"))
-        output = job.getStream().getvalue()
-        if isinstance(output, str):
-            # Ensure that our output is bytes
-            output = output.encode("utf-8")
-        parts.append(self._createFormPart("name=\"file\"; filename=\"%s\"" % job.getFileName(), output))
+        parts = [
+            self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"),
+            self._createFormPart("name=\"file\"; filename=\"%s\"" % job.getFileName(), job.getOutput())
+        ]
         self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
                                on_progress=self._onPrintJobUploadProgress)
 

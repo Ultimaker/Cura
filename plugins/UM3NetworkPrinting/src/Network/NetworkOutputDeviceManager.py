@@ -118,8 +118,6 @@ class NetworkOutputDeviceManager:
     @staticmethod
     def _connectToOutputDevice(device: PrinterOutputDevice, active_machine: GlobalStack) -> None:
         device.connect()
-        active_machine.setMetaDataEntry("um_network_key", device.key)
-        active_machine.setMetaDataEntry("group_name", device.name)
         active_machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
 
@@ -199,6 +197,8 @@ class NetworkOutputDeviceManager:
         # The newly added machine is automatically activated.
         CuraApplication.getInstance().getMachineManager().addMachine(device.printerType, device.name)
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        active_machine.setMetaDataEntry("um_network_key", device.key)
+        active_machine.setMetaDataEntry("group_name", device.name)
         if active_machine:
             self._connectToOutputDevice(device, active_machine)
 

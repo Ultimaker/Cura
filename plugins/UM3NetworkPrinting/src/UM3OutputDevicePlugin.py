@@ -14,8 +14,6 @@ from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 ## This plugin handles the discovery and networking for Ultimaker 3D printers that support network and cloud printing.
 class UM3OutputDevicePlugin(OutputDevicePlugin):
 
-    # cloudFlowIsPossible = Signal()
-
     def __init__(self) -> None:
         super().__init__()
 
@@ -28,24 +26,6 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # Refresh network connections when another machine was selected in Cura.
         # This ensures no output devices are still connected that do not belong to the new active machine.
         CuraApplication.getInstance().globalContainerStackChanged.connect(self.refreshConnections)
-
-        # TODO: re-write cloud messaging
-        # self._account = self._application.getCuraAPI().account
-
-        # Check if cloud flow is possible when user logs in
-        # self._account.loginStateChanged.connect(self.checkCloudFlowIsPossible)
-
-        # Check if cloud flow is possible when user switches machines
-        # self._application.globalContainerStackChanged.connect(self._onMachineSwitched)
-
-        # Listen for when cloud flow is possible
-        # self.cloudFlowIsPossible.connect(self._onCloudFlowPossible)
-
-        # self._start_cloud_flow_message = None # type: Optional[Message]
-        # self._cloud_flow_complete_message = None # type: Optional[Message]
-
-        # self._cloud_output_device_manager.addedCloudCluster.connect(self._onCloudPrintingConfigured)
-        # self._cloud_output_device_manager.removedCloudCluster.connect(self.checkCloudFlowIsPossible)
 
     ##  Start looking for devices in the network and cloud.
     def start(self):
