@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Dict, List, Any
 
-from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtGui import QDesktopServices, QImage
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply
 
@@ -14,6 +14,7 @@ from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 from .ClusterApiClient import ClusterApiClient
 from ..ExportFileJob import ExportFileJob
@@ -104,27 +105,13 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super()._update()
         self._cluster_api.getPrinters(self._updatePrinters)
         self._cluster_api.getPrintJobs(self._updatePrintJobs)
-        # for print_job in self._print_jobs:
-        #     if print_job.getPreviewImage() is None:
-        #         self.get("print_jobs/{uuid}/preview_image".format(uuid=print_job.key), on_finished=self._onGetPreviewImageFinished)
+        self._updatePrintJobPreviewImages()
 
     ## Sync the material profiles in Cura with the printer.
     #  This gets called when connecting to a printer as well as when sending a print.
     def sendMaterialProfiles(self) -> None:
         job = SendMaterialJob(device=self)
         job.run()
-
-    # ## Callback for when preview image was downloaded from cluster.
-    # def _onGetPreviewImageFinished(self, reply: QNetworkReply) -> None:
-    #     reply_url = reply.url().toString()
-    #
-    #     uuid = reply_url[reply_url.find("print_jobs/")+len("print_jobs/"):reply_url.rfind("/preview_image")]
-    #
-    #     print_job = findByKey(self._print_jobs, uuid)
-    #     if print_job:
-    #         image = QImage()
-    #         image.loadFromData(reply.readAll())
-    #         print_job.updatePreviewImage(image)
 
     ## Send a print job to the cluster.
     def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False,
@@ -187,3 +174,9 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             lifetime=10
         ).show()
         self.writeError.emit()
+
+    ## Download all the images from the cluster and load their data in the print job models.
+    def _updatePrintJobPreviewImages(self):
+        for print_job in self._print_jobs:
+            if print_job.getPreviewImage() is None:
+                self._cluster_api.getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)

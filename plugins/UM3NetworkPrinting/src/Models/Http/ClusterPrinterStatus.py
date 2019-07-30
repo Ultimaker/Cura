@@ -6,6 +6,7 @@ from PyQt5.QtCore import QUrl
 
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+
 from .ClusterBuildPlate import ClusterBuildPlate
 from .ClusterPrintCoreConfiguration import ClusterPrintCoreConfiguration
 from ..BaseModel import BaseModel

@@ -76,6 +76,12 @@ class ClusterApiClient:
         action = "print" if state == "resume" else state
         self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
 
+    ## Get the preview image data of a print job.
+    def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
+        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/preview_image"
+        reply = self._manager.get(self._createEmptyRequest(url))
+        self._addCallback(reply, on_finished)
+
     ## We override _createEmptyRequest in order to add the user credentials.
     #  \param url: The URL to request
     #  \param content_type: The type of the body contents.
@@ -124,17 +130,23 @@ class ClusterApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[ClusterApiClientModel], Any],
                                         Callable[[List[ClusterApiClientModel]], Any]],
-                     model: Type[ClusterApiClientModel],
+                     model: Optional[Type[ClusterApiClientModel]] = None,
                      ) -> None:
         def parse() -> None:
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
                 return
-            status_code, response = self._parseReply(reply)
+
             self._anti_gc_callbacks.remove(parse)
-            if on_finished:
-                self._parseModels(response, on_finished, model)
-            return
+
+            # If no parse model is given, simply return the raw data in the callback.
+            if not model:
+                on_finished(reply.readAll())
+                return
+
+            # Otherwise parse the result and return the formatted data in the callback.
+            status_code, response = self._parseReply(reply)
+            self._parseModels(response, on_finished, model)
+
         self._anti_gc_callbacks.append(parse)
-        if on_finished:
-            reply.finished.connect(parse)
+        reply.finished.connect(parse)

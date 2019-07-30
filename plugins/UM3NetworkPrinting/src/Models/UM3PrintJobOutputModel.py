@@ -3,6 +3,7 @@
 from typing import List
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt5.QtGui import QImage
 
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
@@ -26,3 +27,8 @@ class UM3PrintJobOutputModel(PrintJobOutputModel):
             return
         self._configuration_changes = changes
         self.configurationChangesChanged.emit()
+
+    def updatePreviewImageData(self, data: bytes) -> None:
+        image = QImage()
+        image.loadFromData(data)
+        self.updatePreviewImage(image)
