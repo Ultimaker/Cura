@@ -14,7 +14,6 @@ from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 
 from .ClusterApiClient import ClusterApiClient
 from ..ExportFileJob import ExportFileJob
