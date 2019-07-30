@@ -60,7 +60,7 @@ Rectangle
         {
             materialList.currentBrand = material.brand
             materialList.currentType = material.brand + "_" + material.material
-            base.currentItem = material
+            base.setExpandedActiveMaterial(material.root_material_id)
         }
         hoverEnabled: true
         onEntered: { materialSlot.hovered = true }
