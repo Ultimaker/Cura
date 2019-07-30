@@ -5,7 +5,7 @@ from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply, QNetworkConfiguration
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
 from UM.Logger import Logger
 
@@ -33,7 +33,6 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
-        self._upload = None  # type: # Optional[ToolPathUploader]
         # In order to avoid garbage collection we keep the callbacks in this list.
         self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
@@ -129,7 +128,7 @@ class ClusterApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[ClusterApiClientModel], Any],
                                         Callable[[List[ClusterApiClientModel]], Any]],
-                     model: Optional[Type[ClusterApiClientModel]] = None,
+                     model: Type[ClusterApiClientModel] = None,
                      ) -> None:
         
         def parse() -> None:
