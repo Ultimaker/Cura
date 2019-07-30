@@ -170,13 +170,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            message = Message(
+            return Message(
                 text=I18N_CATALOG.i18nc("@info:status", "Please wait until the current job has been sent."),
                 title=I18N_CATALOG.i18nc("@info:title", "Print error"),
                 lifetime=10
-            )
-            message.show()
-            return
+            ).show()
 
         if self._uploaded_print_job:
             # The mesh didn't change, let's not upload it again
