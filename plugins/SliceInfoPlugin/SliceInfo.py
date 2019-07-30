@@ -127,6 +127,8 @@ class SliceInfo(QObject, Extension):
                 data["active_mode"] = "custom"
 
             data["camera_view"] = application.getPreferences().getValue("general/camera_perspective_mode")
+            if data["camera_view"] == "orthographic":
+                data["camera_view"] = "orthogonal" #The database still only recognises the old name "orthogonal".
 
             definition_changes = global_stack.definitionChanges
             machine_settings_changed_by_user = False

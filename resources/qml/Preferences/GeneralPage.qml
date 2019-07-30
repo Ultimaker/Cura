@@ -368,7 +368,7 @@ UM.PreferencesPage
             {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: zoomToMouseCheckbox.enabled ? catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?") : catalog.i18nc("@info:tooltip", "Zooming towards the mouse is not supported in the orthogonal perspective.")
+                text: zoomToMouseCheckbox.enabled ? catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?") : catalog.i18nc("@info:tooltip", "Zooming towards the mouse is not supported in the orthographic perspective.")
 
                 CheckBox
                 {
@@ -389,7 +389,7 @@ UM.PreferencesPage
                         {
                             return;
                         }
-                        zoomToMouseCheckbox.enabled = UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal";
+                        zoomToMouseCheckbox.enabled = UM.Preferences.getValue("general/camera_perspective_mode") !== "orthographic";
                         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled;
                     }
                 }
@@ -481,7 +481,7 @@ UM.PreferencesPage
 
                             Component.onCompleted: {
                                 append({ text: catalog.i18n("Perspective"), code: "perspective" })
-                                append({ text: catalog.i18n("Orthogonal"), code: "orthogonal" })
+                                append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
                             }
                         }
 
