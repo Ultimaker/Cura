@@ -42,43 +42,43 @@ class ClusterApiClient:
     ## Get printer system information.
     #  \param on_finished: The callback in case the response is successful.
     def getSystem(self, on_finished: Callable) -> None:
-        url = f"{self.PRINTER_API_PREFIX}/system/"
+        url = "{}/system/".format(self.PRINTER_API_PREFIX)
         self._manager.get(self._createEmptyRequest(url))
 
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/printers/"
+        url = "{}/printers/".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrinterStatus)
 
     ## Get the print jobs in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/"
+        url = "{}/print_jobs/".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
     ## Move a print job to the top of the queue.
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action/move"
+        url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     ## Delete a print job from the queue.
     def deletePrintJob(self, print_job_uuid: str) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}"
+        url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.deleteResource(self._createEmptyRequest(url))
 
     ## Set the state of a print job.
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action"
+        url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
         self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
 
     ## Get the preview image data of a print job.
     def getPrintJobPreviewImage(self, print_job_uuid: str, on_finished: Callable) -> None:
-        url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/preview_image"
+        url = "{}/print_jobs/{}/preview_image".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished)
 

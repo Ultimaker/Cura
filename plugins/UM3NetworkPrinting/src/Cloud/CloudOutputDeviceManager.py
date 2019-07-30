@@ -168,8 +168,9 @@ class CloudOutputDeviceManager:
         if not device:
             return
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device, active_machine)
+        # TODO: fix this
+        # active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        # self._connectToOutputDevice(device, active_machine)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     @staticmethod

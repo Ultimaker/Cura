@@ -25,7 +25,7 @@ class ExportFileJob(WriteFileJob):
         # Determine the filename.
         job_name = CuraApplication.getInstance().getPrintInformation().jobName
         extension = self._mesh_format_handler.preferred_format.get("extension", "")
-        self.setFileName(f"{job_name}.{extension}")
+        self.setFileName("{}.{}".format(job_name, extension))
 
     ## Get the mime type of the selected export file type.
     def getMimeType(self) -> str:

@@ -41,7 +41,7 @@ Item
     UM.RecolorImage
     {
         id: ultiBotImage
-        
+
         anchors.centerIn: printJobPreview
         color: UM.Theme.getColor("monitor_placeholder_image")
         height: printJobPreview.height

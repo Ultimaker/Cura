@@ -63,7 +63,7 @@ class NetworkOutputDeviceManager:
         new_manual_devices = ",".join(self._manual_instances.keys())
         CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
 
-        device_id = f"manual:{address}"
+        device_id = "manual:{}".format(address)
         if device_id not in self._discovered_devices:
             self._onDeviceDiscovered(device_id, address, {
                 b"name": address.encode("utf-8"),
@@ -79,7 +79,7 @@ class NetworkOutputDeviceManager:
     ## Remove a manually added networked printer.
     def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
         if device_id not in self._discovered_devices and address is not None:
-            device_id = f"manual:{address}"
+            device_id = "manual:{}".format(address)
 
         if device_id in self._discovered_devices:
             address = address or self._discovered_devices[device_id].ipAddress

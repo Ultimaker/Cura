@@ -69,7 +69,7 @@ class ClusterPrinterStatus(BaseModel):
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
-        model.setCameraUrl(QUrl(f"http://{self.ip_address}:8080/?action=stream"))
+        model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
         for configuration, extruder_output, extruder_config in \
                 zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
