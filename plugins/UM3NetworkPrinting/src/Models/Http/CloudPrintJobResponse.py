@@ -28,6 +28,5 @@ class CloudPrintJobResponse(BaseModel):
         self.upload_url = upload_url
         self.content_type = content_type
         self.status_description = status_description
-        # TODO: Implement slicing details
         self.slicing_details = slicing_details
         super().__init__(**kwargs)

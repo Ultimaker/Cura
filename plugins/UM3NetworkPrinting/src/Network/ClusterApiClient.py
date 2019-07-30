@@ -59,9 +59,6 @@ class ClusterApiClient:
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
-    def requestPrint(self) -> None:
-        pass  # TODO
-
     ## Move a print job to the top of the queue.
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         url = f"{self.CLUSTER_API_PREFIX}/print_jobs/{print_job_uuid}/action/move"
@@ -78,9 +75,6 @@ class ClusterApiClient:
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
         self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
-
-    def forcePrintJob(self, print_job_uuid: str) -> None:
-        pass  # TODO
 
     ## We override _createEmptyRequest in order to add the user credentials.
     #  \param url: The URL to request
