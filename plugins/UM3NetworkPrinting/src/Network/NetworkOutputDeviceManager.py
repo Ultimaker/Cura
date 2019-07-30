@@ -18,6 +18,8 @@ from .NetworkOutputDevice import NetworkOutputDevice
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
 class NetworkOutputDeviceManager:
+    
+    META_NETWORK_KEY = "um_network_key"
 
     MANUAL_DEVICES_PREFERENCE_KEY = "um3networkprinting/manual_instances"
     MIN_SUPPORTED_CLUSTER_VERSION = Version("4.0.0")
@@ -72,9 +74,8 @@ class NetworkOutputDeviceManager:
                 b"incomplete": b"true",
                 b"temporary": b"true"
             })
-
-        response_callback = lambda status_code, response: self._onCheckManualDeviceResponse(status_code, address)
-        self._checkManualDevice(address, response_callback)
+        self._checkManualDevice(address, lambda status_code, response: self._onCheckManualDeviceResponse(
+                status_code, address))
 
     ## Remove a manually added networked printer.
     def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
@@ -102,17 +103,14 @@ class NetworkOutputDeviceManager:
         if not active_machine:
             return
 
-        # Remove all output devices that we have registered.
-        # This is needed because when we switch we can only leave output devices that are meant for that machine.
-        for device_id in self._discovered_devices:
-            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device_id)
-
-        # Check if the stored network key for the active machine is in our list of discovered devices.
-        stored_network_key = active_machine.getMetaDataEntry("um_network_key")
-        if stored_network_key in self._discovered_devices:
-            device = self._discovered_devices[stored_network_key]
-            self._connectToOutputDevice(device, active_machine)
-            Logger.log("d", "Device connected by metadata network key %s", stored_network_key)
+        stored_device_id = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
+        for device in self._discovered_devices.values():
+            if device.key == stored_device_id:
+                # Connect to it if the stored key matches.
+                self._connectToOutputDevice(device, active_machine)
+            else:
+                # Remove device if it is not meant for the active machine.
+                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
 
     ## Add a device to the current active machine.
     @staticmethod
@@ -191,16 +189,16 @@ class NetworkOutputDeviceManager:
     def _createMachineFromDiscoveredDevice(self, device_id: str) -> None:
         device = self._discovered_devices.get(device_id)
         if device is None:
-            Logger.log("e", "Could not find discovered device with device_id [%s]", device_id)
             return
 
         # The newly added machine is automatically activated.
         CuraApplication.getInstance().getMachineManager().addMachine(device.printerType, device.name)
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        active_machine.setMetaDataEntry("um_network_key", device.key)
+        if not active_machine:
+            return
+        active_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         active_machine.setMetaDataEntry("group_name", device.name)
-        if active_machine:
-            self._connectToOutputDevice(device, active_machine)
+        self._connectToOutputDevice(device, active_machine)
 
     ## Load the user-configured manual devices from Cura preferences.
     def _getStoredManualInstances(self) -> Dict[str, Optional[Callable]]:

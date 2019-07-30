@@ -25,6 +25,7 @@ from ..Models.Http.CloudError import CloudError
 class CloudOutputDeviceManager:
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
+    META_NETWORK_KEY = "um_network_key"
 
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 30.0  # seconds
@@ -125,9 +126,8 @@ class CloudOutputDeviceManager:
         self._connectToActiveMachine()
 
     def _createMachineFromDiscoveredDevice(self, key: str) -> None:
-        device = self._remote_clusters[key]  # type: CloudOutputDevice
+        device = self._remote_clusters[key]
         if not device:
-            Logger.log("e", "Could not find discovered device with key [%s]", key)
             return
 
         # The newly added machine is automatically activated.
@@ -145,32 +145,19 @@ class CloudOutputDeviceManager:
         if not active_machine:
             return
 
-        # Remove all output devices that we have registered.
-        # This is needed because when we switch we can only leave output devices that are meant for that machine.
-        for device_id in self._remote_clusters:
-            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device_id)
-
-        # Check if the stored cluster_id for the active machine is in our list of remote clusters.
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
-        if stored_cluster_id in self._remote_clusters:
-            device = self._remote_clusters[stored_cluster_id]
-            self._connectToOutputDevice(device, active_machine)
-            Logger.log("d", "Device connected by metadata cluster ID %s", stored_cluster_id)
-        else:
-            self._connectByNetworkKey(active_machine)
-
-    ## Tries to match the local network key to the cloud cluster host name.
-    def _connectByNetworkKey(self, active_machine: GlobalStack) -> None:
-        local_network_key = active_machine.getMetaDataEntry("um_network_key")
-        if not local_network_key:
-            return
-        device = next((c for c in self._remote_clusters.values() if c.matchesNetworkKey(local_network_key)), None)
-        if not device:
-            return
-        Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
-        # TODO: fix this
-        # active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        # self._connectToOutputDevice(device, active_machine)
+        local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
+        for device in self._remote_clusters.values():
+            if device.key == stored_cluster_id:
+                # Connect to it if the stored ID matches.
+                self._connectToOutputDevice(device, active_machine)
+            elif local_network_key and device.matchesNetworkKey(local_network_key):
+                # Connect to it if we can match the local network key that was already present.
+                active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+                self._connectToOutputDevice(device, active_machine)
+            else:
+                # Remove device if it is not meant for the active machine.
+                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     @staticmethod
