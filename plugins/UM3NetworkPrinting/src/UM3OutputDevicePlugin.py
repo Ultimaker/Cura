@@ -44,7 +44,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
 
     ## Indicate that this plugin supports adding networked printers manually.
     def canAddManualDevice(self, address: str = "") -> ManualDeviceAdditionAttempt:
-        return ManualDeviceAdditionAttempt.POSSIBLE
+        return ManualDeviceAdditionAttempt.PRIORITY
 
     ## Add a networked printer manually based on its network address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:

@@ -4,7 +4,6 @@ import os
 from typing import List, Optional, Dict
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot, QUrl
-from PyQt5.QtGui import QImage
 
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration, DurationFormat

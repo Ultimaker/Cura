@@ -1,14 +1,13 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Dict, List, Any
+from typing import Optional, Dict, List
 
-from PyQt5.QtGui import QDesktopServices, QImage
+from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob
-from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
@@ -39,7 +38,7 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         )
 
         # API client for making requests to the print cluster.
-        self._cluster_api = ClusterApiClient(address, on_error=self._onNetworkError)
+        self._cluster_api = ClusterApiClient(address, on_error=lambda error: print(error))
         # We don't have authentication over local networking, so we're always authenticated.
         self.setAuthenticationState(AuthState.Authenticated)
         self._setInterfaceElements()
@@ -95,11 +94,6 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def setJobState(self, print_job_uuid: str, action: str) -> None:
         self._cluster_api.setPrintJobState(print_job_uuid, action)
 
-    ## Handle network errors.
-    @staticmethod
-    def _onNetworkError(errors: Dict[str, Any]):
-        Logger.log("w", str(errors))
-
     def _update(self) -> None:
         super()._update()
         self._cluster_api.getPrinters(self._updatePrinters)
@@ -152,7 +146,7 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeProgress.emit()
 
     ## Handler for when the print job was fully uploaded to the cluster.
-    def _onPrintUploadCompleted(self, reply: QNetworkReply) -> None:
+    def _onPrintUploadCompleted(self, _: QNetworkReply) -> None:
         self._progress.hide()
         Message(
             text=I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),

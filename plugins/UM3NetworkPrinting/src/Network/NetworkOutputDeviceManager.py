@@ -14,6 +14,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .NetworkOutputDevice import NetworkOutputDevice
+from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
@@ -64,18 +65,8 @@ class NetworkOutputDeviceManager:
         self._manual_instances[address] = callback
         new_manual_devices = ",".join(self._manual_instances.keys())
         CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
-
-        device_id = "manual:{}".format(address)
-        if device_id not in self._discovered_devices:
-            self._onDeviceDiscovered(device_id, address, {
-                b"name": address.encode("utf-8"),
-                b"address": address.encode("utf-8"),
-                b"manual": b"true",
-                b"incomplete": b"true",
-                b"temporary": b"true"
-            })
-        self._checkManualDevice(address, lambda status_code, response: self._onCheckManualDeviceResponse(
-                status_code, address))
+        api_client = ClusterApiClient(address, self._onApiError)
+        api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status))
 
     ## Remove a manually added networked printer.
     def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
@@ -119,19 +110,19 @@ class NetworkOutputDeviceManager:
         active_machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
 
-    ## Checks if a networked printer exists at the given address.
-    #  If the printer responds it will replace the preliminary printer created from the stored manual instances.
-    def _checkManualDevice(self, address: str, on_finished: Callable) -> None:
-        api_client = ClusterApiClient(address, self._onApiError)
-        api_client.getSystem(on_finished)
-
     ## Callback for when a manual device check request was responded to.
-    def _onCheckManualDeviceResponse(self, status_code: int, address: str) -> None:
-        Logger.log("d", "manual device check response: {} {}".format(status_code, address))
-        if address in self._manual_instances:
-            callback = self._manual_instances[address]
-            if callback is not None:
-                CuraApplication.getInstance().callLater(callback, status_code == 200, address)
+    def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus) -> None:
+        callback = self._manual_instances.get(address, None)
+        if callback is None:
+            return
+        self._onDeviceDiscovered("manual:{}".format(address), address, {
+            b"name": status.name.encode("utf-8"),
+            b"address": address.encode("utf-8"),
+            b"manual": b"true",
+            b"incomplete": b"true",
+            b"temporary": b"true"
+        })
+        CuraApplication.getInstance().callLater(callback, True, address)
 
     ## Returns a dict of printer BOM numbers to machine types.
     #  These numbers are available in the machine definition already so we just search for them here.
@@ -179,9 +170,10 @@ class NetworkOutputDeviceManager:
 
     ## Remove a device.
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
-        device = self._discovered_devices.pop(device_id, None)
+        device = self._discovered_devices.pop(device_id, None)  # type: Optional[NetworkOutputDevice]
         if not device:
             return
+        device.close()
         CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.address)
         self.discoveredDevicesChanged.emit()
 

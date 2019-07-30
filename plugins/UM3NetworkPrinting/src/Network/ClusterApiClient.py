@@ -5,13 +5,14 @@ from json import JSONDecodeError
 from typing import Callable, List, Optional, Dict, Union, Any, Type, cast, TypeVar, Tuple
 
 from PyQt5.QtCore import QUrl
-from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply, QNetworkConfiguration
 
 from UM.Logger import Logger
 
 from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
+from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
 
 ## The generic type variable used to document the methods below.
@@ -21,11 +22,8 @@ ClusterApiClientModel = TypeVar("ClusterApiClientModel", bound=BaseModel)
 ## The ClusterApiClient is responsible for all network calls to local network clusters.
 class ClusterApiClient:
 
-    PRINTER_API_VERSION = "1"
-    PRINTER_API_PREFIX = "/api/v" + PRINTER_API_VERSION
-
-    CLUSTER_API_VERSION = "1"
-    CLUSTER_API_PREFIX = "/cluster-api/v" + CLUSTER_API_VERSION
+    PRINTER_API_PREFIX = "/api/v1"
+    CLUSTER_API_PREFIX = "/cluster-api/v1"
 
     ## Initializes a new cluster API client.
     #  \param address: The network address of the cluster to call.
@@ -43,7 +41,8 @@ class ClusterApiClient:
     #  \param on_finished: The callback in case the response is successful.
     def getSystem(self, on_finished: Callable) -> None:
         url = "{}/system/".format(self.PRINTER_API_PREFIX)
-        self._manager.get(self._createEmptyRequest(url))
+        reply = self._manager.get(self._createEmptyRequest(url))
+        self._addCallback(reply, on_finished, PrinterSystemStatus)
 
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
@@ -132,12 +131,17 @@ class ClusterApiClient:
                                         Callable[[List[ClusterApiClientModel]], Any]],
                      model: Optional[Type[ClusterApiClientModel]] = None,
                      ) -> None:
+        
         def parse() -> None:
+            self._anti_gc_callbacks.remove(parse)
+            
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
                 return
-
-            self._anti_gc_callbacks.remove(parse)
+            
+            if reply.error() > 0:
+                self._on_error(reply.errorString())
+                return
 
             # If no parse model is given, simply return the raw data in the callback.
             if not model:
