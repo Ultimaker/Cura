@@ -18,12 +18,7 @@ Item
     implicitWidth: 200
     implicitHeight: checkboxSize
 
-    property var model: null
-
-    // What key of the model should be used to set the identifier of the checkbox.
-    // This is used to figure out what checkbox just got toggled. Set a buttonGroup and listen to it's clicked signal.
-    // You can use button.identifier to figure out which button was clicked.
-    property string modelKey: "name"
+    property var dataModel: null
 
     // The horizontal inactive bar that sits behind the buttons
     Rectangle
@@ -45,6 +40,7 @@ Item
         }
     }
 
+
     RowLayout
     {
         id: buttonBar
@@ -56,7 +52,7 @@ Item
         Repeater
         {
             id: repeater
-            model: base.model
+            model: base.dataModel
             height: checkboxSize
             Item
             {
@@ -75,7 +71,9 @@ Item
                     height: barSize
                     width: buttonBar.width / (repeater.count - 1) - activeComponent.width - 2
                     color: defaultItemColor
-
+                    // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
+                    // but not when using the exact same QML in Cura.
+                    y: 0.5 * checkboxSize
                     anchors
                     {
                         right: activeComponent.left
@@ -87,9 +85,7 @@ Item
                     id: activeComponent
                     sourceComponent: isEnabled? checkboxComponent : disabledComponent
                     width: checkboxSize
-                    // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
-                    // but not when using the exact same QML in Cura.
-                    y: -0.5 * checkboxSize
+
                     property var modelItem: model
                 }
             }
@@ -127,7 +123,8 @@ Item
             ButtonGroup.group: buttonGroup
             width: checkboxSize
             height: checkboxSize
-            property var identifier: modelItem[base.modelKey]
+            property var modelData: modelItem
+
             checked: isCheckedFunction(modelItem)
             indicator: Rectangle
             {

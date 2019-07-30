@@ -7,7 +7,7 @@ import QtQuick.Controls 2.3 as Controls2
 import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.6 as Cura
 
 
 //
@@ -98,7 +98,8 @@ Item
         {
             id: activeProfileButtonGroup
             exclusive: true
-            onClicked: Cura.MachineManager.activeQualityGroup = button.identifier
+            onClicked: Cura.IntentManager.selectIntent(button.modelData.intent_category, button.modelData.quality_type)
+
         }
 
         Cura.LabelBar
@@ -114,29 +115,32 @@ Item
             modelKey: "layer_height"
         }
 
-        Cura.RadioCheckbar
+        Repeater
         {
-            anchors
+            model: Cura.IntentCategoryModel{}
+            Cura.RadioCheckbar
             {
-                left: parent.left
-                right: parent.right
-            }
-
-            model: Cura.QualityProfilesDropDownMenuModel
-            buttonGroup: activeProfileButtonGroup
-            modelKey: "quality_group"
-
-            function checkedFunction(modelItem)
-            {
-                if(Cura.MachineManager.hasCustomQuality)
+                anchors
                 {
-                    // When user created profile is active, no quality tickbox should be active.
-                    return false
+                    left: parent.left
+                    right: parent.right
                 }
-                return Cura.MachineManager.activeQualityType == modelItem.quality_type
+                dataModel: model["qualities"]
+                buttonGroup: activeProfileButtonGroup
+
+                function checkedFunction(modelItem)
+                {
+                    if(Cura.MachineManager.hasCustomQuality)
+                    {
+                        // When user created profile is active, no quality tickbox should be active.
+                        return false
+                    }
+                    return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
+                }
+
+                isCheckedFunction: checkedFunction
             }
 
-            isCheckedFunction: checkedFunction
         }
     }
 }
