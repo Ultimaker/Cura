@@ -12,13 +12,11 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
-from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.ExportFileJob import ExportFileJob
 
 from .ClusterApiClient import ClusterApiClient
-from ..MeshFormatHandler import MeshFormatHandler
+from ..ExportFileJob import ExportFileJob
 from ..SendMaterialJob import SendMaterialJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 
@@ -58,6 +56,7 @@ class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Called when the connection to the cluster changes.
     def connect(self) -> None:
         super().connect()
+        self._update()
         self.sendMaterialProfiles()
 
     @pyqtProperty(QUrl, notify=activeCameraUrlChanged)

@@ -59,6 +59,7 @@ class CloudOutputDeviceManager:
         self._running = True
         if not self._update_timer.isActive():
             self._update_timer.start()
+        self._getRemoteClusters()
         self._update_timer.timeout.connect(self._getRemoteClusters)
 
     ## Stops running the cloud output device manager.
@@ -84,7 +85,6 @@ class CloudOutputDeviceManager:
 
     ## Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
-        print("getRemoteClusters")
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
     ## Callback for when the request for getting the clusters is finished.
@@ -112,7 +112,7 @@ class CloudOutputDeviceManager:
             new_devices[device.key] = device
 
         # Remove output devices that disappeared.
-        keys = self._remote_clusters.keys()
+        keys = new_devices.keys()
         removed_devices = [cluster for cluster in self._remote_clusters.values() if cluster.key not in keys]
         for device in removed_devices:
             device.disconnect()
@@ -156,8 +156,8 @@ class CloudOutputDeviceManager:
             device = self._remote_clusters[stored_cluster_id]
             self._connectToOutputDevice(device, active_machine)
             Logger.log("d", "Device connected by metadata cluster ID %s", stored_cluster_id)
-        # else:
-        #     self._connectByNetworkKey(active_machine)
+        else:
+            self._connectByNetworkKey(active_machine)
 
     ## Tries to match the local network key to the cloud cluster host name.
     def _connectByNetworkKey(self, active_machine: GlobalStack) -> None:
@@ -167,9 +167,10 @@ class CloudOutputDeviceManager:
         device = next((c for c in self._remote_clusters.values() if c.matchesNetworkKey(local_network_key)), None)
         if not device:
             return
+        print("CONNECT BY NETWORK KEY", local_network_key, device.key, device.name)
         Logger.log("i", "Found cluster %s with network key %s", device, local_network_key)
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device, active_machine)
+        # active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        # self._connectToOutputDevice(device, active_machine)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     @staticmethod

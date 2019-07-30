@@ -17,11 +17,10 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.ExportFileJob import ExportFileJob
 
 from .CloudApiClient import CloudApiClient
+from ..ExportFileJob import ExportFileJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
-from ..MeshFormatHandler import MeshFormatHandler
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
@@ -106,6 +105,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super().connect()
         Logger.log("i", "Connected to cluster %s", self.key)
         CuraApplication.getInstance().getBackend().backendStateChange.connect(self._onBackendStateChange)
+        self._update()
 
     ## Disconnects the device
     def disconnect(self) -> None:
@@ -145,8 +145,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         super()._update()
         if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
             return  # Avoid calling the cloud too often
-
-        Logger.log("d", "Updating: %s - %s >= %s", time(), self._last_request_time, self.CHECK_CLUSTER_INTERVAL)
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._last_request_time = time()

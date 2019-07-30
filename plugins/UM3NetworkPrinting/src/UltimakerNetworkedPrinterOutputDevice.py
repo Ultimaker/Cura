@@ -241,7 +241,6 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         for removed_job in removed_jobs:
             if removed_job.assignedPrinter:
                 removed_job.assignedPrinter.updateActivePrintJob(None)
-                removed_job.stateChanged.disconnect(self._onPrintJobStateChanged)
 
         self._print_jobs = new_print_jobs
         self.printJobsChanged.emit()
@@ -250,20 +249,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     #  \param remote_job: The remote print job data.
     def _createPrintJobModel(self, remote_job: ClusterPrintJobStatus) -> UM3PrintJobOutputModel:
         model = remote_job.createOutputModel(ClusterOutputController(self))
-        model.stateChanged.connect(self._onPrintJobStateChanged)
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
         return model
-
-    def _onPrintJobStateChanged(self) -> None:
-        pass
 
     ## Updates the printer assignment for the given print job model.
     def _updateAssignedPrinter(self, model: UM3PrintJobOutputModel, printer_uuid: str) -> None:
         printer = next((p for p in self._printers if printer_uuid == p.key), None)
         if not printer:
-            Logger.log("w", "Missing printer %s for job %s in %s", model.assignedPrinter, model.key,
-                       [p.key for p in self._printers])
             return
         printer.updateActivePrintJob(model)
         model.updateAssignedPrinter(printer)

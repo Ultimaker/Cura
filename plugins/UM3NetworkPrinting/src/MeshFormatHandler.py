@@ -91,10 +91,9 @@ class MeshFormatHandler:
         machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
 
-        # TODO: re-enable UFP after Cura master branch works again
-        # # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
-        # if "application/x-ufp" not in machine_file_formats and Version(firmware_version) >= Version("4.4"):
-        #     machine_file_formats = ["application/x-ufp"] + machine_file_formats
+        # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
+        if "application/x-ufp" not in machine_file_formats and Version(firmware_version) >= Version("4.4"):
+            machine_file_formats = ["application/x-ufp"] + machine_file_formats
 
         # Take the intersection between file_formats and machine_file_formats.
         format_by_mimetype = {f["mime_type"]: f for f in file_formats}

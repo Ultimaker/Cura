@@ -2,7 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional
 
-from UM.Logger import Logger
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 
@@ -48,11 +47,9 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
             material_type = container.getMetaDataEntry("material")
             name = container.getName()
         else:
-            Logger.log("w", "Unable to find material with guid {guid}. Using data as provided by cluster"
-                       .format(guid = self.guid))
             color = self.color
             brand = self.brand
             material_type = self.material
             name = "Empty" if self.material == "empty" else "Unknown"
 
-        return MaterialOutputModel(guid = self.guid, type = material_type, brand = brand, color = color, name = name)
+        return MaterialOutputModel(guid=self.guid, type=material_type, brand=brand, color=color, name=name)
