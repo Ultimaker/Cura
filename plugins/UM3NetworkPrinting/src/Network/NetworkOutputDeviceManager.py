@@ -22,7 +22,7 @@ I18N_CATALOG = i18nCatalog("cura")
 
 ## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
 class NetworkOutputDeviceManager:
-    
+
     META_NETWORK_KEY = "um_network_key"
 
     MANUAL_DEVICES_PREFERENCE_KEY = "um3networkprinting/manual_instances"
@@ -97,12 +97,13 @@ class NetworkOutputDeviceManager:
         if not active_machine:
             return
 
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_device_id = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
         for device in self._discovered_devices.values():
             if device.key == stored_device_id:
                 # Connect to it if the stored key matches.
                 self._connectToOutputDevice(device, active_machine)
-            else:
+            elif device.key in output_device_manager.getOutputDeviceIds():
                 # Remove device if it is not meant for the active machine.
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
 
