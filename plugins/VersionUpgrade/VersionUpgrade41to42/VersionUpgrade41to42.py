@@ -198,6 +198,7 @@ _quality_changes_to_creality_base = {
     "creality_cr10s5_extruder_0",
     "creality_ender3_extruder_0"
     "creality_cr10",
+    "creality_cr10s",
     "creality_cr10s4",
     "creality_cr10s5",
     "creality_ender3",
@@ -238,6 +239,7 @@ class VersionUpgrade41to42(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        print("============================ upgrading instance container!")
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -264,6 +266,7 @@ class VersionUpgrade41to42(VersionUpgrade):
         # For quality-changes profiles made for Creality printers, change the definition to the creality_base and make sure that the quality is something we have a profile for.
         if parser["metadata"].get("type", "") == "quality_changes":
             for possible_printer in _quality_changes_to_creality_base:
+                print("======================= basename:", os.path.basename(filename), "vs. possible printer", possible_printer)
                 if os.path.basename(filename).startswith(possible_printer + "_"):
                     parser["general"]["definition"] = "creality_base"
                     parser["metadata"]["quality_type"] = _creality_limited_quality_type.get(parser["metadata"]["quality_type"], "draft")
