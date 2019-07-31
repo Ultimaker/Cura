@@ -151,6 +151,7 @@ class CloudOutputDeviceManager:
         if not active_machine:
             return
 
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
         local_network_key = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
         for device in self._remote_clusters.values():
@@ -161,9 +162,9 @@ class CloudOutputDeviceManager:
                 # Connect to it if we can match the local network key that was already present.
                 active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
                 self._connectToOutputDevice(device, active_machine)
-            else:
+            elif device.key in output_device_manager.getOutputDeviceIds():
                 # Remove device if it is not meant for the active machine.
-                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
+                output_device_manager.removeOutputDevice(device.key)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
     @staticmethod

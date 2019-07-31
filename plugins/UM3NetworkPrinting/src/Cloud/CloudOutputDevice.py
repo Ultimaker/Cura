@@ -128,7 +128,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             return True
         # However, for manually added printers, the local IP address is used in lieu of a proper
         # network key, so check for that as well
-        if self.clusterData.host_internal_ip is not None and network_key.find(self.clusterData.host_internal_ip):
+        if self.clusterData.host_internal_ip is not None and network_key in self.clusterData.host_internal_ip:
             return True
         return False
 
