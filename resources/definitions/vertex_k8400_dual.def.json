@@ -4,9 +4,8 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "manufacturer": "Velleman",
+        "manufacturer": "Velleman N.V.",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "Vertex_build_panel.stl",
         "platform_offset": [0, -3, 0],
         "machine_extruder_trains": {
@@ -60,7 +59,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 18
+            "value": "18"
         },
         "machine_extruder_count": {
             "default_value": 2

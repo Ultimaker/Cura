@@ -30,7 +30,13 @@
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
         "supports_usb_connection": false,
-        "weight": -1
+        "supports_network_connection": true,
+        "weight": -2,
+        "firmware_update_info": {
+            "id": 9051,
+            "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
+            "update_url": "https://ultimaker.com/firmware"
+        }
     },
 
     "overrides": {
@@ -56,7 +62,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "default_value": 60 },
+        "gantry_height": { "value": "60" },
         "machine_extruder_count": { "default_value": 2 },
         "extruder_prime_pos_abs": { "default_value": true },
         "machine_start_gcode": { "default_value": "" },
@@ -151,10 +157,12 @@
         "wall_0_inset": { "value": "0" },
         "wall_line_width_x": { "value": "round(line_width * 0.3 / 0.35, 2)" },
         "wall_thickness": { "value": "1" },
-        "meshfix_maximum_resolution": { "value": "0.04" },
+        "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
+        "meshfix_maximum_deviation": { "value": "layer_height / 2" },
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_combing": { "default_value": "all" },
         "initial_layer_line_width_factor": { "value": "120" },
-        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" }
+        "zig_zaggify_infill": { "value": "gradual_infill_steps == 0" },
+        "build_volume_temperature": { "maximum_value": 50 }
     }
 }

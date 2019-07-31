@@ -145,12 +145,10 @@ class CuraContainerStack(ContainerStack):
     def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
 
-    ##  Get the definition container.
-    #
-    #   \return The definition container. Should always be a valid container, but can be equal to the empty InstanceContainer.
-    @pyqtProperty(QObject, fset = setDefinition, notify = pyqtContainersChanged)
-    def definition(self) -> DefinitionContainer:
+    def getDefinition(self) -> "DefinitionContainer":
         return cast(DefinitionContainer, self._containers[_ContainerIndexes.Definition])
+
+    definition = pyqtProperty(QObject, fget = getDefinition, fset = setDefinition, notify = pyqtContainersChanged)
 
     @override(ContainerStack)
     def getBottom(self) -> "DefinitionContainer":

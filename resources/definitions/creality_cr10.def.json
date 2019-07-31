@@ -1,95 +1,32 @@
 {
     "name": "Creality CR-10",
     "version": 2,
-    "inherits": "fdmprinter",
-    "metadata": {
-        "visible": true,
-        "author": "Michael Wildermuth",
-        "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode",
-        "preferred_quality_type": "draft",
-        "machine_extruder_trains":
-        {
-            "0": "creality_cr10_extruder_0"
-        }
-    },
+    "inherits": "creality_base",
     "overrides": {
-        "machine_width": {
-            "default_value": 300
-        },
-        "machine_height": {
-            "default_value": 400
-        },
-        "machine_depth": {
-            "default_value": 300
-        },
-        "machine_head_polygon": {
-            "default_value": [
-                [-30, 34],
-                [-30, -32],
-                [30, -32],
-                [30, 34]
+        "machine_name": { "default_value": "Creality CR-10" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "machine_head_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [22, -32],
+                [22, 34]
             ]
         },
-        "layer_height_0": {
-            "default_value": 0.2
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
         },
-        "top_bottom_thickness": {
-            "default_value": 0.6
-        },
-        "top_bottom_pattern_0": {
-            "default_value": "concentric"
-        },
-        "infill_pattern": {
-            "value": "'triangles'"
-        },
-        "retraction_enable": {
-            "default_value": true
-        },
-        "retraction_amount": {
-            "default_value": 5
-        },
-        "retraction_speed": {
-            "default_value": 40
-        },
-        "cool_min_layer_time": {
-            "default_value": 10
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "skirt_line_count": {
-            "default_value": 4
-        },
-        "skirt_gap": {
-            "default_value": 5
-        },
-        "machine_end_gcode": {
-            "default_value": "G91\nG1 F1800 E-3\nG1 F3000 Z10\nG90\nG28 X0 Y0 ; home x and y axis\nM106 S0 ; turn off cooling fan\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; disable motors"
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "gantry_height": {
-            "default_value": 30
-        },
-        "acceleration_enabled": {
-            "default_value": true
-        },
-        "acceleration_print": {
-            "default_value": 500
-        },
-        "acceleration_travel": {
-            "default_value": 500
-        },
-        "jerk_enabled": {
-            "default_value": true
-        },
-        "jerk_print": {
-            "default_value": 20
-        },
-        "jerk_travel": {
-            "default_value": 20
-        }
+
+        "gantry_height": { "value": 25 }
+
+    },
+    "metadata": {
+        "quality_definition": "creality_base",
+        "visible": true
     }
 }

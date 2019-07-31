@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -57,7 +57,7 @@ Item
             var currentItemId = base.currentItem == null ? "" : base.currentItem.root_material_id
             search_root_id = currentItemId
         }
-        for (var material_idx = 0; material_idx < genericMaterialsModel.rowCount(); material_idx++)
+        for (var material_idx = 0; material_idx < genericMaterialsModel.count; material_idx++)
         {
             var material = genericMaterialsModel.getItem(material_idx)
             if (material.root_material_id == search_root_id)
@@ -72,15 +72,15 @@ Item
                 return true
             }
         }
-        for (var brand_idx = 0; brand_idx < materialsModel.rowCount(); brand_idx++)
+        for (var brand_idx = 0; brand_idx < materialsModel.count; brand_idx++)
         {
             var brand = materialsModel.getItem(brand_idx)
             var types_model = brand.material_types
-            for (var type_idx = 0; type_idx < types_model.rowCount(); type_idx++)
+            for (var type_idx = 0; type_idx < types_model.count; type_idx++)
             {
                 var type = types_model.getItem(type_idx)
                 var colors_model = type.colors
-                for (var material_idx = 0; material_idx < colors_model.rowCount(); material_idx++)
+                for (var material_idx = 0; material_idx < colors_model.count; material_idx++)
                 {
                     var material = colors_model.getItem(material_idx)
                     if (material.root_material_id == search_root_id)
@@ -102,6 +102,7 @@ Item
                 }
             }
         }
+        base.currentItem = null
         return false
     }
 

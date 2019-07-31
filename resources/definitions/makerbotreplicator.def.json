@@ -6,6 +6,7 @@
         "visible": true,
         "author": "Ultimaker",
         "manufacturer": "MakerBot",
+        "machine_x3g_variant": "r1",
         "file_formats": "application/x3g",
         "platform_offset": [ 0, 0, 0],
         "machine_extruder_trains":

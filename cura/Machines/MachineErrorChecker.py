@@ -64,21 +64,21 @@ class MachineErrorChecker(QObject):
 
     def _onMachineChanged(self) -> None:
         if self._global_stack:
-            self._global_stack.propertyChanged.disconnect(self.startErrorCheck)
+            self._global_stack.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.disconnect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruders.values():
-                extruder.propertyChanged.disconnect(self.startErrorCheck)
+                extruder.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.disconnect(self.startErrorCheck)
 
         self._global_stack = self._machine_manager.activeMachine
 
         if self._global_stack:
-            self._global_stack.propertyChanged.connect(self.startErrorCheck)
+            self._global_stack.propertyChanged.connect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.connect(self.startErrorCheck)
 
             for extruder in self._global_stack.extruders.values():
-                extruder.propertyChanged.connect(self.startErrorCheck)
+                extruder.propertyChanged.connect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.connect(self.startErrorCheck)
 
     hasErrorUpdated = pyqtSignal()
@@ -92,6 +92,13 @@ class MachineErrorChecker(QObject):
     @pyqtProperty(bool, notify = needToWaitForResultChanged)
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
+
+    #   Start the error check for property changed
+    #   this is seperate from the startErrorCheck because it ignores a number property types
+    def startErrorCheckPropertyChanged(self, key, property_name):
+        if property_name != "value":
+            return
+        self.startErrorCheck()
 
     # Starts the error check timer to schedule a new error check.
     def startErrorCheck(self, *args) -> None:
@@ -120,7 +127,7 @@ class MachineErrorChecker(QObject):
 
         # Populate the (stack, key) tuples to check
         self._stacks_and_keys_to_check = deque()
-        for stack in [global_stack] + list(global_stack.extruders.values()):
+        for stack in global_stack.extruders.values():
             for key in stack.getAllKeys():
                 self._stacks_and_keys_to_check.append((stack, key))
 
@@ -161,7 +168,7 @@ class MachineErrorChecker(QObject):
             if validator_type:
                 validator = validator_type(key)
                 validation_state = validator(stack)
-        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
             # Finish
             self._setResult(True)
             return

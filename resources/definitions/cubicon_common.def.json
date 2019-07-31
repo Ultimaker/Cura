@@ -1,0 +1,99 @@
+{
+    "version": 2,
+    "name": "Cubicon Common",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Cubicon R&D Center",
+        "manufacturer": "Cubicon",
+        "visible": false
+    },
+    "overrides": {
+        "machine_start_gcode": {
+            "default_value": "M201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nM904\nM117 Print completed! \nM84"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "Repetier"
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "travel_compensate_overlapping_walls_enabled": {
+            "default_value": false
+        },
+        "travel_compensate_overlapping_walls_0_enabled": {
+            "default_value": false
+        },
+        "travel_compensate_overlapping_walls_x_enabled": {
+            "default_value": false
+        },
+        "layer_height": {
+            "default_value": 0.2
+        },
+        "layer_height_0": {
+            "default_value": 0.2
+        },
+        "infill_line_width": {
+            "default_value": 0.6
+        },
+        "adhesion_type": {
+            "default_value": "raft"
+        },
+        "roofing_pattern": { "default_value": "lines" },
+        "top_bottom_pattern": { "default_value": "lines" },
+        "top_bottom_pattern_0": {
+            "default_value": "zigzag"
+        },
+        "fill_perimeter_gaps": { "default_value": "everywhere" },
+        "infill_pattern": {
+            "default_value": "zigzag"
+        },
+        "infill_sparse_density": { "default_value": 20 },
+        "infill_overlap": {
+            "default_value": 15
+        },
+        "infill_before_walls": { "default_value": false },
+        "infill_sparse_thickness": { "default_value": 0.2 },
+        "top_bottom_thickness": {
+            "default_value": 1.0
+        },
+        "top_thickness": {
+            "default_value": 1.0
+        },
+        "bottom_thickness": {
+            "default_value": 0.6,
+            "value": "top_bottom_thickness * 0.6"
+        },
+        "roofing_layer_count": {
+            "default_value": 1
+        },
+        "skin_preshrink": { "default_value": true },
+        "material_flow_layer_0": { "default_value": 100 },
+        "top_skin_preshrink": { "default_value": 1.2 },
+        "bottom_skin_preshrink": { "default_value": 1.2 },
+        "max_skin_angle_for_expansion": { "default_value": 90 },
+        "min_skin_width_for_expansion": { "default_value": 2.7475 },
+        "skin_angles": { "default_value": "[135,45]" },
+        "roofing_angles": { "default_value": "[135,45]" },
+        "coasting_volume": { "default_value": 0.032 },
+        "wall_thickness": { "default_value": 1.2 },
+        "wall_line_count": { "default_value": 3 },
+        "speed_wall_0": { "default_value": 25 },
+        "skin_overlap": { "default_value": 5 },
+        "cool_min_layer_time_fan_speed_max": { "default_value": 15 },
+        "cool_min_layer_time": { "default_value": 15 },
+        "support_roof_pattern": { "default_value": "zigzag" },
+        "support_bottom_pattern": { "default_value": "zigzag" },
+        "support_interface_pattern": { "default_value": "zigzag" },
+        "support_pattern": { "default_value": "zigzag" },
+        "retraction_amount": { "default_value": 1.5 },
+        "top_layers": {
+            "default_value": 5
+        },
+        "bottom_layers": {
+            "default_value": 3
+        }
+    }
+}

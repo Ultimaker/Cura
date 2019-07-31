@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
@@ -61,9 +61,15 @@ Item
                 id: labelStyle
                 text: control.text
                 color: control.enabled ? (control.hovered ? UM.Theme.getColor("primary") : UM.Theme.getColor("text")) : UM.Theme.getColor("text_inactive")
-                font: UM.Theme.getFont("default_bold")
-                horizontalAlignment: Text.AlignRight
+                font: UM.Theme.getFont("medium_bold")
+                horizontalAlignment: Text.AlignLeft
+                anchors
+                {
+                    left: parent.left
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                }
                 width: control.width
+                renderType: Text.NativeRendering
             }
         }
     }

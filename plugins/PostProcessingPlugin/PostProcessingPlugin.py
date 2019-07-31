@@ -32,7 +32,8 @@ class PostProcessingPlugin(QObject, Extension):
     def __init__(self, parent = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        self.addMenuItem(i18n_catalog.i18n("Modify G-Code"), self.showPopup)
+        self.setMenuName(i18n_catalog.i18nc("@item:inmenu", "Post Processing"))
+        self.addMenuItem(i18n_catalog.i18nc("@item:inmenu", "Modify G-Code"), self.showPopup)
         self._view = None
 
         # Loaded scripts are all scripts that can be used
@@ -54,14 +55,14 @@ class PostProcessingPlugin(QObject, Extension):
     def selectedScriptDefinitionId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getDefinitionId()
-        except:
+        except IndexError:
             return ""
 
     @pyqtProperty(str, notify=selectedIndexChanged)
     def selectedScriptStackId(self) -> Optional[str]:
         try:
             return self._script_list[self._selected_script_index].getStackId()
-        except:
+        except IndexError:
             return ""
 
     ##  Execute all post-processing scripts on the gcode.
@@ -161,7 +162,7 @@ class PostProcessingPlugin(QObject, Extension):
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue
-                    spec.loader.exec_module(loaded_script)
+                    spec.loader.exec_module(loaded_script)  # type: ignore
                     sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
 
                     loaded_class = getattr(loaded_script, script_name)
@@ -218,6 +219,7 @@ class PostProcessingPlugin(QObject, Extension):
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): # Missing or empty.
             self.scriptListChanged.emit() # Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
+            self.setSelectedScriptIndex(-1)
             return
 
         self._script_list.clear()

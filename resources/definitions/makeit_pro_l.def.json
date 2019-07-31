@@ -4,11 +4,10 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "NA",
-        "manufacturer": "NA",
+        "author": "unknown",
+        "manufacturer": "MAKEiT 3D",
         "file_formats": "text/x-gcode",
         "has_materials": false,
-        "supported_actions": [ "MachineSettingsAction", "UpgradeFirmware" ],
         "machine_extruder_trains":
         {
             "0": "makeit_l_dual_1st",
@@ -40,7 +39,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 330
+            "value": "330"
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true

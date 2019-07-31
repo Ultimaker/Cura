@@ -1,11 +1,10 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import xml.etree.ElementTree as ET
 
 from UM.VersionUpgrade import VersionUpgrade
 
-from cura.CuraApplication import CuraApplication
 from .XmlMaterialProfile import XmlMaterialProfile
 
 

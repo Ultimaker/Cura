@@ -100,8 +100,8 @@ class ChangeAtZ(Script):
                 },
                 "d_twLayers":
                 {
-                    "label": "No. Layers",
-                    "description": "No. of layers used to change",
+                    "label": "Layer Spread",
+                    "description": "The change will be gradual over this many layers. Enter 1 to make the change immediate.",
                     "unit": "",
                     "type": "int",
                     "default_value": 1,
@@ -112,7 +112,7 @@ class ChangeAtZ(Script):
                 "e1_Change_speed":
                 {
                     "label": "Change Speed",
-                    "description": "Select if total speed (print and travel) has to be cahnged",
+                    "description": "Select if total speed (print and travel) has to be changed",
                     "type": "bool",
                     "default_value": false
                 },
@@ -330,7 +330,7 @@ class ChangeAtZ(Script):
             "extruderOne": self.getSettingValueByKey("i2_extruderOne"),
             "extruderTwo": self.getSettingValueByKey("i4_extruderTwo"),
             "fanSpeed": self.getSettingValueByKey("j2_fanSpeed")}
-        old = {"speed": -1, "flowrate": -1, "flowrateOne": -1, "flowrateTwo": -1, "platformTemp": -1, "extruderOne": -1,
+        old = {"speed": -1, "flowrate": 100, "flowrateOne": -1, "flowrateTwo": -1, "platformTemp": -1, "extruderOne": -1,
             "extruderTwo": -1, "bedTemp": -1, "fanSpeed": -1, "state": -1}
         twLayers = self.getSettingValueByKey("d_twLayers")
         if self.getSettingValueByKey("c_behavior") == "single_layer":
@@ -407,13 +407,15 @@ class ChangeAtZ(Script):
                 if "M106" in line and state < 3: #looking for fan speed
                     old["fanSpeed"] = self.getValue(line, "S", old["fanSpeed"])
                 if "M221" in line and state < 3: #looking for flow rate
-                    tmp_extruder = self.getValue(line,"T",None)
+                    tmp_extruder = self.getValue(line, "T", None)
                     if tmp_extruder == None: #check if extruder is specified
                         old["flowrate"] = self.getValue(line, "S", old["flowrate"])
+                        if old["flowrate"] == -1:
+                            old["flowrate"] = 100.0
                     elif tmp_extruder == 0: #first extruder
                         old["flowrateOne"] = self.getValue(line, "S", old["flowrateOne"])
                     elif tmp_extruder == 1: #second extruder
-                        old["flowrateOne"] = self.getValue(line, "S", old["flowrateOne"])
+                        old["flowrateTwo"] = self.getValue(line, "S", old["flowrateTwo"])
                 if ("M84" in line or "M25" in line):
                     if state>0 and ChangeProp["speed"]: #"finish" commands for UM Original and UM2
                         modified_gcode += "M220 S100 ; speed reset to 100% at the end of print\n"
@@ -481,9 +483,9 @@ class ChangeAtZ(Script):
                             state = 2
                             done_layers = 0
                             if targetL_i > -100000:
-                                modified_gcode += ";ChangeAtZ V%s: reset below Layer %d\n" % (self.version,targetL_i)
+                                modified_gcode += ";ChangeAtZ V%s: reset below Layer %d\n" % (self.version, targetL_i)
                             else:
-                                modified_gcode += ";ChangeAtZ V%s: reset below %1.2f mm\n" % (self.version,targetZ)
+                                modified_gcode += ";ChangeAtZ V%s: reset below %1.2f mm\n" % (self.version, targetZ)
                             if IsUM2 and oldValueUnknown: #executes on UM2 with Ultigcode and machine setting
                                 modified_gcode += "M606 S%d;recalls saved settings\n" % (TWinstances-1)
                             else: #executes on RepRap, UM2 with Ultigcode and Cura setting

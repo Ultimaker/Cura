@@ -41,7 +41,7 @@ class WorkspaceDialog(QObject):
         self._num_user_settings = 0
         self._active_mode = ""
         self._quality_name = ""
-        self._num_settings_overriden_by_quality_changes = 0
+        self._num_settings_overridden_by_quality_changes = 0
         self._quality_type = ""
         self._machine_name = ""
         self._machine_type = ""
@@ -151,10 +151,10 @@ class WorkspaceDialog(QObject):
 
     @pyqtProperty(int, notify=numSettingsOverridenByQualityChangesChanged)
     def numSettingsOverridenByQualityChanges(self):
-        return self._num_settings_overriden_by_quality_changes
+        return self._num_settings_overridden_by_quality_changes
 
-    def setNumSettingsOverridenByQualityChanges(self, num_settings_overriden_by_quality_changes):
-        self._num_settings_overriden_by_quality_changes = num_settings_overriden_by_quality_changes
+    def setNumSettingsOverriddenByQualityChanges(self, num_settings_overridden_by_quality_changes):
+        self._num_settings_overridden_by_quality_changes = num_settings_overridden_by_quality_changes
         self.numSettingsOverridenByQualityChangesChanged.emit()
 
     @pyqtProperty(str, notify=qualityNameChanged)

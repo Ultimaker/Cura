@@ -7,7 +7,6 @@
         "author": "3Dator GmbH",
         "manufacturer": "3Dator GmbH",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "supports_usb_connection": true,
         "platform": "3dator_platform.stl",
         "machine_extruder_trains":
@@ -46,7 +45,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 30
+            "value": "30"
         },
         "machine_start_gcode": {
             "default_value": ";Sliced at: {day} {date} {time}\nM104 S{material_print_temperature} ;set temperatures\nM140 S{material_bed_temperature}\nM109 S{material_print_temperature} ;wait for temperatures\nM190 S{material_bed_temperature}\nG21  ;metric values\nG90  ;absolute positioning\nM82  ;set extruder to absolute mode\nM107  ;start with the fan off\nG28 Z0  ;move Z to min endstops\nG28 X0 Y0  ;move X/Y to min endstops\nG29  ;Auto Level\nG1 Z0.6 F{speed_travel} ;move the Nozzle near the Bed\nG92 E0\nG1 Y0  ;zero the extruded length\nG1 X10 E30 F500  ;printing a Line from right to left\nG92 E0  ;zero the extruded length again\nG1 Z2\nG1 F{speed_travel}\nM117 Printing...;Put printing message on LCD screen\nM150 R255 U255 B255 P4 ;Change LED Color to white"      },

@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 from UM.Qt.ListModel import ListModel
@@ -9,13 +10,16 @@ from UM.Qt.ListModel import ListModel
 #  Those 2 models are used by the material drop down menu to show generic materials and branded materials separately.
 #  The extruder position defined here is being used to bound a menu to the correct extruder. This is used in the top
 #  bar menu "Settings" -> "Extruder nr" -> "Material" -> this menu
+from cura.Machines.MaterialNode import MaterialNode
+
+
 class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
+    enabledChanged = pyqtSignal()
 
     def __init__(self, parent = None):
         super().__init__(parent)
-
         from cura.CuraApplication import CuraApplication
 
         self._application = CuraApplication.getInstance()
@@ -54,8 +58,9 @@ class BaseMaterialsModel(ListModel):
         self._extruder_position = 0
         self._extruder_stack = None
 
-        self._available_materials = None
-        self._favorite_ids = None
+        self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
+        self._favorite_ids = set()  # type: Set[str]
+        self._enabled = True
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -64,9 +69,11 @@ class BaseMaterialsModel(ListModel):
 
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.disconnect(self._update)
         self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.connect(self._update)
+            self._extruder_stack.approximateMaterialDiameterChanged.connect(self._update)
         # Force update the model when the extruder stack changes
         self._update()
 
@@ -80,6 +87,18 @@ class BaseMaterialsModel(ListModel):
     def extruderPosition(self) -> int:
         return self._extruder_position
 
+    def setEnabled(self, enabled):
+        if self._enabled != enabled:
+            self._enabled = enabled
+            if self._enabled:
+                # ensure the data is there again.
+                self._update()
+            self.enabledChanged.emit()
+
+    @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
+    def enabled(self):
+        return self._enabled
+
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
     def _update(self):
@@ -91,7 +110,7 @@ class BaseMaterialsModel(ListModel):
     def _canUpdate(self):
         global_stack = self._machine_manager.activeMachine
 
-        if global_stack is None:
+        if global_stack is None or not self._enabled:
             return False
 
         extruder_position = str(self._extruder_position)
@@ -100,7 +119,6 @@ class BaseMaterialsModel(ListModel):
             return False
         
         extruder_stack = global_stack.extruders[extruder_position]
-
         self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         if self._available_materials is None:
             return False

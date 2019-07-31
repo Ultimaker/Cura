@@ -160,7 +160,7 @@ Item {
                     model: UM.SettingDefinitionsModel
                     {
                         id: addedSettingsModel;
-                        containerId: Cura.MachineManager.activeDefinitionId
+                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         expanded: [ "*" ]
                         filter:
                         {
@@ -265,7 +265,6 @@ Item {
                                         anchors.verticalCenter: parent.verticalCenter
                                         width: parent.width
                                         height: width
-                                        sourceSize.width: width
                                         sourceSize.height: width
                                         color: control.hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
                                         source: UM.Theme.getIcon("minus")
@@ -407,14 +406,9 @@ Item {
         function updateFilter()
         {
             var new_filter = {};
-            if (printSequencePropertyProvider.properties.value == "one_at_a_time")
-            {
-                new_filter["settable_per_meshgroup"] = true;
-            }
-            else
-            {
-                new_filter["settable_per_mesh"] = true;
-            }
+            new_filter["settable_per_mesh"] = true;
+            // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
+            //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
 
             if(filterInput.text != "")
             {
@@ -473,7 +467,7 @@ Item {
                 model: UM.SettingDefinitionsModel
                 {
                     id: definitionsModel;
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                     expanded: [ "*" ]
                     exclude:

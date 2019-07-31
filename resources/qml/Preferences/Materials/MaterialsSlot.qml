@@ -1,5 +1,5 @@
 // Copyright (c) 2018 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -15,12 +15,22 @@ Rectangle
     id: materialSlot
     property var material: null
     property var hovered: false
-    property var is_favorite: material != null ? material.is_favorite : false
+    property var is_favorite: material != null && material.is_favorite
 
     height: UM.Theme.getSize("favorites_row").height
     width: parent.width
-    color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
-
+    //color: material != null ? (base.currentItem.root_material_id == material.root_material_id ? UM.Theme.getColor("favorites_row_selected") : "transparent") : "transparent"
+    color:
+    {
+        if(material !== null && base.currentItem !== null)
+        {
+            if(base.currentItem.root_material_id === material.root_material_id)
+            {
+                return UM.Theme.getColor("favorites_row_selected")
+            }
+        }
+        return "transparent"
+    }
     Rectangle
     {
         id: swatch
@@ -41,7 +51,7 @@ Rectangle
         anchors.left: swatch.right
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        font.italic: Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
+        font.italic: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
     }
     MouseArea
     {
@@ -50,7 +60,7 @@ Rectangle
         {
             materialList.currentBrand = material.brand
             materialList.currentType = material.brand + "_" + material.material
-            base.currentItem = material
+            base.setExpandedActiveMaterial(material.root_material_id)
         }
         hoverEnabled: true
         onEntered: { materialSlot.hovered = true }
@@ -70,24 +80,20 @@ Rectangle
         }
         onClicked:
         {
-            if (materialSlot.is_favorite) {
-                base.materialManager.removeFavorite(material.root_material_id)
-                materialSlot.is_favorite = false
+            if (materialSlot.is_favorite)
+            {
+                CuraApplication.getMaterialManager().removeFavorite(material.root_material_id)
                 return
             }
-            base.materialManager.addFavorite(material.root_material_id)
-            materialSlot.is_favorite = true
+            CuraApplication.getMaterialManager().addFavorite(material.root_material_id)
             return
         }
         style: ButtonStyle
         {
-            background: Rectangle
-            {
-                anchors.fill: parent
-                color: "transparent"
-            }
+            background: Item { }
         }
-        UM.RecolorImage {
+        UM.RecolorImage
+        {
             anchors
             {
                 verticalCenter: favorite_button.verticalCenter
@@ -95,8 +101,6 @@ Rectangle
             }
             width: UM.Theme.getSize("favorites_button_icon").width
             height: UM.Theme.getSize("favorites_button_icon").height
-            sourceSize.width: width
-            sourceSize.height: height
             color:
             {
                 if (favorite_button.hovered)

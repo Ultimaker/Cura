@@ -107,7 +107,7 @@ class VariantManager:
                     break
             return variant_node
 
-        return self._machine_to_variant_dict_map[machine_definition_id].get(variant_type, {}).get(variant_name)
+        return self._machine_to_variant_dict_map.get(machine_definition_id, {}).get(variant_type, {}).get(variant_name)
 
     def getVariantNodes(self, machine: "GlobalStack", variant_type: "VariantType") -> Dict[str, ContainerNode]:
         machine_definition_id = machine.definition.getId()

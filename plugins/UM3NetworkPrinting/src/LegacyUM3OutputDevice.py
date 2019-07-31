@@ -1,24 +1,25 @@
 from typing import List, Optional
 
-from UM.FileHandler.FileHandler import FileHandler
-from UM.Scene.SceneNode import SceneNode
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from cura.PrinterOutput.PrinterOutputModel import PrinterOutputModel
-from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
-from cura.PrinterOutput.MaterialOutputModel import MaterialOutputModel
-from cura.PrinterOutput.NetworkCamera import NetworkCamera
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.ExtruderManager import ExtruderManager
 
-from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.FileHandler.FileHandler import FileHandler
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 from UM.Message import Message
+from UM.PluginRegistry import PluginRegistry
+from UM.Scene.SceneNode import SceneNode
+from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from PyQt5.QtNetwork import QNetworkRequest
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore import QTimer, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
 from .LegacyUM3PrinterOutputController import LegacyUM3PrinterOutputController
@@ -44,7 +45,7 @@ i18n_catalog = i18nCatalog("cura")
 #   5. As a final step, we verify the authentication, as this forces the QT manager to setup the authenticator.
 class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
     def __init__(self, device_id, address: str, properties, parent = None) -> None:
-        super().__init__(device_id = device_id, address = address, properties = properties, parent = parent)
+        super().__init__(device_id = device_id, address = address, properties = properties, connection_type =  ConnectionType.NetworkConnection, parent = parent)
         self._api_prefix = "/api/v1/"
         self._number_of_extruders = 2
 
@@ -76,9 +77,15 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
 
         self.setIconName("print")
 
-        self._monitor_view_qml_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../resources/qml/MonitorItem.qml")
-
         self._output_controller = LegacyUM3PrinterOutputController(self)
+
+    def _createMonitorViewFromQML(self) -> None:
+        if self._monitor_view_qml_path is None and PluginRegistry.getInstance() is not None:
+            self._monitor_view_qml_path = os.path.join(
+                PluginRegistry.getInstance().getPluginPath("UM3NetworkPrinting"),
+                "resources", "qml", "MonitorStage.qml"
+            )
+        super()._createMonitorViewFromQML()
 
     def _onAuthenticationStateChanged(self):
         # We only accept commands if we are authenticated.
@@ -171,7 +178,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # NotImplementedError. We can simply ignore these.
                 pass
 
-    def requestWrite(self, nodes: List[SceneNode], file_name: Optional[str] = None, limit_mimetypes: bool = False, file_handler: Optional[FileHandler] = None, **kwargs: str) -> None:
+    def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         if not self.activePrinter:
             # No active printer. Unable to write
             return
@@ -499,8 +507,8 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
         self._authentication_id = None
 
         self.post("auth/request",
-                  json.dumps({"application":  "Cura-" + CuraApplication.getInstance().getVersion(),
-                                               "user": self._getUserName()}).encode(),
+                  json.dumps({"application": "Cura-" + CuraApplication.getInstance().getVersion(),
+                              "user": self._getUserName()}),
                   on_finished=self._onRequestAuthenticationFinished)
 
         self.setAuthenticationState(AuthState.AuthenticationRequested)
@@ -568,7 +576,7 @@ class LegacyUM3OutputDevice(NetworkedPrinterOutputDevice):
                 # Quickest way to get the firmware version is to grab it from the zeroconf.
                 firmware_version = self._properties.get(b"firmware_version", b"").decode("utf-8")
                 self._printers = [PrinterOutputModel(output_controller=self._output_controller, number_of_extruders=self._number_of_extruders, firmware_version=firmware_version)]
-                self._printers[0].setCamera(NetworkCamera("http://" + self._address + ":8080/?action=stream"))
+                self._printers[0].setCameraUrl(QUrl("http://" + self._address + ":8080/?action=stream"))
                 for extruder in self._printers[0].extruders:
                     extruder.activeMaterialChanged.connect(self.materialIdChanged)
                     extruder.hotendIDChanged.connect(self.hotendIdChanged)

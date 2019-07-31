@@ -1,17 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 49 (51002) - http://www.bohemiancoding.com/sketch -->
-    <title>icn_buildplate</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Visual" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
-        <g id="Printer-status-icon" transform="translate(-33.000000, -366.000000)" stroke="#000000">
-            <g id="icn_buildplate" transform="translate(33.000000, 367.000000)">
-                <polyline id="Stroke-6823" points="0 5 7 8 14 5"></polyline>
-                <polyline id="Stroke-6823-Copy" points="0 7 7 10 14 7"></polyline>
-                <polyline id="Stroke-6823-Copy" points="0 9 7 12 14 9"></polyline>
-                <polygon id="Stroke-6824" points="0 2.75 7 0 14 2.75 7 5.5"></polygon>
-            </g>
-        </g>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <g fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="0 6 7 9 14 6" />
+        <polyline points="0 8 7 11 14 8" />
+        <polyline points="0 10 7 13 14 10" />
+        <polygon points="0 3.75 7 1 14 3.75 7 6.5" fill="black" />
     </g>
 </svg>

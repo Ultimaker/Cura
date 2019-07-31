@@ -1,8 +1,8 @@
 {
     "name": "G-code Reader",
-    "author": "Victor Larchenko",
-    "version": "1.0.0",
+    "author": "Victor Larchenko, Ultimaker",
+    "version": "1.0.1",
     "description": "Allows loading and displaying G-code files.",
-    "api": 5,
+    "api": "6.0",
     "i18n-catalog": "cura"
 }

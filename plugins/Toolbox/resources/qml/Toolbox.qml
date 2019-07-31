@@ -10,21 +10,21 @@ Window
 {
     id: base
     property var selection: null
-    title: catalog.i18nc("@title", "Toolbox")
+    title: catalog.i18nc("@title", "Marketplace")
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
-    width: 720 * screenScaleFactor
-    height: 640 * screenScaleFactor
+    width: Math.floor(720 * screenScaleFactor)
+    height: Math.floor(640 * screenScaleFactor)
     minimumWidth: width
     maximumWidth: minimumWidth
     minimumHeight: height
     maximumHeight: minimumHeight
-    color: UM.Theme.getColor("sidebar")
+    color: UM.Theme.getColor("main_background")
     UM.I18nCatalog
     {
         id: catalog
-        name:"cura"
+        name: "cura"
     }
     Item
     {
@@ -38,7 +38,7 @@ Window
         {
             id: mainView
             width: parent.width
-            z: -1
+            z: parent.z - 1
             anchors
             {
                 top: header.bottom
@@ -48,32 +48,32 @@ Window
             ToolboxLoadingPage
             {
                 id: viewLoading
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "loading"
             }
             ToolboxErrorPage
             {
                 id: viewErrored
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "errored"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "errored"
             }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "overview"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "overview"
             }
             ToolboxDetailPage
             {
                 id: viewDetail
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "detail"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "detail"
             }
             ToolboxAuthorPage
             {
                 id: viewAuthor
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "author"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "author"
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: toolbox.viewCategory == "installed"
+                visible: toolbox.viewCategory === "installed"
             }
         }
 
@@ -95,6 +95,7 @@ Window
                 licenseDialog.show();
             }
         }
+        
         ToolboxLicenseDialog
         {
             id: licenseDialog

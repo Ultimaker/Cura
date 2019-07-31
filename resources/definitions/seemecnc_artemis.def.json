@@ -7,7 +7,6 @@
         "author": "PouncingIguana, JJ",
         "manufacturer": "SeeMeCNC",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "artemis_platform.stl",
         "has_materials": true,
         "machine_extruder_trains":

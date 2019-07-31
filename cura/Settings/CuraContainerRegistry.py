@@ -1,16 +1,16 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
 import re
 import configparser
 
-from typing import cast, Optional
-
+from typing import Any, cast, Dict, Optional
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
 from UM.Settings.ContainerFormatError import ContainerFormatError
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -28,7 +28,7 @@ from . import GlobalStack
 
 import cura.CuraApplication
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-from cura.ReaderWriters.ProfileReader import NoProfileException
+from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -103,13 +103,14 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \param instance_ids \type{list} the IDs of the profiles to export.
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    def exportQualityProfile(self, container_list, file_name, file_type):
+    #   \return True if the export succeeded, false otherwise.
+    def exportQualityProfile(self, container_list, file_name, file_type) -> bool:
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
         if split < 0:  # Not found. Invalid format.
             Logger.log("e", "Invalid file format identifier %s", file_type)
-            return
+            return False
         description = file_type[:split]
         extension = file_type[split + 4:-1]  # Leave out the " (*." and ")".
         if not file_name.endswith("." + extension):  # Auto-fill the extension if the user did not provide any.
@@ -121,7 +122,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 result = QMessageBox.question(None, catalog.i18nc("@title:window", "File Already Exists"),
                                               catalog.i18nc("@label Don't translate the XML tag <filename>!", "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?").format(file_name))
                 if result == QMessageBox.No:
-                    return
+                    return False
 
         profile_writer = self._findProfileWriter(extension, description)
         try:
@@ -132,17 +133,18 @@ class CuraContainerRegistry(ContainerRegistry):
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         if not success:
             Logger.log("w", "Failed to export profile to %s: Writer plugin reported failure.", file_name)
             m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure.", file_name),
                         lifetime = 0,
                         title = catalog.i18nc("@info:title", "Error"))
             m.show()
-            return
+            return False
         m = Message(catalog.i18nc("@info:status Don't translate the XML tag <filename>!", "Exported profile to <filename>{0}</filename>", file_name),
                     title = catalog.i18nc("@info:title", "Export succeeded"))
         m.show()
+        return True
 
     ##  Gets the plugin object matching the criteria
     #   \param extension
@@ -161,29 +163,29 @@ class CuraContainerRegistry(ContainerRegistry):
 
     ##  Imports a profile from a file
     #
-    #   \param file_name \type{str} the full path and filename of the profile to import
-    #   \return \type{Dict} dict with a 'status' key containing the string 'ok' or 'error', and a 'message' key
-    #       containing a message for the user
-    def importProfile(self, file_name):
+    #   \param file_name The full path and filename of the profile to import.
+    #   \return Dict with a 'status' key containing the string 'ok' or 'error',
+    #       and a 'message' key containing a message for the user.
+    def importProfile(self, file_name: str) -> Dict[str, str]:
         Logger.log("d", "Attempting to import profile %s", file_name)
         if not file_name:
-            return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename> or <message>!", "Failed to import profile from <filename>{0}</filename>: <message>{1}</message>", file_name, "Invalid path")}
-
-        plugin_registry = PluginRegistry.getInstance()
-        extension = file_name.split(".")[-1]
+            return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
 
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
-            return
+            return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
 
         machine_extruders = []
         for position in sorted(global_stack.extruders):
             machine_extruders.append(global_stack.extruders[position])
 
+        plugin_registry = PluginRegistry.getInstance()
+        extension = file_name.split(".")[-1]
+
         for plugin_id, meta_data in self._getIOPlugins("profile_reader"):
             if meta_data["profile_reader"][0]["extension"] != extension:
                 continue
-            profile_reader = plugin_registry.getPluginObject(plugin_id)
+            profile_reader = cast(ProfileReader, plugin_registry.getPluginObject(plugin_id))
             try:
                 profile_or_list = profile_reader.read(file_name)  # Try to open the file with the profile reader.
             except NoProfileException:
@@ -221,13 +223,13 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Make sure we have a profile_definition in the file:
                 if profile_definition is None:
                     break
-                machine_definition = self.findDefinitionContainers(id = profile_definition)
-                if not machine_definition:
+                machine_definitions = self.findDefinitionContainers(id = profile_definition)
+                if not machine_definitions:
                     Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
                     return {"status": "error",
                             "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "This profile <filename>{0}</filename> contains incorrect data, could not import it.", file_name)
                             }
-                machine_definition = machine_definition[0]
+                machine_definition = machine_definitions[0]
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
@@ -267,20 +269,21 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile.setMetaDataEntry("position", "0")
                         profile.setDirty(True)
                         if idx == 0:
-                            # move all per-extruder settings to the first extruder's quality_changes
+                            # Move all per-extruder settings to the first extruder's quality_changes
                             for qc_setting_key in global_profile.getAllKeys():
                                 settable_per_extruder = global_stack.getProperty(qc_setting_key, "settable_per_extruder")
                                 if settable_per_extruder:
                                     setting_value = global_profile.getProperty(qc_setting_key, "value")
 
                                     setting_definition = global_stack.getSettingDefinition(qc_setting_key)
-                                    new_instance = SettingInstance(setting_definition, profile)
-                                    new_instance.setProperty("value", setting_value)
-                                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
-                                    profile.addInstance(new_instance)
-                                    profile.setDirty(True)
+                                    if setting_definition is not None:
+                                        new_instance = SettingInstance(setting_definition, profile)
+                                        new_instance.setProperty("value", setting_value)
+                                        new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                                        profile.addInstance(new_instance)
+                                        profile.setDirty(True)
 
-                                    global_profile.removeInstance(qc_setting_key, postpone_emit=True)
+                                    global_profile.removeInstance(qc_setting_key, postpone_emit = True)
                         extruder_profiles.append(profile)
 
                     for profile in extruder_profiles:
@@ -290,7 +293,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
-                        profile_id = (global_stack.getBottom().getId() + "_" + name_seed).lower().replace(" ", "_")
+                        profile_id = (cast(ContainerInterface, global_stack.getBottom()).getId() + "_" + name_seed).lower().replace(" ", "_")
 
                     elif profile_index < len(machine_extruders) + 1:
                         # This is assumed to be an extruder profile
@@ -302,8 +305,8 @@ class CuraContainerRegistry(ContainerRegistry):
                             profile.setMetaDataEntry("position", extruder_position)
                         profile_id = (extruder_id + "_" + name_seed).lower().replace(" ", "_")
 
-                    else: #More extruders in the imported file than in the machine.
-                        continue #Delete the additional profiles.
+                    else:  # More extruders in the imported file than in the machine.
+                        continue  # Delete the additional profiles.
 
                     result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
@@ -325,6 +328,23 @@ class CuraContainerRegistry(ContainerRegistry):
         super().load()
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
+
+    ##  Check if the metadata for a container is okay before adding it.
+    #
+    #   This overrides the one from UM.Settings.ContainerRegistry because we
+    #   also require that the setting_version is correct.
+    @override(ContainerRegistry)
+    def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
+        if metadata is None:
+            return False
+        if "setting_version" not in metadata:
+            return False
+        try:
+            if int(metadata["setting_version"]) != cura.CuraApplication.CuraApplication.SettingVersion:
+                return False
+        except ValueError: #Not parsable as int.
+            return False
+        return True
 
     ##  Update an imported profile to match the current machine configuration.
     #
@@ -384,30 +404,6 @@ class CuraContainerRegistry(ContainerRegistry):
             if io_type in meta_data:
                 result.append( (plugin_id, meta_data) )
         return result
-
-    ##  Returns true if the current machine requires its own materials
-    #   \return True if the current machine requires its own materials
-    def _machineHasOwnMaterials(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            return global_container_stack.getMetaDataEntry("has_materials", False)
-        return False
-
-    ##  Gets the ID of the active material
-    #   \return the ID of the active material or the empty string
-    def _activeMaterialId(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack and global_container_stack.material:
-            return global_container_stack.material.getId()
-        return ""
-
-    ##  Returns true if the current machine requires its own quality profiles
-    #   \return true if the current machine requires its own quality profiles
-    def _machineHasOwnQualities(self):
-        global_container_stack = Application.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            return parseBool(global_container_stack.getMetaDataEntry("has_machine_quality", False))
-        return False
 
     ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
     def _convertContainerStack(self, container):
@@ -520,7 +516,7 @@ class CuraContainerRegistry(ContainerRegistry):
         user_container.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
 
         if machine.userChanges:
-            # for the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
+            # For the newly created extruder stack, we need to move all "per-extruder" settings to the user changes
             # container to the extruder stack.
             for user_setting_key in machine.userChanges.getAllKeys():
                 settable_per_extruder = machine.getProperty(user_setting_key, "settable_per_extruder")
@@ -582,7 +578,7 @@ class CuraContainerRegistry(ContainerRegistry):
                     extruder_quality_changes_container.setMetaDataEntry("position", extruder_definition.getMetaDataEntry("position"))
                     extruder_stack.qualityChanges = self.findInstanceContainers(id = quality_changes_id)[0]
                 else:
-                    # if we still cannot find a quality changes container for the extruder, create a new one
+                    # If we still cannot find a quality changes container for the extruder, create a new one
                     container_name = machine_quality_changes.getName()
                     container_id = self.uniqueName(extruder_stack.getId() + "_qc_" + container_name)
                     extruder_quality_changes_container = InstanceContainer(container_id, parent = application)
@@ -600,7 +596,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 Logger.log("w", "Could not find quality_changes named [%s] for extruder [%s]",
                            machine_quality_changes.getName(), extruder_stack.getId())
             else:
-                # move all per-extruder settings to the extruder's quality changes
+                # Move all per-extruder settings to the extruder's quality changes
                 for qc_setting_key in machine_quality_changes.getAllKeys():
                     settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
                     if settable_per_extruder:
@@ -641,7 +637,7 @@ class CuraContainerRegistry(ContainerRegistry):
             if qc_name not in qc_groups:
                 qc_groups[qc_name] = []
             qc_groups[qc_name].append(qc)
-            # try to find from the quality changes cura directory too
+            # Try to find from the quality changes cura directory too
             quality_changes_container = self._findQualityChangesContainerInCuraFolder(machine_quality_changes.getName())
             if quality_changes_container:
                 qc_groups[qc_name].append(quality_changes_container)
@@ -655,7 +651,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 else:
                     qc_dict["global"] = qc
             if qc_dict["global"] is not None and len(qc_dict["extruders"]) == 1:
-                # move per-extruder settings
+                # Move per-extruder settings
                 for qc_setting_key in qc_dict["global"].getAllKeys():
                     settable_per_extruder = machine.getProperty(qc_setting_key, "settable_per_extruder")
                     if settable_per_extruder:
@@ -689,17 +685,17 @@ class CuraContainerRegistry(ContainerRegistry):
             try:
                 parser.read([file_path])
             except:
-                # skip, it is not a valid stack file
+                # Skip, it is not a valid stack file
                 continue
 
             if not parser.has_option("general", "name"):
                 continue
 
             if parser["general"]["name"] == name:
-                # load the container
+                # Load the container
                 container_id = os.path.basename(file_path).replace(".inst.cfg", "")
                 if self.findInstanceContainers(id = container_id):
-                    # this container is already in the registry, skip it
+                    # This container is already in the registry, skip it
                     continue
 
                 instance_container = InstanceContainer(container_id)
@@ -733,7 +729,7 @@ class CuraContainerRegistry(ContainerRegistry):
             else:
                 Logger.log("w", "Could not find machine {machine} for extruder {extruder}", machine = extruder_stack.getMetaDataEntry("machine"), extruder = extruder_stack.getId())
 
-    #Override just for the type.
+    # Override just for the type.
     @classmethod
     @override(ContainerRegistry)
     def getInstance(cls, *args, **kwargs) -> "CuraContainerRegistry":

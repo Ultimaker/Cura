@@ -3,7 +3,7 @@
 
 import os.path
 import time
-from typing import cast, Optional
+from typing import Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, pyqtSlot, QObject
 
@@ -13,8 +13,12 @@ from UM.i18n import i18nCatalog
 
 from cura.CuraApplication import CuraApplication
 from cura.MachineAction import MachineAction
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .UM3OutputDevicePlugin import UM3OutputDevicePlugin
+
+if TYPE_CHECKING:
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 catalog = i18nCatalog("cura")
 
@@ -36,6 +40,11 @@ class DiscoverUM3Action(MachineAction):
 
         # Time to wait after a zero-conf service change before allowing a zeroconf reset
         self._zero_conf_change_grace_period = 0.25 #type: float
+
+    # Overrides the one in MachineAction.
+    # This requires not attention from the user (any more), so we don't need to show any 'upgrade screens'.
+    def needsUserInteraction(self) -> bool:
+        return False
 
     @pyqtSlot()
     def startDiscovery(self):
@@ -101,41 +110,25 @@ class DiscoverUM3Action(MachineAction):
         Logger.log("d", "Attempting to set the group name of the active machine to %s", group_name)
         global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "connect_group_name" in meta_data:
-                previous_connect_group_name = meta_data["connect_group_name"]
-                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
-                # Find all the places where there is the same group name and change it accordingly
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "connect_group_name", value = previous_connect_group_name, new_value = group_name)
-            else:
-                global_container_stack.setMetaDataEntry("connect_group_name", group_name)
+            # Update a GlobalStacks in the same group with the new group name.
+            group_id = global_container_stack.getMetaDataEntry("group_id")
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+            for machine in machine_manager.getMachinesInGroup(group_id):
+                machine.setMetaDataEntry("group_name", group_name)
+
             # Set the default value for "hidden", which is used when you have a group with multiple types of printers
             global_container_stack.setMetaDataEntry("hidden", False)
 
         if self._network_plugin:
             # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.refreshConnections()
 
-    @pyqtSlot(str)
-    def setKey(self, key: str) -> None:
-        Logger.log("d", "Attempting to set the network key of the active machine to %s", key)
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        if global_container_stack:
-            meta_data = global_container_stack.getMetaData()
-            if "um_network_key" in meta_data:
-                previous_network_key= meta_data["um_network_key"]
-                global_container_stack.setMetaDataEntry("um_network_key", key)
-                # Delete old authentication data.
-                Logger.log("d", "Removing old authentication id %s for device %s", global_container_stack.getMetaDataEntry("network_authentication_id", None), key)
-                global_container_stack.removeMetaDataEntry("network_authentication_id")
-                global_container_stack.removeMetaDataEntry("network_authentication_key")
-                CuraApplication.getInstance().getMachineManager().replaceContainersMetadata(key = "um_network_key", value = previous_network_key, new_value = key)
-            else:
-                global_container_stack.setMetaDataEntry("um_network_key", key)
-
+    # Associates the currently active machine with the given printer device. The network connection information will be
+    # stored into the metadata of the currently active machine.
+    @pyqtSlot(QObject)
+    def associateActiveMachineWithPrinterDevice(self, printer_device: Optional["PrinterOutputDevice"]) -> None:
         if self._network_plugin:
-            # Ensure that the connection states are refreshed.
-            self._network_plugin.reCheckConnections()
+            self._network_plugin.associateActiveMachineWithPrinterDevice(printer_device)
 
     @pyqtSlot(result = str)
     def getStoredKey(self) -> str:
@@ -155,7 +148,9 @@ class DiscoverUM3Action(MachineAction):
 
     @pyqtSlot(str, result = bool)
     def existsKey(self, key: str) -> bool:
-        return CuraApplication.getInstance().getMachineManager().existNetworkInstances(network_key = key)
+        metadata_filter = {"um_network_key": key}
+        containers = CuraContainerRegistry.getInstance().findContainerStacks(type="machine", **metadata_filter)
+        return bool(containers)
 
     @pyqtSlot()
     def loadConfigurationFromPrinter(self) -> None:
@@ -182,4 +177,3 @@ class DiscoverUM3Action(MachineAction):
 
         # Create extra components
         CuraApplication.getInstance().addAdditionalComponent("monitorButtons", self.__additional_components_view.findChild(QObject, "networkPrinterConnectButton"))
-        CuraApplication.getInstance().addAdditionalComponent("machinesDetailPane", self.__additional_components_view.findChild(QObject, "networkPrinterConnectionInfo"))

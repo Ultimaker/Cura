@@ -9,6 +9,7 @@ import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
 from UM.Settings.InstanceContainer import InstanceContainer #To check against the class of InstanceContainer.
+from cura.Settings import Exceptions
 from cura.Settings.Exceptions import InvalidContainerError, InvalidOperationError #To check whether the correct exceptions are raised.
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.cura_empty_instance_containers import empty_container
@@ -298,3 +299,30 @@ def test_setPropertyUser(key, property, value, extruder_stack):
     extruder_stack.setProperty(key, property, value) #The actual test.
 
     extruder_stack.userChanges.setProperty.assert_called_once_with(key, property, value, None, False) #Make sure that the user container gets a setProperty call.
+
+
+def test_setEnabled(extruder_stack):
+    extruder_stack.setEnabled(True)
+    assert extruder_stack.isEnabled
+    extruder_stack.setEnabled(False)
+    assert not extruder_stack.isEnabled
+
+
+def test_getPropertyWithoutGlobal(extruder_stack):
+    assert extruder_stack.getNextStack() is None
+
+    with pytest.raises(Exceptions.NoGlobalStackError):
+        extruder_stack.getProperty("whatever", "value")
+
+
+def test_getMachineDefinitionWithoutGlobal(extruder_stack):
+    assert extruder_stack.getNextStack() is None
+
+    with pytest.raises(Exceptions.NoGlobalStackError):
+        extruder_stack._getMachineDefinition()
+
+def test_getMachineDefinition(extruder_stack):
+    mocked_next_stack = unittest.mock.MagicMock()
+    mocked_next_stack._getMachineDefinition = unittest.mock.MagicMock(return_value = "ZOMG")
+    extruder_stack.getNextStack = unittest.mock.MagicMock(return_value = mocked_next_stack)
+    assert extruder_stack._getMachineDefinition() == "ZOMG"

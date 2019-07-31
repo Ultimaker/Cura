@@ -4,112 +4,101 @@
 import QtQuick 2.2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
-
 import UM 1.1 as UM
 
-UM.Dialog
-{
+UM.Dialog {
     id: base;
-
-    minimumWidth: 500 * screenScaleFactor
-    minimumHeight: 140 * screenScaleFactor
-    maximumWidth: minimumWidth
-    maximumHeight: minimumHeight
-    width: minimumWidth
-    height: minimumHeight
-
-    visible: true
-    modality: Qt.ApplicationModal
-    onVisibleChanged:
-    {
-        if(visible)
-        {
-            resetPrintersModel()
-        }
-        else
-        {
-            OutputDevice.cancelPrintSelection()
-        }
-    }
-    title: catalog.i18nc("@title:window", "Print over network")
-
-    property var printersModel:  ListModel{}
-    function resetPrintersModel() {
-        printersModel.clear()
-        printersModel.append({ name: "Automatic", key: ""})
-
-        for (var index in OutputDevice.printers)
-        {
-            printersModel.append({name: OutputDevice.printers[index].name, key: OutputDevice.printers[index].key})
-        }
-    }
-
-    Column
-    {
-        id: printerSelection
-        anchors.fill: parent
-        anchors.top: parent.top
-        anchors.topMargin: UM.Theme.getSize("default_margin").height
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        anchors.rightMargin: UM.Theme.getSize("default_margin").width
-        height: 50 * screenScaleFactor
-        Label
-        {
-            id: manualPrinterSelectionLabel
-            anchors
-            {
-                left: parent.left
-                topMargin: UM.Theme.getSize("default_margin").height
-                right: parent.right
-            }
-            text: catalog.i18nc("@label", "Printer selection")
-            wrapMode: Text.Wrap
-            height: 20 * screenScaleFactor
-        }
-
-        ComboBox
-        {
-            id: printerSelectionCombobox
-            model: base.printersModel
-            textRole: "name"
-
-            width: parent.width
-            height: 40 * screenScaleFactor
-            Behavior on height { NumberAnimation { duration: 100 } }
-        }
-
-        SystemPalette
-        {
-           id: palette
-        }
-
-        UM.I18nCatalog { id: catalog; name: "cura"; }
-    }
-
+    height: minimumHeight;
     leftButtons: [
-        Button
-        {
-            text: catalog.i18nc("@action:button","Cancel")
-            enabled: true
+        Button {
+            enabled: true;
             onClicked: {
                 base.visible = false;
-                printerSelectionCombobox.currentIndex = 0
-                OutputDevice.cancelPrintSelection()
+                printerSelectionCombobox.currentIndex = 0;
+                OutputDevice.cancelPrintSelection();
             }
+            text: catalog.i18nc("@action:button","Cancel");
         }
     ]
-
+    maximumHeight: minimumHeight;
+    maximumWidth: minimumWidth;
+    minimumHeight: 140 * screenScaleFactor;
+    minimumWidth: 500 * screenScaleFactor;
+    modality: Qt.ApplicationModal;
+    onVisibleChanged: {
+        if (visible) {
+            resetPrintersModel();
+        } else {
+            OutputDevice.cancelPrintSelection();
+        }
+    }
     rightButtons: [
-        Button
-        {
-            text: catalog.i18nc("@action:button","Print")
-            enabled: true
+        Button {
+            enabled: true;
             onClicked: {
                 base.visible = false;
-                OutputDevice.selectPrinter(printerSelectionCombobox.model.get(printerSelectionCombobox.currentIndex).key)
+                OutputDevice.selectPrinter(printerSelectionCombobox.model.get(printerSelectionCombobox.currentIndex).key);
                 // reset to defaults
-                printerSelectionCombobox.currentIndex = 0
+                printerSelectionCombobox.currentIndex = 0;
             }
+            text: catalog.i18nc("@action:button","Print");
         }
     ]
+    title: catalog.i18nc("@title:window", "Print over network");
+    visible: true;
+    width: minimumWidth;
+
+    Column {
+        id: printerSelection;
+        anchors {
+            fill: parent;
+            leftMargin: UM.Theme.getSize("default_margin").width;
+            rightMargin: UM.Theme.getSize("default_margin").width;
+            top: parent.top;
+            topMargin: UM.Theme.getSize("default_margin").height;
+        }
+        height: 50 * screenScaleFactor;
+
+        SystemPalette {
+           id: palette;
+        }
+
+        UM.I18nCatalog {
+            id: catalog;
+            name: "cura";
+        }
+
+        Label {
+            id: manualPrinterSelectionLabel;
+            anchors {
+                left: parent.left;
+                right: parent.right;
+                topMargin: UM.Theme.getSize("default_margin").height;
+            }
+            height: 20 * screenScaleFactor;
+            text: catalog.i18nc("@label", "Printer selection");
+            wrapMode: Text.Wrap;
+            renderType: Text.NativeRendering;
+        }
+
+        ComboBox {
+            id: printerSelectionCombobox;
+            Behavior on height { NumberAnimation { duration: 100 } }
+            height: 40 * screenScaleFactor;
+            model: ListModel {
+                id: printersModel;
+            }
+            textRole: "name";
+            width: parent.width;
+        }
+    }
+
+    // Utils
+    function resetPrintersModel() {
+        printersModel.clear();
+        printersModel.append({ name: "Automatic", key: ""});
+        for (var index in OutputDevice.printers) {
+            printersModel.append({name: OutputDevice.printers[index].name, key: OutputDevice.printers[index].key});
+        }
+    }
 }

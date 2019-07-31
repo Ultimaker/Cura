@@ -1,12 +1,18 @@
+#Copyright (c) 2019 Ultimaker B.V.
+#Cura is released under the terms of the LGPLv3 or higher.
+
 import numpy
 import copy
+from typing import Optional, Tuple, TYPE_CHECKING
 
 from UM.Math.Polygon import Polygon
 
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
 
 ##  Polygon representation as an array for use with Arrange
 class ShapeArray:
-    def __init__(self, arr, offset_x, offset_y, scale = 1):
+    def __init__(self, arr: numpy.array, offset_x: float, offset_y: float, scale: float = 1) -> None:
         self.arr = arr
         self.offset_x = offset_x
         self.offset_y = offset_y
@@ -16,7 +22,7 @@ class ShapeArray:
     #   \param vertices
     #   \param scale  scale the coordinates
     @classmethod
-    def fromPolygon(cls, vertices, scale = 1):
+    def fromPolygon(cls, vertices: numpy.array, scale: float = 1) -> "ShapeArray":
         # scale
         vertices = vertices * scale
         # flip y, x -> x, y
@@ -42,7 +48,7 @@ class ShapeArray:
     #   \param min_offset offset for the offset ShapeArray
     #   \param scale scale the coordinates
     @classmethod
-    def fromNode(cls, node, min_offset, scale = 0.5):
+    def fromNode(cls, node: "SceneNode", min_offset: float, scale: float = 0.5, include_children: bool = False) -> Tuple[Optional["ShapeArray"], Optional["ShapeArray"]]:
         transform = node._transformation
         transform_x = transform._data[0][3]
         transform_y = transform._data[2][3]
@@ -52,6 +58,21 @@ class ShapeArray:
             return None, None
         # For one_at_a_time printing you need the convex hull head.
         hull_head_verts = node.callDecoration("getConvexHullHead") or hull_verts
+        if hull_head_verts is None:
+            hull_head_verts = Polygon()
+
+        # If the child-nodes are included, adjust convex hulls as well:
+        if include_children:
+            children = node.getAllChildren()
+            if not children is None:
+                for child in children:
+                    # 'Inefficient' combination of convex hulls through known code rather than mess it up:
+                    child_hull = child.callDecoration("getConvexHull")
+                    if not child_hull is None:
+                        hull_verts = hull_verts.unionConvexHulls(child_hull)
+                    child_hull_head = child.callDecoration("getConvexHullHead") or child_hull
+                    if not child_hull_head is None:
+                        hull_head_verts = hull_head_verts.unionConvexHulls(child_hull_head)
 
         offset_verts = hull_head_verts.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
         offset_points = copy.deepcopy(offset_verts._points)  # x, y
@@ -73,7 +94,7 @@ class ShapeArray:
     #   \param shape  numpy format shape, [x-size, y-size]
     #   \param vertices
     @classmethod
-    def arrayFromPolygon(cls, shape, vertices):
+    def arrayFromPolygon(cls, shape: Tuple[int, int], vertices: numpy.array) -> numpy.array:
         base_array = numpy.zeros(shape, dtype = numpy.int32)  # Initialize your array of zeros
 
         fill = numpy.ones(base_array.shape) * True  # Initialize boolean array defining shape fill
@@ -96,9 +117,9 @@ class ShapeArray:
     #   \param p2 2-tuple with x, y for point 2
     #   \param base_array boolean array to project the line on
     @classmethod
-    def _check(cls, p1, p2, base_array):
+    def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> bool:
         if p1[0] == p2[0] and p1[1] == p2[1]:
-            return
+            return False
         idxs = numpy.indices(base_array.shape)  # Create 3D array of indices
 
         p1 = p1.astype(float)
@@ -117,4 +138,3 @@ class ShapeArray:
         max_col_idx = (idxs[0] - p1[0]) / (p2[0] - p1[0]) * (p2[1] - p1[1]) + p1[1]
         sign = numpy.sign(p2[0] - p1[0])
         return idxs[1] * sign <= max_col_idx * sign
-

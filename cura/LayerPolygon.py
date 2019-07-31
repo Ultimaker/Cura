@@ -1,9 +1,11 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
-from typing import Any
+from typing import Any, Optional
 import numpy
+
+from UM.Logger import Logger
 
 
 class LayerPolygon:
@@ -18,22 +20,24 @@ class LayerPolygon:
     MoveCombingType = 8
     MoveRetractionType = 9
     SupportInterfaceType = 10
-    __number_of_types = 11
+    PrimeTowerType = 11
+    __number_of_types = 12
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
 
     ##  LayerPolygon, used in ProcessSlicedLayersJob
-    #   \param extruder
+    #   \param extruder The position of the extruder
     #   \param line_types array with line_types
     #   \param data new_points
     #   \param line_widths array with line widths
     #   \param line_thicknesses: array with type as index and thickness as value
     #   \param line_feedrates array with line feedrates
-    def __init__(self, extruder, line_types, data, line_widths, line_thicknesses, line_feedrates):
+    def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray, line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
         self._extruder = extruder
         self._types = line_types
         for i in range(len(self._types)):
-            if self._types[i] >= self.__number_of_types: #Got faulty line data from the engine.
+            if self._types[i] >= self.__number_of_types: # Got faulty line data from the engine.
+                Logger.log("w", "Found an unknown line type: %s", i)
                 self._types[i] = self.NoneType
         self._data = data
         self._line_widths = line_widths
@@ -53,23 +57,23 @@ class LayerPolygon:
         # Buffering the colors shouldn't be necessary as it is not 
         # re-used and can save alot of memory usage.
         self._color_map = LayerPolygon.getColorMap()
-        self._colors = self._color_map[self._types]
+        self._colors = self._color_map[self._types]  # type: numpy.ndarray
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype=numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype = numpy.bool)
         
-        self._build_cache_line_mesh_mask = None
-        self._build_cache_needed_points = None
+        self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
+        self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
         
-    def buildCache(self):
+    def buildCache(self) -> None:
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
-        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)
+        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype = bool)
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
         
-        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype=numpy.bool)
+        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype = numpy.bool)
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
@@ -90,10 +94,14 @@ class LayerPolygon:
     #   \param extruders : vertex numpy array to be filled
     #   \param line_types : vertex numpy array to be filled
     #   \param indices : index numpy array to be filled
-    def build(self, vertex_offset, index_offset, vertices, colors, line_dimensions, feedrates, extruders, line_types, indices):
+    def build(self, vertex_offset: int, index_offset: int, vertices: numpy.ndarray, colors: numpy.ndarray, line_dimensions: numpy.ndarray, feedrates: numpy.ndarray, extruders: numpy.ndarray, line_types: numpy.ndarray, indices: numpy.ndarray) -> None:
         if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
             self.buildCache()
-            
+
+        if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
+            Logger.log("w", "Failed to build cache for layer polygon")
+            return
+
         line_mesh_mask = self._build_cache_line_mesh_mask
         needed_points_list = self._build_cache_needed_points
         
@@ -128,9 +136,9 @@ class LayerPolygon:
         self._index_begin += index_offset
         self._index_end += index_offset
         
-        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype=numpy.int32).reshape((-1, 1))
+        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype = numpy.int32).reshape((-1, 1))
         # When the line type changes the index needs to be increased by 2.
-        indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype=numpy.int32).reshape((-1, 1))
+        indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype = numpy.int32).reshape((-1, 1))
         # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
         # The -1 is to compensate for the neccecarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
         indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
@@ -236,7 +244,8 @@ class LayerPolygon:
                 theme.getColor("layerview_support_infill").getRgbF(), # SupportInfillType
                 theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
-                theme.getColor("layerview_support_interface").getRgbF()  # SupportInterfaceType
+                theme.getColor("layerview_support_interface").getRgbF(),  # SupportInterfaceType
+                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
             ])
 
         return cls.__color_map

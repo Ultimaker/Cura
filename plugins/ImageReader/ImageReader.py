@@ -46,9 +46,9 @@ class ImageReader(MeshReader):
 
     def _read(self, file_name):
         size = max(self._ui.getWidth(), self._ui.getDepth())
-        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
+        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, image_color_invert):
+    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -104,7 +104,7 @@ class ImageReader(MeshReader):
 
         Job.yieldThread()
 
-        if image_color_invert:
+        if not lighter_is_higher:
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):

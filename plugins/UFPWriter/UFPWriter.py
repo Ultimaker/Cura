@@ -28,7 +28,7 @@ class UFPWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ufp",
-                comment = "Cura UFP File",
+                comment = "Ultimaker Format Package",
                 suffixes = ["ufp"]
             )
         )
@@ -95,10 +95,14 @@ class UFPWriter(MeshWriter):
         added_materials = []
         for extruder_stack in global_stack.extruders.values():
             material = extruder_stack.material
-            material_file_name = material.getMetaData()["base_file"] + ".xml.fdm_material"
+            try:
+                material_file_name = material.getMetaData()["base_file"] + ".xml.fdm_material"
+            except KeyError:
+                Logger.log("w", "Unable to get base_file for the material %s", material.getId())
+                continue
             material_file_name = "/Materials/" + material_file_name
 
-            #Same material cannot be added
+            # The same material should not be added again.
             if material_file_name in added_materials:
                 continue
 

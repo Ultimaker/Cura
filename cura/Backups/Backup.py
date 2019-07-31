@@ -46,12 +46,13 @@ class Backup:
 
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
         # When restoring a backup on Linux, we move it back.
-        if Platform.isLinux():
+        if Platform.isLinux(): #TODO: This should check for the config directory not being the same as the data directory, rather than hard-coding that to Linux systems.
             preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
-            Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
-            shutil.copyfile(preferences_file, backup_preferences_file)
+            if os.path.exists(preferences_file) and (not os.path.exists(backup_preferences_file) or not os.path.samefile(preferences_file, backup_preferences_file)):
+                Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
+                shutil.copyfile(preferences_file, backup_preferences_file)
 
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()
@@ -115,12 +116,13 @@ class Backup:
 
         current_version = self._application.getVersion()
         version_to_restore = self.meta_data.get("cura_release", "master")
-        if current_version != version_to_restore:
-            # Cannot restore version older or newer than current because settings might have changed.
-            # Restoring this will cause a lot of issues so we don't allow this for now.
+
+        if current_version < version_to_restore:
+            # Cannot restore version newer than current because settings might have changed.
+            Logger.log("d", "Tried to restore a Cura backup of version {version_to_restore} with cura version {current_version}".format(version_to_restore = version_to_restore, current_version = current_version))
             self._showMessage(
                 self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup that does not match your current version."))
+                                   "Tried to restore a Cura backup that is higher than the current version."))
             return False
 
         version_data_dir = Resources.getDataStoragePath()
@@ -146,5 +148,9 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        archive.extractall(target_path)
+        try:
+            archive.extractall(target_path)
+        except PermissionError:
+            Logger.logException("e", "Unable to extract the backup due to permission errors")
+            return False
         return True

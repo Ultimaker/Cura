@@ -25,7 +25,7 @@ class MultiplyObjectsJob(Job):
 
     def run(self):
         status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime=0,
-                                 dismissable=False, progress=0, title = i18n_catalog.i18nc("@info:title", "Placing Object"))
+                                 dismissable=False, progress=0, title = i18n_catalog.i18nc("@info:title", "Placing Objects"))
         status_message.show()
         scene = Application.getInstance().getController().getScene()
 

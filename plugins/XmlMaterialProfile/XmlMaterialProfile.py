@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, Tuple, cast
+from typing import Any, Dict, List, Optional, Tuple, cast, Set
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -60,28 +60,47 @@ class XmlMaterialProfile(InstanceContainer):
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
+            Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
+
+        # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
+        # "properties" field and apply the new values to SettingInstances as well.
+        new_setting_values_dict = {}
+        if key == "properties":
+            for k, v in value.items():
+                if k in self.__material_properties_setting_map:
+                    new_setting_values_dict[self.__material_properties_setting_map[k]] = v
 
         # Prevent recursion
         if not apply_to_all:
             super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
             return
 
         # Get the MaterialGroup
         material_manager = CuraApplication.getInstance().getMaterialManager()
         root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
         material_group = material_manager.getMaterialGroup(root_material_id)
-
+        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
+            super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
+            return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
             root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
+            for k, v in new_setting_values_dict.items():
+                root_material_container.setProperty(k, "value", v)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
             if container is not None:
                 container.setMetaDataEntry(key, value, apply_to_all = False)
+                for k, v in new_setting_values_dict.items():
+                    container.setProperty(k, "value", v)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -117,7 +136,7 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Overridden from InstanceContainer
     # base file: common settings + supported machines
     # machine / variant combination: only changes for itself.
-    def serialize(self, ignored_metadata_keys: Optional[set] = None):
+    def serialize(self, ignored_metadata_keys: Optional[Set[str]] = None):
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -141,22 +160,12 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
                 del metadata[key]
         properties = metadata.pop("properties", {})
-
-        # Metadata properties that should not be serialized.
-        metadata.pop("status", "")
-        metadata.pop("variant", "")
-        metadata.pop("type", "")
-        metadata.pop("base_file", "")
-        metadata.pop("approximate_diameter", "")
-        metadata.pop("id", "")
-        metadata.pop("container_type", "")
-        metadata.pop("name", "")
 
         ## Begin Name Block
         builder.start("name") # type: ignore
@@ -181,13 +190,16 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Name Block
 
         for key, value in metadata.items():
-            builder.start(key) # type: ignore
+            key_to_use = key
+            if key in self._metadata_tags_that_have_cura_namespace:
+                key_to_use = "cura:" + key_to_use
+            builder.start(key_to_use) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
                 value = str(value)
             builder.data(value)
-            builder.end(key)
+            builder.end(key_to_use)
 
         builder.end("metadata")
         ## End Metadata Block
@@ -952,14 +964,12 @@ class XmlMaterialProfile(InstanceContainer):
 
         for machine in data.iterfind("./um:settings/um:machine", cls.__namespaces):
             machine_compatibility = common_compatibility
-            for entry in machine.iterfind("./um:setting", cls.__namespaces):
-                key = entry.get("key")
-                if key == "hardware compatible":
-                    if entry.text is not None:
-                        machine_compatibility = cls._parseCompatibleValue(entry.text)
+            for entry in machine.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                if entry.text is not None:
+                    machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                machine_id_list = product_id_map.get(identifier.get("product", ""), [])
                 if not machine_id_list:
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
@@ -991,7 +1001,7 @@ class XmlMaterialProfile(InstanceContainer):
                     result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
-                    buildplate_map = {} # type: Dict[str, Dict[str, bool]]
+                    buildplate_map = {}  # type: Dict[str, Dict[str, bool]]
                     buildplate_map["buildplate_compatible"] = {}
                     buildplate_map["buildplate_recommended"] = {}
                     for buildplate in buildplates:
@@ -1027,11 +1037,9 @@ class XmlMaterialProfile(InstanceContainer):
                             continue
 
                         hotend_compatibility = machine_compatibility
-                        for entry in hotend.iterfind("./um:setting", cls.__namespaces):
-                            key = entry.get("key")
-                            if key == "hardware compatible":
-                                if entry.text is not None:
-                                    hotend_compatibility = cls._parseCompatibleValue(entry.text)
+                        for entry in hotend.iterfind("./um:setting[@key='hardware compatible']", cls.__namespaces):
+                            if entry.text is not None:
+                                hotend_compatibility = cls._parseCompatibleValue(entry.text)
 
                         new_hotend_specific_material_id = container_id + "_" + machine_id + "_" + hotend_name.replace(" ", "_")
 
@@ -1165,6 +1173,8 @@ class XmlMaterialProfile(InstanceContainer):
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
+        #This also loads "Ultimaker S5" -> "ultimaker_s5" even though that is not strictly necessary with the default to change spaces into underscores.
+        #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
@@ -1175,6 +1185,8 @@ class XmlMaterialProfile(InstanceContainer):
     ##  Small string representation for debugging.
     def __str__(self):
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
+
+    _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
 
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
@@ -1188,6 +1200,14 @@ class XmlMaterialProfile(InstanceContainer):
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
+        "build volume temperature": "build_volume_temperature",
+        "anti ooze retract position": "material_anti_ooze_retracted_position",
+        "anti ooze retract speed": "material_anti_ooze_retraction_speed",
+        "break preparation position": "material_break_preparation_retracted_position",
+        "break preparation speed": "material_break_preparation_speed",
+        "break position": "material_break_retracted_position",
+        "break speed": "material_break_speed",
+        "break temperature": "material_break_temperature"
     }
     __unmapped_settings = [
         "hardware compatible",

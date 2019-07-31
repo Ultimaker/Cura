@@ -5,7 +5,8 @@ from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutput.PrintJobOutputModel import PrintJobOutputModel
+    from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+
 
 class ClusterUM3PrinterOutputController(PrinterOutputController):
     def __init__(self, output_device):
@@ -15,7 +16,5 @@ class ClusterUM3PrinterOutputController(PrinterOutputController):
         self.can_control_manually = False
         self.can_send_raw_gcode = False
 
-    def setJobState(self, job: "PrintJobOutputModel", state: str):
-        data = "{\"action\": \"%s\"}" % state
-        self._output_device.put("print_jobs/%s/action" % job.key, data, on_finished=None)
-
+    def setJobState(self, job: "PrintJobOutputModel", state: str) -> None:
+        self._output_device.setJobState(job.key, state)

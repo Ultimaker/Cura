@@ -1,8 +1,8 @@
 {
     "name": "X3D Reader",
     "author": "Seva Alekseyev",
-    "version": "0.5.0",
+    "version": "1.0.1",
     "description": "Provides support for reading X3D files.",
-    "api": 5,
+    "api": "6.0",
     "i18n-catalog": "cura"
 }

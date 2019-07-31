@@ -52,8 +52,8 @@ class ExtruderStack(CuraContainerStack):
         return super().getNextStack()
 
     def setEnabled(self, enabled: bool) -> None:
-        if "enabled" not in self._metadata:
-            self.setMetaDataEntry("enabled", "True")
+        if self.getMetaDataEntry("enabled", True) == enabled: # No change.
+            return # Don't emit a signal then.
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
@@ -65,16 +65,33 @@ class ExtruderStack(CuraContainerStack):
     def getLoadingPriority(cls) -> int:
         return 3
 
+    compatibleMaterialDiameterChanged = pyqtSignal()
+
     ##  Return the filament diameter that the machine requires.
     #
     #   If the machine has no requirement for the diameter, -1 is returned.
     #   \return The filament diameter for the printer
-    @property
-    def materialDiameter(self) -> float:
+    def getCompatibleMaterialDiameter(self) -> float:
         context = PropertyEvaluationContext(self)
         context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
-        return self.getProperty("material_diameter", "value", context = context)
+        return float(self.getProperty("material_diameter", "value", context = context))
+
+    def setCompatibleMaterialDiameter(self, value: float) -> None:
+        old_approximate_diameter = self.getApproximateMaterialDiameter()
+        if self.getCompatibleMaterialDiameter() != value:
+            self.definitionChanges.setProperty("material_diameter", "value", value)
+            self.compatibleMaterialDiameterChanged.emit()
+
+            # Emit approximate diameter changed signal if needed
+            if old_approximate_diameter != self.getApproximateMaterialDiameter():
+                self.approximateMaterialDiameterChanged.emit()
+
+    compatibleMaterialDiameter = pyqtProperty(float, fset = setCompatibleMaterialDiameter,
+                                              fget = getCompatibleMaterialDiameter,
+                                              notify = compatibleMaterialDiameterChanged)
+
+    approximateMaterialDiameterChanged = pyqtSignal()
 
     ##  Return the approximate filament diameter that the machine requires.
     #
@@ -84,9 +101,11 @@ class ExtruderStack(CuraContainerStack):
     #   If the machine has no requirement for the diameter, -1 is returned.
     #
     #   \return The approximate filament diameter for the printer
-    @pyqtProperty(float)
-    def approximateMaterialDiameter(self) -> float:
-        return round(float(self.materialDiameter))
+    def getApproximateMaterialDiameter(self) -> float:
+        return round(self.getCompatibleMaterialDiameter())
+
+    approximateMaterialDiameter = pyqtProperty(float, fget = getApproximateMaterialDiameter,
+                                               notify = approximateMaterialDiameterChanged)
 
     ##  Overridden from ContainerStack
     #

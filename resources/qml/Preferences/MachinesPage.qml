@@ -1,4 +1,4 @@
-// Copyright (c) 2016 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -14,15 +14,19 @@ UM.ManagementPage
     id: base;
 
     title: catalog.i18nc("@title:tab", "Printers");
-    model: Cura.MachineManagementModel { }
+    model: Cura.GlobalStacksModel { }
 
-    activeId: Cura.MachineManager.activeMachineId
+    sectionRole: "discoverySource"
+
+    activeId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
     activeIndex: activeMachineIndex()
 
     function activeMachineIndex()
     {
-        for(var i = 0; i < model.rowCount(); i++) {
-            if (model.getItem(i).id == Cura.MachineManager.activeMachineId) {
+        for(var i = 0; i < model.count; i++)
+        {
+            if (model.getItem(i).id == base.activeId)
+            {
                 return i;
             }
         }
@@ -32,6 +36,7 @@ UM.ManagementPage
     buttons: [
         Button
         {
+            id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate");
             iconName: "list-activate";
             enabled: base.currentItem != null && base.currentItem.id != Cura.MachineManager.activeMaterialId
@@ -39,22 +44,25 @@ UM.ManagementPage
         },
         Button
         {
+            id: addMenuButton
             text: catalog.i18nc("@action:button", "Add");
             iconName: "list-add";
-            onClicked: CuraApplication.requestAddPrinter()
+            onClicked: Cura.Actions.addMachine.trigger()
         },
         Button
         {
+            id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove");
             iconName: "list-remove";
-            enabled: base.currentItem != null && model.rowCount() > 1
+            enabled: base.currentItem != null && model.count > 1
             onClicked: confirmDialog.open();
         },
         Button
         {
+            id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename");
             iconName: "edit-rename";
-            enabled: base.currentItem != null && base.currentItem.metadata.connect_group_name == null
+            enabled: base.currentItem != null && base.currentItem.metadata.group_name == null
             onClicked: renameDialog.open();
         }
     ]
@@ -68,7 +76,7 @@ UM.ManagementPage
         {
             id: machineName
             text: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             width: parent.width
             elide: Text.ElideRight
         }
@@ -89,17 +97,18 @@ UM.ManagementPage
 
                 Item
                 {
-                    width: childrenRect.width + 2 * screenScaleFactor
+                    width: Math.round(childrenRect.width + 2 * screenScaleFactor)
                     height: childrenRect.height
                     Button
                     {
                         text: machineActionRepeater.model[index].label
                         onClicked:
                         {
-                            actionDialog.content = machineActionRepeater.model[index].displayItem;
-                            machineActionRepeater.model[index].displayItem.reset();
-                            actionDialog.title = machineActionRepeater.model[index].label;
-                            actionDialog.show();
+                            var currentItem = machineActionRepeater.model[index]
+                            actionDialog.loader.manager = currentItem
+                            actionDialog.loader.source = currentItem.qmlPath
+                            actionDialog.title = currentItem.label
+                            actionDialog.show()
                         }
                     }
                 }
@@ -109,13 +118,7 @@ UM.ManagementPage
         UM.Dialog
         {
             id: actionDialog
-            property var content
-            onContentChanged:
-            {
-                contents = content;
-                content.onCompleted.connect(hide)
-                content.dialog = actionDialog
-            }
+
             rightButtons: Button
             {
                 text: catalog.i18nc("@action:button", "Close")
@@ -124,132 +127,15 @@ UM.ManagementPage
             }
         }
 
-        Grid
-        {
-            id: machineInfo
-
-            anchors.top: machineActions.visible ? machineActions.bottom : machineActions.anchors.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            anchors.right: parent.right
-            spacing: UM.Theme.getSize("default_margin").height
-            rowSpacing: UM.Theme.getSize("default_lining").height
-            columns: 2
-
-            visible: base.currentItem
-
-            property bool printerConnected: Cura.MachineManager.printerConnected
-            property var connectedPrinter: printerConnected ? Cura.MachineManager.printerOutputDevices[0] : null
-            property bool printerAcceptsCommands: printerConnected && Cura.MachineManager.printerOutputDevices[0].acceptsCommands
-            property var printJob: connectedPrinter != null ? connectedPrinter.activePrintJob: null
-            Label
-            {
-                text: catalog.i18nc("@label", "Printer type:")
-                visible: base.currentItem && "definition_name" in base.currentItem.metadata
-            }
-            Label
-            {
-                text: (base.currentItem && "definition_name" in base.currentItem.metadata) ? base.currentItem.metadata.definition_name : ""
-            }
-            Label
-            {
-                text: catalog.i18nc("@label", "Connection:")
-                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
-            }
-            Label
-            {
-                width: (parent.width * 0.7) | 0
-                text: machineInfo.printerConnected ? machineInfo.connectedPrinter.connectionText : catalog.i18nc("@info:status", "The printer is not connected.")
-                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
-                wrapMode: Text.WordWrap
-            }
-            Label
-            {
-                text: catalog.i18nc("@label", "State:")
-                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
-            }
-            Label {
-                width: (parent.width * 0.7) | 0
-                text:
-                {
-                    if(!machineInfo.printerConnected || !machineInfo.printerAcceptsCommands) {
-                        return "";
-                    }
-
-                    if (machineInfo.printJob == null)
-                    {
-                        return catalog.i18nc("@label:MonitorStatus", "Waiting for a printjob");
-                    }
-
-                    switch(machineInfo.printJob.state)
-                    {
-                        case "printing":
-                            return catalog.i18nc("@label:MonitorStatus", "Printing...");
-                        case "paused":
-                            return catalog.i18nc("@label:MonitorStatus", "Paused");
-                        case "pre_print":
-                            return catalog.i18nc("@label:MonitorStatus", "Preparing...");
-                        case "wait_cleanup":
-                            return catalog.i18nc("@label:MonitorStatus", "Waiting for someone to clear the build plate");
-                        case "error":
-                            return printerOutputDevice.errorText;
-                        case "maintenance":
-                            return catalog.i18nc("@label:MonitorStatus", "In maintenance. Please check the printer");
-                        case "abort":  // note sure if this jobState actually occurs in the wild
-                            return catalog.i18nc("@label:MonitorStatus", "Aborting print...");
-
-                    }
-                    return ""
-                }
-                visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId && machineInfo.printerAcceptsCommands
-                wrapMode: Text.WordWrap
-            }
-        }
-
-        Column {
-            id: additionalComponentsColumn
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: machineInfo.visible ? machineInfo.bottom : machineInfo.anchors.top
-            anchors.topMargin: UM.Theme.getSize("default_margin").width
-
-            spacing: UM.Theme.getSize("default_margin").width
-            visible: base.currentItem && base.currentItem.id == Cura.MachineManager.activeMachineId
-
-            Component.onCompleted:
-            {
-                for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
-                    CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
-                }
-            }
-        }
-
-        Component.onCompleted: {
-            addAdditionalComponents("machinesDetailPane")
-        }
-
-        Connections {
-            target: CuraApplication
-            onAdditionalComponentsChanged: addAdditionalComponents
-        }
-
-        function addAdditionalComponents (areaId) {
-            if(areaId == "machinesDetailPane") {
-                for (var component in CuraApplication.additionalComponents["machinesDetailPane"]) {
-                    CuraApplication.additionalComponents["machinesDetailPane"][component].parent = additionalComponentsColumn
-                }
-            }
-        }
-
         UM.I18nCatalog { id: catalog; name: "cura"; }
 
         UM.ConfirmRemoveDialog
         {
-            id: confirmDialog;
-            object: base.currentItem && base.currentItem.name ? base.currentItem.name : "";
+            id: confirmDialog
+            object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
             onYes:
             {
-                Cura.MachineManager.removeMachine(base.currentItem.id);
+                Cura.MachineManager.removeMachine(base.currentItem.id)
                 if(!base.currentItem)
                 {
                     objectList.currentIndex = activeMachineIndex()

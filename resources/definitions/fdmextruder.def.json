@@ -6,7 +6,7 @@
         "type": "extruder",
         "author": "Ultimaker",
         "manufacturer": "Unknown",
-        "setting_version": 1,
+        "setting_version": 9,
         "visible": false,
         "position": "0"
     },
@@ -78,7 +78,7 @@
                 "machine_extruder_start_code":
                 {
                     "label": "Extruder Start G-Code",
-                    "description": "Start g-code to execute whenever turning the extruder on.",
+                    "description": "Start g-code to execute when switching to this extruder.",
                     "type": "str",
                     "default_value": "",
                     "settable_per_mesh": false,
@@ -124,7 +124,7 @@
                 "machine_extruder_end_code":
                 {
                     "label": "Extruder End G-Code",
-                    "description": "End g-code to execute whenever turning the extruder off.",
+                    "description": "End g-code to execute when switching away from this extruder.",
                     "type": "str",
                     "default_value": "",
                     "settable_per_mesh": false,
@@ -189,7 +189,7 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false,
-                    "setttable_globally": false
+                    "settable_globally": false
                }
             }
         },
