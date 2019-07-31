@@ -52,6 +52,7 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_z_hop": {"value": 5},
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 
