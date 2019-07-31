@@ -196,7 +196,7 @@ _quality_changes_to_creality_base = {
     "creality_cr10_extruder_0",
     "creality_cr10s4_extruder_0",
     "creality_cr10s5_extruder_0",
-    "creality_ender3_extruder_0"
+    "creality_ender3_extruder_0",
     "creality_cr10",
     "creality_cr10s",
     "creality_cr10s4",
