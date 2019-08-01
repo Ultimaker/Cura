@@ -15,15 +15,10 @@ Menu
     PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
 
     property var activeMachine: Cura.MachineManager.activeMachine
-
-    onAboutToShow: extruderInstantiator.active = true
-    onAboutToHide: extruderInstantiator.active = false
     Instantiator
     {
         id: extruderInstantiator
         model: activeMachine == null ? null : activeMachine.extruderList
-        active: false
-        asynchronous: true
         Menu
         {
             title: modelData.name
@@ -39,41 +34,20 @@ Menu
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Set as Active Extruder")
-                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
-                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
-                // onTriggered work directly again).
-                Component.onCompleted:
-                {
-                    var index = model.index
-                    triggered.connect(function(){Cura.ExtruderManager.setActiveExtruderIndex(index)})
-                }
+                onTriggered: Cura.ExtruderManager.setActiveExtruderIndex(model.index)
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
-                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
-                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
-                // onTriggered work directly again).
-                Component.onCompleted:
-                {
-                    var index = model.index
-                    triggered.connect(function(){Cura.MachineManager.setExtruderEnabled(index, true)})
-                }
+                onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
                 visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
-                // HACK: Instead of directly binding to the onTriggered handle, we have to use this workaround.
-                // I've narrowed it down to it being an issue with the instantiator (removing that makes the
-                // onTriggered work directly again).
-                Component.onCompleted:
-                {
-                    var index = model.index
-                    triggered.connect(function(){Cura.MachineManager.setExtruderEnabled(index, false)})
-                }
+                onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
                 visible: Cura.MachineManager.getExtruder(model.index).isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }
