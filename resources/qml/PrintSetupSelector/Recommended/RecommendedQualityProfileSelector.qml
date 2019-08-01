@@ -18,28 +18,12 @@ Item
     property real settingsColumnWidth: width - labelColumnWidth
 
     // Here are the elements that are shown in the left column
-    Item
-    {
-        id: titleRow
-        width: labelColumnWidth
-        height: childrenRect.height
-
-        Cura.IconWithText
-        {
-            id: qualityRowTitle
-            source: UM.Theme.getIcon("category_layer_height")
-            text: catalog.i18nc("@label", "Profiles")
-            font: UM.Theme.getFont("medium")
-            anchors.left: parent.left
-            anchors.right: customisedSettings.left
-        }
-    }
 
     Column
     {
         anchors
         {
-            left: titleRow.right
+            left: parent.left
             right: parent.right
         }
 
@@ -53,43 +37,85 @@ Item
 
         }
 
-        Cura.LabelBar
+        Item
         {
-            id: labelbar
+            height: childrenRect.height
             anchors
             {
                 left: parent.left
                 right: parent.right
             }
+            Cura.IconWithText
+            {
+                id: profileLabel
+                source: UM.Theme.getIcon("category_layer_height")
+                text: catalog.i18nc("@label", "Profiles")
+                font: UM.Theme.getFont("medium")
+                width: labelColumnWidth
+            }
 
-            model: Cura.QualityProfilesDropDownMenuModel
-            modelKey: "layer_height"
+            Cura.LabelBar
+            {
+                id: labelbar
+                anchors
+                {
+                    left: profileLabel.right
+                    right: parent.right
+                }
+
+                model: Cura.QualityProfilesDropDownMenuModel
+                modelKey: "layer_height"
+            }
         }
+
 
         Repeater
         {
-            model: Cura.IntentCategoryModel{}
-            Cura.RadioCheckbar
+            model: Cura.IntentCategoryModel {}
+            Item
             {
                 anchors
                 {
                     left: parent.left
                     right: parent.right
                 }
-                dataModel: model["qualities"]
-                buttonGroup: activeProfileButtonGroup
+                height: childrenRect.height
 
-                function checkedFunction(modelItem)
+                Label
                 {
-                    if(Cura.MachineManager.hasCustomQuality)
-                    {
-                        // When user created profile is active, no quality tickbox should be active.
-                        return false
-                    }
-                    return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
+                    id: intentCategoryLabel
+                    text: model.name
+                    width: labelColumnWidth - UM.Theme.getSize("section_icon").width
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("section_icon").width + UM.Theme.getSize("narrow_margin").width
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                    elide: Text.ElideRight
                 }
 
-                isCheckedFunction: checkedFunction
+                Cura.RadioCheckbar
+                {
+                    anchors
+                    {
+                        left: intentCategoryLabel.right
+                        right: parent.right
+                    }
+                    dataModel: model["qualities"]
+                    buttonGroup: activeProfileButtonGroup
+
+                    function checkedFunction(modelItem)
+                    {
+                        if(Cura.MachineManager.hasCustomQuality)
+                        {
+                            // When user created profile is active, no quality tickbox should be active.
+                            return false
+                        }
+                        return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
+                    }
+
+                    isCheckedFunction: checkedFunction
+                }
             }
 
         }
