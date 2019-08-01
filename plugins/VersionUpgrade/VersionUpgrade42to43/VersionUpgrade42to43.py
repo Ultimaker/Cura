@@ -18,6 +18,10 @@ _removed_settings = {
     "start_layers_at_same_position"
 }
 
+_renamed_settings = {
+    "support_infill_angle": "support_infill_angles"
+} # type: Dict[str, str]
+
 ##  Upgrades configurations from the state they were in at version 4.2 to the
 #   state they should be in at version 4.3.
 class VersionUpgrade42to43(VersionUpgrade):
@@ -62,9 +66,18 @@ class VersionUpgrade42to43(VersionUpgrade):
         parser["metadata"]["setting_version"] = "9"
 
         if "values" in parser:
+            for old_name, new_name in _renamed_settings.items():
+                if old_name in parser["values"]:
+                    parser["values"][new_name] = parser["values"][old_name]
+                    del parser["values"][old_name]
             for key in _removed_settings:
                 if key in parser["values"]:
                     del parser["values"][key]
+
+        parser["values"]["support_infill_angles"]["type"] = "[int]"
+        parser["values"]["support_infill_angles"]["default_value"] = "[ ]"
+        del parser["values"]["support_infill_angles"]["minimum_value"]
+        del parser["values"]["support_infill_angles"]["maximum_value"]
 
         result = io.StringIO()
         parser.write(result)
