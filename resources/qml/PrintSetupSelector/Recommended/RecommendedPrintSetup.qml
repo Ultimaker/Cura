@@ -27,7 +27,6 @@ Item
 
     Column
     {
-        width: parent.width - 2 * parent.padding
         spacing: UM.Theme.getSize("wide_margin").height
 
         anchors

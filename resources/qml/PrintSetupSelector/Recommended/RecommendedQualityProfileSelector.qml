@@ -33,37 +33,6 @@ Item
             anchors.left: parent.left
             anchors.right: customisedSettings.left
         }
-
-        UM.SimpleButton
-        {
-            id: customisedSettings
-
-            visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
-            height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
-            width: height
-            anchors
-            {
-                right: parent.right
-                rightMargin: UM.Theme.getSize("default_margin").width
-                leftMargin: UM.Theme.getSize("default_margin").width
-                verticalCenter: parent.verticalCenter
-            }
-
-            color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button")
-            iconSource: UM.Theme.getIcon("reset")
-
-            onClicked:
-            {
-                // If the current profile is user-created, switch to a built-in quality
-                Cura.MachineManager.resetToUseDefaultQuality()
-            }
-            onEntered:
-            {
-                var tooltipContent = catalog.i18nc("@tooltip","You have modified some profile settings. If you want to change these go to custom mode.")
-                base.showTooltip(qualityRow, Qt.point(-UM.Theme.getSize("thick_margin").width, 0),  tooltipContent)
-            }
-            onExited: base.hideTooltip()
-        }
     }
 
     Column
