@@ -9,10 +9,6 @@ import QtQuick.Controls.Styles 1.4
 import UM 1.2 as UM
 import Cura 1.6 as Cura
 
-
-//
-// Quality profile
-//
 Item
 {
     id: qualityRow
@@ -20,20 +16,6 @@ Item
 
     property real labelColumnWidth: Math.round(width / 3)
     property real settingsColumnWidth: width - labelColumnWidth
-
-    Timer
-    {
-        id: qualitySliderChangeTimer
-        interval: 50
-        running: false
-        repeat: false
-        onTriggered:
-        {
-            var item = Cura.QualityProfilesDropDownMenuModel.getItem(qualitySlider.value);
-            Cura.MachineManager.activeQualityGroup = item.quality_group;
-        }
-    }
-
 
     // Here are the elements that are shown in the left column
     Item
@@ -46,7 +28,7 @@ Item
         {
             id: qualityRowTitle
             source: UM.Theme.getIcon("category_layer_height")
-            text: catalog.i18nc("@label", "Layer Height")
+            text: catalog.i18nc("@label", "Profiles")
             font: UM.Theme.getFont("medium")
             anchors.left: parent.left
             anchors.right: customisedSettings.left
@@ -72,7 +54,7 @@ Item
 
             onClicked:
             {
-                // if the current profile is user-created, switch to a built-in quality
+                // If the current profile is user-created, switch to a built-in quality
                 Cura.MachineManager.resetToUseDefaultQuality()
             }
             onEntered:
