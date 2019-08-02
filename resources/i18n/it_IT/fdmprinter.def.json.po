@@ -1326,7 +1326,7 @@ msgstr "Nascondi o esponi giunzione"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
-msgstr "Smart Hiding"
+msgstr "Occultamento intelligente"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"

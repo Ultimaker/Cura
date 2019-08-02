@@ -58,11 +58,11 @@ Menu
         {
             text: catalog.i18nc("@action:inmenu menubar:view", "Orthographic")
             checkable: true
-            checked: cameraViewMenu.cameraMode == "orthogonal"
+            checked: cameraViewMenu.cameraMode == "orthographic"
             onTriggered:
             {
-                UM.Preferences.setValue("general/camera_perspective_mode", "orthogonal")
-                checked = cameraViewMenu.cameraMode == "orthogonal"
+                UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
+                checked = cameraViewMenu.cameraMode == "orthographic"
             }
             exclusiveGroup: group
         }

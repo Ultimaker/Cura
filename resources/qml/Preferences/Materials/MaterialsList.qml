@@ -102,6 +102,7 @@ Item
                 }
             }
         }
+        base.currentItem = null
         return false
     }
 

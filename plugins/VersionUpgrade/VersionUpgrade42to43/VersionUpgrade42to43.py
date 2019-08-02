@@ -39,6 +39,17 @@ class VersionUpgrade42to43(VersionUpgrade):
         setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
+    def upgradePreferences(self, serialized: str, filename: str):
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+
+        if "camera_perspective_mode" in parser["general"] and parser["general"]["camera_perspective_mode"] == "orthogonal":
+            parser["general"]["camera_perspective_mode"] = "orthographic"
+
+        result = io.StringIO()
+        parser.write(result)
+        return [filename], [result.getvalue()]
+
     ##  Upgrades instance containers to have the new version
     #   number.
     #

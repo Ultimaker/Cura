@@ -58,6 +58,11 @@ Item
     {
         forceActiveFocus()
         materialDetailsPanel.currentItem = currentItem
+        // CURA-6679 If the current item is gone after the model update, reset the current item to the active material.
+        if (currentItem == null)
+        {
+            resetExpandedActiveMaterial()
+        }
     }
 
     // Main layout

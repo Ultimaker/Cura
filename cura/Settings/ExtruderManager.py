@@ -381,7 +381,13 @@ class ExtruderManager(QObject):
         elif extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
             Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
                 printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
-            extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            try:
+                extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            except IndexError as e:
+                # It still needs to break, but we want to know what extruder ID made it break.
+                msg = "Unable to find extruder definition with the id [%s]" % expected_extruder_definition_0_id
+                Logger.logException("e", msg)
+                raise IndexError(msg)
             extruder_stack_0.definition = extruder_definition
 
     ##  Get all extruder values for a certain setting.
