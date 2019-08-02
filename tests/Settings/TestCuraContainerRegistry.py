@@ -308,3 +308,11 @@ class TestImportProfile:
                                              ({"setting_version": 0}, False)])
 def test_isMetaDataValid(container_registry, metadata, result):
     assert container_registry._isMetadataValid(metadata) == result
+
+
+def test_getIOPlugins(container_registry):
+    plugin_registry = unittest.mock.MagicMock()
+    plugin_registry.getActivePlugins = unittest.mock.MagicMock(return_value = ["lizard"])
+    plugin_registry.getMetaData = unittest.mock.MagicMock(return_value = {"zomg": {"test": "test"}})
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", unittest.mock.MagicMock(return_value = plugin_registry)):
+        assert container_registry._getIOPlugins("zomg") == [("lizard", {"zomg": {"test": "test"}})]
