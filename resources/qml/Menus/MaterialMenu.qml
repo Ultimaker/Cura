@@ -39,6 +39,16 @@ Menu
 
     MenuItem
     {
+        action: Cura.Actions.manageMaterials
+    }
+
+    MenuSeparator
+    {
+        visible: favoriteMaterialsModel.items.length > 0
+    }
+
+    MenuItem
+    {
         text: catalog.i18nc("@label:category menu label", "Favorites")
         enabled: false
         visible: favoriteMaterialsModel.items.length > 0
@@ -128,12 +138,5 @@ Menu
 
     ExclusiveGroup {
         id: group
-    }
-
-    MenuSeparator {}
-
-    MenuItem
-    {
-        action: Cura.Actions.manageMaterials
     }
 }

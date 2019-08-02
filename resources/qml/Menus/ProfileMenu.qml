@@ -11,6 +11,13 @@ Menu
 {
     id: menu
 
+    MenuItem { action: Cura.Actions.addProfile }
+    MenuItem { action: Cura.Actions.updateProfile }
+    MenuItem { action: Cura.Actions.resetProfile }
+    MenuSeparator { }
+    MenuItem { action: Cura.Actions.manageProfiles }
+    MenuSeparator { }
+
     Instantiator
     {
         model: Cura.QualityProfilesDropDownMenuModel
@@ -73,12 +80,4 @@ Menu
     }
 
     ExclusiveGroup { id: group; }
-
-    MenuSeparator { id: profileMenuSeparator }
-
-    MenuItem { action: Cura.Actions.addProfile }
-    MenuItem { action: Cura.Actions.updateProfile }
-    MenuItem { action: Cura.Actions.resetProfile }
-    MenuSeparator { }
-    MenuItem { action: Cura.Actions.manageProfiles }
 }
