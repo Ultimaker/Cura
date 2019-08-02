@@ -70,8 +70,8 @@ class CloudApiClient:
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], Any]
-                      ) -> None:
+    def requestUpload(self, request: CloudPrintJobUploadRequest,
+                      on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
@@ -167,9 +167,7 @@ class CloudApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
-                     model: Type[CloudApiClientModel],
-                     ) -> None:
-
+                     model: Type[CloudApiClientModel]) -> None:
         def parse() -> None:
             self._anti_gc_callbacks.remove(parse)
 
