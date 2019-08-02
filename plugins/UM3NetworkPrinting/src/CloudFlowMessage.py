@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 
@@ -14,7 +14,7 @@ I18N_CATALOG = i18nCatalog("cura")
 
 
 class CloudFlowMessage(Message):
-    
+
     def __init__(self, address: str) -> None:
         super().__init__(
             text=I18N_CATALOG.i18nc("@info:status",

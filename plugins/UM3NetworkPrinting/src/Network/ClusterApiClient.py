@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
@@ -130,14 +130,14 @@ class ClusterApiClient:
                                         Callable[[List[ClusterApiClientModel]], Any]],
                      model: Type[ClusterApiClientModel] = None,
                      ) -> None:
-        
+
         def parse() -> None:
             self._anti_gc_callbacks.remove(parse)
-            
+
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
                 return
-            
+
             if reply.error() > 0:
                 self._on_error(reply.errorString())
                 return

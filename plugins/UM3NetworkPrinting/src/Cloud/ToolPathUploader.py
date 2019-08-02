@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 from PyQt5.QtCore import QUrl
