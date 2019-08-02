@@ -9,7 +9,6 @@ from PyQt5.QtGui import QDesktopServices
 from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
-from UM.FileHandler.WriteFileJob import WriteFileJob
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
@@ -191,11 +190,12 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     ## Handler for when the print job was created locally.
     #  It can now be sent over the cloud.
-    def _onPrintJobCreated(self, job: WriteFileJob) -> None:
-        self._tool_path = job.getOutput()
+    def _onPrintJobCreated(self, job: ExportFileJob) -> None:
+        output = job.getOutput()
+        self._tool_path = output  # store the tool path to prevent re-uploading when printing the same file again
         request = CloudPrintJobUploadRequest(
             job_name=job.getFileName(),
-            file_size=len(self._tool_path),
+            file_size=len(output),
             content_type=job.getMimeType(),
         )
         self._api.requestUpload(request, self._uploadPrintJob)
@@ -203,6 +203,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Uploads the mesh when the print job was registered with the cloud API.
     #  \param job_response: The response received from the cloud API.
     def _uploadPrintJob(self, job_response: CloudPrintJobResponse) -> None:
+        if not self._tool_path:
+            return self._onUploadError()
         self._progress.show()
         self._uploaded_print_job = job_response  # store the last uploaded job to prevent re-upload of the same file
         self._api.uploadToolPath(job_response, self._tool_path, self._onPrintJobUploaded, self._progress.update,

@@ -46,7 +46,7 @@ class LocalClusterOutputDeviceManager:
         self._zero_conf_client.removedNetworkCluster.connect(self._onDiscoveredDeviceRemoved)
 
         # Persistent dict containing manually connected clusters.
-        self._manual_instances = {}  # type: Dict[str, Callable]
+        self._manual_instances = {}  # type: Dict[str, Optional[Callable]]
 
     ## Start the network discovery.
     def start(self) -> None:
