@@ -32,7 +32,7 @@ class MeshFormatHandler:
     #  \return A dict with the file format details, with the following keys:
     #       {id: str, extension: str, description: str, mime_type: str, mode: int, hide_in_file_dialog: bool}
     @property
-    def preferred_format(self) -> Optional[Dict[str, Union[str, int, bool]]]:
+    def preferred_format(self) -> Dict[str, Union[str, int, bool]]:
         return self._preferred_format
 
     ## Gets the file writer for the given file handler and mime type.

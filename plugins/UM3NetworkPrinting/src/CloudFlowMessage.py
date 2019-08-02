@@ -16,16 +16,19 @@ I18N_CATALOG = i18nCatalog("cura")
 class CloudFlowMessage(Message):
 
     def __init__(self, address: str) -> None:
+
+        image_path = os.path.join(
+            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
+            "resources", "svg", "cloud-flow-start.svg"
+        )
+
         super().__init__(
             text=I18N_CATALOG.i18nc("@info:status",
                                     "Send and monitor print jobs from anywhere using your Ultimaker account."),
             lifetime=0,
             dismissable=True,
             option_state=False,
-            image_source=QUrl.fromLocalFile(os.path.join(
-                    CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting"),
-                    "resources", "svg", "cloud-flow-start.svg"
-            )),
+            image_source=image_path,
             image_caption=I18N_CATALOG.i18nc("@info:status Ultimaker Cloud should not be translated.",
                                              "Connect to Ultimaker Cloud"),
         )

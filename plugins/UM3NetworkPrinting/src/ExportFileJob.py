@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.FileHandler.WriteFileJob import WriteFileJob
@@ -12,7 +12,7 @@ from .MeshFormatHandler import MeshFormatHandler
 ## Job that exports the build plate to the correct file format for the target cluster.
 class ExportFileJob(WriteFileJob):
 
-    def __init__(self, file_handler: FileHandler, nodes: List[SceneNode], firmware_version: str) -> None:
+    def __init__(self, file_handler: Optional[FileHandler], nodes: List[SceneNode], firmware_version: str) -> None:
 
         self._mesh_format_handler = MeshFormatHandler(file_handler, firmware_version)
         if not self._mesh_format_handler.is_valid:

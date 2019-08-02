@@ -191,7 +191,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Keep track of the new printers to show.
         # We create a new list instead of changing the existing one to get the correct order.
-        new_printers = []
+        new_printers = []  # type: List[PrinterOutputModel]
 
         # Check which printers need to be created or updated.
         for index, printer_data in enumerate(remote_printers):

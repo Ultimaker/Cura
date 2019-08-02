@@ -7,7 +7,6 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
-from UM.FileHandler.WriteFileJob import WriteFileJob
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
@@ -130,7 +129,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     ## Handler for when the print job was created locally.
     #  It can now be sent over the network.
-    def _onPrintJobCreated(self, job: WriteFileJob) -> None:
+    def _onPrintJobCreated(self, job: ExportFileJob) -> None:
         self._progress.show()
         parts = [
             self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"),
