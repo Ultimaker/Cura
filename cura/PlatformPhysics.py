@@ -54,13 +54,13 @@ class PlatformPhysics:
         # same direction.
         transformed_nodes = []
 
-        # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
-        # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         nodes = list(BreadthFirstIterator(root))
 
         # Only check nodes inside build area.
         nodes = [node for node in nodes if (hasattr(node, "_outside_buildarea") and not node._outside_buildarea)]
 
+        # We try to shuffle all the nodes to prevent "locked" situations, where iteration B inverts iteration A.
+        # By shuffling the order of the nodes, this might happen a few times, but at some point it will resolve.
         random.shuffle(nodes)
         for node in nodes:
             if node is root or not isinstance(node, SceneNode) or node.getBoundingBox() is None:
