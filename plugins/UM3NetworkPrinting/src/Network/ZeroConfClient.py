@@ -53,11 +53,16 @@ class ZeroConfClient:
     ## Handles a change is discovered network services.
     def _queueService(self, zeroconf: Zeroconf, service_type, name: str, state_change: ServiceStateChange) -> None:
         item = (zeroconf, service_type, name, state_change)
+        if not self._service_changed_request_queue or not self._service_changed_request_event:
+            return
         self._service_changed_request_queue.put(item)
         self._service_changed_request_event.set()
 
     ## Callback for when a ZeroConf service has changes.
     def _handleOnServiceChangedRequests(self) -> None:
+        if not self._service_changed_request_queue or not self._service_changed_request_event:
+            return
+
         while True:
             # Wait for the event to be set
             self._service_changed_request_event.wait(timeout=5.0)

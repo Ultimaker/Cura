@@ -195,7 +195,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Check which printers need to be created or updated.
         for index, printer_data in enumerate(remote_printers):
-            printer = next(iter(printer for printer in self._printers if printer.key == printer_data.uuid), None)
+            printer = next(iter(printer for printer in self._printers if printer.key == printer_data.uuid))
             if not printer:
                 printer = printer_data.createOutputModel(ClusterOutputController(self))
             else:
