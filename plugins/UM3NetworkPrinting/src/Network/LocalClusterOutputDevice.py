@@ -23,7 +23,7 @@ from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOut
 I18N_CATALOG = i18nCatalog("cura")
 
 
-class NetworkOutputDevice(UltimakerNetworkedPrinterOutputDevice):
+class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     activeCameraUrlChanged = pyqtSignal()
 

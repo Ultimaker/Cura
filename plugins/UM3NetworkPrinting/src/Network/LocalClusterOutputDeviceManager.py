@@ -12,7 +12,7 @@ from cura.Settings.GlobalStack import GlobalStack
 
 from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
-from .NetworkOutputDevice import NetworkOutputDevice
+from .LocalClusterOutputDevice import LocalClusterOutputDevice
 from ..CloudFlowMessage import CloudFlowMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
@@ -20,8 +20,8 @@ from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 I18N_CATALOG = i18nCatalog("cura")
 
 
-## The NetworkOutputDeviceManager is responsible for discovering and managing local networked clusters.
-class NetworkOutputDeviceManager:
+## The LocalClusterOutputDeviceManager is responsible for discovering and managing local networked clusters.
+class LocalClusterOutputDeviceManager:
 
     META_NETWORK_KEY = "um_network_key"
 
@@ -37,7 +37,7 @@ class NetworkOutputDeviceManager:
     def __init__(self) -> None:
 
         # Persistent dict containing the networked clusters.
-        self._discovered_devices = {}  # type: Dict[str, NetworkOutputDevice]
+        self._discovered_devices = {}  # type: Dict[str, LocalClusterOutputDevice]
         self._output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
         # Hook up ZeroConf client.
@@ -152,7 +152,7 @@ class NetworkOutputDeviceManager:
         if cluster_size == -1:
             return
 
-        device = NetworkOutputDevice(key, address, properties)
+        device = LocalClusterOutputDevice(key, address, properties)
         CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
             ip_address=address,
             key=device.getId(),
@@ -167,7 +167,7 @@ class NetworkOutputDeviceManager:
 
     ## Remove a device.
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
-        device = self._discovered_devices.pop(device_id, None)  # type: Optional[NetworkOutputDevice]
+        device = self._discovered_devices.pop(device_id, None)  # type: Optional[LocalClusterOutputDevice]
         if not device:
             return
         device.close()

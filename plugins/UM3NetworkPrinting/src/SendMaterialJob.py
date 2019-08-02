@@ -13,7 +13,7 @@ from .Models.ClusterMaterial import ClusterMaterial
 from .Models.LocalMaterial import LocalMaterial
 
 if TYPE_CHECKING:
-    from .Network.NetworkOutputDevice import NetworkOutputDevice
+    from .Network.LocalClusterOutputDevice import LocalClusterOutputDevice
 
 
 ##  Asynchronous job to send material profiles to the printer.
@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 #   This way it won't freeze up the interface while sending those materials.
 class SendMaterialJob(Job):
 
-    def __init__(self, device: "NetworkOutputDevice") -> None:
+    def __init__(self, device: "LocalClusterOutputDevice") -> None:
         super().__init__()
-        self.device = device  # type: NetworkOutputDevice
+        self.device = device  # type: LocalClusterOutputDevice
 
     ##  Send the request to the printer and register a callback
     def run(self) -> None:

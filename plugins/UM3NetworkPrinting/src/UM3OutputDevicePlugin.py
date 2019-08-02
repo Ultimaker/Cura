@@ -7,7 +7,7 @@ from cura.CuraApplication import CuraApplication
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 
-from .Network.NetworkOutputDeviceManager import NetworkOutputDeviceManager
+from .Network.LocalClusterOutputDeviceManager import LocalClusterOutputDeviceManager
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 
@@ -18,7 +18,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         super().__init__()
 
         # Create a network output device manager that abstracts all network connection logic away.
-        self._network_output_device_manager = NetworkOutputDeviceManager()
+        self._network_output_device_manager = LocalClusterOutputDeviceManager()
 
         # Create a cloud output device manager that abstracts all cloud connection logic away.
         self._cloud_output_device_manager = CloudOutputDeviceManager()
