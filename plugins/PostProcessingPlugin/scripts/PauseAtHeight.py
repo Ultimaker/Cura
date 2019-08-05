@@ -1,15 +1,16 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
 
 from UM.Application import Application #To get the current printer's settings.
+from typing import List, Tuple
 
 class PauseAtHeight(Script):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
-    def getSettingDataString(self):
+    def getSettingDataString(self) -> str:
         return """{
             "name": "Pause at height",
             "key": "PauseAtHeight",
@@ -113,11 +114,9 @@ class PauseAtHeight(Script):
             }
         }"""
 
-    def getNextXY(self, layer: str):
-        """
-        Get the X and Y values for a layer (will be used to get X and Y of
-        the layer after the pause
-        """
+    ##  Get the X and Y values for a layer (will be used to get X and Y of the
+    #   layer after the pause).
+    def getNextXY(self, layer: str) -> Tuple[float, float]:
         lines = layer.split("\n")
         for line in lines:
             if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
@@ -126,8 +125,10 @@ class PauseAtHeight(Script):
                 return x, y
         return 0, 0
 
-    def execute(self, data: list):
-        """data is a list. Each index contains a layer"""
+    ##  Inserts the pause commands.
+    #   \param data: List of layers.
+    #   \return New list of layers.
+    def execute(self, data: List[str]) -> List[str]:
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")

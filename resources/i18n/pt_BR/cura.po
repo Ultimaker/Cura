@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Cura 4.2\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0200\n"
-"PO-Revision-Date: 2019-05-28 09:51+0200\n"
+"PO-Revision-Date: 2019-07-28 06:51-0300\n"
 "Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
 "Language: pt_BR\n"
@@ -88,7 +88,7 @@ msgstr "O perfil foi achatado & ativado."
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
-msgstr ""
+msgstr "Arquivo AMF"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
 msgctxt "@item:inmenu"
@@ -805,7 +805,7 @@ msgstr "Detalhes do G-Code"
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:481
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
-msgstr "Assegure-se que o g-code é adequado para sua impressora e configuração antes de enviar o arquivo. A representação de g-code pode não ser acurada."
+msgstr "Certifique que o g-code é adequado para sua impressora e configuração antes de enviar o arquivo. A representação de g-code pode não ser acurada."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:64
 msgctxt "@item:inmenu"
@@ -929,7 +929,7 @@ msgstr "URL de arquivo inválida:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr ""
+msgstr "Os ajustes foram alterados para seguir a disponibilidade de extrusores atuais:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
@@ -1394,7 +1394,7 @@ msgstr "Registros"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
 msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-msgstr ""
+msgstr "Descrição do usuário (Nota: Os desenvolvedores podem não falar sua língua, por favor use inglês se possível)"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
@@ -1930,7 +1930,7 @@ msgstr "Vidro"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
-msgstr ""
+msgstr "Por favor atualize o firmware de sua impressora parar gerir a fila remotamente."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
 msgctxt "@info"
@@ -1995,12 +1995,12 @@ msgstr "Enfileirados"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
-msgstr ""
+msgstr "Gerir no navegador"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
-msgstr ""
+msgstr "Não há trabalhos de impressão na fila. Fatie e envie um trabalho para adicioná-lo."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
 msgctxt "@label"
@@ -2035,12 +2035,12 @@ msgstr "Conectar a Impressora de Rede"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr ""
+msgstr "Para imprimir diretamente na sua impressora pela rede, certifique-se que ela esteja conectada à rede usando um cabo de rede ou conectando sua impressora à sua WIFI. Se você não conectar Cura à sua impressora, você ainda pode usar um drive USB ou SDCard para transferir arquivos G-Code a ela."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr ""
+msgstr "Selecione sua impressora da lista abaixo:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2340,6 +2340,10 @@ msgid ""
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
 msgstr ""
+"Por favor certifique-se que sua impressora está conectada>\n"
+"- Verifique se ela está ligada.\n"
+"- Verifique se ela está conectada à rede.\n"
+"- Verifique se você está logado para descobrir impressoras conectadas à nuvem."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -3257,7 +3261,7 @@ msgstr "A ampliação (zoom) deve se mover na direção do mouse?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-msgstr ""
+msgstr "Ampliar na direção do mouse não é suportado na perspectiva ortogonal."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3307,20 +3311,20 @@ msgstr "Forçar modo de compatibilidade da visão de camadas (requer reinício)"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
-msgstr ""
+msgstr "Que tipo de renderização de câmera deve ser usada?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
 msgctxt "@window:text"
 msgid "Camera rendering: "
-msgstr ""
+msgstr "Renderização de câmera:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
 msgid "Perspective"
-msgstr ""
+msgstr "Perspectiva"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgid "Orthogonal"
-msgstr ""
+msgstr "Ortogonal"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -3679,7 +3683,7 @@ msgid ""
 "\n"
 "Click to make these settings visible."
 msgstr ""
-"Alguns ajustes ocultados usam valores diferentes de seu valor calculado normal.\n"
+"Alguns ajustes ocultos usam valores diferentes de seu valor calculado normal.\n"
 "\n"
 "Clique para tornar estes ajustes visíveis."
 
@@ -4001,17 +4005,17 @@ msgstr "Posição da &câmera"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
-msgstr ""
+msgstr "Visão de câmera"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:47
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr ""
+msgstr "Perspectiva"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
-msgstr ""
+msgstr "Ortográfico"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
@@ -4160,7 +4164,7 @@ msgstr "Tipo de Visão"
 #: /home/ruben/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
 msgid "Object list"
-msgstr ""
+msgstr "Lista de objetos"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
@@ -4231,7 +4235,7 @@ msgstr "Não foi possível fatiar"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
 msgid "Processing"
-msgstr ""
+msgstr "Processando"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
@@ -4301,7 +4305,7 @@ msgstr "Alternar Tela Cheia"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Sair da Tela Cheia"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
@@ -5149,12 +5153,12 @@ msgstr "Achatador de Perfil"
 #: AMFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr ""
+msgstr "Provê suporta à leitura de arquivos AMF."
 
 #: AMFReader/plugin.json
 msgctxt "name"
 msgid "AMF Reader"
-msgstr ""
+msgstr "Leitor AMF"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5419,12 +5423,12 @@ msgstr "Atualização de Versão 3.0 para 3.1"
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr ""
+msgstr "Atualiza configurações do Cura 4.1 para o Cura 4.2."
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
-msgstr ""
+msgstr "Atualização de Versão 4.1 para 4.2"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"

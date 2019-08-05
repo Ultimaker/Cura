@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 8,
+        "setting_version": 9,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -1477,7 +1477,7 @@
                 "ironing_enabled":
                 {
                     "label": "Enable Ironing",
-                    "description": "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface.",
+                    "description": "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material.",
                     "type": "bool",
                     "default_value": false,
                     "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2252,8 +2252,8 @@
                     "unit": "mm",
                     "default_value": 4,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "retraction_amount",
+                    "minimum_value_warning": "-retraction_amount",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2278,8 +2278,8 @@
                     "unit": "mm",
                     "default_value": 16,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "retraction_amount * 4",
+                    "minimum_value_warning": "-retraction_amount * 4",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2304,8 +2304,8 @@
                     "unit": "mm",
                     "default_value": 50,
                     "enabled": false,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
+                    "minimum_value_warning": "-100",
+                    "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3771,17 +3771,6 @@
                     "enabled": "resolveOrValue('retraction_combing') != 'off' and travel_avoid_other_parts",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "start_layers_at_same_position":
-                {
-                    "label": "Start Layers with the Same Part",
-                    "description": "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": true
                 },
                 "layer_start_x":
                 {

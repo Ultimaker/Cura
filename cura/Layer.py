@@ -1,14 +1,19 @@
+from typing import List
+
 from UM.Mesh.MeshBuilder import MeshBuilder
 
 import numpy
 
+from UM.Mesh.MeshData import MeshData
+from cura.LayerPolygon import LayerPolygon
+
 
 class Layer:
-    def __init__(self, layer_id):
+    def __init__(self, layer_id: int) -> None:
         self._id = layer_id
         self._height = 0.0
         self._thickness = 0.0
-        self._polygons = []
+        self._polygons = []  # type: List[LayerPolygon]
         self._element_count = 0
 
     @property
@@ -20,7 +25,7 @@ class Layer:
         return self._thickness
 
     @property
-    def polygons(self):
+    def polygons(self) -> List[LayerPolygon]:
         return self._polygons
 
     @property
@@ -33,14 +38,14 @@ class Layer:
     def setThickness(self, thickness):
         self._thickness = thickness
 
-    def lineMeshVertexCount(self):
+    def lineMeshVertexCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshVertexCount()
 
         return result
 
-    def lineMeshElementCount(self):
+    def lineMeshElementCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshElementCount()
@@ -57,18 +62,18 @@ class Layer:
             result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount
 
-        return (result_vertex_offset, result_index_offset)
+        return result_vertex_offset, result_index_offset
 
-    def createMesh(self):
+    def createMesh(self) -> MeshData:
         return self.createMeshOrJumps(True)
 
-    def createJumps(self):
+    def createJumps(self) -> MeshData:
         return self.createMeshOrJumps(False)
 
     # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
     __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
 
-    def createMeshOrJumps(self, make_mesh):
+    def createMeshOrJumps(self, make_mesh: bool) -> MeshData:
         builder = MeshBuilder()
         
         line_count = 0

@@ -12,7 +12,7 @@ from cura.Settings.GlobalStack import GlobalStack #Testing for returning the cor
 import UM.Settings.InstanceContainer #Creating instance containers to register.
 import UM.Settings.ContainerRegistry #Making empty container stacks.
 import UM.Settings.ContainerStack #Setting the container registry here properly.
-
+import cura.CuraApplication
 
 def teardown():
     #If the temporary file for the legacy file rename test still exists, remove it.
@@ -300,3 +300,19 @@ class TestImportProfile:
             with unittest.mock.patch.object(container_registry, "_configureProfile", return_value=None):
                 result = container_registry.importProfile("test.zomg")
         assert result["status"] == "ok"
+
+
+@pytest.mark.parametrize("metadata,result", [(None, False),
+                                             ({}, False),
+                                             ({"setting_version": cura.CuraApplication.CuraApplication.SettingVersion}, True),
+                                             ({"setting_version": 0}, False)])
+def test_isMetaDataValid(container_registry, metadata, result):
+    assert container_registry._isMetadataValid(metadata) == result
+
+
+def test_getIOPlugins(container_registry):
+    plugin_registry = unittest.mock.MagicMock()
+    plugin_registry.getActivePlugins = unittest.mock.MagicMock(return_value = ["lizard"])
+    plugin_registry.getMetaData = unittest.mock.MagicMock(return_value = {"zomg": {"test": "test"}})
+    with unittest.mock.patch("UM.PluginRegistry.PluginRegistry.getInstance", unittest.mock.MagicMock(return_value = plugin_registry)):
+        assert container_registry._getIOPlugins("zomg") == [("lizard", {"zomg": {"test": "test"}})]

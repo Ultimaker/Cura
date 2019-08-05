@@ -144,7 +144,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 8
+    SettingVersion = 9
 
     Created = False
 
@@ -421,7 +421,7 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container  # type: EmptyInstanceContainer
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
         self._container_registry.addContainer(
             cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
@@ -1262,7 +1262,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def arrangeObjectsToAllBuildPlates(self) -> None:
         nodes_to_arrange = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1289,7 +1289,7 @@ class CuraApplication(QtApplication):
     def arrangeAll(self) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1327,7 +1327,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         has_merged_nodes = False
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 if node.getName() == "MergedMesh":
                     has_merged_nodes = True
@@ -1339,9 +1339,9 @@ class CuraApplication(QtApplication):
             return
 
         for node in nodes:
-            file_name = node.getMeshData().getFileName()
-            if file_name:
-                job = ReadMeshJob(file_name)
+            mesh_data = node.getMeshData()
+            if mesh_data and mesh_data.getFileName():
+                job = ReadMeshJob(mesh_data.getFileName())
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:

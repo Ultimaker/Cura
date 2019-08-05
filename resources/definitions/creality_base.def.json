@@ -9,7 +9,7 @@
 
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
-        "machine_max_feedrate_z": { "value": 5 },
+        "machine_max_feedrate_z": { "value": 10 },
         "machine_max_feedrate_e": { "value": 50 },
 
         "machine_max_acceleration_x": { "value": 500 },
@@ -52,6 +52,7 @@
         "speed_prime_tower": { "value": "speed_topbottom" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_support_interface": { "value": "speed_topbottom" },
+        "speed_z_hop": {"value": 5},
 
         "skirt_brim_speed": { "value": "speed_layer_0" },
 

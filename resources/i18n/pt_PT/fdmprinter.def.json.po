@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
+"Project-Id-Version: Cura 4.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0000\n"
-"PO-Revision-Date: 2019-03-14 14:15+0100\n"
-"Last-Translator: Portuguese <info@bothof.nl>\n"
-"Language-Team: Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
+"PO-Revision-Date: 2019-07-29 15:51+0100\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Portuguese <info@lionbridge.com>, Paulo Miranda <av@utopica3d.com>, Portuguese <info@bothof.nl>\n"
 "Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -343,7 +343,7 @@ msgstr "O tempo mínimo durante o qual um extrusor tem de estar inativo antes de
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
 msgid "G-code Flavor"
-msgstr ""
+msgstr "Variante do G-code"
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -1337,7 +1337,11 @@ msgstr "Preferência Canto Junta"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
 msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
-msgstr ""
+msgstr "Controla se os cantos do contorno do modelo influenciam a posição da junta. Nenhum significa que os cantos não influenciam a posição da"
+" junta. Ocultar Junta faz com que seja mais provável que a junta surja num canto interior. Expor Junta faz com que seja"
+" mais provável que a junta aconteça num canto exterior. Ocultar ou Expor Junta faz com que seja mais provável que a junta aconteça num"
+" canto interior ou exterior. Ocultação Inteligente permite os cantos interiores e exteriores, mas opta pelos cantos interiores com mais"
+" frequência, se apropriado."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
@@ -1368,7 +1372,7 @@ msgstr "Ocultar ou Expor Junta"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_weighted"
 msgid "Smart Hiding"
-msgstr ""
+msgstr "Ocultação Inteligente"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
@@ -1383,12 +1387,14 @@ msgstr "Quando ativado, as coordenadas da junta-Z são relativas ao centro de ca
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
 msgid "No Skin in Z Gaps"
-msgstr ""
+msgstr "Sem Revestimento nos Espaços Z"
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
 msgid "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air."
-msgstr ""
+msgstr "Quando o modelo tem pequenos espaços verticais de apenas algumas camadas, deverá normalmente existir revestimento à volta dessas camadas no espaço estreito."
+" Ative esta definição para não gerar revestimento se o espaço vertical for muito pequeno. Isto melhora o tempo de impressão e o tempo de seccionamento,"
+" mas deixa tecnicamente o enchimento exposto ao ar."
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
@@ -1946,7 +1952,7 @@ msgstr "Temperatura do volume de construção"
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
 msgid "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted."
-msgstr ""
+msgstr "A temperatura do ambiente para a impressão. Se este valor for 0, a temperatura do volume de construção não será ajustada."
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2061,82 +2067,83 @@ msgstr "Proporção de Contração em percentagem."
 #: fdmprinter.def.json
 msgctxt "material_crystallinity label"
 msgid "Crystalline Material"
-msgstr ""
+msgstr "Material Cristalino"
 
 #: fdmprinter.def.json
 msgctxt "material_crystallinity description"
 msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
-msgstr ""
+msgstr "Este tipo de material é daquele que se separa de forma regular quando aquecido (cristalino) ou daquele que cria longas cadeias de polímero entrelaçado"
+" (não cristalino)?"
 
 #: fdmprinter.def.json
 msgctxt "material_anti_ooze_retracted_position label"
 msgid "Anti-ooze Retracted Position"
-msgstr ""
+msgstr "Posição Retraída Antiescorrimento"
 
 #: fdmprinter.def.json
 msgctxt "material_anti_ooze_retracted_position description"
 msgid "How far the material needs to be retracted before it stops oozing."
-msgstr ""
+msgstr "A distância a que o material tem de ser retraído antes de parar o escorrimento."
 
 #: fdmprinter.def.json
 msgctxt "material_anti_ooze_retraction_speed label"
 msgid "Anti-ooze Retraction Speed"
-msgstr ""
+msgstr "Velocidade de Retração Antiescorrimento"
 
 #: fdmprinter.def.json
 msgctxt "material_anti_ooze_retraction_speed description"
 msgid "How fast the material needs to be retracted during a filament switch to prevent oozing."
-msgstr ""
+msgstr "A velocidade a que o material tem de ser retraído durante uma substituição de filamentos para evitar o escorrimento."
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position label"
 msgid "Break Preparation Retracted Position"
-msgstr ""
+msgstr "Posição Retraída de Preparação da Separação"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_retracted_position description"
 msgid "How far the filament can be stretched before it breaks, while heated."
-msgstr ""
+msgstr "A distância a que o filamento pode ser esticado antes de se separar, enquanto é aquecido."
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_speed label"
 msgid "Break Preparation Retraction Speed"
-msgstr ""
+msgstr "Velocidade de Retração de Preparação da Separação"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_speed description"
 msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
-msgstr ""
+msgstr "A velocidade a que o filamento tem de ser retraído imediatamente antes de se separar numa retração."
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
 msgid "Break Retracted Position"
-msgstr ""
+msgstr "Posição Retraída de Separação"
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position description"
 msgid "How far to retract the filament in order to break it cleanly."
-msgstr ""
+msgstr "A distância de retração do filamento para separá-lo de forma regular."
 
 #: fdmprinter.def.json
 msgctxt "material_break_speed label"
 msgid "Break Retraction Speed"
-msgstr ""
+msgstr "Velocidade de Retração de Separação"
 
 #: fdmprinter.def.json
 msgctxt "material_break_speed description"
 msgid "The speed at which to retract the filament in order to break it cleanly."
-msgstr ""
+msgstr "A velocidade de retração do filamento para separá-lo de forma regular."
 
 #: fdmprinter.def.json
 msgctxt "material_break_temperature label"
 msgid "Break Temperature"
-msgstr ""
+msgstr "Temperatura de Separação"
 
 #: fdmprinter.def.json
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
-msgstr ""
+msgstr "A temperatura a que o filamento se quebra para uma separação regular."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2151,112 +2158,112 @@ msgstr "Compensação de fluxo: a quantidade de material extrudido é multiplica
 #: fdmprinter.def.json
 msgctxt "wall_material_flow label"
 msgid "Wall Flow"
-msgstr ""
+msgstr "Fluxo da Parede"
 
 #: fdmprinter.def.json
 msgctxt "wall_material_flow description"
 msgid "Flow compensation on wall lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas de parede."
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow label"
 msgid "Outer Wall Flow"
-msgstr ""
+msgstr "Fluxo de Parede Exterior"
 
 #: fdmprinter.def.json
 msgctxt "wall_0_material_flow description"
 msgid "Flow compensation on the outermost wall line."
-msgstr ""
+msgstr "Compensação de fluxo na linha de parede exterior."
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow label"
 msgid "Inner Wall(s) Flow"
-msgstr ""
+msgstr "Parede de Parede(s) Interior(es)"
 
 #: fdmprinter.def.json
 msgctxt "wall_x_material_flow description"
 msgid "Flow compensation on wall lines for all wall lines except the outermost one."
-msgstr ""
+msgstr "A compensação de fluxo nas linhas de parede para todas as linhas de parede exceto a mais exterior."
 
 #: fdmprinter.def.json
 msgctxt "skin_material_flow label"
 msgid "Top/Bottom Flow"
-msgstr ""
+msgstr "Fluxo Superior/Inferior"
 
 #: fdmprinter.def.json
 msgctxt "skin_material_flow description"
 msgid "Flow compensation on top/bottom lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas superiores/inferiores."
 
 #: fdmprinter.def.json
 msgctxt "roofing_material_flow label"
 msgid "Top Surface Skin Flow"
-msgstr ""
+msgstr "Fluxo de Revestimento da Superfície Superior"
 
 #: fdmprinter.def.json
 msgctxt "roofing_material_flow description"
 msgid "Flow compensation on lines of the areas at the top of the print."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas das áreas na parte superior da impressora."
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow label"
 msgid "Infill Flow"
-msgstr ""
+msgstr "Fluxo de Enchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_material_flow description"
 msgid "Flow compensation on infill lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas de enchimento."
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_material_flow label"
 msgid "Skirt/Brim Flow"
-msgstr ""
+msgstr "Fluxo de Contorno/Aba"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_material_flow description"
 msgid "Flow compensation on skirt or brim lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas de contorno ou abas."
 
 #: fdmprinter.def.json
 msgctxt "support_material_flow label"
 msgid "Support Flow"
-msgstr ""
+msgstr "Fluxo de Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_material_flow description"
 msgid "Flow compensation on support structure lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas das estruturas de suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_material_flow label"
 msgid "Support Interface Flow"
-msgstr ""
+msgstr "Fluxo da Interface do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_material_flow description"
 msgid "Flow compensation on lines of support roof or floor."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas de suporte do teto ou do chão."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_material_flow label"
 msgid "Support Roof Flow"
-msgstr ""
+msgstr "Fluxo do Teto do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_material_flow description"
 msgid "Flow compensation on support roof lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas do teto do suporte."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_material_flow label"
 msgid "Support Floor Flow"
-msgstr ""
+msgstr "Fluxo do Chão do Suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_material_flow description"
 msgid "Flow compensation on support floor lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas do chão do suporte."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
@@ -2266,7 +2273,7 @@ msgstr "Fluxo da torre de preparação"
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
 msgid "Flow compensation on prime tower lines."
-msgstr ""
+msgstr "Compensação de fluxo nas linhas da torre de preparação."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2397,7 +2404,8 @@ msgstr "Limitar Retrações de Suportes"
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
 msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-msgstr ""
+msgstr "Eliminar a retração quando o movimento de suporte para suporte é em linha reta. Ativar esta definição reduz o tempo de impressão, mas pode levar a que"
+" aja um excessivo numero de fios nas estruturas de suporte."
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2454,12 +2462,12 @@ msgstr "A velocidade a que o filamento é empurrado após uma retração de subs
 #: fdmprinter.def.json
 msgctxt "switch_extruder_extra_prime_amount label"
 msgid "Nozzle Switch Extra Prime Amount"
-msgstr ""
+msgstr "Quantidade de Preparação Extra de Substituição do Nozzle"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_extra_prime_amount description"
 msgid "Extra material to prime after nozzle switching."
-msgstr ""
+msgstr "Material extra a preparar após a substituição do nozzle."
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -2668,12 +2676,13 @@ msgstr "A velocidade a que o contorno e a aba são impressos. Geralmente, isto �
 #: fdmprinter.def.json
 msgctxt "speed_z_hop label"
 msgid "Z Hop Speed"
-msgstr ""
+msgstr "Velocidade do Salto Z"
 
 #: fdmprinter.def.json
 msgctxt "speed_z_hop description"
 msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
-msgstr ""
+msgstr "A velocidade a que o movimento Z vertical é efetuado para Saltos Z. Este valor é geralmente inferior à velocidade de impressão, uma vez que é mais difícil"
+" mover a base de construção ou o pórtico da máquina."
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
@@ -3762,7 +3771,8 @@ msgstr "Distância da junção do suporte"
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
 msgid "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one."
-msgstr ""
+msgstr "A distância máxima entre as estruturas de suporte nas direções X/Y. Quando a distância entre as estruturas de suporte for menor do que este valor, as estruturas"
+" fundem-se numa só."
 
 #: fdmprinter.def.json
 msgctxt "support_offset label"
@@ -4145,12 +4155,12 @@ msgstr "O diâmetro de uma torre especial."
 #: fdmprinter.def.json
 msgctxt "support_tower_maximum_supported_diameter label"
 msgid "Maximum Tower-Supported Diameter"
-msgstr ""
+msgstr "Diâmetro Máximo Suportado pela Torre"
 
 #: fdmprinter.def.json
 msgctxt "support_tower_maximum_supported_diameter description"
 msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
-msgstr ""
+msgstr "O diâmetro máximo nas direções X/Y de uma pequena área que deverá ser suportada por uma torre de suporte especializada."
 
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle label"
@@ -5018,7 +5028,8 @@ msgstr "\"Spiralize\" Suavizar Contornos"
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
 msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr ""
+msgstr "Suaviza os contornos, criados pelo \"Spiralize\", para reduzir a visibilidade da junta Z (a junta Z deve ser praticamente impercetível na impressão, mas"
+" continuará a ser visível na visualização por camadas). Tenha em conta que a suavização tenderá a reduzir/desfocar pequenos detalhes da superfície."
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
@@ -5534,7 +5545,7 @@ msgstr "Ativar suporte cónico"
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled description"
 msgid "Make support areas smaller at the bottom than at the overhang."
-msgstr ""
+msgstr "Torna as áreas de suporte mais reduzidas na parte inferior do que na saliência."
 
 #: fdmprinter.def.json
 msgctxt "support_conical_angle label"

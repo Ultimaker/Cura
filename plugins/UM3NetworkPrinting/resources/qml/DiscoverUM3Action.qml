@@ -250,29 +250,13 @@ Cura.MachineAction
                         renderType: Text.NativeRendering
                         text:
                         {
-                            if(base.selectedDevice)
-                            {
-                                if (base.selectedDevice.printerType == "ultimaker3")
-                                {
-                                    return "Ultimaker 3";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
-                                {
-                                    return "Ultimaker 3 Extended";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker_s5")
-                                {
-                                    return "Ultimaker S5";
-                                }
-                                else
-                                {
-                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
-                                }
+                            if (base.selectedDevice) {
+                                // It would be great to use a more readable machine type here,
+                                // but the new discoveredPrintersModel is not used yet in the UM networking actions.
+                                // TODO: remove actions or replace 'connect via network' button with new flow?
+                                return base.selectedDevice.printerType
                             }
-                            else
-                            {
-                                return ""
-                            }
+                            return ""
                         }
                     }
                     Label

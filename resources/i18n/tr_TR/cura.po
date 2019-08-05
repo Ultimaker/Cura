@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: Cura 4.2\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-07-16 14:38+0200\n"
-"PO-Revision-Date: 2019-03-13 14:00+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Turkish\n"
+"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "Profil düzleştirilmiş ve aktifleştirilmiştir."
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "AMF File"
-msgstr ""
+msgstr "AMF Dosyası"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
 msgctxt "@item:inmenu"
@@ -929,7 +929,7 @@ msgstr "Geçersiz dosya URL’si:"
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
-msgstr ""
+msgstr "Ayarlar, ekstrüderlerin mevcut kullanılabilirliğine uyacak şekilde değiştirildi:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
@@ -1394,7 +1394,7 @@ msgstr "Günlükler"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
 msgid "User description (Note: Developers may not speak your language, please use English if possible)"
-msgstr ""
+msgstr "Kullanıcı açıklaması (Not: Geliştiriciler dilinizi konuşamıyor olabilir, lütfen mümkünse İngilizce kullanın)"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
@@ -1930,7 +1930,7 @@ msgstr "Cam"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
-msgstr ""
+msgstr "Kuyruğu uzaktan yönetmek için lütfen yazıcının donanım yazılımını güncelleyin."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
 msgctxt "@info"
@@ -1995,12 +1995,12 @@ msgstr "Kuyrukta"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
 msgid "Manage in browser"
-msgstr ""
+msgstr "Tarayıcıda yönet"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
 msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
-msgstr ""
+msgstr "Kuyrukta baskı işi yok. Bir iş eklemek için dilimleme yapın ve gönderin."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
 msgctxt "@label"
@@ -2035,12 +2035,13 @@ msgstr "Ağ Yazıcısına Bağlan"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr ""
+msgstr "Yazıcınıza ağ üzerinden doğrudan baskı göndermek için lütfen yazıcınızın ağ kablosuyla ağa bağlı olduğundan veya yazıcınızı WiFi ağınıza bağladığınızdan"
+" emin olun. Yazıcınız ile Cura'ya bağlanamıyorsanız g-code dosyalarını yazıcınıza aktarmak için USB sürücüsü kullanabilirsiniz."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr ""
+msgstr "Aşağıdaki listeden yazıcınızı seçin:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2339,7 +2340,8 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr ""
+msgstr "Lütfen yazıcınızda bağlantı olduğundan emin olun:\n- Yazıcının açık olup olmadığını kontrol edin.\n- Yazıcının ağa bağlı olup olmadığını kontrol edin.\n-"
+" Buluta bağlı yazıcıları keşfetmek için giriş yapıp yapmadığınızı kontrol edin."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -3257,7 +3259,7 @@ msgstr "Yakınlaştırma farenin hareket yönüne uygun olsun mu?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-msgstr ""
+msgstr "Fareye doğru yakınlaştırma yapılması ortografik perspektifte desteklenmez."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3307,20 +3309,20 @@ msgstr "Katman görünümünü uyumluluk moduna zorla (yeniden başlatma gerekir
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
-msgstr ""
+msgstr "Ne tür bir kamera oluşturma işlemi kullanılmalıdır?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
 msgctxt "@window:text"
 msgid "Camera rendering: "
-msgstr ""
+msgstr "Kamera oluşturma: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
 msgid "Perspective"
-msgstr ""
+msgstr "Perspektif"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgid "Orthogonal"
-msgstr ""
+msgstr "Ortografik"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -4001,17 +4003,17 @@ msgstr "&Kamera konumu"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
 msgctxt "@action:inmenu menubar:view"
 msgid "Camera view"
-msgstr ""
+msgstr "Kamera görüşü"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:47
 msgctxt "@action:inmenu menubar:view"
 msgid "Perspective"
-msgstr ""
+msgstr "Perspektif"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:59
 msgctxt "@action:inmenu menubar:view"
 msgid "Orthographic"
-msgstr ""
+msgstr "Ortografik"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
@@ -4160,7 +4162,7 @@ msgstr "Görüntüleme tipi"
 #: /home/ruben/Projects/Cura/resources/qml/ObjectSelector.qml:59
 msgctxt "@label"
 msgid "Object list"
-msgstr ""
+msgstr "Nesne listesi"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
@@ -4231,7 +4233,7 @@ msgstr "Dilimlenemedi"
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
 msgid "Processing"
-msgstr ""
+msgstr "İşleme"
 
 #: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
@@ -4301,7 +4303,7 @@ msgstr "Tam Ekrana Geç"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
 msgctxt "@action:inmenu"
 msgid "Exit Full Screen"
-msgstr ""
+msgstr "Tam Ekrandan Çık"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
@@ -5149,12 +5151,12 @@ msgstr "Profil Düzleştirici"
 #: AMFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr ""
+msgstr "AMF dosyalarının okunması için destek sağlar."
 
 #: AMFReader/plugin.json
 msgctxt "name"
 msgid "AMF Reader"
-msgstr ""
+msgstr "AMF Okuyucu"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
@@ -5419,12 +5421,12 @@ msgstr "3.0'dan 3.1'e Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
-msgstr ""
+msgstr "Yapılandırmaları Cura 4.1'den Cura 4.2'ye yükseltir."
 
 #: VersionUpgrade/VersionUpgrade41to42/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.1 to 4.2"
-msgstr ""
+msgstr "Sürüm 4.1'den 4.2'ye Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"

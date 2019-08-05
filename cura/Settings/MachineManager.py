@@ -38,11 +38,10 @@ from .CuraStackBuilder import CuraStackBuilder
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
-
+from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Settings.CuraContainerStack import CuraContainerStack
-    from cura.Settings.GlobalStack import GlobalStack
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
     from cura.Machines.VariantManager import VariantManager
@@ -388,7 +387,7 @@ class MachineManager(QObject):
         machines = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", **metadata_filter)
         for machine in machines:
             if machine.definition.getId() == definition_id:
-                return machine
+                return cast(GlobalStack, machine)
         return None
 
     @pyqtSlot(str)
@@ -599,7 +598,7 @@ class MachineManager(QObject):
     def activeStack(self) -> Optional["ExtruderStack"]:
         return self._active_container_stack
 
-    @pyqtProperty(str, notify=activeMaterialChanged)
+    @pyqtProperty(str, notify = activeMaterialChanged)
     def activeMaterialId(self) -> str:
         if self._active_container_stack:
             material = self._active_container_stack.material
@@ -950,7 +949,7 @@ class MachineManager(QObject):
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
         root_node = self._application.getController().getScene().getRoot()
-        for node in DepthFirstIterator(root_node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(root_node):
             if node.getMeshData():
                 extruder_nr = node.callDecoration("getActiveExtruderPosition")
 
@@ -986,10 +985,13 @@ class MachineManager(QObject):
         self._application.globalContainerStackChanged.emit()
         self.forceUpdateAllSettings()
 
-    # Note that this function is deprecated, but the decorators for this don't play well together!
-    # @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
     @pyqtSlot(int, result = QObject)
     def getExtruder(self, position: int) -> Optional[ExtruderStack]:
+        return self._getExtruder(position)
+
+    # This is a workaround for the deprecated decorator and the pyqtSlot not playing well together.
+    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
+    def _getExtruder(self, position) -> Optional[ExtruderStack]:
         if self._global_container_stack:
             return self._global_container_stack.extruders.get(str(position))
         return None

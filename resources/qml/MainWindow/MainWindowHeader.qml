@@ -55,6 +55,7 @@ Item
 
             delegate: Button
             {
+                id: stageSelectorButton
                 text: model.name.toUpperCase()
                 checkable: true
                 checked: UM.Controller.activeStage !== null && model.id == UM.Controller.activeStage.stageId

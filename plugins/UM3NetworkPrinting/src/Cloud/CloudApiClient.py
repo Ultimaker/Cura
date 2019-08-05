@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
@@ -11,18 +11,19 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from UM.Logger import Logger
 from cura import UltimakerCloudAuthentication
 from cura.API import Account
+
 from .ToolPathUploader import ToolPathUploader
-from ..Models import BaseModel
-from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudError import CloudError
-from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.BaseModel import BaseModel
+from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudError import CloudError
+from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ..Models.Http.CloudPrintResponse import CloudPrintResponse
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The generic type variable used to document the methods below.
-CloudApiClientModel = TypeVar("CloudApiClientModel", bound = BaseModel)
+CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
@@ -69,8 +70,8 @@ class CloudApiClient:
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], Any]
-                      ) -> None:
+    def requestUpload(self, request: CloudPrintJobUploadRequest,
+                      on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
@@ -100,14 +101,9 @@ class CloudApiClient:
     #  \param cluster_id: The ID of the cluster.
     #  \param cluster_job_id: The ID of the print job within the cluster.
     #  \param action: The name of the action to execute.
-    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str, data: Optional[Dict[str, Any]] = None) -> None:
-        body = b""
-        if data:
-            try:
-                body = json.dumps({"data": data}).encode()
-            except JSONDecodeError as err:
-                Logger.log("w", "Could not encode body: %s", err)
-                return
+    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
+                         data: Optional[Dict[str, Any]] = None) -> None:
+        body = json.dumps({"data": data}).encode() if data else b""
         url = "{}/clusters/{}/print_jobs/{}/action/{}".format(self.CLUSTER_API_ROOT, cluster_id, cluster_job_id, action)
         self._manager.post(self._createEmptyRequest(url), body)
 
@@ -171,12 +167,16 @@ class CloudApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
-                     model: Type[CloudApiClientModel],
-                     ) -> None:
+                     model: Type[CloudApiClientModel]) -> None:
         def parse() -> None:
-            status_code, response = self._parseReply(reply)
             self._anti_gc_callbacks.remove(parse)
-            return self._parseModels(response, on_finished, model)
+
+            # Don't try to parse the reply if we didn't get one
+            if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+                return
+
+            status_code, response = self._parseReply(reply)
+            self._parseModels(response, on_finished, model)
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)
