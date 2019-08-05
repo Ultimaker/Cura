@@ -72,3 +72,6 @@ run.sh
 CuraEngine
 
 /.coverage
+
+#Prevents import failures when plugin running tests
+plugins/__init__.py
