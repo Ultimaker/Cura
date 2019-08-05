@@ -15,7 +15,7 @@
         },
         "platform_offset": [
             0,
-            -18.8,
+            0,
             0
         ]
     },
@@ -24,7 +24,7 @@
             "default_value": "Cubicon Dual Pro-A30"
         },
         "machine_start_gcode": {
-            "default_value": "M911 Style Plus-A15\nM201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
+            "default_value": "M911 Dual Pro-A30C\nM201 X400 Y400\nM202 X400 Y400\nG28 ; Home\nG1 Z15.0 F6000 ;move the platform down 15mm\n;Prime the extruder\nG92 E0\nG1 F200 E3\nG92 E0"
         },
         "machine_width": {
             "default_value": 300
