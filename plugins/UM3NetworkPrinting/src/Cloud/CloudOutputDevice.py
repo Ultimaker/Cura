@@ -10,7 +10,6 @@ from UM import i18nCatalog
 from UM.Backend.Backend import BackendState
 from UM.FileHandler.FileHandler import FileHandler
 from UM.Logger import Logger
-from UM.Message import Message
 from UM.Scene.SceneNode import SceneNode
 from UM.Version import Version
 from cura.CuraApplication import CuraApplication

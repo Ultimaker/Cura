@@ -7,7 +7,6 @@ from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
-from UM.Message import Message
 from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
