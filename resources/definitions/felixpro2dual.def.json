@@ -6,9 +6,9 @@
         "visible": true,
         "author": "pnks",
         "manufacturer": "Felix",
-		"platform": "FelixPro2_platform.obj",
-		"platform_texture": "FelixPro2_platform.png",
-		"platform_offset": [-135,0,130],
+        "platform": "FelixPro2_platform.obj",
+        "platform_texture": "FelixPro2_platform.png",
+        "platform_offset": [-135, 0, 130],
         "machine_extruder_trains":
         {
             "0": "felixpro2_dual_extruder_0",
@@ -25,7 +25,7 @@
 
         "layer_height": { "default_value": 0.15 },
         "layer_height_0": { "default_value": 0.2 },
-        "speed_layer_0": { "default_value": 20},        
+        "speed_layer_0": { "default_value": 20},
         
         "infill_sparse_density": { "default_value": 20 },
         "wall_thickness": { "default_value": 1 },
@@ -34,8 +34,8 @@
         "machine_width": { "default_value": 240 },
         "machine_depth": { "default_value": 225 },
         "machine_height": { "default_value": 245 },
-		
-		"machine_head_with_fans_polygon":
+
+        "machine_head_with_fans_polygon":
         {
             "default_value": [
                 [ -60, 50 ],
@@ -45,10 +45,10 @@
             ]
         },
        "gantry_height": { "value": "0" },
-        "machine_extruder_count": { "default_value": 2 },		
+        "machine_extruder_count": { "default_value": 2 },
         "prime_tower_position_x": { "value": "250" },
-        "prime_tower_position_y": { "value": "200" },		
-		
+        "prime_tower_position_y": { "value": "200" },
+
         "machine_heated_bed": { "default_value": true },
         "machine_gcode_flavor": { "default_value": "Repetier" },
         "machine_center_is_zero": { "default_value": false },
@@ -59,10 +59,10 @@
         "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 50},
         "material_flow": { "default_value": 100 },
-        "material_flow_layer_0": { "default_value" : 110, "value": "material_flow * 1.1"},
+        "material_flow_layer_0": { "default_value" : 110, "value": "material_flow * 1.1" },
         "adhesion_type": { "default_value": "skirt" },
-        "skirt_brim_minimal_length": { "default_value": 130},
-		"skirt_line_count": { "default_value": 3 },
+        "skirt_brim_minimal_length": { "default_value": 130 },
+        "skirt_line_count": { "default_value": 3 },
 
         "machine_start_gcode": {
             "default_value": "G90 ;absolute positioning\r\nM82 ;set extruder to absolute mode\r\nM107 ;start with the fan off\r\nG28 X0 Y0 ;move X\/Y to min endstops\r\nG28 Z0 ;move Z to min endstops\r\nG1 Z15.0 F9000 ;move the platform down 15mm\r\n\r\nT0 ;Switch to the 1st extruder\r\nG92 E0 ;zero the extruded length\r\nG1 F200 E6 ;extrude 6 mm of feed stock\r\nG92 E0 ;zero the extruded length again\r\n;G1 F9000\r\nM117 FPro2 printing...\r\n"
