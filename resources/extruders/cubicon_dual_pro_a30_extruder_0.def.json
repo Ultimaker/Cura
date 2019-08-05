@@ -15,10 +15,10 @@
             "default_value": 0.4
         },
         "machine_nozzle_offset_x": {
-            "default_value": 0.0
+            "default_value": -27.3
         },
         "machine_nozzle_offset_y": {
-            "default_value": 0.0
+            "default_value": -19.9
         },
         "material_diameter": {
             "default_value": 1.75
