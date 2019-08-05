@@ -7,7 +7,6 @@
         "author": "pnks",
         "manufacturer": "Felix",
         "platform": "FelixPro2_platform.obj",
-        "platform_texture": "FelixPro2_platform.png",
         "platform_offset": [-135, -0.5, 130],
         "machine_extruder_trains":
         {
