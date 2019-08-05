@@ -15,13 +15,13 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
+from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
+from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
+from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 from ..Models.Http.CloudClusterStatus import CloudClusterStatus
 from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest

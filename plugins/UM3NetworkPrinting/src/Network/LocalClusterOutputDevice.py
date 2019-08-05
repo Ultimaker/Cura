@@ -11,14 +11,14 @@ from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
-from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 
 from .ClusterApiClient import ClusterApiClient
 from ..ExportFileJob import ExportFileJob
 from ..SendMaterialJob import SendMaterialJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
+from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
+from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
+from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 
 
 I18N_CATALOG = i18nCatalog("cura")
