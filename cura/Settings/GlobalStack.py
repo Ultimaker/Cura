@@ -118,7 +118,7 @@ class GlobalStack(CuraContainerStack):
     ##  \sa configuredConnectionTypes
     def removeConfiguredConnectionType(self, connection_type: int) -> None:
         configured_connection_types = self.configuredConnectionTypes
-        if connection_type in self.configured_connection_types:
+        if connection_type in configured_connection_types:
             # Store the values as a string.
             configured_connection_types.remove(connection_type)
             self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
