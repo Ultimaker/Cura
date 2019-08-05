@@ -3,9 +3,11 @@
 from UM import i18nCatalog
 from UM.Message import Message
 
+
 I18N_CATALOG = i18nCatalog("cura")
 
 
+## Message shown when uploading a print job to a cluster is blocked because another upload is already in progress.
 class PrintJobUploadBlockedMessage(Message):
     
     def __init__(self) -> None:
