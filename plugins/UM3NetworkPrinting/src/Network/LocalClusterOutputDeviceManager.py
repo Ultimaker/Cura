@@ -110,7 +110,6 @@ class LocalClusterOutputDeviceManager:
     ## Callback for when a manual device check request was responded to.
     def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus) -> None:
         callback = self._manual_instances.get(address, None)
-        print("status", status)
         if callback is None:
             return
         self._onDeviceDiscovered("manual:{}".format(address), address, {
