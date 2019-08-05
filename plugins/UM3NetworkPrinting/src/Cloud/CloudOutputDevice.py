@@ -16,6 +16,9 @@ from UM.Version import Version
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 
 from .CloudApiClient import CloudApiClient
 from ..ExportFileJob import ExportFileJob
@@ -134,7 +137,6 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
         self.setPriority(2)  # Make sure we end up below the local networking and above 'save to file'.
-        self.setName(self._id)
         self.setShortDescription(I18N_CATALOG.i18nc("@action:button", "Print via Cloud"))
         self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print via Cloud"))
         self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected via Cloud"))
@@ -169,19 +171,17 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            return Message(
-                text=I18N_CATALOG.i18nc("@info:status", "Please wait until the current job has been sent."),
-                title=I18N_CATALOG.i18nc("@info:title", "Print error"),
-                lifetime=10
-            ).show()
-
-        if self._uploaded_print_job:
-            # The mesh didn't change, let's not upload it again
-            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted)
+            PrintJobUploadBlockedMessage().show()
             return
 
         # Indicate we have started sending a job.
         self.writeStarted.emit(self)
+
+        # The mesh didn't change, let's not upload it to the cloud again.
+        # Note that self.writeFinished is called in _onPrintUploadCompleted as well.
+        if self._uploaded_print_job:
+            self._api.requestPrint(self.key, self._uploaded_print_job.job_id, self._onPrintUploadCompleted)
+            return
 
         # Export the scene to the correct file type.
         job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
@@ -216,28 +216,20 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         print_job = cast(CloudPrintJobResponse, self._uploaded_print_job)
         self._api.requestPrint(self.key, print_job.job_id, self._onPrintUploadCompleted)
 
+    ## Shows a message when the upload has succeeded
+    #  \param response: The response from the cloud API.
+    def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
+        self._progress.hide()
+        PrintJobUploadSuccessMessage().show()
+        self.writeFinished.emit()
+
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
     def _onUploadError(self, message: str = None) -> None:
         self._progress.hide()
         self._uploaded_print_job = None
-        Message(
-            text=message or I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer."),
-            title=I18N_CATALOG.i18nc("@info:title", "Cloud error"),
-            lifetime=10
-        ).show()
+        PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
-
-    ## Shows a message when the upload has succeeded
-    #  \param response: The response from the cloud API.
-    def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
-        self._progress.hide()
-        Message(
-            text=I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
-            title=I18N_CATALOG.i18nc("@info:title", "Data Sent"),
-            lifetime=5
-        ).show()
-        self.writeFinished.emit()
 
     ##  Whether the printer that this output device represents supports print job actions via the cloud.
     @pyqtProperty(bool, notify=_clusterPrintersChanged)

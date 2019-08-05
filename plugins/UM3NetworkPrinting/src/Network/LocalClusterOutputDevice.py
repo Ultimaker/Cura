@@ -12,6 +12,9 @@ from UM.i18n import i18nCatalog
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
+from plugins.UM3NetworkPrinting.src.Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
 
 from .ClusterApiClient import ClusterApiClient
 from ..ExportFileJob import ExportFileJob
@@ -46,7 +49,6 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
         self.setPriority(3)  # Make sure the output device gets selected above local file output
-        self.setName(self._id)
         self.setShortDescription(I18N_CATALOG.i18nc("@action:button Preceded by 'Ready to'.", "Print over network"))
         self.setDescription(I18N_CATALOG.i18nc("@properties:tooltip", "Print over network"))
         self.setConnectionText(I18N_CATALOG.i18nc("@info:status", "Connected over the network"))
@@ -111,11 +113,8 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         # Show an error message if we're already sending a job.
         if self._progress.visible:
-            return Message(
-                text=I18N_CATALOG.i18nc("@info:status", "Please wait until the current job has been sent."),
-                title=I18N_CATALOG.i18nc("@info:title", "Print error"),
-                lifetime=10
-            ).show()
+            PrintJobUploadBlockedMessage().show()
+            return
 
         self.writeStarted.emit(self)
 
@@ -147,22 +146,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Handler for when the print job was fully uploaded to the cluster.
     def _onPrintUploadCompleted(self, _: QNetworkReply) -> None:
         self._progress.hide()
-        Message(
-            text=I18N_CATALOG.i18nc("@info:status", "Print job was successfully sent to the printer."),
-            title=I18N_CATALOG.i18nc("@info:title", "Data Sent"),
-            lifetime=5
-        ).show()
+        PrintJobUploadSuccessMessage().show()
         self.writeFinished.emit()
 
     ## Displays the given message if uploading the mesh has failed
     #  \param message: The message to display.
     def _onUploadError(self, message: str = None) -> None:
         self._progress.hide()
-        Message(
-            text=message or I18N_CATALOG.i18nc("@info:text", "Could not upload the data to the printer."),
-            title=I18N_CATALOG.i18nc("@info:title", "Network error"),
-            lifetime=10
-        ).show()
+        PrintJobUploadErrorMessage(message).show()
         self.writeError.emit()
 
     ## Download all the images from the cluster and load their data in the print job models.
