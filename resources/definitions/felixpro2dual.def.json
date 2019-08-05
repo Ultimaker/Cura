@@ -8,7 +8,7 @@
         "manufacturer": "Felix",
         "platform": "FelixPro2_platform.obj",
         "platform_texture": "FelixPro2_platform.png",
-        "platform_offset": [-135, 0, 130],
+        "platform_offset": [-135, -0.5, 130],
         "machine_extruder_trains":
         {
             "0": "felixpro2_dual_extruder_0",
@@ -44,7 +44,7 @@
                 [ 70, -50 ]
             ]
         },
-       "gantry_height": { "value": "0" },
+        "gantry_height": { "value": "0" },
         "machine_extruder_count": { "default_value": 2 },
         "prime_tower_position_x": { "value": "250" },
         "prime_tower_position_y": { "value": "200" },
