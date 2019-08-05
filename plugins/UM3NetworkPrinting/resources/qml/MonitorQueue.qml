@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -186,17 +186,7 @@ Item
                 }
                 printJob: modelData
             }
-            model:
-            {
-                // When printing over the cloud we don't recieve print jobs until there is one, so
-                // unless there's at least one print job we'll be stuck with skeleton loading
-                // indefinitely.
-                if (Cura.MachineManager.activeMachineIsUsingCloudConnection || OutputDevice.receivedPrintJobs)
-                {
-                    return OutputDevice.queuedPrintJobs
-                }
-                return [null, null]
-            }
+            model: OutputDevice.queuedPrintJobs
             spacing: 6  // TODO: Theme!
         }
     }
