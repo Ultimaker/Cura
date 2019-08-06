@@ -27,12 +27,11 @@ class VariantNode(ContainerNode):
         self.materials = {}  # type: Dict[str, MaterialNode]  # Mapping material base files to their nodes.
         container_registry = ContainerRegistry.getInstance()
         self.variant_name = container_registry.findContainersMetadata(id = container_id)[0]["name"] #Store our own name so that we can filter more easily.
-        container_registry.allMetadataLoaded.connect(self._reloadAll)
         container_registry.containerAdded.connect(self._materialAdded)
-        self._reloadAll()
+        self._loadAll()
 
     ##  (Re)loads all materials under this variant.
-    def _reloadAll(self):
+    def _loadAll(self):
         container_registry = ContainerRegistry.getInstance()
         # Find all the materials for this variant's name.
         if not self.parent.has_machine_materials:  # Printer has no specific materials. Look for all fdmprinter materials.

@@ -21,12 +21,11 @@ class MachineNode(ContainerNode):
         self.variants = {}  # type: Dict[str, VariantNode] # mapping variant names to their nodes.
         container_registry = ContainerRegistry.getInstance()
         self.has_machine_materials = parseBool(container_registry.findContainersMetadata(id = container_id)[0].get("has_machine_materials", "true"))
-        container_registry.allMetadataLoaded.connect(self._reloadAll)
         container_registry.containerAdded.connect(self._variantAdded)
-        self._reloadAll()
+        self._loadAll()
 
     ##  (Re)loads all variants under this printer.
-    def _reloadAll(self):
+    def _loadAll(self):
         # Find all the variants for this definition ID.
         variants = ContainerRegistry.getInstance().findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
         for variant in variants:
