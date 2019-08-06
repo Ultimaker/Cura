@@ -34,7 +34,6 @@ Item
             id: activeProfileButtonGroup
             exclusive: true
             onClicked: Cura.IntentManager.selectIntent(button.modelData.intent_category, button.modelData.quality_type)
-
         }
 
         Item

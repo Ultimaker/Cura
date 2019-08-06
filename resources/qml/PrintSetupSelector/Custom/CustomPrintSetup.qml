@@ -6,7 +6,7 @@ import QtQuick.Controls 2.0
 import QtQuick.Controls 1.1 as OldControls
 
 import UM 1.3 as UM
-import Cura 1.0 as Cura
+import Cura 1.6 as Cura
 
 
 Item
@@ -18,18 +18,6 @@ Item
 
     property var extrudersModel: CuraApplication.getExtrudersModel()
 
-    // Profile selector row
-    GlobalProfileSelector
-    {
-        id: globalProfileRow
-        anchors
-        {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            margins: parent.padding
-        }
-    }
     Item
     {
         id: intent
@@ -37,7 +25,7 @@ Item
 
         anchors
         {
-            top: globalProfileRow.bottom
+            top: parent.top
             topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
             leftMargin: parent.padding
@@ -60,20 +48,93 @@ Item
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
         }
-        OldControls.ToolButton
+
+        Button
         {
             id: intentSelection
-            text: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.intent.name : ""
-            tooltip: text
-            height: UM.Theme.getSize("print_setup_big_item").height
-            width: UM.Theme.getSize("print_setup_big_item").width
-            anchors.right: parent.right
-            style: UM.Theme.styles.print_setup_header_button
-            activeFocusOnPress: true
+            onClicked: menu.opened ? menu.close() : menu.open()
+            text: generateActiveQualityText()
 
-            menu: Cura.IntentMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
+            anchors.right: parent.right
+            width: UM.Theme.getSize("print_setup_big_item").width
+            height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
+
+            contentItem: Label
+            {
+                id: textLabel
+                text: intentSelection.text
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                anchors.verticalCenter: intentSelection.verticalCenter
+                height: contentHeight
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            background: Rectangle
+            {
+                border.color: UM.Theme.getColor("lining")
+                border.width: UM.Theme.getSize("default_lining").width
+                radius: UM.Theme.getSize("default_radius").width
+            }
+
+            function generateActiveQualityText()
+            {
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName
+                if (Cura.MachineManager.isActiveQualityExperimental)
+                {
+                    result += " (Experimental)"
+                }
+
+                if (Cura.MachineManager.isActiveQualitySupported)
+                {
+                    if (Cura.MachineManager.activeQualityLayerHeight > 0)
+                    {
+                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        result += " - "
+                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                        result += "</font>"
+                    }
+                }
+
+                return result
+            }
+
+            UM.SimpleButton
+            {
+                id: customisedSettings
+
+                visible: Cura.MachineManager.hasUserSettings
+                width: UM.Theme.getSize("print_setup_icon").width
+                height: UM.Theme.getSize("print_setup_icon").height
+
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.right: parent.right
+                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+
+                color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
+                iconSource: UM.Theme.getIcon("star")
+
+                onClicked:
+                {
+                    forceActiveFocus();
+                    Cura.Actions.manageProfiles.trigger()
+                }
+                onEntered:
+                {
+                    var content = catalog.i18nc("@tooltip", "Some setting/override values are different from the values stored in the profile.\n\nClick to open the profile manager.")
+                    base.showTooltip(intent, Qt.point(-UM.Theme.getSize("default_margin").width, 0), content)
+                }
+                onExited: base.hideTooltip()
+            }
         }
 
+        QualitiesWithIntentMenu
+        {
+            id: menu
+            y: intentSelection.y + intentSelection.height
+            x: intentSelection.x
+            width: intentSelection.width
+        }
     }
 
     UM.TabRow
