@@ -115,9 +115,10 @@ class LocalClusterOutputDeviceManager:
         self._onDeviceDiscovered("manual:{}".format(address), address, {
             b"name": status.name.encode("utf-8"),
             b"address": address.encode("utf-8"),
+            b"machine": str(status.hardware.get("typeid", "")).encode("utf-8"),
             b"manual": b"true",
-            b"incomplete": b"true",
-            b"temporary": b"true"
+            b"firmware_version": status.firmware.encode("utf-8"),
+            b"cluster_size": b"1"
         })
         CuraApplication.getInstance().callLater(callback, True, address)
 
