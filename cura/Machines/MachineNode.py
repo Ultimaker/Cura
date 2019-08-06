@@ -41,5 +41,9 @@ class MachineNode(ContainerNode):
         name = container.getMetaDataEntry("name")
         if name in self.variants:
             return  # Already have this one.
+        if container.getMetaDataEntry("hardware_type") != "nozzle":
+            return  # Only want nozzles in my tree.
+        if container.getMetaDataEntry("definition") != self.container_id:
+            return  # Not a nozzle that fits in my machine.
 
         self.variants[name] = VariantNode(container.getId(), parent = self)
