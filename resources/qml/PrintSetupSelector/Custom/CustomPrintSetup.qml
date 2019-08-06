@@ -205,7 +205,7 @@ Item
     {
         anchors
         {
-            top: tabBar.visible ? tabBar.bottom : globalProfileRow.bottom
+            top: tabBar.visible ? tabBar.bottom : intent.bottom
             topMargin: -UM.Theme.getSize("default_lining").width
             left: parent.left
             leftMargin: parent.padding
