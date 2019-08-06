@@ -80,7 +80,7 @@ Popup
                         target: parent
                         property: "height"
                         value: parent.childrenRect.height
-                        when: parent.visibleChildren.lengt > 0
+                        when: parent.visibleChildren.length > 0
                     }
 
                     // Add the qualities that belong to the intent
