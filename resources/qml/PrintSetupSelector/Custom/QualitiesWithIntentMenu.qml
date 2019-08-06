@@ -52,9 +52,7 @@ Popup
                 anchors
                 {
                     left: parent.left
-                    leftMargin: defaultMargin
                     right: parent.right
-                    rightMargin: defaultMargin
                 }
 
                 Label
@@ -64,6 +62,8 @@ Popup
                     height: visible ? contentHeight: 0
                     enabled: false
                     visible: qualitiesList.visibleChildren.length > 0
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
                 }
 
                 Column
@@ -88,16 +88,16 @@ Popup
                     {
                         visible: false
                         model: subItemModel
-                        Button
+                        MenuButton
                         {
                             id: button
 
                             onClicked: Cura.IntentManager.selectIntent(model.intent_category, model.quality_type)
 
                             width: parent.width
-                            height: buttonHeight
                             checkable: true
                             visible: model.available
+                            text: model.name + " - " + model.layer_height + " mm"
                             checked:
                             {
                                 if(Cura.MachineManager.hasCustomQuality)
@@ -108,34 +108,7 @@ Popup
                                 return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category
                             }
                             ButtonGroup.group: buttonGroup
-                            background: Item {}
-                            contentItem: Item
-                            {
-                                Rectangle
-                                {
-                                    id: checkmark
-                                    width: checkmarkSize
-                                    height: checkmarkSize
-                                    anchors.verticalCenter: parent.verticalCenter
-                                    color: "black"
-                                    visible: button.checked
-                                }
 
-                                Label
-                                {
-                                    id: label
-                                    text: model.name + " - " + model.layer_height + " mm"
-                                    verticalAlignment: Text.AlignVCenter
-                                    anchors
-                                    {
-                                        left: checkmark.right
-                                        leftMargin: defaultMargin
-                                        top: parent.top
-                                        bottom: parent.bottom
-                                        right: parent.right
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -149,46 +122,43 @@ Popup
             anchors.right: parent.right
             color: borderColor
         }
-        Button
+        MenuButton
         {
-            text: Cura.Actions.addProfile.text
+            labelText: Cura.Actions.addProfile.text
 
             anchors.left: parent.left
-            anchors.leftMargin: defaultMargin
+            anchors.right: parent.right
 
             enabled: Cura.Actions.addProfile.enabled
-            background: Item {}
             onClicked:
             {
                 Cura.Actions.addProfile.trigger()
                 popup.visible = false
             }
-
         }
-        Button
+        MenuButton
         {
-            text: Cura.Actions.updateProfile.text
-
+            labelText: Cura.Actions.updateProfile.text
             anchors.left: parent.left
-            anchors.leftMargin: defaultMargin
+            anchors.right: parent.right
 
             enabled: Cura.Actions.updateProfile.enabled
-            background: Item {}
+
             onClicked:
             {
                 popup.visible = false
                 Cura.Actions.updateProfile.trigger()
             }
         }
-        Button
+        MenuButton
         {
             text: catalog.i18nc("@action:button", "Discard current changes")
 
             anchors.left: parent.left
-            anchors.leftMargin: defaultMargin
+            anchors.right: parent.right
 
             enabled: Cura.MachineManager.hasUserSettings
-            background: Item {}
+
             onClicked:
             {
                 popup.visible = false
@@ -202,20 +172,19 @@ Popup
             anchors.right: parent.right
             color: borderColor
         }
-        Button
+
+        MenuButton
         {
             id: manageProfilesButton
             text: Cura.Actions.manageProfiles.text
             anchors
             {
                 left: parent.left
-                leftMargin: defaultMargin
                 right: parent.right
-                rightMargin: defaultMargin
             }
 
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
-            background: Item {}
+
             contentItem: Item
             {
                 width: manageProfilesButton.width
@@ -224,6 +193,8 @@ Popup
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
+                    anchors.left: button.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 }
                 Label
                 {
