@@ -176,7 +176,7 @@ class LocalClusterOutputDeviceManager:
         active_machine.setMetaDataEntry("group_name", device.name)
         self._connectToOutputDevice(device, active_machine)
         CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
-        
+
     ## Load all manual devices from stored preferences.
     def _loadManualDevices(self) -> None:
         for address in self._getManualDevicesFromPreferences():

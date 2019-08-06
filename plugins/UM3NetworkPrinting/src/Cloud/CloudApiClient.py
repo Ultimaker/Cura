@@ -163,7 +163,7 @@ class CloudApiClient:
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
                      model: Type[CloudApiClientModel]) -> None:
-        
+
         def parse() -> None:
             self._anti_gc_callbacks.remove(parse)
 
