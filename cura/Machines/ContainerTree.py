@@ -16,7 +16,18 @@ from typing import Dict
 class ContainerTree:
     def __init__(self) -> None:
         self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
-        ContainerRegistry.getInstance().containerAdded.connect(self._machineAdded)
+        container_registry = ContainerRegistry.getInstance()
+        container_registry.allMetadataLoaded.connect(self._reloadAll)
+        container_registry.containerAdded.connect(self._machineAdded)
+        self._reloadAll()
+
+    ##  (Re)builds the initial container tree.
+    def _reloadAll(self):
+        all_stacks = ContainerRegistry.getInstance().findContainerStacks()
+        for stack in all_stacks:
+            definition_id = stack.definition.getId()
+            if definition_id not in self.machines:
+                self.machines[definition_id] = MachineNode(definition_id)
 
     ##  When a printer gets added, we need to build up the tree for that container.
     def _machineAdded(self, definition_container: ContainerInterface):
