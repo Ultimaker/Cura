@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 #   The subnodes of these nodes are variants.
 class MachineNode(ContainerNode):
     def __init__(self, container_id: str) -> None:
-        super().__init__(container_id, None)
+        super().__init__(container_id)
         self.variants = {}  # type: Dict[str, VariantNode] # mapping variant names to their nodes.
         container_registry = ContainerRegistry.getInstance()
         my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
@@ -35,7 +35,7 @@ class MachineNode(ContainerNode):
         for variant in variants:
             variant_name = variant["name"]
             if variant_name not in self.variants:
-                self.variants[variant_name] = VariantNode(variant["id"], parent = self)
+                self.variants[variant_name] = VariantNode(variant["id"], machine = self)
 
     ##  When a variant gets added to the set of profiles, we need to update our
     #   tree here.
@@ -50,4 +50,4 @@ class MachineNode(ContainerNode):
         if container.getMetaDataEntry("definition") != self.container_id:
             return  # Not a nozzle that fits in my machine.
 
-        self.variants[name] = VariantNode(container.getId(), parent = self)
+        self.variants[name] = VariantNode(container.getId(), machine = self)

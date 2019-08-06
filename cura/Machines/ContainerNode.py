@@ -18,10 +18,8 @@ class ContainerNode:
     ##  Creates a new node for the container tree.
     #   \param container_id The ID of the container that this node should
     #   represent.
-    #   \param parent The parent container node, if any.
-    def __init__(self, container_id: str, parent: Optional["ContainerNode"]) -> None:
+    def __init__(self, container_id: str) -> None:
         self.container_id = container_id
-        self.parent = parent
         self._container = None  # type: Optional[InstanceContainer]
         self.children_map = {}  # type: Dict[str, ContainerNode]  # Mapping from container ID to container node.
 
