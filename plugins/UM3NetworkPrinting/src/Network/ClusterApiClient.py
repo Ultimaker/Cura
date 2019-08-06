@@ -46,30 +46,30 @@ class ClusterApiClient:
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
-        url = "{}/printers/".format(self.CLUSTER_API_PREFIX)
+        url = "{}/printers".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrinterStatus)
 
     ## Get the print jobs in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
-        url = "{}/print_jobs/".format(self.CLUSTER_API_PREFIX)
+        url = "{}/print_jobs".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
     ## Move a print job to the top of the queue.
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
-        url = "{}/print_jobs/{}/action/move/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     ## Delete a print job from the queue.
     def deletePrintJob(self, print_job_uuid: str) -> None:
-        url = "{}/print_jobs/{}/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.deleteResource(self._createEmptyRequest(url))
 
     ## Set the state of a print job.
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
-        url = "{}/print_jobs/{}/action/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
         self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
@@ -86,6 +86,7 @@ class ClusterApiClient:
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
+        request.setAttribute(QNetworkRequest.FollowRedirectsAttribute, True)
         if content_type:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         return request
