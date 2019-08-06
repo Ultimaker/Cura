@@ -3,6 +3,7 @@
 
 from typing import TYPE_CHECKING
 
+from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
 from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
@@ -19,6 +20,7 @@ class MachineNode(ContainerNode):
         super().__init__(container_id, None)
         self.variants = {}  # type: Dict[str, VariantNode] # mapping variant names to their nodes.
         container_registry = ContainerRegistry.getInstance()
+        self.has_machine_materials = parseBool(container_registry.findContainersMetadata(id = container_id)[0].get("has_machine_materials", "true"))
         container_registry.allMetadataLoaded.connect(self._reloadAll)
         container_registry.containerAdded.connect(self._variantAdded)
         self._reloadAll()
