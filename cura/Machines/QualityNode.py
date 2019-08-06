@@ -1,38 +1,44 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, Dict, cast, Any
+from typing import TYPE_CHECKING
 
-from .ContainerNode import ContainerNode
-from .QualityChangesGroup import QualityChangesGroup
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.Interfaces import ContainerInterface
+from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.IntentNode import IntentNode
+from cura.Machines.MaterialNode import MaterialNode
 
+if TYPE_CHECKING:
+    from typing import Dict
 
+##  Represents a material profile in the container tree.
 #
-# QualityNode is used for BOTH quality and quality_changes containers.
-#
+#   Its subcontainers are intent profiles.
 class QualityNode(ContainerNode):
+    def __init__(self, container_id: str, material: MaterialNode) -> None:
+        super().__init__(container_id)
+        self.material = material
+        self.intents = {}  # type: Dict[str, IntentNode]
+        ContainerRegistry.getInstance().containerAdded.connect(self._intentAdded)
+        self._loadAll()
 
-    def __init__(self, metadata: Optional[Dict[str, Any]] = None) -> None:
-        super().__init__(metadata = metadata)
-        self.quality_type_map = {}  # type: Dict[str, QualityNode] # quality_type -> QualityNode for InstanceContainer
+    def _loadAll(self) -> None:
+        container_registry = ContainerRegistry.getInstance()
+        # Find all intent profiles that fit the current configuration.
+        for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.material.variant.machine.quality_definition, variant = self.material.variant.variant_name, material = self.material.base_file):
+            self.intents[intent["id"]] = IntentNode(intent["id"], quality = self)
 
-    def getChildNode(self, child_key: str) -> Optional["QualityNode"]:
-        return self.children_map.get(child_key)
-
-    def addQualityMetadata(self, quality_type: str, metadata: Dict[str, Any]):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode(metadata)
-
-    def getQualityNode(self, quality_type: str) -> Optional["QualityNode"]:
-        return self.quality_type_map.get(quality_type)
-
-    def addQualityChangesMetadata(self, quality_type: str, metadata: Dict[str, Any]):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode()
-        quality_type_node = self.quality_type_map[quality_type]
-
-        name = metadata["name"]
-        if name not in quality_type_node.children_map:
-            quality_type_node.children_map[name] = QualityChangesGroup(name, quality_type)
-        quality_changes_group = quality_type_node.children_map[name]
-        cast(QualityChangesGroup, quality_changes_group).addNode(QualityNode(metadata))
+    def _intentAdded(self, container: ContainerInterface) -> None:
+        if container.getMetaDataEntry("type") != "intent":
+            return  # Not interested if it's not an intent.
+        if container.getMetaDataEntry("definition") != self.material.variant.machine.quality_definition:
+            return  # Incorrect printer.
+        if container.getMetaDataEntry("variant") != self.material.variant.variant_name:
+            return  # Incorrect variant.
+        if container.getMetaDataEntry("material") != self.material.base_file:
+            return  # Incorrect material.
+        container_id = container.getId()
+        if container_id in self.intents:
+            return  # Already have this.
+        self.intents[container_id] = IntentNode(container_id, quality = self)
