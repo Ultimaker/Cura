@@ -7,16 +7,16 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.IntentNode import IntentNode
-from cura.Machines.MaterialNode import MaterialNode
 
 if TYPE_CHECKING:
     from typing import Dict
+    from cura.Machines.MaterialNode import MaterialNode
 
 ##  Represents a material profile in the container tree.
 #
 #   Its subcontainers are intent profiles.
 class QualityNode(ContainerNode):
-    def __init__(self, container_id: str, material: MaterialNode) -> None:
+    def __init__(self, container_id: str, material: "MaterialNode") -> None:
         super().__init__(container_id)
         self.material = material
         self.intents = {}  # type: Dict[str, IntentNode]

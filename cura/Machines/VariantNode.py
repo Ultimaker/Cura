@@ -6,11 +6,11 @@ from typing import TYPE_CHECKING
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
-from cura.Machines.MachineNode import MachineNode
 from cura.Machines.MaterialNode import MaterialNode
 
 if TYPE_CHECKING:
     from typing import Dict
+    from cura.Machines.MachineNode import MachineNode
 
 ##  This class represents an extruder variant in the container tree.
 #
@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 #   material diameter setting, we cannot filter them here. Filtering must be
 #   done in the model.
 class VariantNode(ContainerNode):
-    def __init__(self, container_id: str, machine: MachineNode) -> None:
+    def __init__(self, container_id: str, machine: "MachineNode") -> None:
         super().__init__(container_id)
         self.machine = machine
         self.materials = {}  # type: Dict[str, MaterialNode]  # Mapping material base files to their nodes.

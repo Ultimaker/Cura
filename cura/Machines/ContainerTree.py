@@ -17,12 +17,11 @@ class ContainerTree:
     def __init__(self) -> None:
         self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
         container_registry = ContainerRegistry.getInstance()
-        container_registry.allMetadataLoaded.connect(self._reloadAll)
         container_registry.containerAdded.connect(self._machineAdded)
-        self._reloadAll()
+        self._loadAll()
 
-    ##  (Re)builds the initial container tree.
-    def _reloadAll(self):
+    ##  Builds the initial container tree.
+    def _loadAll(self):
         all_stacks = ContainerRegistry.getInstance().findContainerStacks()
         for stack in all_stacks:
             definition_id = stack.definition.getId()

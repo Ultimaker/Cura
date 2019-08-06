@@ -7,16 +7,16 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityNode import QualityNode
-from cura.Machines.VariantNode import VariantNode
 
 if TYPE_CHECKING:
     from typing import Dict
+    from cura.Machines.VariantNode import VariantNode
 
 ##  Represents a material in the container tree.
 #
 #   Its subcontainers are quality profiles.
 class MaterialNode(ContainerNode):
-    def __init__(self, container_id, variant: VariantNode) -> None:
+    def __init__(self, container_id, variant: "VariantNode") -> None:
         super().__init__(container_id)
         self.variant = variant
         self.qualities = {}  # type: Dict[str, QualityNode] # Mapping container IDs to quality profiles.
