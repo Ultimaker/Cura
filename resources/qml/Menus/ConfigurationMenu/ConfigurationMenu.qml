@@ -99,12 +99,14 @@ Cura.ExpandablePopup
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         top: typeAndBrandNameLabel.bottom
+                        right: parent.right
+                        rightMargin:  UM.Theme.getSize("default_margin").width
                     }
                 }
             }
         }
 
-        //Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
+        // Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
         Label
         {
             text: catalog.i18nc("@label", "Select configuration")
