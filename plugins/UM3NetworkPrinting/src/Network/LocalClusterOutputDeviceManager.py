@@ -1,19 +1,21 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Dict, Optional, Callable
+from typing import Dict, Optional, Callable, List
 
 from UM import i18nCatalog
+from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
-from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 from cura.Settings.GlobalStack import GlobalStack
 
 from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .LocalClusterOutputDevice import LocalClusterOutputDevice
+from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..CloudFlowMessage import CloudFlowMessage
+from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
 
@@ -45,15 +47,10 @@ class LocalClusterOutputDeviceManager:
         self._zero_conf_client.addedNetworkCluster.connect(self._onDeviceDiscovered)
         self._zero_conf_client.removedNetworkCluster.connect(self._onDiscoveredDeviceRemoved)
 
-        # Persistent dict containing manually connected clusters.
-        self._manual_instances = {}  # type: Dict[str, Optional[Callable]]
-
     ## Start the network discovery.
     def start(self) -> None:
         self._zero_conf_client.start()
-        # Load all manual devices.
-        self._manual_instances = self._getStoredManualInstances()
-        for address in self._manual_instances:
+        for address in self._getStoredManualAddresses():
             self.addManualDevice(address)
 
     ## Stop network discovery and clean up discovered devices.
@@ -65,11 +62,8 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        self._manual_instances[address] = callback
-        new_manual_devices = ",".join(self._manual_instances.keys())
-        CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_manual_devices)
         api_client = ClusterApiClient(address, lambda error: print(error))
-        api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status))
+        api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status, callback))
 
     ## Remove a manually added networked printer.
     def removeManualDevice(self, device_id: str, address: Optional[str] = None) -> None:
@@ -80,19 +74,15 @@ class LocalClusterOutputDeviceManager:
             address = address or self._discovered_devices[device_id].ipAddress
             self._onDiscoveredDeviceRemoved(device_id)
 
-        if address in self._manual_instances:
-            manual_instance_callback = self._manual_instances.pop(address)
-            new_devices = ",".join(self._manual_instances.keys())
-            CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_devices)
-            if manual_instance_callback:
-                CuraApplication.getInstance().callLater(manual_instance_callback, False, address)
+        if address in self._getStoredManualAddresses():
+            self._removeStoredManualAddress(address)
 
     ## Force reset all network device connections.
-    def refreshConnections(self):
+    def refreshConnections(self) -> None:
         self._connectToActiveMachine()
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
-    def _connectToActiveMachine(self):
+    def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
@@ -108,10 +98,8 @@ class LocalClusterOutputDeviceManager:
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
 
     ## Callback for when a manual device check request was responded to.
-    def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus) -> None:
-        callback = self._manual_instances.get(address, None)
-        if callback is None:
-            return
+    def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus,
+                                     callback: Optional[Callable[[bool, str], None]] = None) -> None:
         self._onDeviceDiscovered("manual:{}".format(address), address, {
             b"name": status.name.encode("utf-8"),
             b"address": address.encode("utf-8"),
@@ -120,7 +108,9 @@ class LocalClusterOutputDeviceManager:
             b"firmware_version": status.firmware.encode("utf-8"),
             b"cluster_size": b"1"
         })
-        CuraApplication.getInstance().callLater(callback, True, address)
+        self._storeManualAddress(address)
+        if callback is not None:
+            CuraApplication.getInstance().callLater(callback, True, address)
 
     ## Returns a dict of printer BOM numbers to machine types.
     #  These numbers are available in the machine definition already so we just search for them here.
@@ -139,6 +129,7 @@ class LocalClusterOutputDeviceManager:
     ## Add a new device.
     def _onDeviceDiscovered(self, key: str, address: str, properties: Dict[bytes, bytes]) -> None:
         cluster_size = int(properties.get(b"cluster_size", -1))
+        firmware_version = Version(properties.get(b"firmware", "1.0.0"))
         machine_identifier = properties.get(b"machine", b"").decode("utf-8")
         printer_type_identifiers = self._getPrinterTypeIdentifiers()
 
@@ -149,8 +140,8 @@ class LocalClusterOutputDeviceManager:
                 properties[b"printer_type"] = bytes(p_type, encoding="utf8")
                 break
 
-        # We no longer support legacy devices, so check that here.
-        if cluster_size == -1:
+        # We no longer support legacy devices, prevent them from showing up in the discovered devices list.
+        if cluster_size == -1 or firmware_version < self.MIN_SUPPORTED_CLUSTER_VERSION:
             return
 
         device = LocalClusterOutputDevice(key, address, properties)
@@ -191,16 +182,40 @@ class LocalClusterOutputDeviceManager:
         self._connectToOutputDevice(device, active_machine)
         CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
 
+    ## Add an address to the stored preferences.
+    def _storeManualAddress(self, address: str) -> None:
+        stored_addresses = self._getStoredManualAddresses()
+        if address in stored_addresses:
+            return  # Prevent duplicates.
+        stored_addresses.append(address)
+        new_value = ",".join(stored_addresses)
+        CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_value)
+
+    ## Remove an address from the stored preferences.
+    def _removeStoredManualAddress(self, address: str) -> None:
+        stored_addresses = self._getStoredManualAddresses()
+        try:
+            stored_addresses.remove(address)  # Can throw a ValueError
+            new_value = ",".join(stored_addresses)
+            CuraApplication.getInstance().getPreferences().setValue(self.MANUAL_DEVICES_PREFERENCE_KEY, new_value)
+        except ValueError:
+            Logger.log("w", "Could not remove address from stored_addresses, it was not there")
+
     ## Load the user-configured manual devices from Cura preferences.
-    def _getStoredManualInstances(self) -> Dict[str, Optional[Callable]]:
+    def _getStoredManualAddresses(self) -> List[str]:
         preferences = CuraApplication.getInstance().getPreferences()
         preferences.addPreference(self.MANUAL_DEVICES_PREFERENCE_KEY, "")
         manual_instances = preferences.getValue(self.MANUAL_DEVICES_PREFERENCE_KEY).split(",")
-        return {address: None for address in manual_instances}
+        return manual_instances
 
     ## Add a device to the current active machine.
-    @staticmethod
-    def _connectToOutputDevice(device: PrinterOutputDevice, active_machine: GlobalStack) -> None:
+    def _connectToOutputDevice(self, device: UltimakerNetworkedPrinterOutputDevice, machine: GlobalStack) -> None:
+        
+        # Make sure users know that we no longer support legacy devices.
+        if device.clusterSize < 1 or Version(device.firmwareVersion) < self.MIN_SUPPORTED_CLUSTER_VERSION:
+            LegacyDeviceNoLongerSupportedMessage().show()
+            return
+        
         device.connect()
-        active_machine.addConfiguredConnectionType(device.connectionType.value)
+        machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)

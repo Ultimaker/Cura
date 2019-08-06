@@ -25,6 +25,9 @@ class ClusterApiClient:
     PRINTER_API_PREFIX = "/api/v1"
     CLUSTER_API_PREFIX = "/cluster-api/v1"
 
+    # In order to avoid garbage collection we keep the callbacks in this list.
+    _anti_gc_callbacks = []  # type: List[Callable[[], None]]
+
     ## Initializes a new cluster API client.
     #  \param address: The network address of the cluster to call.
     #  \param on_error: The callback to be called whenever we receive errors from the server.
@@ -33,8 +36,6 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
-        # In order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Get printer system information.
     #  \param on_finished: The callback in case the response is successful.
