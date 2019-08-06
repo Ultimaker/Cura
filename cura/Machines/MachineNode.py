@@ -20,7 +20,9 @@ class MachineNode(ContainerNode):
         super().__init__(container_id, None)
         self.variants = {}  # type: Dict[str, VariantNode] # mapping variant names to their nodes.
         container_registry = ContainerRegistry.getInstance()
-        self.has_machine_materials = parseBool(container_registry.findContainersMetadata(id = container_id)[0].get("has_machine_materials", "true"))
+        my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+        self.has_machine_materials = parseBool(my_metadata.get("has_machine_materials", "true"))
+        self.exclude_materials = my_metadata.get("exclude_materials", [])
         container_registry.containerAdded.connect(self._variantAdded)
         self._loadAll()
 

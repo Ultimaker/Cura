@@ -45,6 +45,9 @@ class VariantNode(ContainerNode):
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
             materials = materials_per_base_file.values()
 
+        for excluded_material in self.parent.exclude_materials:
+            del materials[excluded_material]
+
         for material in materials:
             base_file = material["base_file"]
             if base_file not in self.materials:
@@ -60,6 +63,8 @@ class VariantNode(ContainerNode):
             if material_definition != "fdmprinter":
                 return
         base_file = container.getMetaDataEntry("base_file")
+        if base_file in self.parent.exclude_materials:
+            return  # Material is forbidden for this printer.
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.parent.container_id:
                 return
