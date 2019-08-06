@@ -39,21 +39,21 @@ class ClusterApiClient:
     ## Get printer system information.
     #  \param on_finished: The callback in case the response is successful.
     def getSystem(self, on_finished: Callable) -> None:
-        url = "{}/system/".format(self.PRINTER_API_PREFIX)
+        url = "{}/system".format(self.PRINTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
 
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
-        url = "{}/printers/".format(self.CLUSTER_API_PREFIX)
+        url = "{}/printers".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrinterStatus)
 
     ## Get the print jobs in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
-        url = "{}/print_jobs/".format(self.CLUSTER_API_PREFIX)
+        url = "{}/print_jobs".format(self.CLUSTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, ClusterPrintJobStatus)
 
@@ -86,6 +86,7 @@ class ClusterApiClient:
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         url = QUrl("http://" + self._address + path)
         request = QNetworkRequest(url)
+        request.setAttribute(QNetworkRequest.FollowRedirectsAttribute, True)
         if content_type:
             request.setHeader(QNetworkRequest.ContentTypeHeader, content_type)
         return request
@@ -111,14 +112,17 @@ class ClusterApiClient:
                      on_finished: Union[Callable[[ClusterApiClientModel], Any],
                                         Callable[[List[ClusterApiClientModel]], Any]],
                      model_class: Type[ClusterApiClientModel]) -> None:
-        if isinstance(response, list):
-            results = [model_class(**c) for c in response]  # type: List[ClusterApiClientModel]
-            on_finished_list = cast(Callable[[List[ClusterApiClientModel]], Any], on_finished)
-            on_finished_list(results)
-        else:
-            result = model_class(**response)  # type: ClusterApiClientModel
-            on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
-            on_finished_item(result)
+        try:
+            if isinstance(response, list):
+                results = [model_class(**c) for c in response]  # type: List[ClusterApiClientModel]
+                on_finished_list = cast(Callable[[List[ClusterApiClientModel]], Any], on_finished)
+                on_finished_list(results)
+            else:
+                result = model_class(**response)  # type: ClusterApiClientModel
+                on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
+                on_finished_item(result)
+        except JSONDecodeError:
+            Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.
     #  The callback is added to the 'finished' signal of the reply.

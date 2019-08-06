@@ -14,7 +14,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
-from .PrintJobUploadProgressMessage import PrintJobUploadProgressMessage
+from .Messages.PrintJobUploadProgressMessage import PrintJobUploadProgressMessage
 from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -45,6 +45,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
+
+        # Set the display name from the properties
+        self.setName(self.getProperty("name"))
 
         # Keeps track of all printers in the cluster.
         self._printers = []  # type: List[PrinterOutputModel]
