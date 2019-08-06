@@ -39,7 +39,7 @@ class ClusterApiClient:
     ## Get printer system information.
     #  \param on_finished: The callback in case the response is successful.
     def getSystem(self, on_finished: Callable) -> None:
-        url = "{}/system/".format(self.PRINTER_API_PREFIX)
+        url = "{}/system".format(self.PRINTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
 
@@ -59,17 +59,17 @@ class ClusterApiClient:
 
     ## Move a print job to the top of the queue.
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
-        url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}/action/move/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
 
     ## Delete a print job from the queue.
     def deletePrintJob(self, print_job_uuid: str) -> None:
-        url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.deleteResource(self._createEmptyRequest(url))
 
     ## Set the state of a print job.
     def setPrintJobState(self, print_job_uuid: str, state: str) -> None:
-        url = "{}/print_jobs/{}/action".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        url = "{}/print_jobs/{}/action/".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         # We rewrite 'resume' to 'print' here because we are using the old print job action endpoints.
         action = "print" if state == "resume" else state
         self._manager.put(self._createEmptyRequest(url), json.dumps({"action": action}).encode())
@@ -111,14 +111,17 @@ class ClusterApiClient:
                      on_finished: Union[Callable[[ClusterApiClientModel], Any],
                                         Callable[[List[ClusterApiClientModel]], Any]],
                      model_class: Type[ClusterApiClientModel]) -> None:
-        if isinstance(response, list):
-            results = [model_class(**c) for c in response]  # type: List[ClusterApiClientModel]
-            on_finished_list = cast(Callable[[List[ClusterApiClientModel]], Any], on_finished)
-            on_finished_list(results)
-        else:
-            result = model_class(**response)  # type: ClusterApiClientModel
-            on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
-            on_finished_item(result)
+        try:
+            if isinstance(response, list):
+                results = [model_class(**c) for c in response]  # type: List[ClusterApiClientModel]
+                on_finished_list = cast(Callable[[List[ClusterApiClientModel]], Any], on_finished)
+                on_finished_list(results)
+            else:
+                result = model_class(**response)  # type: ClusterApiClientModel
+                on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
+                on_finished_item(result)
+        except JSONDecodeError:
+            Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.
     #  The callback is added to the 'finished' signal of the reply.
