@@ -139,19 +139,14 @@ class CloudApiClient:
     #  \param on_finished: The callback in case the response is successful.
     #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
     def _parseModels(self, response: Dict[str, Any],
-                     on_finished: Union[Callable[[CloudApiClientModel], Any],
-                                        Callable[[List[CloudApiClientModel]], Any]],
-                     model_class: Type[CloudApiClientModel]) -> None:
+                     model_class: Type[CloudApiClientModel]
+                     ) -> Optional[Union[List[CloudApiClientModel], CloudApiClientModel]]:
         if "data" in response:
             data = response["data"]
             if isinstance(data, list):
-                results = [model_class(**c) for c in data]  # type: List[CloudApiClientModel]
-                on_finished_list = cast(Callable[[List[CloudApiClientModel]], Any], on_finished)
-                on_finished_list(results)
+                return [model_class(**c) for c in data]
             else:
-                result = model_class(**data)  # type: CloudApiClientModel
-                on_finished_item = cast(Callable[[CloudApiClientModel], Any], on_finished)
-                on_finished_item(result)
+                return model_class(**data)
         elif "errors" in response:
             self._on_error([CloudError(**error) for error in response["errors"]])
         else:
@@ -168,15 +163,23 @@ class CloudApiClient:
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
                      model: Type[CloudApiClientModel]) -> None:
+        
         def parse() -> None:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
                 return
+            
+            if reply.error() > 0:
+                self._on_error(reply.errorString())
+                return
 
             status_code, response = self._parseReply(reply)
-            self._parseModels(response, on_finished, model)
+            parsed_response = self._parseModels(response, model)
+            if not parsed_response:
+                return
+            on_finished(parsed_response)
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)

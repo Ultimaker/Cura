@@ -28,7 +28,7 @@ class ClusterApiClient:
     ## Initializes a new cluster API client.
     #  \param address: The network address of the cluster to call.
     #  \param on_error: The callback to be called whenever we receive errors from the server.
-    def __init__(self, address: str, on_error: Callable) -> None:
+    def __init__(self, address: str, on_error: Callable = None) -> None:
         super().__init__()
         self._manager = QNetworkAccessManager()
         self._address = address
@@ -109,19 +109,14 @@ class ClusterApiClient:
     #  \param on_finished: The callback in case the response is successful.
     #  \param model_class: The type of the model to convert the response to. It may either be a single record or a list.
     def _parseModels(self, response: Dict[str, Any],
-                     on_finished: Union[Callable[[ClusterApiClientModel], Any],
-                                        Callable[[List[ClusterApiClientModel]], Any]],
-                     model_class: Type[ClusterApiClientModel]) -> None:
+                     model_class: Type[ClusterApiClientModel]
+                     ) -> Optional[Union[List[ClusterApiClientModel], ClusterApiClientModel]]:
         try:
             if isinstance(response, list):
-                results = [model_class(**c) for c in response]  # type: List[ClusterApiClientModel]
-                on_finished_list = cast(Callable[[List[ClusterApiClientModel]], Any], on_finished)
-                on_finished_list(results)
+                return [model_class(**c) for c in response]
             else:
-                result = model_class(**response)  # type: ClusterApiClientModel
-                on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
-                on_finished_item(result)
-        except JSONDecodeError:
+                return model_class(**response)
+        except (JSONDecodeError, TypeError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.
@@ -153,7 +148,10 @@ class ClusterApiClient:
 
             # Otherwise parse the result and return the formatted data in the callback.
             status_code, response = self._parseReply(reply)
-            self._parseModels(response, on_finished, model)
+            parsed_response = self._parseModels(response, model)
+            if not parsed_response:
+                return
+            on_finished(parsed_response)
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)
