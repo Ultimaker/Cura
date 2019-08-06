@@ -58,6 +58,7 @@ Item
             anchors.right: parent.right
             width: UM.Theme.getSize("print_setup_big_item").width
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
+            hoverEnabled: true
 
             contentItem: Label
             {
@@ -72,7 +73,8 @@ Item
 
             background: Rectangle
             {
-                border.color: UM.Theme.getColor("lining")
+                id: backgroundItem
+                border.color: intentSelection.hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
                 border.width: UM.Theme.getSize("default_lining").width
                 radius: UM.Theme.getSize("default_radius").width
                 color: UM.Theme.getColor("main_background")
