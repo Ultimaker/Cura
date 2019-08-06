@@ -16,6 +16,7 @@ from .LocalClusterOutputDevice import LocalClusterOutputDevice
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..CloudFlowMessage import CloudFlowMessage
 from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
+from ..Messages.NotClusterHostMessage import NotClusterHostMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
 
@@ -128,8 +129,6 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a new device.
     def _onDeviceDiscovered(self, key: str, address: str, properties: Dict[bytes, bytes]) -> None:
-        cluster_size = int(properties.get(b"cluster_size", -1))
-        firmware_version = Version(properties.get(b"firmware", "1.0.0"))
         machine_identifier = properties.get(b"machine", b"").decode("utf-8")
         printer_type_identifiers = self._getPrinterTypeIdentifiers()
 
@@ -139,10 +138,6 @@ class LocalClusterOutputDeviceManager:
             if machine_identifier.startswith(bom):
                 properties[b"printer_type"] = bytes(p_type, encoding="utf8")
                 break
-
-        # We no longer support legacy devices, prevent them from showing up in the discovered devices list.
-        if cluster_size == -1 or firmware_version < self.MIN_SUPPORTED_CLUSTER_VERSION:
-            return
 
         device = LocalClusterOutputDevice(key, address, properties)
         CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
@@ -210,10 +205,15 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a device to the current active machine.
     def _connectToOutputDevice(self, device: UltimakerNetworkedPrinterOutputDevice, machine: GlobalStack) -> None:
-        
+
         # Make sure users know that we no longer support legacy devices.
-        if device.clusterSize < 1 or Version(device.firmwareVersion) < self.MIN_SUPPORTED_CLUSTER_VERSION:
+        if Version(device.firmwareVersion) < self.MIN_SUPPORTED_CLUSTER_VERSION:
             LegacyDeviceNoLongerSupportedMessage().show()
+            return
+    
+        # Tell the user that they cannot connect to a non-host printer.
+        if device.clusterSize < 1:
+            NotClusterHostMessage().show()
             return
         
         device.connect()
