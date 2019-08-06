@@ -35,7 +35,7 @@ Item
 
         Label
         {
-            id: intentLabel
+            id: profileLabel
             anchors
             {
                 top: parent.top
@@ -43,7 +43,7 @@ Item
                 left: parent.left
                 right: intentSelection.left
             }
-            text: catalog.i18nc("@label", "Intent")
+            text: catalog.i18nc("@label", "Profile")
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
@@ -75,6 +75,7 @@ Item
                 border.color: UM.Theme.getColor("lining")
                 border.width: UM.Theme.getSize("default_lining").width
                 radius: UM.Theme.getSize("default_radius").width
+                color: UM.Theme.getColor("main_background")
             }
 
             function generateActiveQualityText()
