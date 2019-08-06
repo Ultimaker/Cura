@@ -109,8 +109,8 @@ Item
                 height: UM.Theme.getSize("print_setup_icon").height
 
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.right: parent.right
-                anchors.rightMargin: UM.Theme.getSize("thick_margin").width
+                anchors.right: downArrow.left
+                anchors.rightMargin: UM.Theme.getSize("default_margin").width
 
                 color: hovered ? UM.Theme.getColor("setting_control_button_hover") : UM.Theme.getColor("setting_control_button");
                 iconSource: UM.Theme.getIcon("star")
@@ -126,6 +126,24 @@ Item
                     base.showTooltip(intent, Qt.point(-UM.Theme.getSize("default_margin").width, 0), content)
                 }
                 onExited: base.hideTooltip()
+            }
+            UM.RecolorImage
+            {
+                id: downArrow
+
+
+                source: UM.Theme.getIcon("arrow_bottom")
+                width: UM.Theme.getSize("standard_arrow").width
+                height: UM.Theme.getSize("standard_arrow").height
+
+                anchors
+                {
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                }
+
+                color: UM.Theme.getColor("setting_control_button")
             }
         }
 
