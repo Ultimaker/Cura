@@ -394,7 +394,7 @@ TabView
                 {
                     width: childrenRect.width
                     height: childrenRect.height
-                    text: model.description
+                    text: model.label
                     Label
                     {
                         id: label
