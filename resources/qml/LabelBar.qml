@@ -28,7 +28,7 @@ Item
             {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                Layout.maximumWidth: index + 1 === repeater.count ? itemSize: 200000000
+                Layout.maximumWidth: index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1)
                 height: childrenRect.height
                 Label
                 {
