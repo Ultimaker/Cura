@@ -12,15 +12,17 @@ Popup
     property int defaultMargin: 5
     property int checkmarkSize: 12
     property int buttonHeight: 25
-    property color backgroundColor: "#f2f2f2"
-    property color borderColor: "#cccccc"
+    property color backgroundColor: UM.Theme.getColor("main_background")
+    property color borderColor: UM.Theme.getColor("lining")
+
     padding: 0
 
-    background: Rectangle
+    background: Cura.RoundedRectangle
     {
         color: backgroundColor
-        border.width: 1
+        border.width: UM.Theme.getSize("default_lining").width
         border.color: borderColor
+        cornerSide: Cura.RoundedRectangle.Direction.Down
     }
 
     ButtonGroup
@@ -33,10 +35,10 @@ Popup
     contentItem: Column
     {
         anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_lining").width
+        anchors.rightMargin: UM.Theme.getSize("default_lining").width
         anchors.right: parent.right
         anchors.top: parent.top
-
-        height: childrenRect.height
 
         // This repeater adds the intent labels
         Repeater
@@ -208,6 +210,12 @@ Popup
                 popup.visible = false
                 Cura.Actions.manageProfiles.trigger()
             }
+        }
+        // spacer
+        Item
+        {
+            width: 2
+            height: UM.Theme.getSize("default_radius").width 
         }
     }
 }
