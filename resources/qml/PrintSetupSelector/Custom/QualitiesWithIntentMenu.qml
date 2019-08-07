@@ -65,7 +65,7 @@ Popup
                     enabled: false
                     visible: qualitiesList.visibleChildren.length > 0
                     anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 }
 
                 Column
@@ -195,14 +195,18 @@ Popup
                     id: textLabel
                     text: manageProfilesButton.text
                     height: contentHeight
-                    anchors.left: button.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.left: parent.left
+                    anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
+                    verticalAlignment: Text.AlignVCenter
                 }
                 Label
                 {
                     id: shortcutLabel
                     text: Cura.Actions.manageProfiles.shortcut
+                    height: contentHeight
                     anchors.right: parent.right
+                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    verticalAlignment: Text.AlignVCenter
                 }
             }
             onClicked:

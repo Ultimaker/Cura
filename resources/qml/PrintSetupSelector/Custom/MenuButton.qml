@@ -22,6 +22,7 @@ Button
         border.width: 1
         border.color: button.checked ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
         color: button.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        radius: UM.Theme.getSize("action_button_radius").width
     }
 
     // Workarround to ensure that the mnemonic highlighting happens correctly
@@ -42,6 +43,6 @@ Button
         height: contentHeight
         verticalAlignment: Text.AlignVCenter
         anchors.left: button.left
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        anchors.leftMargin: UM.Theme.getSize("wide_margin").width
     }
 }
