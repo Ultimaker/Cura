@@ -15,6 +15,9 @@ mocked_material.getMetaDataEntry = MagicMock(return_value = "base_material")
 mocked_extruder.material = mocked_material
 mocked_stack.extruders = {"0": mocked_extruder}
 
+# These tests are outdated
+pytestmark = pytest.mark.skip
+
 @pytest.fixture()
 def material_manager():
     result = MagicMock()
