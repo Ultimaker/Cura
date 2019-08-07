@@ -46,11 +46,12 @@ class VariantNode(ContainerNode):
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
             materials = materials_per_base_file.values()
 
-        for excluded_material in self.machine.exclude_materials:
-            if excluded_material in materials:
-                del materials[excluded_material]
-
+        filtered_materials = []
         for material in materials:
+            if material["id"] not in self.machine.exclude_materials:
+                filtered_materials.append(material)
+
+        for material in filtered_materials:
             base_file = material["base_file"]
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
