@@ -67,17 +67,6 @@ class QualityManager(QObject):
         self._update_timer.timeout.connect(self._updateMaps)
 
     def initialize(self) -> None:
-        container_tree = ContainerTree()
-        for machine_id, machine in container_tree.machines.items():
-            print("--", machine_id)
-            for variant_name, variant in machine.variants.items():
-                print("-- --", variant_name)
-                for material_base_file, material in variant.materials.items():
-                    print("-- -- --", material_base_file)
-                    for quality_id, quality in material.qualities.items():
-                        print("-- -- -- --", quality_id)
-                        for intent_id in quality.intents:
-                            print("-- -- -- -- --", intent_id)
 
         # Initialize the lookup tree for quality profiles with following structure:
         # <machine> -> <nozzle> -> <buildplate> -> <material>

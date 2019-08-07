@@ -47,7 +47,8 @@ class VariantNode(ContainerNode):
             materials = materials_per_base_file.values()
 
         for excluded_material in self.machine.exclude_materials:
-            del materials[excluded_material]
+            if excluded_material in materials:
+                del materials[excluded_material]
 
         for material in materials:
             base_file = material["base_file"]
