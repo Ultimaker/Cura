@@ -13,7 +13,6 @@
         "platform":                        "deltacomb.stl",
         "has_machine_quality":             true,
         "has_materials":                   true,
-        "has_machine_materials":           false,
         "has_variants":                    true,
         "variants_name":                   "Head",
         "preferred_variant_name":          "E3D 0.40mm",
