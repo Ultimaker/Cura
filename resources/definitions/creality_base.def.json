@@ -154,7 +154,6 @@
         "has_materials": true,
         "has_variants": true,
         "has_machine_quality": true,
-        "has_machine_materials": true,
         "variants_name": "Nozzle Size",
 
         "preferred_variant_name": "0.4mm Nozzle",

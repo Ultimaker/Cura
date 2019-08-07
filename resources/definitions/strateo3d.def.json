@@ -11,7 +11,6 @@
             "file_formats": "text/x-gcode",
             "has_machine_quality": true,
             "has_materials": true,
-            "has_machine_materials": true,
             "has_variants": true,
             "preferred_variant_name": "Standard 0.6",
             "preferred_material": "emotiontech_pla",

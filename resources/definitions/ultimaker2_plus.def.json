@@ -12,7 +12,6 @@
         "preferred_variant_name": "0.4 mm",
         "has_variants": true,
         "has_materials": true,
-        "has_machine_materials": true,
         "has_machine_quality": true,
         "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
         "first_start_actions": [],
