@@ -20,10 +20,16 @@ RowLayout
         {
             if (Cura.MachineManager.activeStack)
             {
-                var text = Cura.MachineManager.activeQualityOrQualityChangesName
+                var text = ""
+                if(Cura.MachineManager.activeIntentCategory != "default")
+                {
+                    text += Cura.MachineManager.activeIntentCategory + " - "
+                }
+
+                text += Cura.MachineManager.activeQualityOrQualityChangesName
                 if (!Cura.MachineManager.hasNotSupportedQuality)
                 {
-                    text += " " + layerHeight.properties.value + "mm"
+                    text += " - " + layerHeight.properties.value + "mm"
                     text += Cura.MachineManager.isActiveQualityExperimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
                 }
                 return text

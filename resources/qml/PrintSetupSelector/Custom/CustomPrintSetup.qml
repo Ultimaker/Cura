@@ -82,7 +82,14 @@ Item
 
             function generateActiveQualityText()
             {
-                var result = Cura.MachineManager.activeQualityOrQualityChangesName
+
+                var result = ""
+                if(Cura.MachineManager.activeIntentCategory != "default")
+                {
+                    result += Cura.MachineManager.activeIntentCategory + " - "
+                }
+
+                result += Cura.MachineManager.activeQualityOrQualityChangesName
                 if (Cura.MachineManager.isActiveQualityExperimental)
                 {
                     result += " (Experimental)"
