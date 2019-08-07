@@ -63,7 +63,6 @@ Menu
         title: catalog.i18nc("@title:menu", "&Build plate")
         visible: CuraSDKVersion == "dev" && Cura.MachineManager.hasVariantBuildplates
     }
-    ProfileMenu { title: catalog.i18nc("@title:settings", "&Profile") }
 
     MenuSeparator { }
 
