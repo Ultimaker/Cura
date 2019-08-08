@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional
@@ -8,6 +8,7 @@ from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
@@ -38,14 +39,6 @@ class CuraStackBuilder:
 
         machine_definition = definitions[0]
 
-        # get variant container for the global stack
-        global_variant_container = application.empty_variant_container
-        global_variant_node = variant_manager.getDefaultVariantNode(machine_definition, VariantType.BUILD_PLATE)
-        if global_variant_node:
-            global_variant_container = global_variant_node.getContainer()
-        if not global_variant_container:
-            global_variant_container = application.empty_variant_container
-
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
         # Make sure the new name does not collide with any definition or (quality) profile
         # createUniqueName() only looks at other stacks, but not at definitions or quality profiles
@@ -56,7 +49,7 @@ class CuraStackBuilder:
         new_global_stack = cls.createGlobalStack(
             new_stack_id = generated_name,
             definition = machine_definition,
-            variant_container = global_variant_container,
+            variant_container = application.empty_variant_container,
             material_container = application.empty_material_container,
             quality_container = application.empty_quality_container,
         )
@@ -108,16 +101,15 @@ class CuraStackBuilder:
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
         material_manager = application.getMaterialManager()
         registry = application.getContainerRegistry()
 
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
-        extruder_variant_node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE,
-                                                                      global_stack = global_stack)
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
         extruder_variant_name = None
-        if extruder_variant_node:
+        if extruder_variant_node is not None:
             extruder_variant_container = extruder_variant_node.getContainer()
             if not extruder_variant_container:
                 extruder_variant_container = application.empty_variant_container
