@@ -95,8 +95,9 @@ def test_materialAdded(container_registry, machine_node, metadata, material_resu
     for name in material_result_list:
         assert name in variant_node.materials
 
+
 @pytest.mark.parametrize("metadata,changed_material_list,unchanged_material_list", material_node_update_test_data)
-def test_materialAdded_update(container_registry, machine_node, metadata,changed_material_list, unchanged_material_list):
+def test_materialAdded_update(container_registry, machine_node, metadata, changed_material_list, unchanged_material_list):
     variant_node = createVariantNode("machine_1", machine_node, container_registry)
     original_material_nodes = copy.copy(variant_node.materials)
 
