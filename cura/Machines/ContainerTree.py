@@ -14,6 +14,14 @@ from typing import Dict
 #   The tree starts at the machine definitions. For every distinct definition
 #   there will be one machine node here.
 class ContainerTree:
+    __instance = None
+
+    @classmethod
+    def getInstance(cls):
+        if cls.__instance is None:
+            cls.__instance = ContainerTree()
+        return cls.__instance
+
     def __init__(self) -> None:
         self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
         container_registry = ContainerRegistry.getInstance()

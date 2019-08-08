@@ -70,6 +70,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 import cura.Machines.MaterialManager #Imported like this to prevent circular imports.
 import cura.Machines.QualityManager #Imported like this to prevent circular imports.
@@ -730,6 +731,9 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
+
+        Logger.log("i", "Building container tree.")
+        ContainerTree.getInstance()
 
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self, parent = self)
