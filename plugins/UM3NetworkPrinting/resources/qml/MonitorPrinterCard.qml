@@ -39,8 +39,7 @@ Item
     {
         id: background
         anchors.fill: parent
-        // color: UM.Theme.getColor("monitor_card_background")
-        color: "red"
+        color: UM.Theme.getColor("monitor_card_background")
         border
         {
             color: UM.Theme.getColor("monitor_card_border")
