@@ -1,16 +1,17 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import OrderedDict
 from typing import Optional, TYPE_CHECKING, Dict
 
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.VariantType import VariantType, ALL_VARIANT_TYPES
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
@@ -35,10 +36,16 @@ if TYPE_CHECKING:
 # A container is loaded when getVariant() is called to load a variant InstanceContainer.
 #
 class VariantManager:
+    __instance = None
 
-    def __init__(self, container_registry: ContainerRegistry) -> None:
-        self._container_registry = container_registry
+    @classmethod
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
+    def getInstance(cls) -> "VariantManager":
+        if cls.__instance is None:
+            cls.__instance = VariantManager()
+        return cls.__instance
 
+    def __init__(self) -> None:
         self._machine_to_variant_dict_map = dict()  # type: Dict[str, Dict["VariantType", Dict[str, ContainerNode]]]
         self._machine_to_buildplate_dict_map = dict() # type: Dict[str, Dict[str, ContainerNode]]
 
@@ -53,7 +60,8 @@ class VariantManager:
         self._machine_to_buildplate_dict_map = OrderedDict()
 
         # Cache all variants from the container registry to a variant map for better searching and organization.
-        variant_metadata_list = self._container_registry.findContainersMetadata(type = "variant")
+        container_registry = CuraContainerRegistry.getInstance
+        variant_metadata_list = container_registry.findContainersMetadata(type = "variant")
         for variant_metadata in variant_metadata_list:
             if variant_metadata["id"] in self._exclude_variant_id_list:
                 Logger.log("d", "Exclude variant [%s]", variant_metadata["id"])
@@ -85,7 +93,7 @@ class VariantManager:
                 if variant_definition not in self._machine_to_buildplate_dict_map:
                     self._machine_to_buildplate_dict_map[variant_definition] = OrderedDict()
 
-                variant_container = self._container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
+                variant_container = container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
                 buildplate_type = variant_container.getProperty("machine_buildplate_type", "value")
                 if buildplate_type not in self._machine_to_buildplate_dict_map[variant_definition]:
                     self._machine_to_variant_dict_map[variant_definition][buildplate_type] = dict()

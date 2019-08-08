@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict, OrderedDict
@@ -8,12 +8,13 @@ from typing import Dict, Optional, TYPE_CHECKING, Any, Set, List, cast, Tuple
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
-from UM.Application import Application
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Logger import Logger
-from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
+import cura.CuraApplication #Imported like this to prevent circular imports.
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
@@ -37,15 +38,20 @@ if TYPE_CHECKING:
 # because it's simple.
 #
 class MaterialManager(QObject):
+    __instance = None
+
+    @classmethod
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
+    def getInstance(cls) -> "MaterialManager":
+        if cls.__instance is None:
+            cls.__instance = MaterialManager()
+        return cls.__instance
 
     materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
     favoritesUpdated = pyqtSignal()  # Emitted whenever the favorites are changed
 
-    def __init__(self, container_registry, parent = None):
+    def __init__(self, parent = None):
         super().__init__(parent)
-        self._application = Application.getInstance()
-        self._container_registry = container_registry  # type: ContainerRegistry
-
         # Material_type -> generic material metadata
         self._fallback_materials_map = dict()  # type: Dict[str, Dict[str, Any]]
 
@@ -81,16 +87,18 @@ class MaterialManager(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._updateMaps)
 
-        self._container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
-        self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
-        self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
+        container_registry = CuraContainerRegistry.getInstance()
+        container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
+        container_registry.containerAdded.connect(self._onContainerMetadataChanged)
+        container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
         self._favorites = set()  # type: Set[str]
 
     def initialize(self) -> None:
         # Find all materials and put them in a matrix for quick search.
+        container_registry = CuraContainerRegistry.getInstance()
         material_metadatas = {metadata["id"]: metadata for metadata in
-                              self._container_registry.findContainersMetadata(type = "material") if
+                              container_registry.findContainersMetadata(type = "material") if
                               metadata.get("GUID")} # type: Dict[str, Dict[str, Any]]
 
         self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
@@ -107,7 +115,7 @@ class MaterialManager(QObject):
                 continue
             if root_material_id not in self._material_group_map:
                 self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
-                self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
+                self._material_group_map[root_material_id].is_read_only = container_registry.isReadOnly(root_material_id)
             group = self._material_group_map[root_material_id]
 
             # Store this material in the group of the appropriate root material.
@@ -206,7 +214,7 @@ class MaterialManager(QObject):
         for material_metadata in material_metadatas.values():
             self.__addMaterialMetadataIntoLookupTree(material_metadata)
 
-        favorites = self._application.getPreferences().getValue("cura/favorite_materials")
+        favorites = cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials")
         for item in favorites.split(";"):
             self._favorites.add(item)
 
@@ -239,7 +247,7 @@ class MaterialManager(QObject):
                                        (buildplate_name, VariantType.BUILD_PLATE),
                                        ]
 
-        variant_manager = self._application.getVariantManager()
+        variant_manager = cura.CuraApplication.CuraApplication.getInstance().getVariantManager()
 
         machine_node = machine_nozzle_buildplate_material_map[definition]
         current_node = machine_node
@@ -264,7 +272,7 @@ class MaterialManager(QObject):
 
         if error_message is not None:
             Logger.log("e", "%s It will not be added into the material lookup tree.", error_message)
-            self._container_registry.addWrongContainerId(material_metadata["id"])
+            CuraContainerRegistry.getInstance().addWrongContainerId(material_metadata["id"])
             return
 
         # Add the material to the current tree node, which is the deepest (the most specific) branch we can find.
@@ -537,6 +545,7 @@ class MaterialManager(QObject):
             Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
             return
 
+        container_registry = CuraContainerRegistry.getInstance()
         nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
         # Sort all nodes with respect to the container ID lengths in the ascending order so the base material container
         # will be the first one to be removed. We need to do this to ensure that all containers get loaded & deleted.
@@ -545,11 +554,11 @@ class MaterialManager(QObject):
         # list, so removeContainer() can ignore those ones.
         for node in nodes_to_remove:
             container_id = node.getMetaDataEntry("id", "")
-            results = self._container_registry.findContainers(id = container_id)
+            results = container_registry.findContainers(id = container_id)
             if not results:
-                self._container_registry.addWrongContainerId(container_id)
+                container_registry.addWrongContainerId(container_id)
         for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.getMetaDataEntry("id", ""))
+            container_registry.removeContainer(node.getMetaDataEntry("id", ""))
 
     #
     # Methods for GUI
@@ -567,7 +576,7 @@ class MaterialManager(QObject):
         nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
         ids_to_remove = [node.getMetaDataEntry("id", "") for node in nodes_to_remove]
 
-        for extruder_stack in self._container_registry.findContainerStacks(type="extruder_train"):
+        for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:
                 return False
         return True
@@ -577,7 +586,7 @@ class MaterialManager(QObject):
         root_material_id = material_node.getMetaDataEntry("base_file")
         if root_material_id is None:
             return
-        if self._container_registry.isReadOnly(root_material_id):
+        if CuraContainerRegistry.getInstance().isReadOnly(root_material_id):
             Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
             return
 
@@ -614,12 +623,13 @@ class MaterialManager(QObject):
             return None
 
         # Ensure all settings are saved.
-        self._application.saveSettings()
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
 
         # Create a new ID & container to hold the data.
         new_containers = []
+        container_registry = CuraContainerRegistry.getInstance()
         if new_base_id is None:
-            new_base_id = self._container_registry.uniqueName(base_container.getId())
+            new_base_id = container_registry.uniqueName(base_container.getId())
         new_base_container = copy.deepcopy(base_container)
         new_base_container.getMetaData()["id"] = new_base_id
         new_base_container.getMetaData()["base_file"] = new_base_id
@@ -652,7 +662,7 @@ class MaterialManager(QObject):
 
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
-            self._container_registry.addContainer(container_to_add)
+            container_registry.addContainer(container_to_add)
 
         # if the duplicated material was favorite then the new material should also be added to favorite.
         if root_material_id in self.getFavorites():
@@ -668,12 +678,13 @@ class MaterialManager(QObject):
         from UM.i18n import i18nCatalog
         catalog = i18nCatalog("cura")
         # Ensure all settings are saved.
-        self._application.saveSettings()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        application.saveSettings()
 
-        machine_manager = self._application.getMachineManager()
+        machine_manager = application.getMachineManager()
         extruder_stack = machine_manager.activeStack
 
-        machine_definition = self._application.getGlobalContainerStack().definition
+        machine_definition = application.getGlobalContainerStack().definition
         root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
 
         approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
@@ -685,7 +696,7 @@ class MaterialManager(QObject):
             return ""
 
         # Create a new ID & container to hold the data.
-        new_id = self._container_registry.uniqueName("custom_material")
+        new_id = CuraContainerRegistry.getInstance().uniqueName("custom_material")
         new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
                         "brand": catalog.i18nc("@label", "Custom"),
                         "GUID": str(uuid.uuid4()),
@@ -702,8 +713,8 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
-        self._application.saveSettings()
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
 
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str) -> None:
@@ -715,8 +726,8 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
-        self._application.saveSettings()
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
 
     @pyqtSlot()
     def getFavorites(self):

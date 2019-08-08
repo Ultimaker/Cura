@@ -15,7 +15,7 @@ from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qm
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application
-from UM.Decorators import override
+from UM.Decorators import override, deprecated
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Message import Message
@@ -23,7 +23,6 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
-from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -47,7 +46,6 @@ from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.SettingFunction import SettingFunction
@@ -73,6 +71,8 @@ from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
 
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
+import cura.Machines.MaterialManager #Imported like this to prevent circular imports.
+import cura.Machines.QualityManager #Imported like this to prevent circular imports.
 from cura.Machines.VariantManager import VariantManager
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
@@ -136,8 +136,6 @@ from cura import ApplicationMetadata, UltimakerCloudAuthentication
 from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
-    from cura.Machines.MaterialManager import MaterialManager
-    from cura.Machines.QualityManager import QualityManager
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 numpy.seterr(all = "ignore")
@@ -205,9 +203,7 @@ class CuraApplication(QtApplication):
         self.empty_quality_container = None  # type: EmptyInstanceContainer
         self.empty_quality_changes_container = None  # type: EmptyInstanceContainer
 
-        self._variant_manager = None
         self._material_manager = None
-        self._quality_manager = None
         self._machine_manager = None
         self._extruder_manager = None
         self._container_manager = None
@@ -734,21 +730,6 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
-        container_registry = self._container_registry
-
-        Logger.log("i", "Initializing variant manager")
-        self._variant_manager = VariantManager(container_registry)
-        self._variant_manager.initialize()
-
-        Logger.log("i", "Initializing material manager")
-        from cura.Machines.MaterialManager import MaterialManager
-        self._material_manager = MaterialManager(container_registry, parent = self)
-        self._material_manager.initialize()
-
-        Logger.log("i", "Initializing quality manager")
-        from cura.Machines.QualityManager import QualityManager
-        self._quality_manager = QualityManager(self, parent = self)
-        self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self, parent = self)
@@ -928,16 +909,19 @@ class CuraApplication(QtApplication):
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
 
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
     def getVariantManager(self, *args) -> VariantManager:
-        return self._variant_manager
+        return VariantManager.getInstance()
 
+    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
     def getMaterialManager(self, *args) -> "MaterialManager":
-        return self._material_manager
+        return cura.Machines.MaterialManager.MaterialManager.getInstance()
 
+    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
     def getQualityManager(self, *args) -> "QualityManager":
-        return self._quality_manager
+        return cura.Machines.QualityManager.QualityManager.getInstance()
 
     def getIntentManager(self, *args) -> IntentManager:
         return IntentManager.getInstance()

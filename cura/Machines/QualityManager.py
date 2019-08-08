@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import TYPE_CHECKING, Optional, cast, Dict, List, Set
@@ -9,10 +9,11 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Decorators import deprecated
 
+import cura.CuraApplication
 from cura.Settings.ExtruderStack import ExtruderStack
 
-from cura.Machines.ContainerTree import ContainerTree
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
@@ -20,7 +21,6 @@ if TYPE_CHECKING:
     from UM.Settings.Interfaces import DefinitionContainerInterface
     from cura.Settings.GlobalStack import GlobalStack
     from .QualityChangesGroup import QualityChangesGroup
-    from cura.CuraApplication import CuraApplication
 
 
 #
@@ -34,17 +34,25 @@ if TYPE_CHECKING:
 # because it's simple.
 #
 class QualityManager(QObject):
+    __instance = None
+
+    @classmethod
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
+    def getInstance(cls) -> "QualityManager":
+        if cls.__instance is None:
+            cls.__instance = QualityManager()
+        return cls.__instance
 
     qualitiesUpdated = pyqtSignal()
 
-    def __init__(self, application: "CuraApplication", parent = None) -> None:
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
-        self._application = application
-        self._material_manager = self._application.getMaterialManager()
-        self._container_registry = self._application.getContainerRegistry()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        self._material_manager = application.getMaterialManager()
+        self._container_registry = application.getContainerRegistry()
 
-        self._empty_quality_container = self._application.empty_quality_container
-        self._empty_quality_changes_container = self._application.empty_quality_changes_container
+        self._empty_quality_container = application.empty_quality_container
+        self._empty_quality_changes_container = application.empty_quality_changes_container
 
         # For quality lookup
         self._machine_nozzle_buildplate_material_quality_type_to_quality_dict = {}  # type: Dict[str, QualityNode]
@@ -422,8 +430,9 @@ class QualityManager(QObject):
 
         quality_changes_group.name = new_name
 
-        self._application.getMachineManager().activeQualityChanged.emit()
-        self._application.getMachineManager().activeQualityGroupChanged.emit()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        application.getMachineManager().activeQualityChanged.emit()
+        application.getMachineManager().activeQualityGroupChanged.emit()
 
         return new_name
 
@@ -432,7 +441,7 @@ class QualityManager(QObject):
     #
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, quality_changes_name: str, quality_model_item) -> None:
-        global_stack = self._application.getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             Logger.log("i", "No active global stack, cannot duplicate quality changes.")
             return
@@ -461,7 +470,7 @@ class QualityManager(QObject):
     #   stack and clear the user settings.
     @pyqtSlot(str)
     def createQualityChanges(self, base_name: str) -> None:
-        machine_manager = self._application.getMachineManager()
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
 
         global_stack = machine_manager.activeMachine
         if not global_stack:
@@ -522,7 +531,7 @@ class QualityManager(QObject):
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
         quality_changes.setDefinition(machine_definition_id)
 
-        quality_changes.setMetaDataEntry("setting_version", self._application.SettingVersion)
+        quality_changes.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.getInstance().SettingVersion)
         return quality_changes
 
 
