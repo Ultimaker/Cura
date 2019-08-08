@@ -75,7 +75,7 @@ class CuraContainerRegistry(ContainerRegistry):
     #   \return \type{string} Name that is unique for the specified type and name/id
     def createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
         new_name = new_name.strip()
-        num_check = re.compile("(.*?)\s*#\d+$").match(new_name)
+        num_check = re.compile(r"(.*?)\s*#\d+$").match(new_name)
         if num_check:
             new_name = num_check.group(1)
         if new_name == "":
