@@ -7512,7 +7512,7 @@
                     "unit": "%",
                     "type": "float",
                     "default_value": 50,
-                    "minimum_value": "10",
+                    "minimum_value": "1",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
                     "settable_per_mesh": true
@@ -7525,7 +7525,7 @@
                     "type": "float",
                     "default_value": 50,
                     "value": "small_feature_speed_factor",
-                    "minimum_value": "10",
+                    "minimum_value": "1",
                     "minimum_value_warning": "25",
                     "maximum_value": "100",
                     "settable_per_mesh": true
