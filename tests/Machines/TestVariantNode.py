@@ -2,7 +2,7 @@ from unittest.mock import patch, MagicMock
 import pytest
 
 from cura.Machines.VariantNode import VariantNode
-
+import copy
 
 instance_container_metadata_dict = {"fdmprinter": {"no_variant": [{"base_file": "material_1", "id": "material_1"}, {"base_file": "material_2", "id": "material_2"}]},
                  "machine_1": {"no_variant": [{"base_file": "material_1", "id": "material_1"}, {"base_file": "material_2", "id": "material_2"}],
@@ -17,6 +17,10 @@ material_node_added_test_data = [({"type": "Not a material"}, ["material_1", "ma
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant": "Variant One"}, ["material_1", "material_2", "material_4"])
                                  ]
 
+material_node_update_test_data = [({"type": "material", "base_file": "material_1", "definition": "machine_1", "variant": "Variant One"}, ["material_1"], ["material_2"]),
+                                  ({"type": "material", "base_file": "material_1", "definition": "fdmprinter", "variant": "Variant One"}, [], ["material_2", "material_1"]),  # Too generic
+                                  ({"type": "material", "base_file": "material_1", "definition": "machine_2", "variant": "Variant One"}, [], ["material_2", "material_1"])   # Wrong definition
+                                  ]
 
 metadata_dict = {}
 
@@ -90,3 +94,21 @@ def test_materialAdded(container_registry, machine_node, metadata, material_resu
     assert len(material_result_list) == len(variant_node.materials)
     for name in material_result_list:
         assert name in variant_node.materials
+
+@pytest.mark.parametrize("metadata,changed_material_list,unchanged_material_list", material_node_update_test_data)
+def test_materialAdded_update(container_registry, machine_node, metadata,changed_material_list, unchanged_material_list):
+    variant_node = createVariantNode("machine_1", machine_node, container_registry)
+    original_material_nodes = copy.copy(variant_node.materials)
+
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+        with patch("cura.Machines.VariantNode.MaterialNode"):  # We're not testing the material node here, so patch it out.
+            with patch.dict(metadata_dict, metadata):
+                mocked_container = createMockedInstanceContainer()
+                variant_node._materialAdded(mocked_container)
+
+    for key in unchanged_material_list:
+        assert original_material_nodes[key] == variant_node.materials[key]
+
+    for key in changed_material_list:
+        assert original_material_nodes[key] != variant_node.materials[key]
+
