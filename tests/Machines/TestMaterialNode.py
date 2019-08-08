@@ -27,6 +27,7 @@ metadata_dict = {}
 def getMetadataEntrySideEffect(*args, **kwargs):
     return metadata_dict.get(args[0])
 
+
 def createMockedInstanceContainer(container_id):
     result = MagicMock()
     result.getId = MagicMock(return_value=container_id)
@@ -98,7 +99,6 @@ def test_qualityAdded_hasMachineQuality(container_registry, metadata, qualities_
     assert len(qualities_result_list) == len(node.qualities)
     for name in qualities_result_list:
         assert name in node.qualities
-
 
 
 @pytest.mark.parametrize("metadata,qualities_result_list", quality_metadata_no_machine_quality)
