@@ -61,7 +61,7 @@ class DisplayRemainingTimeOnLCD(Script):
                         m, s = divmod(total_time, 60)    # Math to calculate
                         h, m = divmod(m, 60)             # hours, minutes and seconds.
                         total_time_string = "{:d}h{:02d}m{:02d}s".format(h, m, s)           # Now we put it into the string
-                        lines[line_index] = "M117 Time Left: {}".format(total_time_string)  # And print that string instead of the original one
+                        lines[line_index] = "M117 Time Left {}".format(total_time_string)   # And print that string instead of the original one
 
 
 
@@ -83,7 +83,7 @@ class DisplayRemainingTimeOnLCD(Script):
                         m1, s1 = divmod(time_left, 60)          # And some math to get the total time in seconds into
                         h1, m1 = divmod(m1, 60)                 # the right format. (HH,MM,SS)
                         current_time_string = "{:d}h{:2d}m{:2d}s".format(int(h1), int(m1), int(s1))   # Here we create the string holding our time
-                        lines[line_index] = "M117 Time Left: {}".format(current_time_string)          # And now insert that into the GCODE
+                        lines[line_index] = "M117 Time Left {}".format(current_time_string)           # And now insert that into the GCODE
 
 
                 # Here we are OUT of the second for-loop
