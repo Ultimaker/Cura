@@ -1729,7 +1729,7 @@
                     "description": "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move.",
                     "type": "bool",
                     "default_value": false,
-                    "value": "infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'cubicsubdiv' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic'",
+                    "value": "infill_pattern in ('grid', 'triangles', 'trihexagon', 'cubic', 'cubicsubdiv', 'tetrahedral', 'quarter_cubic')",
                     "enabled": "not ((infill_pattern == 'cross' and connect_infill_polygons) or infill_pattern == 'concentric')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
