@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -22,7 +22,7 @@ from UM.Message import Message
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
@@ -44,8 +44,6 @@ if TYPE_CHECKING:
     from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Settings.GlobalStack import GlobalStack
     from cura.Machines.MaterialManager import MaterialManager
-    from cura.Machines.QualityManager import QualityManager
-    from cura.Machines.VariantManager import VariantManager
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
@@ -119,16 +117,6 @@ class MachineManager(QObject):
         if containers:
             containers[0].nameChanged.connect(self._onMaterialNameChanged)
 
-        self._material_manager = self._application.getMaterialManager()  # type: MaterialManager
-        self._variant_manager = self._application.getVariantManager()  # type: VariantManager
-        self._quality_manager = self._application.getQualityManager()  # type: QualityManager
-
-        # When the materials lookup table gets updated, it can mean that a material has its name changed, which should
-        # be reflected on the GUI. This signal emission makes sure that it happens.
-        self._material_manager.materialsUpdated.connect(self.rootMaterialChanged)
-        # When the materials get updated, it can be that an activated material's diameter gets changed. In that case,
-        # a material update should be triggered to make sure that the machine still has compatible materials activated.
-        self._material_manager.materialsUpdated.connect(self._updateUponMaterialMetadataChange)
         self.rootMaterialChanged.connect(self._onRootMaterialChanged)
 
         # Emit the printerConnectedStatusChanged when either globalContainerChanged or outputDevicesChanged are emitted
@@ -1199,7 +1187,7 @@ class MachineManager(QObject):
         # In that case, do not set quality containers to empty.
         quality_group = None
         if quality_type != "not_supported":
-            quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
+            quality_group_dict = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
             quality_group = quality_group_dict.get(quality_type)
             if quality_group is None:
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
@@ -1281,7 +1269,7 @@ class MachineManager(QObject):
         current_quality_type = None
         if self._current_quality_group:
             current_quality_type = self._current_quality_group.quality_type
-        candidate_quality_groups = self._quality_manager.getQualityGroups(self._global_container_stack)
+        candidate_quality_groups = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
         Logger.log("d", "Current quality type = [%s]", current_quality_type)
@@ -1334,7 +1322,7 @@ class MachineManager(QObject):
                 current_nozzle_name = extruder.variant.getMetaDataEntry("name")
 
             material_diameter = extruder.getCompatibleMaterialDiameter()
-            candidate_materials = self._material_manager.getAvailableMaterials(
+            candidate_materials = MaterialManager.getInstance().getAvailableMaterials(
                 self._global_container_stack.definition,
                 current_nozzle_name,
                 buildplate_name,
@@ -1350,7 +1338,7 @@ class MachineManager(QObject):
                 continue
 
             # The current material is not available, find the preferred one
-            material_node = self._material_manager.getDefaultMaterial(self._global_container_stack, position_item, current_nozzle_name)
+            material_node = MaterialManager.getInstance().getDefaultMaterial(self._global_container_stack, position_item, current_nozzle_name)
             if material_node is not None:
                 self._setMaterial(position_item, material_node)
 
@@ -1428,7 +1416,7 @@ class MachineManager(QObject):
                 else:
                     variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
                                                                                   extruder_configuration.hotendID)
-                    material_container_node = self._material_manager.getMaterialNodeByType(self._global_container_stack,
+                    material_container_node = MaterialManager.getInstance().getMaterialNodeByType(self._global_container_stack,
                                                                                            position,
                                                                                            extruder_configuration.hotendID,
                                                                                            configuration.buildplateConfiguration,
@@ -1498,7 +1486,7 @@ class MachineManager(QObject):
         extruder_stack = self._global_container_stack.extruders[position]
         nozzle_name = extruder_stack.variant.getName()
         material_diameter = extruder_stack.getApproximateMaterialDiameter()
-        material_node = self._material_manager.getMaterialNode(machine_definition_id, nozzle_name, buildplate_name,
+        material_node = MaterialManager.getInstance().getMaterialNode(machine_definition_id, nozzle_name, buildplate_name,
                                                                material_diameter, root_material_id)
         self.setMaterial(position, material_node)
 
@@ -1545,7 +1533,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         # Get all the quality groups for this global stack and filter out by quality_type
-        quality_group_dict = self._quality_manager.getQualityGroups(self._global_container_stack)
+        quality_group_dict = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
         self.setQualityGroup(quality_group)
 
