@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer
@@ -36,14 +36,12 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
         self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
-        self._application = Application.getInstance()
-        self._machine_manager = self._application.getMachineManager()
-        self._quality_manager = Application.getInstance().getQualityManager()
+        application = Application.getInstance()
+        self._machine_manager = application.getMachineManager()
 
-        self._application.globalContainerStackChanged.connect(self._onChange)
+        application.globalContainerStackChanged.connect(self._onChange)
         self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
         self._machine_manager.extruderChanged.connect(self._onChange)
-        self._quality_manager.qualitiesUpdated.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 
