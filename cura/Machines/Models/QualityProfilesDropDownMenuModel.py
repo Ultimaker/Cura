@@ -3,11 +3,11 @@
 
 from PyQt5.QtCore import Qt, QTimer
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.SettingFunction import SettingFunction
 
+from cura.CuraApplication import CuraApplication
 from cura.Machines.QualityManager import QualityGroup
 
 
@@ -36,12 +36,12 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
         self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
-        application = Application.getInstance()
-        self._machine_manager = application.getMachineManager()
+        application = CuraApplication.getInstance()
+        machine_manager = application.getMachineManager()
 
         application.globalContainerStackChanged.connect(self._onChange)
-        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
-        self._machine_manager.extruderChanged.connect(self._onChange)
+        machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        machine_manager.extruderChanged.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 
@@ -58,14 +58,14 @@ class QualityProfilesDropDownMenuModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        global_stack = self._machine_manager.activeMachine
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
         # Check for material compatibility
-        if not self._machine_manager.activeMaterialsCompatible():
+        if not CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
             Logger.log("d", "No active material compatibility, set quality profile model as empty.")
             self.setItems([])
             return
@@ -94,7 +94,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.setItems(item_list)
 
     def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
-        global_stack = self._machine_manager.activeMachine
+        global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
             if not unit:
