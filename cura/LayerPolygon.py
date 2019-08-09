@@ -61,7 +61,7 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype = numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
         
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
