@@ -15,6 +15,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
 from .Messages.PrintJobUploadProgressMessage import PrintJobUploadProgressMessage
+from .Messages.NotClusterHostMessage import NotClusterHostMessage
 from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -95,7 +96,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
-        return max(1, len(self._printers))
+        return len(self._printers)
 
     # Get the amount of printer in the cluster per type.
     @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
@@ -190,6 +191,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             return
         self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
+    def _update(self):
+        super()._update()
+
     def _updatePrinters(self, remote_printers: List[ClusterPrinterStatus]) -> None:
 
         # Keep track of the new printers to show.
@@ -217,6 +221,14 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             self.setActivePrinter(self._printers[0])
 
         self.printersChanged.emit()
+        self._checkIfClusterHost()
+
+    ## Check is this device is a cluster host and takes the needed actions when it is not.
+    def _checkIfClusterHost(self):
+        if len(self._printers) < 1 and self.isConnected():
+            NotClusterHostMessage(self).show()
+            self.close()
+            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
 
     ## Updates the local list of print jobs with the list received from the cluster.
     #  \param remote_jobs: The print jobs received from the cluster.

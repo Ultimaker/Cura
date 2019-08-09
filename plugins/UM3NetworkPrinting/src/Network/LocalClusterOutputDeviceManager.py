@@ -14,7 +14,7 @@ from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .LocalClusterOutputDevice import LocalClusterOutputDevice
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
-from ..CloudFlowMessage import CloudFlowMessage
+from ..Messages.CloudFlowMessage import CloudFlowMessage
 from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
 from ..Messages.NotClusterHostMessage import NotClusterHostMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
@@ -57,9 +57,13 @@ class LocalClusterOutputDeviceManager:
     ## Stop network discovery and clean up discovered devices.
     def stop(self) -> None:
         self._zero_conf_client.stop()
-        # Cleanup all manual devices.
         for instance_name in list(self._discovered_devices):
             self._onDiscoveredDeviceRemoved(instance_name)
+
+    ## Restart discovery on the local network.
+    def startDiscovery(self):
+        self.stop()
+        self.start()
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
@@ -210,12 +214,7 @@ class LocalClusterOutputDeviceManager:
         if Version(device.firmwareVersion) < self.MIN_SUPPORTED_CLUSTER_VERSION:
             LegacyDeviceNoLongerSupportedMessage().show()
             return
-    
-        # Tell the user that they cannot connect to a non-host printer.
-        if device.clusterSize < 1:
-            NotClusterHostMessage().show()
-            return
-        
+
         device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)

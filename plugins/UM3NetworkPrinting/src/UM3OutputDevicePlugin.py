@@ -37,6 +37,10 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._network_output_device_manager.stop()
         self._cloud_output_device_manager.stop()
 
+    ## Restart network discovery.
+    def startDiscovery(self) -> None:
+        self._network_output_device_manager.startDiscovery()
+
     ## Force refreshing the network connections.
     def refreshConnections(self) -> None:
         self._network_output_device_manager.refreshConnections()
