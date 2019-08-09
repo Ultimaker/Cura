@@ -15,6 +15,7 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
 from .Messages.PrintJobUploadProgressMessage import PrintJobUploadProgressMessage
+from .Messages.NotClusterHostMessage import NotClusterHostMessage
 from .Models.UM3PrintJobOutputModel import UM3PrintJobOutputModel
 from .Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
@@ -95,7 +96,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
-        return max(1, len(self._printers))
+        return len(self._printers)
 
     # Get the amount of printer in the cluster per type.
     @pyqtProperty("QVariantList", notify=_clusterPrintersChanged)
@@ -190,6 +191,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             return
         self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
 
+    def _update(self):
+        super()._update()
+
     def _updatePrinters(self, remote_printers: List[ClusterPrinterStatus]) -> None:
 
         # Keep track of the new printers to show.
@@ -211,6 +215,13 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         for removed_printer in removed_printers:
             if self._active_printer and self._active_printer.key == removed_printer.key:
                 self.setActivePrinter(None)
+
+        # Check if this is actually a group host.
+        if len(new_printers) < 1 and self.isConnected():
+            NotClusterHostMessage(self).show()
+            self.close()
+            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
+            return
 
         self._printers = new_printers
         if self._printers and not self.activePrinter:

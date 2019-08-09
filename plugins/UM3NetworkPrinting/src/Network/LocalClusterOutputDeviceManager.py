@@ -215,11 +215,6 @@ class LocalClusterOutputDeviceManager:
             LegacyDeviceNoLongerSupportedMessage().show()
             return
 
-        # Tell the user that they cannot connect to a non-host printer.
-        if device.clusterSize < 1:
-            NotClusterHostMessage().show()
-            return
-
         device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
         CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
