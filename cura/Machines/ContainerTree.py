@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import ContainerInterface
@@ -30,6 +31,7 @@ class ContainerTree:
 
     ##  Builds the initial container tree.
     def _loadAll(self):
+        Logger.log("i", "Building container tree.")
         all_stacks = ContainerRegistry.getInstance().findContainerStacks()
         for stack in all_stacks:
             definition_id = stack.definition.getId()

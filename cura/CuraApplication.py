@@ -511,6 +511,8 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
 
+        self._container_registry.allMetadataLoaded.connect(ContainerRegistry.getInstance)
+
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
@@ -731,9 +733,6 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
-
-        Logger.log("i", "Building container tree.")
-        ContainerTree.getInstance()
 
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self, parent = self)
