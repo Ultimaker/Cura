@@ -71,7 +71,8 @@ class ClusterPrinterStatus(BaseModel):
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
         model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
-        for configuration, extruder_output, extruder_config in \
-                zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
-            configuration.updateOutputModel(extruder_output)
-            configuration.updateConfigurationModel(extruder_config)
+        if model.printerConfiguration is not None:
+            for configuration, extruder_output, extruder_config in \
+                    zip(self.configuration, model.extruders, model.printerConfiguration.extruderConfigurations):
+                configuration.updateOutputModel(extruder_output)
+                configuration.updateConfigurationModel(extruder_config)
