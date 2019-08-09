@@ -14,7 +14,7 @@ from .ZeroConfClient import ZeroConfClient
 from .ClusterApiClient import ClusterApiClient
 from .LocalClusterOutputDevice import LocalClusterOutputDevice
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
-from ..CloudFlowMessage import CloudFlowMessage
+from ..Messages.CloudFlowMessage import CloudFlowMessage
 from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
 from ..Messages.NotClusterHostMessage import NotClusterHostMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
