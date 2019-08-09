@@ -216,18 +216,19 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             if self._active_printer and self._active_printer.key == removed_printer.key:
                 self.setActivePrinter(None)
 
-        # Check if this is actually a group host.
-        if len(new_printers) < 1 and self.isConnected():
-            NotClusterHostMessage(self).show()
-            self.close()
-            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
-            return
-
         self._printers = new_printers
         if self._printers and not self.activePrinter:
             self.setActivePrinter(self._printers[0])
 
         self.printersChanged.emit()
+        self._checkIfClusterHost()
+
+    ## Check is this device is a cluster host and takes the needed actions when it is not.
+    def _checkIfClusterHost(self):
+        if len(self._printers) < 1 and self.isConnected():
+            NotClusterHostMessage(self).show()
+            self.close()
+            CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
 
     ## Updates the local list of print jobs with the list received from the cluster.
     #  \param remote_jobs: The print jobs received from the cluster.
