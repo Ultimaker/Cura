@@ -34,7 +34,7 @@
         "machine_nozzle_heat_up_speed": { "default_value": 2 },
         "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": { "default_value": [[-20,20],[10,10],[10,10],[10,10]] },
-        "gantry_height": { "default_value": 275 },
+        "gantry_height": { "value": "275" },
         "machine_max_feedrate_z": { "default_value": 15 },
         "machine_max_feedrate_e": { "default_value": 60 },
         "machine_max_acceleration_z": { "default_value": 1000 },

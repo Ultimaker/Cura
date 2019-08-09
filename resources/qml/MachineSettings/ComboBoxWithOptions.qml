@@ -59,6 +59,7 @@ UM.TooltipArea
         anchors.verticalCenter: comboBox.verticalCenter
         visible: text != ""
         font: UM.Theme.getFont("medium")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
 

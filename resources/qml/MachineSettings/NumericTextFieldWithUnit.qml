@@ -66,6 +66,7 @@ UM.TooltipArea
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
         font: UM.Theme.getFont("medium")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
 
@@ -135,6 +136,7 @@ UM.TooltipArea
         hoverEnabled: true
         selectByMouse: true
         font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
 
         // When the textbox gets focused by TAB, select all text

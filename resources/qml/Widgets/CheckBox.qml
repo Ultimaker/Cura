@@ -70,6 +70,7 @@ CheckBox
         leftPadding: control.indicator.width + control.spacing
         text: control.text
         font: control.font
+        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
         verticalAlignment: Text.AlignVCenter
     }

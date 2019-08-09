@@ -19,7 +19,7 @@ Item
     {
         anchors.centerIn: parent
         width: parent.width
-        spacing: UM.Theme.getSize("wide_margin").height
+        spacing: 2 * UM.Theme.getSize("wide_margin").height
 
         Label
         {
@@ -46,6 +46,7 @@ Item
             horizontalAlignment: Text.AlignHCenter
             text: catalog.i18nc("@text", "Please follow these steps to set up\nUltimaker Cura. This will only take a few moments.")
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
 

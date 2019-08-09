@@ -53,6 +53,7 @@ Item
         anchors
         {
             top: titleLabel.bottom
+            topMargin: UM.Theme.getSize("default_margin").height
             bottom: nextButton.top
             bottomMargin: UM.Theme.getSize("default_margin").height
             left: parent.left

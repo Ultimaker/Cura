@@ -104,7 +104,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # because the new version of Cura will be release before the firmware and we don't want to
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
-                    Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
+                    Logger.log("i", "Showing firmware update message for new version: {version}".format(current_version))
                     message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name,
                                                            self._lookups.getRedirectUserUrl())
                     message.actionTriggered.connect(self._callback)

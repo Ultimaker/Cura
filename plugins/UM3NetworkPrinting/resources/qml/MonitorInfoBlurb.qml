@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -40,6 +40,7 @@ Item
                 width: 240 * screenScaleFactor // TODO: Theme!
                 color: UM.Theme.getColor("monitor_tooltip_text")
                 font: UM.Theme.getFont("default")
+                renderType: Text.NativeRendering
             }
         }
     }

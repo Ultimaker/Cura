@@ -48,39 +48,69 @@ Item
 
             spacing: UM.Theme.getSize("wide_margin").height
 
-            Image
+            Label
             {
-                id: curaImage
+                id: topLabel
+                width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
-                source: UM.Theme.getImage("first_run_share_data")
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:")
+                wrapMode: Text.WordWrap
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                renderType: Text.NativeRendering
+            }
+
+            Grid {
+                columns: 2
+                spacing: UM.Theme.getSize("wide_margin").height
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Machine types")
+                    imageSource: UM.Theme.getImage("first_run_machine_types")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Material usage")
+                    imageSource: UM.Theme.getImage("first_run_material_usage")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Number of slices")
+                    imageSource: UM.Theme.getImage("first_run_number_slices")
+                }
+
+                ImageTile
+                {
+                    text: catalog.i18nc("@text", "Print settings")
+                    imageSource: UM.Theme.getImage("first_run_print_settings")
+                }
             }
 
             Label
             {
-                id: textLabel
+                id: bottomLabel
                 width: parent.width
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
                 text:
                 {
-                    var t = catalog.i18nc("@text", "Ultimaker Cura collects anonymous data to improve print quality and user experience.")
+                    var t = catalog.i18nc("@text", "Data collected by Ultimaker Cura will not contain any personal information.")
                     var t2 = catalog.i18nc("@text", "More information")
-                    t += " <span style=\"color: rgb(0,0,255)\">" + t2 + "</span>"
+                    t += " <a href='https://notusedref'>" + t2 + "</a>"
                     return t
                 }
                 textFormat: Text.RichText
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
+                linkColor: UM.Theme.getColor("text_link")
+                onLinkActivated: CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
                 renderType: Text.NativeRendering
-
-                MouseArea
-                {
-                    anchors.fill: parent
-                    onClicked:
-                    {
-                        CuraApplication.showMoreInformationDialogForAnonymousDataCollection()
-                    }
-                }
             }
         }
     }

@@ -7,9 +7,6 @@ import QtQuick.Controls 2.3
 import UM 1.3 as UM
 import Cura 1.1 as Cura
 
-import "../PrinterSelector"
-
-
 //
 // This is the widget for adding a network printer. There are 2 parts in this widget. One is a scroll view of a list
 // of discovered network printers. Beneath the scroll view is a container with 3 buttons: "Refresh", "Add by IP", and
@@ -59,7 +56,7 @@ Item
             ScrollBar.vertical.policy: ScrollBar.AsNeeded
 
             property int maxItemCountAtOnce: 8  // show at max 8 items at once, otherwise you need to scroll.
-            height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+            height: Math.min(contentHeight, maxItemCountAtOnce * UM.Theme.getSize("action_button").height)
 
             visible: networkPrinterListView.count > 0
 
@@ -71,29 +68,63 @@ Item
                 anchors.fill: parent
                 model: CuraApplication.getDiscoveredPrintersModel().discoveredPrinters
 
+                section.property: "modelData.sectionName"
+                section.criteria: ViewSection.FullString
+                section.delegate: sectionHeading
+
+                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+
                 Component.onCompleted:
                 {
-                    // Select the first one that's not "unknown" by default.
+                    var toSelectIndex = -1
+                    // Select the first one that's not "unknown" and is the host a group by default.
                     for (var i = 0; i < count; i++)
                     {
-                        if (!model[i].isUnknownMachineType)
+                        if (!model[i].isUnknownMachineType && model[i].isHostOfGroup)
                         {
-                            currentIndex = i
+                            toSelectIndex = i
                             break
                         }
                     }
+                    currentIndex = toSelectIndex
                 }
 
-                delegate: MachineSelectorButton
+                // CURA-6483 For some reason currentIndex can be reset to 0. This check is here to prevent automatically
+                // selecting an unknown or non-host printer.
+                onCurrentIndexChanged:
+                {
+                    var item = model[currentIndex]
+                    if (!item || item.isUnknownMachineType || !item.isHostOfGroup)
+                    {
+                        currentIndex = -1
+                    }
+                }
+
+                Component
+                {
+                    id: sectionHeading
+
+                    Label
+                    {
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        height: UM.Theme.getSize("setting_control").height
+                        text: section
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("small_button_text")
+                        verticalAlignment: Text.AlignVCenter
+                        renderType: Text.NativeRendering
+                    }
+                }
+
+                delegate: Cura.MachineSelectorButton
                 {
                     text: modelData.device.name
 
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
+                    width: networkPrinterListView.width
                     outputDevice: modelData.device
 
-                    enabled: !modelData.isUnknownMachineType
+                    enabled: !modelData.isUnknownMachineType && modelData.isHostOfGroup
 
                     printerTypeLabelAutoFit: true
 
@@ -119,22 +150,23 @@ Item
         }
     }
 
+    // Horizontal line separating the buttons (below) and the discovered network printers (above)
+    Rectangle
+    {
+        id: separator
+        anchors.left: parent.left
+        anchors.top: networkPrinterInfo.bottom
+        anchors.right: parent.right
+        height: UM.Theme.getSize("default_lining").height
+        color: UM.Theme.getColor("lining")
+    }
+
     Item
     {
         id: controlsRectangle
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.top: networkPrinterInfo.bottom
-
-        // Horizontal line separating the buttons (below) and the discovered network printers (above)
-        Rectangle
-        {
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.right: parent.right
-            height: UM.Theme.getSize("default_lining").width
-            color: UM.Theme.getColor("lining")
-        }
+        anchors.top: separator.bottom
 
         height: UM.Theme.getSize("message_action_button").height + UM.Theme.getSize("default_margin").height
 

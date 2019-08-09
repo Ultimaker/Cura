@@ -29,6 +29,7 @@ Cura.MachineAction
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label","Please select any upgrades made to this Ultimaker Original")
             font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
 

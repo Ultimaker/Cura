@@ -71,7 +71,23 @@ class PrinterConfigurationModel(QObject):
         return "\n".join(message_chunks)
 
     def __eq__(self, other):
-        return hash(self) == hash(other)
+        if not isinstance(other, PrinterConfigurationModel):
+            return False
+
+        if self.printerType != other.printerType:
+            return False
+
+        if self.buildplateConfiguration != other.buildplateConfiguration:
+            return False
+
+        if len(self.extruderConfigurations) != len(other.extruderConfigurations):
+            return False
+
+        for self_extruder, other_extruder in zip(sorted(self._extruder_configurations, key=lambda x: x.position), sorted(other.extruderConfigurations, key=lambda x: x.position)):
+            if self_extruder != other_extruder:
+                return False
+
+        return True
 
     ##  The hash function is used to compare and create unique sets. The configuration is unique if the configuration
     #   of the extruders is unique (the order of the extruders matters), and the type and buildplate is the same.

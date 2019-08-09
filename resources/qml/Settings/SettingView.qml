@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -228,7 +228,7 @@ Item
             model: UM.SettingDefinitionsModel
             {
                 id: definitionsModel
-                containerId: Cura.MachineManager.activeDefinitionId
+                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
                 exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
@@ -270,6 +270,8 @@ Item
                 property var propertyProvider: provider
                 property var globalPropertyProvider: inheritStackProvider
                 property var externalResetHandler: false
+
+                property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
 
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -314,16 +316,15 @@ Item
                     when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
-                        // associate this binding with Cura.MachineManager.activeMachineId in the beginning so this
+                        // Associate this binding with Cura.MachineManager.activeMachine.id in the beginning so this
                         // binding will be triggered when activeMachineId is changed too.
                         // Otherwise, if this value only depends on the extruderIds, it won't get updated when the
                         // machine gets changed.
-                        var activeMachineId = Cura.MachineManager.activeMachineId;
 
                         if (!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
-                            return activeMachineId;
+                            return delegate.activeMachineId
                         }
                         if (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
@@ -336,7 +337,7 @@ Item
                             return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        return activeMachineId;
+                        return delegate.activeMachineId
                     }
                 }
 
@@ -345,7 +346,7 @@ Item
                 UM.SettingPropertyProvider
                 {
                     id: inheritStackProvider
-                    containerStackId: Cura.MachineManager.activeMachineId
+                    containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
                     key: model.key
                     watchedProperties: [ "limit_to_extruder" ]
                 }
@@ -354,7 +355,7 @@ Item
                 {
                     id: provider
 
-                    containerStackId: Cura.MachineManager.activeMachineId
+                    containerStackId: delegate.activeMachineId
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
@@ -371,7 +372,7 @@ Item
                         contextMenu.provider = provider
                         contextMenu.popup();
                     }
-                    onShowTooltip: base.showTooltip(delegate, Qt.point(- settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
+                    onShowTooltip: base.showTooltip(delegate, Qt.point(-settingsView.x - UM.Theme.getSize("default_margin").width, 0), text)
                     onHideTooltip: base.hideTooltip()
                     onShowAllHiddenInheritedSettings:
                     {
@@ -511,12 +512,7 @@ Item
                     text: catalog.i18nc("@action:menu", "Hide this setting");
                     onTriggered:
                     {
-                        definitionsModel.hide(contextMenu.key);
-                        // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "")
-                        {
-                            settingVisibilityPresetsModel.setActivePreset("custom");
-                        }
+                        definitionsModel.hide(contextMenu.key)
                     }
                 }
                 MenuItem
@@ -544,11 +540,6 @@ Item
                         {
                             definitionsModel.show(contextMenu.key);
                         }
-                        // visible settings have changed, so we're no longer showing a preset
-                        if (settingVisibilityPresetsModel.activePreset != "")
-                        {
-                            settingVisibilityPresetsModel.setActivePreset("custom");
-                        }
                     }
                 }
                 MenuItem
@@ -564,7 +555,7 @@ Item
             {
                 id: machineExtruderCount
 
-                containerStackId: Cura.MachineManager.activeMachineId
+                containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
                 key: "machine_extruder_count"
                 watchedProperties: [ "value" ]
                 storeIndex: 0

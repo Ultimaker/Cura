@@ -1,0 +1,73 @@
+{
+    "version": 2,
+    "name": "Felix Pro 2 Dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "pnks",
+        "manufacturer": "Felix",
+        "platform": "FelixPro2_platform.obj",
+        "platform_offset": [-135, -0.5, 130],
+        "machine_extruder_trains":
+        {
+            "0": "felixpro2_dual_extruder_0",
+            "1": "felixpro2_dual_extruder_1"
+        },
+        "file_formats": "text/x-gcode",
+        "has_variants": true,
+        "has_materials": true,
+        "preferred_variant_name": "0.35 mm",
+        "variants_name": "Nozzle diameter"
+    },
+    "overrides": {
+        "machine_name": { "default_value": "FelixPro2Dual" },
+
+        "layer_height": { "default_value": 0.15 },
+        "layer_height_0": { "default_value": 0.2 },
+        "speed_layer_0": { "default_value": 20},
+        
+        "infill_sparse_density": { "default_value": 20 },
+        "wall_thickness": { "default_value": 1 },
+        "top_bottom_thickness": { "default_value": 1 },
+
+        "machine_width": { "default_value": 240 },
+        "machine_depth": { "default_value": 225 },
+        "machine_height": { "default_value": 245 },
+
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -60, 50 ],
+                [ -60, -50 ],
+                [ 70, 50 ],
+                [ 70, -50 ]
+            ]
+        },
+        "gantry_height": { "value": "0" },
+        "machine_extruder_count": { "default_value": 2 },
+        "prime_tower_position_x": { "value": "250" },
+        "prime_tower_position_y": { "value": "200" },
+
+        "machine_heated_bed": { "default_value": true },
+        "machine_gcode_flavor": { "default_value": "Repetier" },
+        "machine_center_is_zero": { "default_value": false },
+
+        "speed_print": { "default_value": 80 },
+        "speed_travel": { "default_value": 200 },
+
+        "retraction_amount": { "default_value": 1 },
+        "retraction_speed": { "default_value": 50},
+        "material_flow": { "default_value": 100 },
+        "material_flow_layer_0": { "default_value" : 110, "value": "material_flow * 1.1" },
+        "adhesion_type": { "default_value": "skirt" },
+        "skirt_brim_minimal_length": { "default_value": 130 },
+        "skirt_line_count": { "default_value": 3 },
+
+        "machine_start_gcode": {
+            "default_value": "G90 ;absolute positioning\r\nM82 ;set extruder to absolute mode\r\nM107 ;start with the fan off\r\nG28 X0 Y0 ;move X\/Y to min endstops\r\nG28 Z0 ;move Z to min endstops\r\nG1 Z15.0 F9000 ;move the platform down 15mm\r\n\r\nT0 ;Switch to the 1st extruder\r\nG92 E0 ;zero the extruded length\r\nG1 F200 E6 ;extrude 6 mm of feed stock\r\nG92 E0 ;zero the extruded length again\r\n;G1 F9000\r\nM117 FPro2 printing...\r\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "; Endcode FELIXprinters Pro series\r\n; =================================\t; Move extruder to park position\r\nG91   \t\t\t\t\t; Make coordinates relative\r\nG1 Z2 F5000   \t\t\t\t; Move z 2mm up\r\nG90   \t\t\t\t\t; Use absolute coordinates again\t\t\r\nG1 X220 Y243 F7800 \t\t\t; Move bed and printhead to ergonomic position\r\n\r\n; =================================\t; Turn off heaters\r\nT0\t\t\t\t\t; Select left extruder\r\nM104 T0 S0\t\t\t\t; Turn off heater and continue\t\t\t\t\r\nG92 E0\t\t\t\t\t; Reset extruder position\r\nG1 E-8\t\t\t\t\t; Retract filament 8mm\r\nG1 E-5\t\t\t\t\t; Push back filament 3mm\r\nG92 E0\t\t\t\t\t; Reset extruder position\r\n\r\nT1\t\t\t\t\t; Select right extruder\r\nM104 T1 S0\t\t\t\t; Turn off heater and continu\r\nG92 E0\t\t\t\t\t; Reset extruder position\r\nG1 E-8\t\t\t\t\t; Retract filament 8mm\r\nG1 E-5\t\t\t\t\t; Push back filament 3mm\r\nG92 E0\t\t\t\t\t; Reset extruder position\r\nT0\t\t\t\t\t; Select left extruder\r\nM140 S0\t\t\t\t\t; Turn off bed heater\r\n\r\n; =================================\t; Turn the rest off\r\nM107    \t\t\t\t; Turn off fan\r\nM84\t\t\t\t\t; Disable steppers\r\nM117 Print Complete"
+        }
+    }
+}

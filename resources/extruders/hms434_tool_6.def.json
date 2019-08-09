@@ -17,10 +17,10 @@
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": "\n;start T0\n\nM104 T0 S{material_print_temperature_layer_0}\nG1 X65 Y35 F9000 ; go to wipe position\nM109 T0 S{material_print_temperature_layer_0}; wait for temp\nG1 E10 F300; prime\nG92 E0\nG1 X45 Y15 F3000; wipe\nG1 X55 F9000\nG1 Y35 F6000; wipe again\n\nM117 printing...\n"         
+          "default_value": "\n;changing to tool6"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nM104 T0 S{material_standby_temperature}\nG1 X65 Y35 F9000 ; go to wipe position\nM109 T0 R{material_standby_temperature}; wait for temp\nG1 X45 Y15 F3000; wipe\nG1 X55 F9000\nG1 Y35 F6000; wipe again\n\n;end T0\n\n"
+           "default_value": "\n;ending tool6"
         }
     }
 }

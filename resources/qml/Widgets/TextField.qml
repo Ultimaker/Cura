@@ -17,17 +17,41 @@ TextField
 
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property int controlWidth: UM.Theme.getSize("setting_control").width
-    property int controlHeight: UM.Theme.getSize("setting_control").height
-
     hoverEnabled: true
     selectByMouse: true
     font: UM.Theme.getFont("default")
+    color: UM.Theme.getColor("text")
     renderType: Text.NativeRendering
+
+    states: [
+        State
+        {
+            name: "disabled"
+            when: !textField.enabled
+            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
+            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
+        },
+        State
+        {
+            name: "invalid"
+            when: !textField.acceptableInput
+            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_validation_error")}
+            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_validation_error_background")}
+        },
+        State
+        {
+            name: "hovered"
+            when: textField.hovered || textField.activeFocus
+            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
+        }
+    ]
 
     background: Rectangle
     {
-        anchors.fill: parent
+        id: backgroundRectangle
+
+        color: UM.Theme.getColor("main_background")
+
         anchors.margins: Math.round(UM.Theme.getSize("default_lining").width)
         radius: UM.Theme.getSize("setting_control_radius").width
 

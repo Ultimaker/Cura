@@ -29,6 +29,7 @@ Menu
     MenuItem
     {
         id: saveWorkspaceMenu
+        shortcut: StandardKey.Save
         text: catalog.i18nc("@title:menu menubar:file", "&Save...")
         onTriggered:
         {

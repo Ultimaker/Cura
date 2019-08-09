@@ -63,9 +63,19 @@ class XmlMaterialProfile(InstanceContainer):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
             return
 
+        # Some metadata such as diameter should also be instantiated to be a setting. Go though all values for the
+        # "properties" field and apply the new values to SettingInstances as well.
+        new_setting_values_dict = {}
+        if key == "properties":
+            for k, v in value.items():
+                if k in self.__material_properties_setting_map:
+                    new_setting_values_dict[self.__material_properties_setting_map[k]] = v
+
         # Prevent recursion
         if not apply_to_all:
             super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
             return
 
         # Get the MaterialGroup
@@ -74,17 +84,23 @@ class XmlMaterialProfile(InstanceContainer):
         material_group = material_manager.getMaterialGroup(root_material_id)
         if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
             super().setMetaDataEntry(key, value)
+            for k, v in new_setting_values_dict.items():
+                self.setProperty(k, "value", v)
             return
         # Update the root material container
         root_material_container = material_group.root_material_node.getContainer()
         if root_material_container is not None:
             root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
+            for k, v in new_setting_values_dict.items():
+                root_material_container.setProperty(k, "value", v)
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
             container = node.getContainer()
             if container is not None:
                 container.setMetaDataEntry(key, value, apply_to_all = False)
+                for k, v in new_setting_values_dict.items():
+                    container.setProperty(k, "value", v)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
@@ -144,7 +160,7 @@ class XmlMaterialProfile(InstanceContainer):
         # setting_version is derived from the "version" tag in the schema, so don't serialize it into a file
         if ignored_metadata_keys is None:
             ignored_metadata_keys = set()
-        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name"}
+        ignored_metadata_keys |= {"setting_version", "definition", "status", "variant", "type", "base_file", "approximate_diameter", "id", "container_type", "name", "compatible"}
         # remove the keys that we want to ignore in the metadata
         for key in ignored_metadata_keys:
             if key in metadata:
@@ -174,13 +190,16 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Name Block
 
         for key, value in metadata.items():
-            builder.start(key) # type: ignore
+            key_to_use = key
+            if key in self._metadata_tags_that_have_cura_namespace:
+                key_to_use = "cura:" + key_to_use
+            builder.start(key_to_use) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
                 value = str(value)
             builder.data(value)
-            builder.end(key)
+            builder.end(key_to_use)
 
         builder.end("metadata")
         ## End Metadata Block
@@ -950,7 +969,7 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                machine_id_list = product_id_map.get(identifier.get("product", ""), [])
                 if not machine_id_list:
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
@@ -982,7 +1001,7 @@ class XmlMaterialProfile(InstanceContainer):
                     result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
-                    buildplate_map = {} # type: Dict[str, Dict[str, bool]]
+                    buildplate_map = {}  # type: Dict[str, Dict[str, bool]]
                     buildplate_map["buildplate_compatible"] = {}
                     buildplate_map["buildplate_recommended"] = {}
                     for buildplate in buildplates:
@@ -1167,6 +1186,8 @@ class XmlMaterialProfile(InstanceContainer):
     def __str__(self):
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
 
+    _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
+
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
         "print temperature": "default_material_print_temperature",
@@ -1179,6 +1200,14 @@ class XmlMaterialProfile(InstanceContainer):
         "adhesion tendency": "material_adhesion_tendency",
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
+        "build volume temperature": "build_volume_temperature",
+        "anti ooze retract position": "material_anti_ooze_retracted_position",
+        "anti ooze retract speed": "material_anti_ooze_retraction_speed",
+        "break preparation position": "material_break_preparation_retracted_position",
+        "break preparation speed": "material_break_preparation_speed",
+        "break position": "material_break_retracted_position",
+        "break speed": "material_break_speed",
+        "break temperature": "material_break_temperature"
     }
     __unmapped_settings = [
         "hardware compatible",

@@ -15,6 +15,8 @@ Cura.ExpandableComponent
 {
     id: base
 
+    dragPreferencesNamePrefix: "view/colorscheme"
+
     contentHeaderTitle: catalog.i18nc("@label", "Color scheme")
 
     Connections

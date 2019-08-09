@@ -46,7 +46,7 @@ UM.MainWindow
     {
         id: greyOutBackground
         anchors.fill: parent
-        visible: welcomeDialog.visible
+        visible: welcomeDialogItem.visible
         color: UM.Theme.getColor("window_disabled_background")
         opacity: 0.7
         z: stageMenu.z + 1
@@ -61,9 +61,9 @@ UM.MainWindow
         }
     }
 
-    WelcomeDialog
+    WelcomeDialogItem
     {
-        id: welcomeDialog
+        id: welcomeDialogItem
         visible: true  // True, so if somehow no preferences are found/loaded, it's shown anyway.
         z: greyOutBackground.z + 1
     }
@@ -71,29 +71,43 @@ UM.MainWindow
     Component.onCompleted:
     {
         CuraApplication.setMinimumWindowSize(UM.Theme.getSize("window_minimum_size"))
-        // Workaround silly issues with QML Action's shortcut property.
-        //
-        // Currently, there is no way to define shortcuts as "Application Shortcut".
-        // This means that all Actions are "Window Shortcuts". The code for this
-        // implements a rather naive check that just checks if any of the action's parents
-        // are a window. Since the "Actions" object is a singleton it has no parent by
-        // default. If we set its parent to something contained in this window, the
-        // shortcut will activate properly because one of its parents is a window.
-        //
-        // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
-        Cura.Actions.parent = backgroundItem
         CuraApplication.purgeWindows()
+    }
 
-        if (CuraApplication.needToShowUserAgreement)
+    Connections
+    {
+        target: CuraApplication
+        onInitializationFinished:
         {
-            welcomeDialog.visible = true
+            // Workaround silly issues with QML Action's shortcut property.
+            //
+            // Currently, there is no way to define shortcuts as "Application Shortcut".
+            // This means that all Actions are "Window Shortcuts". The code for this
+            // implements a rather naive check that just checks if any of the action's parents
+            // are a window. Since the "Actions" object is a singleton it has no parent by
+            // default. If we set its parent to something contained in this window, the
+            // shortcut will activate properly because one of its parents is a window.
+            //
+            // This has been fixed for QtQuick Controls 2 since the Shortcut item has a context property.
+            Cura.Actions.parent = backgroundItem
+
+            if (CuraApplication.shouldShowWelcomeDialog())
+            {
+                welcomeDialogItem.visible = true
+            }
+            else
+            {
+                welcomeDialogItem.visible = false
+            }
+
+            // Reuse the welcome dialog item to show "What's New" only.
+            if (CuraApplication.shouldShowWhatsNewDialog())
+            {
+                welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
         }
-        else
-        {
-            welcomeDialog.visible = false
-        }
-        // TODO: While the new onboarding process contains the user-agreement,
-        //       it should probably not entirely rely on 'needToShowUserAgreement' for show/hide.
     }
 
     Item
@@ -246,15 +260,17 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
-            ObjectsList
+            ObjectSelector
             {
-                id: objectsList
-                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+                id: objectSelector
+                visible: CuraApplication.platformActivity
                 anchors
                 {
-                    bottom: viewOrientationControls.top
+                    bottom: jobSpecs.top
                     left: toolbar.right
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height
                 }
             }
 
@@ -264,10 +280,12 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: viewOrientationControls.top
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     bottomMargin: UM.Theme.getSize("thin_margin").width
+                    topMargin: UM.Theme.getSize("thin_margin").width
                 }
             }
 
@@ -277,7 +295,7 @@ UM.MainWindow
 
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }
@@ -377,6 +395,7 @@ UM.MainWindow
         PrintSetupTooltip
         {
             id: tooltip
+            sourceWidth: UM.Theme.getSize("print_setup_widget").width
         }
     }
 
@@ -554,7 +573,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen();
+        onTriggered: base.toggleFullscreen()
+    }
+
+    Connections
+    {
+        target: Cura.Actions.exitFullScreen
+        onTriggered: base.exitFullscreen()
     }
 
     FileDialog
@@ -566,7 +591,12 @@ UM.MainWindow
         modality: Qt.WindowModal
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: CuraApplication.getDefaultPath("dialog_load_path")
+        folder:
+        {
+            //Because several implementations of the file dialog only update the folder when it is explicitly set.
+            folder = CuraApplication.getDefaultPath("dialog_load_path");
+            return CuraApplication.getDefaultPath("dialog_load_path");
+        }
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder
@@ -731,44 +761,6 @@ UM.MainWindow
         }
     }
 
-    AddMachineDialog
-    {
-        id: addMachineDialog
-        onMachineAdded:
-        {
-            machineActionsWizard.firstRun = addMachineDialog.firstRun
-            machineActionsWizard.start(id)
-        }
-    }
-
-    // Dialog to handle first run machine actions
-    UM.Wizard
-    {
-        id: machineActionsWizard;
-
-        title: catalog.i18nc("@title:window", "Add Printer")
-        property var machine;
-
-        function start(id)
-        {
-            var actions = Cura.MachineActionManager.getFirstStartActions(id)
-            resetPages() // Remove previous pages
-
-            for (var i = 0; i < actions.length; i++)
-            {
-                actions[i].displayItem.reset()
-                machineActionsWizard.appendPage(actions[i].displayItem, catalog.i18nc("@title", actions[i].label));
-            }
-
-            //Only start if there are actions to perform.
-            if (actions.length > 0)
-            {
-                machineActionsWizard.currentPage = 0;
-                show()
-            }
-        }
-    }
-
     MessageDialog
     {
         id: messageDialog
@@ -812,10 +804,37 @@ UM.MainWindow
         }
     }
 
+    Cura.WizardDialog
+    {
+        id: addMachineDialog
+        title: catalog.i18nc("@title:window", "Add Printer")
+        model: CuraApplication.getAddPrinterPagesModel()
+        progressBarVisible: false
+    }
+
+    Cura.WizardDialog
+    {
+        id: whatsNewDialog
+        title: catalog.i18nc("@title:window", "What's New")
+        model: CuraApplication.getWhatsNewPagesModel()
+        progressBarVisible: false
+    }
+
+    Connections
+    {
+        target: Cura.Actions.whatsNew
+        onTriggered: whatsNewDialog.show()
+    }
+
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered: addMachineDialog.visible = true;
+        onTriggered:
+        {
+            // Make sure to show from the first page when the dialog shows up.
+            addMachineDialog.resetModelState()
+            addMachineDialog.show()
+        }
     }
 
     AboutDialog
@@ -829,31 +848,17 @@ UM.MainWindow
         onTriggered: aboutDialog.visible = true;
     }
 
-    Connections
-    {
-        target: CuraApplication
-        onRequestAddPrinter:
-        {
-            addMachineDialog.visible = true
-            addMachineDialog.firstRun = false
-        }
-    }
-
     Timer
     {
-        id: startupTimer;
-        interval: 100;
-        repeat: false;
-        running: true;
+        id: startupTimer
+        interval: 100
+        repeat: false
+        running: true
         onTriggered:
         {
-            if(!base.visible)
+            if (!base.visible)
             {
-                base.visible = true;
-            }
-            if(!CuraApplication.needToShowUserAgreement && Cura.MachineManager.activeMachine == null)
-            {
-                addMachineDialog.open();
+                base.visible = true
             }
         }
     }

@@ -1,10 +1,15 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
+import sys
+
+from UM.Logger import Logger
+try:
+    from . import UFPReader
+except ImportError:
+    Logger.log("w", "Could not import UFPReader; libCharon may be missing")
+
 from UM.i18n import i18nCatalog
-
-from . import UFPReader
-
 i18n_catalog = i18nCatalog("cura")
 
 
@@ -21,6 +26,9 @@ def getMetaData():
 
 
 def register(app):
+    if "UFPReader.UFPReader" not in sys.modules:
+        return {}
+
     app.addNonSliceableExtension(".ufp")
     return {"mesh_reader": UFPReader.UFPReader()}
 

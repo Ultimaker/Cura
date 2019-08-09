@@ -49,18 +49,19 @@ Item
         anchors.left: parent.left
         anchors.right: parent.right
         height: UM.Theme.getSize("expandable_component_content_header").height
-        rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_right")
+        rightIconSource: contentShown ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         contentShown: base.contentShown
     }
 
     Cura.RoundedRectangle
     {
         id: contentRectangle
-        anchors.top: header.bottom
+        // Move up a bit (exaclty the width of the border) to avoid double line
+        y: header.height - UM.Theme.getSize("default_lining").width
         anchors.left: header.left
         anchors.right: header.right
         // Add 2x lining, because it needs a bit of space on the top and the bottom.
-        height: contentLoader.height + 2 * UM.Theme.getSize("thick_lining").height
+        height: contentLoader.item.height + 2 * UM.Theme.getSize("thick_lining").height
 
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")

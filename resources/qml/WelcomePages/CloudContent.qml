@@ -35,7 +35,7 @@ Item
         horizontalAlignment: Text.AlignHCenter
         text: catalog.i18nc("@label", "Ultimaker Cloud")
         color: UM.Theme.getColor("primary_button")
-        font: UM.Theme.getFont("large_bold")
+        font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
     }
 
@@ -51,7 +51,6 @@ Item
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
         }
-
 
         // Pictures and texts are arranged using Columns with spacing. The whole picture and text area is centered in
         // the cloud contents area.
@@ -98,13 +97,14 @@ Item
                     t = catalog.i18nc("@text", "- Store your Ultimaker Cura settings in the cloud for use anywhere")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Get exclusive access to material profiles from leading brands")
+                    t = catalog.i18nc("@text", "- Get exclusive access to print profiles from leading brands")
                     full_text += "<p>" + t + "</p>"
 
                     return full_text
                 }
                 textFormat: Text.RichText
                 font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
         }

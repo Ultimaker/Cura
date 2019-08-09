@@ -76,6 +76,4 @@ NumericTextFieldWithUnit
             forceUpdateOnChangeFunction()
         }
     }
-
-    // TODO: add forceUpdateOnChangeFunction:
 }

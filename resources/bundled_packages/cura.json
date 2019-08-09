@@ -33,18 +33,18 @@
             }
         }
     },
-    "ChangeLogPlugin": {
+    "AMFReader": {
         "package_info": {
-            "package_id": "ChangeLogPlugin",
+            "package_id": "AMFReader",
             "package_type": "plugin",
-            "display_name": "Change Log",
-            "description": "Shows changes since latest checked version.",
-            "package_version": "1.0.1",
+            "display_name": "AMF Reader",
+            "description": "Provides support for reading AMF files.",
+            "package_version": "1.0.0",
             "sdk_version": "6.0.0",
             "website": "https://ultimaker.com",
             "author": {
-                "author_id": "UltimakerPackages",
-                "display_name": "Ultimaker B.V.",
+                "author_id": "fieldOfView",
+                "display_name": "fieldOfView",
                 "email": "plugins@ultimaker.com",
                 "website": "https://ultimaker.com"
             }
@@ -754,6 +754,40 @@
             "display_name": "Version Upgrade 4.0 to 4.1",
             "description": "Upgrades configurations from Cura 4.0 to Cura 4.1.",
             "package_version": "1.0.1",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade41to42": {
+        "package_info": {
+            "package_id": "VersionUpgrade41to42",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.1 to 4.2",
+            "description": "Upgrades configurations from Cura 4.1 to Cura 4.2.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
+    "VersionUpgrade42to43": {
+        "package_info": {
+            "package_id": "VersionUpgrade42to43",
+            "package_type": "plugin",
+            "display_name": "Version Upgrade 4.2 to 4.3",
+            "description": "Upgrades configurations from Cura 4.2 to Cura 4.3.",
+            "package_version": "1.0.0",
             "sdk_version": "6.0.0",
             "website": "https://ultimaker.com",
             "author": {

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Optional, List, Dict, Any
 
 from PyQt5.QtCore import QUrl, Qt, pyqtSlot, pyqtProperty, pyqtSignal
 
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Resources import Resources
@@ -23,6 +24,9 @@ if TYPE_CHECKING:
 #  - page_url     : The QUrl to the QML file that contains the content of this page
 #  - next_page_id : (OPTIONAL) The next page ID to go to when this page finished. This is optional. If this is not
 #                   provided, it will go to the page with the current index + 1
+#  - next_page_button_text: (OPTIONAL) The text to show for the "next" button, by default it's the translated text of
+#                           "Next". Note that each step QML can decide whether to use this text or not, so it's not
+#                           mandatory.
 #  - should_show_function : (OPTIONAL) An optional function that returns True/False indicating if this page should be
 #                           shown. By default all pages should be shown. If a function returns False, that page will
 #                           be skipped and its next page will be shown.
@@ -34,6 +38,8 @@ class WelcomePagesModel(ListModel):
     IdRole = Qt.UserRole + 1  # Page ID
     PageUrlRole = Qt.UserRole + 2  # URL to the page's QML file
     NextPageIdRole = Qt.UserRole + 3  # The next page ID it should go to
+    NextPageButtonTextRole = Qt.UserRole + 4  # The text for the next page button
+    PreviousPageButtonTextRole = Qt.UserRole + 5  # The text for the previous page button
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -41,14 +47,23 @@ class WelcomePagesModel(ListModel):
         self.addRoleName(self.IdRole, "id")
         self.addRoleName(self.PageUrlRole, "page_url")
         self.addRoleName(self.NextPageIdRole, "next_page_id")
+        self.addRoleName(self.NextPageButtonTextRole, "next_page_button_text")
+        self.addRoleName(self.PreviousPageButtonTextRole, "previous_page_button_text")
 
         self._application = application
+        self._catalog = i18nCatalog("cura")
+
+        self._default_next_button_text = self._catalog.i18nc("@action:button", "Next")
 
         self._pages = []  # type: List[Dict[str, Any]]
 
         self._current_page_index = 0
         # Store all the previous page indices so it can go back.
         self._previous_page_indices_stack = deque()  # type: deque
+
+        # If the welcome flow should be shown. It can show the complete flow or just the changelog depending on the
+        # specific case. See initialize() for how this variable is set.
+        self._should_show_welcome_flow = False
 
     allFinished = pyqtSignal()  # emitted when all steps have been finished
     currentPageIndexChanged = pyqtSignal()
@@ -137,7 +152,8 @@ class WelcomePagesModel(ListModel):
         page_index = self.getPageIndexById(page_id)
         if page_index is None:
             # FIXME: If we cannot find the next page, we cannot do anything here.
-            Logger.log("e", "Cannot find page with ID [%s]", page_index)
+            Logger.log("e", "Cannot find page with ID [%s], go to the next page by default", page_index)
+            self.goToNextPage()
             return
 
         if self._shouldPageBeShown(page_index):
@@ -164,6 +180,12 @@ class WelcomePagesModel(ListModel):
 
         self.currentPageIndexChanged.emit()
 
+    shouldShowWelcomeFlowChanged = pyqtSignal()
+
+    @pyqtProperty(bool, notify = shouldShowWelcomeFlowChanged)
+    def shouldShowWelcomeFlow(self) -> bool:
+        return self._should_show_welcome_flow
+
     # Gets the page index with the given page ID. If the page ID doesn't exist, returns None.
     def getPageIndexById(self, page_id: str) -> Optional[int]:
         page_idx = None
@@ -179,38 +201,80 @@ class WelcomePagesModel(ListModel):
         return QUrl.fromLocalFile(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles,
                                                     os.path.join("WelcomePages", page_filename)))
 
-    def initialize(self) -> None:
-        # Add default welcome pages
-        self._pages.append({"id": "welcome",
-                            "page_url": self._getBuiltinWelcomePagePath("WelcomeContent.qml"),
-                            })
-        self._pages.append({"id": "user_agreement",
-                            "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
-                            })
-        self._pages.append({"id": "whats_new",
-                            "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
-                            })
-        self._pages.append({"id": "data_collections",
-                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
-                            })
-        self._pages.append({"id": "add_network_or_local_printer",
-                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
-                            "next_page_id": "machine_actions",
-                            })
-        self._pages.append({"id": "add_printer_by_ip",
-                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
-                            "next_page_id": "machine_actions",
-                            })
-        self._pages.append({"id": "machine_actions",
-                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
-                            "next_page_id": "cloud",
-                            "should_show_function": self.shouldShowMachineActions,
-                            })
-        self._pages.append({"id": "cloud",
-                            "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
-                            })
+    # FIXME: HACKs for optimization that we don't update the model every time the active machine gets changed.
+    def _onActiveMachineChanged(self) -> None:
+        self._application.getMachineManager().globalContainerChanged.disconnect(self._onActiveMachineChanged)
+        self._initialize(update_should_show_flag = False)
 
+    def initialize(self) -> None:
+        self._application.getMachineManager().globalContainerChanged.connect(self._onActiveMachineChanged)
+        self._initialize()
+
+    def _initialize(self, update_should_show_flag: bool = True) -> None:
+        show_whatsnew_only = False
+        if update_should_show_flag:
+            has_active_machine = self._application.getMachineManager().activeMachine is not None
+            has_app_just_upgraded = self._application.hasJustUpdatedFromOldVersion()
+
+            # Only show the what's new dialog if there's no machine and we have just upgraded
+            show_complete_flow = not has_active_machine
+            show_whatsnew_only = has_active_machine and has_app_just_upgraded
+
+            # FIXME: This is a hack. Because of the circular dependency between MachineManager, ExtruderManager, and
+            # possibly some others, setting the initial active machine is not done when the MachineManager gets initialized.
+            # So at this point, we don't know if there will be an active machine or not. It could be that the active machine
+            # files are corrupted so we cannot rely on Preferences either. This makes sure that once the active machine
+            # gets changed, this model updates the flags, so it can decide whether to show the welcome flow or not.
+            should_show_welcome_flow = show_complete_flow or show_whatsnew_only
+            if should_show_welcome_flow != self._should_show_welcome_flow:
+                self._should_show_welcome_flow = should_show_welcome_flow
+                self.shouldShowWelcomeFlowChanged.emit()
+
+        # All pages
+        all_pages_list = [{"id": "welcome",
+                           "page_url": self._getBuiltinWelcomePagePath("WelcomeContent.qml"),
+                           },
+                          {"id": "user_agreement",
+                           "page_url": self._getBuiltinWelcomePagePath("UserAgreementContent.qml"),
+                           },
+                          {"id": "whats_new",
+                           "page_url": self._getBuiltinWelcomePagePath("WhatsNewContent.qml"),
+                           },
+                          {"id": "data_collections",
+                           "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
+                           },
+                          {"id": "add_network_or_local_printer",
+                           "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
+                           "next_page_id": "machine_actions",
+                           },
+                          {"id": "add_printer_by_ip",
+                           "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
+                           "next_page_id": "machine_actions",
+                           },
+                          {"id": "machine_actions",
+                           "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
+                           "next_page_id": "cloud",
+                           "should_show_function": self.shouldShowMachineActions,
+                           },
+                          {"id": "cloud",
+                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                           },
+                          ]
+
+        pages_to_show = all_pages_list
+        if show_whatsnew_only:
+            pages_to_show = list(filter(lambda x: x["id"] == "whats_new", all_pages_list))
+
+        self._pages = pages_to_show
         self.setItems(self._pages)
+
+    # For convenience, inject the default "next" button text to each item if it's not present.
+    def setItems(self, items: List[Dict[str, Any]]) -> None:
+        for item in items:
+            if "next_page_button_text" not in item:
+                item["next_page_button_text"] = self._default_next_button_text
+
+        super().setItems(items)
 
     # Indicates if the machine action panel should be shown by checking if there's any first start machine actions
     # available.

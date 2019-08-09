@@ -68,7 +68,7 @@
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_head_with_fans_polygon":
         {

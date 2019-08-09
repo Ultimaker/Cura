@@ -41,10 +41,7 @@ Item
 
         onClicked:
         {
-            if (contentShown)
-            {
-                addLocalPrinterDropDown.contentShown = false
-            }
+            addLocalPrinterDropDown.contentShown = !contentShown
         }
 
         contentComponent: networkPrinterListComponent
@@ -57,7 +54,7 @@ Item
             {
                 id: networkPrinterScrollView
 
-                maxItemCountAtOnce: 6  // show at max 6 items at once, otherwise you need to scroll.
+                maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
 
                 onRefreshButtonClicked:
                 {
@@ -79,16 +76,13 @@ Item
         anchors.top: addNetworkPrinterDropDown.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.topMargin: UM.Theme.getSize("wide_margin").height
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
 
         title: catalog.i18nc("@label", "Add a non-networked printer")
 
         onClicked:
         {
-            if (contentShown)
-            {
-                addNetworkPrinterDropDown.contentShown = false
-            }
+            addNetworkPrinterDropDown.contentShown = !contentShown
         }
 
         contentComponent: localPrinterListComponent
@@ -101,6 +95,20 @@ Item
             {
                 id: localPrinterView
             }
+        }
+    }
+
+    // This "Back" button only shows in the "Add Machine" dialog, which has "previous_page_button_text" set to "Cancel"
+    Cura.SecondaryButton
+    {
+        id: backButton
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        visible: base.currentItem.previous_page_button_text ? true : false
+        text: base.currentItem.previous_page_button_text ? base.currentItem.previous_page_button_text : ""
+        onClicked:
+        {
+            base.endWizard()
         }
     }
 
@@ -118,11 +126,14 @@ Item
             }
             else
             {
-                return addLocalPrinterDropDown.contentItem.currentItem != null
+                // Printer name cannot be empty
+                const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
+                const isPrinterNameValid = addLocalPrinterDropDown.contentItem.isPrinterNameValid
+                return localPrinterItem != null && isPrinterNameValid
             }
         }
 
-        text: catalog.i18nc("@button", "Next")
+        text: base.currentItem.next_page_button_text
         onClicked:
         {
             // Create a network printer or a local printer according to the selection
@@ -139,7 +150,8 @@ Item
             {
                 // Create a local printer
                 const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
-                Cura.MachineManager.addMachine(localPrinterItem.id)
+                const printerName = addLocalPrinterDropDown.contentItem.printerName
+                Cura.MachineManager.addMachine(localPrinterItem.id, printerName)
 
                 base.showNextPage()
             }

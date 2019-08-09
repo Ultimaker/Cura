@@ -23,6 +23,7 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
+from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -112,7 +113,12 @@ from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
 from cura.UI.TextManager import TextManager
+from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
+from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.WelcomePagesModel import WelcomePagesModel
+from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
+
+from cura.Utils.NetworkingUtil import NetworkingUtil
 
 from .SingleInstance import SingleInstance
 from .AutoSave import AutoSave
@@ -138,7 +144,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 7
+    SettingVersion = 9
 
     Created = False
 
@@ -212,12 +218,14 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._machine_settings_manager = MachineSettingsManager(self)
+        self._machine_settings_manager = MachineSettingsManager(self, parent = self)
 
-        self._discovered_printer_model = DiscoveredPrintersModel(self)
-        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self)
-        self._welcome_pages_model = WelcomePagesModel(self)
-        self._text_manager = TextManager(self)
+        self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
+        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+        self._welcome_pages_model = WelcomePagesModel(self, parent = self)
+        self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
+        self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
+        self._text_manager = TextManager(parent = self)
 
         self._quality_profile_drop_down_menu_model = None
         self._custom_quality_profile_drop_down_menu_model = None
@@ -253,8 +261,7 @@ class CuraApplication(QtApplication):
         self._plugins_loaded = False
 
         # Backups
-        self._auto_save = None
-        self._save_data_enabled = True
+        self._auto_save = None  # type: Optional[AutoSave]
 
         from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
@@ -414,7 +421,7 @@ class CuraApplication(QtApplication):
         # Add empty variant, material and quality containers.
         # Since they are empty, they should never be serialized and instead just programmatically created.
         # We need them to simplify the switching between materials.
-        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container  # type: EmptyInstanceContainer
+        self.empty_container = cura.Settings.cura_empty_instance_containers.empty_container
 
         self._container_registry.addContainer(
             cura.Settings.cura_empty_instance_containers.empty_definition_changes_container)
@@ -517,8 +524,13 @@ class CuraApplication(QtApplication):
         preferences.addPreference("cura/choice_on_profile_override", "always_ask")
         preferences.addPreference("cura/choice_on_open_project", "always_ask")
         preferences.addPreference("cura/use_multi_build_plate", False)
+        preferences.addPreference("cura/show_list_of_objects", False)
         preferences.addPreference("view/settings_list_height", 400)
         preferences.addPreference("view/settings_visible", False)
+        preferences.addPreference("view/settings_xpos", 0)
+        preferences.addPreference("view/settings_ypos", 56)
+        preferences.addPreference("view/colorscheme_xpos", 0)
+        preferences.addPreference("view/colorscheme_ypos", 56)
         preferences.addPreference("cura/currency", "€")
         preferences.addPreference("cura/material_settings", "{}")
 
@@ -664,13 +676,10 @@ class CuraApplication(QtApplication):
             self._message_box_callback(button, *self._message_box_callback_arguments)
             self._message_box_callback = None
             self._message_box_callback_arguments = []
-            
-    def setSaveDataEnabled(self, enabled: bool) -> None:
-        self._save_data_enabled = enabled
 
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self):
-        if not self.started or not self._save_data_enabled:
+        if not self.started:
             # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
@@ -762,6 +771,8 @@ class CuraApplication(QtApplication):
 
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
+        self._add_printer_pages_model.initialize()
+        self._whats_new_pages_model.initialize()
 
         # Detect in which mode to run and execute that mode
         if self._is_headless:
@@ -828,7 +839,6 @@ class CuraApplication(QtApplication):
         if diagonal < 1: #No printer added yet. Set a default camera distance for normal-sized printers.
             diagonal = 375
         camera.setPosition(Vector(-80, 250, 700) * diagonal / 375)
-        camera.setPerspective(True)
         camera.lookAt(Vector(0, 0, 0))
         controller.getScene().setActiveCamera("3d")
 
@@ -874,6 +884,14 @@ class CuraApplication(QtApplication):
         return self._welcome_pages_model
 
     @pyqtSlot(result = QObject)
+    def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
+        return self._add_printer_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
+        return self._whats_new_pages_model
+
+    @pyqtSlot(result = QObject)
     def getMachineSettingsManager(self, *args) -> "MachineSettingsManager":
         return self._machine_settings_manager
 
@@ -912,7 +930,7 @@ class CuraApplication(QtApplication):
 
     def getObjectsModel(self, *args):
         if self._object_manager is None:
-            self._object_manager = ObjectsModel.createObjectsModel()
+            self._object_manager = ObjectsModel(self)
         return self._object_manager
 
     @pyqtSlot(result = QObject)
@@ -971,7 +989,7 @@ class CuraApplication(QtApplication):
 
         return super().event(event)
 
-    def getAutoSave(self):
+    def getAutoSave(self) -> Optional[AutoSave]:
         return self._auto_save
 
     ##  Get print information (duration / material used)
@@ -1013,12 +1031,17 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
+        qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
+
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
+        qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
+        qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
+        qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
 
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
 
-        qmlRegisterSingletonType(ObjectsModel, "Cura", 1, 0, "ObjectsModel", self.getObjectsModel)
+        qmlRegisterType(ObjectsModel, "Cura", 1, 0, "ObjectsModel")
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
         qmlRegisterType(InstanceContainer, "Cura", 1, 0, "InstanceContainer")
@@ -1098,7 +1121,6 @@ class CuraApplication(QtApplication):
             self._camera_animation.setTarget(Selection.getSelectedObject(0).getWorldPosition())
             self._camera_animation.start()
 
-    requestAddPrinter = pyqtSignal()
     activityChanged = pyqtSignal()
     sceneBoundingBoxChanged = pyqtSignal()
 
@@ -1240,7 +1262,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def arrangeObjectsToAllBuildPlates(self) -> None:
         nodes_to_arrange = []
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1267,7 +1289,7 @@ class CuraApplication(QtApplication):
     def arrangeAll(self) -> None:
         nodes_to_arrange = []
         active_build_plate = self.getMultiBuildPlateModel().activeBuildPlate
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, SceneNode):
                 continue
 
@@ -1305,7 +1327,7 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         has_merged_nodes = False
-        for node in DepthFirstIterator(self.getController().getScene().getRoot()):  # type: ignore
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 if node.getName() == "MergedMesh":
                     has_merged_nodes = True
@@ -1317,9 +1339,9 @@ class CuraApplication(QtApplication):
             return
 
         for node in nodes:
-            file_name = node.getMeshData().getFileName()
-            if file_name:
-                job = ReadMeshJob(file_name)
+            mesh_data = node.getMeshData()
+            if mesh_data and mesh_data.getFileName():
+                job = ReadMeshJob(mesh_data.getFileName())
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
@@ -1758,3 +1780,32 @@ class CuraApplication(QtApplication):
     def getSidebarCustomMenuItems(self) -> list:
         return self._sidebar_custom_menu_items
 
+    @pyqtSlot(result = bool)
+    def shouldShowWelcomeDialog(self) -> bool:
+        # Only show the complete flow if there is no printer yet.
+        return self._machine_manager.activeMachine is None
+
+    @pyqtSlot(result = bool)
+    def shouldShowWhatsNewDialog(self) -> bool:
+        has_active_machine = self._machine_manager.activeMachine is not None
+        has_app_just_upgraded = self.hasJustUpdatedFromOldVersion()
+
+        # Only show the what's new dialog if there's no machine and we have just upgraded
+        show_whatsnew_only = has_active_machine and has_app_just_upgraded
+        return show_whatsnew_only
+
+    @pyqtSlot(result = int)
+    def appWidth(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.width()
+        else:
+            return 0
+
+    @pyqtSlot(result = int)
+    def appHeight(self) -> int:
+        main_window = QtApplication.getInstance().getMainWindow()
+        if main_window:
+            return main_window.height()
+        else:
+            return 0

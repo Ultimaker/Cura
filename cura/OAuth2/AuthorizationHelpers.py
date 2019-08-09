@@ -50,6 +50,7 @@ class AuthorizationHelpers:
     #   \param refresh_token:
     #   \return An AuthenticationResponse object.
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
+        Logger.log("d", "Refreshing the access token.")
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",

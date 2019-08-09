@@ -29,7 +29,8 @@ Cura.MachineAction
             width: parent.width
             text: catalog.i18nc("@title", "Build Plate Leveling")
             wrapMode: Text.WordWrap
-            font.pointSize: 18
+            font: UM.Theme.getFont("medium")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
 
@@ -41,6 +42,8 @@ Cura.MachineAction
             width: parent.width
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move to Next Position' the nozzle will move to the different positions that can be adjusted.")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
 
@@ -52,6 +55,8 @@ Cura.MachineAction
             width: parent.width
             wrapMode: Text.WordWrap
             text: catalog.i18nc("@label", "For every position; insert a piece of paper under the nozzle and adjust the print build plate height. The print build plate height is right when the paper is slightly gripped by the tip of the nozzle.")
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
         }
 

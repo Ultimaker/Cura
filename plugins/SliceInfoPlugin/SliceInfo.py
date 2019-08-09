@@ -77,7 +77,7 @@ class SliceInfo(QObject, Extension):
             if not plugin_path:
                 Logger.log("e", "Could not get plugin path!", self.getPluginId())
                 return None
-            file_path = os.path.join(plugin_path, "example_data.json")
+            file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
                 with open(file_path, "r", encoding = "utf-8") as f:
                     self._example_data_content = f.read()
@@ -125,6 +125,10 @@ class SliceInfo(QObject, Extension):
                 data["active_mode"] = "recommended"
             else:
                 data["active_mode"] = "custom"
+
+            data["camera_view"] = application.getPreferences().getValue("general/camera_perspective_mode")
+            if data["camera_view"] == "orthographic":
+                data["camera_view"] = "orthogonal" #The database still only recognises the old name "orthogonal".
 
             definition_changes = global_stack.definitionChanges
             machine_settings_changed_by_user = False
@@ -181,6 +185,8 @@ class SliceInfo(QObject, Extension):
                     model = dict()
                     model["hash"] = node.getMeshData().getHash()
                     bounding_box = node.getBoundingBox()
+                    if not bounding_box:
+                        continue
                     model["bounding_box"] = {"minimum": {"x": bounding_box.minimum.x,
                                                          "y": bounding_box.minimum.y,
                                                          "z": bounding_box.minimum.z},

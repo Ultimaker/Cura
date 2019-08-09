@@ -53,7 +53,7 @@ Button
                 verticalCenter: parent.verticalCenter
             }
             text: machineSelectorButton.text
-            color: UM.Theme.getColor("text")
+            color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("small_button_text")
             font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering

@@ -1,6 +1,7 @@
 module Cura
 
 MachineSelector 1.0 MachineSelector.qml
+MachineSelectorButton 1.0 MachineSelectorButton.qml
 CustomConfigurationSelector 1.0 CustomConfigurationSelector.qml
 PrintSetupSelector 1.0 PrintSetupSelector.qml
 ActionButton 1.0 ActionButton.qml
@@ -17,6 +18,12 @@ SettingView 1.0 SettingView.qml
 ProfileMenu 1.0 ProfileMenu.qml
 CheckBoxWithTooltip 1.0 CheckBoxWithTooltip.qml
 ToolTip 1.0 ToolTip.qml
+
+
+# Cura/WelcomePages
+
+WizardPanel         1.0 WizardPanel.qml
+WizardDialog        1.0 WizardDialog.qml
 
 
 # Cura/Widgets

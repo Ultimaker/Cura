@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -78,6 +78,7 @@ UM.Dialog {
             height: 20 * screenScaleFactor;
             text: catalog.i18nc("@label", "Printer selection");
             wrapMode: Text.Wrap;
+            renderType: Text.NativeRendering;
         }
 
         ComboBox {

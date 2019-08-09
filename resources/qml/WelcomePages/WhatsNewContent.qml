@@ -44,6 +44,7 @@ Item
         textArea.textFormat: Text.RichText
         textArea.wrapMode: Text.WordWrap
         textArea.readOnly: true
+        textArea.font: UM.Theme.getFont("medium")
     }
 
     Cura.PrimaryButton
@@ -51,7 +52,7 @@ Item
         id: getStartedButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Next")
+        text: base.currentItem.next_page_button_text
         onClicked: base.showNextPage()
     }
 }
