@@ -90,7 +90,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 width: 180 * screenScaleFactor // TODO: Theme!
-                height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
+                height: childrenRect.height
 
                 Rectangle
                 {
@@ -134,6 +134,54 @@ Item
                         left: printerNameLabel.left
                     }
                     text: printer ? printer.type : ""
+                }
+                Item
+                {
+                    id: managePrinterLink
+                    anchors {
+                        top: printerFamilyPill.bottom
+                        topMargin: 6 * screenScaleFactor
+                    }
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    width: childrenRect.width
+  
+                    Label
+                    {
+                        id: managePrinterText
+                        anchors.verticalCenter: managePrinterLink.verticalCenter
+                        color: UM.Theme.getColor("monitor_text_link")
+                        font: UM.Theme.getFont("default")
+                        linkColor: UM.Theme.getColor("monitor_text_link")
+                        text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
+                        renderType: Text.NativeRendering
+                    }
+                    UM.RecolorImage
+                    {
+                        id: externalLinkIcon
+                        anchors
+                        {
+                            left: managePrinterText.right
+                            leftMargin: 6 * screenScaleFactor
+                            verticalCenter: managePrinterText.verticalCenter
+                        }
+                        color: UM.Theme.getColor("monitor_text_link")
+                        source: UM.Theme.getIcon("external_link")
+                        width: 12 * screenScaleFactor
+                        height: 12 * screenScaleFactor
+                    }
+                }
+                MouseArea
+                {
+                    anchors.fill: managePrinterLink
+                    onClicked: OutputDevice.openPrintJobControlPanel()
+                    onEntered:
+                    {
+                        manageQueueText.font.underline = true
+                    }
+                    onExited:
+                    {
+                        manageQueueText.font.underline = false
+                    }
                 }
             }
 

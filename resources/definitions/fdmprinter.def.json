@@ -7483,6 +7483,52 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "settable_per_meshgroup": false
+                },
+                "small_hole_max_size":
+                {
+                    "label": "Small Hole Max Size",
+                    "description": "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "settable_per_mesh": true
+                },
+                "small_feature_max_length":
+                {
+                    "label": "Small Feature Max Length",
+                    "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value": "0",
+                    "default_value": 0,
+                    "value": "small_hole_max_size * math.pi",
+                    "settable_per_mesh": true
+                },
+                "small_feature_speed_factor":
+                {
+                    "label": "Small Feature Speed",
+                    "description": "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "minimum_value": "1",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": true
+                },
+                "small_feature_speed_factor_0":
+                {
+                    "label": "First Layer Speed",
+                    "description": "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 50,
+                    "value": "small_feature_speed_factor",
+                    "minimum_value": "1",
+                    "minimum_value_warning": "25",
+                    "maximum_value": "100",
+                    "settable_per_mesh": true
                 }
             }
         },

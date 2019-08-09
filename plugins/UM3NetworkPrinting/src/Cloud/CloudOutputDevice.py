@@ -258,11 +258,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
 
     ## Gets the cluster response from which this device was created.
     @property
@@ -273,3 +273,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @clusterData.setter
     def clusterData(self, value: CloudClusterResponse) -> None:
         self._cluster = value
+        
+    ## Gets the URL on which to monitor the cluster via the cloud.
+    @property
+    def clusterCloudUrl(self) -> str:
+        root_url_prefix = "-staging" if self._account.is_staging else ""
+        return "https://mycloud{}.ultimaker.com/app/jobs/{}".format(root_url_prefix, self.clusterData.cluster_id)
