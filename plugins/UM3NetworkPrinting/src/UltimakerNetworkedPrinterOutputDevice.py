@@ -52,7 +52,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Keeps track of all printers in the cluster.
         self._printers = []  # type: List[PrinterOutputModel]
-        self._received_printers = False
+        self._has_received_printers = False
 
         # Keeps track of all print jobs in the cluster.
         self._print_jobs = []  # type: List[UM3PrintJobOutputModel]
@@ -97,7 +97,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
-        if not self._received_printers:
+        if not self._has_received_printers:
             return 1  # prevent false positives when discovering new devices
         return len(self._printers)
 
@@ -220,7 +220,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
                 self.setActivePrinter(None)
 
         self._printers = new_printers
-        self._received_printers = True
+        self._has_received_printers = True
         if self._printers and not self.activePrinter:
             self.setActivePrinter(self._printers[0])
 
