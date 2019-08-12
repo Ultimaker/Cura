@@ -608,6 +608,7 @@ class XmlMaterialProfile(InstanceContainer):
         # Map machine human-readable names to IDs
         product_id_map = self.getProductIdMap()
 
+        variant_manager = CuraApplication.getInstance().getVariantManager()
         machines = data.iterfind("./um:settings/um:machine", self.__namespaces)
         for machine in machines:
             machine_compatibility = common_compatibility
@@ -702,7 +703,6 @@ class XmlMaterialProfile(InstanceContainer):
                         if buildplate_id is None:
                             continue
 
-                        variant_manager = CuraApplication.getInstance().getVariantManager()
                         variant_node = variant_manager.getVariantNode(machine_id, buildplate_id,
                                                                       variant_type = VariantType.BUILD_PLATE)
                         if not variant_node:
@@ -725,7 +725,6 @@ class XmlMaterialProfile(InstanceContainer):
                         if hotend_name is None:
                             continue
 
-                        variant_manager = CuraApplication.getInstance().getVariantManager()
                         variant_node = variant_manager.getVariantNode(machine_id, hotend_name, VariantType.NOZZLE)
                         if not variant_node:
                             continue
@@ -777,7 +776,6 @@ class XmlMaterialProfile(InstanceContainer):
                             if buildplate_name is None:
                                 continue
 
-                            variant_manager = CuraApplication.getInstance().getVariantManager()
                             variant_node = variant_manager.getVariantNode(machine_id, buildplate_name, VariantType.BUILD_PLATE)
                             if not variant_node:
                                 continue
