@@ -44,7 +44,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
     
     # Time in seconds since last network response after which we consider this device offline.
-    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0
+    # We set this a bit higher than some of the other intervals to make sure they don't overlap.
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 12.0
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
@@ -214,6 +215,13 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     def _reconnectForActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
+            return
+
+        # Indicate this device is now connected again.
+        self.setConnectionState(ConnectionState.Connected)
+
+        # If the device was already registered we don't need to register it again.
+        if self.key in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
             return
 
         # Try for local network device.
