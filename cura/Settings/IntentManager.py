@@ -143,7 +143,6 @@ class IntentManager(QObject):
                 extruder_stack.intent = intent[0]
             else:
                 extruder_stack.intent = self.getDefaultIntent()
-
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
         if old_intent_category != intent_category:
             self.intentCategoryChanged.emit()
