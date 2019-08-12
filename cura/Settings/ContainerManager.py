@@ -20,6 +20,7 @@ from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
+import cura.CuraApplication
 
 
 if TYPE_CHECKING:
@@ -27,11 +28,9 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
-    from UM.PluginRegistry import PluginRegistry
     from cura.Settings.MachineManager import MachineManager
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
-    from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 catalog = i18nCatalog("cura")
 
@@ -56,7 +55,7 @@ class ContainerManager(QObject):
 
     @pyqtSlot(str, str, result=str)
     def getContainerMetaDataEntry(self, container_id: str, entry_names: str) -> str:
-        metadatas = CuraApplication.getInstance().getContainerRegistry().findContainersMetadata(id = container_id)
+        metadatas = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findContainersMetadata(id = container_id)
         if not metadatas:
             Logger.log("w", "Could not get metadata of container %s because it was not found.", container_id)
             return ""
@@ -86,7 +85,7 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant", str, str)
     def setContainerMetaDataEntry(self, container_node: "ContainerNode", entry_name: str, entry_value: str) -> bool:
         root_material_id = container_node.getMetaDataEntry("base_file", "")
-        if CuraApplication.getInstance().getContainerRegistry().isReadOnly(root_material_id):
+        if cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
             return False
 
@@ -123,7 +122,7 @@ class ContainerManager(QObject):
 
     @pyqtSlot(str, result = str)
     def makeUniqueName(self, original_name: str) -> str:
-        return CuraApplication.getInstance().getContainerRegistry().uniqueName(original_name)
+        return cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().uniqueName(original_name)
 
     ##  Get a list of string that can be used as name filters for a Qt File Dialog
     #
@@ -178,7 +177,7 @@ class ContainerManager(QObject):
         else:
             mime_type = self._container_name_filters[file_type]["mime"]
 
-        containers = CuraApplication.getInstance().getContainerRegistry().findContainers(id = container_id)
+        containers = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findContainers(id = container_id)
         if not containers:
             return {"status": "error", "message": "Container not found"}
         container = containers[0]
@@ -236,12 +235,13 @@ class ContainerManager(QObject):
         except MimeTypeNotFoundError:
             return {"status": "error", "message": "Could not determine mime type of file"}
 
-        container_type = CuraApplication.getInstance().getContainerRegistry().getContainerForMimeType(mime_type)
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        container_type = container_registry.getContainerForMimeType(mime_type)
         if not container_type:
             return {"status": "error", "message": "Could not find a container to handle the specified file."}
 
         container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
-        container_id = CuraApplication.getInstance().getContainerRegistry().uniqueName(container_id)
+        container_id = container_registry.uniqueName(container_id)
 
         container = container_type(container_id)
 
@@ -257,7 +257,7 @@ class ContainerManager(QObject):
 
         container.setDirty(True)
 
-        CuraApplication.getInstance().getContainerRegistry().addContainer(container)
+        container_registry.addContainer(container)
 
         return {"status": "success", "message": "Successfully imported container {0}".format(container.getName())}
 
@@ -278,7 +278,7 @@ class ContainerManager(QObject):
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
         extruder_stacks = list(global_stack.extruders.values())
-        container_registry = CuraApplication.getInstance().getContainerRegistry()
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         quality_manager = QualityManager.getInstance()
         for stack in [global_stack] + extruder_stacks:
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
@@ -374,8 +374,8 @@ class ContainerManager(QObject):
 
     def _updateContainerNameFilters(self) -> None:
         self._container_name_filters = {}
-        plugin_registry = CuraApplication.getInstance().getPluginRegistry()
-        container_registry = CuraApplication.getInstance().getContainerRegistry()
+        plugin_registry = cura.CuraApplication.CuraApplication.getInstance().getPluginRegistry()
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         for plugin_id, container_type in container_registry.getContainerTypes():
             # Ignore default container types since those are not plugins
             if container_type in (InstanceContainer, ContainerStack, DefinitionContainer):
@@ -427,7 +427,7 @@ class ContainerManager(QObject):
         path = file_url.toLocalFile()
         if not path:
             return {"status": "error", "message": catalog.i18nc("@info:status", "Invalid file URL:") + " " + str(file_url)}
-        return CuraApplication.getInstance().getContainerRegistry().importProfile(path)
+        return cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().importProfile(path)
 
     @pyqtSlot(QObject, QUrl, str)
     def exportQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", file_url: QUrl, file_type: str) -> None:
@@ -438,7 +438,7 @@ class ContainerManager(QObject):
             return
 
         container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
-        CuraApplication.getInstance().getContainerRegistry().exportQualityProfile(container_list, path, file_type)
+        cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().exportQualityProfile(container_list, path, file_type)
 
     __instance = None   # type: ContainerManager
 
