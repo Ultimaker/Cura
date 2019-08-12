@@ -22,7 +22,9 @@ from UM.Message import Message
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
+from cura.Machines.MaterialManager import MaterialManager
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
+
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.ExtruderConfigurationModel import ExtruderConfigurationModel
@@ -43,7 +45,6 @@ if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Settings.GlobalStack import GlobalStack
-    from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
