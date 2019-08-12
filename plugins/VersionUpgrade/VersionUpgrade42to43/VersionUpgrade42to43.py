@@ -1,6 +1,6 @@
 import configparser
 import io
-from typing import Tuple, List
+from typing import Dict, Tuple, List
 
 from UM.VersionUpgrade import VersionUpgrade
 
@@ -20,7 +20,7 @@ _removed_settings = {
 
 _renamed_settings = {
     "support_infill_angle": "support_infill_angles"
-} # type: Dict[str, str]
+}  # type: Dict[str, str]
 
 ##  Upgrades configurations from the state they were in at version 4.2 to the
 #   state they should be in at version 4.3.
