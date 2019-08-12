@@ -76,7 +76,7 @@ class MaterialNode(ContainerNode):
                     if container.getMetaDataEntry("material") not in allowed_material_ids:
                         return  # Doesn't match the material type.
                 else:
-                    my_material_guid = my_metadata["guid"]
+                    my_material_guid = my_metadata.get("GUID")
                     allowed_material_ids = {metadata["id"] for metadata in container_registry.findInstanceContainersMetadata(type = "material", guid = my_material_guid)}
                     if container.getMetaDataEntry("material") not in allowed_material_ids:
                         return  # Doesn't match the material GUID.
