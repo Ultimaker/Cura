@@ -66,10 +66,11 @@ class MaterialNode(ContainerNode):
             my_metadata = container_registry.findInstanceContainersMetadata(id = self.container_id)[0]
             my_material_type = my_metadata.get("material")
             allowed_material_ids = {metadata["id"] for metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type)}
-            is_fallback_guid = len(self.qualities) == 0 or next(iter(self.qualities.values())).getMetaDataEntry("material") not in allowed_material_ids  # Select any quality profile; if the material is not matching by material type, we've been falling back to GUID.
+            # Select any quality profile; if the material is not matching by material type, we've been falling back to GUID all along.
+            is_fallback_guid = len(self.qualities) == 0 or next(iter(self.qualities.values())).getMetaDataEntry("material") not in allowed_material_ids
 
             if is_fallback_guid and container.getMetaDataEntry("material") in allowed_material_ids:  # So far we needed the fallback, but no longer!
-                self.qualities.clear()
+                self.qualities.clear()  # It'll get filled with the new quality profile then.
             else:
                 if not is_fallback_guid:
                     if container.getMetaDataEntry("material") not in allowed_material_ids:
