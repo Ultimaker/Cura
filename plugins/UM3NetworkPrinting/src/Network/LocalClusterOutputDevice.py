@@ -45,6 +45,9 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._setInterfaceElements()
         self._active_camera_url = QUrl()  # type: QUrl
 
+        # Get the printers of this cluster to check if this device is a group host or not.
+        self._cluster_api.getPrinters(self._updatePrinters)
+
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
         self.setPriority(3)  # Make sure the output device gets selected above local file output
