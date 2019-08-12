@@ -36,12 +36,13 @@ class MaterialNode(ContainerNode):
             my_metadata = container_registry.findInstanceContainersMetadata(id = self.container_id)[0]
             my_material_type = my_metadata.get("material")
             qualities = []
+            qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name)
             for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type):
-                qualities.extend(container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name, material = material_metadata["id"]))
+                qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
             if not qualities:  # No quality profiles found. Go by GUID then.
                 my_guid = my_metadata.get("material")
                 for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", guid = my_guid):
-                    qualities.extend(container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name, material = material_metadata["id"]))
+                    qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
 
         for quality in qualities:
             quality_id = quality["id"]
