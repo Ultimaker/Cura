@@ -1,9 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Logger import Logger
 
+import cura.CuraApplication  # Imported this way to prevent circular references.
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
+from cura.Machines.QualityManager import QualityManager
 
 
 #
@@ -14,13 +16,13 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        active_global_stack = self._machine_manager.activeMachine
+        active_global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
         if active_global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set %s as empty.", self.__class__.__name__)
             return
 
-        quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(active_global_stack)
+        quality_changes_group_dict = QualityManager.getInstance().getQualityChangesGroups(active_global_stack)
 
         item_list = []
         for key in sorted(quality_changes_group_dict, key = lambda name: name.upper()):

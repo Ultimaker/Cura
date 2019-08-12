@@ -7,8 +7,8 @@ from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.SettingFunction import SettingFunction
 
-from cura.CuraApplication import CuraApplication
-from cura.Machines.QualityManager import QualityGroup
+import cura.CuraApplication  # Imported this way to prevent circular dependencies.
+from cura.Machines.QualityManager import QualityGroup, QualityManager
 
 
 #
@@ -36,7 +36,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
         self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
-        application = CuraApplication.getInstance()
+        application = cura.CuraApplication.CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
 
         application.globalContainerStackChanged.connect(self._onChange)
@@ -58,19 +58,19 @@ class QualityProfilesDropDownMenuModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
         # Check for material compatibility
-        if not CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
+        if not cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
             Logger.log("d", "No active material compatibility, set quality profile model as empty.")
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
+        quality_group_dict = QualityManager.getInstance().getQualityGroups(global_stack)
 
         item_list = []
         for key in sorted(quality_group_dict):
@@ -94,7 +94,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.setItems(item_list)
 
     def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
-        global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
             if not unit:
