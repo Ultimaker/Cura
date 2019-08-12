@@ -919,9 +919,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         application = CuraApplication.getInstance()
         material_manager = application.getMaterialManager()
 
-        # Force update lookup tables first
-        material_manager.initialize()
-
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
@@ -978,10 +975,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_manager = Application.getInstance().getMachineManager()
         material_manager = Application.getInstance().getMaterialManager()
         quality_manager = Application.getInstance().getQualityManager()
-
-        # Force update the lookup maps first
-        material_manager.initialize()
-        quality_manager.initialize()
 
         machine_manager.setActiveMachine(global_stack.getId())
 

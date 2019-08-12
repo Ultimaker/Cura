@@ -67,89 +67,6 @@ class QualityManager(QObject):
         self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
         self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
-        # When a custom quality gets added/imported, there can be more than one InstanceContainers. In those cases,
-        # we don't want to react on every container/metadata changed signal. The timer here is to buffer it a bit so
-        # we don't react too many time.
-        self._update_timer = QTimer(self)
-        self._update_timer.setInterval(300)
-        self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self._updateMaps)
-
-    def initialize(self) -> None:
-
-        # Initialize the lookup tree for quality profiles with following structure:
-        # <machine> -> <nozzle> -> <buildplate> -> <material>
-        # <machine> -> <material>
-
-        self._machine_nozzle_buildplate_material_quality_type_to_quality_dict = {}  # for quality lookup
-        self._machine_quality_type_to_quality_changes_dict = {}  # for quality_changes lookup
-
-        quality_metadata_list = self._container_registry.findContainersMetadata(type = "quality")
-        for metadata in quality_metadata_list:
-            if metadata["id"] == "empty_quality":
-                continue
-
-            definition_id = metadata["definition"]
-            quality_type = metadata["quality_type"]
-
-            root_material_id = metadata.get("material")
-            nozzle_name = metadata.get("variant")
-            buildplate_name = metadata.get("buildplate")
-            is_global_quality = metadata.get("global_quality", False)
-            is_global_quality = is_global_quality or (root_material_id is None and nozzle_name is None and buildplate_name is None)
-
-            # Sanity check: material+variant and is_global_quality cannot be present at the same time
-            if is_global_quality and (root_material_id or nozzle_name):
-                ConfigurationErrorMessage.getInstance().addFaultyContainers(metadata["id"])
-                continue
-
-            if definition_id not in self._machine_nozzle_buildplate_material_quality_type_to_quality_dict:
-                self._machine_nozzle_buildplate_material_quality_type_to_quality_dict[definition_id] = QualityNode()
-            machine_node = cast(QualityNode, self._machine_nozzle_buildplate_material_quality_type_to_quality_dict[definition_id])
-
-            if is_global_quality:
-                # For global qualities, save data in the machine node
-                machine_node.addQualityMetadata(quality_type, metadata)
-                continue
-
-            current_node = machine_node
-            intermediate_node_info_list = [nozzle_name, buildplate_name, root_material_id]
-            current_intermediate_node_info_idx = 0
-
-            while current_intermediate_node_info_idx < len(intermediate_node_info_list):
-                node_name = intermediate_node_info_list[current_intermediate_node_info_idx]
-                if node_name is not None:
-                    # There is specific information, update the current node to go deeper so we can add this quality
-                    # at the most specific branch in the lookup tree.
-                    if node_name not in current_node.children_map:
-                        current_node.children_map[node_name] = QualityNode()
-                    current_node = cast(QualityNode, current_node.children_map[node_name])
-
-                current_intermediate_node_info_idx += 1
-
-            current_node.addQualityMetadata(quality_type, metadata)
-
-        # Initialize the lookup tree for quality_changes profiles with following structure:
-        # <machine> -> <quality_type> -> <name>
-        quality_changes_metadata_list = self._container_registry.findContainersMetadata(type = "quality_changes")
-        for metadata in quality_changes_metadata_list:
-            if metadata["id"] == "empty_quality_changes":
-                continue
-
-            machine_definition_id = metadata["definition"]
-            quality_type = metadata["quality_type"]
-
-            if machine_definition_id not in self._machine_quality_type_to_quality_changes_dict:
-                self._machine_quality_type_to_quality_changes_dict[machine_definition_id] = QualityNode()
-            machine_node = self._machine_quality_type_to_quality_changes_dict[machine_definition_id]
-            machine_node.addQualityChangesMetadata(quality_type, metadata)
-
-        Logger.log("d", "Lookup tables updated.")
-        self.qualitiesUpdated.emit()
-
-    def _updateMaps(self) -> None:
-        self.initialize()
-
     def _onContainerMetadataChanged(self, container: InstanceContainer) -> None:
         self._onContainerChanged(container)
 
@@ -157,9 +74,6 @@ class QualityManager(QObject):
         container_type = container.getMetaDataEntry("type")
         if container_type not in ("quality", "quality_changes"):
             return
-
-        # update the cache table
-        self._update_timer.start()
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
