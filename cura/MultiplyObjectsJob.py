@@ -71,7 +71,11 @@ class MultiplyObjectsJob(Job):
                 new_node = copy.deepcopy(node)
                 solution_found = False
                 if not node_too_big:
-                    solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
+                    if offset_shape_arr is not None and hull_shape_arr is not None:
+                        solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
+                    else:
+                        # The node has no shape, so no need to arrange it. The solution is simple: Do nothing. 
+                        solution_found = True
 
                 if node_too_big or not solution_found:
                     found_solution_for_all = False
