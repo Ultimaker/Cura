@@ -27,6 +27,7 @@ class QualityNode(ContainerNode):
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
         # Find all intent profiles that fit the current configuration.
+        from cura.Machines.MachineNode import MachineNode
         if not isinstance(self.parent, MachineNode):  # Not a global profile.
             for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.parent.variant.machine.quality_definition, variant = self.parent.variant.variant_name, material = self.parent.base_file):
                 self.intents[intent["id"]] = IntentNode(intent["id"], quality = self)
