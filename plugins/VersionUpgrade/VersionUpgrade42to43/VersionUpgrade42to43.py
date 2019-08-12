@@ -18,6 +18,10 @@ _removed_settings = {
     "start_layers_at_same_position"
 }
 
+_renamed_settings = {
+    "support_infill_angle": "support_infill_angles"
+} # type: Dict[str, str]
+
 ##  Upgrades configurations from the state they were in at version 4.2 to the
 #   state they should be in at version 4.3.
 class VersionUpgrade42to43(VersionUpgrade):
@@ -46,6 +50,17 @@ class VersionUpgrade42to43(VersionUpgrade):
         if "camera_perspective_mode" in parser["general"] and parser["general"]["camera_perspective_mode"] == "orthogonal":
             parser["general"]["camera_perspective_mode"] = "orthographic"
 
+        # Fix renamed settings for visibility
+        if "visible_settings" in parser["general"]:
+            all_setting_keys = parser["general"]["visible_settings"].strip().split(";")
+            if all_setting_keys:
+                for idx, key in enumerate(all_setting_keys):
+                    if key in _renamed_settings:
+                        all_setting_keys[idx] = _renamed_settings[key]
+                parser["general"]["visible_settings"] = ";".join(all_setting_keys)
+
+        parser["metadata"]["setting_version"] = "9"
+            
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
@@ -62,9 +77,18 @@ class VersionUpgrade42to43(VersionUpgrade):
         parser["metadata"]["setting_version"] = "9"
 
         if "values" in parser:
+            for old_name, new_name in _renamed_settings.items():
+                if old_name in parser["values"]:
+                    parser["values"][new_name] = parser["values"][old_name]
+                    del parser["values"][old_name]
             for key in _removed_settings:
                 if key in parser["values"]:
                     del parser["values"][key]
+
+        if "support_infill_angles" in parser["values"]:
+            old_value = float(parser["values"]["support_infill_angles"])
+            new_value = [int(round(old_value))]
+            parser["values"]["support_infill_angles"] = str(new_value)
 
         result = io.StringIO()
         parser.write(result)
