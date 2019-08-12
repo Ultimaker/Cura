@@ -154,14 +154,24 @@ class LocalClusterOutputDeviceManager:
                 break
 
         device = LocalClusterOutputDevice(key, address, properties)
-        CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
-            ip_address=address,
-            key=device.getId(),
-            name=device.getName(),
-            create_callback=self._createMachineFromDiscoveredDevice,
-            machine_type=device.printerType,
-            device=device
-        )
+        discovered_printers_model = CuraApplication.getInstance().getDiscoveredPrintersModel()
+        if address in list(discovered_printers_model.discoveredPrintersByAddress.keys()):
+            # The printer was already added, we just update the available data.
+            discovered_printers_model.updateDiscoveredPrinter(
+                ip_address=address,
+                name=device.getName(),
+                machine_type=device.printerType
+            )
+        else:
+            # The printer was not added yet so let's do that.
+            discovered_printers_model.addDiscoveredPrinter(
+                ip_address=address,
+                key=device.getId(),
+                name=device.getName(),
+                create_callback=self._createMachineFromDiscoveredDevice,
+                machine_type=device.printerType,
+                device=device
+            )
         self._discovered_devices[device.getId()] = device
         self.discoveredDevicesChanged.emit()
         self._connectToActiveMachine()
