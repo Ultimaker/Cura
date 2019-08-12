@@ -40,8 +40,9 @@ I18N_CATALOG = i18nCatalog("cura")
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
 class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
-    # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 10.0  # seconds
+    # The interval with which the remote cluster is checked.
+    # We can do this relatively often as this API call is quite fast.
+    CHECK_CLUSTER_INTERVAL = 8.0  # seconds
 
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.3.0")

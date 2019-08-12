@@ -43,6 +43,7 @@ class CloudOutputDeviceManager:
         self._update_timer = QTimer()
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
+        self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Ensure we don't start twice.
         self._running = False
@@ -57,7 +58,6 @@ class CloudOutputDeviceManager:
         if not self._update_timer.isActive():
             self._update_timer.start()
         self._getRemoteClusters()
-        self._update_timer.timeout.connect(self._getRemoteClusters)
 
     ## Stops running the cloud output device manager.
     def stop(self):
@@ -67,7 +67,6 @@ class CloudOutputDeviceManager:
         if self._update_timer.isActive():
             self._update_timer.stop()
         self._onGetRemoteClustersFinished([])  # Make sure we remove all cloud output devices.
-        self._update_timer.timeout.disconnect(self._getRemoteClusters)
 
     ## Force refreshing connections.
     def refreshConnections(self) -> None:

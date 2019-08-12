@@ -26,6 +26,9 @@ from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 #  Currently used for local networking and cloud printing using Ultimaker Connect.
 #  This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
 class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
+    
+    META_NETWORK_KEY = "um_network_key"
+    META_CLUSTER_ID = "um_cloud_cluster_id"
 
     # Signal emitted when the status of the print jobs for this cluster were changed over the network.
     printJobsChanged = pyqtSignal()
@@ -195,6 +198,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     ## Check if we're still connected by comparing the last timestamps for network response and the current time.
     #  This implementation is similar to the base NetworkedPrinterOutputDevice, but is tweaked slightly.
+    #  Re-connecting is handled automatically by the output device managers in this plugin.
+    #  TODO: it would be nice to have this logic in the managers, but connecting those with signals causes crashes.
     def _checkStillConnected(self) -> None:
         time_since_last_response = time() - self._time_of_last_response
         if time_since_last_response > self.NETWORK_RESPONSE_CONSIDER_OFFLINE:
@@ -202,9 +207,24 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             if self.key in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
                 CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
         elif self.connectionState == ConnectionState.Closed:
-            self.setConnectionState(ConnectionState.Connected)
-            if self.key not in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
-                CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(self)
+            self._reconnectForActiveMachine()
+
+    ## Reconnect for the active output device.
+    #  Does nothing if the device is not meant for the active machine.
+    def _reconnectForActiveMachine(self) -> None:
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if not active_machine:
+            return
+
+        # Try for local network device.
+        stored_device_id = active_machine.getMetaDataEntry(self.META_NETWORK_KEY)
+        if self.key == stored_device_id:
+            CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(self)
+
+        # Try for cloud device.
+        stored_cluster_id = active_machine.getMetaDataEntry(self.META_CLUSTER_ID)
+        if self.key == stored_cluster_id:
+            CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(self)
 
     def _responseReceived(self) -> None:
         self._time_of_last_response = time()
