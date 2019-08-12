@@ -125,9 +125,11 @@ class CloudOutputDeviceManager:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
         if not device:
             return
-        device.disconnect()
         device.close()
         CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.key)
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key in output_device_manager.getOutputDeviceIds():
+            output_device_manager.removeOutputDevice(device.key)
         self.discoveredDevicesChanged.emit()
 
     def _createMachineFromDiscoveredDevice(self, key: str) -> None:
