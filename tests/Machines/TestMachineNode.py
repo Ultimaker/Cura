@@ -18,7 +18,7 @@ metadata_dict = {}
 @pytest.fixture
 def container_registry():
     result = MagicMock()
-    result.findInstanceContainersMetadata = MagicMock(return_value = [{"id": "variant_1", "name": "Variant One"}, {"id": "variant_2", "name": "Variant Two"}])
+    result.findInstanceContainersMetadata = MagicMock(return_value = [{"id": "variant_1", "name": "Variant One", "quality_type": "normal"}, {"id": "variant_2", "name": "Variant Two", "quality_type": "great"}])
     return result
 
 
