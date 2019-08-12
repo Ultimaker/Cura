@@ -4013,12 +4013,12 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid ""
 "Orientation of the infill pattern for supports. The support infill pattern "
 "is rotated in the horizontal plane."

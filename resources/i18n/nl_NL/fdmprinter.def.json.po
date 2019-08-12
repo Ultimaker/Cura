@@ -3508,12 +3508,12 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "Afstand tussen de lijnen van de supportstructuur voor de eerste laag. Deze wordt berekend op basis van de dichtheid van de supportstructuur."
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "Lijnrichting Vulling Supportstructuur"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
 msgstr "Richting van het vulpatroon voor supportstructuren. Het vulpatroon voor de supportstructuur wordt in het horizontale vlak gedraaid."
 

@@ -3503,12 +3503,12 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "인쇄된 초기 레이어 서포트 구조 선 사이의 거리. 이 설정은 서포트 밀도로 계산됩니다."
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "서포트 내부채움 선 방향"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
 msgstr "서포트에 대한 내부채움 패턴 방향. 서포트 내부채움 패턴은 수평면에서 회전합니다."
 
