@@ -16,7 +16,6 @@ from .LocalClusterOutputDevice import LocalClusterOutputDevice
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.CloudFlowMessage import CloudFlowMessage
 from ..Messages.LegacyDeviceNoLongerSupportedMessage import LegacyDeviceNoLongerSupportedMessage
-from ..Messages.NotClusterHostMessage import NotClusterHostMessage
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
 
 
@@ -85,6 +84,17 @@ class LocalClusterOutputDeviceManager:
     ## Force reset all network device connections.
     def refreshConnections(self) -> None:
         self._connectToActiveMachine()
+
+    ## Get the discovered devices.
+    def getDiscoveredDevices(self) -> Dict[str, LocalClusterOutputDevice]:
+        return self._discovered_devices
+
+    ## Connect the active machine to a given device.
+    def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if not active_machine:
+            return
+        self._connectToOutputDevice(device, active_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
@@ -176,8 +186,6 @@ class LocalClusterOutputDeviceManager:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
-        active_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
-        active_machine.setMetaDataEntry("group_name", device.name)
         self._connectToOutputDevice(device, active_machine)
         CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
 
@@ -214,6 +222,10 @@ class LocalClusterOutputDeviceManager:
         if Version(device.firmwareVersion) < self.MIN_SUPPORTED_CLUSTER_VERSION:
             LegacyDeviceNoLongerSupportedMessage().show()
             return
+
+        machine.setName(device.name)
+        machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
+        machine.setMetaDataEntry("group_name", device.name)
 
         device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
