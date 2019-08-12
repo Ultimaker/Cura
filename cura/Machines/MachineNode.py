@@ -3,6 +3,7 @@
 
 from typing import TYPE_CHECKING
 
+from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
 from UM.Settings.Interfaces import ContainerInterface
@@ -22,8 +23,11 @@ class MachineNode(ContainerNode):
         self.variants = {}  # type: Dict[str, VariantNode] # Mapping variant names to their nodes.
         self.global_qualities = {}  # type: Dict[str, QualityNode] # Mapping quality types to the global quality for those types.
         container_registry = ContainerRegistry.getInstance()
-
-        my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+        try:
+            my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
+        except IndexError:
+            Logger.log("Unable to find metadata for container %s", container_id)
+            my_metadata = {}
         # Some of the metadata is cached upon construction here.
         # ONLY DO THAT FOR METADATA THAT DOESN'T CHANGE DURING RUNTIME!
         # Otherwise you need to keep it up-to-date during runtime.

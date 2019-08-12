@@ -28,7 +28,6 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
-    from cura.Settings.MachineManager import MachineManager
     from cura.Machines.MaterialManager import MaterialManager
     from cura.Machines.QualityManager import QualityManager
 
@@ -269,11 +268,11 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(result = bool)
     def updateQualityChanges(self) -> bool:
-        global_stack = MachineManager.getInstance().activeMachine
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
         if not global_stack:
             return False
 
-        MachineManager.getInstance().blurSettings.emit()
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().blurSettings.emit()
 
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
@@ -296,14 +295,14 @@ class ContainerManager(QObject):
 
             self._performMerge(quality_changes, stack.getTop())
 
-        MachineManager.getInstance().activeQualityChangesGroupChanged.emit()
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeQualityChangesGroupChanged.emit()
 
         return True
 
     ##  Clear the top-most (user) containers of the active stacks.
     @pyqtSlot()
     def clearUserContainers(self) -> None:
-        machine_manager = MachineManager.getInstance()
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
         machine_manager.blurSettings.emit()
 
         send_emits_containers = []
