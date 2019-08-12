@@ -2,6 +2,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+@pytest.mark.skip(reason = "Outdated test")
 def test_setActiveMachine(machine_manager):
     registry = MagicMock()
 

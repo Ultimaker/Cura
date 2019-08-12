@@ -62,6 +62,7 @@ def test_createMachine(application, container_registry, definition_container, gl
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
     application.empty_quality_changes_container = quality_changes_container
+    application.empty_variant_container = global_variant
 
     metadata = definition_container.getMetaData()
     metadata["machine_extruder_trains"] = {}

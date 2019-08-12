@@ -1533,7 +1533,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         # Get all the quality groups for this global stack and filter out by quality_type
-        quality_group_dict = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
+        quality_group_dict = self._application.getQualityManager().getQualityGroups(self._global_container_stack)
         quality_group = quality_group_dict[quality_type]
         self.setQualityGroup(quality_group)
 
