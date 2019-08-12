@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
+from time import time
 from typing import List, Optional, Dict
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject, pyqtSlot, QUrl
@@ -10,7 +11,7 @@ from UM.Qt.Duration import Duration, DurationFormat
 from cura.CuraApplication import CuraApplication
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice, AuthState
-from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType, ConnectionState
 
 from .Utils import formatTimeCompleted, formatDateCompleted
 from .ClusterOutputController import ClusterOutputController
@@ -38,6 +39,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
+    
+    # Time in seconds since last network response after which we consider this device offline.
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
@@ -46,6 +50,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
+        
+        # Keeps track the last network response to determine if we are still connected.
+        self._time_of_last_response = time()
 
         # Set the display name from the properties
         self.setName(self.getProperty("name"))
@@ -182,22 +189,28 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     def formatDuration(self, seconds: int) -> str:
         return Duration(seconds).getDisplayString(DurationFormat.Format.Short)
 
-    ## Load Monitor tab QML.
-    def _loadMonitorTab(self):
-        plugin_registry = CuraApplication.getInstance().getPluginRegistry()
-        if not plugin_registry:
-            Logger.log("e", "Could not get plugin registry")
-            return
-        plugin_path = plugin_registry.getPluginPath("UM3NetworkPrinting")
-        if not plugin_path:
-            Logger.log("e", "Could not get plugin path")
-            return
-        self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
-
-    def _update(self):
+    def _update(self) -> None:
+        self._checkStillConnected()
         super()._update()
 
+    ## Check if we're still connected by comparing the last timestamps for network response and the current time.
+    #  This implementation is similar to the base NetworkedPrinterOutputDevice, but is tweaked slightly.
+    def _checkStillConnected(self) -> None:
+        time_since_last_response = time() - self._time_of_last_response
+        if time_since_last_response > self.NETWORK_RESPONSE_CONSIDER_OFFLINE:
+            self.setConnectionState(ConnectionState.Closed)
+            if self.key in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
+                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(self.key)
+        elif self.connectionState == ConnectionState.Closed:
+            self.setConnectionState(ConnectionState.Connected)
+            if self.key not in CuraApplication.getInstance().getOutputDeviceManager().getOutputDeviceIds():
+                CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(self)
+
+    def _responseReceived(self) -> None:
+        self._time_of_last_response = time()
+
     def _updatePrinters(self, remote_printers: List[ClusterPrinterStatus]) -> None:
+        self._responseReceived()
 
         # Keep track of the new printers to show.
         # We create a new list instead of changing the existing one to get the correct order.
@@ -237,6 +250,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     ## Updates the local list of print jobs with the list received from the cluster.
     #  \param remote_jobs: The print jobs received from the cluster.
     def _updatePrintJobs(self, remote_jobs: List[ClusterPrintJobStatus]) -> None:
+        self._responseReceived()
 
         # Keep track of the new print jobs to show.
         # We create a new list instead of changing the existing one to get the correct order.
@@ -279,3 +293,15 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             return
         printer.updateActivePrintJob(model)
         model.updateAssignedPrinter(printer)
+
+    ## Load Monitor tab QML.
+    def _loadMonitorTab(self) -> None:
+        plugin_registry = CuraApplication.getInstance().getPluginRegistry()
+        if not plugin_registry:
+            Logger.log("e", "Could not get plugin registry")
+            return
+        plugin_path = plugin_registry.getPluginPath("UM3NetworkPrinting")
+        if not plugin_path:
+            Logger.log("e", "Could not get plugin path")
+            return
+        self._monitor_view_qml_path = os.path.join(plugin_path, "resources", "qml", "MonitorStage.qml")
