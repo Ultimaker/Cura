@@ -9,12 +9,13 @@ from cura.Machines.QualityManager import QualityManager
 
 from tests.Settings.MockContainer import MockContainer
 
+
 @pytest.fixture()
 def quality_manager(application, container_registry, global_stack) -> QualityManager:
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-            manager = QualityManager(application)
+            manager = QualityManager()
     return manager
 
 
