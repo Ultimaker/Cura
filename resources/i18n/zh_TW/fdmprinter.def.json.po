@@ -3500,12 +3500,12 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "支撐結構起始層線條之間的距離。該設定通過支撐密度計算。"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "支撐填充線條方向"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
 msgstr "支撐填充樣式的方向。 支撐填充樣式的旋轉方向是在水平面上旋轉。"
 

@@ -3509,12 +3509,12 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "Distancia entre las líneas de estructuras del soporte de la capa inicial impresas. Este ajuste se calcula por la densidad del soporte."
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "Dirección de línea de relleno de soporte"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
 msgstr "Orientación del patrón de relleno para soportes. El patrón de relleno de soporte se gira en el plano horizontal."
 

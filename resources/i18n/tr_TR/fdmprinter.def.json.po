@@ -3508,12 +3508,12 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "Yazdırılan ilk katman destek yapı hatları arasındaki mesafedir. Bu ayar destek yoğunluğuna göre hesaplanır."
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "Destek Dolgu Hattı Yönü"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
+msgctxt "support_infill_angles description"
 msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
 msgstr "Destekler için dolgu şeklinin döndürülmesi. Destek dolgu şekli yatay düzlemde döndürülür."
 
