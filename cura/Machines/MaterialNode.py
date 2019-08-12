@@ -37,7 +37,7 @@ class MaterialNode(ContainerNode):
         for quality in qualities:
             quality_id = quality["id"]
             if quality_id not in self.qualities:
-                self.qualities[quality_id] = QualityNode(quality_id, material = self)
+                self.qualities[quality_id] = QualityNode(quality_id, parent = self)
 
     def _qualityAdded(self, container: ContainerInterface) -> None:
         if container.getMetaDataEntry("type") != "quality":
@@ -50,4 +50,4 @@ class MaterialNode(ContainerNode):
                 return  # Doesn't match our configuration.
 
         quality_id = container.getId()
-        self.qualities[quality_id] = QualityNode(quality_id, material = self)
+        self.qualities[quality_id] = QualityNode(quality_id, parent = self)
