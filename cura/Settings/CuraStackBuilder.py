@@ -9,7 +9,8 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.VariantType import VariantType
+from cura.Machines.MachineNode import MachineNode
+from cura.Machines.MaterialManager import MaterialManager
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
@@ -100,11 +101,16 @@ class CuraStackBuilder:
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
+        material_manager = MaterialManager.getInstance()
         registry = application.getContainerRegistry()
+        container_tree = ContainerTree.getInstance()
 
         # get variant container for extruders
         extruder_variant_container = application.empty_variant_container
+        # The container tree listens to the containerAdded signal to add this, but that signal is emitted with a delay which might not have passed yet.
+        # Therefore we must make sure that it's manually added here.
+        if global_stack.definition.getId() not in container_tree.machines:
+            container_tree.machines[global_stack.definition.getId()] = MachineNode(global_stack.definition.getId())
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
         extruder_variant_name = None
@@ -118,7 +124,7 @@ class CuraStackBuilder:
         extruder_definition_id = extruder_definition_dict[str(extruder_position)]
         try:
             extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
-        except IndexError as e:
+        except IndexError:
             # It still needs to break, but we want to know what extruder ID made it break.
             msg = "Unable to find extruder definition with the id [%s]" % extruder_definition_id
             Logger.logException("e", msg)
