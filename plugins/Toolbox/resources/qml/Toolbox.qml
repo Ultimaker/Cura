@@ -48,32 +48,32 @@ Window
             ToolboxLoadingPage
             {
                 id: viewLoading
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "loading"
             }
             ToolboxErrorPage
             {
                 id: viewErrored
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "errored"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "errored"
             }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "overview"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "overview"
             }
             ToolboxDetailPage
             {
                 id: viewDetail
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "detail"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "detail"
             }
             ToolboxAuthorPage
             {
                 id: viewAuthor
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "author"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "author"
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: toolbox.viewCategory == "installed"
+                visible: toolbox.viewCategory === "installed"
             }
         }
 

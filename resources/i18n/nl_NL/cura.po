@@ -5,12 +5,12 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
+"Project-Id-Version: Cura 4.2\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-05-14 12:48+0200\n"
-"PO-Revision-Date: 2019-03-13 14:00+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Dutch\n"
+"POT-Creation-Date: 2019-07-16 14:38+0200\n"
+"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Dutch <info@lionbridge.com>, Dutch <info@bothof.nl>\n"
 "Language: nl_NL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,11 @@ msgid ""
 "<p>{model_names}</p>\n"
 "<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
 "<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
-msgstr "<p>Een of meer 3D-modellen worden mogelijk niet optimaal geprint vanwege het modelformaat en de materiaalconfiguratie:</p>\n<p>{model_names}</p>\n<p>Ontdek hoe u de best mogelijke printkwaliteit en betrouwbaarheid verkrijgt.</p>\n<p><a href=”https://ultimaker.com/3D-model-assistant”>Handleiding printkwaliteit bekijken</a></p>"
+msgstr ""
+"<p>Een of meer 3D-modellen worden mogelijk niet optimaal geprint vanwege het modelformaat en de materiaalconfiguratie:</p>\n"
+"<p>{model_names}</p>\n"
+"<p>Ontdek hoe u de best mogelijke printkwaliteit en betrouwbaarheid verkrijgt.</p>\n"
+"<p><a href=”https://ultimaker.com/3D-model-assistant”>Handleiding printkwaliteit bekijken</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
@@ -80,6 +84,11 @@ msgstr "Actieve instellingen platmaken"
 msgctxt "@info:status"
 msgid "Profile has been flattened & activated."
 msgstr "Profiel is platgemaakt en geactiveerd."
+
+#: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
+msgctxt "@item:inlistbox"
+msgid "AMF File"
+msgstr "AMF-bestand"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
 msgctxt "@item:inmenu"
@@ -106,12 +115,6 @@ msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "Er wordt momenteel via USB geprint. Wanneer u Cura afsluit, wordt het printen gestopt. Weet u zeker dat u wilt afsluiten?"
 
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/install/X3GWriter/__init__.py:15
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
-msgctxt "X3G Writer File Description"
-msgid "X3G File"
-msgstr "X3G-bestand"
-
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
 msgid "Writes X3g to files"
@@ -121,6 +124,11 @@ msgstr "Schrijft X3g naar bestanden"
 msgctxt "X3g Writer File Description"
 msgid "X3g File"
 msgstr "X3g-bestand"
+
+#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
+msgctxt "X3G Writer File Description"
+msgid "X3G File"
+msgstr "X3G-bestand"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
@@ -194,9 +202,9 @@ msgstr "Kan niet opslaan op verwisselbaar station {0}: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:188
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:133
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:140
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1620
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:134
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:141
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1622
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Fout"
@@ -226,8 +234,8 @@ msgstr "Verwisselbaar station {0} uitwerpen"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:197
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1610
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1710
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1612
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1712
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Waarschuwing"
@@ -358,39 +366,39 @@ msgid "There is a mismatch between the configuration or calibration of the print
 msgstr "De configuratie of kalibratie van de printer komt niet overeen met de configuratie van Cura. Slice voor het beste resultaat altijd voor de PrintCores en materialen die in de printer zijn ingevoerd."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:259
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:171
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:185
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:176
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:181
 msgctxt "@info:status"
 msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
 msgstr "Het verzenden van nieuwe taken is (tijdelijk) geblokkeerd. Nog bezig met het verzenden van de vorige printtaak."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:266
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:189
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:206
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:194
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:211
 msgctxt "@info:status"
 msgid "Sending data to printer"
 msgstr "De gegevens worden naar de printer verzonden"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:267
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:191
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:208
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:196
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:213
 msgctxt "@info:title"
 msgid "Sending Data"
 msgstr "Gegevens Verzenden"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:268
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:209
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:214
 #: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:18
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:81
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:410
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:38
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:149
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:272
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:283
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Annuleren"
@@ -439,82 +447,82 @@ msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Via het netwerk verbonden"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:284
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:369
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:289
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:370
 msgctxt "@info:status"
 msgid "Print job was successfully sent to the printer."
 msgstr "De printtaak is naar de printer verzonden."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:286
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:370
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:291
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:371
 msgctxt "@info:title"
 msgid "Data Sent"
 msgstr "Gegevens verzonden"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:287
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:292
 msgctxt "@action:button"
 msgid "View in Monitor"
 msgstr "In monitor weergeven"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:399
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:317
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:411
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:318
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Printer '{printer_name}' has finished printing '{job_name}'."
 msgstr "Printer '{printer_name}' is klaar met het printen van '{job_name}'."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:401
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:321
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:413
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:322
 #, python-brace-format
 msgctxt "@info:status"
 msgid "The print job '{job_name}' was finished."
 msgstr "De printtaak '{job_name}' is voltooid."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:402
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:414
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:316
 msgctxt "@info:status"
 msgid "Print finished"
 msgstr "Print klaar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:583
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:617
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:595
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:629
 msgctxt "@label:material"
 msgid "Empty"
 msgstr "Leeg"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:584
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:618
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:596
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:630
 msgctxt "@label:material"
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:174
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:169
 msgctxt "@action:button"
 msgid "Print via Cloud"
 msgstr "Printen via Cloud"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:175
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:170
 msgctxt "@properties:tooltip"
 msgid "Print via Cloud"
 msgstr "Printen via Cloud"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:176
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:171
 msgctxt "@info:status"
 msgid "Connected via Cloud"
 msgstr "Verbonden via Cloud"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:186
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:358
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:182
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:359
 msgctxt "@info:title"
 msgid "Cloud error"
 msgstr "Cloud-fout"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:203
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:199
 msgctxt "@info:status"
 msgid "Could not export print job."
 msgstr "Kan de printtaak niet exporteren."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:357
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:358
 msgctxt "@info:text"
 msgid "Could not upload the data to the printer."
 msgstr "Kan de gegevens niet uploaden naar de printer."
@@ -544,37 +552,37 @@ msgctxt "@info:status"
 msgid "Uploading via Ultimaker Cloud"
 msgstr "Uploaden via Ultimaker Cloud"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:624
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:621
 msgctxt "@info:status"
 msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
 msgstr "Verzend en controleer overal printtaken met uw Ultimaker-account."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:630
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:627
 msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
 msgid "Connect to Ultimaker Cloud"
 msgstr "Verbinden met Ultimaker Cloud"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:631
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:628
 msgctxt "@action"
 msgid "Don't ask me again for this printer."
 msgstr "Niet opnieuw vragen voor deze printer."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:634
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:631
 msgctxt "@action"
 msgid "Get started"
 msgstr "Aan de slag"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:640
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:637
 msgctxt "@info:status"
 msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
 msgstr "U kunt nu overal vandaan printtaken verzenden en controleren met uw Ultimaker-account."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:646
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:643
 msgctxt "@info:status"
 msgid "Connected!"
 msgstr "Verbonden!"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:648
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:645
 msgctxt "@action"
 msgid "Review your connection"
 msgstr "Uw verbinding controleren"
@@ -583,11 +591,6 @@ msgstr "Uw verbinding controleren"
 msgctxt "@action"
 msgid "Connect via Network"
 msgstr "Verbinding Maken via Netwerk"
-
-#: /home/ruben/Projects/Cura/plugins/SettingsGuide/__init__.py:16
-msgctxt "@item:inmenu"
-msgid "Cura Settings Guide"
-msgstr "Cura-instellingengids"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
@@ -762,18 +765,18 @@ msgid "3MF File"
 msgstr "3MF-bestand"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:191
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:772
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:775
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Nozzle"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:470
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:474
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projectbestand <filename>{0}</filename> bevat een onbekend type machine <message>{1}</message>. Kan de machine niet importeren. In plaats daarvan worden er modellen geïmporteerd."
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:473
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:477
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Projectbestand Openen"
@@ -905,13 +908,13 @@ msgid "Not supported"
 msgstr "Niet ondersteund"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:203
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:121
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Het Bestand Bestaat Al"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:204
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
@@ -923,117 +926,116 @@ msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "Ongeldige bestands-URL:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:924
-#, python-format
-msgctxt "@info:generic"
-msgid "Settings have been changed to match the current availability of extruders: [%s]"
-msgstr "De instellingen zijn gewijzigd zodat deze overeenkomen met de huidige beschikbaarheid van de extruders: [%s]"
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
+msgctxt "@info:message Followed by a list of settings."
+msgid "Settings have been changed to match the current availability of extruders:"
+msgstr "De instellingen zijn gewijzigd zodat deze overeenkomen met de huidige beschikbaarheid van extruders:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:926
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "De instellingen zijn bijgewerkt"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1468
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1481
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Extruder(s) uitgeschakeld"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:131
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: <message>{1}</message>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:138
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:139
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Kan het profiel niet exporteren als <filename>{0}</filename>: Invoegtoepassing voor de schrijver heeft een fout gerapporteerd."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Het profiel is geëxporteerd als <filename>{0}</filename>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:145
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "De export is voltooid"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:170
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:172
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>: {1}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:177
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:176
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename> voordat een printer toegevoegd is."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:190
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:192
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Er is geen aangepast profiel om in het bestand <filename>{0}</filename> te importeren"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:194
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:196
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:218
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:228
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:220
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:230
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Dit profiel <filename>{0}</filename> bevat incorrecte gegevens. Kan het profiel niet importeren."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:241
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:243
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
 msgstr "De machine die is vastgelegd in het profiel <filename>{0}</filename> ({1}), komt niet overeen met uw huidige machine ({2}). Kan het profiel niet importeren."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:313
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Kan het profiel niet importeren uit <filename>{0}</filename>:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:316
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:318
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "Het profiel {0} is geïmporteerd"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:319
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:321
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Het bestand {0} bevat geen geldig profiel."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:322
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:324
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Het profiel {0} heeft een onbekend bestandstype of is beschadigd."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:357
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:359
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Aangepast profiel"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:373
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:375
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "Er ontbreekt een kwaliteitstype in het profiel."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:387
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:389
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
@@ -1111,7 +1113,7 @@ msgctxt "@action:button"
 msgid "Next"
 msgstr "Volgende"
 
-#: /home/ruben/Projects/Cura/cura/UI/ObjectsModel.py:73
+#: /home/ruben/Projects/Cura/cura/UI/ObjectsModel.py:61
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1122,7 +1124,7 @@ msgstr "Groepsnummer {group_nr}"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:85
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:508
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:120
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:124
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:168
 msgctxt "@action:button"
 msgid "Close"
@@ -1130,7 +1132,7 @@ msgstr "Sluiten"
 
 #: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:17
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:91
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:46
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Toevoegen"
@@ -1151,20 +1153,20 @@ msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Alle Bestanden (*)"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:78
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:181
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:222
+#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:86
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:182
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:223
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:269
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:102
+#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:116
 msgctxt "@label"
 msgid "The printer(s) below cannot be connected because they are part of a group"
 msgstr "Kan de onderstaande printer(s) niet verbinden omdat deze deel uitmaakt/uitmaken van een groep"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:104
+#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:118
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Beschikbare netwerkprinters"
@@ -1180,12 +1182,12 @@ msgctxt "@label"
 msgid "Custom"
 msgstr "Aangepast"
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:81
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:89
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "De hoogte van het bouwvolume is verminderd wegens de waarde van de instelling “Printvolgorde”, om te voorkomen dat de rijbrug tegen geprinte modellen botst."
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:83
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:91
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Werkvolume"
@@ -1278,7 +1280,12 @@ msgid ""
 "                    <p>Backups can be found in the configuration folder.</p>\n"
 "                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
-msgstr "<p><b>Oeps, Ultimaker Cura heeft een probleem gedetecteerd.</p></b>\n                    <p>Tijdens het opstarten is een onherstelbare fout opgetreden. Deze fout is mogelijk veroorzaakt door enkele onjuiste configuratiebestanden. Het wordt aanbevolen een back-up te maken en de standaardinstelling van uw configuratie te herstellen.</p>\n                    <p>Back-ups bevinden zich in de configuratiemap.</p>\n                    <p>Stuur ons dit crashrapport om het probleem op te lossen.</p>\n                "
+msgstr ""
+"<p><b>Oeps, Ultimaker Cura heeft een probleem gedetecteerd.</p></b>\n"
+"                    <p>Tijdens het opstarten is een onherstelbare fout opgetreden. Deze fout is mogelijk veroorzaakt door enkele onjuiste configuratiebestanden. Het wordt aanbevolen een back-up te maken en de standaardinstelling van uw configuratie te herstellen.</p>\n"
+"                    <p>Back-ups bevinden zich in de configuratiemap.</p>\n"
+"                    <p>Stuur ons dit crashrapport om het probleem op te lossen.</p>\n"
+"                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:98
 msgctxt "@action:button"
@@ -1311,7 +1318,10 @@ msgid ""
 "<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
 "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 "        "
-msgstr "<p><b>Er is een fatale fout opgetreden in Cura. Stuur ons het crashrapport om het probleem op te lossen</p></b>\n            <p>Druk op de knop \"Rapport verzenden\" om het foutenrapport automatisch naar onze servers te verzenden</p>\n        "
+msgstr ""
+"<p><b>Er is een fatale fout opgetreden in Cura. Stuur ons het crashrapport om het probleem op te lossen</p></b>\n"
+"            <p>Druk op de knop \"Rapport verzenden\" om het foutenrapport automatisch naar onze servers te verzenden</p>\n"
+"        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:173
 msgctxt "@title:groupbox"
@@ -1383,48 +1393,48 @@ msgstr "Logboeken"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
-msgid "User description"
-msgstr "Gebruikersbeschrijving"
+msgid "User description (Note: Developers may not speak your language, please use English if possible)"
+msgstr "Gebruikersbeschrijving (opmerking: ontwikkelaars spreken uw taal mogelijk niet; gebruik indien mogelijk Engels)"
 
-#: /home/ruben/Projects/Cura/cura/CrashHandler.py:341
+#: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
 msgid "Send report"
 msgstr "Rapport verzenden"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:503
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:504
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Machines laden..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:817
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:819
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Scene instellen..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:853
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:854
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Interface laden..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1131
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1133
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1609
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1611
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Er kan slechts één G-code-bestand tegelijkertijd worden geladen. Het importeren van {0} is overgeslagen"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1619
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1621
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Kan geen ander bestand openen als G-code wordt geladen. Het importeren van {0} is overgeslagen"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1709
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1711
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "Het geselecteerde model is te klein om te laden."
@@ -1434,98 +1444,98 @@ msgctxt "@title:label"
 msgid "Printer Settings"
 msgstr "Printerinstellingen"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:70
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:72
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (Breedte)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:88
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:102
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:190
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:208
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:226
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:246
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:264
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:76
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:90
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:194
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:213
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:232
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:253
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:272
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:123
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:124
 msgctxt "@label"
 msgid "mm"
 msgstr "mm"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:84
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:86
 msgctxt "@label"
 msgid "Y (Depth)"
 msgstr "Y (Diepte)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:98
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:100
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Hoogte)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:112
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:114
 msgctxt "@label"
 msgid "Build plate shape"
 msgstr "Vorm van het platform"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:125
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:127
 msgctxt "@label"
 msgid "Origin at center"
 msgstr "Centraal oorsprongpunt"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:139
 msgctxt "@label"
 msgid "Heated bed"
 msgstr "Verwarmd bed"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:149
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:151
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "Versie G-code"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:174
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:176
 msgctxt "@title:label"
 msgid "Printhead Settings"
 msgstr "Printkopinstellingen"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:186
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:190
 msgctxt "@label"
 msgid "X min"
 msgstr "X min"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:204
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:209
 msgctxt "@label"
 msgid "Y min"
 msgstr "Y min"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:222
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:228
 msgctxt "@label"
 msgid "X max"
 msgstr "X max"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:242
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:249
 msgctxt "@label"
 msgid "Y max"
 msgstr "Y max"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:260
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:268
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Rijbrughoogte"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:274
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:282
 msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Aantal extruders"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:333
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Start G-code"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:347
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:355
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Eind G-code"
@@ -1555,22 +1565,22 @@ msgctxt "@label"
 msgid "Nozzle offset X"
 msgstr "Nozzle-offset X"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:119
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:120
 msgctxt "@label"
 msgid "Nozzle offset Y"
 msgstr "Nozzle-offset Y"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:133
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:135
 msgctxt "@label"
 msgid "Cooling Fan Number"
 msgstr "Nummer van koelventilator"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:160
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:162
 msgctxt "@title:label"
 msgid "Extruder Start G-code"
 msgstr "Start-G-code van extruder"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:174
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:176
 msgctxt "@title:label"
 msgid "Extruder End G-code"
 msgstr "Eind-G-code van extruder"
@@ -1581,7 +1591,7 @@ msgid "Install"
 msgstr "Installeren"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:20
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:45
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:46
 msgctxt "@action:button"
 msgid "Installed"
 msgstr "Geïnstalleerd"
@@ -1604,8 +1614,8 @@ msgstr "Invoegtoepassingen"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:70
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:44
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:66
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:413
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:80
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:417
 msgctxt "@title:tab"
 msgid "Materials"
 msgstr "Materialen"
@@ -1615,49 +1625,49 @@ msgctxt "@label"
 msgid "Your rating"
 msgstr "Uw beoordeling"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:98
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:99
 msgctxt "@label"
 msgid "Version"
 msgstr "Versie"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:105
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:106
 msgctxt "@label"
 msgid "Last updated"
 msgstr "Laatst bijgewerkt"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:112
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:113
 msgctxt "@label"
 msgid "Author"
 msgstr "Auteur"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:119
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:120
 msgctxt "@label"
 msgid "Downloads"
 msgstr "Downloads"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:55
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:56
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Log in</a> is required to install or update"
 msgstr "<a href='%1'>Aanmelden</a> is vereist voor installeren of bijwerken"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:79
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:80
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
 msgstr "<a href='%1'>Materiaalspoelen kopen</a>"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:95
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:96
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:34
 msgctxt "@action:button"
 msgid "Update"
 msgstr "Bijwerken"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:96
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:97
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:35
 msgctxt "@action:button"
 msgid "Updating"
 msgstr "Bijwerken"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:97
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:98
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledTileActions.qml:36
 msgctxt "@action:button"
 msgid "Updated"
@@ -1769,7 +1779,10 @@ msgid ""
 "This plugin contains a license.\n"
 "You need to accept this license to install this plugin.\n"
 "Do you agree with the terms below?"
-msgstr "Deze invoegtoepassing bevat een licentie.\nU moet akkoord gaan met deze licentie om deze invoegtoepassing te mogen installeren.\nGaat u akkoord met de onderstaande voorwaarden?"
+msgstr ""
+"Deze invoegtoepassing bevat een licentie.\n"
+"U moet akkoord gaan met deze licentie om deze invoegtoepassing te mogen installeren.\n"
+"Gaat u akkoord met de onderstaande voorwaarden?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxLicenseDialog.qml:55
 msgctxt "@action:button"
@@ -1907,69 +1920,69 @@ msgid "Firmware update failed due to missing firmware."
 msgstr "Firmware-update mislukt door ontbrekende firmware."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:144
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:185
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:133
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:181
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
 msgctxt "@label"
 msgid "Glass"
 msgstr "Glas"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:209
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:253
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:208
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
 msgctxt "@info"
-msgid "These options are not available because you are monitoring a cloud printer."
-msgstr "Deze opties zijn niet beschikbaar omdat u een cloudprinter controleert."
+msgid "Please update your printer's firmware to manage the queue remotely."
+msgstr "Werk de firmware van uw printer bij om de wachtrij op afstand te beheren."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:242
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
 msgctxt "@info"
 msgid "The webcam is not available because you are monitoring a cloud printer."
 msgstr "De webcam is niet beschikbaar omdat u een cloudprinter controleert."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:302
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:300
 msgctxt "@label:status"
 msgid "Loading..."
 msgstr "Laden..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:306
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:304
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Niet beschikbaar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:310
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:308
 msgctxt "@label:status"
 msgid "Unreachable"
 msgstr "Onbereikbaar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:314
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:312
 msgctxt "@label:status"
 msgid "Idle"
 msgstr "Inactief"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:355
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:353
 msgctxt "@label"
 msgid "Untitled"
 msgstr "Zonder titel"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:376
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:374
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "Anoniem"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:403
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:401
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "Hiervoor zijn configuratiewijzigingen vereist"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:441
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:439
 msgctxt "@action:button"
 msgid "Details"
 msgstr "Details"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:134
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:130
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "Niet‑beschikbare printer"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:136
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:132
 msgctxt "@label"
 msgid "First available"
 msgstr "Eerst beschikbaar"
@@ -1979,35 +1992,30 @@ msgctxt "@label"
 msgid "Queued"
 msgstr "In wachtrij"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:68
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:67
 msgctxt "@label link to connect manager"
-msgid "Go to Cura Connect"
-msgstr "Ga naar Cura Connect"
+msgid "Manage in browser"
+msgstr "Beheren in browser"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:103
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:100
+msgctxt "@label"
+msgid "There are no print jobs in the queue. Slice and send a job to add one."
+msgstr "Er staan geen afdruktaken in de wachtrij. Slice een taak en verzend deze om er een toe te voegen."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "Printtaken"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:118
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:132
 msgctxt "@label"
 msgid "Total print time"
 msgstr "Totale printtijd"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:133
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:148
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "Wachten op"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:217
-msgctxt "@info"
-msgid "All jobs are printed."
-msgstr "Alle taken zijn geprint."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:252
-msgctxt "@label link to connect manager"
-msgid "View print history"
-msgstr "Printgeschiedenis weergeven"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:50
 msgctxt "@window:title"
@@ -2026,11 +2034,15 @@ msgstr "Verbinding Maken met Printer in het Netwerk"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
 msgctxt "@label"
-msgid ""
-"To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
-"\n"
-"Select your printer from the list below:"
-msgstr "Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken om G-code-bestanden naar de printer over te zetten.\n\nSelecteer uw printer in de onderstaande lijst:"
+msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
+msgstr "Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk"
+" of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken"
+" om G-code-bestanden naar de printer over te zetten."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
+msgctxt "@label"
+msgid "Select your printer from the list below:"
+msgstr "Selecteer uw printer in de onderstaande lijst:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
 msgctxt "@action:button"
@@ -2038,9 +2050,9 @@ msgid "Edit"
 msgstr "Bewerken"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:112
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:128
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:52
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:117
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:146
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:55
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:121
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "Verwijderen"
@@ -2123,50 +2135,50 @@ msgctxt "@action:button"
 msgid "OK"
 msgstr "OK"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:73
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:85
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:78
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:90
 msgctxt "@label:status"
 msgid "Aborted"
 msgstr "Afgebroken"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:75
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:77
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:80
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:82
 msgctxt "@label:status"
 msgid "Finished"
 msgstr "Gereed"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:79
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:81
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:84
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:86
 msgctxt "@label:status"
 msgid "Preparing..."
 msgstr "Voorbereiden..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:83
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88
 msgctxt "@label:status"
 msgid "Aborting..."
 msgstr "Afbreken..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:87
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
 msgctxt "@label:status"
 msgid "Pausing..."
 msgstr "Pauzeren..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:89
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94
 msgctxt "@label:status"
 msgid "Paused"
 msgstr "Gepauzeerd"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:91
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:96
 msgctxt "@label:status"
 msgid "Resuming..."
 msgstr "Hervatten..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:93
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:98
 msgctxt "@label:status"
 msgid "Action required"
 msgstr "Handeling nodig"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:95
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:100
 msgctxt "@label:status"
 msgid "Finishes %1 at %2"
 msgstr "Voltooit %1 om %2"
@@ -2270,44 +2282,44 @@ msgctxt "@action:button"
 msgid "Override"
 msgstr "Overschrijven"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:65
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:85
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
 msgid_plural "The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "Voor de toegewezen printer, %1, is de volgende configuratiewijziging vereist:"
 msgstr[1] "Voor de toegewezen printer, %1, zijn de volgende configuratiewijzigingen vereist:"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:69
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:89
 msgctxt "@label"
 msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
 msgstr "De printer %1 is toegewezen. De taak bevat echter een onbekende materiaalconfiguratie."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:79
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:99
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
 msgstr "Wijzig het materiaal %1 van %2 in %3."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:82
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:102
 msgctxt "@label"
 msgid "Load %3 as material %1 (This cannot be overridden)."
 msgstr "Laad %3 als materiaal %1 (kan niet worden overschreven)."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:85
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:105
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
 msgstr "Wijzig de print core %1 van %2 in %3."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:88
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:108
 msgctxt "@label"
 msgid "Change build plate to %1 (This cannot be overridden)."
 msgstr "Wijzig het platform naar %1 (kan niet worden overschreven)."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:95
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:115
 msgctxt "@label"
 msgid "Override will use the specified settings with the existing printer configuration. This may result in a failed print."
 msgstr "Met het overschrijven worden de opgegeven instellingen gebruikt met de bestaande printerconfiguratie. De print kan hierdoor mislukken."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:136
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:156
 msgctxt "@label"
 msgid "Aluminum"
 msgstr "Aluminium"
@@ -2317,7 +2329,7 @@ msgctxt "@info:tooltip"
 msgid "Connect to a printer"
 msgstr "Verbinding maken met een printer"
 
-#: /home/ruben/Projects/Cura/plugins/SettingsGuide/resources/qml/SettingsGuide.qml:17
+#: /home/ruben/Projects/Cura/plugins/SettingsGuide/resources/qml/SettingsGuide.qml:16
 msgctxt "@title"
 msgid "Cura Settings Guide"
 msgstr "Cura-instellingengids"
@@ -2327,8 +2339,10 @@ msgctxt "@info"
 msgid ""
 "Please make sure your printer has a connection:\n"
 "- Check if the printer is turned on.\n"
-"- Check if the printer is connected to the network."
-msgstr "Controleer of de printer verbonden is:\n- Controleer of de printer ingeschakeld is.\n- Controleer of de printer verbonden is met het netwerk."
+"- Check if the printer is connected to the network.\n"
+"- Check if you are signed in to discover cloud-connected printers."
+msgstr "Controleer of de printer verbonden is:\n- Controleer of de printer ingeschakeld is.\n- Controleer of de printer verbonden is met het netwerk.\n- Controleer"
+" of u bent aangemeld om met de cloud verbonden printers te detecteren."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -2640,7 +2654,7 @@ msgid "Printer Group"
 msgstr "Printergroep"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:215
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Profielinstellingen"
@@ -2653,19 +2667,19 @@ msgstr "Hoe dient het conflict in het profiel te worden opgelost?"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:308
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:121
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:239
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:250
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Naam"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:223
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:234
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Niet in profiel"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:236
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:228
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:239
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2837,18 +2851,24 @@ msgid "Previous"
 msgstr "Vorige"
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:60
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:154
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:152
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:159
 msgctxt "@action:button"
 msgid "Export"
 msgstr "Exporteren"
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageCategoryView.qml:169
+#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageCategoryView.qml:209
 msgctxt "@label"
 msgid "Tip"
 msgstr "Tip"
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPage.qml:156
+#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorMaterialMenu.qml:20
+#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:66
+msgctxt "@label:category menu label"
+msgid "Generic"
+msgstr "Standaard"
+
+#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPage.qml:160
 msgctxt "@label"
 msgid "Print experiment"
 msgstr "Print experiment"
@@ -2953,170 +2973,170 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "Weet u zeker dat u het printen wilt afbreken?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:71
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:73
 msgctxt "@title"
 msgid "Information"
 msgstr "Informatie"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:100
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:102
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "Diameterwijziging bevestigen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:101
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:103
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
 msgstr "Het nieuwe filament is ingesteld op %1 mm. Dit is niet compatibel met de huidige extruder. Wilt u verder gaan?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:133
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:127
 msgctxt "@label"
 msgid "Display Name"
 msgstr "Naam"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:143
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:137
 msgctxt "@label"
 msgid "Brand"
 msgstr "Merk"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:153
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:147
 msgctxt "@label"
 msgid "Material Type"
 msgstr "Type Materiaal"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:163
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:157
 msgctxt "@label"
 msgid "Color"
 msgstr "Kleur"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:213
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:207
 msgctxt "@label"
 msgid "Properties"
 msgstr "Eigenschappen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:215
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:209
 msgctxt "@label"
 msgid "Density"
 msgstr "Dichtheid"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:230
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:224
 msgctxt "@label"
 msgid "Diameter"
 msgstr "Diameter"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:264
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:258
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr "Kostprijs Filament"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:281
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:275
 msgctxt "@label"
 msgid "Filament weight"
 msgstr "Gewicht filament"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:299
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:293
 msgctxt "@label"
 msgid "Filament length"
 msgstr "Lengte filament"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:308
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:302
 msgctxt "@label"
 msgid "Cost per Meter"
 msgstr "Kostprijs per meter"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:322
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:316
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
 msgstr "Dit materiaal is gekoppeld aan %1 en deelt hiermee enkele eigenschappen."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:329
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:323
 msgctxt "@label"
 msgid "Unlink Material"
 msgstr "Materiaal ontkoppelen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:340
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:334
 msgctxt "@label"
 msgid "Description"
 msgstr "Beschrijving"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:353
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:347
 msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "Gegevens Hechting"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:379
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:373
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Instellingen voor printen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:84
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:39
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:72
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:99
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:40
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:73
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Activeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:101
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:117
 msgctxt "@action:button"
 msgid "Create"
 msgstr "Maken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:114
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:131
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Dupliceren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:141
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:142
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:148
 msgctxt "@action:button"
 msgid "Import"
 msgstr "Importeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:203
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:223
 msgctxt "@action:label"
 msgid "Printer"
 msgstr "Printer"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:262
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:246
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:287
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:253
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Verwijderen Bevestigen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:263
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:247
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:290
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:254
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Weet u zeker dat u %1 wilt verwijderen? Deze bewerking kan niet ongedaan worden gemaakt!"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:277
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:285
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:304
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Materiaal Importeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:286
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:313
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Kon materiaal <filename>%1</filename> niet importeren: <message>%2</message>"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:290
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:317
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Materiaal <filename>%1</filename> is geïmporteerd"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:308
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:316
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:335
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:343
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Materiaal Exporteren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:320
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:347
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Exporteren van materiaal naar <filename>%1</filename> is mislukt: <message>%2</message>"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:326
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:353
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Materiaal is geëxporteerd naar <filename>%1</filename>"
@@ -3157,383 +3177,406 @@ msgid "Unit"
 msgstr "Eenheid"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:15
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:406
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:410
 msgctxt "@title:tab"
 msgid "General"
 msgstr "Algemeen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:126
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:130
 msgctxt "@label"
 msgid "Interface"
 msgstr "Interface"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:137
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
 msgctxt "@label"
 msgid "Language:"
 msgstr "Taal:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:204
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:208
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Valuta:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:217
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:221
 msgctxt "@label"
 msgid "Theme:"
 msgstr "Thema:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:273
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:277
 msgctxt "@label"
 msgid "You will need to restart the application for these changes to have effect."
 msgstr "U moet de toepassing opnieuw starten voordat deze wijzigingen van kracht worden."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:290
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Automatisch slicen bij wijzigen van instellingen."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:298
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:302
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "Automatisch slicen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:312
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:316
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "Gedrag kijkvenster"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:320
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:324
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "Geef niet-ondersteunde gedeelten van het model een rode markering. Zonder ondersteuning zullen deze gedeelten niet goed worden geprint."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:329
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Overhang weergeven"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:336
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "Verplaatst de camera zodanig dat wanneer een model wordt geselecteerd, het model in het midden van het beeld wordt weergegeven"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:346
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Camera centreren wanneer een item wordt geselecteerd"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:350
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:356
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "Moet het standaard zoomgedrag van Cura worden omgekeerd?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:355
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:361
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "Keer de richting van de camerazoom om."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:365
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "Moet het zoomen in de richting van de muis gebeuren?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:370
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
+msgctxt "@info:tooltip"
+msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
+msgstr "Zoomen in de richting van de muis wordt niet ondersteund in het orthogonale perspectief."
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Zoomen in de richting van de muis"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:380
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:402
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Moeten modellen op het platform zodanig worden verplaatst dat ze elkaar niet meer doorsnijden?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:385
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:407
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "Modellen gescheiden houden"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:394
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "Moeten modellen in het printgebied omlaag worden gebracht zodat ze het platform raken?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:399
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:421
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Modellen automatisch op het platform laten vallen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:411
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:433
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "Toon het waarschuwingsbericht in de G-code-lezer."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:420
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:442
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "Waarschuwingsbericht in de G-code-lezer"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:428
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:450
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "Moet de laag in de compatibiliteitsmodus worden geforceerd?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:433
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:455
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Compatibiliteitsmodus voor laagweergave forceren (opnieuw opstarten vereist)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:449
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
+msgctxt "@info:tooltip"
+msgid "What type of camera rendering should be used?"
+msgstr "Welk type cameraweergave moet worden gebruikt?"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
+msgctxt "@window:text"
+msgid "Camera rendering: "
+msgstr "Cameraweergave: "
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
+msgid "Perspective"
+msgstr "Perspectief"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
+msgid "Orthogonal"
+msgstr "Orthografisch"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "Bestanden openen en opslaan"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:456
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "Moeten modellen worden geschaald naar het werkvolume als ze te groot zijn?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:461
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Grote modellen schalen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:471
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Een model wordt mogelijk extreem klein weergegeven als de eenheden bijvoorbeeld in meters zijn in plaats van in millimeters. Moeten dergelijke modellen worden opgeschaald?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:476
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:542
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "Extreem kleine modellen schalen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:486
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:552
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "Moeten modellen worden geselecteerd nadat ze zijn geladen?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:491
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:557
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "Modellen selecteren wanneer ze geladen zijn"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:501
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:567
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "Moet er automatisch een op de printernaam gebaseerde voorvoegsel aan de naam van de printtaak worden toegevoegd?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:572
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "Machinevoorvoegsel toevoegen aan taaknaam"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:516
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "Dient er een samenvatting te worden weergegeven wanneer een projectbestand wordt opgeslagen?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:520
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:586
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Dialoogvenster voor samenvatting weergeven tijdens het opslaan van een project"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:530
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:596
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "Standaardgedrag tijdens het openen van een projectbestand"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:538
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:604
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Standaardgedrag tijdens het openen van een projectbestand: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:552
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:618
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "Altijd vragen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:553
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:619
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "Altijd als project openen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:554
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "Altijd modellen importeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:590
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:656
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "Wanneer u wijzigingen hebt aangebracht aan een profiel en naar een ander profiel wisselt, wordt een dialoogvenster weergegeven waarin u wordt gevraagd of u de aanpassingen wilt behouden. U kunt ook een standaardgedrag kiezen en het dialoogvenster nooit meer laten weergeven."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:599
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:665
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Profielen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:604
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "Standaardgedrag voor gewijzigde instellingen wanneer er naar een ander profiel wordt overgeschakeld: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:618
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:684
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:157
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Altijd vragen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:619
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:685
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "Gewijzigde instellingen altijd verwijderen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:686
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "Gewijzigde instellingen altijd naar nieuw profiel overbrengen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:654
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:720
 msgctxt "@label"
 msgid "Privacy"
 msgstr "Privacy"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:661
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:727
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "Moet Cura op updates controleren wanneer het programma wordt gestart?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:666
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:732
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "Bij starten op updates controleren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:676
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:742
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Mogen anonieme gegevens over uw print naar Ultimaker worden verzonden? Opmerking: er worden geen modellen, IP-adressen of andere persoonlijk identificeerbare gegevens verzonden of opgeslagen."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:681
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:747
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "(Anonieme) printgegevens verzenden"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:690
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:756
 msgctxt "@action:button"
 msgid "More information"
 msgstr "Meer informatie"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:774
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:27
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ProfileMenu.qml:23
 msgctxt "@label"
 msgid "Experimental"
 msgstr "Experimenteel"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:715
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:781
 msgctxt "@info:tooltip"
 msgid "Use multi build plate functionality"
 msgstr "Functionaliteit voor meerdere platformen gebruiken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:720
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:786
 msgctxt "@option:check"
 msgid "Use multi build plate functionality (restart required)"
 msgstr "Functionaliteit voor meerdere platformen gebruiken (opnieuw opstarten vereist)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:411
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:415
 msgctxt "@title:tab"
 msgid "Printers"
 msgstr "Printers"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:59
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:129
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:63
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:134
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Hernoemen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:36
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:415
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:419
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Profielen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:87
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:89
 msgctxt "@label"
 msgid "Create"
 msgstr "Maken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:102
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:105
 msgctxt "@label"
 msgid "Duplicate"
 msgstr "Dupliceren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:174
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:181
 msgctxt "@title:window"
 msgid "Create Profile"
 msgstr "Profiel Maken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:176
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:183
 msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "Geef een naam op voor dit profiel."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:232
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:239
 msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "Profiel Dupliceren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:263
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:270
 msgctxt "@title:window"
 msgid "Rename Profile"
 msgstr "Profiel Hernoemen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:276
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:283
 msgctxt "@title:window"
 msgid "Import Profile"
 msgstr "Profiel Importeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:302
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:309
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Profiel Exporteren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:357
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:364
 msgctxt "@label %1 is printer name"
 msgid "Printer: %1"
 msgstr "Printer: %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:413
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:420
 msgctxt "@label"
 msgid "Default profiles"
 msgstr "Standaardprofielen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:413
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:420
 msgctxt "@label"
 msgid "Custom profiles"
 msgstr "Aangepaste profielen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:490
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:500
 msgctxt "@action:button"
 msgid "Update profile with current settings/overrides"
 msgstr "Profiel bijwerken met huidige instellingen/overschrijvingen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:497
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:507
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Huidige wijzigingen verwijderen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:514
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:524
 msgctxt "@action:label"
 msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
 msgstr "Dit profiel gebruikt de standaardinstellingen die door de printer zijn opgegeven, dus er zijn hiervoor geen instellingen/overschrijvingen in de onderstaande lijst."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:521
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:531
 msgctxt "@action:label"
 msgid "Your current settings match the selected profile."
 msgstr "Uw huidige instellingen komen overeen met het geselecteerde profiel."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:540
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:550
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Algemene Instellingen"
@@ -3601,33 +3644,33 @@ msgctxt "@label:textbox"
 msgid "search settings"
 msgstr "instellingen zoeken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:465
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:466
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Waarde naar alle extruders kopiëren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:474
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:475
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Alle gewijzigde waarden naar alle extruders kopiëren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:511
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:512
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "Deze instelling verbergen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:529
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:525
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Deze instelling verbergen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:533
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:529
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Deze instelling zichtbaar houden"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:557
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:425
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:548
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:434
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
 msgstr "Zichtbaarheid Instelling Configureren..."
@@ -3638,55 +3681,64 @@ msgid ""
 "Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.\n\nKlik om deze instellingen zichtbaar te maken."
+msgstr ""
+"Een aantal verborgen instellingen gebruiken andere waarden dan hun normale berekende waarde.\n"
+"\n"
+"Klik om deze instellingen zichtbaar te maken."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:67
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:81
 msgctxt "@label"
 msgid "This setting is not used because all the settings that it influences are overridden."
 msgstr "Deze instelling wordt niet gebruikt omdat alle instellingen waarop deze invloed heeft, worden overschreven."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:72
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:86
 msgctxt "@label Header for list of settings."
 msgid "Affects"
 msgstr "Beïnvloedt"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:77
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:91
 msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Beïnvloed door"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:172
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:186
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "Deze instelling wordt altijd door alle extruders gedeeld. Als u hier de instelling wijzigt, wordt de waarde voor alle extruders gewijzigd."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:176
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:190
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
 msgstr "De waarde wordt afgeleid van de waarden per extruder "
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:214
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:228
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
 "\n"
 "Click to restore the value of the profile."
-msgstr "Deze instelling heeft een andere waarde dan in het profiel.\n\nKlik om de waarde van het profiel te herstellen."
+msgstr ""
+"Deze instelling heeft een andere waarde dan in het profiel.\n"
+"\n"
+"Klik om de waarde van het profiel te herstellen."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:308
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:322
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
-msgstr "Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde.\n\nKlik om de berekende waarde te herstellen."
+msgstr ""
+"Deze instelling wordt normaliter berekend, maar is nu ingesteld op een absolute waarde.\n"
+"\n"
+"Klik om de berekende waarde te herstellen."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
 msgid "Recommended"
 msgstr "Aanbevolen"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:157
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:158
 msgctxt "@button"
 msgid "Custom"
 msgstr "Aangepast"
@@ -3711,12 +3763,12 @@ msgctxt "@label"
 msgid "Generate structures to support parts of the model which have overhangs. Without these structures, such parts would collapse during printing."
 msgstr "Genereer structuren om delen van het model met overhang te ondersteunen. Zonder deze structuren zakken dergelijke delen in tijdens het printen."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:28
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:29
 msgctxt "@label"
 msgid "Adhesion"
 msgstr "Hechting"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:85
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:74
 msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Het printen van een brim of raft inschakelen. Deze optie zorgt ervoor dat er extra materiaal rondom of onder het object wordt neergelegd, dat er naderhand eenvoudig kan worden afgesneden."
@@ -3762,7 +3814,10 @@ msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Sommige waarden of aanpassingen van instellingen zijn anders dan de waarden die in het profiel zijn opgeslagen.\n\nKlik om het profielbeheer te openen."
+msgstr ""
+"Sommige waarden of aanpassingen van instellingen zijn anders dan de waarden die in het profiel zijn opgeslagen.\n"
+"\n"
+"Klik om het profielbeheer te openen."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -3799,7 +3854,7 @@ msgctxt "@label"
 msgid "Send G-code"
 msgstr "G-code verzenden"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:364
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:365
 msgctxt "@tooltip of G-code command input"
 msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
 msgstr "Verzend een aangepaste G-code-opdracht naar de verbonden printer. Druk op Enter om de opdracht te verzenden."
@@ -3896,11 +3951,6 @@ msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Favorieten"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:66
-msgctxt "@label:category menu label"
-msgid "Generic"
-msgstr "Standaard"
-
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:25
 msgctxt "@label:category menu label"
 msgid "Network enabled printers"
@@ -3951,7 +4001,22 @@ msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
 msgstr "&Camerapositie"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:35
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
+msgctxt "@action:inmenu menubar:view"
+msgid "Camera view"
+msgstr "Camerabeeld"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:47
+msgctxt "@action:inmenu menubar:view"
+msgid "Perspective"
+msgstr "Perspectief"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:59
+msgctxt "@action:inmenu menubar:view"
+msgid "Orthographic"
+msgstr "Orthografisch"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
 msgstr "&Platform"
@@ -4070,22 +4135,22 @@ msgctxt "@title:menu menubar:file"
 msgid "Open &Recent"
 msgstr "&Recente bestanden openen"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:145
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:140
 msgctxt "@label"
 msgid "Active print"
 msgstr "Actieve print"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:153
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:148
 msgctxt "@label"
 msgid "Job Name"
 msgstr "Taaknaam"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:161
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:156
 msgctxt "@label"
 msgid "Printing Time"
 msgstr "Printtijd"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:169
+#: /home/ruben/Projects/Cura/resources/qml/PrintMonitor.qml:164
 msgctxt "@label"
 msgid "Estimated time left"
 msgstr "Geschatte resterende tijd"
@@ -4094,6 +4159,11 @@ msgstr "Geschatte resterende tijd"
 msgctxt "@label"
 msgid "View type"
 msgstr "Type weergeven"
+
+#: /home/ruben/Projects/Cura/resources/qml/ObjectSelector.qml:59
+msgctxt "@label"
+msgid "Object list"
+msgstr "Lijst met objecten"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/UserOperations.qml:22
 msgctxt "@label The argument is a username."
@@ -4126,7 +4196,10 @@ msgid ""
 "- Send print jobs to Ultimaker printers outside your local network\n"
 "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 "- Get exclusive access to print profiles from leading brands"
-msgstr "- Printtaken verzenden naar Ultimaker-printers buiten uw lokale netwerk\n- Ultimaker Cura-instellingen opslaan in de cloud zodat u ze overal kunt gebruiken\n- Exclusieve toegang verkrijgen tot printprofielen van toonaangevende merken"
+msgstr ""
+"- Printtaken verzenden naar Ultimaker-printers buiten uw lokale netwerk\n"
+"- Ultimaker Cura-instellingen opslaan in de cloud zodat u ze overal kunt gebruiken\n"
+"- Exclusieve toegang verkrijgen tot printprofielen van toonaangevende merken"
 
 #: /home/ruben/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4143,32 +4216,37 @@ msgctxt "@label"
 msgid "No cost estimation available"
 msgstr "Geen kostenraming beschikbaar"
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/OutputProcessWidget.qml:126
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/OutputProcessWidget.qml:127
 msgctxt "@button"
 msgid "Preview"
 msgstr "Voorbeeld"
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:49
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:55
 msgctxt "@label:PrintjobStatus"
 msgid "Slicing..."
 msgstr "Slicen..."
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:61
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:67
 msgctxt "@label:PrintjobStatus"
 msgid "Unable to slice"
 msgstr "Kan niet slicen"
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:97
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
+msgctxt "@button"
+msgid "Processing"
+msgstr "Verwerken"
+
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:103
 msgctxt "@button"
 msgid "Slice"
 msgstr "Slicen"
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:98
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:104
 msgctxt "@label"
 msgid "Start the slicing process"
 msgstr "Het sliceproces starten"
 
-#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:112
+#: /home/ruben/Projects/Cura/resources/qml/ActionPanel/SliceProcessWidget.qml:118
 msgctxt "@button"
 msgid "Cancel"
 msgstr "Annuleren"
@@ -4203,233 +4281,238 @@ msgctxt "@label"
 msgid "Preset printers"
 msgstr "Vooraf ingestelde printers"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:162
+#: /home/ruben/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:166
 msgctxt "@button"
 msgid "Add printer"
 msgstr "Printer toevoegen"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:177
+#: /home/ruben/Projects/Cura/resources/qml/PrinterSelector/MachineSelector.qml:182
 msgctxt "@button"
 msgid "Manage printers"
 msgstr "Printers beheren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:80
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:81
 msgctxt "@action:inmenu"
 msgid "Show Online Troubleshooting Guide"
 msgstr "Online gids voor probleemoplossing weergegeven"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:87
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:88
 msgctxt "@action:inmenu"
 msgid "Toggle Full Screen"
 msgstr "Volledig Scherm In-/Uitschakelen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:94
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:96
+msgctxt "@action:inmenu"
+msgid "Exit Full Screen"
+msgstr "Volledig scherm sluiten"
+
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:103
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Undo"
 msgstr "Ongedaan &Maken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:104
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:113
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Redo"
 msgstr "&Opnieuw"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:114
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:123
 msgctxt "@action:inmenu menubar:file"
 msgid "&Quit"
 msgstr "&Afsluiten"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:122
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:131
 msgctxt "@action:inmenu menubar:view"
 msgid "3D View"
 msgstr "3D-weergave"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:129
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:138
 msgctxt "@action:inmenu menubar:view"
 msgid "Front View"
 msgstr "Weergave voorzijde"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:136
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:145
 msgctxt "@action:inmenu menubar:view"
 msgid "Top View"
 msgstr "Weergave bovenzijde"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:143
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:152
 msgctxt "@action:inmenu menubar:view"
 msgid "Left Side View"
 msgstr "Weergave linkerzijde"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:150
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:159
 msgctxt "@action:inmenu menubar:view"
 msgid "Right Side View"
 msgstr "Weergave rechterzijde"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:157
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:166
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
 msgstr "Cura Configureren..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:164
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:173
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
 msgstr "&Printer Toevoegen..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:170
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:179
 msgctxt "@action:inmenu menubar:printer"
 msgid "Manage Pr&inters..."
 msgstr "Pr&inters Beheren..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:177
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:186
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
 msgstr "Materialen Beheren..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:186
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
 msgstr "Profiel bijwerken met h&uidige instellingen/overschrijvingen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:194
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
 msgstr "Hui&dige wijzigingen verwijderen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:206
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:215
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
 msgstr "Profiel maken op basis van huidige instellingen/overs&chrijvingen..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:212
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:221
 msgctxt "@action:inmenu menubar:profile"
 msgid "Manage Profiles..."
 msgstr "Profielen Beheren..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:220
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:229
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Online &Documentation"
 msgstr "Online &Documentatie Weergeven"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:228
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:237
 msgctxt "@action:inmenu menubar:help"
 msgid "Report a &Bug"
 msgstr "Een &Bug Rapporteren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:236
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:245
 msgctxt "@action:inmenu menubar:help"
 msgid "What's New"
 msgstr "Nieuwe functies"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:242
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:251
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
 msgstr "Over..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:249
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:258
 msgctxt "@action:inmenu menubar:edit"
 msgid "Delete Selected Model"
 msgid_plural "Delete Selected Models"
 msgstr[0] "Geselecteerd model verwijderen"
 msgstr[1] "Geselecteerde modellen verwijderen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:259
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:268
 msgctxt "@action:inmenu menubar:edit"
 msgid "Center Selected Model"
 msgid_plural "Center Selected Models"
 msgstr[0] "Geselecteerd model centreren"
 msgstr[1] "Geselecteerde modellen centreren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:268
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:277
 msgctxt "@action:inmenu menubar:edit"
 msgid "Multiply Selected Model"
 msgid_plural "Multiply Selected Models"
 msgstr[0] "Geselecteerd model verveelvoudigen"
 msgstr[1] "Geselecteerde modellen verveelvoudigen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:277
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:286
 msgctxt "@action:inmenu"
 msgid "Delete Model"
 msgstr "Model Verwijderen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:285
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:294
 msgctxt "@action:inmenu"
 msgid "Ce&nter Model on Platform"
 msgstr "Model op Platform Ce&ntreren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:291
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:300
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
 msgstr "Modellen &Groeperen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:311
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:320
 msgctxt "@action:inmenu menubar:edit"
 msgid "Ungroup Models"
 msgstr "Groeperen van Modellen Opheffen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:321
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:330
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
 msgstr "Modellen Samen&voegen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:331
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:340
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
 msgstr "&Model verveelvoudigen..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:338
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:347
 msgctxt "@action:inmenu menubar:edit"
 msgid "Select All Models"
 msgstr "Alle Modellen Selecteren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:348
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:357
 msgctxt "@action:inmenu menubar:edit"
 msgid "Clear Build Plate"
 msgstr "Platform Leegmaken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:358
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:367
 msgctxt "@action:inmenu menubar:file"
 msgid "Reload All Models"
 msgstr "Alle Modellen Opnieuw Laden"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:367
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:376
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models To All Build Plates"
 msgstr "Alle modellen schikken op alle platformen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:374
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:383
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange All Models"
 msgstr "Alle modellen schikken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:382
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:391
 msgctxt "@action:inmenu menubar:edit"
 msgid "Arrange Selection"
 msgstr "Selectie schikken"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:389
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:398
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Positions"
 msgstr "Alle Modelposities Herstellen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:396
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:405
 msgctxt "@action:inmenu menubar:edit"
 msgid "Reset All Model Transformations"
 msgstr "Alle Modeltransformaties Herstellen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:403
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:412
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
 msgstr "Bestand(en) &openen..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:411
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:420
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
 msgstr "&Nieuw project..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:418
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:427
 msgctxt "@action:inmenu menubar:help"
 msgid "Show Configuration Folder"
 msgstr "Open Configuratiemap"
 
-#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:432
+#: /home/ruben/Projects/Cura/resources/qml/Actions.qml:441
 msgctxt "@action:menu"
 msgid "&Marketplace"
 msgstr "&Marktplaats"
@@ -4444,49 +4527,49 @@ msgctxt "@label"
 msgid "This package will be installed after restarting."
 msgstr "Dit package wordt na opnieuw starten geïnstalleerd."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:409
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:413
 msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Instellingen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:535
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:539
 msgctxt "@title:window"
 msgid "Closing Cura"
 msgstr "Cura afsluiten"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:536
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:548
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:540
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:552
 msgctxt "@label"
 msgid "Are you sure you want to exit Cura?"
 msgstr "Weet u zeker dat u Cura wilt verlaten?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:580
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:590
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Bestand(en) openen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:681
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:691
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Package installeren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:689
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:699
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Bestand(en) openen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:692
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:702
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Binnen de door u geselecteerde bestanden zijn een of meer G-code-bestanden aangetroffen. U kunt maximaal één G-code-bestand tegelijk openen. Selecteer maximaal één bestand als u dit wilt openen als G-code-bestand."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:795
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:805
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Printer Toevoegen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:803
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:813
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "Nieuwe functies"
@@ -4508,7 +4591,9 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "U hebt enkele profielinstellingen aangepast.\nWilt u deze instellingen behouden of verwijderen?"
+msgstr ""
+"U hebt enkele profielinstellingen aangepast.\n"
+"Wilt u deze instellingen behouden of verwijderen?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:110
 msgctxt "@title:column"
@@ -4570,7 +4655,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "Cura is ontwikkeld door Ultimaker B.V. in samenwerking met de community.\nCura maakt met trots gebruik van de volgende opensourceprojecten:"
+msgstr ""
+"Cura is ontwikkeld door Ultimaker B.V. in samenwerking met de community.\n"
+"Cura maakt met trots gebruik van de volgende opensourceprojecten:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:134
 msgctxt "@label"
@@ -4707,32 +4794,32 @@ msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Project opslaan"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:138
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:149
 msgctxt "@action:label"
 msgid "Build plate"
 msgstr "Platform"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:172
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:183
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Extruder %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:187
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:198
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 &materiaal"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:189
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:200
 msgctxt "@action:label"
 msgid "Material"
 msgstr "Materiaal"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:261
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:272
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "Bij opnieuw opslaan projectsamenvatting niet weergeven"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:280
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:291
 msgctxt "@action:button"
 msgid "Save"
 msgstr "Opslaan"
@@ -4908,12 +4995,12 @@ msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "Probleemoplossing"
 
-#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:204
+#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:207
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Printernaam"
 
-#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:217
+#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:220
 msgctxt "@text"
 msgid "Please give your printer a name"
 msgstr "Voer een naam in voor uw printer"
@@ -4963,27 +5050,14 @@ msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr "Volg deze stappen voor het instellen van\nUltimaker Cura. Dit duurt slechts even."
+msgstr ""
+"Volg deze stappen voor het instellen van\n"
+"Ultimaker Cura. Dit duurt slechts even."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
 msgctxt "@button"
 msgid "Get started"
 msgstr "Aan de slag"
-
-#: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:210
-msgctxt "@option:check"
-msgid "See only current build plate"
-msgstr "Alleen huidig platform weergeven"
-
-#: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:226
-msgctxt "@action:button"
-msgid "Arrange to all build plates"
-msgstr "Schikken naar alle platformen"
-
-#: /home/ruben/Projects/Cura/resources/qml/ObjectsList.qml:246
-msgctxt "@action:button"
-msgid "Arrange current build plate"
-msgstr "Huidig platform schikken"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
@@ -5075,6 +5149,16 @@ msgctxt "name"
 msgid "Profile Flattener"
 msgstr "Profielvlakker"
 
+#: AMFReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading AMF files."
+msgstr "Biedt ondersteuning voor het lezen van AMF-bestanden."
+
+#: AMFReader/plugin.json
+msgctxt "name"
+msgid "AMF Reader"
+msgstr "AMF-lezer"
+
 #: USBPrinting/plugin.json
 msgctxt "description"
 msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
@@ -5084,16 +5168,6 @@ msgstr "Hiermee accepteert u G-code en verzendt u deze code naar een printer. Vi
 msgctxt "name"
 msgid "USB printing"
 msgstr "USB-printen"
-
-#: X3GWriter/build/plugin.json
-msgctxt "description"
-msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
-msgstr "Hiermee slaat u de resulterende slice op als X3G-bestand, om printers te ondersteunen die deze indeling lezen (Malyan, Makerbot en andere Sailfish-gebaseerde printers)."
-
-#: X3GWriter/build/plugin.json
-msgctxt "name"
-msgid "X3GWriter"
-msgstr "X3G-schrijver"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
@@ -5345,6 +5419,16 @@ msgctxt "name"
 msgid "Version Upgrade 3.0 to 3.1"
 msgstr "Versie-upgrade van 3.0 naar 3.1"
 
+#: VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.1 to Cura 4.2."
+msgstr "Hiermee worden configuraties bijgewerkt van Cura 4.1 naar Cura 4.2."
+
+#: VersionUpgrade/VersionUpgrade41to42/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.1 to 4.2"
+msgstr "Versie-upgrade van 4.1 naar 4.2"
+
 #: VersionUpgrade/VersionUpgrade26to27/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.6 to Cura 2.7."
@@ -5414,16 +5498,6 @@ msgstr "Biedt ondersteuning voor het lezen van 3MF-bestanden."
 msgctxt "name"
 msgid "3MF Reader"
 msgstr "3MF-lezer"
-
-#: SVGToolpathReader/build/plugin.json
-msgctxt "description"
-msgid "Reads SVG files as toolpaths, for debugging printer movements."
-msgstr "Hiermee leest u SVG-bestanden als gereedschapsbanen, voor probleemoplossing in printerverplaatsingen."
-
-#: SVGToolpathReader/build/plugin.json
-msgctxt "name"
-msgid "SVG Toolpath Reader"
-msgstr "SVG-gereedschapsbaanlezer"
 
 #: SolidView/plugin.json
 msgctxt "description"
@@ -5514,6 +5588,82 @@ msgstr "Biedt ondersteuning bij het importeren van Cura-profielen."
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Cura-profiellezer"
+
+#~ msgctxt "@item:inmenu"
+#~ msgid "Cura Settings Guide"
+#~ msgstr "Cura-instellingengids"
+
+#~ msgctxt "@info:generic"
+#~ msgid "Settings have been changed to match the current availability of extruders: [%s]"
+#~ msgstr "De instellingen zijn gewijzigd zodat deze overeenkomen met de huidige beschikbaarheid van de extruders: [%s]"
+
+#~ msgctxt "@title:groupbox"
+#~ msgid "User description"
+#~ msgstr "Gebruikersbeschrijving"
+
+#~ msgctxt "@info"
+#~ msgid "These options are not available because you are monitoring a cloud printer."
+#~ msgstr "Deze opties zijn niet beschikbaar omdat u een cloudprinter controleert."
+
+#~ msgctxt "@label link to connect manager"
+#~ msgid "Go to Cura Connect"
+#~ msgstr "Ga naar Cura Connect"
+
+#~ msgctxt "@info"
+#~ msgid "All jobs are printed."
+#~ msgstr "Alle taken zijn geprint."
+
+#~ msgctxt "@label link to connect manager"
+#~ msgid "View print history"
+#~ msgstr "Printgeschiedenis weergeven"
+
+#~ msgctxt "@label"
+#~ msgid ""
+#~ "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n"
+#~ "\n"
+#~ "Select your printer from the list below:"
+#~ msgstr ""
+#~ "Als u rechtstreeks via het netwerk wilt printen naar de printer, moet u ervoor zorgen dat de printer met een netwerkkabel is verbonden met het netwerk of moet u verbinding maken met de printer via het wifi-netwerk. Als u geen verbinding maakt tussen Cura en de printer, kunt u een USB-station gebruiken om G-code-bestanden naar de printer over te zetten.\n"
+#~ "\n"
+#~ "Selecteer uw printer in de onderstaande lijst:"
+
+#~ msgctxt "@info"
+#~ msgid ""
+#~ "Please make sure your printer has a connection:\n"
+#~ "- Check if the printer is turned on.\n"
+#~ "- Check if the printer is connected to the network."
+#~ msgstr ""
+#~ "Controleer of de printer verbonden is:\n"
+#~ "- Controleer of de printer ingeschakeld is.\n"
+#~ "- Controleer of de printer verbonden is met het netwerk."
+
+#~ msgctxt "@option:check"
+#~ msgid "See only current build plate"
+#~ msgstr "Alleen huidig platform weergeven"
+
+#~ msgctxt "@action:button"
+#~ msgid "Arrange to all build plates"
+#~ msgstr "Schikken naar alle platformen"
+
+#~ msgctxt "@action:button"
+#~ msgid "Arrange current build plate"
+#~ msgstr "Huidig platform schikken"
+
+#~ msgctxt "description"
+#~ msgid "Allows saving the resulting slice as an X3G file, to support printers that read this format (Malyan, Makerbot and other Sailfish-based printers)."
+#~ msgstr "Hiermee slaat u de resulterende slice op als X3G-bestand, om printers te ondersteunen die deze indeling lezen (Malyan, Makerbot en andere Sailfish-gebaseerde printers)."
+
+#~ msgctxt "name"
+#~ msgid "X3GWriter"
+#~ msgstr "X3G-schrijver"
+
+#~ msgctxt "description"
+#~ msgid "Reads SVG files as toolpaths, for debugging printer movements."
+#~ msgstr "Hiermee leest u SVG-bestanden als gereedschapsbanen, voor probleemoplossing in printerverplaatsingen."
+
+#~ msgctxt "name"
+#~ msgid "SVG Toolpath Reader"
+#~ msgstr "SVG-gereedschapsbaanlezer"
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Changelog"
@@ -5721,7 +5871,6 @@ msgstr "Cura-profiellezer"
 #~ "- Store your Ultimaker Cura settings in the cloud for use anywhere\n"
 #~ "- Get exclusive access to material profiles from leading brands"
 #~ msgstr ""
-
 #~ "- Printtaken verzenden naar Ultimaker-printers buiten uw lokale netwerk\n"
 #~ "- Ultimaker Cura-instellingen opslaan in de cloud zodat u ze overal kunt gebruiken\n"
 #~ "- Exclusieve toegang verkrijgen tot materiaalprofielen van toonaangevende merken"
@@ -5748,7 +5897,6 @@ msgstr "Cura-profiellezer"
 #~ "\n"
 #~ "If your printer is not in the list, use the \"Custom FFF Printer\" from the \"Custom\" category and adjust the settings to match your printer in the next dialog."
 #~ msgstr ""
-
 #~ "Selecteer de printer die u wilt gebruiken, uit de onderstaande lijst.\n"
 #~ "\n"
 #~ "Als uw printer niet in de lijst wordt weergegeven, gebruikt u de 'Custom FFF Printer' (Aangepaste FFF-printer) uit de categorie 'Custom' (Aangepast) en past u in het dialoogvenster dat wordt weergegeven, de instellingen aan zodat deze overeenkomen met uw printer."
@@ -5961,7 +6109,6 @@ msgstr "Cura-profiellezer"
 #~ "Print Setup disabled\n"
 #~ "G-code files cannot be modified"
 #~ msgstr ""
-
 #~ "Instelling voor printen uitgeschakeld\n"
 #~ "G-code-bestanden kunnen niet worden aangepast"
 
@@ -6214,7 +6361,6 @@ msgstr "Cura-profiellezer"
 #~ "Could not export using \"{}\" quality!\n"
 #~ "Felt back to \"{}\"."
 #~ msgstr ""
-
 #~ "Kan niet exporteren met de kwaliteit \"{}\"!\n"
 #~ "Instelling teruggezet naar \"{}\"."
 
@@ -6391,7 +6537,6 @@ msgstr "Cura-profiellezer"
 #~ "2) Turn the fan off (only if there are no tiny details on the model).\n"
 #~ "3) Use a different material."
 #~ msgstr ""
-
 #~ "Sommige modellen worden mogelijk niet optimaal geprint vanwege de grootte van het object en de gekozen materialen voor modellen: {model_names}.\n"
 #~ "Mogelijk nuttige tips om de printkwaliteit te verbeteren:\n"
 #~ "1) Gebruik afgeronde hoeken.\n"
@@ -6408,7 +6553,6 @@ msgstr "Cura-profiellezer"
 #~ "\n"
 #~ "Thanks!"
 #~ msgstr ""
-
 #~ "In uw tekening zijn geen modellen gevonden. Controleer de inhoud nogmaals en zorg ervoor dat één onderdeel of assemblage zich in de tekening bevindt.\n"
 #~ "\n"
 #~ "Hartelijk dank."
@@ -6419,7 +6563,6 @@ msgstr "Cura-profiellezer"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
-
 #~ "In uw tekening is meer dan één onderdeel of assemblage gevonden. Momenteel worden alleen tekeningen met precies één onderdeel of assemblage ondersteund.\n"
 #~ "\n"
 #~ "Sorry."
@@ -6444,7 +6587,6 @@ msgstr "Cura-profiellezer"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
-
 #~ "Beste klant,\n"
 #~ "Op uw systeem is geen geldige installatie van SolidWorks aangetroffen. Dit betekent dat SolidWorks niet is geïnstalleerd of dat u niet over een geldige licentie beschikt. Controleer of SolidWorks zelf zonder problemen kan worden uitgevoerd en/of neem contact op met uw IT-afdeling.\n"
 #~ "\n"
@@ -6459,7 +6601,6 @@ msgstr "Cura-profiellezer"
 #~ "With kind regards\n"
 #~ " - Thomas Karl Pietrowski"
 #~ msgstr ""
-
 #~ "Beste klant,\n"
 #~ "Momenteel voert u deze invoegtoepassing uit op een ander besturingssysteem dan Windows. Deze invoegtoepassing werkt alleen op systemen waarop Windows en SolidWorks met een geldige licentie zijn geïnstalleerd. Installeer deze invoegtoepassing op een Windows-systeem waarop SolidWorks is geïnstalleerd.\n"
 #~ "\n"
@@ -6564,7 +6705,6 @@ msgstr "Cura-profiellezer"
 #~ "Open the directory\n"
 #~ "with macro and icon"
 #~ msgstr ""
-
 #~ "Open de map\n"
 #~ "met macro en pictogram"
 
@@ -6863,7 +7003,6 @@ msgstr "Cura-profiellezer"
 #~ "\n"
 #~ " Thanks!."
 #~ msgstr ""
-
 #~ "In uw tekening zijn geen modellen gevonden. Controleer de inhoud en zorg ervoor dat zich in de tekening een onderdeel of assemblage bevindt.\n"
 #~ "\n"
 #~ " Hartelijk dank."
@@ -6874,7 +7013,6 @@ msgstr "Cura-profiellezer"
 #~ "\n"
 #~ "Sorry!"
 #~ msgstr ""
-
 #~ "In uw tekening is meer dan één onderdeel of assemblage gevonden. Momenteel worden alleen tekeningen met precies één onderdeel of assemblage ondersteund.\n"
 #~ "\n"
 #~ "Sorry."
@@ -6909,7 +7047,6 @@ msgstr "Cura-profiellezer"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-
 #~ "<p><b>Er is een fatale fout opgetreden. Stuur ons het Crashrapport om het probleem op te lossen</p></b>\n"
 #~ "            <p>Druk op de knop \"Rapport verzenden\" om het foutenrapport automatisch naar onze servers te verzenden</p>\n"
 #~ "        "
@@ -7076,7 +7213,6 @@ msgstr "Cura-profiellezer"
 #~ "            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</p>\n"
 #~ "        "
 #~ msgstr ""
-
 #~ "<p><b>Er is een fatale uitzondering opgetreden. Stuur ons het Crashrapport om het probleem op te lossen</p></b>\n"
 #~ "            <p>Druk op de knop \"Rapport verzenden\" om het foutenrapport automatisch naar onze servers te verzenden</p>\n"
 #~ "        "
@@ -7223,7 +7359,6 @@ msgstr "Cura-profiellezer"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
-
 #~ "<p>Er is een fatale fout opgetreden die niet kan worden hersteld!</p>\n"
 #~ "        <p>Gebruik de onderstaande informatie om een bugrapport te plaatsen op <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
@@ -7266,7 +7401,6 @@ msgstr "Cura-profiellezer"
 #~ "You need to accept this license to install this plugin.\n"
 #~ "Do you agree with the terms below?"
 #~ msgstr ""
-
 #~ " invoegtoepassing bevat een licentie.\n"
 #~ "U moet akkoord gaan met deze licentie om deze invoegtoepassing te mogen installeren.\n"
 #~ "Gaat u akkoord met onderstaande voorwaarden?"
@@ -7794,7 +7928,6 @@ msgstr "Cura-profiellezer"
 #~ msgid "Print Selected Model with %1"
 #~ msgid_plural "Print Selected Models With %1"
 #~ msgstr[0] "Geselecteerd model printen met %1"
-
 #~ msgstr[1] "Geselecteerde modellen printen met %1"
 
 #~ msgctxt "@info:status"
@@ -7824,7 +7957,6 @@ msgstr "Cura-profiellezer"
 #~ "        <p>Please use the information below to post a bug report at <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"
 #~ "    "
 #~ msgstr ""
-
 #~ "<p>Er is een fatale fout opgetreden die niet kan worden hersteld!</p>\n"
 #~ "        <p>Hopelijk komt u met de afbeelding van deze kitten wat bij van de schrik.</p>\n"
 #~ "        <p>Gebruik de onderstaande informatie om een bugrapport te plaatsen op <a href=\"http://github.com/Ultimaker/Cura/issues\">http://github.com/Ultimaker/Cura/issues</a></p>\n"

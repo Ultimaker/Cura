@@ -51,7 +51,7 @@ Rectangle
         anchors.left: swatch.right
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        font.italic: Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
+        font.italic: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
     }
     MouseArea
     {
@@ -60,7 +60,7 @@ Rectangle
         {
             materialList.currentBrand = material.brand
             materialList.currentType = material.brand + "_" + material.material
-            base.currentItem = material
+            base.setExpandedActiveMaterial(material.root_material_id)
         }
         hoverEnabled: true
         onEntered: { materialSlot.hovered = true }
@@ -82,10 +82,10 @@ Rectangle
         {
             if (materialSlot.is_favorite)
             {
-                base.materialManager.removeFavorite(material.root_material_id)
+                CuraApplication.getMaterialManager().removeFavorite(material.root_material_id)
                 return
             }
-            base.materialManager.addFavorite(material.root_material_id)
+            CuraApplication.getMaterialManager().addFavorite(material.root_material_id)
             return
         }
         style: ButtonStyle

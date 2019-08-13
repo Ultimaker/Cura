@@ -6,7 +6,6 @@
     "metadata": {
         "author": "William & Cataldo URSO",
         "manufacturer": "Shenzhen Geeetech Technology",
-        "setting_version": 8,
         "file_formats": "text/x-gcode",
         "visible": true,
         "has_materials": true,

@@ -15,15 +15,10 @@ Menu
     PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
 
     property var activeMachine: Cura.MachineManager.activeMachine
-
-    onAboutToShow: extruderInstantiator.active = true
-    onAboutToHide: extruderInstantiator.active = false
     Instantiator
     {
         id: extruderInstantiator
         model: activeMachine == null ? null : activeMachine.extruderList
-        active: false
-        asynchronous: true
         Menu
         {
             title: modelData.name
@@ -52,7 +47,7 @@ Menu
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
-                onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
+                onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
                 visible: Cura.MachineManager.getExtruder(model.index).isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }

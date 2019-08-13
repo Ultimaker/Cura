@@ -8,6 +8,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
+from cura.CuraApplication import CuraApplication
 from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
@@ -67,9 +68,10 @@ class CuraProfileReader(ProfileReader):
             return []
 
         version = int(parser["general"]["version"])
+        setting_version = int(parser["metadata"].get("setting_version", "0"))
         if InstanceContainer.Version != version:
             name = parser["general"]["name"]
-            return self._upgradeProfileVersion(serialized, name, version)
+            return self._upgradeProfileVersion(serialized, name, version, setting_version)
         else:
             return [(serialized, profile_id)]
 
@@ -83,7 +85,7 @@ class CuraProfileReader(ProfileReader):
         profile = InstanceContainer(profile_id)
         profile.setMetaDataEntry("type", "quality_changes")
         try:
-            profile.deserialize(serialized)
+            profile.deserialize(serialized, file_name = profile_id)
         except ContainerFormatError as e:
             Logger.log("e", "Error in the format of a container: %s", str(e))
             return None
@@ -98,19 +100,27 @@ class CuraProfileReader(ProfileReader):
     #   \param profile_id The name of the profile.
     #   \param source_version The profile version of 'serialized'.
     #   \return List of serialized profile strings and matching profile names.
-    def _upgradeProfileVersion(self, serialized: str, profile_id: str, source_version: int) -> List[Tuple[str, str]]:
-        converter_plugins = PluginRegistry.getInstance().getAllMetaData(filter = {"version_upgrade": {} }, active_only = True)
+    def _upgradeProfileVersion(self, serialized: str, profile_id: str, main_version: int, setting_version: int) -> List[Tuple[str, str]]:
+        source_version = main_version * 1000000 + setting_version
 
-        source_format = ("profile", source_version)
-        profile_convert_funcs = [plugin["version_upgrade"][source_format][2] for plugin in converter_plugins
-                                 if source_format in plugin["version_upgrade"] and plugin["version_upgrade"][source_format][1] == InstanceContainer.Version]
-
-        if not profile_convert_funcs:
-            Logger.log("w", "Unable to find an upgrade path for the profile [%s]", profile_id)
+        from UM.VersionUpgradeManager import VersionUpgradeManager
+        results = VersionUpgradeManager.getInstance().updateFilesData("quality_changes", source_version, [serialized], [profile_id])
+        if results is None:
             return []
 
-        filenames, outputs = profile_convert_funcs[0](serialized, profile_id)
-        if filenames is None and outputs is None:
-            Logger.log("w", "The conversion failed to return any usable data for [%s]", profile_id)
+        serialized = results.files_data[0]
+
+        parser = configparser.ConfigParser(interpolation = None)
+        parser.read_string(serialized)
+        if "general" not in parser:
+            Logger.log("w", "Missing required section 'general'.")
             return []
-        return list(zip(outputs, filenames))
+
+        new_source_version = results.version
+        if int(new_source_version / 1000000) != InstanceContainer.Version or new_source_version % 1000000 != CuraApplication.SettingVersion:
+            Logger.log("e", "Failed to upgrade profile [%s]", profile_id)
+
+        if int(parser["general"]["version"]) != InstanceContainer.Version:
+            Logger.log("e", "Failed to upgrade profile [%s]", profile_id)
+            return []
+        return [(serialized, profile_id)]
