@@ -3,8 +3,13 @@ image: registry.gitlab.com/ultimaker/cura/cura-build-environment:centos7
 stages:
   - build
 
-build-and-test:
+
+build and test linux:
   stage: build
+  tags:
+    - cura
+    - docker
+    - linux
   script:
     - docker/build.sh
   artifacts:
