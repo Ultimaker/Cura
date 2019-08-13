@@ -26,7 +26,7 @@ from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 #  Currently used for local networking and cloud printing using Ultimaker Connect.
 #  This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
 class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
-    
+
     META_NETWORK_KEY = "um_network_key"
     META_CLUSTER_ID = "um_cloud_cluster_id"
 
@@ -42,10 +42,10 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
-    
+
     # Time in seconds since last network response after which we consider this device offline.
     # We set this a bit higher than some of the other intervals to make sure they don't overlap.
-    NETWORK_RESPONSE_CONSIDER_OFFLINE = 12.0
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0  # seconds
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
@@ -54,7 +54,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
-        
+
         # Keeps track the last network response to determine if we are still connected.
         self._time_of_last_response = time()
 

@@ -42,7 +42,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     # The interval with which the remote cluster is checked.
     # We can do this relatively often as this API call is quite fast.
-    CHECK_CLUSTER_INTERVAL = 8.0  # seconds
+    CHECK_CLUSTER_INTERVAL = 10.0  # seconds
+
+    # Override the network response timeout in seconds after which we consider the device offline.
+    # For cloud this needs to be higher because the interval at which we check the status is higher as well.
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 15.0  # seconds
 
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.3.0")
@@ -274,7 +278,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @clusterData.setter
     def clusterData(self, value: CloudClusterResponse) -> None:
         self._cluster = value
-        
+
     ## Gets the URL on which to monitor the cluster via the cloud.
     @property
     def clusterCloudUrl(self) -> str:
