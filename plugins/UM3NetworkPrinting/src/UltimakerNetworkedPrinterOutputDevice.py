@@ -109,7 +109,10 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
         if not self._has_received_printers:
-            return 1  # prevent false positives when discovering new devices
+            discovered_size = self.getProperty("cluster_size")
+            if discovered_size == "":
+                return 1  # prevent false positives for new devices
+            return int(discovered_size)
         return len(self._printers)
 
     # Get the amount of printer in the cluster per type.
