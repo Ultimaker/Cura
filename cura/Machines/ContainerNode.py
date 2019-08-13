@@ -23,6 +23,12 @@ class ContainerNode:
         self._container = None  # type: Optional[InstanceContainer]
         self.children_map = {}  # type: Dict[str, ContainerNode]  # Mapping from container ID to container node.
 
+    ##  Gets the metadata of the container that this node represents.
+    #   \return The metadata of the container in this node.
+    @deprecated("Get the metadata from the container with the ID of this node yourself.", "4.3")
+    def getMetadata(self):
+        return ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)[0]
+
     ##  Get an entry from the metadata of the container that this node contains.
     #   \param entry The metadata entry key to return.
     #   \param default If the metadata is not present or the container is not
