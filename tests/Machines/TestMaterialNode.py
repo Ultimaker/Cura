@@ -3,15 +3,15 @@ import pytest
 
 from cura.Machines.MaterialNode import MaterialNode
 
-instance_container_metadata_dict = {"fdmprinter": {"no_variant": [{"id": "quality_1"}]},
-                                    "machine_1": {"variant_1": {"material_1": [{"id": "quality_2"}, {"id": "quality_3"}]}}}
+instance_container_metadata_dict = {"fdmprinter": {"no_variant": [{"id": "quality_1", "material": "material_1"}]},
+                                    "machine_1": {"variant_1": {"material_1": [{"id": "quality_2", "material": "material_1"}, {"id": "quality_3","material": "material_1"}]}}}
 
 
 quality_metadata_machine_quality_test_data = [({"type": "Not a quality"}, ["quality_2", "quality_3"]),  # Wrong type
                               ({"type": "quality", "definition": "machine_2"}, ["quality_2", "quality_3"]),  # Wrong defintion
                               ({"type": "quality", "definition": "machine_1", "variant": "variant_2"}, ["quality_2", "quality_3"]), # Wrong variant
                               ({"type": "quality", "definition": "machine_1", "variant": "variant_1", "material": "material_2"}, ["quality_2", "quality_3"]),  # wrong material
-                              ({"type": "quality", "definition": "machine_1", "variant": "variant_1", "material": "material_1"}, ["quality_2", "quality_3", "quality_4"]),
+
                              ]
 
 quality_metadata_no_machine_quality =[({"type": "Not a quality"}, ["quality_1"]),  # Wrong type
@@ -38,11 +38,20 @@ def createMockedInstanceContainer(container_id):
 def getInstanceContainerSideEffect(*args, **kwargs):
     variant = kwargs.get("variant")
     definition = kwargs.get("definition")
-    if variant is not None:
+    type = kwargs.get("type")
+    material = kwargs.get("material")
+    if material is not None and variant is not None:
         definition_dict = instance_container_metadata_dict.get(definition)
         variant_dict = definition_dict.get(variant)
-        material_dict = variant_dict.get(kwargs.get("material"))
+        material_dict = variant_dict.get(material)
         return material_dict
+    if type == "quality":
+        if variant is None:
+            return instance_container_metadata_dict.get(definition).get("no_variant")
+        else:
+            return instance_container_metadata_dict.get(definition).get(variant).get("material_1")
+    if definition is None:
+        return [{"id": "material_1", "material": "material_1"}]
     return instance_container_metadata_dict.get(definition).get("no_variant")
 
 
