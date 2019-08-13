@@ -27,7 +27,6 @@ class CuraStackBuilder:
     def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
         quality_manager = application.getQualityManager()
         registry = application.getContainerRegistry()
 
