@@ -1,18 +1,18 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 from UM.Qt.ListModel import ListModel
 
+from cura.Machines.MaterialNode import MaterialNode
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 ## This is the base model class for GenericMaterialsModel and MaterialBrandsModel.
 #  Those 2 models are used by the material drop down menu to show generic materials and branded materials separately.
 #  The extruder position defined here is being used to bound a menu to the correct extruder. This is used in the top
 #  bar menu "Settings" -> "Extruder nr" -> "Material" -> this menu
-from cura.Machines.MaterialNode import MaterialNode
-
-
 class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
@@ -128,7 +128,7 @@ class BaseMaterialsModel(ListModel):
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = container_node.getMetadata()
+        metadata = CuraContainerRegistry.getInstance().findContainersMetadata(id = container_node.container_id)[0]
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],
