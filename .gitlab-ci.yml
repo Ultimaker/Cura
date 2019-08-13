@@ -3,7 +3,6 @@ image: registry.gitlab.com/ultimaker/cura/cura-build-environment:centos7
 stages:
   - build
 
-
 build and test linux:
   stage: build
   tags:

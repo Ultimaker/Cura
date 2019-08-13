@@ -12,7 +12,7 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
-from UM.Settings.ContainerStack import ContainerStack
+from UM.Decorators import deprecated
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -95,6 +95,7 @@ class ExtruderManager(QObject):
     #
     #   \param index The index of the extruder whose name to get.
     @pyqtSlot(int, result = str)
+    @deprecated("Use Cura.MachineManager.activeMachine.extruders[index].name instead", "4.3")
     def getExtruderName(self, index: int) -> str:
         try:
             return self.getActiveExtruderStacks()[index].getName()
@@ -114,7 +115,7 @@ class ExtruderManager(QObject):
             selected_nodes = []  # type: List["SceneNode"]
             for node in Selection.getAllSelectedObjects():
                 if node.callDecoration("isGroup"):
-                    for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                    for grouped_node in BreadthFirstIterator(node):
                         if grouped_node.callDecoration("isGroup"):
                             continue
 
@@ -131,7 +132,7 @@ class ExtruderManager(QObject):
                 elif current_extruder_trains:
                     object_extruders.add(current_extruder_trains[0].getId())
 
-            self._selected_object_extruders = list(object_extruders)  # type: List[Union[str, "ExtruderStack"]]
+            self._selected_object_extruders = list(object_extruders)
 
         return self._selected_object_extruders
 
@@ -140,7 +141,7 @@ class ExtruderManager(QObject):
     #   This will trigger a recalculation of the extruders used for the
     #   selection.
     def resetSelectedObjectExtruders(self) -> None:
-        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
+        self._selected_object_extruders = []
         self.selectedObjectExtrudersChanged.emit()
 
     @pyqtSlot(result = QObject)
@@ -380,7 +381,13 @@ class ExtruderManager(QObject):
         elif extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
             Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
                 printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
-            extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            try:
+                extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            except IndexError as e:
+                # It still needs to break, but we want to know what extruder ID made it break.
+                msg = "Unable to find extruder definition with the id [%s]" % expected_extruder_definition_0_id
+                Logger.logException("e", msg)
+                raise IndexError(msg)
             extruder_stack_0.definition = extruder_definition
 
     ##  Get all extruder values for a certain setting.

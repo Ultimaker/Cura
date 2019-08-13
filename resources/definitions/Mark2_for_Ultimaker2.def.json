@@ -11,9 +11,7 @@
         "weight": 0,
         "has_variants": true,
         "has_materials": true,
-        "has_machine_materials": false,
         "has_machine_quality": false,
-        "has_variant_materials": false,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
@@ -201,12 +199,6 @@
         "extruder_prime_pos_x": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_y": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_z": { "default_value": 0.0, "enabled": false },
-        "start_layers_at_same_position":
-        {
-            "default_value": false,
-            "enabled": false,
-            "value": false
-        },
         "layer_start_x":
         {
             "default_value": 105.0,

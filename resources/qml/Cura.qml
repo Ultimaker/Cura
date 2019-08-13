@@ -573,7 +573,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen();
+        onTriggered: base.toggleFullscreen()
+    }
+
+    Connections
+    {
+        target: Cura.Actions.exitFullScreen
+        onTriggered: base.exitFullscreen()
     }
 
     FileDialog
@@ -585,7 +591,12 @@ UM.MainWindow
         modality: Qt.WindowModal
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: CuraApplication.getDefaultPath("dialog_load_path")
+        folder:
+        {
+            //Because several implementations of the file dialog only update the folder when it is explicitly set.
+            folder = CuraApplication.getDefaultPath("dialog_load_path");
+            return CuraApplication.getDefaultPath("dialog_load_path");
+        }
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder

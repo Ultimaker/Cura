@@ -93,7 +93,14 @@ class VariantManager:
                 if variant_definition not in self._machine_to_buildplate_dict_map:
                     self._machine_to_buildplate_dict_map[variant_definition] = OrderedDict()
 
-                variant_container = container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
+                try:
+                    variant_container = container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
+                except IndexError as e:
+                    # It still needs to break, but we want to know what variant ID made it break.
+                    msg = "Unable to find build plate variant with the id [%s]" % variant_metadata["id"]
+                    Logger.logException("e", msg)
+                    raise IndexError(msg)
+
                 buildplate_type = variant_container.getProperty("machine_buildplate_type", "value")
                 if buildplate_type not in self._machine_to_buildplate_dict_map[variant_definition]:
                     self._machine_to_variant_dict_map[variant_definition][buildplate_type] = dict()

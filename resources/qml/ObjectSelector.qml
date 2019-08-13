@@ -105,7 +105,12 @@ Item
                 // We use an extra property here, since we only want to to be informed about the content size changes.
                 onContentHeightChanged:
                 {
-                    scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
+                    // It can sometimes happen that (due to animations / updates) the contentHeight is -1.
+                    // This can cause a bunch of updates to trigger oneother, leading to a weird loop. 
+                    if(contentHeight >= 0)
+                    {
+                        scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
+                    }
                 }
 
                 Component.onCompleted:
@@ -116,10 +121,15 @@ Item
 
                 delegate: ObjectItemButton
                 {
+                    id: modelButton
+                    Binding
+                    {
+                        target: modelButton
+                        property: "checked"
+                        value: model.selected
+                    }
                     text: model.name
                     width: listView.width
-
-                    checked: model.selected
                 }
             }
         }

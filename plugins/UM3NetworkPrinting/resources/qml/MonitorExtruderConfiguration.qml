@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -56,7 +56,7 @@ Item
         Label
         {
             id: materialLabel
-            
+
             color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default") // 12pt, regular
@@ -86,7 +86,7 @@ Item
         Label
         {
             id: printCoreLabel
-            
+
             color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
             font: UM.Theme.getFont("default_bold") // 12pt, bold

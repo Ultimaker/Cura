@@ -31,6 +31,7 @@ Menu
                 return Cura.MachineManager.activeVariantNames[extruderIndex] == model.hotend_name
             }
             exclusiveGroup: group
+
             onTriggered: {
                 Cura.MachineManager.setVariant(menu.extruderIndex, model.container_node);
             }
