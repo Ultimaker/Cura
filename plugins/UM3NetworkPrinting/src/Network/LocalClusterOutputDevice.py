@@ -38,15 +38,12 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             parent=parent
         )
 
-        # API client for making requests to the print cluster.
-        self._cluster_api = ClusterApiClient(address, on_error=lambda error: print(error))
+        self._cluster_api = None  # type: Optional[ClusterApiClient]
+
         # We don't have authentication over local networking, so we're always authenticated.
         self.setAuthenticationState(AuthState.Authenticated)
         self._setInterfaceElements()
         self._active_camera_url = QUrl()  # type: QUrl
-
-        # Get the printers of this cluster to check if this device is a group host or not.
-        self._cluster_api.getPrinters(self._updatePrinters)
 
     ##  Set all the interface elements and texts for this output device.
     def _setInterfaceElements(self) -> None:
@@ -81,11 +78,11 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(str, name="sendJobToTop")
     def sendJobToTop(self, print_job_uuid: str) -> None:
-        self._cluster_api.movePrintJobToTop(print_job_uuid)
+        self._getApiClient().movePrintJobToTop(print_job_uuid)
 
     @pyqtSlot(str, name="deleteJobFromQueue")
     def deleteJobFromQueue(self, print_job_uuid: str) -> None:
-        self._cluster_api.deletePrintJob(print_job_uuid)
+        self._getApiClient().deletePrintJob(print_job_uuid)
 
     @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
@@ -95,12 +92,12 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     #  \param print_job_uuid: The UUID of the print job to set the state for.
     #  \param action: The action to undertake ('pause', 'resume', 'abort').
     def setJobState(self, print_job_uuid: str, action: str) -> None:
-        self._cluster_api.setPrintJobState(print_job_uuid, action)
+        self._getApiClient().setPrintJobState(print_job_uuid, action)
 
     def _update(self) -> None:
         super()._update()
-        self._cluster_api.getPrinters(self._updatePrinters)
-        self._cluster_api.getPrintJobs(self._updatePrintJobs)
+        self._getApiClient().getPrinters(self._updatePrinters)
+        self._getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
 
     ## Sync the material profiles in Cura with the printer.
@@ -162,4 +159,10 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def _updatePrintJobPreviewImages(self):
         for print_job in self._print_jobs:
             if print_job.getPreviewImage() is None:
-                self._cluster_api.getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
+                self._getApiClient().getPrintJobPreviewImage(print_job.key, print_job.updatePreviewImageData)
+
+    ## Get the API client instance.
+    def _getApiClient(self) -> ClusterApiClient:
+        if not self._cluster_api:
+            self._cluster_api = ClusterApiClient(self.address, on_error=lambda error: print(error))
+        return self._cluster_api
