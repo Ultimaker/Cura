@@ -14,6 +14,7 @@ from UM.Logger import Logger
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
 import cura.CuraApplication #Imported like this to prevent circular imports.
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .MaterialNode import MaterialNode
@@ -163,73 +164,23 @@ class MaterialManager(QObject):
     def getAllMaterialGroups(self) -> Dict[str, "MaterialGroup"]:
         return self._material_group_map
 
-    #
-    # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
-    #
-    def getAvailableMaterials(self, machine_definition: "DefinitionContainer", nozzle_name: Optional[str],
-                              buildplate_name: Optional[str], diameter: float) -> Dict[str, MaterialNode]:
-        # round the diameter to get the approximate diameter
-        rounded_diameter = str(round(diameter))
-        if rounded_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-            Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s])", diameter, rounded_diameter)
-            return dict()
-
-        machine_definition_id = machine_definition.getId()
-
-        # If there are nozzle-and-or-buildplate materials, get the nozzle-and-or-buildplate material
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]
-        machine_node = machine_nozzle_buildplate_material_map.get(machine_definition_id)
-        default_machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
-        nozzle_node = None
-        buildplate_node = None
-        if nozzle_name is not None and machine_node is not None:
-            nozzle_node = machine_node.getChildNode(nozzle_name)
-            # Get buildplate node if possible
-            if nozzle_node is not None and buildplate_name is not None:
-                buildplate_node = nozzle_node.getChildNode(buildplate_name)
-
-        nodes_to_check = [buildplate_node, nozzle_node, machine_node, default_machine_node]
-        # Fallback mechanism of finding materials:
-        #  1. buildplate-specific material
-        #  2. nozzle-specific material
-        #  3. machine-specific material
-        #  4. generic material (for fdmprinter)
-        machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
-
-        material_id_metadata_dict = dict()  # type: Dict[str, MaterialNode]
-        excluded_materials = set()
-        for current_node in nodes_to_check:
-            if current_node is None:
-                continue
-
-            # Only exclude the materials that are explicitly specified in the "exclude_materials" field.
-            # Do not exclude other materials that are of the same type.
-            for material_id, node in current_node.material_map.items():
-                if material_id in machine_exclude_materials:
-                    excluded_materials.add(material_id)
-                    continue
-
-                if material_id not in material_id_metadata_dict:
-                    material_id_metadata_dict[material_id] = node
-
-        if excluded_materials:
-            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
-
-        return material_id_metadata_dict
+    ##  Gives a dictionary of all root material IDs and their associated
+    #   MaterialNodes from the ContainerTree that are available for the given
+    #   printer and variant.
+    def getAvailableMaterials(self, definition_id: str, nozzle_name: Optional[str]) -> Dict[str, MaterialNode]:
+        return ContainerTree.getInstance().machines[definition_id].variants.get(nozzle_name, "empty_variant").materials
 
     #
     # A convenience function to get available materials for the given machine with the extruder position.
     #
     def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
                                                 extruder_stack: "ExtruderStack") -> Optional[Dict[str, MaterialNode]]:
-        buildplate_name = machine.getBuildplateName()
         nozzle_name = None
         if extruder_stack.variant.getId() != "empty_variant":
             nozzle_name = extruder_stack.variant.getName()
-        diameter = extruder_stack.getApproximateMaterialDiameter()
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
-        return self.getAvailableMaterials(machine.definition, nozzle_name, buildplate_name, diameter)
+        return self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
 
     #
     # Gets MaterialNode for the given extruder and machine with the given material name.
