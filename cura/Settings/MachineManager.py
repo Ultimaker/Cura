@@ -22,6 +22,7 @@ from UM.Message import Message
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
 from cura.Machines.MaterialManager import MaterialManager
 
@@ -1312,6 +1313,8 @@ class MachineManager(QObject):
                    current_quality_type, quality_type)
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
 
+    ##  Update the material profile in the current stacks when the variant is
+    #   changed.
     def updateMaterialWithVariant(self, position: Optional[str]) -> None:
         if self._global_container_stack is None:
             return
@@ -1319,10 +1322,6 @@ class MachineManager(QObject):
             position_list = list(self._global_container_stack.extruders.keys())
         else:
             position_list = [position]
-
-        buildplate_name = None
-        if self._global_container_stack.variant.getId() != "empty_variant":
-            buildplate_name = self._global_container_stack.variant.getName()
 
         for position_item in position_list:
             extruder = self._global_container_stack.extruders[position_item]
@@ -1332,12 +1331,7 @@ class MachineManager(QObject):
             if extruder.variant.getId() != empty_variant_container.getId():
                 current_nozzle_name = extruder.variant.getMetaDataEntry("name")
 
-            material_diameter = extruder.getCompatibleMaterialDiameter()
-            candidate_materials = MaterialManager.getInstance().getAvailableMaterials(
-                self._global_container_stack.definition,
-                current_nozzle_name,
-                buildplate_name,
-                material_diameter)
+            candidate_materials = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name].materials
 
             if not candidate_materials:
                 self._setMaterial(position_item, container_node = None)

@@ -168,7 +168,7 @@ class MaterialManager(QObject):
     #   MaterialNodes from the ContainerTree that are available for the given
     #   printer and variant.
     def getAvailableMaterials(self, definition_id: str, nozzle_name: Optional[str]) -> Dict[str, MaterialNode]:
-        return ContainerTree.getInstance().machines[definition_id].variants.get(nozzle_name, "empty_variant").materials
+        return ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
 
     #
     # A convenience function to get available materials for the given machine with the extruder position.
