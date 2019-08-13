@@ -1,10 +1,10 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 import copy
 import uuid
-from typing import Dict, Optional, TYPE_CHECKING, Any, Set, List, cast, Tuple
+from typing import Dict, Optional, TYPE_CHECKING, Any, List, cast
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
