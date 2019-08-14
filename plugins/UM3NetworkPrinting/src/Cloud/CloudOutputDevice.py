@@ -148,8 +148,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
-            return  # Avoid calling the cloud too often
+        if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
+            return  # avoid calling the cloud too often
+        self._time_of_last_request = time()
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._last_request_time = time()
@@ -160,9 +161,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Method called when HTTP request to status endpoint is finished.
     #  Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
-        # Update all data from the cluster.
-        self._last_response_time = time()
-        if self._received_printers != status.printers:
+        self._responseReceived()
+        if status.printers != self._received_printers:
             self._received_printers = status.printers
             self._updatePrinters(status.printers)
         if status.print_jobs != self._received_print_jobs:

@@ -57,6 +57,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         # Keeps track the last network response to determine if we are still connected.
         self._time_of_last_response = time()
+        self._time_of_last_request = time()
 
         # Set the display name from the properties
         self.setName(self.getProperty("name"))
