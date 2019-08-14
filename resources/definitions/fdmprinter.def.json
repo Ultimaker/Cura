@@ -2192,7 +2192,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "130",
-                    "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
