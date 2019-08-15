@@ -51,15 +51,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.3.0")
 
-    # Signal triggered when the print jobs in the queue were changed.
-    printJobsChanged = pyqtSignal()
-
-    # Signal triggered when the selected printer in the UI should be changed.
-    activePrinterChanged = pyqtSignal()
-
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore we create a private signal used to trigger the printersChanged signal.
-    _clusterPrintersChanged = pyqtSignal()
+    _cloudClusterPrintersChanged = pyqtSignal()
 
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
@@ -93,7 +87,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._setInterfaceElements()
 
         # Trigger the printersChanged signal when the private signal is triggered.
-        self.printersChanged.connect(self._clusterPrintersChanged)
+        self.printersChanged.connect(self._cloudClusterPrintersChanged)
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[ClusterPrinterStatus]]
@@ -236,7 +230,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeError.emit()
 
     ##  Whether the printer that this output device represents supports print job actions via the cloud.
-    @pyqtProperty(bool, notify=_clusterPrintersChanged)
+    @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:
         if not self._printers:
             return False
