@@ -52,11 +52,7 @@ class IntentModel(ListModel):
         if not global_stack:
             self.setItems(new_items)
             return
-        definition_id = global_stack.definition.getId()
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
-        quality_groups = ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
+        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
         for intent_category, quality_type in IntentManager.getInstance().getCurrentAvailableIntents():
             if intent_category == self._intent_category:

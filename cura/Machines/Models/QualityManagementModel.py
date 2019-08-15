@@ -43,11 +43,7 @@ class QualityManagementModel(ListModel):
             self.setItems([])
             return
 
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders]
-        definition_id = global_stack.definition.getId()
-        quality_group_dict = ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)
 
         available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
