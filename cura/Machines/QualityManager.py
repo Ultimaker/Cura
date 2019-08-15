@@ -1,11 +1,10 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, cast, Dict, List, Set
+from typing import TYPE_CHECKING, Optional, Dict
 
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -117,7 +116,7 @@ class QualityManager(QObject):
             nozzle_name = extruder.variant.getName()
             material_base = extruder.material.getMetaDataEntry("base_file")
             if nozzle_name not in machine_node.variants or material_base not in machine_node.variants[nozzle_name].materials:
-                # The printer has no variant/material-specific quality profiles. Return the global quality profiles.
+                # The printer has no variant/material-specific quality profiles. Use the global quality profiles.
                 qualities_per_type_per_extruder[extruder_nr] = machine_node.global_qualities
             else:
                 # Use the actually specialised quality profiles.
@@ -126,8 +125,8 @@ class QualityManager(QObject):
         # Create the quality group for each available type.
         quality_groups = {}
         for quality_type, global_quality_node in machine_node.global_qualities.items():
-            quality_groups[quality_type].node_for_global = global_quality_node
             quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
+            quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in qualities_per_type_per_extruder:
                 quality_groups[quality_type].nodes_for_extruders[extruder] = qualities_per_type[quality_type]
 

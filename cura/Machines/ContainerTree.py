@@ -8,7 +8,7 @@ from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.MachineNode import MachineNode
 
 from typing import Dict
-
+import time
 ##  This class contains a look-up tree for which containers are available at
 #   which stages of configuration.
 #
@@ -32,12 +32,15 @@ class ContainerTree:
     ##  Builds the initial container tree.
     def _loadAll(self):
         Logger.log("i", "Building container tree.")
+        start_time = time.time()
         all_stacks = ContainerRegistry.getInstance().findContainerStacks()
         for stack in all_stacks:
             definition_id = stack.definition.getId()
             if definition_id not in self.machines:
                 self.machines[definition_id] = MachineNode(definition_id)
 
+        Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
+        
     ##  When a printer gets added, we need to build up the tree for that container.
     def _machineAdded(self, definition_container: ContainerInterface):
         if not isinstance(definition_container, DefinitionContainer):

@@ -1253,7 +1253,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         if material_node:
-            self._global_container_stack.extruders[position].material = CuraContainerRegistry.getInstance().findContainers(id = material_node.container_id)
+            self._global_container_stack.extruders[position].material = CuraContainerRegistry.getInstance().findContainers(id = material_node.container_id)[0]
             root_material_id = material_node.getMetaDataEntry("base_file", None)
         else:
             self._global_container_stack.extruders[position].material = empty_material_container
