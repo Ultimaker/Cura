@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List, TYPE_CHECKING
+from typing import Dict, List
 
 from UM.Logger import Logger
 from UM.Util import parseBool
@@ -11,9 +11,6 @@ from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
-
-if TYPE_CHECKING:
-    from typing import Dict
 
 ##  This class represents a machine in the container tree.
 #
