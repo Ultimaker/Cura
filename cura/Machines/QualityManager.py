@@ -106,9 +106,9 @@ class QualityManager(QObject):
     #   for those types as values.
     def getQualityGroups(self, global_stack: "GlobalStack") -> Dict[str, QualityGroup]:
         # Gather up the variant names and material base files for each extruder.
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders]
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
         definition_id = global_stack.definition.getId()
         return ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
 
