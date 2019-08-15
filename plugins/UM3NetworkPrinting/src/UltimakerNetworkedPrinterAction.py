@@ -79,9 +79,9 @@ class UltimakerNetworkedPrinterAction(MachineAction):
 
     ## Get the network manager from the plugin.
     @property
-    def _networkPlugin(self) -> Optional[UM3OutputDevicePlugin]:
+    def _networkPlugin(self) -> UM3OutputDevicePlugin:
         if not self._network_plugin:
             output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
             network_plugin = output_device_manager.getOutputDevicePlugin("UM3NetworkPrinting")
-            self._network_plugin = network_plugin
+            self._network_plugin = cast(UM3OutputDevicePlugin, network_plugin)
         return self._network_plugin
