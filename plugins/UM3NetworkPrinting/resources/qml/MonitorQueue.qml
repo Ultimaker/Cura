@@ -102,7 +102,6 @@ Item
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
-            width: 600 * screenScaleFactor // TODO: Theme! (Should match column size)
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!

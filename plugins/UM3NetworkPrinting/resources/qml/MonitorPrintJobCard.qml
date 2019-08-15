@@ -64,6 +64,7 @@ Item
                     visible: printJob
 
                     // FIXED-LINE-HEIGHT:
+                    width: parent.width
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
@@ -241,11 +242,10 @@ Item
         enabled: !contextMenuButton.enabled
     }
 
-	// TODO: uncomment this tooltip as soon as the required firmware is released
-    // MonitorInfoBlurb
-    // {
-    //     id: contextMenuDisabledInfo
-    //     text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
-    //     target: contextMenuButton
-    // }
+     MonitorInfoBlurb
+     {
+         id: contextMenuDisabledInfo
+         text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+         target: contextMenuButton
+     }
 }

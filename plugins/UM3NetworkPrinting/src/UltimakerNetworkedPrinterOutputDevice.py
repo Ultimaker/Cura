@@ -299,6 +299,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
                 print_job_data.updateOutputModel(print_job)
                 if print_job_data.printer_uuid:
                     self._updateAssignedPrinter(print_job, print_job_data.printer_uuid)
+                if print_job_data.assigned_to:
+                    self._updateAssignedPrinter(print_job, print_job_data.assigned_to)
                 new_print_jobs.append(print_job)
 
         # Check which print job need to be removed (de-referenced).
@@ -317,6 +319,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         model = remote_job.createOutputModel(ClusterOutputController(self))
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
+        if remote_job.assigned_to:
+            self._updateAssignedPrinter(model, remote_job.assigned_to)
         return model
 
     ## Updates the printer assignment for the given print job model.
