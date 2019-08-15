@@ -190,41 +190,22 @@ class MaterialManager(QObject):
     #
     def getMaterialNode(self, machine_definition_id: str, nozzle_name: Optional[str],
                         buildplate_name: Optional[str], diameter: float, root_material_id: str) -> Optional["MaterialNode"]:
-        # round the diameter to get the approximate diameter
-        rounded_diameter = str(round(diameter))
-        if rounded_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-            Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s]) for root material id [%s]",
-                       diameter, rounded_diameter, root_material_id)
+        container_tree = ContainerTree.getInstance()
+        machine_node = container_tree.machines.get(machine_definition_id)
+        if machine_node is None:
+            Logger.log("w", "Could not find machine with definition %s in the container tree", machine_definition_id)
             return None
 
-        # If there are nozzle materials, get the nozzle-specific material
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]  # type: Dict[str, MaterialNode]
-        machine_node = machine_nozzle_buildplate_material_map.get(machine_definition_id)
-        nozzle_node = None
-        buildplate_node = None
+        variant_node = machine_node.variants.get(nozzle_name)
+        if variant_node is None:
+            Logger.log("w", "Could not find variant %s for machine with definition %s in the container tree", nozzle_name, machine_definition_id )
+            return None
 
-        # Fallback for "fdmprinter" if the machine-specific materials cannot be found
-        if machine_node is None:
-            machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
-        if machine_node is not None and nozzle_name is not None:
-            nozzle_node = machine_node.getChildNode(nozzle_name)
-        if nozzle_node is not None and buildplate_name is not None:
-            buildplate_node = nozzle_node.getChildNode(buildplate_name)
+        material_node = variant_node.materials.get(root_material_id)
 
-        # Fallback mechanism of finding materials:
-        #  1. buildplate-specific material
-        #  2. nozzle-specific material
-        #  3. machine-specific material
-        #  4. generic material (for fdmprinter)
-        nodes_to_check = [buildplate_node, nozzle_node, machine_node,
-                          machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)]
-
-        material_node = None
-        for node in nodes_to_check:
-            if node is not None:
-                material_node = node.material_map.get(root_material_id)
-                if material_node:
-                    break
+        if material_node is None:
+            Logger.log("w", "Could not find material %s for machine with definition %s and variant %s in the container tree", root_material_id, machine_definition_id, nozzle_name)
+            return None
 
         return material_node
 
