@@ -140,11 +140,20 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getDefaultQualityType(self, machine: "GlobalStack") -> Optional[QualityGroup]:
-        preferred_quality_type = machine.definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = self.getQualityGroups(machine)
-        quality_group = quality_group_dict.get(preferred_quality_type)
-        return quality_group
+    def getDefaultQualityType(self, machine: "GlobalStack") -> QualityGroup:
+        machine_node = ContainerTree.getInstance().machines[machine.definition.getId()]
+        variant_names = []
+        material_bases = []
+        extruder_enabled = []
+        for extruder in machine.extruders.values():
+            variant_names.append(extruder.variant.getName())
+            material_bases.append(extruder.material.getMetaDataEntry("base_file"))
+            extruder_enabled.append(extruder.isEnabled)
+        quality_groups = machine_node.getQualityGroups(variant_names, material_bases, extruder_enabled)
+        result = quality_groups.get(machine_node.preferred_quality_type)
+        if result is not None:
+            return result
+        return next(iter(quality_groups.values()))  # If preferred quality type is not available, pick any quality type.
 
 
     #
