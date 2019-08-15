@@ -140,20 +140,22 @@ class QualityManager(QObject):
 
         return quality_group_dict
 
-    def getDefaultQualityType(self, machine: "GlobalStack") -> QualityGroup:
+    ##  Get the quality group for the preferred quality type for a certain
+    #   global stack.
+    #
+    #   If the preferred quality type is not available, ``None`` will be
+    #   returned.
+    #   \param machine The global stack of the machine to get the preferred
+    #   quality group for.
+    #   \return The preferred quality group, or ``None`` if that is not
+    #   available.
+    def getDefaultQualityType(self, machine: "GlobalStack") -> Optional[QualityGroup]:
         machine_node = ContainerTree.getInstance().machines[machine.definition.getId()]
-        variant_names = []
-        material_bases = []
-        extruder_enabled = []
-        for extruder in machine.extruders.values():
-            variant_names.append(extruder.variant.getName())
-            material_bases.append(extruder.material.getMetaDataEntry("base_file"))
-            extruder_enabled.append(extruder.isEnabled)
-        quality_groups = machine_node.getQualityGroups(variant_names, material_bases, extruder_enabled)
+        quality_groups = self.getQualityGroups(machine)
         result = quality_groups.get(machine_node.preferred_quality_type)
-        if result is not None:
+        if result is not None and result.is_available:
             return result
-        return next(iter(quality_groups.values()))  # If preferred quality type is not available, pick any quality type.
+        return None  # If preferred quality type is not available, leave it up for the caller.
 
 
     #
