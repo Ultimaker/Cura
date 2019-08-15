@@ -33,7 +33,7 @@
         "weight": -2,
         "firmware_update_info": {
             "id": 9051,
-            "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
+            "check_urls": ["https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
             "update_url": "https://ultimaker.com/firmware"
         }
     },
