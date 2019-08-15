@@ -18,7 +18,7 @@ I18N_CATALOG = i18nCatalog("cura")
 ## Machine action that allows to connect the active machine to a networked devices.
 #  TODO: in the future this should be part of the new discovery workflow baked into Cura.
 class UltimakerNetworkedPrinterAction(MachineAction):
-    
+
     # Signal emitted when discovered devices have changed.
     discoveredDevicesChanged = pyqtSignal()
 
@@ -34,58 +34,54 @@ class UltimakerNetworkedPrinterAction(MachineAction):
     ## Start listening to network discovery events via the plugin.
     @pyqtSlot(name = "startDiscovery")
     def startDiscovery(self) -> None:
-        network_plugin = self._getNetworkPlugin()
-        network_plugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
+        self._networkPlugin.discoveredDevicesChanged.connect(self._onDeviceDiscoveryChanged)
         self.discoveredDevicesChanged.emit()  # trigger at least once to populate the list
 
     ## Reset the discovered devices.
     @pyqtSlot(name = "reset")
     def reset(self) -> None:
-        self.restartDiscovery()
+        self.discoveredDevicesChanged.emit()  # trigger to reset the list
 
     ## Reset the discovered devices.
     @pyqtSlot(name = "restartDiscovery")
     def restartDiscovery(self) -> None:
-        network_plugin = self._getNetworkPlugin()
-        network_plugin.startDiscovery()
+        self._networkPlugin.startDiscovery()
         self.discoveredDevicesChanged.emit()  # trigger to reset the list
 
     ## Remove a manually added device.
     @pyqtSlot(str, str, name = "removeManualDevice")
     def removeManualDevice(self, key: str, address: str) -> None:
-        network_plugin = self._getNetworkPlugin()
-        network_plugin.removeManualDevice(key, address)
+        self._networkPlugin.removeManualDevice(key, address)
 
     ## Add a new manual device. Can replace an existing one by key.
     @pyqtSlot(str, str, name = "setManualDevice")
     def setManualDevice(self, key: str, address: str) -> None:
-        network_plugin = self._getNetworkPlugin()
         if key != "":
-            network_plugin.removeManualDevice(key)
+            self._networkPlugin.removeManualDevice(key)
         if address != "":
-            network_plugin.addManualDevice(address)
+            self._networkPlugin.addManualDevice(address)
 
     ## Get the devices discovered in the local network sorted by name.
     @pyqtProperty("QVariantList", notify = discoveredDevicesChanged)
     def foundDevices(self):
-        network_plugin = self._getNetworkPlugin()
-        discovered_devices = list(network_plugin.getDiscoveredDevices().values())
+        discovered_devices = list(self._networkPlugin.getDiscoveredDevices().values())
         discovered_devices.sort(key = lambda d: d.name)
         return discovered_devices
 
     ## Connect a device selected in the list with the active machine.
     @pyqtSlot(QObject, name = "associateActiveMachineWithPrinterDevice")
     def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
-        network_plugin = self._getNetworkPlugin()
-        network_plugin.associateActiveMachineWithPrinterDevice(device)
+        self._networkPlugin.associateActiveMachineWithPrinterDevice(device)
 
     ## Callback for when the list of discovered devices in the plugin was changed.
     def _onDeviceDiscoveryChanged(self) -> None:
         self.discoveredDevicesChanged.emit()
 
     ## Get the network manager from the plugin.
-    def _getNetworkPlugin(self) -> UM3OutputDevicePlugin:
+    @property
+    def _networkPlugin(self) -> Optional[UM3OutputDevicePlugin]:
         if not self._network_plugin:
-            plugin = CuraApplication.getInstance().getOutputDeviceManager().getOutputDevicePlugin("UM3NetworkPrinting")
-            self._network_plugin = cast(UM3OutputDevicePlugin, plugin)
+            output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+            network_plugin = output_device_manager.getOutputDevicePlugin("UM3NetworkPrinting")
+            self._network_plugin = network_plugin
         return self._network_plugin
