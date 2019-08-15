@@ -103,9 +103,9 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state not in self.QUEUED_PRINT_JOBS_STATES]
 
-    @pyqtProperty(bool, notify=printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return bool(self._print_jobs)
+    @pyqtProperty(bool, notify=_clusterPrintersChanged)
+    def receivedData(self) -> bool:
+        return self._has_received_printers
 
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)

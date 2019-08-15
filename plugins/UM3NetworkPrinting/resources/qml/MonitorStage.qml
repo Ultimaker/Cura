@@ -52,7 +52,7 @@ Component
                 id: carousel
                 printers:
                 {
-                    if (OutputDevice.receivedPrintJobs)
+                    if (OutputDevice.receivedData)
                     {
                         return OutputDevice.printers
                     }

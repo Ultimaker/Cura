@@ -187,7 +187,7 @@ Item
             }
             model:
             {
-                if (OutputDevice.receivedPrintJobs)
+                if (OutputDevice.receivedData)
                 {
                     return OutputDevice.queuedPrintJobs
                 }
