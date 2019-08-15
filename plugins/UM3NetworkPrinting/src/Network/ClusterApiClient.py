@@ -62,6 +62,11 @@ class ClusterApiClient:
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+    
+    ## Override print job configuration and force it to be printed.
+    def forcePrintJob(self, print_job_uuid: str) -> None:
+        url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        self._manager.put(self._createEmptyRequest(url), json.dumps({"force": True}).encode())
 
     ## Delete a print job from the queue.
     def deletePrintJob(self, print_job_uuid: str) -> None:

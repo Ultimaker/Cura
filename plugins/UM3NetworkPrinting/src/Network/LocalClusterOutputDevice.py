@@ -86,7 +86,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(str, name="forceSendJob")
     def forceSendJob(self, print_job_uuid: str) -> None:
-        pass  # TODO
+        self._getApiClient().forcePrintJob(print_job_uuid)
 
     ## Set the remote print job state.
     #  \param print_job_uuid: The UUID of the print job to set the state for.
