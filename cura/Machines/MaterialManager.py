@@ -206,10 +206,10 @@ class MaterialManager(QObject):
         # Fallback for "fdmprinter" if the machine-specific materials cannot be found
         if machine_node is None:
             machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
-        if machine_node is not None and nozzle_name is not None:
-            nozzle_node = machine_node.getChildNode(nozzle_name)
-        if nozzle_node is not None and buildplate_name is not None:
-            buildplate_node = nozzle_node.getChildNode(buildplate_name)
+        if machine_node is not None and nozzle_name is not None and nozzle_name in machine_node.children_map:
+            nozzle_node = machine_node.children_map[nozzle_name]
+        if nozzle_node is not None and buildplate_name is not None and buildplate_name in nozzle_node.children_map:
+            buildplate_node = nozzle_node.children_map[buildplate_name]
 
         # Fallback mechanism of finding materials:
         #  1. buildplate-specific material
