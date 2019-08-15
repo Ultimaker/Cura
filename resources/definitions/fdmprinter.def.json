@@ -204,6 +204,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_heated_build_volume":
+                {
+                    "label": "Has Build Volume Temperature Stabilization",
+                    "description": "Whether the machine is able to stabilize the build volume temperature.",
+                    "default_value": false,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_center_is_zero":
                 {
                     "label": "Is Center Origin",
@@ -2103,7 +2113,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": true,
+                    "enabled": "machine_heated_build_volume",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
