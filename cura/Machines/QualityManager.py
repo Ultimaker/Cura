@@ -105,39 +105,17 @@ class QualityManager(QObject):
     #   \return A dictionary with quality types as keys and the quality groups
     #   for those types as values.
     def getQualityGroups(self, global_stack: "GlobalStack") -> Dict[str, QualityGroup]:
+        # Gather up the variant names and material base files for each extruder.
+        variant_names = []
+        material_bases = []
+        extruder_enabled = []
+        for extruder in global_stack.extruders.values():
+            variant_names.append(extruder.variant.getName())
+            material_bases.append(extruder.material.getMetaDataEntry("base_file"))
+            extruder_enabled.append(extruder.isEnabled)
+
         definition_id = global_stack.definition.getId()
-        machine_node = ContainerTree.getInstance().machines[definition_id]
-
-        # For each extruder, find which quality profiles are available. Later we'll intersect the quality types.
-        qualities_per_type_per_extruder = {}  # type: Dict[str, Dict[str, QualityNode]]
-        for extruder_nr, extruder in global_stack.extruders.items():
-            if not extruder.isEnabled:
-                continue  # No qualities available in this extruder. It'll get skipped when intersecting the quality types.
-            nozzle_name = extruder.variant.getName()
-            material_base = extruder.material.getMetaDataEntry("base_file")
-            if nozzle_name not in machine_node.variants or material_base not in machine_node.variants[nozzle_name].materials:
-                # The printer has no variant/material-specific quality profiles. Use the global quality profiles.
-                qualities_per_type_per_extruder[extruder_nr] = machine_node.global_qualities
-            else:
-                # Use the actually specialised quality profiles.
-                qualities_per_type_per_extruder[extruder_nr] = machine_node.variants[nozzle_name].materials[material_base].qualities
-
-        # Create the quality group for each available type.
-        quality_groups = {}
-        for quality_type, global_quality_node in machine_node.global_qualities.items():
-            quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
-            quality_groups[quality_type].node_for_global = global_quality_node
-            for extruder, qualities_per_type in qualities_per_type_per_extruder:
-                quality_groups[quality_type].nodes_for_extruders[extruder] = qualities_per_type[quality_type]
-
-        available_quality_types = set(quality_groups.keys())
-        for extruder_nr, qualities_per_type in qualities_per_type_per_extruder.items():
-            if not global_stack.extruders[extruder_nr].isEnabled:
-                continue
-            available_quality_types.intersection_update(qualities_per_type.keys())
-        for quality_type in available_quality_types:
-            quality_groups[quality_type].is_available = True
-        return quality_groups
+        return ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
 
     def getQualityGroupsForMachineDefinition(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
