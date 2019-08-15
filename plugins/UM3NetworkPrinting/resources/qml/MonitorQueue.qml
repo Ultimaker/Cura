@@ -185,7 +185,14 @@ Item
                 }
                 printJob: modelData
             }
-            model: OutputDevice.queuedPrintJobs
+            model:
+            {
+                if (OutputDevice.receivedPrintJobs)
+                {
+                    return OutputDevice.queuedPrintJobs
+                }
+                return [null, null]
+            }
             spacing: 6  // TODO: Theme!
         }
     }
