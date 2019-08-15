@@ -49,6 +49,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
+
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
 
