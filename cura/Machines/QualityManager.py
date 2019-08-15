@@ -112,7 +112,7 @@ class QualityManager(QObject):
         qualities_per_type_per_extruder = {}  # type: Dict[str, Dict[str, QualityNode]]
         for extruder_nr, extruder in global_stack.extruders.items():
             if not extruder.isEnabled:
-                continue # No qualities available in this extruder. It'll get skipped when intersecting the quality types.
+                continue  # No qualities available in this extruder. It'll get skipped when intersecting the quality types.
             nozzle_name = extruder.variant.getName()
             material_base = extruder.material.getMetaDataEntry("base_file")
             if nozzle_name not in machine_node.variants or material_base not in machine_node.variants[nozzle_name].materials:
@@ -131,7 +131,9 @@ class QualityManager(QObject):
                 quality_groups[quality_type].nodes_for_extruders[extruder] = qualities_per_type[quality_type]
 
         available_quality_types = set(quality_groups.keys())
-        for qualities_per_type in qualities_per_type_per_extruder.values():
+        for extruder_nr, qualities_per_type in qualities_per_type_per_extruder.items():
+            if not global_stack.extruders[extruder_nr].isEnabled:
+                continue
             available_quality_types.intersection_update(qualities_per_type.keys())
         for quality_type in available_quality_types:
             quality_groups[quality_type].is_available = True
