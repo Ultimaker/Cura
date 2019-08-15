@@ -112,7 +112,7 @@ class UFPWriter(MeshWriter):
                 Logger.log("e", "Cannot find material container with root id [%s]", material_root_id)
                 return False
 
-            material_container = material_group.root_material_node.getContainer()
+            material_container = material_group.root_material_node.container
             try:
                 serialized_material = material_container.serialize()
             except NotImplementedError:

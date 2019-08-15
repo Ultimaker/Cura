@@ -901,8 +901,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.BUILD_PLATE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None and node.getContainer() is not None:
-                global_stack.variant = node.getContainer()
+            if node is not None and node.container is not None:
+                global_stack.variant = node.container
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
@@ -911,8 +911,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if extruder_info.variant_info is None:
                 # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
                 node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE, global_stack)
-                if node is not None and node.getContainer() is not None:
-                    extruder_stack.variant = node.getContainer()
+                if node is not None and node.container is not None:
+                    extruder_stack.variant = node.container
                 continue
             parser = extruder_info.variant_info.parser
 
@@ -920,8 +920,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_type = VariantType.NOZZLE
 
             node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None and node.getContainer() is not None:
-                extruder_stack.variant = node.getContainer()
+            if node is not None and node.container is not None:
+                extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
         application = CuraApplication.getInstance()
@@ -947,8 +947,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                                                              machine_material_diameter,
                                                              root_material_id)
 
-            if material_node is not None and material_node.getContainer() is not None:
-                extruder_stack.material = material_node.getContainer()  # type: InstanceContainer
+            if material_node is not None and material_node.container is not None:
+                extruder_stack.material = material_node.container  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

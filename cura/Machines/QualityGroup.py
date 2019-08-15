@@ -43,7 +43,7 @@ class QualityGroup(QObject):
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
-            container = node.getContainer()
+            container = node.container
             if container:
                 result.update(container.getAllKeys())
         return result

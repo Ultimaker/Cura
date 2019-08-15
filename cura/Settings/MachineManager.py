@@ -1160,10 +1160,10 @@ class MachineManager(QObject):
             self._setEmptyQuality()
             return
 
-        if quality_group.node_for_global is None or quality_group.node_for_global.getContainer() is None:
+        if quality_group.node_for_global is None or quality_group.node_for_global.container is None:
             return
         for node in quality_group.nodes_for_extruders.values():
-            if node.getContainer() is None:
+            if node.container is None:
                 return
 
         self._current_quality_group = quality_group
@@ -1171,13 +1171,13 @@ class MachineManager(QObject):
             self._current_quality_changes_group = None
 
         # Set quality and quality_changes for the GlobalStack
-        self._global_container_stack.quality = quality_group.node_for_global.getContainer()
+        self._global_container_stack.quality = quality_group.node_for_global.container
         if empty_quality_changes:
             self._global_container_stack.qualityChanges = empty_quality_changes_container
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruders[str(position)].quality = node.getContainer()
+            self._global_container_stack.extruders[str(position)].quality = node.container
             if empty_quality_changes:
                 self._global_container_stack.extruders[str(position)].qualityChanges = empty_quality_changes_container
 
@@ -1186,7 +1186,7 @@ class MachineManager(QObject):
 
     def _fixQualityChangesGroupToNotSupported(self, quality_changes_group: "QualityChangesGroup") -> None:
         nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
-        containers = [n.getContainer() for n in nodes if n is not None]
+        containers = [n.container for n in nodes if n is not None]
         for container in containers:
             if container:
                 container.setMetaDataEntry("quality_type", "not_supported")
@@ -1207,10 +1207,10 @@ class MachineManager(QObject):
 
         quality_changes_container = empty_quality_changes_container
         quality_container = empty_quality_container  # type: Optional[InstanceContainer]
-        if quality_changes_group.node_for_global and quality_changes_group.node_for_global.getContainer():
-            quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.getContainer())
-        if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.getContainer():
-            quality_container = quality_group.node_for_global.getContainer()
+        if quality_changes_group.node_for_global and quality_changes_group.node_for_global.container:
+            quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.container)
+        if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.container:
+            quality_container = quality_group.node_for_global.container
 
         self._global_container_stack.quality = quality_container
         self._global_container_stack.qualityChanges = quality_changes_container
@@ -1223,10 +1223,10 @@ class MachineManager(QObject):
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
-            if quality_changes_node and quality_changes_node.getContainer():
-                quality_changes_container = cast(InstanceContainer, quality_changes_node.getContainer())
-            if quality_node and quality_node.getContainer():
-                quality_container = quality_node.getContainer()
+            if quality_changes_node and quality_changes_node.container:
+                quality_changes_container = cast(InstanceContainer, quality_changes_node.container)
+            if quality_node and quality_node.container:
+                quality_container = quality_node.container
 
             extruder.quality = quality_container
             extruder.qualityChanges = quality_changes_container
@@ -1245,7 +1245,7 @@ class MachineManager(QObject):
     def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
         if self._global_container_stack is None:
             return
-        self._global_container_stack.variant = container_node.getContainer()
+        self._global_container_stack.variant = container_node.container
         if not self._global_container_stack.variant:
             self._global_container_stack.variant = self._application.empty_variant_container
 
@@ -1501,7 +1501,7 @@ class MachineManager(QObject):
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:
         if global_stack is not None and global_stack != self._global_container_stack:
-            global_stack.extruders[position].material = container_node.getContainer()
+            global_stack.extruders[position].material = container_node.container
             return
         position = str(position)
         self.blurSettings.emit()
@@ -1555,11 +1555,11 @@ class MachineManager(QObject):
                 Logger.log("e", "Could not set quality group [%s] because it has no node_for_global", str(quality_group))
                 return
             # This is not changing the quality for the active machine !!!!!!!!
-            global_stack.quality = quality_group.node_for_global.getContainer()
+            global_stack.quality = quality_group.node_for_global.container
             for extruder_nr, extruder_stack in global_stack.extruders.items():
                 quality_container = empty_quality_container
                 if extruder_nr in quality_group.nodes_for_extruders:
-                    container = quality_group.nodes_for_extruders[extruder_nr].getContainer()
+                    container = quality_group.nodes_for_extruders[extruder_nr].container
                     quality_container = container if container is not None else quality_container
                 extruder_stack.quality = quality_container
             return

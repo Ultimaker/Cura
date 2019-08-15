@@ -390,7 +390,7 @@ class MaterialManager(QObject):
 
         material_group = self.getMaterialGroup(root_material_id)
         if material_group:
-            container = material_group.root_material_node.getContainer()
+            container = material_group.root_material_node.container
             if container:
                 container.setName(name)
 
@@ -416,7 +416,7 @@ class MaterialManager(QObject):
             Logger.log("i", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
             return None
 
-        base_container = material_group.root_material_node.getContainer()
+        base_container = material_group.root_material_node.container
         if not base_container:
             return None
 
@@ -438,7 +438,7 @@ class MaterialManager(QObject):
 
         # Clone all of them.
         for node in material_group.derived_material_node_list:
-            container_to_copy = node.getContainer()
+            container_to_copy = node.container
             if not container_to_copy:
                 continue
             # Create unique IDs for every clone.

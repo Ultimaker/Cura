@@ -204,7 +204,7 @@ class QualityManager(QObject):
 
         new_name = self._container_registry.uniqueName(new_name)
         for node in quality_changes_group.getAllNodes():
-            container = node.getContainer()
+            container = node.container
             if container:
                 container.setName(new_name)
 
@@ -237,7 +237,7 @@ class QualityManager(QObject):
         else:
             new_name = self._container_registry.uniqueName(quality_changes_name)
             for node in quality_changes_group.getAllNodes():
-                container = node.getContainer()
+                container = node.container
                 if not container:
                     continue
                 new_id = self._container_registry.uniqueName(container.getId())

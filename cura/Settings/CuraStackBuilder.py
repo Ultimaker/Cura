@@ -78,12 +78,12 @@ class CuraStackBuilder:
                 preferred_quality_type = next(iter(quality_group_dict))
             quality_group = quality_group_dict.get(preferred_quality_type)
 
-            new_global_stack.quality = quality_group.node_for_global.getContainer()
+            new_global_stack.quality = quality_group.node_for_global.container
             if not new_global_stack.quality:
                 new_global_stack.quality = application.empty_quality_container
             for position, extruder_stack in new_global_stack.extruders.items():
-                if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].getContainer():
-                    extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
+                if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].container:
+                    extruder_stack.quality = quality_group.nodes_for_extruders[position].container
                 else:
                     extruder_stack.quality = application.empty_quality_container
 
@@ -115,7 +115,7 @@ class CuraStackBuilder:
         extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
         extruder_variant_name = None
         if extruder_variant_node is not None:
-            extruder_variant_container = extruder_variant_node.getContainer()
+            extruder_variant_container = extruder_variant_node.container
             if not extruder_variant_container:
                 extruder_variant_container = application.empty_variant_container
             extruder_variant_name = extruder_variant_container.getName()
@@ -134,8 +134,8 @@ class CuraStackBuilder:
         material_container = application.empty_material_container
         material_node = material_manager.getDefaultMaterial(global_stack, str(extruder_position), extruder_variant_name,
                                                             extruder_definition = extruder_definition)
-        if material_node and material_node.getContainer():
-            material_container = material_node.getContainer()
+        if material_node and material_node.container:
+            material_container = material_node.container
 
         new_extruder_id = registry.uniqueName(extruder_definition_id)
         new_extruder = cls.createExtruderStack(

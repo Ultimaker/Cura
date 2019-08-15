@@ -112,7 +112,7 @@ class ContainerManager(QObject):
             entry_name = root_name
             entry_value = root
 
-        container = material_group.root_material_node.getContainer()
+        container = material_group.root_material_node.container
         if container is not None:
             container.setMetaDataEntry(entry_name, entry_value)
             if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
@@ -357,7 +357,7 @@ class ContainerManager(QObject):
         # Update the GUID
         # NOTE: We only need to set the root material container because XmlMaterialProfile.setMetaDataEntry() will
         # take care of the derived containers too
-        container = material_group.root_material_node.getContainer()
+        container = material_group.root_material_node.container
         if container is not None:
             container.setMetaDataEntry("GUID", new_guid)
 
@@ -436,7 +436,7 @@ class ContainerManager(QObject):
         if not path:
             return
 
-        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
+        container_list = [n.container for n in quality_changes_group.getAllNodes() if n.container is not None]
         cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().exportQualityProfile(container_list, path, file_type)
 
     __instance = None   # type: ContainerManager

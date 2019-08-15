@@ -41,7 +41,7 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
             material_group = non_read_only_material_group_list[0]
 
         if material_group:
-            container = material_group.root_material_node.getContainer()
+            container = material_group.root_material_node.container
             color = container.getMetaDataEntry("color_code")
             brand = container.getMetaDataEntry("brand")
             material_type = container.getMetaDataEntry("material")

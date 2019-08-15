@@ -89,7 +89,7 @@ class XmlMaterialProfile(InstanceContainer):
                 self.setProperty(k, "value", v)
             return
         # Update the root material container
-        root_material_container = material_group.root_material_node.getContainer()
+        root_material_container = material_group.root_material_node.container
         if root_material_container is not None:
             root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
             for k, v in new_setting_values_dict.items():
@@ -97,7 +97,7 @@ class XmlMaterialProfile(InstanceContainer):
 
         # Update all containers derived from it
         for node in material_group.derived_material_node_list:
-            container = node.getContainer()
+            container = node.container
             if container is not None:
                 container.setMetaDataEntry(key, value, apply_to_all = False)
                 for k, v in new_setting_values_dict.items():

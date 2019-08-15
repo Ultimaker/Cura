@@ -103,8 +103,8 @@ class QualitySettingsModel(ListModel):
                 quality_changes_node = quality_changes_group.node_for_global
             else:
                 quality_changes_node = quality_changes_group.nodes_for_extruders.get(str(self._selected_position))
-            if quality_changes_node is not None and quality_changes_node.getContainer() is not None:  # it can be None if number of extruders are changed during runtime
-                quality_containers.insert(0, quality_changes_node.getContainer())
+            if quality_changes_node is not None and quality_changes_node.container is not None:  # it can be None if number of extruders are changed during runtime
+                quality_containers.insert(0, quality_changes_node.container)
             settings_keys.update(quality_changes_group.getAllKeys())
 
         # We iterate over all definitions instead of settings in a quality/qualtiy_changes group is because in the GUI,

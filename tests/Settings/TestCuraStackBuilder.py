@@ -48,12 +48,12 @@ def test_createMachine(application, container_registry, definition_container, gl
     variant_manager = MagicMock(name = "Variant Manager")
     quality_manager = MagicMock(name = "Quality Manager")
     global_variant_node = MagicMock( name = "global variant node")
-    global_variant_node.getContainer = MagicMock(return_value = global_variant)
+    global_variant_node.container = global_variant
 
     variant_manager.getDefaultVariantNode = MagicMock(return_value = global_variant_node)
     quality_group = QualityGroup(name = "zomg", quality_type = "normal")
     quality_group.node_for_global = MagicMock(name = "Node for global")
-    quality_group.node_for_global.getContainer = MagicMock(return_value = quality_container)
+    quality_group.node_for_global.container = quality_container
     quality_manager.getQualityGroups = MagicMock(return_value = {"normal": quality_group})
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
