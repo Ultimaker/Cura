@@ -42,6 +42,8 @@ class ContainerTree:
     #   \return For every quality type, one quality group.
     def getCurrentQualityGroups(self) -> Dict[str, "QualityGroup"]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return {}
         variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
         material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
