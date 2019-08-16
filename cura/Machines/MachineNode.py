@@ -6,7 +6,6 @@ from typing import Dict, List
 from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
-from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
@@ -36,7 +35,6 @@ class MachineNode(ContainerNode):
         self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
 
-        container_registry.containerAdded.connect(self._variantAdded)
         self._loadAll()
 
     ##  Get the available quality groups for this machine.
@@ -102,18 +100,3 @@ class MachineNode(ContainerNode):
             global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter", global_quality = True)  # Otherwise pick the global global qualities.
         for global_quality in global_qualities:
             self.global_qualities[global_quality["quality_type"]] = QualityNode(global_quality["id"], parent = self)
-
-    ##  When a variant gets added to the set of profiles, we need to update our
-    #   tree here.
-    def _variantAdded(self, container: ContainerInterface):
-        if container.getMetaDataEntry("type") != "variant":
-            return  # Not interested.
-        name = container.getMetaDataEntry("name")
-        if name in self.variants:
-            return  # Already have this one.
-        if container.getMetaDataEntry("hardware_type") != "nozzle":
-            return  # Only want nozzles in my tree.
-        if container.getMetaDataEntry("definition") != self.container_id:
-            return  # Not a nozzle that fits in my machine.
-
-        self.variants[name] = VariantNode(container.getId(), machine = self)
