@@ -32,13 +32,13 @@ ScrollView
             model: toolbox.viewCategory === "material" ? toolbox.materialsAvailableModel : toolbox.pluginsAvailableModel
         }
 
-        /*ToolboxDownloadsGrid
+        ToolboxDownloadsGrid
         {
             id: genericMaterials
             visible: toolbox.viewCategory === "material"
             width: parent.width
             heading: catalog.i18nc("@label", "Generic Materials")
             model: toolbox.materialsGenericModel
-        }*/
+        }
     }
 }
