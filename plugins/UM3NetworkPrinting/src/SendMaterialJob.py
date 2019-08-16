@@ -7,6 +7,7 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Settings import ContainerRegistry
 from cura.CuraApplication import CuraApplication
 
 from .Models.ClusterMaterial import ClusterMaterial
@@ -171,7 +172,7 @@ class SendMaterialJob(Job):
 
         # Find the latest version of all material containers in the registry.
         for root_material_id, material_group in material_group_dict.items():
-            material_metadata = material_group.root_material_node.getMetadata()
+            material_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = material_group.root_material_node.container_id)[0]
 
             try:
                 # material version must be an int
