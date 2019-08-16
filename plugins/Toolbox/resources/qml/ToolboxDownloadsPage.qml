@@ -10,9 +10,11 @@ ScrollView
     clip: true
     width: parent.width
     height: parent.height
+    contentHeight: mainColumn.height
 
     Column
     {
+        id: mainColumn
         width: base.width
         spacing: UM.Theme.getSize("default_margin").height
 
@@ -30,13 +32,13 @@ ScrollView
             model: toolbox.viewCategory === "material" ? toolbox.materialsAvailableModel : toolbox.pluginsAvailableModel
         }
 
-        ToolboxDownloadsGrid
+        /*ToolboxDownloadsGrid
         {
             id: genericMaterials
             visible: toolbox.viewCategory === "material"
             width: parent.width
             heading: catalog.i18nc("@label", "Generic Materials")
             model: toolbox.materialsGenericModel
-        }
+        }*/
     }
 }
