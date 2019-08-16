@@ -254,25 +254,13 @@ class MaterialManager(QObject):
         return node
 
     def removeMaterialByRootId(self, root_material_id: str):
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
-
         container_registry = CuraContainerRegistry.getInstance()
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        # Sort all nodes with respect to the container ID lengths in the ascending order so the base material container
-        # will be the first one to be removed. We need to do this to ensure that all containers get loaded & deleted.
-        nodes_to_remove = sorted(nodes_to_remove, key = lambda x: len(x.getMetaDataEntry("id", "")))
-        # Try to load all containers first. If there is any faulty ones, they will be put into the faulty container
-        # list, so removeContainer() can ignore those ones.
-        for node in nodes_to_remove:
-            container_id = node.getMetaDataEntry("id", "")
-            results = container_registry.findContainers(id = container_id)
-            if not results:
-                container_registry.addWrongContainerId(container_id)
-        for node in nodes_to_remove:
-            container_registry.removeContainer(node.getMetaDataEntry("id", ""))
+        results = container_registry.findContainers(id=root_material_id)
+        if not results:
+            container_registry.addWrongContainerId(root_material_id)
+
+        for result in results:
+            container_registry.removeContainer(result.getMetaDataEntry("id", ""))
 
     #
     # Methods for GUI
@@ -327,14 +315,14 @@ class MaterialManager(QObject):
     def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
         root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
 
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
+        container_registry = CuraContainerRegistry.getInstance()
+        results = container_registry.findContainers(id=root_material_id)
+
+        if not results:
             Logger.log("i", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
             return None
 
-        base_container = material_group.root_material_node.container
-        if not base_container:
-            return None
+        base_container = results[0]
 
         # Ensure all settings are saved.
         cura.CuraApplication.CuraApplication.getInstance().saveSettings()
@@ -353,11 +341,9 @@ class MaterialManager(QObject):
         new_containers.append(new_base_container)
 
         # Clone all of them.
-        for node in material_group.derived_material_node_list:
-            container_to_copy = node.container
-            if not container_to_copy:
-                continue
-            # Create unique IDs for every clone.
+        for container_to_copy in container_registry.findContainers(base_file= root_material_id):
+            if container_to_copy.getId() == root_material_id:
+                continue  # We already have that one, skip it
             new_id = new_base_id
             if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
                 new_id += "_" + container_to_copy.getMetaDataEntry("definition")
@@ -371,7 +357,6 @@ class MaterialManager(QObject):
             if new_metadata is not None:
                 for key, value in new_metadata.items():
                     new_container.getMetaData()[key] = value
-
             new_containers.append(new_container)
 
         for container_to_add in new_containers:
