@@ -103,7 +103,7 @@ class MaterialManager(QObject):
     # A convenience function to get available materials for the given machine with the extruder position.
     #
     def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
-                                                extruder_stack: "ExtruderStack") -> Optional[Dict[str, MaterialNode]]:
+                                                extruder_stack: "ExtruderStack") -> Dict[str, MaterialNode]:
         nozzle_name = None
         if extruder_stack.variant.getId() != "empty_variant":
             nozzle_name = extruder_stack.variant.getName()

@@ -106,20 +106,15 @@ class BaseMaterialsModel(ListModel):
     #  so it's placed here for easy access.
     def _canUpdate(self):
         global_stack = self._machine_manager.activeMachine
-
         if global_stack is None or not self._enabled:
             return False
 
         extruder_position = str(self._extruder_position)
-
         if extruder_position not in global_stack.extruders:
             return False
-        
         extruder_stack = global_stack.extruders[extruder_position]
-        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if self._available_materials is None:
-            return False
 
+        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         return True
 
     ## This is another convenience function which is shared by all material
