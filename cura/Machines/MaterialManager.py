@@ -274,12 +274,8 @@ class MaterialManager(QObject):
         if CuraContainerRegistry.getInstance().isReadOnly(root_material_id):
             Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
             return
-
-        material_group = self.getMaterialGroup(root_material_id)
-        if material_group:
-            container = material_group.root_material_node.container
-            if container:
-                container.setName(name)
+        containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = root_material_id)
+        containers[0].setName(name)
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
