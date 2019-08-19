@@ -87,7 +87,15 @@ class MaterialManager(QObject):
         return self._material_group_map.get(root_material_id)
 
     def getRootMaterialIDForDiameter(self, root_material_id: str, approximate_diameter: str) -> str:
-        return self._material_diameter_map.get(root_material_id, {}).get(approximate_diameter, root_material_id)
+        original_material = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(id=root_material_id)[0]
+        if original_material["approximate_diameter"] == approximate_diameter:
+            return root_material_id
+
+        matching_materials = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "material", brand = original_material["brand"], definition = original_material["definition"], material = original_material["material"], color_name = original_material["color_name"])
+        for material in matching_materials:
+            if material["approximate_diameter"] == approximate_diameter:
+                return material["id"]
+        return root_material_id
 
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id, "")
