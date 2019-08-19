@@ -2,11 +2,20 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
+import cura.CuraApplication  # To listen to changes to the preferences.
 
 ##  Model that shows the list of favorite materials.
 class FavoriteMaterialsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
+        self._update()
+
+    ##  Triggered when any preference changes, but only handles it when the list
+    #   of favourites is changed.
+    def _onFavoritesChanged(self, preference_key: str) -> None:
+        if preference_key != "cura/favorite_materials":
+            return
         self._update()
 
     def _update(self):
