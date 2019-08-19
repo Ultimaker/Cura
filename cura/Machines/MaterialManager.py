@@ -283,14 +283,7 @@ class MaterialManager(QObject):
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
 
-    #
-    # Creates a duplicate of a material, which has the same GUID and base_file metadata.
-    # Returns the root material ID of the duplicated material if successful.
-    #
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
-        root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
-
+    def duplicateMaterialByRootId(self, root_material_id,  new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
         container_registry = CuraContainerRegistry.getInstance()
         results = container_registry.findContainers(id=root_material_id)
 
@@ -317,7 +310,7 @@ class MaterialManager(QObject):
         new_containers.append(new_base_container)
 
         # Clone all of them.
-        for container_to_copy in container_registry.findContainers(base_file= root_material_id):
+        for container_to_copy in container_registry.findContainers(base_file=root_material_id):
             if container_to_copy.getId() == root_material_id:
                 continue  # We already have that one, skip it
             new_id = new_base_id
@@ -344,8 +337,15 @@ class MaterialManager(QObject):
             self.addFavorite(new_base_id)
 
         return new_base_id
-
     #
+    # Creates a duplicate of a material, which has the same GUID and base_file metadata.
+    # Returns the root material ID of the duplicated material if successful.
+    #
+    @pyqtSlot("QVariant", result = str)
+    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
+        return self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
+
     # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
     # Returns the ID of the newly created material.
     @pyqtSlot(result = str)
@@ -364,11 +364,6 @@ class MaterialManager(QObject):
 
         approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
         root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-        material_group = self.getMaterialGroup(root_material_id)
-
-        if not material_group:  # This should never happen
-            Logger.log("w", "Cannot get the material group of %s.", root_material_id)
-            return ""
 
         # Create a new ID & container to hold the data.
         new_id = CuraContainerRegistry.getInstance().uniqueName("custom_material")
@@ -377,9 +372,7 @@ class MaterialManager(QObject):
                         "GUID": str(uuid.uuid4()),
                         }
 
-        self.duplicateMaterial(material_group.root_material_node,
-                               new_base_id = new_id,
-                               new_metadata = new_metadata)
+        self.duplicateMaterialByRootId(root_material_id, new_base_id = new_id, new_metadata = new_metadata)
         return new_id
 
     @pyqtSlot(str)
