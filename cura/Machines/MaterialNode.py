@@ -27,7 +27,7 @@ class MaterialNode(ContainerNode):
         self.guid = my_metadata["GUID"]
         self._loadAll()
         container_registry.containerRemoved.connect(self._onRemoved)
-        container_registry.containerMetaDataChanged(self._onMetadataChanged)
+        container_registry.containerMetaDataChanged.connect(self._onMetadataChanged)
 
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
