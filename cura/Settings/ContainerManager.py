@@ -9,7 +9,6 @@ from typing import Dict, Union, Any, TYPE_CHECKING, List
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtWidgets import QMessageBox
 
-
 from UM.i18n import i18nCatalog
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
@@ -17,6 +16,7 @@ from UM.MimeTypeDatabase import MimeTypeDatabase, MimeTypeNotFoundError
 from UM.Platform import Platform
 from UM.SaveFile import SaveFile
 from UM.Settings.ContainerFormatError import ContainerFormatError
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -327,21 +327,14 @@ class ContainerManager(QObject):
     #   the same GUID.
     #   \param exclude_self Whether to include the name of the material you
     #   provided.
-    #   \return A list of names of materials with the same GUID
+    #   \return A list of names of materials with the same GUID.
     @pyqtSlot("QVariant", bool, result = "QStringList")
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
-        guid = material_node.getMetaDataEntry("GUID", "")
-
-        self_root_material_id = material_node.getMetaDataEntry("base_file")
-        material_group_list = MaterialManager.getInstance().getMaterialGroupListByGUID(guid)
-
-        linked_material_names = []
-        if material_group_list:
-            for material_group in material_group_list:
-                if exclude_self and material_group.name == self_root_material_id:
-                    continue
-                linked_material_names.append(material_group.root_material_node.getMetaDataEntry("name", ""))
-        return linked_material_names
+        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(guid = material_node.guid)
+        if exclude_self:
+            return [metadata["name"] for metadata in same_guid if metadata["base_file"] != material_node.base_file]
+        else:
+            return [metadata["name"] for metadata in same_guid]
 
     ##  Unlink a material from all other materials by creating a new GUID
     #   \param material_id \type{str} the id of the material to create a new GUID for.
