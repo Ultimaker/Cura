@@ -1223,7 +1223,7 @@ msgstr "Imprimer les parties du modèle qui sont horizontalement plus fines que 
 #: fdmprinter.def.json
 msgctxt "xy_offset label"
 msgid "Horizontal Expansion"
-msgstr "Vitesse d’impression horizontale"
+msgstr "Expansion horizontale"
 
 #: fdmprinter.def.json
 msgctxt "xy_offset description"
