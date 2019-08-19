@@ -253,9 +253,6 @@ class MaterialManager(QObject):
         for result in results:
             container_registry.removeContainer(result.getMetaDataEntry("id", ""))
 
-    #
-    # Methods for GUI
-    #
     @pyqtSlot("QVariant", result=bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode"):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
@@ -284,9 +281,6 @@ class MaterialManager(QObject):
             if container:
                 container.setName(name)
 
-    #
-    # Removes the given material.
-    #
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
         root_material_id = material_node.getMetaDataEntry("base_file")

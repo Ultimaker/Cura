@@ -28,7 +28,8 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
                 continue
 
             item = self._createMaterialItem(root_material_id, container_node)
-            item_list.append(item)
+            if item:
+                item_list.append(item)
 
         # Sort the item list alphabetically by name
         item_list = sorted(item_list, key = lambda d: d["brand"].upper())

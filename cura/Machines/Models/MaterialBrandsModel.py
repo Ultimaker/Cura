@@ -55,7 +55,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
 
             # Now handle the individual materials
             item = self._createMaterialItem(root_material_id, container_node)
-            brand_group_dict[brand][material_type].append(item)
+            if item:
+                brand_group_dict[brand][material_type].append(item)
 
         # Part 2: Organize the tree into models
         #
