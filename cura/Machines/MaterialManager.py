@@ -59,26 +59,12 @@ class MaterialManager(QObject):
         # Root_material_id -> MaterialGroup
         self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
 
-        # Approximate diameter str
-        self._diameter_machine_nozzle_buildplate_material_map = dict()  # type: Dict[str, Dict[str, MaterialNode]]
-
-        # We're using these two maps to convert between the specific diameter material id and the generic material id
-        # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
-        # i.e. generic_pla -> generic_pla_175
-        # root_material_id -> approximate diameter str -> root_material_id for that diameter
-        self._material_diameter_map = defaultdict(dict)  # type: Dict[str, Dict[str, str]]
-
         # Material id including diameter (generic_pla_175) -> material root id (generic_pla)
         self._diameter_material_map = dict()  # type: Dict[str, str]
 
         # This is used in Legacy UM3 send material function and the material management page.
         # GUID -> a list of material_groups
         self._guid_material_groups_map = defaultdict(list)  # type: Dict[str, List[MaterialGroup]]
-
-        # The machine definition ID for the non-machine-specific materials.
-        # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
-        self._default_machine_definition_id = "fdmprinter"
-        self._default_approximate_diameter_for_quality_search = "3"
 
         self._favorites = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
         self.materialsUpdated.emit()
