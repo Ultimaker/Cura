@@ -40,7 +40,7 @@ class MaterialNode(ContainerNode):
             for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type):
                 qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
             if not qualities:  # No quality profiles found. Go by GUID then.
-                my_guid = my_metadata.get("material")
+                my_guid = my_metadata.get("guid")
                 for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", guid = my_guid):
                     qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
 
