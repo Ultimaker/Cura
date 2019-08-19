@@ -262,12 +262,7 @@ class MaterialManager(QObject):
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
         # corrupts the configuration)
         root_material_id = material_node.getMetaDataEntry("base_file")
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            return False
-
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        ids_to_remove = [node.getMetaDataEntry("id", "") for node in nodes_to_remove]
+        ids_to_remove = [metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file=root_material_id)]
 
         for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:
