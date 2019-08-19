@@ -33,7 +33,7 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
     #   \return A material output model that matches the current GUID.
     def createOutputModel(self) -> MaterialOutputModel:
         container_registry = ContainerRegistry.getInstance()
-        same_guid = container_registry.findInstanceContainersMetadata(guid = self.guid)
+        same_guid = container_registry.findInstanceContainersMetadata(GUID = self.guid)
         if same_guid:
             read_only = sorted(filter(lambda metadata: container_registry.isReadOnly(metadata["id"]), same_guid), key = lambda metadata: metadata["name"])
             if read_only:
