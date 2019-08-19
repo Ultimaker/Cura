@@ -323,10 +323,13 @@ class ContainerManager(QObject):
 
     ##  Get a list of materials that have the same GUID as the reference material
     #
-    #   \param material_id \type{str} the id of the material for which to get the linked materials.
-    #   \return \type{list} a list of names of materials with the same GUID
+    #   \param material_node The node representing the material for which to get
+    #   the same GUID.
+    #   \param exclude_self Whether to include the name of the material you
+    #   provided.
+    #   \return A list of names of materials with the same GUID
     @pyqtSlot("QVariant", bool, result = "QStringList")
-    def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False):
+    def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
         guid = material_node.getMetaDataEntry("GUID", "")
 
         self_root_material_id = material_node.getMetaDataEntry("base_file")
