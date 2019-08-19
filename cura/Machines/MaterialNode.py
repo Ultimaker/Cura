@@ -24,7 +24,7 @@ class MaterialNode(ContainerNode):
         my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
         self.base_file = my_metadata["base_file"]
         self.material_type = my_metadata["material"]
-        self.guid = my_metadata["guid"]
+        self.guid = my_metadata["GUID"]
         self._loadAll()
         container_registry.containerRemoved.connect(self._onRemoved)
         container_registry.containerMetaDataChanged(self._onMetadataChanged)
@@ -81,7 +81,7 @@ class MaterialNode(ContainerNode):
         old_material_type = self.material_type
         self.material_type = new_metadata["material"]
         old_guid = self.guid
-        self.guid = new_metadata["guid"]
+        self.guid = new_metadata["GUID"]
         if self.base_file != old_base_file or self.material_type != old_material_type or self.guid != old_guid:  # List of quality profiles could've changed.
             self.qualities = {}
             self._loadAll()  # Re-load the quality profiles for this node.
