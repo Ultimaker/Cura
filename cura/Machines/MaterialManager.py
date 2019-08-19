@@ -109,7 +109,10 @@ class MaterialManager(QObject):
             nozzle_name = extruder_stack.variant.getName()
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
-        return self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
+        materials =self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
+        compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
+
+        return {key: material for key, material in materials.items() if material.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
 
     #
     # Gets MaterialNode for the given extruder and machine with the given material name.
