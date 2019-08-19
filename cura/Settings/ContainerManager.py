@@ -21,14 +21,14 @@ from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
 import cura.CuraApplication
-
+from cura.Machines.MaterialManager import MaterialManager
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
-    from cura.Machines.MaterialManager import MaterialManager
+
     from cura.Machines.QualityManager import QualityManager
 
 catalog = i18nCatalog("cura")
