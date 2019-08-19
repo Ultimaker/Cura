@@ -4,6 +4,7 @@
 from typing import TYPE_CHECKING
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Settings.Interfaces import ContainerInterface
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityNode import QualityNode
 
@@ -19,9 +20,11 @@ class MaterialNode(ContainerNode):
         super().__init__(container_id)
         self.variant = variant
         self.qualities = {}  # type: Dict[str, QualityNode] # Mapping container IDs to quality profiles.
-        my_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0]
+        container_registry = ContainerRegistry.getInstance()
+        my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
         self.base_file = my_metadata["base_file"]
         self._loadAll()
+        container_registry.containerRemoved.connect(self._onRemoved)
 
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
@@ -45,3 +48,12 @@ class MaterialNode(ContainerNode):
             quality_id = quality["id"]
             if quality_id not in self.qualities:
                 self.qualities[quality_id] = QualityNode(quality_id, parent = self)
+
+    ##  Triggered when any container is removed, but only handles it when the
+    #   container is removed that this node represents.
+    #   \param container The container that was allegedly removed.
+    def _onRemoved(self, container: ContainerInterface) -> None:
+        if container.getId() == self.container_id:
+            # Remove myself from my parent.
+            if self.base_file in self.variant.materials:
+                del self.variant.materials[self.base_file]
