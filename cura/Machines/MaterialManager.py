@@ -247,7 +247,7 @@ class MaterialManager(QObject):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
         # corrupts the configuration)
-        root_material_id = material_node.getMetaDataEntry("base_file")
+        root_material_id = material_node.container.getMetaDataEntry("base_file")
         ids_to_remove = [metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file=root_material_id)]
 
         for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
@@ -257,7 +257,7 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
-        root_material_id = material_node.getMetaDataEntry("base_file")
+        root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is None:
             return
         if CuraContainerRegistry.getInstance().isReadOnly(root_material_id):
@@ -268,7 +268,7 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
-        root_material_id = material_node.getMetaDataEntry("base_file")
+        root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
 
@@ -332,7 +332,7 @@ class MaterialManager(QObject):
     #
     @pyqtSlot("QVariant", result = str)
     def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
-        root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
+        root_material_id = cast(str, material_node.container.getMetaDataEntry("base_file", ""))
         return self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
 
     # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.

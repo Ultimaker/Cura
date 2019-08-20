@@ -165,7 +165,7 @@ class QualityManager(QObject):
         Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
         removed_quality_changes_ids = set()
         for node in quality_changes_group.getAllNodes():
-            container_id = node.getMetaDataEntry("id")
+            container_id = node.container_id
             self._container_registry.removeContainer(container_id)
             removed_quality_changes_ids.add(container_id)
 

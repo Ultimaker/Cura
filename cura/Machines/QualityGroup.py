@@ -60,12 +60,12 @@ class QualityGroup(QObject):
         self.node_for_global = node
 
         # Update is_experimental flag
-        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental
 
     def setExtruderNode(self, position: int, node: "ContainerNode") -> None:
         self.nodes_for_extruders[position] = node
 
         # Update is_experimental flag
-        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental
