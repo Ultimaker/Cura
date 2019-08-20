@@ -166,23 +166,8 @@ class AuthorizationService:
             "code_challenge_method": "S512"
         })
 
-        # GITHUB issue #6194: https://github.com/Ultimaker/Cura/issues/6194
-        # With AppImage 2 on Linux, the current working directory will be somewhere in /tmp/<rand>/usr, which is owned
-        # by root. For some reason, QDesktopServices.openUrl() requires to have a usable current working directory,
-        # otherwise it doesn't work. This is a workaround on Linux that before we call QDesktopServices.openUrl(), we
-        # switch to a directory where the user has the ownership.
-        old_work_dir = ""
-        if Platform.isLinux():
-            # Change the working directory to user home
-            old_work_dir = os.getcwd()
-            os.chdir(os.path.expanduser("~"))
-
         # Open the authorization page in a new browser window.
         QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
-
-        if Platform.isLinux():
-            # Change the working directory back
-            os.chdir(old_work_dir)
 
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
