@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
 from UM.Settings.InstanceContainer import InstanceContainer
 
@@ -75,7 +76,8 @@ class IntentManager(QObject):
             # TODO: We now do this (return a default) if the global stack is missing, but not in the code below,
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
             #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
-        quality_groups = application.getQualityManager().getQualityGroups(global_stack)
+        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
+        # TODO: These quality nodes in that tree already contain the intent nodes. We can optimise this.
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]

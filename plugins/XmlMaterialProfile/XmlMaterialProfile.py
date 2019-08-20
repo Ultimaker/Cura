@@ -244,7 +244,10 @@ class XmlMaterialProfile(InstanceContainer):
 
             variant_name = container.getMetaDataEntry("variant_name")
             if variant_name:
-                variant_dict = {"variant_node": variant_manager.getVariantNode(definition_id, variant_name),
+                variant_node = variant_manager.getVariantNode(definition_id, variant_name)
+                if variant_node is None:
+                    continue
+                variant_dict = {"variant_node":variant_node ,
                                 "material_container": container}
                 machine_variant_map[definition_id][variant_name] = variant_dict
                 continue

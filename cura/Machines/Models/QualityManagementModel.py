@@ -1,10 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSlot
 
-from UM.Qt.ListModel import ListModel
 from UM.Logger import Logger
+from UM.Qt.ListModel import ListModel
+from cura.Machines.ContainerTree import ContainerTree
 
 #
 # This the QML model for the quality management page.
@@ -42,7 +43,7 @@ class QualityManagementModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
         quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)
 
         available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()

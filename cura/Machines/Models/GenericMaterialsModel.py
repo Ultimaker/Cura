@@ -24,11 +24,12 @@ class GenericMaterialsModel(BaseMaterialsModel):
                 continue
 
             # Only add results for generic materials
-            if container_node.getMetaDataEntry("brand").lower() != "generic":
+            if container_node.getMetaDataEntry("brand", "unknown").lower() != "generic":
                 continue
 
             item = self._createMaterialItem(root_material_id, container_node)
-            item_list.append(item)
+            if item:
+                item_list.append(item)
 
         # Sort the item list alphabetically by name
         item_list = sorted(item_list, key = lambda d: d["name"].upper())

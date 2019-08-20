@@ -8,6 +8,7 @@ from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.IntentManager import IntentManager
 import cura.CuraApplication
 
@@ -47,13 +48,11 @@ class IntentModel(ListModel):
 
     def _update(self) -> None:
         new_items = []  # type: List[Dict[str, Any]]
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
-        global_stack = application.getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             self.setItems(new_items)
             return
-        quality_groups = quality_manager.getQualityGroups(global_stack)
+        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
         for intent_category, quality_type in IntentManager.getInstance().getCurrentAvailableIntents():
             if intent_category == self._intent_category:

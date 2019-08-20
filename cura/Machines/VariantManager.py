@@ -115,7 +115,7 @@ class VariantManager:
                        variant_type: Optional["VariantType"] = None) -> Optional["ContainerNode"]:
         if variant_type is None:
             variant_node = None
-            variant_type_dict = self._machine_to_variant_dict_map[machine_definition_id]
+            variant_type_dict = self._machine_to_variant_dict_map.get("machine_definition_id", {})
             for variant_dict in variant_type_dict.values():
                 if variant_name in variant_dict:
                     variant_node = variant_dict[variant_name]

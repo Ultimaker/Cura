@@ -5,10 +5,15 @@ from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import ContainerInterface
+import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.MachineNode import MachineNode
 
-from typing import Dict
+from typing import Dict, List, TYPE_CHECKING
 import time
+
+if TYPE_CHECKING:
+    from cura.Machines.QualityGroup import QualityGroup
+
 ##  This class contains a look-up tree for which containers are available at
 #   which stages of configuration.
 #
@@ -28,6 +33,21 @@ class ContainerTree:
         container_registry = ContainerRegistry.getInstance()
         container_registry.containerAdded.connect(self._machineAdded)
         self._loadAll()
+
+    ##  Get the quality groups available for the currently activated printer.
+    #
+    #   This contains all quality groups, enabled or disabled. To check whether
+    #   the quality group can be activated, test for the
+    #   ``QualityGroup.is_available`` property.
+    #   \return For every quality type, one quality group.
+    def getCurrentQualityGroups(self) -> Dict[str, "QualityGroup"]:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return {}
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
+        return self.machines[global_stack.definition.getId()].getQualityGroups(variant_names, material_bases, extruder_enabled)
 
     ##  Builds the initial container tree.
     def _loadAll(self):

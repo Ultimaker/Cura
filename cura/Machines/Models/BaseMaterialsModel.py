@@ -34,9 +34,6 @@ class BaseMaterialsModel(ListModel):
 
         # Update this model when switching machines
         self._machine_manager.activeStackChanged.connect(self._update)
-        
-        # Update this model when list of materials changes
-        self._material_manager.materialsUpdated.connect(self._update)
 
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
@@ -109,26 +106,24 @@ class BaseMaterialsModel(ListModel):
     #  so it's placed here for easy access.
     def _canUpdate(self):
         global_stack = self._machine_manager.activeMachine
-
         if global_stack is None or not self._enabled:
             return False
 
         extruder_position = str(self._extruder_position)
-
         if extruder_position not in global_stack.extruders:
             return False
-        
         extruder_stack = global_stack.extruders[extruder_position]
-        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if self._available_materials is None:
-            return False
 
+        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         return True
 
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = CuraContainerRegistry.getInstance().findContainersMetadata(id = container_node.container_id)[0]
+        metadata_list = CuraContainerRegistry.getInstance().findContainersMetadata(id = container_node.container_id)
+        if not metadata_list:
+            return None
+        metadata = metadata_list[0]
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],

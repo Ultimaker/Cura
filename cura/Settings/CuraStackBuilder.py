@@ -28,7 +28,6 @@ class CuraStackBuilder:
     def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
         registry = application.getContainerRegistry()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
@@ -64,7 +63,7 @@ class CuraStackBuilder:
             registry.addContainer(new_extruder)
 
         preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = quality_manager.getQualityGroups(new_global_stack)
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
         if not quality_group_dict:
             # There is no available quality group, set all quality containers to empty.
             new_global_stack.quality = application.empty_quality_container
