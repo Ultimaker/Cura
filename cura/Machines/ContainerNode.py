@@ -24,6 +24,7 @@ class ContainerNode:
         self.children_map = {}  # type: Dict[str, ContainerNode]  # Mapping from container ID to container node.
 
     ##  Gets the metadata of the container that this node represents.
+    #   Getting the metadata from the container directly is about 10x as fast.
     #   \return The metadata of the container in this node.
     @deprecated("Get the metadata from the container with the ID of this node yourself.", "4.3")
     def getMetadata(self):

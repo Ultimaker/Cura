@@ -1,6 +1,5 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
 from collections import defaultdict
 import copy
 import uuid
@@ -109,10 +108,10 @@ class MaterialManager(QObject):
             nozzle_name = extruder_stack.variant.getName()
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
-        materials =self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
+        materials = self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
         compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
-
-        return {key: material for key, material in materials.items() if material.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+        result = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+        return result
 
     #
     # Gets MaterialNode for the given extruder and machine with the given material name.
