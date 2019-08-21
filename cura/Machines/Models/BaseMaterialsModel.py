@@ -115,7 +115,14 @@ class BaseMaterialsModel(ListModel):
             return False
         extruder_stack = global_stack.extruders[extruder_position]
 
-        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
+        nozzle_name = None
+        if extruder_stack.variant.getId() != "empty_variant":
+            nozzle_name = extruder_stack.variant.getName()
+
+        # Update the available materials (ContainerNode) for the current active machine and extruder setup.
+        materials = self.getAvailableMaterials(global_stack.definition.getId(), nozzle_name)
+        compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
+        self._available_materials = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
         return True
 
     ## This is another convenience function which is shared by all material
