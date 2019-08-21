@@ -131,7 +131,7 @@ class BaseMaterialsModel(ListModel):
             nozzle_name = extruder_stack.variant.getName()
 
         # Update the available materials (ContainerNode) for the current active machine and extruder setup.
-        materials = self.getAvailableMaterials(global_stack.definition.getId(), nozzle_name)
+        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
         compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
         self._available_materials = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
         return True
