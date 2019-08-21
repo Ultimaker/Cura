@@ -89,6 +89,7 @@ def test_onRemoved_wrongContainer(container_registry):
 
     assert "material_1" in variant_node.materials
 
+
 def test_onRemoved_rightContainer(container_registry):
     variant_node = MagicMock()
     variant_node.variant_name = "variant_1"
@@ -103,3 +104,49 @@ def test_onRemoved_rightContainer(container_registry):
     node._onRemoved(container)
 
     assert "material_1" not in variant_node.materials
+
+
+def test_onMetadataChanged(container_registry):
+    variant_node = MagicMock()
+    variant_node.variant_name = "variant_1"
+    variant_node.machine.has_machine_quality = True
+    variant_node.machine.quality_definition = "machine_1"
+    with patch("cura.Machines.MaterialNode.QualityNode"):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+            node = MaterialNode("material_1", variant_node)
+
+    # We only do this now since we do want it to be constructed but not actually re-evaluated.
+    node._loadAll = MagicMock()
+
+    container = createMockedInstanceContainer("material_1")
+    container.getMetaData = MagicMock(return_value = {"base_file": "new_base_file", "material": "new_material_type", "GUID": "new_guid"})
+
+    node._onMetadataChanged(container)
+
+    assert node.material_type == "new_material_type"
+    assert node.guid == "new_guid"
+    assert node.base_file == "new_base_file"
+
+
+def test_onMetadataChanged_wrongContainer(container_registry):
+    variant_node = MagicMock()
+    variant_node.variant_name = "variant_1"
+    variant_node.machine.has_machine_quality = True
+    variant_node.machine.quality_definition = "machine_1"
+    with patch("cura.Machines.MaterialNode.QualityNode"):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance",
+                   MagicMock(return_value=container_registry)):
+            node = MaterialNode("material_1", variant_node)
+
+    # We only do this now since we do want it to be constructed but not actually re-evaluated.
+    node._loadAll = MagicMock()
+
+    container = createMockedInstanceContainer("material_2")
+    container.getMetaData = MagicMock(
+        return_value={"base_file": "new_base_file", "material": "new_material_type", "GUID": "new_guid"})
+
+    node._onMetadataChanged(container)
+
+    assert node.material_type == "test_material_type"
+    assert node.guid == "omg zomg"
+    assert node.base_file == "material_1"
