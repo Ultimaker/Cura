@@ -4,7 +4,7 @@
 import os
 import urllib.parse
 import uuid
-from typing import Dict, Union, Any, TYPE_CHECKING, List
+from typing import Dict, Union, Any, TYPE_CHECKING, List, cast
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtWidgets import QMessageBox
@@ -47,8 +47,10 @@ class ContainerManager(QObject):
         if ContainerManager.__instance is not None:
             raise RuntimeError("Try to create singleton '%s' more than once" % self.__class__.__name__)
         ContainerManager.__instance = self
-
-        super().__init__(parent = application)
+        try:
+            super().__init__(parent = application)
+        except TypeError:
+            super().__init__()
 
         self._application = application # type: CuraApplication
         self._plugin_registry = self._application.getPluginRegistry()  # type: PluginRegistry
@@ -436,7 +438,7 @@ class ContainerManager(QObject):
         if not path:
             return
 
-        container_list = [n.getContainer() for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
+        container_list = [cast(InstanceContainer, n.getContainer()) for n in quality_changes_group.getAllNodes() if n.getContainer() is not None]
         self._container_registry.exportQualityProfile(container_list, path, file_type)
 
     __instance = None   # type: ContainerManager

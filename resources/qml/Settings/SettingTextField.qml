@@ -42,6 +42,7 @@ SettingItem
             }
             switch(propertyProvider.properties.validationState)
             {
+                case "ValidatorState.Invalid":
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":
@@ -65,6 +66,7 @@ SettingItem
             }
             switch(propertyProvider.properties.validationState)
             {
+                case "ValidatorState.Invalid":
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":

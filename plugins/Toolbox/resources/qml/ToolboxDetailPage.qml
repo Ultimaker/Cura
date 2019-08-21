@@ -89,6 +89,7 @@ Item
             Label
             {
                 text: catalog.i18nc("@label", "Your rating") + ":"
+                visible: details.type == "plugin"
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text_medium")
                 renderType: Text.NativeRendering

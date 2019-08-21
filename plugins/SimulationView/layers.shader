@@ -1,6 +1,9 @@
 [shaders]
 vertex =
-    uniform highp mat4 u_modelViewProjectionMatrix;
+    uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
+
     uniform lowp float u_active_extruder;
     uniform lowp float u_shade_factor;
     uniform highp int u_layer_view_type;
@@ -16,7 +19,7 @@ vertex =
 
     void main()
     {
-        gl_Position = u_modelViewProjectionMatrix * a_vertex;
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_vertex;
         // shade the color depending on the extruder index
         v_color = a_color;
         // 8 and 9 are travel moves
@@ -76,7 +79,10 @@ fragment =
 
 vertex41core =
     #version 410
-    uniform highp mat4 u_modelViewProjectionMatrix;
+    uniform highp mat4 u_modelMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
+
     uniform lowp float u_active_extruder;
     uniform lowp float u_shade_factor;
     uniform highp int u_layer_view_type;
@@ -92,7 +98,7 @@ vertex41core =
 
     void main()
     {
-        gl_Position = u_modelViewProjectionMatrix * a_vertex;
+        gl_Position = u_projectionMatrix * u_viewMatrix * u_modelMatrix * a_vertex;
         v_color = a_color;
         if ((a_line_type != 8) && (a_line_type != 9)) {
             v_color = (a_extruder == u_active_extruder) ? v_color : vec4(u_shade_factor * v_color.rgb, v_color.a);
@@ -154,7 +160,9 @@ u_show_skin = 1
 u_show_infill = 1
 
 [bindings]
-u_modelViewProjectionMatrix = model_view_projection_matrix
+u_modelMatrix = model_matrix
+u_viewMatrix = view_matrix
+u_projectionMatrix = projection_matrix
 
 [attributes]
 a_vertex = vertex

@@ -9,14 +9,17 @@ Button
 {
     id: control
     property bool active: false
-    hoverEnabled: true
+
+    implicitWidth: UM.Theme.getSize("toolbox_header_tab").width
+    implicitHeight: UM.Theme.getSize("toolbox_header_tab").height
 
     background: Item
     {
-        implicitWidth: UM.Theme.getSize("toolbox_header_tab").width
-        implicitHeight: UM.Theme.getSize("toolbox_header_tab").height
+        id: backgroundItem
         Rectangle
         {
+            id: highlight
+
             visible: control.active
             color: UM.Theme.getColor("primary")
             anchors.bottom: parent.bottom
@@ -24,28 +27,42 @@ Button
             height: UM.Theme.getSize("toolbox_header_highlight").height
         }
     }
+
     contentItem: Label
     {
         id: label
         text: control.text
-        color:
-        {
-            if(control.hovered)
-            {
-                return UM.Theme.getColor("toolbox_header_button_text_hovered");
-            }
-            if(control.active)
-            {
-                return UM.Theme.getColor("toolbox_header_button_text_active");
-            }
-            else
-            {
-                return UM.Theme.getColor("toolbox_header_button_text_inactive");
-            }
-        }
-        font: control.enabled ? (control.active ? UM.Theme.getFont("medium_bold") : UM.Theme.getFont("medium")) : UM.Theme.getFont("default_italic")
+        color: UM.Theme.getColor("toolbox_header_button_text_inactive")
+        font: UM.Theme.getFont("medium")
+
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
+
         renderType: Text.NativeRendering
     }
+
+    states:
+    [
+        State
+        {
+            name: "disabled"
+            when: !control.enabled
+            PropertyChanges
+            {
+                target: label
+                font: UM.Theme.getFont("default_italic")
+            }
+        },
+        State
+        {
+            name: "active"
+            when: control.active
+            PropertyChanges
+            {
+                target: label
+                font: UM.Theme.getFont("medium_bold")
+                color: UM.Theme.getColor("action_button_text")
+            }
+        }
+    ]
 }

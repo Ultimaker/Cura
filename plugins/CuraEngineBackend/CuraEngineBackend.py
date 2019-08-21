@@ -10,20 +10,17 @@ from time import time
 from typing import Any, cast, Dict, List, Optional, Set, TYPE_CHECKING
 
 from UM.Backend.Backend import Backend, BackendState
-from UM.Scene.Camera import Camera
 from UM.Scene.SceneNode import SceneNode
 from UM.Signal import Signal
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Qt.Duration import DurationFormat
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.SettingInstance import SettingInstance #For typing.
 from UM.Tool import Tool #For typing.
-from UM.Mesh.MeshData import MeshData #For typing.
 
 from cura.CuraApplication import CuraApplication
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -210,7 +207,7 @@ class CuraEngineBackend(QObject, Backend):
             self._createSocket()
 
         if self._process_layers_job is not None:  # We were processing layers. Stop that, the layers are going to change soon.
-            Logger.log("d", "Aborting process layers job...")
+            Logger.log("i", "Aborting process layers job...")
             self._process_layers_job.abort()
             self._process_layers_job = None
 
@@ -225,7 +222,7 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Perform a slice of the scene.
     def slice(self) -> None:
-        Logger.log("d", "Starting to slice...")
+        Logger.log("i", "Starting to slice...")
         self._slice_start_time = time()
         if not self._build_plates_to_be_sliced:
             self.processingProgress.emit(1.0)
@@ -372,7 +369,7 @@ class CuraEngineBackend(QObject, Backend):
 
         elif job.getResult() == StartJobResult.ObjectSettingError:
             errors = {}
-            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):
                 stack = node.callDecoration("getStack")
                 if not stack:
                     continue
@@ -441,7 +438,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if not self._application.getPreferences().getValue("general/auto_slice"):
             enable_timer = False
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):
                 enable_timer = False
                 self.setState(BackendState.Disabled)
@@ -463,7 +460,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Return a dict with number of objects per build plate
     def _numObjectsPerBuildPlate(self) -> Dict[int, int]:
         num_objects = defaultdict(int) #type: Dict[int, int]
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
@@ -520,9 +517,6 @@ class CuraEngineBackend(QObject, Backend):
                 self._build_plates_to_be_sliced.append(build_plate_number)
             self.printDurationMessage.emit(source_build_plate_number, {}, [])
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
-        # if not self._use_timer:
-            # With manually having to slice, we want to clear the old invalid layer data.
         self._clearLayerData(build_plate_changed)
 
         self._invokeSlice()
@@ -554,10 +548,11 @@ class CuraEngineBackend(QObject, Backend):
         # Clear out any old gcode
         self._scene.gcode_dict = {}  # type: ignore
 
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    node.getParent().removeChild(node)
+                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
         for build_plate_number in range(self._application.getMultiBuildPlateModel().maxBuildPlate + 1):
@@ -566,10 +561,10 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self) -> None:
+        self.determineAutoSlicing()
         self.stopSlicing()
         self.markSliceAll()
         self.processingProgress.emit(0.0)
-        self.setState(BackendState.NotStarted)
         if not self._use_timer:
             # With manually having to slice, we want to clear the old invalid layer data.
             self._clearLayerData()
@@ -738,6 +733,7 @@ class CuraEngineBackend(QObject, Backend):
             "support_interface": message.time_support_interface,
             "support": message.time_support,
             "skirt": message.time_skirt,
+            "prime_tower": message.time_prime_tower,
             "travel": message.time_travel,
             "retract": message.time_retract,
             "none": message.time_none

@@ -29,4 +29,4 @@ class PlatformPhysicsOperation(Operation):
         return group
 
     def __repr__(self):
-        return "PlatformPhysicsOperation(translation = {0})".format(self._translation)
+        return "PlatformPhysicsOp.(trans.={0})".format(self._translation)

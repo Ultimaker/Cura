@@ -12,7 +12,6 @@
         "platform_texture": "Ultimaker3Extendedbackplate.png",
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,
-        "has_machine_materials": true,
         "has_materials": true,
         "has_variants": true,
         "preferred_variant_name": "AA 0.4",
@@ -28,8 +27,7 @@
             "id": 9511,
             "check_urls":
             [
-                "http://software.ultimaker.com/jedi/releases/latest.version?utm_source=cura&utm_medium=software&utm_campaign=resources",
-                "http://software.ultimaker.com/releases/firmware/9511/stable/version.txt"
+                "https://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version"
             ],
             "update_url": "https://ultimaker.com/firmware"
         }

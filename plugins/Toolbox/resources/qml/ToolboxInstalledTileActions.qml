@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 
 Column
 {
-    property bool canUpdate: false
+    property bool canUpdate: CuraApplication.getPackageManager().packagesWithUpdate.indexOf(model.id) != -1
     property bool canDowngrade: false
     property bool loginRequired: model.login_required && !Cura.API.account.isLoggedIn
     width: UM.Theme.getSize("toolbox_action_button").width
@@ -83,7 +83,6 @@ Column
             target: toolbox
             onMetadataChanged:
             {
-                canUpdate = toolbox.canUpdate(model.id)
                 canDowngrade = toolbox.canDowngrade(model.id)
             }
         }

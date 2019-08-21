@@ -14,8 +14,6 @@ TabView
 {
     id: base
 
-    property QtObject materialManager: CuraApplication.getMaterialManager()
-
     property QtObject properties
     property var currentMaterialNode: null
 
@@ -28,6 +26,8 @@ TabView
 
     property double spoolLength: calculateSpoolLength()
     property real costPerMeter: calculateCostPerMeter()
+
+    signal resetSelectedMaterial()
 
     property bool reevaluateLinkedMaterials: false
     property string linkedMaterialNames:
@@ -105,29 +105,21 @@ TabView
                     property var new_diameter_value: null;
                     property var old_diameter_value: null;
                     property var old_approximate_diameter_value: null;
-                    property bool keyPressed: false
 
                     onYes:
                     {
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                        base.resetSelectedMaterial()
                     }
 
                     onNo:
                     {
-                        properties.diameter = old_diameter_value;
-                        diameterSpinBox.value = properties.diameter;
+                        base.properties.diameter = old_diameter_value;
+                        diameterSpinBox.value = Qt.binding(function() { return base.properties.diameter })
                     }
 
-                    onVisibilityChanged:
-                    {
-                        if (!visible && !keyPressed)
-                        {
-                            // If the user closes this dialog without clicking on any button, it's the same as clicking "No".
-                            no();
-                        }
-                        keyPressed = false;
-                    }
+                    onRejected: no()
                 }
 
                 Label { width: scrollView.columnWidth; height: parent.rowHeight; verticalAlignment: Qt.AlignVCenter; text: catalog.i18nc("@label", "Display Name") }
@@ -393,7 +385,7 @@ TabView
             {
                 model: UM.SettingDefinitionsModel
                 {
-                    containerId: Cura.MachineManager.activeDefinitionId
+                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     visibilityHandler: Cura.MaterialSettingsVisibilityHandler { }
                     expanded: ["*"]
                 }
@@ -461,7 +453,7 @@ TabView
                     UM.ContainerPropertyProvider
                     {
                         id: machinePropertyProvider
-                        containerId: Cura.MachineManager.activeDefinitionId
+                        containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         watchedProperties: [ "value" ]
                         key: model.key
                     }
@@ -573,7 +565,7 @@ TabView
         }
 
         // update the values
-        base.materialManager.setMaterialName(base.currentMaterialNode, new_name)
+        CuraApplication.getMaterialManager().setMaterialName(base.currentMaterialNode, new_name)
         properties.name = new_name
     }
 

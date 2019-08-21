@@ -1,5 +1,5 @@
-# Copyright (c) 2018 Ultimaker B.V.
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 import json
@@ -208,7 +208,7 @@ class TestSendMaterialJob(TestCase):
 
         self.assertEqual(1, device_mock.createFormPart.call_count)
         self.assertEqual(1, device_mock.postFormWithParts.call_count)
-        self.assertEquals(
+        self.assertEqual(
             [call.createFormPart("name=\"file\"; filename=\"generic_pla_white.xml.fdm_material\"", "<xml></xml>"),
              call.postFormWithParts(target = "materials/", parts = ["_xXx_"], on_finished = job.sendingFinished)],
             device_mock.method_calls)
@@ -238,7 +238,7 @@ class TestSendMaterialJob(TestCase):
 
         self.assertEqual(1, device_mock.createFormPart.call_count)
         self.assertEqual(1, device_mock.postFormWithParts.call_count)
-        self.assertEquals(
+        self.assertEqual(
             [call.createFormPart("name=\"file\"; filename=\"generic_pla_white.xml.fdm_material\"", "<xml></xml>"),
              call.postFormWithParts(target = "materials/", parts = ["_xXx_"], on_finished = job.sendingFinished)],
             device_mock.method_calls)

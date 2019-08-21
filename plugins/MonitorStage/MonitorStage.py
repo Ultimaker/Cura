@@ -2,8 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import os.path
 from UM.Application import Application
-from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
 from cura.Stages.CuraStage import CuraStage
 
 

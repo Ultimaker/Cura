@@ -259,7 +259,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         custom_quality_name = ""
-        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
 
@@ -297,7 +297,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 custom_quality_name = parser["general"]["name"]
                 values = parser["values"] if parser.has_section("values") else dict()
-                num_settings_overriden_by_quality_changes += len(values)
+                num_settings_overridden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
                                                                                   type = "quality_changes")
@@ -419,13 +419,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if parser.has_option("metadata", "enabled"):
                 extruder_info.enabled = parser["metadata"]["enabled"]
             if variant_id not in ("empty", "empty_variant"):
-                extruder_info.variant_info = instance_container_info_dict[variant_id]
+                if variant_id in instance_container_info_dict:
+                    extruder_info.variant_info = instance_container_info_dict[variant_id]
+
             if material_id not in ("empty", "empty_material"):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
+
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
+
             user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
@@ -515,7 +519,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
@@ -820,6 +824,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
+                    container.setDirty(True)
+                    self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)
@@ -903,6 +909,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 continue
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
+                # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
+                node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE, global_stack)
+                if node is not None and node.getContainer() is not None:
+                    extruder_stack.variant = node.getContainer()
                 continue
             parser = extruder_info.variant_info.parser
 

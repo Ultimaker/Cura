@@ -202,13 +202,11 @@ class QualityManager(QObject):
     def getQualityGroups(self, machine: "GlobalStack") -> Dict[str, QualityGroup]:
         machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
 
-        # This determines if we should only get the global qualities for the global stack and skip the global qualities for the extruder stacks
-        has_machine_specific_qualities = machine.getHasMachineQuality()
-
         # To find the quality container for the GlobalStack, check in the following fall-back manner:
         #   (1) the machine-specific node
         #   (2) the generic node
         machine_node = self._machine_nozzle_buildplate_material_quality_type_to_quality_dict.get(machine_definition_id)
+
         # Check if this machine has specific quality profiles for its extruders, if so, when looking up extruder
         # qualities, we should not fall back to use the global qualities.
         has_extruder_specific_qualities = False
@@ -441,7 +439,8 @@ class QualityManager(QObject):
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
             # create global quality changes only
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, quality_changes_name,
+            new_name = self._container_registry.uniqueName(quality_changes_name)
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, new_name,
                                                              global_stack, None)
             self._container_registry.addContainer(new_quality_changes)
         else:

@@ -23,13 +23,17 @@ known_args = vars(parser.parse_known_args()[0])
 if not known_args["debug"]:
     def get_cura_dir_path():
         if Platform.isWindows():
-            return os.path.expanduser("~/AppData/Roaming/" + CuraAppName)
+            appdata_path = os.getenv("APPDATA")
+            if not appdata_path: #Defensive against the environment variable missing (should never happen).
+                appdata_path = "."
+            return os.path.join(appdata_path, CuraAppName)
         elif Platform.isLinux():
             return os.path.expanduser("~/.local/share/" + CuraAppName)
         elif Platform.isOSX():
             return os.path.expanduser("~/Library/Logs/" + CuraAppName)
 
-    if hasattr(sys, "frozen"):
+    # Do not redirect stdout and stderr to files if we are running CLI.
+    if hasattr(sys, "frozen") and "cli" not in os.path.basename(sys.argv[0]).lower():
         dirpath = get_cura_dir_path()
         os.makedirs(dirpath, exist_ok = True)
         sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")
@@ -55,6 +59,14 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
         del os.environ["PYTHONPATH"]
     except KeyError:
         pass
+
+# GITHUB issue #6194: https://github.com/Ultimaker/Cura/issues/6194
+# With AppImage 2 on Linux, the current working directory will be somewhere in /tmp/<rand>/usr, which is owned
+# by root. For some reason, QDesktopServices.openUrl() requires to have a usable current working directory,
+# otherwise it doesn't work. This is a workaround on Linux that before we call QDesktopServices.openUrl(), we
+# switch to a directory where the user has the ownership.
+if Platform.isLinux() and hasattr(sys, "frozen"):
+    os.chdir(os.path.expanduser("~"))
 
 # WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in

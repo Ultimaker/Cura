@@ -36,6 +36,20 @@ Item
     property var resolve: Cura.MachineManager.activeStackId !== Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
+    // A list of stack levels that will trigger to show the revert button
+    property var showRevertStackLevels: [0]
+    property bool resetButtonVisible: {
+        var is_revert_stack_level = false;
+        for (var i in base.showRevertStackLevels)
+        {
+            if (base.stackLevel == i)
+            {
+                is_revert_stack_level = true
+                break
+            }
+        }
+        return is_revert_stack_level && base.showRevertButton
+    }
 
     signal focusReceived()
     signal setActiveFocusToNextSetting(bool forward)
@@ -62,14 +76,19 @@ Item
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
 
+        if(!propertyProvider.isValueUsed)
+        {
+            tooltip += "<i>%1</i><br/><br/>".arg(catalog.i18nc("@label", "This setting is not used because all the settings that it influences are overridden."))
+        }
+
         if (affects_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
         }
 
         if (affected_by_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
         }
 
         return tooltip
@@ -179,7 +198,7 @@ Item
             {
                 id: revertButton
 
-                visible: base.stackLevel == 0 && base.showRevertButton
+                visible: base.resetButtonVisible
 
                 height: parent.height
                 width: height
@@ -213,7 +232,7 @@ Item
 
             UM.SimpleButton
             {
-                // This button shows when the setting has an inherited function, but is overriden by profile.
+                // This button shows when the setting has an inherited function, but is overridden by profile.
                 id: inheritButton
                 // Inherit button needs to be visible if;
                 // - User made changes that override any loaded settings

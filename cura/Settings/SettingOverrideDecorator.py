@@ -73,8 +73,8 @@ class SettingOverrideDecorator(SceneNodeDecorator):
 
         # use value from the stack because there can be a delay in signal triggering and "_is_non_printing_mesh"
         # has not been updated yet.
-        deep_copy._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
-        deep_copy._is_non_thumbnail_visible_mesh = self.evaluateIsNonThumbnailVisibleMesh()
+        deep_copy._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
+        deep_copy._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
 
         return deep_copy
 
@@ -102,21 +102,21 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     def isNonPrintingMesh(self):
         return self._is_non_printing_mesh
 
-    def evaluateIsNonPrintingMesh(self):
+    def _evaluateIsNonPrintingMesh(self):
         return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_printing_mesh_settings)
 
     def isNonThumbnailVisibleMesh(self):
         return self._is_non_thumbnail_visible_mesh
 
-    def evaluateIsNonThumbnailVisibleMesh(self):
+    def _evaluateIsNonThumbnailVisibleMesh(self):
         return any(bool(self._stack.getProperty(setting, "value")) for setting in self._non_thumbnail_visible_settings)
 
-    def _onSettingChanged(self, instance, property_name): # Reminder: 'property' is a built-in function
+    def _onSettingChanged(self, setting_key, property_name): # Reminder: 'property' is a built-in function
+        # We're only interested in a few settings and only if it's value changed.
         if property_name == "value":
             # Trigger slice/need slicing if the value has changed.
-            self._is_non_printing_mesh = self.evaluateIsNonPrintingMesh()
-            self._is_non_thumbnail_visible_mesh = self.evaluateIsNonThumbnailVisibleMesh()
-
+            self._is_non_printing_mesh = self._evaluateIsNonPrintingMesh()
+            self._is_non_thumbnail_visible_mesh = self._evaluateIsNonThumbnailVisibleMesh()
             Application.getInstance().getBackend().needsSlicing()
             Application.getInstance().getBackend().tickle()
 

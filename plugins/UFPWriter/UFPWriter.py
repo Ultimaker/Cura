@@ -28,7 +28,7 @@ class UFPWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ufp",
-                comment = "Cura UFP File",
+                comment = "Ultimaker Format Package",
                 suffixes = ["ufp"]
             )
         )

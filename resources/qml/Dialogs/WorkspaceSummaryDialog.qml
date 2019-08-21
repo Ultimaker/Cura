@@ -50,7 +50,7 @@ UM.Dialog
         UM.SettingDefinitionsModel
         {
             id: definitionsModel
-            containerId: base.visible ? Cura.MachineManager.activeDefinitionId: ""
+            containerId: base.visible ? Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: "" : ""
             showAll: true
             exclude: ["command_line_settings"]
             showAncestors: true
@@ -123,7 +123,18 @@ UM.Dialog
                         }
                         Label
                         {
-                            text: Cura.MachineManager.activeMachineNetworkGroupName != "" ? Cura.MachineManager.activeMachineNetworkGroupName : Cura.MachineManager.activeMachineName
+                            text:
+                            {
+                                if(Cura.MachineManager.activeMachineNetworkGroupName != "")
+                                {
+                                    return Cura.MachineManager.activeMachineNetworkGroupName
+                                }
+                                if(Cura.MachineManager.activeMachine)
+                                {
+                                    return Cura.MachineManager.activeMachine.name
+                                }
+                                return ""
+                            }
                             width: Math.floor(scroll.width / 3) | 0
                         }
                     }
@@ -140,7 +151,7 @@ UM.Dialog
                     }
                     Label
                     {
-                        text: Cura.MachineManager.activeVariantBuildplateName
+                        text: Cura.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
                         width: Math.floor(scroll.width / 3) | 0
                     }
                 }
@@ -153,7 +164,9 @@ UM.Dialog
                     {
                         height: childrenRect.height
                         width: parent.width
-                         Label
+                        property string variantName: Cura.MachineManager.activeVariantNames[modelData] !== undefined ? Cura.MachineManager.activeVariantNames[modelData]: ""
+                        property string materialName: Cura.MachineManager.getExtruder(modelData).material.name !== undefined ? Cura.MachineManager.getExtruder(modelData).material.name : ""
+                        Label
                         {
                             text: {
                                 var extruder = Number(modelData)
@@ -175,14 +188,30 @@ UM.Dialog
                         {
                             width: parent.width
                             height: childrenRect.height
+
                             Label
                             {
-                                text: catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
+                                text:
+                                {
+                                    if(variantName !== "" && materialName !== "")
+                                    {
+                                        return catalog.i18nc("@action:label", "%1 & material").arg(Cura.MachineManager.activeDefinitionVariantsName)
+                                    }
+                                    return catalog.i18nc("@action:label", "Material")
+                                }
                                 width: Math.floor(scroll.width / 3) | 0
                             }
                             Label
                             {
-                                text: Cura.MachineManager.activeVariantNames[modelData] + ", " + Cura.MachineManager.getExtruder(modelData).material.name
+                                text:
+                                {
+                                    if(variantName !== "" && materialName !== "")
+                                    {
+                                        return variantName + ", " + materialName
+                                    }
+                                    return materialName
+                                }
+
                                 width: Math.floor(scroll.width / 3) | 0
                             }
                         }

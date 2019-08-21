@@ -69,6 +69,7 @@ Item
         // Activate button
         Button
         {
+            id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
             enabled: !isCurrentItemActivated
@@ -84,6 +85,7 @@ Item
         // Create button
         Button
         {
+            id: createMenuButton
             text: catalog.i18nc("@label", "Create")
             iconName: "list-add"
             enabled: base.canCreateProfile && !Cura.MachineManager.stacksHaveErrors
@@ -99,6 +101,7 @@ Item
         // Duplicate button
         Button
         {
+            id: duplicateMenuButton
             text: catalog.i18nc("@label", "Duplicate")
             iconName: "list-add"
             enabled: !base.canCreateProfile
@@ -114,6 +117,7 @@ Item
         // Remove button
         Button
         {
+            id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
@@ -126,6 +130,7 @@ Item
         // Rename button
         Button
         {
+            id: renameMenuButton
             text: catalog.i18nc("@action:button", "Rename")
             iconName: "edit-rename"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
@@ -139,6 +144,7 @@ Item
         // Import button
         Button
         {
+            id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
             onClicked: {
@@ -149,6 +155,7 @@ Item
         // Export button
         Button
         {
+            id: exportMenuButton
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
@@ -419,6 +426,9 @@ Item
                 {
                     width: profileScrollView.width
                     height: childrenRect.height
+
+                    // Added this property to identify custom profiles in automated system tests (Squish)
+                    property bool isReadOnly: model.is_read_only
 
                     property bool isCurrentItem: ListView.isCurrentItem
                     color: isCurrentItem ? palette.highlight : (model.index % 2) ? palette.base : palette.alternateBase

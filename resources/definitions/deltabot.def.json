@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "Ultimaker",
-        "manufacturer": "Danny Lu",
+        "manufacturer": "Custom",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0],
         "machine_extruder_trains":

@@ -14,7 +14,6 @@
         "has_materials": false,
         "has_machine_quality": true,
         "preferred_variant_name": "0.4 mm",
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
         "first_start_actions": ["UM2UpgradeSelection"],
         "supported_actions":["UM2UpgradeSelection"],
         "machine_extruder_trains":
@@ -56,7 +55,7 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 48
+            "value": "48"
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true

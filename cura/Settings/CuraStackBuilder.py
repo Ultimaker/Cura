@@ -129,8 +129,9 @@ class CuraStackBuilder:
             extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
         except IndexError as e:
             # It still needs to break, but we want to know what extruder ID made it break.
-            Logger.log("e", "Unable to find extruder with the id %s", extruder_definition_id)
-            raise e
+            msg = "Unable to find extruder definition with the id [%s]" % extruder_definition_id
+            Logger.logException("e", msg)
+            raise IndexError(msg)
 
         # get material container for extruders
         material_container = application.empty_material_container

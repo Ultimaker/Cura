@@ -40,6 +40,10 @@ Button
     // we elide the text to the right so the text will be cut off with the three dots at the end.
     property var fixedWidthMode: false
 
+    // This property is used when the space for the button is limited. In case the button needs to grow with the text,
+    // but it can exceed a maximum, then this value have to be set.
+    property int maximumWidth: 0
+
     leftPadding: UM.Theme.getSize("default_margin").width
     rightPadding: UM.Theme.getSize("default_margin").width
     height: UM.Theme.getSize("action_button").height
@@ -63,6 +67,15 @@ Button
             anchors.verticalCenter: parent.verticalCenter
         }
 
+        TextMetrics
+        {
+            id: buttonTextMetrics
+            text: buttonText.text
+            font: buttonText.font
+            elide: buttonText.elide
+            elideWidth: buttonText.width
+        }
+
         Label
         {
             id: buttonText
@@ -73,7 +86,7 @@ Button
             renderType: Text.NativeRendering
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : undefined
+            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
@@ -120,7 +133,7 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        visible: button.hovered
+        visible: button.hovered && buttonTextMetrics.elidedText != buttonText.text
     }
 
     BusyIndicator

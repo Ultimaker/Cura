@@ -4,6 +4,8 @@
 from collections import defaultdict
 import threading
 from typing import Any, Dict, Optional, Set, TYPE_CHECKING, List
+import uuid
+
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
 from UM.Decorators import override
@@ -33,6 +35,12 @@ class GlobalStack(CuraContainerStack):
         super().__init__(container_id)
 
         self.setMetaDataEntry("type", "machine")  # For backward compatibility
+
+        # TL;DR: If Cura is looking for printers that belong to the same group, it should use "group_id".
+        # Each GlobalStack by default belongs to a group which is identified via "group_id". This group_id is used to
+        # figure out which GlobalStacks are in the printer cluster for example without knowing the implementation
+        # details such as the um_network_key or some other identifier that's used by the underlying device plugin.
+        self.setMetaDataEntry("group_id", str(uuid.uuid4()))  # Assign a new GlobalStack to a unique group by default
 
         self._extruders = {}  # type: Dict[str, "ExtruderStack"]
 
@@ -64,6 +72,14 @@ class GlobalStack(CuraContainerStack):
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")
         return result_list[:machine_extruder_count]
 
+    @pyqtProperty(int, constant = True)
+    def maxExtruderCount(self):
+        return len(self.getMetaDataEntry("machine_extruder_trains"))
+
+    @pyqtProperty(bool, notify=configuredConnectionTypesChanged)
+    def supportsNetworkConnection(self):
+        return self.getMetaDataEntry("supports_network_connection", False)
+
     @classmethod
     def getLoadingPriority(cls) -> int:
         return 2
@@ -81,7 +97,15 @@ class GlobalStack(CuraContainerStack):
         # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
         # But we do want them returned as a list of ints (so the rest of the code can directly compare)
         connection_types = self.getMetaDataEntry("connection_type", "").split(",")
-        return [int(connection_type) for connection_type in connection_types if connection_type != ""]
+        result = []
+        for connection_type in connection_types:
+            if connection_type != "":
+                try:
+                    result.append(int(connection_type))
+                except ValueError:
+                    # We got invalid data, probably a None.
+                    pass
+        return result
 
     ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:
@@ -94,7 +118,7 @@ class GlobalStack(CuraContainerStack):
     ##  \sa configuredConnectionTypes
     def removeConfiguredConnectionType(self, connection_type: int) -> None:
         configured_connection_types = self.configuredConnectionTypes
-        if connection_type in self.configured_connection_types:
+        if connection_type in configured_connection_types:
             # Store the values as a string.
             configured_connection_types.remove(connection_type)
             self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
@@ -200,7 +224,7 @@ class GlobalStack(CuraContainerStack):
     # Determine whether or not we should try to get the "resolve" property instead of the
     # requested property.
     def _shouldResolve(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> bool:
-        if property_name is not "value":
+        if property_name != "value":
             # Do not try to resolve anything but the "value" property
             return False
 
@@ -240,14 +264,17 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    def getHasMaterials(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasMaterials(self):
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    def getHasVariants(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasVariants(self):
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    def getHasMachineQuality(self) -> bool:
-        return parseBool(self.getMetaDataEntry("has_machine_quality", False))
+    @pyqtProperty(int, constant=True)
+    def hasVariantBuildplates(self) -> bool:
+        return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
     ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)

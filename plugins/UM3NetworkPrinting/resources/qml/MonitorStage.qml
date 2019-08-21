@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -25,7 +25,7 @@ Component
         }
         width: maximumWidth
         color: UM.Theme.getColor("monitor_stage_background")
-        
+
         // Enable keyboard navigation. NOTE: This is done here so that we can also potentially
         // forward to the queue items in the future. (Deleting selected print job, etc.)
         Keys.forwardTo: carousel
@@ -52,10 +52,7 @@ Component
                 id: carousel
                 printers:
                 {
-                    // When printing over the cloud we don't recieve print jobs until there is one, so
-                    // unless there's at least one print job we'll be stuck with skeleton loading
-                    // indefinitely.
-                    if (Cura.MachineManager.activeMachineIsUsingCloudConnection || OutputDevice.receivedPrintJobs)
+                    if (OutputDevice.receivedData)
                     {
                         return OutputDevice.printers
                     }

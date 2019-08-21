@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -11,20 +11,8 @@ import UM 1.2 as UM
  */
 Item
 {
-    // The printer name
+    id: monitorPrinterPill
     property var text: ""
-    property var tagText: {
-        switch(text) {
-            case "Ultimaker 3":
-                return "UM 3"
-            case "Ultimaker 3 Extended":
-                return "UM 3 EXT"
-            case "Ultimaker S5":
-                return "UM S5"
-            default:
-                return text
-        }
-    }
 
     implicitHeight: 18 * screenScaleFactor // TODO: Theme!
     implicitWidth: Math.max(printerNameLabel.contentWidth + 12 * screenScaleFactor, 36 * screenScaleFactor) // TODO: Theme!
@@ -40,8 +28,9 @@ Item
         id: printerNameLabel
         anchors.centerIn: parent
         color: UM.Theme.getColor("monitor_text_primary")
-        text: tagText
+        text: monitorPrinterPill.text
         font.pointSize: 10 // TODO: Theme!
-        visible: text !== ""
+        visible: monitorPrinterPill.text !== ""
+        renderType: Text.NativeRendering
     }
 }

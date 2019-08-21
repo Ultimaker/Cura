@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -20,7 +20,7 @@ class LayerPolygon:
     MoveCombingType = 8
     MoveRetractionType = 9
     SupportInterfaceType = 10
-    PrimeTower = 11
+    PrimeTowerType = 11
     __number_of_types = 12
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
@@ -61,19 +61,19 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1], dtype=numpy.bool)
+        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
         
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
         
     def buildCache(self) -> None:
         # For the line mesh we do not draw Infill or Jumps. Therefore those lines are filtered out.
-        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype=bool)
+        self._build_cache_line_mesh_mask = numpy.ones(self._jump_mask.shape, dtype = bool)
         mesh_line_count = numpy.sum(self._build_cache_line_mesh_mask)
         self._index_begin = 0
         self._index_end = mesh_line_count
         
-        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype=numpy.bool)
+        self._build_cache_needed_points = numpy.ones((len(self._types), 2), dtype = numpy.bool)
         # Only if the type of line segment changes do we need to add an extra vertex to change colors
         self._build_cache_needed_points[1:, 0][:, numpy.newaxis] = self._types[1:] != self._types[:-1]
         # Mark points as unneeded if they are of types we don't want in the line mesh according to the calculated mask
@@ -136,9 +136,9 @@ class LayerPolygon:
         self._index_begin += index_offset
         self._index_end += index_offset
         
-        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype=numpy.int32).reshape((-1, 1))
+        indices[self._index_begin:self._index_end, :] = numpy.arange(self._index_end-self._index_begin, dtype = numpy.int32).reshape((-1, 1))
         # When the line type changes the index needs to be increased by 2.
-        indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype=numpy.int32).reshape((-1, 1))
+        indices[self._index_begin:self._index_end, :] += numpy.cumsum(needed_points_list[line_mesh_mask.ravel(), 0], dtype = numpy.int32).reshape((-1, 1))
         # Each line segment goes from it's starting point p to p+1, offset by the vertex index. 
         # The -1 is to compensate for the neccecarily True value of needed_points_list[0,0] which causes an unwanted +1 in cumsum above.
         indices[self._index_begin:self._index_end, :] += numpy.array([self._vertex_begin - 1, self._vertex_begin])
@@ -245,7 +245,7 @@ class LayerPolygon:
                 theme.getColor("layerview_move_combing").getRgbF(), # MoveCombingType
                 theme.getColor("layerview_move_retraction").getRgbF(), # MoveRetractionType
                 theme.getColor("layerview_support_interface").getRgbF(),  # SupportInterfaceType
-                theme.getColor("layerview_prime_tower").getRgbF()
+                theme.getColor("layerview_prime_tower").getRgbF()   # PrimeTowerType
             ])
 
         return cls.__color_map
