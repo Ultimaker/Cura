@@ -81,7 +81,7 @@ class IntentManager(QObject):
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]
-        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        current_definition_id = global_stack.definition.getId()
         for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
@@ -106,7 +106,7 @@ class IntentManager(QObject):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return ["default"]
-        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        current_definition_id = global_stack.definition.getId()
         final_intent_categories = set()  # type: Set[str]
         for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
@@ -136,7 +136,7 @@ class IntentManager(QObject):
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
             return
-        current_definition_id = global_stack.definition.getMetaDataEntry("id")
+        current_definition_id = global_stack.definition.getId()
         for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")

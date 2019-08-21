@@ -137,7 +137,7 @@ def test_getMaterialNode(application):
         manager = MaterialManager(mocked_registry)
     manager._updateMaps()
 
-    assert manager.getMaterialNode("fdmmachine", None, None, 3, "base_material").getMetaDataEntry("id") == "test"
+    assert manager.getMaterialNode("fdmmachine", None, None, 3, "base_material").container_id == "test"
 
 
 def test_getAvailableMaterialsForMachineExtruder(application):
