@@ -7,7 +7,7 @@
         "author": "Samuel Pinches",
         "manufacturer": "JGAurora",
         "file_formats": "text/x-gcode",
-        "preferred_quality_type": "fine",
+        "preferred_quality_type": "fast",
         "machine_extruder_trains":
         {
             "0": "jgaurora_jgmaker_magic_extruder_0"
@@ -39,7 +39,7 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 10
+            "value": "10"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -52,9 +52,6 @@
         },
         "material_bed_temperature": {
             "default_value": 60
-        },
-        "layer_height": {
-            "default_value": 0.15
         },
         "layer_height_0": {
             "default_value": 0.2
