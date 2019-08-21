@@ -22,7 +22,7 @@ Menu
         Menu
         {
             title: modelData.name
-
+            property var extruder: Cura.MachineManager.getExtruder(model.index)
             NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
             MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
 
@@ -41,14 +41,14 @@ Menu
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
-                visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
+                visible: extruder === null ? false : !extruder.isEnabled
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
-                visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                visible: extruder === null ? false : extruder.isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }
 
