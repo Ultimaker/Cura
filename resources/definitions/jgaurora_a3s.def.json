@@ -7,7 +7,7 @@
         "author": "Samuel Pinches",
         "manufacturer": "JGAurora",
         "file_formats": "text/x-gcode",
-        "preferred_quality_type": "fast",
+        "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
             "0": "jgaurora_a3s_extruder_0"
