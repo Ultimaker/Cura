@@ -602,6 +602,7 @@ class MachineManager(QObject):
     #
     #   \return The material ids in all stacks
     @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
+    @deprecated("use Cura.MachineManager.activeStack.extruders instead.", "4.3")
     def allActiveMaterialIds(self) -> Dict[str, str]:
         result = {}
 
