@@ -72,3 +72,34 @@ def test_materialNodeInit_MachineQuality(container_registry):
     assert len(node.qualities) == 2
     assert "quality_2" in node.qualities
     assert "quality_3" in node.qualities
+
+
+def test_onRemoved_wrongContainer(container_registry):
+    variant_node = MagicMock()
+    variant_node.variant_name = "variant_1"
+    variant_node.machine.has_machine_quality = True
+    variant_node.machine.quality_definition = "machine_1"
+    variant_node.materials = {"material_1": MagicMock()}
+    with patch("cura.Machines.MaterialNode.QualityNode"):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance",MagicMock(return_value=container_registry)):
+            node = MaterialNode("material_1", variant_node)
+
+    container = createMockedInstanceContainer("material_2")
+    node._onRemoved(container)
+
+    assert "material_1" in variant_node.materials
+
+def test_onRemoved_rightContainer(container_registry):
+    variant_node = MagicMock()
+    variant_node.variant_name = "variant_1"
+    variant_node.machine.has_machine_quality = True
+    variant_node.machine.quality_definition = "machine_1"
+    with patch("cura.Machines.MaterialNode.QualityNode"):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance",MagicMock(return_value=container_registry)):
+            node = MaterialNode("material_1", variant_node)
+
+    container = createMockedInstanceContainer("material_1")
+    variant_node.materials = {"material_1": MagicMock()}
+    node._onRemoved(container)
+
+    assert "material_1" not in variant_node.materials
