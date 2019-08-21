@@ -6,6 +6,8 @@ from typing import Optional, Dict, Set
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 from UM.Qt.ListModel import ListModel
 
+import cura.CuraApplication  # Imported like this to prevent a circular reference.
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MaterialNode import MaterialNode
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
@@ -27,14 +29,13 @@ class BaseMaterialsModel(ListModel):
         # Make these managers available to all material models
         self._container_registry = self._application.getInstance().getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
-        self._material_manager = self._application.getMaterialManager()
 
         # Update the stack and the model data when the machine changes
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
 
-        # Update this model when switching machines
+        # Update this model when switching machines, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._update)
-        self._material_manager.materialsUpdated.connect(self._update)
+        ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
 
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
@@ -96,6 +97,16 @@ class BaseMaterialsModel(ListModel):
     @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
     def enabled(self):
         return self._enabled
+
+    ##  Triggered when a list of materials changed somewhere in the container
+    #   tree. This change may trigger an _update() call when the materials
+    #   changed for the configuration that this model is looking for.
+    def _materialsListChanged(self, material: MaterialNode) -> None:
+        if material.variant.container_id != self._extruder_stack.variant.getId():
+            return
+        if material.variant.machine.container_id != cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().definition.getId():
+            return
+        self._update()
 
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
