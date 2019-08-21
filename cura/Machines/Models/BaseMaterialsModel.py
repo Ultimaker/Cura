@@ -34,6 +34,7 @@ class BaseMaterialsModel(ListModel):
 
         # Update this model when switching machines
         self._machine_manager.activeStackChanged.connect(self._update)
+        self._material_manager.materialsUpdated.connect(self._update)
 
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")

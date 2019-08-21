@@ -10,6 +10,7 @@ from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Decorators import deprecated
 from UM.Logger import Logger
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
 import cura.CuraApplication #Imported like this to prevent circular imports.
@@ -67,6 +68,29 @@ class MaterialManager(QObject):
 
         self._favorites = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
         self.materialsUpdated.emit()
+
+        self._update_timer = QTimer(self)
+        self._update_timer.setInterval(300)
+
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self.materialsUpdated)
+
+        container_registry = ContainerRegistry.getInstance()
+        container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
+        container_registry.containerAdded.connect(self._onContainerMetadataChanged)
+        container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
+
+    def _onContainerMetadataChanged(self, container):
+        self._onContainerChanged(container)
+
+    def _onContainerChanged(self, container):
+        container_type = container.getMetaDataEntry("type")
+        if container_type != "material":
+            return
+
+        # update the maps
+
+        self._update_timer.start()
 
     def getMaterialGroup(self, root_material_id: str) -> Optional[MaterialGroup]:
         return self._material_group_map.get(root_material_id)
