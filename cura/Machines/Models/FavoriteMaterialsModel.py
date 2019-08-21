@@ -19,9 +19,9 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
         self._update()
 
     def _update(self):
-        super()._update()
         if not self._canUpdate():
             return
+        super()._update()
 
         item_list = []
 

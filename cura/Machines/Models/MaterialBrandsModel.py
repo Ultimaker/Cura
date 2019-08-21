@@ -27,9 +27,9 @@ class MaterialBrandsModel(BaseMaterialsModel):
         self._update()
 
     def _update(self):
-        super()._update()
         if not self._canUpdate():
             return
+        super()._update()
 
         brand_item_list = []
         brand_group_dict = {}

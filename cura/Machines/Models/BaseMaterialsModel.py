@@ -115,6 +115,16 @@ class BaseMaterialsModel(ListModel):
     def _update(self):
         self._favorite_ids = set(Preferences.getInstance().getValue("cura/favorite_materials").split(";"))
 
+        # Update the available materials (ContainerNode) for the current active machine and extruder setup.
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        extruder_stack = global_stack.extruders[str(self._extruder_position)]
+        nozzle_name = None
+        if extruder_stack.variant.getId() != "empty_variant":
+            nozzle_name = extruder_stack.variant.getName()
+        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
+        compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
+        self._available_materials = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+
     ## This method is used by all material models in the beginning of the
     #  _update() method in order to prevent errors. It's the same in all models
     #  so it's placed here for easy access.
@@ -126,16 +136,7 @@ class BaseMaterialsModel(ListModel):
         extruder_position = str(self._extruder_position)
         if extruder_position not in global_stack.extruders:
             return False
-        extruder_stack = global_stack.extruders[extruder_position]
 
-        nozzle_name = None
-        if extruder_stack.variant.getId() != "empty_variant":
-            nozzle_name = extruder_stack.variant.getName()
-
-        # Update the available materials (ContainerNode) for the current active machine and extruder setup.
-        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
-        compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
-        self._available_materials = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
         return True
 
     ## This is another convenience function which is shared by all material
