@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
+from UM.Signal import Signal
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
 
@@ -26,6 +27,8 @@ class VariantNode(ContainerNode):
         super().__init__(container_id)
         self.machine = machine
         self.materials = {}  # type: Dict[str, MaterialNode]  # Mapping material base files to their nodes.
+        self.materialsChanged = Signal()
+
         container_registry = ContainerRegistry.getInstance()
         self.variant_name = container_registry.findContainersMetadata(id = container_id)[0]["name"]  # Store our own name so that we can filter more easily.
         container_registry.containerAdded.connect(self._materialAdded)
@@ -55,6 +58,7 @@ class VariantNode(ContainerNode):
             base_file = material["base_file"]
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
+                self.materials[base_file].materialChanged.connect(self.materialsChanged)
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
@@ -86,3 +90,4 @@ class VariantNode(ContainerNode):
                 return  # Original was already specific or just as unspecific as the new one.
 
         self.materials[base_file] = MaterialNode(container.getId(), variant = self)
+        self.materials[base_file].materialChanged.connect(self.materialsChanged)

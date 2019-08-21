@@ -4,6 +4,7 @@
 from typing import Dict, List
 
 from UM.Logger import Logger
+from UM.Signal import Signal
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
 from cura.Machines.ContainerNode import ContainerNode
@@ -19,6 +20,8 @@ class MachineNode(ContainerNode):
         super().__init__(container_id)
         self.variants = {}  # type: Dict[str, VariantNode] # Mapping variant names to their nodes.
         self.global_qualities = {}  # type: Dict[str, QualityNode] # Mapping quality types to the global quality for those types.
+        self.materialsChanged = Signal()  # Emitted when one of the materials underneath this machine has been changed.
+
         container_registry = ContainerRegistry.getInstance()
         try:
             my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
@@ -93,6 +96,7 @@ class MachineNode(ContainerNode):
             variant_name = variant["name"]
             if variant_name not in self.variants:
                 self.variants[variant_name] = VariantNode(variant["id"], machine = self)
+                self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
 
         # Find the global qualities for this printer.
         global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.container_id, global_quality = True)  # First try specific to this printer.

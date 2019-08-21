@@ -5,6 +5,7 @@ from typing import Any, TYPE_CHECKING
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
+from UM.Signal import Signal
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityNode import QualityNode
 
@@ -20,6 +21,8 @@ class MaterialNode(ContainerNode):
         super().__init__(container_id)
         self.variant = variant
         self.qualities = {}  # type: Dict[str, QualityNode] # Mapping container IDs to quality profiles.
+        self.materialChanged = Signal()  # Triggered when the material is removed or its metadata is updated.
+
         container_registry = ContainerRegistry.getInstance()
         my_metadata = container_registry.findContainersMetadata(id = container_id)[0]
         self.base_file = my_metadata["base_file"]
@@ -59,6 +62,7 @@ class MaterialNode(ContainerNode):
             # Remove myself from my parent.
             if self.base_file in self.variant.materials:
                 del self.variant.materials[self.base_file]
+            self.materialChanged.emit(self)
 
     ##  Triggered when any metadata changed in any container, but only handles
     #   it when the metadata of this node is changed.
@@ -85,3 +89,4 @@ class MaterialNode(ContainerNode):
         if self.base_file != old_base_file or self.material_type != old_material_type or self.guid != old_guid:  # List of quality profiles could've changed.
             self.qualities = {}
             self._loadAll()  # Re-load the quality profiles for this node.
+        self.materialChanged.emit(self)

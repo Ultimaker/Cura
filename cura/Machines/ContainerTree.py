@@ -6,6 +6,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to cont
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import ContainerInterface
 import cura.CuraApplication  # Imported like this to prevent circular dependencies.
+from UM.Signal import Signal
 from cura.Machines.MachineNode import MachineNode
 
 from typing import Dict, List, TYPE_CHECKING
@@ -30,6 +31,8 @@ class ContainerTree:
 
     def __init__(self) -> None:
         self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
+        self.materialsChanged = Signal()  # Emitted when any of the material nodes in the tree got changed.
+
         container_registry = ContainerRegistry.getInstance()
         container_registry.containerAdded.connect(self._machineAdded)
         self._loadAll()
@@ -58,6 +61,7 @@ class ContainerTree:
             definition_id = stack.definition.getId()
             if definition_id not in self.machines:
                 self.machines[definition_id] = MachineNode(definition_id)
+                self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
 
         Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
         
@@ -70,3 +74,4 @@ class ContainerTree:
             return  # Already have this definition ID.
 
         self.machines[definition_id] = MachineNode(definition_id)
+        self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
