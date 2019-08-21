@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -27,10 +27,9 @@ class MaterialBrandsModel(BaseMaterialsModel):
         self._update()
 
     def _update(self):
+        super()._update()
         if not self._canUpdate():
             return
-        # Get updated list of favorites
-        self._favorite_ids = self._material_manager.getFavorites()
 
         brand_item_list = []
         brand_group_dict = {}

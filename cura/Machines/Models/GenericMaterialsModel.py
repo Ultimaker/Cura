@@ -10,11 +10,9 @@ class GenericMaterialsModel(BaseMaterialsModel):
         self._update()
 
     def _update(self):
+        super()._update()
         if not self._canUpdate():
             return
-
-        # Get updated list of favorites
-        self._favorite_ids = self._material_manager.getFavorites()
 
         item_list = []
 

@@ -4,6 +4,8 @@
 from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+
+from UM.Preferences import Preferences
 from UM.Qt.ListModel import ListModel
 
 import cura.CuraApplication  # Imported like this to prevent a circular reference.
@@ -111,7 +113,7 @@ class BaseMaterialsModel(ListModel):
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
     def _update(self):
-        pass
+        self._favorite_ids = set(Preferences.getInstance().getValue("cura/favorite_materials").split(";"))
 
     ## This method is used by all material models in the beginning of the
     #  _update() method in order to prevent errors. It's the same in all models
