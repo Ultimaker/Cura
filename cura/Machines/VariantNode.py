@@ -76,11 +76,11 @@ class VariantNode(ContainerNode):
     #   material.
     #   \return The node for the preferred material, or None if there is no
     #   match.
-    def preferredMaterial(self, approximate_diameter) -> Optional[MaterialNode]:
+    def preferredMaterial(self, approximate_diameter) -> MaterialNode:
         for base_material, material_node in self.materials.items():
             if self.machine.preferred_material in base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                 return material_node
-        return None
+        return next(iter(self.materials.values()))
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
