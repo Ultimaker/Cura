@@ -10,6 +10,7 @@ from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 test_validate_data_get_set = [
     {"attribute": "name", "value": "YAY"},
     {"attribute": "targetBedTemperature", "value": 192},
+    {"attribute": "cameraUrl", "value": "YAY!"}
 ]
 
 test_validate_data_get_update = [
@@ -22,6 +23,7 @@ test_validate_data_get_update = [
     {"attribute": "targetBedTemperature", "value": 9001},
     {"attribute": "activePrintJob", "value": PrintJobOutputModel(MagicMock())},
     {"attribute": "state", "value": "BEEPBOOP"},
+
 ]
 
 
