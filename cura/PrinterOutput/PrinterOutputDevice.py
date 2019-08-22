@@ -220,10 +220,12 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
-        self._unique_configurations = sorted(
-            {printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None},
-            key=lambda config: config.printerType,
-        )
+        all_configurations = set()
+        for printer in self._printers:
+            if printer.printerConfiguration is not None:
+                all_configurations.add(printer.printerConfiguration)
+            all_configurations.update(printer.availableConfigurations)
+        self._unique_configurations = sorted(all_configurations, key = lambda config: config.printerType)
         self.uniqueConfigurationsChanged.emit()
 
     # Returns the unique configurations of the printers within this output device
@@ -234,6 +236,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _onPrintersChanged(self) -> None:
         for printer in self._printers:
             printer.configurationChanged.connect(self._updateUniqueConfigurations)
+            printer.availableConfigurationsChanged.connect(self._updateUniqueConfigurations)
 
         # At this point there may be non-updated configurations
         self._updateUniqueConfigurations()
