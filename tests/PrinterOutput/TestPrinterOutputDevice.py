@@ -1,6 +1,10 @@
 from unittest.mock import MagicMock
 
 import pytest
+from unittest.mock import patch
+
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
+from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 test_validate_data_get_set = [
@@ -8,10 +12,15 @@ test_validate_data_get_set = [
     {"attribute": "connectionState", "value": 1},
 ]
 
+@pytest.fixture()
+def printer_output_device():
+    with patch("UM.Application.Application.getInstance"):
+        return PrinterOutputDevice("whatever")
+
 
 @pytest.mark.parametrize("data", test_validate_data_get_set)
-def test_getAndSet(data):
-    model = PrinterOutputDevice("whatever")
+def test_getAndSet(data, printer_output_device):
+    model = printer_output_device
 
     # Convert the first letter into a capital
     attribute = list(data["attribute"])
@@ -35,3 +44,21 @@ def test_getAndSet(data):
     getattr(model, "set" + attribute)(data["value"])
     # The signal should not fire again
     assert signal.emit.call_count == 1
+
+
+def test_uniqueConfigurations(printer_output_device):
+    printer = PrinterOutputModel(MagicMock())
+    # Add a printer and fire the signal that ensures they get hooked up correctly.
+    printer_output_device._printers = [printer]
+    printer_output_device._onPrintersChanged()
+
+    assert printer_output_device.uniqueConfigurations == []
+    configuration = PrinterConfigurationModel()
+    printer.addAvailableConfiguration(configuration)
+
+    assert printer_output_device.uniqueConfigurations == [configuration]
+
+    # Once the type of printer is set, it's active configuration counts as being set.
+    # In that case, that should also be added to the list of available configurations
+    printer.updateType("blarg!")
+    assert printer_output_device.uniqueConfigurations == [configuration, printer.printerConfiguration]
