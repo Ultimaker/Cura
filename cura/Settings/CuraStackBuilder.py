@@ -100,25 +100,10 @@ class CuraStackBuilder:
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        material_manager = MaterialManager.getInstance()
         registry = application.getContainerRegistry()
         container_tree = ContainerTree.getInstance()
 
-        # get variant container for extruders
-        extruder_variant_container = application.empty_variant_container
-        # The container tree listens to the containerAdded signal to add this, but that signal is emitted with a delay which might not have passed yet.
-        # Therefore we must make sure that it's manually added here.
-        if global_stack.definition.getId() not in container_tree.machines:
-            container_tree.machines[global_stack.definition.getId()] = MachineNode(global_stack.definition.getId())
-        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
-        extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
-        extruder_variant_name = None
-        if extruder_variant_node is not None:
-            extruder_variant_container = extruder_variant_node.container
-            if not extruder_variant_container:
-                extruder_variant_container = application.empty_variant_container
-            extruder_variant_name = extruder_variant_container.getName()
-
+        # Get the extruder definition.
         extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
         extruder_definition_id = extruder_definition_dict[str(extruder_position)]
         try:
@@ -129,12 +114,22 @@ class CuraStackBuilder:
             Logger.logException("e", msg)
             raise IndexError(msg)
 
-        # get material container for extruders
-        material_container = application.empty_material_container
-        material_node = material_manager.getDefaultMaterial(global_stack, str(extruder_position), extruder_variant_name,
-                                                            extruder_definition = extruder_definition)
-        if material_node and material_node.container:
-            material_container = material_node.container
+        # Find out what filament diameter we need.
+        approximate_diameter = round(extruder_definition.getProperty("material_diameter", "value"))  # Can't be modified by definition changes since we are just initialising the stack here.
+
+        # The container tree listens to the containerAdded signal to add the definition and build the tree,
+        # but that signal is emitted with a delay which might not have passed yet.
+        # Therefore we must make sure that it's manually added here.
+        if global_stack.definition.getId() not in container_tree.machines:
+            container_tree.machines[global_stack.definition.getId()] = MachineNode(global_stack.definition.getId())
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
+        if not extruder_variant_node:
+            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name = machine_node.preferred_variant_name, fallback = next(iter(machine_node.variants))))
+            extruder_variant_node = next(iter(machine_node.variants.values()))
+        extruder_variant_container = extruder_variant_node.container
+        material_node = extruder_variant_node.preferredMaterial(approximate_diameter)
+        material_container = material_node.container
 
         new_extruder_id = registry.uniqueName(extruder_definition_id)
         new_extruder = cls.createExtruderStack(
