@@ -242,11 +242,7 @@ class MaterialManager(QObject):
         if nozzle_name not in machine_node.variants:
             Logger.log("w", "Could not find variant {nozzle_name} for machine with definition {definition_id} in the container tree".format(nozzle_name = nozzle_name, definition_id = definition_id))
             return None
-        available_materials = machine_node.variants[nozzle_name].materials
-        for base_material, material_node in available_materials.items():
-            if machine_node.preferred_material in base_material and approximate_material_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
-                return material_node
-        return None
+        return machine_node.variants[nozzle_name].preferredMaterial(approximate_material_diameter)
 
     def removeMaterialByRootId(self, root_material_id: str):
         container_registry = CuraContainerRegistry.getInstance()
