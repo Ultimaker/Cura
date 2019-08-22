@@ -1317,6 +1317,8 @@ class MachineManager(QObject):
 
     ##  Update the material profile in the current stacks when the variant is
     #   changed.
+    #   \param position The extruder stack to update. If provided with None, all
+    #   extruder stacks will be updated.
     def updateMaterialWithVariant(self, position: Optional[str]) -> None:
         if self._global_container_stack is None:
             return
@@ -1333,20 +1335,17 @@ class MachineManager(QObject):
             if extruder.variant.getId() != empty_variant_container.getId():
                 current_nozzle_name = extruder.variant.getMetaDataEntry("name")
 
-            candidate_materials = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name].materials
-
-            if not candidate_materials:
-                self._setMaterial(position_item, container_node = None)
-                continue
-
-            if current_material_base_name in candidate_materials:
+            # If we can keep the current material after the switch, try to do so.
+            nozzle_node = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name]
+            candidate_materials = nozzle_node.materials
+            if current_material_base_name in candidate_materials:  # The current material is also available after the switch. Retain it.
                 new_material = candidate_materials[current_material_base_name]
                 self._setMaterial(position_item, new_material)
-                continue
-
-            # The current material is not available, find the preferred one
-            material_node = MaterialManager.getInstance().getDefaultMaterial(self._global_container_stack, position_item, current_nozzle_name)
-            if material_node is not None:
+            else:
+                # The current material is not available, find the preferred one.
+                material_diameter = self._global_container_stack.extruders[position].getCompatibleMaterialDiameter()
+                approximate_material_diameter = round(material_diameter)
+                material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
                 self._setMaterial(position_item, material_node)
 
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
