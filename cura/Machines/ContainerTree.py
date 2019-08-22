@@ -20,6 +20,11 @@ if TYPE_CHECKING:
 #
 #   The tree starts at the machine definitions. For every distinct definition
 #   there will be one machine node here.
+#
+#   All of the fallbacks for material choices, quality choices, etc. should be
+#   encoded in this tree. There must always be at least one child node (for
+#   nodes that have children) but that child node may be a node representing the
+#   empty instance container.
 class ContainerTree:
     __instance = None
 
