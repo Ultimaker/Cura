@@ -225,8 +225,10 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None:
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
-        self._unique_configurations = sorted(all_configurations, key = lambda config: config.printerType)
-        self.uniqueConfigurationsChanged.emit()
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType)
+        if new_configurations != self._unique_configurations:
+            self._unique_configurations = new_configurations
+            self.uniqueConfigurationsChanged.emit()
 
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
