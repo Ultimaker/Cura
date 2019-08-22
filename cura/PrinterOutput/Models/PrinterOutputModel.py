@@ -304,7 +304,7 @@ class PrinterOutputModel(QObject):
 
     @pyqtProperty(str, notify = peripheralsChanged)
     def peripherals(self) -> str:
-        return ", ".join(*[peripheral.name for peripheral in self._peripherals])
+        return ", ".join([peripheral.name for peripheral in self._peripherals])
 
     def addPeripheral(self, peripheral: Peripheral) -> None:
         self._peripherals.append(peripheral)

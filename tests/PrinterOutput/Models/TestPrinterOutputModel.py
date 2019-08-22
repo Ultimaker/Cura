@@ -6,6 +6,7 @@ import pytest
 
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
+from cura.PrinterOutput.Peripheral import Peripheral
 
 test_validate_data_get_set = [
     {"attribute": "name", "value": "YAY"},
@@ -81,3 +82,24 @@ def test_getAndUpdate(data):
     getattr(model, "update" + attribute)(data["value"])
     # The signal should not fire again
     assert signal.emit.call_count == 1
+
+
+def test_peripherals():
+    model = PrinterOutputModel(MagicMock())
+    model.peripheralsChanged = MagicMock()
+
+    peripheral = MagicMock(spec=Peripheral)
+    peripheral.name = "test"
+    peripheral2 = MagicMock(spec=Peripheral)
+    peripheral2.name = "test2"
+
+    model.addPeripheral(peripheral)
+    assert model.peripheralsChanged.emit.call_count == 1
+    model.addPeripheral(peripheral2)
+    assert model.peripheralsChanged.emit.call_count == 2
+
+    assert model.peripherals == "test, test2"
+
+    model.removePeripheral(peripheral)
+    assert model.peripheralsChanged.emit.call_count == 3
+    assert model.peripherals == "test2"
