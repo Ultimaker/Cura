@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 
 from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
+from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.PrinterOutputModel import PrinterOutputModel
 from cura.PrinterOutput.Peripheral import Peripheral
 
@@ -103,3 +104,46 @@ def test_peripherals():
     model.removePeripheral(peripheral)
     assert model.peripheralsChanged.emit.call_count == 3
     assert model.peripherals == "test2"
+
+
+def test_availableConfigurations_addConfiguration():
+    model = PrinterOutputModel(MagicMock())
+
+    configuration = MagicMock(spec = PrinterConfigurationModel)
+
+    model.addAvailableConfiguration(configuration)
+    assert model.availableConfigurations == [configuration]
+
+
+def test_availableConfigurations_addConfigTwice():
+    model = PrinterOutputModel(MagicMock())
+
+    configuration = MagicMock(spec=PrinterConfigurationModel)
+
+    model.setAvailableConfigurations([configuration])
+    assert model.availableConfigurations == [configuration]
+
+    # Adding it again should not have any effect
+    model.addAvailableConfiguration(configuration)
+    assert model.availableConfigurations == [configuration]
+
+
+def test_availableConfigurations_removeConfig():
+    model = PrinterOutputModel(MagicMock())
+
+    configuration = MagicMock(spec=PrinterConfigurationModel)
+
+    model.addAvailableConfiguration(configuration)
+    model.removeAvailableConfiguration(configuration)
+    assert model.availableConfigurations == []
+
+
+def test_removeAlreadyRemovedConfiguration():
+    model = PrinterOutputModel(MagicMock())
+
+    configuration = MagicMock(spec=PrinterConfigurationModel)
+    model.availableConfigurationsChanged = MagicMock()
+    model.removeAvailableConfiguration(configuration)
+    assert model.availableConfigurationsChanged.emit.call_count == 0
+    assert model.availableConfigurations == []
+
