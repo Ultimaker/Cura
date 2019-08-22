@@ -3,6 +3,7 @@
 
 from typing import Optional, TYPE_CHECKING
 
+from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
@@ -80,7 +81,14 @@ class VariantNode(ContainerNode):
         for base_material, material_node in self.materials.items():
             if self.machine.preferred_material in base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                 return material_node
-        return next(iter(self.materials.values()))
+        fallback = next(iter(self.materials.values()))  # Should only happen with empty material node.
+        Logger.log("w", "Could not find preferred material {preferred_material} with diameter {diameter} for variant {variant_id}, falling back to {fallback}.".format(
+            preferred_material = self.machine.preferred_material,
+            diameter = approximate_diameter,
+            variant_id = self.container_id,
+            fallback = fallback.container_id
+        ))
+        return fallback
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
