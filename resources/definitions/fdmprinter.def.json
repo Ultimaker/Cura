@@ -11,6 +11,7 @@
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
+        "has_variants": false,
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
