@@ -1,11 +1,12 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
+from UM.Util import parseBool
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
 
@@ -59,6 +60,21 @@ class VariantNode(ContainerNode):
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
                 self.materials[base_file].materialChanged.connect(self.materialsChanged)
+
+    ##  Finds the preferred material for this printer with this nozzle in one of
+    #   the extruders.
+    #
+    #   If there is no material here (because the printer has no materials or
+    #   because there are no matching material profiles), None is returned.
+    #   \param approximate_diameter The desired approximate diameter of the
+    #   material.
+    #   \return The node for the preferred material, or None if there is no
+    #   match.
+    def preferredMaterial(self, approximate_diameter) -> Optional[MaterialNode]:
+        for base_material, material_node in self.materials.items():
+            if self.machine.preferred_material in base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+                return material_node
+        return None
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
