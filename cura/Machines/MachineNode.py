@@ -36,6 +36,7 @@ class MachineNode(ContainerNode):
         self.quality_definition = my_metadata.get("quality_definition", container_id)
         self.exclude_materials = my_metadata.get("exclude_materials", [])
         self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
+        self.preferred_material = my_metadata.get("preferred_material", "")
         self.preferred_quality_type = my_metadata.get("preferred_quality_type", "")
 
         self._loadAll()
