@@ -226,12 +226,17 @@ class MaterialManager(QObject):
     ##  Get default material for given global stack, extruder position and extruder nozzle name
     #   you can provide the extruder_definition and then the position is ignored (useful when building up global stack in CuraStackBuilder)
     def getDefaultMaterial(self, global_stack: "GlobalStack", position: str, nozzle_name: Optional[str],
-                           extruder_definition: Optional["DefinitionContainer"] = None) -> Optional["MaterialNode"]:
-        if not parseBool(global_stack.getMetaDataEntry("has_materials", False)):
-            return None
-
+                           extruder_definition: Optional["DefinitionContainer"] = None) -> "MaterialNode":
         definition_id = global_stack.definition.getId()
         machine_node = ContainerTree.getInstance().machines[definition_id]
+        if nozzle_name in machine_node.variants:
+            nozzle_node = machine_node.variants[nozzle_name]
+        else:
+            Logger.log("w", "Could not find variant {nozzle_name} for machine with definition {definition_id} in the container tree".format(nozzle_name = nozzle_name, definition_id = definition_id))
+            nozzle_node = next(iter(machine_node.variants))
+
+        if not parseBool(global_stack.getMetaDataEntry("has_materials", False)):
+            return next(iter(nozzle_node.materials))
 
         if extruder_definition is not None:
             material_diameter = extruder_definition.getProperty("material_diameter", "value")
@@ -239,10 +244,7 @@ class MaterialManager(QObject):
             material_diameter = global_stack.extruders[position].getCompatibleMaterialDiameter()
         approximate_material_diameter = round(material_diameter)
 
-        if nozzle_name not in machine_node.variants:
-            Logger.log("w", "Could not find variant {nozzle_name} for machine with definition {definition_id} in the container tree".format(nozzle_name = nozzle_name, definition_id = definition_id))
-            return None
-        return machine_node.variants[nozzle_name].preferredMaterial(approximate_material_diameter)
+        return nozzle_node.preferredMaterial(approximate_material_diameter)
 
     def removeMaterialByRootId(self, root_material_id: str):
         container_registry = CuraContainerRegistry.getInstance()
