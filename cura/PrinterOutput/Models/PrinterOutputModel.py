@@ -316,6 +316,8 @@ class PrinterOutputModel(QObject):
 
     availableConfigurationsChanged = pyqtSignal()
 
+    # The availableConfigurations are configuration options that a printer can switch to, but doesn't currently have
+    # active (eg; Automatic tool changes, material loaders, etc).
     @pyqtProperty("QVariantList", notify = availableConfigurationsChanged)
     def availableConfigurations(self) -> List[PrinterConfigurationModel]:
         return self._available_printer_configurations
