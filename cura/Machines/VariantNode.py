@@ -38,6 +38,10 @@ class VariantNode(ContainerNode):
     ##  (Re)loads all materials under this variant.
     def _loadAll(self):
         container_registry = ContainerRegistry.getInstance()
+
+        if not self.machine.has_materials:
+            return  # There should not be any materials loaded for this printer.
+
         # Find all the materials for this variant's name.
         if not self.machine.has_machine_materials:  # Printer has no specific materials. Look for all fdmprinter materials.
             materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")  # These are ONLY the base materials.

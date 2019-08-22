@@ -31,6 +31,7 @@ class MachineNode(ContainerNode):
         # Some of the metadata is cached upon construction here.
         # ONLY DO THAT FOR METADATA THAT DOESN'T CHANGE DURING RUNTIME!
         # Otherwise you need to keep it up-to-date during runtime.
+        self.has_materials = parseBool(my_metadata.get("has_materials", "true"))
         self.has_machine_materials = parseBool(my_metadata.get("has_machine_materials", "false"))
         self.has_machine_quality = parseBool(my_metadata.get("has_machine_quality", "false"))
         self.quality_definition = my_metadata.get("quality_definition", container_id)
