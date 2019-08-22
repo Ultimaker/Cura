@@ -38,7 +38,7 @@ class PrinterOutputModel(QObject):
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
-        self._printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
+        self._active_printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
@@ -48,8 +48,8 @@ class PrinterOutputModel(QObject):
         self._buildplate = ""
         self._peripherals = []  # type: List[Peripheral]
 
-        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
-                                                              self._extruders]
+        self._active_printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
+                                                                     self._extruders]
 
         self._available_printer_configurations = []  # type: List[PrinterConfigurationModel]
 
@@ -84,7 +84,7 @@ class PrinterOutputModel(QObject):
     def updateType(self, printer_type: str) -> None:
         if self._printer_type != printer_type:
             self._printer_type = printer_type
-            self._printer_configuration.printerType = self._printer_type
+            self._active_printer_configuration.printerType = self._printer_type
             self.typeChanged.emit()
             self.configurationChanged.emit()
 
@@ -95,7 +95,7 @@ class PrinterOutputModel(QObject):
     def updateBuildplate(self, buildplate: str) -> None:
         if self._buildplate != buildplate:
             self._buildplate = buildplate
-            self._printer_configuration.buildplateConfiguration = self._buildplate
+            self._active_printer_configuration.buildplateConfiguration = self._buildplate
             self.buildplateChanged.emit()
             self.configurationChanged.emit()
 
@@ -296,8 +296,8 @@ class PrinterOutputModel(QObject):
     # Returns the active configuration (material, variant and buildplate) of the current printer
     @pyqtProperty(QObject, notify = configurationChanged)
     def printerConfiguration(self) -> Optional[PrinterConfigurationModel]:
-        if self._printer_configuration.isValid():
-            return self._printer_configuration
+        if self._active_printer_configuration.isValid():
+            return self._active_printer_configuration
         return None
 
     peripheralsChanged = pyqtSignal()
