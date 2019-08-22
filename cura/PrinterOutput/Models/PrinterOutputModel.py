@@ -321,8 +321,9 @@ class PrinterOutputModel(QObject):
         return self._available_printer_configurations
 
     def addAvailableConfiguration(self, new_configuration: PrinterConfigurationModel) -> None:
-        self._available_printer_configurations.append(new_configuration)
-        self.availableConfigurationsChanged.emit()
+        if new_configuration not in self._available_printer_configurations:
+            self._available_printer_configurations.append(new_configuration)
+            self.availableConfigurationsChanged.emit()
 
     def removeAvailableConfiguration(self, config_to_remove: PrinterConfigurationModel) -> None:
         try:
