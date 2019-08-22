@@ -85,10 +85,13 @@ class VariantNode(ContainerNode):
     def _materialAdded(self, container: ContainerInterface):
         if container.getMetaDataEntry("type") != "material":
             return  # Not interested.
+        if not self.machine.has_materials:
+            return  # We won't add any materials.
         material_definition = container.getMetaDataEntry("definition")
         if not self.machine.has_machine_materials:
             if material_definition != "fdmprinter":
                 return
+
         base_file = container.getMetaDataEntry("base_file")
         if base_file in self.machine.exclude_materials:
             return  # Material is forbidden for this printer.
