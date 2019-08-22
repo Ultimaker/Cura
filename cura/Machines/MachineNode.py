@@ -92,17 +92,19 @@ class MachineNode(ContainerNode):
 
     ##  (Re)loads all variants under this printer.
     def _loadAll(self):
-        if not self.has_variants:
-            return
-
-        # Find all the variants for this definition ID.
         container_registry = ContainerRegistry.getInstance()
-        variants = container_registry.findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
-        for variant in variants:
-            variant_name = variant["name"]
-            if variant_name not in self.variants:
-                self.variants[variant_name] = VariantNode(variant["id"], machine = self)
-                self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
+        if not self.has_variants:
+            self.variants["empty"] = VariantNode("empty_variant", machine = self)
+        else:
+            # Find all the variants for this definition ID.
+            variants = container_registry.findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
+            for variant in variants:
+                variant_name = variant["name"]
+                if variant_name not in self.variants:
+                    self.variants[variant_name] = VariantNode(variant["id"], machine = self)
+                    self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
+            if not self.variants:
+                self.variants["empty"] = VariantNode("empty_variant", machine = self)
 
         # Find the global qualities for this printer.
         global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.container_id, global_quality = True)  # First try specific to this printer.

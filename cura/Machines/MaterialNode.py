@@ -53,6 +53,8 @@ class MaterialNode(ContainerNode):
             quality_id = quality["id"]
             if quality_id not in self.qualities:
                 self.qualities[quality_id] = QualityNode(quality_id, parent = self)
+        if not self.qualities:
+            self.qualities["empty_quality"] = QualityNode("empty_quality", parent = self)
 
     ##  Triggered when any container is removed, but only handles it when the
     #   container is removed that this node represents.
@@ -62,6 +64,8 @@ class MaterialNode(ContainerNode):
             # Remove myself from my parent.
             if self.base_file in self.variant.materials:
                 del self.variant.materials[self.base_file]
+                if not self.variant.materials:
+                    self.variant.materials["empty_material"] = MaterialNode("empty_material", variant = self.variant)
             self.materialChanged.emit(self)
 
     ##  Triggered when any metadata changed in any container, but only handles

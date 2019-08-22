@@ -29,4 +29,6 @@ class QualityNode(ContainerNode):
         if not isinstance(self.parent, MachineNode):  # Not a global profile.
             for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.parent.variant.machine.quality_definition, variant = self.parent.variant.variant_name, material = self.parent.base_file):
                 self.intents[intent["id"]] = IntentNode(intent["id"], quality = self)
+        if not self.intents:
+            self.intents["empty_intent"] = IntentNode("empty_intent", quality = self)
         # Otherwise, there are no intents for global profiles.

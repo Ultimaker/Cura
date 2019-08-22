@@ -6,7 +6,6 @@ from typing import Optional, TYPE_CHECKING
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
-from UM.Util import parseBool
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
 
@@ -40,6 +39,7 @@ class VariantNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
 
         if not self.machine.has_materials:
+            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
             return  # There should not be any materials loaded for this printer.
 
         # Find all the materials for this variant's name.
@@ -48,7 +48,7 @@ class VariantNode(ContainerNode):
         else:  # Printer has its own material profiles. Look for material profiles with this printer's definition.
             all_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
             printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id)
-            variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant = self.variant_name)
+            variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant = self.variant_name)  # If empty_variant, this won't return anything.
             materials_per_base_file = {material["base_file"]: material for material in all_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
@@ -64,6 +64,8 @@ class VariantNode(ContainerNode):
             if base_file not in self.materials:
                 self.materials[base_file] = MaterialNode(material["id"], variant = self)
                 self.materials[base_file].materialChanged.connect(self.materialsChanged)
+        if not self.materials:
+            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
 
     ##  Finds the preferred material for this printer with this nozzle in one of
     #   the extruders.
@@ -112,5 +114,7 @@ class VariantNode(ContainerNode):
             if original_variant != "empty" or container.getMetaDataEntry("variant", "empty") == "empty":
                 return  # Original was already specific or just as unspecific as the new one.
 
+        if "empty_material" in self.materials:
+            del self.materials["empty_material"]
         self.materials[base_file] = MaterialNode(container.getId(), variant = self)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
