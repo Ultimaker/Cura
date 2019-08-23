@@ -80,7 +80,7 @@ class ClusterPrinterStatus(BaseModel):
         model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
         # Set the possible configurations based on whether a Material Station is present or not.
-        if self.material_station is not None:
+        if self.material_station is not None and len(self.material_station.material_slots):
             self._updateAvailableConfigurations(model)
         if self.configuration is not None:
             self._updateActiveConfiguration(model)
