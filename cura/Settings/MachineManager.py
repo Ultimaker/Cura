@@ -22,6 +22,8 @@ from UM.Message import Message
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
+import cura.CuraApplication  # Imported like this to prevent circular references.
+
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
 from cura.Machines.MaterialManager import MaterialManager
@@ -283,10 +285,11 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
     ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
-    def _initMachineState(self, global_stack: "CuraContainerStack") -> None:
+    def _initMachineState(self) -> None:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         material_dict = {}
         for position, extruder in global_stack.extruders.items():
-            material_dict[position] = extruder.material.getMetaDataEntry("base_file")
+            material_dict[position] = extruder.material.base_file
         self._current_root_material_id = material_dict
 
         # Update materials to make sure that the diameters match with the machine's
@@ -301,7 +304,7 @@ class MachineManager(QObject):
         # Try to set the same quality/quality_changes as the machine specified.
         # If the quality/quality_changes is not available, switch to the default or the first quality that's available.
         same_quality_found = False
-        quality_groups = self._application.getQualityManager().getQualityGroups(global_stack)
+        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
         if global_quality_changes.getId() != "empty_quality_changes":
             quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
@@ -357,7 +360,7 @@ class MachineManager(QObject):
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
-        self._initMachineState(global_stack)
+        self._initMachineState()
         self._onGlobalContainerChanged()
 
         # Switch to the first enabled extruder
