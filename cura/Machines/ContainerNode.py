@@ -26,17 +26,17 @@ class ContainerNode:
     ##  Gets the metadata of the container that this node represents.
     #   Getting the metadata from the container directly is about 10x as fast.
     #   \return The metadata of the container in this node.
-    @deprecated("Get the metadata from the container with the ID of this node yourself.", "4.3")
     def getMetadata(self):
         return ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)[0]
 
     ##  Get an entry from the metadata of the container that this node contains.
+    #
+    #   This is just a convenience function.
     #   \param entry The metadata entry key to return.
     #   \param default If the metadata is not present or the container is not
     #   found, the value of this default is returned.
     #   \return The value of the metadata entry, or the default if it was not
     #   present.
-    @deprecated("Get the metadata from the container with the ID of this node yourself.", "4.3")
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
         container_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)
         if len(container_metadata) == 0:
