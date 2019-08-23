@@ -76,26 +76,11 @@ class QualityManager(QObject):
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
-
-        machine_node = self._machine_quality_type_to_quality_changes_dict.get(machine_definition_id)
-        if not machine_node:
-            Logger.log("i", "Cannot find node for machine def [%s] in QualityChanges lookup table", machine_definition_id)
-            return dict()
-
-        # Update availability for each QualityChangesGroup:
-        # A custom profile is always available as long as the quality_type it's based on is available
-        quality_group_dict = self.getQualityGroups(machine)
-        available_quality_type_list = [qt for qt, qg in quality_group_dict.items() if qg.is_available]
-
-        # Iterate over all quality_types in the machine node
-        quality_changes_group_dict = dict()
-        for quality_type, quality_changes_node in machine_node.quality_type_map.items():
-            for quality_changes_name, quality_changes_group in quality_changes_node.children_map.items():
-                quality_changes_group_dict[quality_changes_name] = quality_changes_group
-                quality_changes_group.is_available = quality_type in available_quality_type_list
-
-        return quality_changes_group_dict
+        variant_names = [extruder.variant.getName() for extruder in machine.extruders.values()]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extruders.values()]
+        extruder_enabled = [extruder.isEnabled for extruder in machine.extruders.values()]
+        machine_node = ContainerTree.getInstance().machines[machine.definition.getId()]
+        return machine_node.getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
     ##  Gets the quality groups for the current printer.
     #
