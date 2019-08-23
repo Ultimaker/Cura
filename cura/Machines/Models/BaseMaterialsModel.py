@@ -5,7 +5,6 @@ from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
 
-from UM.Preferences import Preferences
 from UM.Qt.ListModel import ListModel
 
 import cura.CuraApplication  # Imported like this to prevent a circular reference.
@@ -113,7 +112,7 @@ class BaseMaterialsModel(ListModel):
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
     def _update(self):
-        self._favorite_ids = set(Preferences.getInstance().getValue("cura/favorite_materials").split(";"))
+        self._favorite_ids = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
 
         # Update the available materials (ContainerNode) for the current active machine and extruder setup.
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
