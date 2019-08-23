@@ -92,26 +92,22 @@ class ClusterPrinterStatus(BaseModel):
             configuration.updateConfigurationModel(extruder_config)
 
     def _updateAvailableConfigurations(self, model: PrinterOutputModel) -> None:
-
         # Generate a list of configurations for the left extruder.
         left_configurations = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
             slot = slot,
             extruder_index = 0
         )]
-
         # Generate a list of configurations for the right extruder.
         right_configurations = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
             slot = slot,
             extruder_index = 1
         )]
-
         # Create a list of all available combinations between both print cores.
         available_configurations = [self._createAvailableConfigurationFromPrinterConfiguration(
             left_slot = left_slot,
             right_slot = right_slot,
             printer_configuration = model.printerConfiguration
         ) for left_slot, right_slot in product(left_configurations, right_configurations)]
-
         # Let Cura know which available configurations there are.
         model.setAvailableConfigurations(available_configurations)
 
