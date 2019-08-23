@@ -8,6 +8,7 @@ from UM.Signal import Signal
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
 from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construct groups of quality changes profiles that belong together.
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
@@ -89,6 +90,50 @@ class MachineNode(ContainerNode):
         for quality_type in available_quality_types:
             quality_groups[quality_type].is_available = True
         return quality_groups
+
+    ##  Returns all of the quality changes groups available to this printer.
+    #
+    #   The quality changes groups store which quality type and intent category
+    #   they were made for, but not which material and nozzle. Instead for the
+    #   quality type and intent category, the quality changes will always be
+    #   available but change the quality type and intent category when
+    #   activated.
+    #
+    #   The quality changes group does depend on the printer: Which quality
+    #   definition is used.
+    #
+    #   The quality changes groups that are available do depend on the quality
+    #   types that are available, so it must still be known which extruders are
+    #   enabled and which materials and variants are loaded in them. This allows
+    #   setting the correct is_available flag.
+    #   \param variant_names The names of the variants loaded in each extruder.
+    #   \param material_bases The base file names of the materials loaded in
+    #   each extruder.
+    #   \param extruder_enabled For each extruder whether or not they are
+    #   enabled.
+    #   \return List of all quality changes groups for the printer.
+    def getQualityChangesGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> List[QualityChangesGroup]:
+        machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type = "quality_changes", definition = self.quality_definition)  # All quality changes for each extruder.
+
+        groups_by_name = {}  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
+        for quality_changes in machine_quality_changes:
+            name = quality_changes["name"]
+            if name not in groups_by_name:
+                groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"], intent_category = quality_changes.get("intent_category", "default"))
+            if "position" in quality_changes:  # An extruder profile.
+                groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes
+            else:  # Global profile.
+                groups_by_name[name].metadata_for_global = quality_changes
+
+        quality_groups = self.getQualityGroups(variant_names, material_bases, extruder_enabled)
+        for quality_changes_group in groups_by_name.values():
+            if quality_changes_group.quality_type not in quality_groups:
+                quality_changes_group.is_available = False
+            else:
+                # Quality changes group is available iff the quality group it depends on is available. Irrespective of whether the intent category is available.
+                quality_changes_group.is_available = quality_groups[quality_changes_group.quality_type].is_available
+
+        return list(groups_by_name.values())
 
     ##  (Re)loads all variants under this printer.
     def _loadAll(self):
