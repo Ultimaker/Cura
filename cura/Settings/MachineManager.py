@@ -1240,7 +1240,7 @@ class MachineManager(QObject):
     def _setVariantNode(self, position: str, variant_node: "VariantNode") -> None:
         if self._global_container_stack is None:
             return
-        self._global_container_stack.extruders[position].variant = CuraContainerRegistry.getInstance().findContainers(id = variant_node.container_id)
+        self._global_container_stack.extruders[position].variant = variant_node.container
         self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
@@ -1254,8 +1254,9 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         if material_node:
-            self._global_container_stack.extruders[position].material = CuraContainerRegistry.getInstance().findContainers(id = material_node.container_id)[0]
-            root_material_id = material_node.container.getMetaDataEntry("base_file", None)
+            material_container = material_node.container
+            self._global_container_stack.extruders[position].material = material_container
+            root_material_id = material_container.getMetaDataEntry("base_file", None)
         else:
             self._global_container_stack.extruders[position].material = empty_material_container
             root_material_id = None
