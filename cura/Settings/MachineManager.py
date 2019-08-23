@@ -284,58 +284,6 @@ class MachineManager(QObject):
             # Notify UI items, such as the "changed" star in profile pull down menu.
             self.activeStackValueChanged.emit()
 
-    ## Given a global_stack, make sure that it's all valid by searching for this quality group and applying it again
-    def _initMachineState(self) -> None:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        material_dict = {}
-        for position, extruder in global_stack.extruders.items():
-            material_dict[position] = extruder.material.base_file
-        self._current_root_material_id = material_dict
-
-        # Update materials to make sure that the diameters match with the machine's
-        for position in global_stack.extruders:
-            self.updateMaterialWithVariant(position)
-
-        global_quality = global_stack.quality
-        quality_type = global_quality.getMetaDataEntry("quality_type")
-        global_quality_changes = global_stack.qualityChanges
-        global_quality_changes_name = global_quality_changes.getName()
-
-        # Try to set the same quality/quality_changes as the machine specified.
-        # If the quality/quality_changes is not available, switch to the default or the first quality that's available.
-        same_quality_found = False
-        quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
-
-        if global_quality_changes.getId() != "empty_quality_changes":
-            quality_changes_groups = self._application.getQualityManager().getQualityChangesGroups(global_stack)
-            new_quality_changes_group = quality_changes_groups.get(global_quality_changes_name)
-            if new_quality_changes_group is not None:
-                self._setQualityChangesGroup(new_quality_changes_group)
-                same_quality_found = True
-                Logger.log("i", "Machine '%s' quality changes set to '%s'",
-                           global_stack.getName(), new_quality_changes_group.name)
-        else:
-            new_quality_group = quality_groups.get(quality_type)
-            if new_quality_group is not None:
-                self._setQualityGroup(new_quality_group, empty_quality_changes = True)
-                same_quality_found = True
-                Logger.log("i", "Machine '%s' quality set to '%s'",
-                           global_stack.getName(), new_quality_group.quality_type)
-
-        # Could not find the specified quality/quality_changes, switch to the preferred quality if available,
-        # otherwise the first quality that's available, otherwise empty (not supported).
-        if not same_quality_found:
-            Logger.log("i", "Machine '%s' could not find quality_type '%s' and quality_changes '%s'. "
-                       "Available quality types are [%s]. Switching to default quality.",
-                       global_stack.getName(), quality_type, global_quality_changes_name,
-                       ", ".join(quality_groups.keys()))
-            preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-            quality_group = quality_groups.get(preferred_quality_type)
-            if quality_group is None:
-                if quality_groups:
-                    quality_group = list(quality_groups.values())[0]
-            self._setQualityGroup(quality_group, empty_quality_changes = True)
-
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
@@ -360,7 +308,6 @@ class MachineManager(QObject):
         self._global_container_stack = global_stack
         self._application.setGlobalContainerStack(global_stack)
         ExtruderManager.getInstance()._globalContainerStackChanged()
-        self._initMachineState()
         self._onGlobalContainerChanged()
 
         # Switch to the first enabled extruder
