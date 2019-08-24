@@ -22,6 +22,24 @@ i18n_catalog = i18nCatalog("cura")
 if TYPE_CHECKING:
     from UM.Settings.Interfaces import DefinitionContainerInterface
 
+# Some post-processing tasks are easy to parallelize. The easiest way to parallelize python code is via multiprocessing.
+# Post-processing scripts aren't directly importable, though,  making them incompatible with multiprocessing.
+# This module is importable, so it's possible to provide a workaround. The trick is to set up functions to call
+# before multiprocessing forks the main process. That way, each forked process has a copy of the processing script.
+# For example:
+#         pool = multiprocessing.Pool(processes=multiprocessing.cpu_count(), initializer=multiprocessing_init,
+#                                     initargs=({"process_layer": self.process_layer},))
+#        result = pool.apply_async(multiprocessing_call, ("process_layer", (layer_steps,))))
+#        return result.get()
+def multiprocessing_init(functions_by_name):
+    """ An inititializer for multiprocessing pools. The passed in keyword arguments are callable using the
+        multiprocessing_call function below """
+    global _multiprocessing_functions
+    _multiprocessing_functions = functions_by_name
+
+def multiprocessing_call(function_name, args):
+    """ Calls the named function with the passed in arguments and returns the result """
+    return _multiprocessing_functions[function_name](*args)
 
 ## Base class for scripts. All scripts should inherit the script class.
 @signalemitter
@@ -179,7 +197,7 @@ class Script:
 
         return result
 
-    ##  This is called when the script is executed. 
+    ##  This is called when the script is executed.
     #   It gets a list of g-code strings and needs to return a (modified) list.
     def execute(self, data: List[str]) -> List[str]:
         raise NotImplementedError()

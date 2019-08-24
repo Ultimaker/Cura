@@ -7,11 +7,14 @@ See the original description in https://github.com/electrocbd/post_stretch
 
 WARNING This script has never been tested with several extruders
 """
-from ..Script import Script
+from ..Script import Script, multiprocessing_init, multiprocessing_call
+import collections
+import multiprocessing
 import numpy as np
 from UM.Logger import Logger
 from UM.Application import Application
 import re
+import time
 from cura.Settings.ExtruderManager import ExtruderManager
 
 def _getValue(line, key, default=None):
@@ -30,7 +33,7 @@ def _getValue(line, key, default=None):
         return default
     return float(number.group(0))
 
-class GCodeStep():
+class GCodeStepParser():
     """
     Class to store the current value of each G_Code parameter
     for any G-Code step
@@ -83,6 +86,24 @@ class GCodeStep():
     def setInRelativeMovement(self, value: bool) -> None:
         self.in_relative_movement = value
 
+class GCodeStepSlot:
+    """
+    GCodeStep was originally used both during input parsing and during processing and output writing. In order to
+    work with multiprocessing pools, the step objects need to be manually pickled (classes in plugins aren't
+    directly pickleable). Rather than reconstruct GCodeSteps again, this class is used during processing. The hope
+    is that, by decoupling the two, future improvements will be easier.
+    """
+    __slots__ = ['step', 'step_x', 'step_y', 'step_z', 'step_e', 'step_f', 'in_relative_movement', 'comment']
+    def __init__(self, step, step_x, step_y, step_z, step_e, step_f, in_relative_movement, comment):
+        self.step = step
+        self.step_x = step_x
+        self.step_y = step_y
+        self.step_z = step_z
+        self.step_e = step_e
+        self.step_f = step_f
+        self.in_relative_movement = in_relative_movement
+        self.comment = comment
+
 
 # Execution part of the stretch plugin
 class Stretcher():
@@ -95,12 +116,11 @@ class Stretcher():
         self.pw_stretch = pw_stretch
         if self.pw_stretch > line_width / 4:
             self.pw_stretch = line_width / 4 # Limit value of pushwall stretch distance
-        self.outpos = GCodeStep(0)
+        self.outpos = GCodeStepParser(0)
         self.vd1 = np.empty((0, 2)) # Start points of segments
                                     # of already deposited material for current layer
         self.vd2 = np.empty((0, 2)) # End points of segments
                                     # of already deposited material for current layer
-        self.layer_z = 0            # Z position of the extrusion moves of the current layer
         self.layergcode = ""
         self._in_relative_movement = False
 
@@ -111,11 +131,15 @@ class Stretcher():
         Logger.log("d", "Post stretch with line width " + str(self.line_width)
                    + "mm wide circle stretch " + str(self.wc_stretch)+ "mm"
                    + " and push wall stretch " + str(self.pw_stretch) + "mm")
+
+        start = time.time()
+        pool = multiprocessing.Pool(processes=multiprocessing.cpu_count(), initializer=multiprocessing_init,
+                                    initargs=({"process_layer":self.processLayer},))
         retdata = []
         layer_steps = []
         in_relative_movement = False
-        current = GCodeStep(0, in_relative_movement)
-        self.layer_z = 0.
+        current = GCodeStepParser(0, in_relative_movement)
+        layer_z = 0.
         current_e = 0.
         for layer in data:
             lines = layer.rstrip("\n").split("\n")
@@ -125,7 +149,7 @@ class Stretcher():
                     current.comment = line[line.find(";"):]
                 if _getValue(line, "G") == 0:
                     current.readStep(line)
-                    onestep = GCodeStep(0, in_relative_movement)
+                    onestep = GCodeStepParser(0, in_relative_movement)
                     onestep.copyPosFrom(current)
                 elif _getValue(line, "G") == 1:
                     last_x = current.step_x
@@ -140,13 +164,13 @@ class Stretcher():
                         # extruded move. Otherwise, the stretched output might contain slight
                         # motion in X and Y in addition to E. This can cause problems with
                         # firmwares that implement pressure advance.
-                        onestep = GCodeStep(-1, in_relative_movement)
+                        onestep = GCodeStepParser(-1, in_relative_movement)
                         onestep.copyPosFrom(current)
                         # Rather than copy the original line, write a new one with consistent
                         # extruder coordinates
                         onestep.comment = "G1 F{} E{}".format(onestep.step_f, onestep.step_e)
                     else:
-                        onestep = GCodeStep(1, in_relative_movement)
+                        onestep = GCodeStepParser(1, in_relative_movement)
                         onestep.copyPosFrom(current)
 
                 # end of relative movement
@@ -160,33 +184,39 @@ class Stretcher():
 
                 elif _getValue(line, "G") == 92:
                     current.readStep(line)
-                    onestep = GCodeStep(-1, in_relative_movement)
+                    onestep = GCodeStepParser(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
                     onestep.comment = line
                 else:
-                    onestep = GCodeStep(-1, in_relative_movement)
+                    onestep = GCodeStepParser(-1, in_relative_movement)
                     onestep.copyPosFrom(current)
                     onestep.comment = line
 
                 if line.find(";LAYER:") >= 0 and len(layer_steps):
                     # Previous plugin "forgot" to separate two layers...
-                    Logger.log("d", "Layer Z " + "{:.3f}".format(self.layer_z)
+                    Logger.log("d", "Layer Z " + "{:.3f}".format(layer_z)
                                + " " + str(len(layer_steps)) + " steps")
-                    retdata.append(self.processLayer(layer_steps))
+                    retdata.append(pool.apply_async(multiprocessing_call, ("process_layer", (layer_steps, layer_z))))
                     layer_steps = []
-                layer_steps.append(onestep)
-                # self.layer_z is the z position of the last extrusion move (not travel move)
-                if current.step_z != self.layer_z and current.step_e != current_e:
-                    self.layer_z = current.step_z
+                # Break up the GCodeStepParser into a tuple so that it can get pickled
+                layer_steps.append((onestep.step, onestep.step_x, onestep.step_y, onestep.step_z,
+                                    onestep.step_e, onestep.step_f, onestep.in_relative_movement, onestep.comment))
+                # layer_z is the z position of the last extrusion move (not travel move)
+                if current.step_z != layer_z and current.step_e != current_e:
+                    layer_z = current.step_z
                 current_e = current.step_e
             if len(layer_steps): # Force a new item in the array
-                Logger.log("d", "Layer Z " + "{:.3f}".format(self.layer_z)
+                Logger.log("d", "Layer Z " + "{:.3f}".format(layer_z)
                            + " " + str(len(layer_steps)) + " steps")
-                retdata.append(self.processLayer(layer_steps))
+                retdata.append(pool.apply_async(multiprocessing_call, ("process_layer", (layer_steps, layer_z))))
                 layer_steps = []
-        retdata.append(";Wide circle stretch distance " + str(self.wc_stretch) + "\n")
-        retdata.append(";Push wall stretch distance " + str(self.pw_stretch) + "\n")
-        return retdata
+
+        result = [x.get() for x in retdata]
+        result.append(";Wide circle stretch distance " + str(self.wc_stretch) + "\n")
+        result.append(";Push wall stretch distance " + str(self.pw_stretch) + "\n")
+        end = time.time()
+        Logger.log("d", "Stretching took %.3g sec", end-start)
+        return result
 
     def extrusionBreak(self, layer_steps, i_pos):
         """
@@ -208,7 +238,7 @@ class Stretcher():
         return True # New sequence
 
 
-    def processLayer(self, layer_steps):
+    def processLayer(self, layer_steps_as_tuples, layer_z):
         """
         Computes the new coordinates of g-code steps
         for one layer (all the steps at the same Z coordinate)
@@ -218,30 +248,32 @@ class Stretcher():
         self.layergcode = ""
         self.vd1 = np.empty((0, 2))
         self.vd2 = np.empty((0, 2))
-        orig_seq = np.empty((0, 2))
+        new_seq_list = []
         modif_seq = np.empty((0, 2))
         iflush = 0
+        layer_steps = [GCodeStepSlot(*step) for step in layer_steps_as_tuples]
         for i, step in enumerate(layer_steps):
             if step.step == 0 or step.step == 1:
                 if self.extrusionBreak(layer_steps, i):
                     # No extrusion since the previous step, so it is a travel move
                     # Let process steps accumulated into orig_seq,
                     # which are a sequence of continuous extrusion
+                    orig_seq = np.array(new_seq_list)
                     modif_seq = np.copy(orig_seq)
                     if len(orig_seq) >= 2:
                         self.workOnSequence(orig_seq, modif_seq)
-                    self.generate(layer_steps, iflush, i, modif_seq)
+                    self.generate(layer_steps, iflush, i, modif_seq, layer_z)
                     iflush = i
-                    orig_seq = np.empty((0, 2))
-                orig_seq = np.concatenate([orig_seq, np.array([[step.step_x, step.step_y]])])
-        if len(orig_seq):
-            modif_seq = np.copy(orig_seq)
+                    new_seq_list = []
+                new_seq_list.append((step.step_x, step.step_y))
+        orig_seq = np.array(new_seq_list)
+        modif_seq = np.copy(orig_seq)
         if len(orig_seq) >= 2:
             self.workOnSequence(orig_seq, modif_seq)
-        self.generate(layer_steps, iflush, len(layer_steps), modif_seq)
+        self.generate(layer_steps, iflush, len(layer_steps), modif_seq, layer_z)
         return self.layergcode
 
-    def stepToGcode(self, onestep):
+    def stepToGcode(self, onestep, layer_z):
         """
         Converts a step into G-Code
         For each of the X, Y, Z, E and F parameter,
@@ -261,7 +293,7 @@ class Stretcher():
                                                            # something went really wrong !
             self.outpos.step_y = onestep.step_y
             sout += " Y{:.3f}".format(self.outpos.step_y).rstrip("0").rstrip(".")
-        if onestep.step_z != self.outpos.step_z or onestep.step_z != self.layer_z:
+        if onestep.step_z != self.outpos.step_z or onestep.step_z != layer_z:
             self.outpos.step_z = onestep.step_z
             sout += " Z{:.3f}".format(self.outpos.step_z).rstrip("0").rstrip(".")
         if onestep.step_e != self.outpos.step_e:
@@ -269,7 +301,7 @@ class Stretcher():
             sout += " E{:.5f}".format(self.outpos.step_e).rstrip("0").rstrip(".")
         return sout
 
-    def generate(self, layer_steps, ibeg, iend, orig_seq):
+    def generate(self, layer_steps, ibeg, iend, orig_seq, layer_z):
         """
         Appends g-code lines to the plugin's returned string
         starting from step ibeg included and until step iend excluded
@@ -279,13 +311,13 @@ class Stretcher():
             if layer_steps[i].step == 0:
                 layer_steps[i].step_x = orig_seq[ipos][0]
                 layer_steps[i].step_y = orig_seq[ipos][1]
-                sout = "G0" + self.stepToGcode(layer_steps[i])
+                sout = "G0" + self.stepToGcode(layer_steps[i], layer_z)
                 self.layergcode = self.layergcode + sout + "\n"
                 ipos = ipos + 1
             elif layer_steps[i].step == 1:
                 layer_steps[i].step_x = orig_seq[ipos][0]
                 layer_steps[i].step_y = orig_seq[ipos][1]
-                sout = "G1" + self.stepToGcode(layer_steps[i])
+                sout = "G1" + self.stepToGcode(layer_steps[i], layer_z)
                 self.layergcode = self.layergcode + sout + "\n"
                 ipos = ipos + 1
             else:
@@ -513,4 +545,3 @@ class Stretch(Script):
             ExtruderManager.getInstance().getActiveExtruderStack().getProperty("machine_nozzle_size", "value")
             , self.getSettingValueByKey("wc_stretch"), self.getSettingValueByKey("pw_stretch"))
         return stretcher.execute(data)
-
