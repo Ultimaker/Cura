@@ -8,7 +8,7 @@ from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.MachineNode import MachineNode
-from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
+from cura.Settings.ExtruderStack import ExtruderStack  # To skip extruder stacks being added.
 
 from typing import Dict, TYPE_CHECKING
 import time
@@ -64,7 +64,7 @@ class ContainerTree:
         start_time = time.time()
         all_stacks = ContainerRegistry.getInstance().findContainerStacks()
         for stack in all_stacks:
-            if not isinstance(stack, GlobalStack):
+            if isinstance(stack, ExtruderStack):
                 continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
             definition_id = stack.definition.getId()
             if definition_id not in self.machines:
@@ -77,6 +77,8 @@ class ContainerTree:
     def _machineAdded(self, definition_container: ContainerInterface):
         if not isinstance(definition_container, DefinitionContainer):
             return  # Not our concern.
+        if definition_container.getMetaDataEntry("position") is not None:
+            return  # This is an extruder definition. Not our concern.
         definition_id = definition_container.getId()
         if definition_id in self.machines:
             return  # Already have this definition ID.
