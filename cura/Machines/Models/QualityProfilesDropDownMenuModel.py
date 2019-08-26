@@ -8,6 +8,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.SettingFunction import SettingFunction
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.QualityManager import QualityGroup, QualityManager
 
 
@@ -70,7 +71,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = QualityManager.getInstance().getQualityGroups(global_stack)
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
 
         item_list = []
         for key in sorted(quality_group_dict):
