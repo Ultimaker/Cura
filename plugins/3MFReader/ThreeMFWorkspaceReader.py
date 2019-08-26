@@ -59,6 +59,9 @@ class MachineInfo:
         self.container_id = None
         self.name = None
         self.definition_id = None
+
+        self.metadata_dict = {}  # type: Dict[str, str]
+
         self.quality_type = None
         self.custom_quality_name = None
         self.quality_changes_info = None
@@ -342,6 +345,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         global_stack_id = self._stripFileToId(global_stack_file)
         serialized = archive.open(global_stack_file).read().decode("utf-8")
         machine_name = self._getMachineNameFromSerializedStack(serialized)
+        self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
+
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
         existing_global_stack = None
@@ -981,6 +986,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.setMetaDataEntry("enabled", "True")
             extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
+
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
@@ -992,6 +1002,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_manager.initialize()
 
         machine_manager.setActiveMachine(global_stack.getId())
+
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
             quality_changes_group_dict = quality_manager.getQualityChangesGroups(global_stack)
@@ -1053,6 +1068,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
+
+    def _getMetaDataDictFromSerializedStack(self, serialized: str) -> Dict[str, str]:
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser.read_string(serialized)
+        return parser["metadata"]
 
     def _getMaterialLabelFromSerialized(self, serialized):
         data = ET.fromstring(serialized)
