@@ -68,8 +68,10 @@ class ContainerTree:
                 continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
             definition_id = stack.definition.getId()
             if definition_id not in self.machines:
+                definition_start_time = time.time()
                 self.machines[definition_id] = MachineNode(definition_id)
                 self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
+                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - definition_start_time))
 
         Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
         
@@ -83,5 +85,7 @@ class ContainerTree:
         if definition_id in self.machines:
             return  # Already have this definition ID.
 
+        start_time = time.time()
         self.machines[definition_id] = MachineNode(definition_id)
         self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
+        Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
