@@ -152,7 +152,7 @@ class MachineNode(ContainerNode):
                 self.variants["empty"] = VariantNode("empty_variant", machine = self)
 
         # Find the global qualities for this printer.
-        global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.container_id, global_quality = True)  # First try specific to this printer.
+        global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.quality_definition, global_quality = True)  # First try specific to this printer.
         if len(global_qualities) == 0:  # This printer doesn't override the global qualities.
             global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter", global_quality = True)  # Otherwise pick the global global qualities.
         for global_quality in global_qualities:
