@@ -1,3 +1,6 @@
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -5,31 +8,24 @@ from typing import Any, Dict, List
 
 from cura.Settings.IntentManager import IntentManager
 from cura.Machines.QualityGroup import QualityGroup
-from cura.Machines.QualityManager import QualityManager
 
 from tests.Settings.MockContainer import MockContainer
 
+@pytest.fixture()
+def mock_container_tree() -> MagicMock:
+    container_tree = MagicMock()
+    container_tree.getCurrentQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
+    return container_tree
 
 @pytest.fixture()
-def quality_manager(application, container_registry, global_stack) -> QualityManager:
-    application.getGlobalContainerStack = MagicMock(return_value = global_stack)
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-            manager = QualityManager()
-    return manager
-
-
-@pytest.fixture()
-def intent_manager(application, extruder_manager, machine_manager, quality_manager, container_registry, global_stack) -> IntentManager:
+def intent_manager(application, extruder_manager, machine_manager, container_registry, global_stack) -> IntentManager:
     application.getExtruderManager = MagicMock(return_value = extruder_manager)
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     application.getMachineManager = MagicMock(return_value = machine_manager)
-    application.getQualityManager = MagicMock(return_value = quality_manager)
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             manager = IntentManager()
     return manager
-
 
 mocked_intent_metadata = [
     {"id": "um3_aa4_pla_smooth_normal", "GUID": "abcxyz", "definition": "ultimaker3", "variant": "AA 0.4",
@@ -65,14 +61,12 @@ def mockFindContainers(**kwargs) -> List[MockContainer]:
     return result
 
 
-def doSetup(application, extruder_manager, quality_manager, container_registry, global_stack) -> None:
+def doSetup(application, extruder_manager, container_registry, global_stack) -> None:
     container_registry.findContainersMetadata = MagicMock(side_effect = mockFindMetadata)
     container_registry.findContainers = MagicMock(side_effect = mockFindContainers)
 
-    quality_manager.getQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
-    for _, qualitygroup in mocked_qualitygroup_metadata.items():
+    for qualitygroup in mocked_qualitygroup_metadata.values():
         qualitygroup.node_for_global = MagicMock(name = "Node for global")
-    application.getQualityManager = MagicMock(return_value = quality_manager)
 
     global_stack.definition = MockContainer({"id": "ultimaker3"})
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
@@ -100,42 +94,45 @@ def test_intentCategories(application, intent_manager, container_registry):
             assert "smooth" in categories, "smooth should be in categories"
 
 
-def test_getCurrentAvailableIntents(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
-    doSetup(application, extruder_manager, quality_manager, container_registry, global_stack)
+def test_getCurrentAvailableIntents(application, extruder_manager, intent_manager, container_registry, global_stack, mock_container_tree):
+    doSetup(application, extruder_manager, container_registry, global_stack)
 
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-            intents = intent_manager.getCurrentAvailableIntents()
-            assert ("smooth", "normal") in intents
-            assert ("strong", "abnorm") in intents
-            #assert ("default", "normal") in intents  # Pending to-do in 'IntentManager'.
-            #assert ("default", "abnorm") in intents  # Pending to-do in 'IntentManager'.
-            assert len(intents) == 2  # Or 4? pending to-do in 'IntentManager'.
-
-
-def test_currentAvailableIntentCategories(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
-    doSetup(application, extruder_manager, quality_manager, container_registry, global_stack)
-
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
-            with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value=extruder_manager)):
-                categories = intent_manager.currentAvailableIntentCategories()
-                assert "default" in categories  # Currently inconsistent with 'currentAvailableIntents'!
-                assert "smooth" in categories
-                assert "strong" in categories
-                assert len(categories) == 3
-
-
-def test_selectIntent(application, extruder_manager, quality_manager, intent_manager, container_registry, global_stack):
-    doSetup(application, extruder_manager, quality_manager, container_registry, global_stack)
-
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
-            with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value=extruder_manager)):
+    with patch("cura.Machines.ContainerTree.ContainerTree.getInstance", MagicMock(return_value = mock_container_tree)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+            with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
                 intents = intent_manager.getCurrentAvailableIntents()
-                for intent, quality in intents:
-                    intent_manager.selectIntent(intent, quality)
-                    extruder_stacks = extruder_manager.getUsedExtruderStacks()
-                    assert len(extruder_stacks) == 2
-                    assert extruder_stacks[0].intent.getMetaDataEntry("intent_category") == intent
-                    assert extruder_stacks[1].intent.getMetaDataEntry("intent_category") == intent
+                assert ("smooth", "normal") in intents
+                assert ("strong", "abnorm") in intents
+                #assert ("default", "normal") in intents  # Pending to-do in 'IntentManager'.
+                #assert ("default", "abnorm") in intents  # Pending to-do in 'IntentManager'.
+                assert len(intents) == 2  # Or 4? pending to-do in 'IntentManager'.
+
+
+def test_currentAvailableIntentCategories(application, extruder_manager, intent_manager, container_registry, global_stack, mock_container_tree):
+    doSetup(application, extruder_manager, container_registry, global_stack)
+
+    with patch("cura.Machines.ContainerTree.ContainerTree.getInstance", MagicMock(return_value = mock_container_tree)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+            with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+                with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value = extruder_manager)):
+                    categories = intent_manager.currentAvailableIntentCategories()
+                    assert "default" in categories  # Currently inconsistent with 'currentAvailableIntents'!
+                    assert "smooth" in categories
+                    assert "strong" in categories
+                    assert len(categories) == 3
+
+
+def test_selectIntent(application, extruder_manager, intent_manager, container_registry, global_stack, mock_container_tree):
+    doSetup(application, extruder_manager, container_registry, global_stack)
+
+    with patch("cura.Machines.ContainerTree.ContainerTree.getInstance", MagicMock(return_value = mock_container_tree)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+            with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+                with patch("cura.Settings.ExtruderManager.ExtruderManager.getInstance", MagicMock(return_value = extruder_manager)):
+                    intents = intent_manager.getCurrentAvailableIntents()
+                    for intent, quality in intents:
+                        intent_manager.selectIntent(intent, quality)
+                        extruder_stacks = extruder_manager.getUsedExtruderStacks()
+                        assert len(extruder_stacks) == 2
+                        assert extruder_stacks[0].intent.getMetaDataEntry("intent_category") == intent
+                        assert extruder_stacks[1].intent.getMetaDataEntry("intent_category") == intent
