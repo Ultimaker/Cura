@@ -396,6 +396,25 @@ class CuraContainerRegistry(ContainerRegistry):
 
         return None
 
+    @override(ContainerRegistry)
+    def saveDirtyContainers(self) -> None:
+        # Lock file for "more" atomically loading and saving to/from config dir.
+        with self.lockFile():
+            # Save base files first
+            for instance in self.findDirtyContainers(container_type=InstanceContainer):
+                if instance.getMetaDataEntry("removed"):
+                    continue
+                if instance.getId() == instance.getMetaData().get("base_file"):
+                    self.saveContainer(instance)
+
+            for instance in self.findDirtyContainers(container_type=InstanceContainer):
+                if instance.getMetaDataEntry("removed"):
+                    continue
+                self.saveContainer(instance)
+
+            for stack in self.findContainerStacks():
+                self.saveContainer(stack)
+
     ##  Gets a list of profile writer plugins
     #   \return List of tuples of (plugin_id, meta_data).
     def _getIOPlugins(self, io_type):
