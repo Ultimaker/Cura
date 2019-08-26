@@ -5,11 +5,12 @@ from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.Interfaces import ContainerInterface
-import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from UM.Signal import Signal
+import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.MachineNode import MachineNode
+from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
 
-from typing import Dict, List, TYPE_CHECKING
+from typing import Dict, TYPE_CHECKING
 import time
 
 if TYPE_CHECKING:
@@ -63,6 +64,8 @@ class ContainerTree:
         start_time = time.time()
         all_stacks = ContainerRegistry.getInstance().findContainerStacks()
         for stack in all_stacks:
+            if not isinstance(stack, GlobalStack):
+                continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
             definition_id = stack.definition.getId()
             if definition_id not in self.machines:
                 self.machines[definition_id] = MachineNode(definition_id)
