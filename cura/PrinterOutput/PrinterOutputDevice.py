@@ -222,7 +222,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _updateUniqueConfigurations(self) -> None:
         all_configurations = set()
         for printer in self._printers:
-            if printer.printerConfiguration is not None:
+            if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
         new_configurations = sorted(all_configurations, key = lambda config: config.printerType)
