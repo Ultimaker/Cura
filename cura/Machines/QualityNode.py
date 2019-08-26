@@ -20,6 +20,10 @@ class QualityNode(ContainerNode):
         super().__init__(container_id)
         self.parent = parent
         self.intents = {}  # type: Dict[str, IntentNode]
+
+        my_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0]
+        self.quality_type = my_metadata["quality_type"]
+
         self._loadAll()
 
     def _loadAll(self) -> None:

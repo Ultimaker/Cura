@@ -3,6 +3,7 @@
 
 from typing import Any, TYPE_CHECKING
 
+from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
@@ -31,6 +32,28 @@ class MaterialNode(ContainerNode):
         self._loadAll()
         container_registry.containerRemoved.connect(self._onRemoved)
         container_registry.containerMetaDataChanged.connect(self._onMetadataChanged)
+
+    ##  Finds the preferred quality for this printer with this material and this
+    #   variant loaded.
+    #
+    #   If the preferred quality is not available, an arbitrary quality is
+    #   returned. If there is a configuration mistake (like a typo in the
+    #   preferred quality) this returns a random available quality. If there are
+    #   no available qualities, this will return the empty quality node.
+    #   \return The node for the preferred quality, or any arbitrary quality if
+    #   there is no match.
+    def preferredQuality(self) -> QualityNode:
+        for quality_id, quality_node in self.qualities.items():
+            if self.variant.machine.preferred_quality_type == quality_node.quality_type:
+                return quality_node
+        fallback = next(iter(self.qualities.values()))  # Should only happen with empty quality node.
+        Logger.log("w", "Could not find preferred quality type {preferred_quality_type} for material {material_id} and variant {variant_id}, falling back to {fallback}.".format(
+            preferred_quality_type = self.variant.machine.preferred_quality_type,
+            material_id = self.container_id,
+            variant_id = self.variant.container_id,
+            fallback = fallback.container_id
+        ))
+        return fallback
 
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()

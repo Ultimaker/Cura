@@ -71,12 +71,14 @@ class VariantNode(ContainerNode):
     ##  Finds the preferred material for this printer with this nozzle in one of
     #   the extruders.
     #
-    #   If there is no material here (because the printer has no materials or
-    #   because there are no matching material profiles), None is returned.
+    #   If the preferred material is not available, an arbitrary material is
+    #   returned. If there is a configuration mistake (like a typo in the
+    #   preferred material) this returns a random available material. If there
+    #   are no available materials, this will return the empty material node.
     #   \param approximate_diameter The desired approximate diameter of the
     #   material.
-    #   \return The node for the preferred material, or None if there is no
-    #   match.
+    #   \return The node for the preferred material, or any arbitrary material
+    #   if there is no match.
     def preferredMaterial(self, approximate_diameter) -> MaterialNode:
         for base_material, material_node in self.materials.items():
             if self.machine.preferred_material in base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
