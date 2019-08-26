@@ -50,7 +50,7 @@ class PrinterOutputModel(QObject):
 
         self._active_printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
                                                                      self._extruders]
-
+        self._active_printer_configuration.configurationChanged.connect(self.configurationChanged)
         self._available_printer_configurations = []  # type: List[PrinterConfigurationModel]
 
         self._camera_url = QUrl()  # type: QUrl
