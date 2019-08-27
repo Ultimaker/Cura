@@ -184,9 +184,6 @@ class SimulationView(CuraView):
         return self._nozzle_node
 
     def _onSceneChanged(self, node: "SceneNode") -> None:
-        if node.getMeshData() is None:
-            self.resetLayerData()
-
         self.setActivity(False)
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
