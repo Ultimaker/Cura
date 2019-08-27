@@ -1231,10 +1231,8 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         Logger.log("d", "Updating quality/quality_changes due to material change")
-        current_quality_type = None
-        if self._current_quality_group:
-            current_quality_type = self._current_quality_group.quality_type
-        candidate_quality_groups = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
+        current_quality_type = self._global_container_stack.quality.getMetaDataEntry("quality_type")
+        candidate_quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
         available_quality_types = {qt for qt, g in candidate_quality_groups.items() if g.is_available}
 
         Logger.log("d", "Current quality type = [%s]", current_quality_type)
