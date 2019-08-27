@@ -226,8 +226,6 @@ class XmlMaterialProfile(InstanceContainer):
         machine_container_map = {}  # type: Dict[str, InstanceContainer]
         machine_variant_map = {}  # type: Dict[str, Dict[str, Any]]
 
-        container_tree = ContainerTree.getInstance()
-
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
         all_containers = registry.findInstanceContainers(base_file = root_material_id)
 
@@ -247,7 +245,7 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_container_map[definition_id] = container
                 continue
 
-            variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", str(VariantType.NOZZLE)),
+            variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", "nozzle"),
                             "material_container": container}
             machine_variant_map[definition_id][variant_name] = variant_dict
 
