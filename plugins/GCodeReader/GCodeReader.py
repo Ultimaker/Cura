@@ -2,7 +2,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import Optional, Union, List, TYPE_CHECKING
 
 from UM.FileHandler.FileReader import FileReader
 from UM.Mesh.MeshReader import MeshReader
@@ -10,10 +10,14 @@ from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
-from cura.Scene.CuraSceneNode import CuraSceneNode
-
 catalog = i18nCatalog("cura")
+
+from .FlavorParser import FlavorParser
 from . import MarlinFlavorParser, RepRapFlavorParser
+
+if TYPE_CHECKING:
+    from UM.Scene.SceneNode import SceneNode
+    from cura.Scene.CuraSceneNode import CuraSceneNode
 
 
 # Class for loading and parsing G-code files
@@ -34,7 +38,7 @@ class GCodeReader(MeshReader):
         )
         self._supported_extensions = [".gcode", ".g"]
 
-        self._flavor_reader = None
+        self._flavor_reader = None  # type: Optional[FlavorParser]
 
         Application.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
@@ -59,9 +63,15 @@ class GCodeReader(MeshReader):
         return self.preReadFromStream(file_data, args, kwargs)
 
     def readFromStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
+        if self._flavor_reader is None:
+            return None
         return self._flavor_reader.processGCodeStream(stream, filename)
 
-    def _read(self, file_name: str) -> Optional["CuraSceneNode"]:
+    def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
         with open(file_name, "r", encoding = "utf-8") as file:
             file_data = file.read()
-        return self.readFromStream(file_data, file_name)
+        result = []  # type: List[SceneNode]
+        node = self.readFromStream(file_data, file_name)
+        if node is not None:
+            result.append(node)
+        return result

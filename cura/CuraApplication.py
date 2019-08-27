@@ -1331,9 +1331,8 @@ class CuraApplication(QtApplication):
         gcode_filename = None  # type: Optional[str]
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
             # Objects loaded from Gcode should also be included.
-            gcode_list_decorator = node.getDecorator(GCodeListDecorator)
-            if gcode_list_decorator is not None and gcode_list_decorator.getGcodeFileName():
-                gcode_filename = gcode_list_decorator.getGcodeFileName()
+            gcode_filename = node.callDecoration("getGcodeFileName")
+            if gcode_filename is not None:
                 break
 
             if not isinstance(node, CuraSceneNode) or not node.getMeshData():
@@ -1353,7 +1352,6 @@ class CuraApplication(QtApplication):
 
         for node in nodes:
             mesh_data = node.getMeshData()
-            gcode_list_decorator = node.getDecorator(GCodeListDecorator)
             if mesh_data and mesh_data.getFileName():
                 job = ReadMeshJob(mesh_data.getFileName())
                 job._node = node  # type: ignore
