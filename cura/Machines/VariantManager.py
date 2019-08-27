@@ -52,62 +52,6 @@ class VariantManager:
         self._exclude_variant_id_list = ["empty_variant"]
 
     #
-    # Initializes the VariantManager including:
-    #  - initializing the variant lookup table based on the metadata in ContainerRegistry.
-    #
-    def initialize(self) -> None:
-        self._machine_to_variant_dict_map = OrderedDict()
-        self._machine_to_buildplate_dict_map = OrderedDict()
-
-        # Cache all variants from the container registry to a variant map for better searching and organization.
-        container_registry = CuraContainerRegistry.getInstance
-        variant_metadata_list = container_registry.findContainersMetadata(type = "variant")
-        for variant_metadata in variant_metadata_list:
-            if variant_metadata["id"] in self._exclude_variant_id_list:
-                Logger.log("d", "Exclude variant [%s]", variant_metadata["id"])
-                continue
-
-            variant_name = variant_metadata["name"]
-            variant_definition = variant_metadata["definition"]
-            if variant_definition not in self._machine_to_variant_dict_map:
-                self._machine_to_variant_dict_map[variant_definition] = OrderedDict()
-                for variant_type in ALL_VARIANT_TYPES:
-                    self._machine_to_variant_dict_map[variant_definition][variant_type] = dict()
-
-            try:
-                variant_type = variant_metadata["hardware_type"]
-            except KeyError:
-                Logger.log("w", "Variant %s does not specify a hardware_type; assuming 'nozzle'", variant_metadata["id"])
-                variant_type = VariantType.NOZZLE
-            variant_type = VariantType(variant_type)
-            variant_dict = self._machine_to_variant_dict_map[variant_definition][variant_type]
-            if variant_name in variant_dict:
-                # ERROR: duplicated variant name.
-                ConfigurationErrorMessage.getInstance().addFaultyContainers(variant_metadata["id"])
-                continue #Then ignore this variant. This now chooses one of the two variants arbitrarily and deletes the other one! No guarantees!
-
-            variant_dict[variant_name] = ContainerNode(metadata = variant_metadata)
-
-            # If the variant is a buildplate then fill also the buildplate map
-            if variant_type == VariantType.BUILD_PLATE:
-                if variant_definition not in self._machine_to_buildplate_dict_map:
-                    self._machine_to_buildplate_dict_map[variant_definition] = OrderedDict()
-
-                try:
-                    variant_container = container_registry.findContainers(type = "variant", id = variant_metadata["id"])[0]
-                except IndexError as e:
-                    # It still needs to break, but we want to know what variant ID made it break.
-                    msg = "Unable to find build plate variant with the id [%s]" % variant_metadata["id"]
-                    Logger.logException("e", msg)
-                    raise IndexError(msg)
-
-                buildplate_type = variant_container.getProperty("machine_buildplate_type", "value")
-                if buildplate_type not in self._machine_to_buildplate_dict_map[variant_definition]:
-                    self._machine_to_variant_dict_map[variant_definition][buildplate_type] = dict()
-
-                self._machine_to_buildplate_dict_map[variant_definition][buildplate_type] = variant_dict[variant_name]
-
-    #
     # Gets the variant InstanceContainer with the given information.
     # Almost the same as getVariantMetadata() except that this returns an InstanceContainer if present.
     #
