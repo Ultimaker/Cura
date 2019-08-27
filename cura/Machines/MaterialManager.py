@@ -298,7 +298,6 @@ class MaterialManager(QObject):
 
         # Create a new ID & container to hold the data.
         new_containers = []
-        container_registry = CuraContainerRegistry.getInstance()
         if new_base_id is None:
             new_base_id = container_registry.uniqueName(base_container.getId())
         new_base_container = copy.deepcopy(base_container)
@@ -334,9 +333,10 @@ class MaterialManager(QObject):
 
         # if the duplicated material was favorite then the new material should also be added to favorite.
         if root_material_id in self.getFavorites():
-            self.addFavorite(new_base_id)
+            cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().addFavorite(new_base_id)
 
         return new_base_id
+
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
     # Returns the root material ID of the duplicated material if successful.

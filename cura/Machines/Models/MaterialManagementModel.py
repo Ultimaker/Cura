@@ -1,11 +1,13 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import copy  # To duplicate materials.
 from PyQt5.QtCore import QObject, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
-from typing import TYPE_CHECKING
+from typing import Any, Dict, Optional, TYPE_CHECKING
 
 from UM.Logger import Logger
 
+import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
 
 if TYPE_CHECKING:
@@ -63,3 +65,65 @@ class MaterialManagementModel(QObject):
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
         for material_metadata in materials_this_base_file:
             container_registry.removeContainer(material_metadata["id"])
+
+    ##  Creates a duplicate of a material with the same GUID and base_file
+    #   metadata.
+    #   \param material_node The node representing the material to duplicate.
+    #   \param new_base_id A new material ID for the base material. The IDs of
+    #   the submaterials will be based off this one. If not provided, a material
+    #   ID will be generated automatically.
+    #   \param new_metadata Metadata for the new material. If not provided, this
+    #   will be duplicated from the original material.
+    #   \return The root material ID of the duplicate material.
+    @pyqtSlot("QVariant", result = str)
+    def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        container_registry = CuraContainerRegistry.getInstance()
+
+        root_materials = container_registry.findContainers(id = material_node.base_file)
+        if not root_materials:
+            Logger.log("i", "Unable to duplicate the root material with ID {root_id}, because it doesn't exist.".format(root_id = material_node.base_file))
+            return None
+        root_material = root_materials[0]
+
+        # Ensure that all settings are saved.
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
+
+        # Create a new ID and container to hold the data.
+        if new_base_id is None:
+            new_base_id = container_registry.uniqueName(root_material.getId())
+        new_root_material = copy.deepcopy(root_material)
+        new_root_material.getMetaData()["id"] = new_base_id
+        new_root_material.getMetaData()["base_file"] = new_base_id
+        if new_metadata is not None:
+            new_root_material.getMetaData().update(new_metadata)
+        new_containers = [new_root_material]
+
+        # Clone all submaterials.
+        for container_to_copy in container_registry.findInstanceContainers(base_file = material_node.base_file):
+            if container_to_copy.getId() == material_node.base_file:
+                continue  # We already have that one. Skip it.
+            new_id = new_base_id
+            definition = container_to_copy.getMetaDataEntry("definition")
+            if definition != "fdmprinter":
+                new_id += "_" + definition
+                variant_name = container_to_copy.getMetaDataEntry("variant_name")
+                if variant_name:
+                    new_id += "_" + variant_name.replace(" ", "_")
+
+            new_container = copy.deepcopy(container_to_copy)
+            new_container.getMetaData()["id"] = new_id
+            new_container.getMetaData()["base_file"] = new_base_id
+            if new_metadata is not None:
+                new_container.getMetaData().update(new_metadata)
+            new_containers.append(new_container)
+
+        for container_to_add in new_containers:
+            container_to_add.setDirty(True)
+            container_registry.addContainer(container_to_add)
+
+        # If the duplicated material was favorite then the new material should also be added to the favorites.
+        # TODO: Move favourites to here.
+        #if material_node.base_file in self.getFavorites():
+        #    self.addFavorite(new_base_id)
+
+        return new_base_id
