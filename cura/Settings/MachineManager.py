@@ -590,11 +590,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityType(self) -> str:
-        quality_type = ""
-        if self._active_container_stack:
-            if self._current_quality_group:
-                quality_type = self._current_quality_group.quality_type
-        return quality_type
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return ""
+        return global_stack.quality.getMetaDataEntry("quality_type")
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualitySupported(self) -> bool:
