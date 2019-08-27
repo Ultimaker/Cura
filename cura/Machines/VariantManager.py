@@ -47,7 +47,6 @@ class VariantManager:
 
     def __init__(self) -> None:
         self._machine_to_variant_dict_map = dict()  # type: Dict[str, Dict["VariantType", Dict[str, ContainerNode]]]
-        self._machine_to_buildplate_dict_map = dict() # type: Dict[str, Dict[str, ContainerNode]]
 
         self._exclude_variant_id_list = ["empty_variant"]
 
@@ -97,8 +96,3 @@ class VariantManager:
         if preferred_variant_name:
             node = self.getVariantNode(machine_definition_id, preferred_variant_name, variant_type)
         return node
-
-    def getBuildplateVariantNode(self, machine_definition_id: str, buildplate_type: str) -> Optional["ContainerNode"]:
-        if machine_definition_id in self._machine_to_buildplate_dict_map:
-            return self._machine_to_buildplate_dict_map[machine_definition_id].get(buildplate_type)
-        return None
