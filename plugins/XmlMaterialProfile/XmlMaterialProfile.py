@@ -226,8 +226,6 @@ class XmlMaterialProfile(InstanceContainer):
         machine_container_map = {}  # type: Dict[str, InstanceContainer]
         machine_variant_map = {}  # type: Dict[str, Dict[str, Any]]
 
-        container_tree = ContainerTree.getInstance()
-
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
         all_containers = registry.findInstanceContainers(base_file = root_material_id)
 
