@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 Item
 {
@@ -40,6 +40,11 @@ Item
     {
         id: catalog
         name: "cura"
+    }
+
+    Cura.MaterialManagementModel
+    {
+        id: materialManagement
     }
 
     function resetExpandedActiveMaterial()
@@ -147,7 +152,7 @@ Item
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManager.canMaterialBeRemoved(base.currentItem.container_node)
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && materialManagement.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
             {
