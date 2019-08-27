@@ -226,7 +226,7 @@ class XmlMaterialProfile(InstanceContainer):
         machine_container_map = {} # type: Dict[str, InstanceContainer]
         machine_variant_map = {} # type: Dict[str, Dict[str, Any]]
 
-        variant_manager = CuraApplication.getInstance().getVariantManager()
+        container_tree = ContainerTree.getInstance()
 
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
         all_containers = registry.findInstanceContainers(base_file = root_material_id)
@@ -243,16 +243,15 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_variant_map[definition_id] = {}
 
             variant_name = container.getMetaDataEntry("variant_name")
-            if variant_name:
-                variant_node = variant_manager.getVariantNode(definition_id, variant_name)
-                if variant_node is None:
-                    continue
-                variant_dict = {"variant_node":variant_node ,
-                                "material_container": container}
-                machine_variant_map[definition_id][variant_name] = variant_dict
-                continue
+            if not variant_name:
+                machine_container_map[definition_id] = container
 
-            machine_container_map[definition_id] = container
+            if variant_name not in container_tree.machines[definition_id].variants:
+                continue
+            variant_node = container_tree.machines[definition_id].variants[variant_name]
+            variant_dict = {"variant_node": variant_node,
+                            "material_container": container}
+            machine_variant_map[definition_id][variant_name] = variant_dict
 
         # Map machine human-readable names to IDs
         product_id_map = self.getProductIdMap()
