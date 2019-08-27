@@ -84,7 +84,7 @@ class SimulationView(CuraView):
         self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
         self._global_container_stack = None  # type: Optional[ContainerStack]
-        self._proxy = SimulationViewProxy()
+        self._proxy = None
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
         self._resetSettings()
@@ -441,6 +441,8 @@ class SimulationView(CuraView):
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        if self._proxy is None:
+            self._proxy = SimulationViewProxy(self)
         return self._proxy
 
     def endRendering(self) -> None:
