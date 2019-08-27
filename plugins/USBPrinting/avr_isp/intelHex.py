@@ -5,13 +5,16 @@ See: http://en.wikipedia.org/wiki/Intel_HEX
 This is a python 3 conversion of the code created by David Braam for the Cura project.
 """
 import io
+from typing import List
+
 from UM.Logger import Logger
 
-def readHex(filename):
+
+def readHex(filename: str) -> List[int]:
     """
     Read an verify an intel hex file. Return the data as an list of bytes.
     """
-    data = []
+    data = []  # type: List[int]
     extra_addr = 0
     f = io.open(filename, "r", encoding = "utf-8")
     for line in f:
