@@ -1072,7 +1072,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _getMetaDataDictFromSerializedStack(self, serialized: str) -> Dict[str, str]:
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
-        return parser["metadata"]
+        return dict(parser["metadata"])
 
     def _getMaterialLabelFromSerialized(self, serialized):
         data = ET.fromstring(serialized)
