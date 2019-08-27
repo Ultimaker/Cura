@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, Dict
+from typing import TYPE_CHECKING, Optional, Dict, List
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
@@ -14,6 +14,7 @@ import cura.CuraApplication
 from cura.Settings.ExtruderStack import ExtruderStack
 
 from cura.Machines.ContainerTree import ContainerTree  # The implementation that replaces this manager, to keep the deprecated interface working.
+from .QualityChangesGroup import QualityChangesGroup
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
@@ -75,7 +76,7 @@ class QualityManager(QObject):
             return
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
-    def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
+    def getQualityChangesGroups(self, machine: "GlobalStack") -> List[QualityChangesGroup]:
         variant_names = [extruder.variant.getName() for extruder in machine.extruders.values()]
         material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extruders.values()]
         extruder_enabled = [extruder.isEnabled for extruder in machine.extruders.values()]

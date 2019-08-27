@@ -44,11 +44,11 @@ class QualityManagementModel(ListModel):
             return
 
         quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
-        quality_changes_group_dict = self._quality_manager.getQualityChangesGroups(global_stack)
+        quality_changes_group_list = self._quality_manager.getQualityChangesGroups(global_stack)
 
         available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
                                       if quality_group.is_available)
-        if not available_quality_types and not quality_changes_group_dict:
+        if not available_quality_types and not quality_changes_group_list:
             # Nothing to show
             self.setItems([])
             return
@@ -69,7 +69,7 @@ class QualityManagementModel(ListModel):
 
         # Create quality_changes group items
         quality_changes_item_list = []
-        for quality_changes_group in quality_changes_group_dict.values():
+        for quality_changes_group in quality_changes_group_list:
             quality_group = quality_group_dict.get(quality_changes_group.quality_type)
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,

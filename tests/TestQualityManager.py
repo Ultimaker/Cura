@@ -61,7 +61,7 @@ def test_getQualityChangesGroup(quality_mocked_application):
     manager = QualityManager(quality_mocked_application)
     manager.initialize()
 
-    assert "herp" in manager.getQualityChangesGroups(mocked_stack)
+    assert "herp" in [qcg.name for qcg in manager.getQualityChangesGroups(mocked_stack)]
 
 
 @pytest.mark.skip("Doesn't work on remote")

@@ -1003,11 +1003,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
-            quality_changes_group_dict = quality_manager.getQualityChangesGroups(global_stack)
-            if self._quality_changes_to_apply not in quality_changes_group_dict:
+            quality_changes_group_list = quality_manager.getQualityChangesGroups(global_stack)
+            quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
+            if not quality_changes_group:
                 Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
                 return
-            quality_changes_group = quality_changes_group_dict[self._quality_changes_to_apply]
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
             self._quality_type_to_apply = self._quality_type_to_apply.lower()
