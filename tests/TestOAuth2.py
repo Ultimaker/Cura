@@ -1,8 +1,9 @@
-import webbrowser
 from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import requests
+
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
@@ -172,12 +173,12 @@ def test_storeAuthData(get_user_profile) -> None:
 
 @patch.object(LocalAuthorizationServer, "stop")
 @patch.object(LocalAuthorizationServer, "start")
-@patch.object(webbrowser, "open_new")
-def test_localAuthServer(webbrowser_open, start_auth_server, stop_auth_server) -> None:
+@patch.object(QDesktopServices, "openUrl")
+def test_localAuthServer(QDesktopServices_openUrl, start_auth_server, stop_auth_server) -> None:
     preferences = Preferences()
     authorization_service = AuthorizationService(OAUTH_SETTINGS, preferences)
     authorization_service.startAuthorizationFlow()
-    assert webbrowser_open.call_count == 1
+    assert QDesktopServices_openUrl.call_count == 1
 
     # Ensure that the Authorization service tried to start the server.
     assert start_auth_server.call_count == 1

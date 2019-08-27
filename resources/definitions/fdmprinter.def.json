@@ -205,6 +205,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_heated_build_volume":
+                {
+                    "label": "Has Build Volume Temperature Stabilization",
+                    "description": "Whether the machine is able to stabilize the build volume temperature.",
+                    "default_value": false,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_center_is_zero":
                 {
                     "label": "Is Center Origin",
@@ -2088,7 +2098,7 @@
                     "default_value": 210,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": "machine_nozzle_temp_enabled",
+                    "enabled": false,
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
                     "minimum_value": "-273.15"
@@ -2104,7 +2114,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
-                    "enabled": true,
+                    "enabled": "machine_heated_build_volume",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -2191,9 +2201,9 @@
                     "resolve": "max(extruderValues('default_material_bed_temperature'))",
                     "default_value": 60,
                     "minimum_value": "-273.15",
-                    "minimum_value_warning": "0",
+                    "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
-                    "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -2208,7 +2218,7 @@
                     "value": "default_material_bed_temperature",
                     "resolve": "max(extruderValues('material_bed_temperature'))",
                     "minimum_value": "-273.15",
-                    "minimum_value_warning": "0",
+                    "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
@@ -2225,7 +2235,7 @@
                     "default_value": 60,
                     "value": "resolveOrValue('material_bed_temperature')",
                     "minimum_value": "-273.15",
-                    "minimum_value_warning": "max(extruderValues('material_bed_temperature'))",
+                    "minimum_value_warning": "max(build_volume_temperature, max(extruderValues('material_bed_temperature')))",
                     "maximum_value_warning": "130",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,

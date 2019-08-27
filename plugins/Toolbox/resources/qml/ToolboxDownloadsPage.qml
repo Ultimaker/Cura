@@ -10,9 +10,11 @@ ScrollView
     clip: true
     width: parent.width
     height: parent.height
+    contentHeight: mainColumn.height
 
     Column
     {
+        id: mainColumn
         width: base.width
         spacing: UM.Theme.getSize("default_margin").height
 

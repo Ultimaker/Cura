@@ -331,7 +331,7 @@ Cura.MachineAction
 
             Label
             {
-                text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
                 width: parent.width
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering

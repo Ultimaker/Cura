@@ -59,6 +59,9 @@ class MachineInfo:
         self.container_id = None
         self.name = None
         self.definition_id = None
+
+        self.metadata_dict = {}  # type: Dict[str, str]
+
         self.quality_type = None
         self.custom_quality_name = None
         self.quality_changes_info = None
@@ -342,6 +345,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         global_stack_id = self._stripFileToId(global_stack_file)
         serialized = archive.open(global_stack_file).read().decode("utf-8")
         machine_name = self._getMachineNameFromSerializedStack(serialized)
+        self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
+
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
         existing_global_stack = None
@@ -832,7 +837,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._machine_info.quality_changes_info.name = quality_changes_name
 
-    def _clearStack(self, stack):
+    @staticmethod
+    def _clearStack(stack):
         application = CuraApplication.getInstance()
 
         stack.definitionChanges.clear()
@@ -978,6 +984,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.setMetaDataEntry("enabled", "True")
             extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
+
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
@@ -985,6 +996,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_manager = Application.getInstance().getQualityManager()
 
         machine_manager.setActiveMachine(global_stack.getId())
+
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
             quality_changes_group_dict = quality_manager.getQualityChangesGroups(global_stack)
@@ -1012,7 +1028,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 
-    def _stripFileToId(self, file):
+    @staticmethod
+    def _stripFileToId(file):
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file)
         file = mime_type.stripExtension(file)
         return file.replace("Cura/", "")
@@ -1021,7 +1038,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))
 
     ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
-    def _getContainerIdListFromSerialized(self, serialized):
+    @staticmethod
+    def _getContainerIdListFromSerialized(serialized):
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
 
@@ -1042,12 +1060,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return container_ids
 
-    def _getMachineNameFromSerializedStack(self, serialized):
+    @staticmethod
+    def _getMachineNameFromSerializedStack(serialized):
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
 
-    def _getMaterialLabelFromSerialized(self, serialized):
+    @staticmethod
+    def _getMetaDataDictFromSerializedStack(serialized: str) -> Dict[str, str]:
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser.read_string(serialized)
+        return dict(parser["metadata"])
+
+    @staticmethod
+    def _getMaterialLabelFromSerialized(serialized):
         data = ET.fromstring(serialized)
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:

@@ -56,7 +56,7 @@ class CloudApiClient:
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
-        url = "{}/clusters".format(self.CLUSTER_API_ROOT)
+        url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, CloudClusterResponse)
 

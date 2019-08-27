@@ -9,7 +9,6 @@ from typing import Any, cast, Dict, Optional, List, Union
 from PyQt5.QtWidgets import QMessageBox
 
 from UM.Decorators import override
-from UM.PluginObject import PluginObject
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -21,7 +20,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
-from UM.Util import parseBool
 from UM.Resources import Resources
 from cura.ReaderWriters.ProfileWriter import ProfileWriter
 
@@ -29,6 +27,7 @@ from . import ExtruderStack
 from . import GlobalStack
 
 import cura.CuraApplication
+from cura.Settings.cura_empty_instance_containers import empty_quality_container
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
@@ -389,12 +388,32 @@ class CuraContainerRegistry(ContainerRegistry):
         # successfully imported but then fail to show up.
         quality_manager = cura.CuraApplication.CuraApplication.getInstance()._quality_manager
         quality_group_dict = quality_manager.getQualityGroupsForMachineDefinition(global_stack)
-        if quality_type not in quality_group_dict:
+        # "not_supported" profiles can be imported.
+        if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
 
         ContainerRegistry.getInstance().addContainer(profile)
 
         return None
+
+    @override(ContainerRegistry)
+    def saveDirtyContainers(self) -> None:
+        # Lock file for "more" atomically loading and saving to/from config dir.
+        with self.lockFile():
+            # Save base files first
+            for instance in self.findDirtyContainers(container_type=InstanceContainer):
+                if instance.getMetaDataEntry("removed"):
+                    continue
+                if instance.getId() == instance.getMetaData().get("base_file"):
+                    self.saveContainer(instance)
+
+            for instance in self.findDirtyContainers(container_type=InstanceContainer):
+                if instance.getMetaDataEntry("removed"):
+                    continue
+                self.saveContainer(instance)
+
+            for stack in self.findContainerStacks():
+                self.saveContainer(stack)
 
     ##  Gets a list of profile writer plugins
     #   \return List of tuples of (plugin_id, meta_data).

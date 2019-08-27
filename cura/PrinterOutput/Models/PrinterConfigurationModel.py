@@ -58,6 +58,14 @@ class PrinterConfigurationModel(QObject):
                 return False
         return self._printer_type != ""
 
+    def hasAnyMaterialLoaded(self) -> bool:
+        if not self.isValid():
+            return False
+        for configuration in self._extruder_configurations:
+            if configuration.activeMaterial and configuration.activeMaterial.type != "empty":
+                return True
+        return False
+
     def __str__(self):
         message_chunks = []
         message_chunks.append("Printer type: " + self._printer_type)

@@ -50,7 +50,14 @@ Component
             MonitorCarousel
             {
                 id: carousel
-                printers: OutputDevice.printers
+                printers:
+                {
+                    if (OutputDevice.receivedData)
+                    {
+                        return OutputDevice.printers
+                    }
+                    return [null]
+                }
             }
         }
 

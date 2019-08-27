@@ -12,9 +12,10 @@ import json
 import ssl
 import urllib.request
 import urllib.error
-import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
+import certifi
+
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
@@ -22,7 +23,6 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
@@ -352,11 +352,13 @@ class CrashHandler:
         # Convert data to bytes
         binary_data = json.dumps(self.data).encode("utf-8")
 
+        # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
+        context = ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
+        context.load_verify_locations(cafile = certifi.where())
         # Submit data
-        kwoptions = {"data": binary_data, "timeout": 5}
-
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
+        kwoptions = {"data": binary_data,
+                     "timeout": 5,
+                     "context": context}
 
         Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
         if not self.has_started:
