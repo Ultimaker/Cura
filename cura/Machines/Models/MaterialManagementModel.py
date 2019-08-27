@@ -86,7 +86,8 @@ class MaterialManagementModel(QObject):
         root_material = root_materials[0]
 
         # Ensure that all settings are saved.
-        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        application.saveSettings()
 
         # Create a new ID and container to hold the data.
         if new_base_id is None:
@@ -122,8 +123,9 @@ class MaterialManagementModel(QObject):
             container_registry.addContainer(container_to_add)
 
         # If the duplicated material was favorite then the new material should also be added to the favorites.
-        # TODO: Move favourites to here.
-        #if material_node.base_file in self.getFavorites():
-        #    self.addFavorite(new_base_id)
+        favorites_set = set(application.getPreferences().getValue("cura/favorite_materials").split(";"))
+        if material_node.base_file in favorites_set:
+            favorites_set.add(new_base_id)
+            application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites_set))
 
         return new_base_id
