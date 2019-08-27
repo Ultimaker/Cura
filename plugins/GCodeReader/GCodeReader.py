@@ -2,11 +2,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import Optional
+
 from UM.FileHandler.FileReader import FileReader
 from UM.Mesh.MeshReader import MeshReader
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
+
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 catalog = i18nCatalog("cura")
 from . import MarlinFlavorParser, RepRapFlavorParser
@@ -54,10 +58,10 @@ class GCodeReader(MeshReader):
             file_data = file.read()
         return self.preReadFromStream(file_data, args, kwargs)
 
-    def readFromStream(self, stream):
-        return self._flavor_reader.processGCodeStream(stream)
+    def readFromStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
+        return self._flavor_reader.processGCodeStream(stream, filename)
 
-    def _read(self, file_name):
+    def _read(self, file_name: str) -> Optional["CuraSceneNode"]:
         with open(file_name, "r", encoding = "utf-8") as file:
             file_data = file.read()
-        return self.readFromStream(file_data)
+        return self.readFromStream(file_data, file_name)
