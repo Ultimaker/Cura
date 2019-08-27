@@ -590,7 +590,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityType(self) -> str:
-        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             return ""
         return global_stack.quality.getMetaDataEntry("quality_type")
@@ -1546,10 +1546,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:
-        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
-            return CuraApplication.getInstance().empty_quality_container.getName()
-        if global_container_stack.qualityChanges != CuraApplication.getInstance().empty_quality_changes_container:
+            return empty_quality_container.getName()
+        if global_container_stack.qualityChanges != empty_quality_changes_container:
             return global_container_stack.qualityChanges.getName()
         return global_container_stack.quality.getName()
 
