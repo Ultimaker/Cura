@@ -61,7 +61,6 @@ class MachineManager(QObject):
         self._global_container_stack = None     # type: Optional[GlobalStack]
 
         self._current_root_material_id = {}  # type: Dict[str, str]
-        self._current_quality_group = None   # type: Optional[QualityGroup]
         self._current_quality_changes_group = None  # type: Optional[QualityChangesGroup]
 
         self._default_extruder_position = "0"  # to be updated when extruders are switched on and off
@@ -597,19 +596,17 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualitySupported(self) -> bool:
-        is_supported = False
-        if self._global_container_stack:
-            if self._current_quality_group:
-                is_supported = self._current_quality_group.is_available
-        return is_supported
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return False
+        return self.activeQualityGroup.is_available
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityExperimental(self) -> bool:
-        is_experimental = False
-        if self._global_container_stack:
-            if self._current_quality_group:
-                is_experimental = self._current_quality_group.is_experimental
-        return is_experimental
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_container_stack:
+            return False
+        return Util.parseBool(global_container_stack.quality.getMetaDataEntry("is_experimental", False))
 
     ##  Returns whether there is anything unsupported in the current set-up.
     #
@@ -1085,7 +1082,6 @@ class MachineManager(QObject):
     def _setEmptyQuality(self) -> None:
         if self._global_container_stack is None:
             return
-        self._current_quality_group = None
         self._current_quality_changes_group = None
         self._global_container_stack.quality = empty_quality_container
         self._global_container_stack.qualityChanges = empty_quality_changes_container
@@ -1109,7 +1105,6 @@ class MachineManager(QObject):
             if node.container is None:
                 return
 
-        self._current_quality_group = quality_group
         if empty_quality_changes:
             self._current_quality_changes_group = None
 
@@ -1174,7 +1169,6 @@ class MachineManager(QObject):
             extruder.quality = quality_container
             extruder.qualityChanges = quality_changes_container
 
-        self._current_quality_group = quality_group
         self._current_quality_changes_group = quality_changes_group
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1515,7 +1509,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
-        return self._current_quality_group
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack.quality == empty_quality_container:
+            return None
+        return ContainerTree.getInstance().getCurrentQualityGroups().get(self.activeQualityType)
 
     @pyqtSlot(QObject)
     def setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", no_dialog: bool = False) -> None:
@@ -1532,7 +1529,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._setQualityGroup(self._current_quality_group)
+            self._setQualityGroup(self.activeQualityGroup)
             for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
                 stack.userChanges.clear()
 
@@ -1555,7 +1552,8 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
-        return self._current_quality_group is None and self._current_quality_changes_group is None
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        return global_container_stack and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
 
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:
