@@ -83,6 +83,11 @@ class SimulationView(CuraView):
         self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
         self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
+        self._max_feedrate = sys.float_info.min
+        self._min_feedrate = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._proxy = None
         self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
