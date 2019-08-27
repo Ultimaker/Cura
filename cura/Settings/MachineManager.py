@@ -570,22 +570,15 @@ class MachineManager(QObject):
     #   This is indicated together with the name of the active quality profile.
     #
     #   \return The layer height of the currently active quality profile. If
-    #   there is no quality profile, this returns 0.
+    #   there is no quality profile, this returns the default layer height.
     @pyqtProperty(float, notify = activeQualityGroupChanged)
     def activeQualityLayerHeight(self) -> float:
         if not self._global_container_stack:
             return 0
-        if self._current_quality_changes_group:
-            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.qualityChanges.getId())
-            if isinstance(value, SettingFunction):
-                value = value(self._global_container_stack)
-            return value
-        elif self._current_quality_group:
-            value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.quality.getId())
-            if isinstance(value, SettingFunction):
-                value = value(self._global_container_stack)
-            return value
-        return 0
+        value = self._global_container_stack.getRawProperty("layer_height", "value", skip_until_container = self._global_container_stack.qualityChanges.getId())
+        if isinstance(value, SettingFunction):
+            value = value(self._global_container_stack)
+        return value
 
     @pyqtProperty(str, notify = activeVariantChanged)
     def globalVariantName(self) -> str:
