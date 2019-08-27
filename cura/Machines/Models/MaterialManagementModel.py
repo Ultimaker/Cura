@@ -4,14 +4,19 @@
 import copy  # To duplicate materials.
 from PyQt5.QtCore import QObject, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
 from typing import Any, Dict, Optional, TYPE_CHECKING
+import uuid  # To generate new GUIDs for new materials.
 
+from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry  # To find the sets of materials belonging to each other, and currently loaded extruder stacks.
 
 if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
+
+catalog = i18nCatalog("cura")
 
 ##  Proxy class to the materials page in the preferences.
 #
@@ -129,3 +134,33 @@ class MaterialManagementModel(QObject):
             application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites_set))
 
         return new_base_id
+
+    ##  Create a new material by cloning the preferred material for the current
+    #   material diameter and generate a new GUID.
+    #
+    #   The material type is explicitly left to be the one from the preferred
+    #   material, since this allows the user to still have SOME profiles to work
+    #   with.
+    #   \return The ID of the newly created material.
+    @pyqtSlot(result = str)
+    def createMaterial(self) -> str:
+        # Ensure all settings are saved.
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        application.saveSettings()
+
+        # Find the preferred material.
+        extruder_stack = application.getMachineManager().activeStack
+        active_variant_name = extruder_stack.variant.getName()
+        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
+        machine_node = ContainerTree.getInstance().machines[application.getGlobalContainerStack().definition.getId()]
+        preferred_material_node = machine_node.variants[active_variant_name].preferredMaterial(approximate_diameter)
+
+        # Create a new ID & new metadata for the new material.
+        new_id = CuraContainerRegistry.getInstance().uniqueName("custom_material")
+        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
+                        "brand": catalog.i18nc("@label", "Custom"),
+                        "GUID": str(uuid.uuid4()),
+                        }
+
+        self.duplicateMaterial(preferred_material_node, new_base_id = new_id, new_metadata = new_metadata)
+        return new_id

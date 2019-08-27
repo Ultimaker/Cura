@@ -122,7 +122,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = base.materialManager.createMaterial();
+                base.newRootMaterialIdToSwitchTo = base.materialManagementModel.createMaterial();
                 base.toActivateNewMaterial = true;
             }
         }
