@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from collections import defaultdict
 import copy
 import uuid
@@ -7,19 +8,16 @@ from typing import Dict, Optional, TYPE_CHECKING, Any, List, cast
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
-import cura.CuraApplication #Imported like this to prevent circular imports.
+import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
-from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -248,7 +246,7 @@ class MaterialManager(QObject):
 
     def removeMaterialByRootId(self, root_material_id: str):
         container_registry = CuraContainerRegistry.getInstance()
-        results = container_registry.findContainers(id=root_material_id)
+        results = container_registry.findContainers(id = root_material_id)
         if not results:
             container_registry.addWrongContainerId(root_material_id)
 
@@ -260,8 +258,8 @@ class MaterialManager(QObject):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
         # corrupts the configuration)
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        ids_to_remove = [metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file=root_material_id)]
+        root_material_id = material_node.base_file
+        ids_to_remove = {metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file = root_material_id)}
 
         for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:

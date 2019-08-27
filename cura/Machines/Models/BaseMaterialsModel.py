@@ -31,8 +31,13 @@ class BaseMaterialsModel(ListModel):
         self._container_registry = self._application.getInstance().getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
 
+        self._extruder_position = 0
+        self._extruder_stack = None
+        self._enabled = True
+
         # Update the stack and the model data when the machine changes
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
+        self._updateExtruderStack()
 
         # Update this model when switching machines, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._update)
@@ -55,12 +60,8 @@ class BaseMaterialsModel(ListModel):
         self.addRoleName(Qt.UserRole + 15, "container_node")
         self.addRoleName(Qt.UserRole + 16, "is_favorite")
 
-        self._extruder_position = 0
-        self._extruder_stack = None
-
         self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
         self._favorite_ids = set()  # type: Set[str]
-        self._enabled = True
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
