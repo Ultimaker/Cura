@@ -136,6 +136,15 @@ class MachineNode(ContainerNode):
 
         return list(groups_by_name.values())
 
+    ##  Gets the preferred global quality node, going by the preferred quality
+    #   type.
+    #
+    #   If the preferred global quality is not in there, an arbitrary global
+    #   quality is taken.
+    #   If there are no global qualities, an empty quality is returned.
+    def preferredGlobalQuality(self) -> QualityNode:
+        return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities)))
+
     ##  (Re)loads all variants under this printer.
     def _loadAll(self):
         container_registry = ContainerRegistry.getInstance()

@@ -29,6 +29,7 @@ class CuraStackBuilder:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
+        container_tree = ContainerTree.getInstance()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
@@ -37,6 +38,12 @@ class CuraStackBuilder:
             return None
 
         machine_definition = definitions[0]
+        # The container tree listens to the containerAdded signal to add the definition and build the tree,
+        # but that signal is emitted with a delay which might not have passed yet.
+        # Therefore we must make sure that it's manually added here.
+        if machine_definition.getId() not in container_tree.machines:
+            container_tree.machines[machine_definition.getId()] = MachineNode(machine_definition.getId())
+        machine_node = container_tree.machines[machine_definition.getId()]
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
         # Make sure the new name does not collide with any definition or (quality) profile
@@ -50,7 +57,7 @@ class CuraStackBuilder:
             definition = machine_definition,
             variant_container = application.empty_variant_container,
             material_container = application.empty_material_container,
-            quality_container = application.empty_quality_container,
+            quality_container = machine_node.preferredGlobalQuality().container,
         )
         new_global_stack.setName(generated_name)
 
@@ -59,32 +66,8 @@ class CuraStackBuilder:
         for position in extruder_dict:
             cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
 
-        for new_extruder in new_global_stack.extruders.values(): #Only register the extruders if we're sure that all of them are correct.
+        for new_extruder in new_global_stack.extruders.values():  # Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
-
-        preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
-        if not quality_group_dict:
-            # There is no available quality group, set all quality containers to empty.
-            new_global_stack.quality = application.empty_quality_container
-            for extruder_stack in new_global_stack.extruders.values():
-                extruder_stack.quality = application.empty_quality_container
-        else:
-            # Set the quality containers to the preferred quality type if available, otherwise use the first quality
-            # type that's available.
-            if preferred_quality_type not in quality_group_dict:
-                Logger.log("w", "The preferred quality {quality_type} doesn't exist for this set-up. Choosing a random one.".format(quality_type = preferred_quality_type))
-                preferred_quality_type = next(iter(quality_group_dict))
-            quality_group = quality_group_dict.get(preferred_quality_type)
-
-            new_global_stack.quality = quality_group.node_for_global.container
-            if not new_global_stack.quality:
-                new_global_stack.quality = application.empty_quality_container
-            for position, extruder_stack in new_global_stack.extruders.items():
-                if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].container:
-                    extruder_stack.quality = quality_group.nodes_for_extruders[position].container
-                else:
-                    extruder_stack.quality = application.empty_quality_container
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
         # extruder stack because the global stack didn't have one yet (which is enforced since Cura 3.1).
@@ -101,7 +84,6 @@ class CuraStackBuilder:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
         registry = application.getContainerRegistry()
-        container_tree = ContainerTree.getInstance()
 
         # Get the extruder definition.
         extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
@@ -117,11 +99,7 @@ class CuraStackBuilder:
         # Find out what filament diameter we need.
         approximate_diameter = round(extruder_definition.getProperty("material_diameter", "value"))  # Can't be modified by definition changes since we are just initialising the stack here.
 
-        # The container tree listens to the containerAdded signal to add the definition and build the tree,
-        # but that signal is emitted with a delay which might not have passed yet.
-        # Therefore we must make sure that it's manually added here.
-        if global_stack.definition.getId() not in container_tree.machines:
-            container_tree.machines[global_stack.definition.getId()] = MachineNode(global_stack.definition.getId())
+        # Find the preferred containers.
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
         if not extruder_variant_node:
@@ -130,6 +108,7 @@ class CuraStackBuilder:
         extruder_variant_container = extruder_variant_node.container
         material_node = extruder_variant_node.preferredMaterial(approximate_diameter)
         material_container = material_node.container
+        quality_node = material_node.preferredQuality()
 
         new_extruder_id = registry.uniqueName(extruder_definition_id)
         new_extruder = cls.createExtruderStack(
@@ -139,7 +118,7 @@ class CuraStackBuilder:
             position = extruder_position,
             variant_container = extruder_variant_container,
             material_container = material_container,
-            quality_container = application.empty_quality_container
+            quality_container = quality_node.container
         )
         new_extruder.setNextStack(global_stack)
 
