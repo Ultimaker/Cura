@@ -565,7 +565,7 @@ TabView
         }
 
         // update the values
-        base.materialManagement.setMaterialName(base.currentMaterialNode, new_name)
+        materialManagement.setMaterialName(base.currentMaterialNode, new_name)
         properties.name = new_name
     }
 

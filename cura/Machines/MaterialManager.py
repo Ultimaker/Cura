@@ -246,7 +246,7 @@ class MaterialManager(QObject):
 
     def removeMaterialByRootId(self, root_material_id: str):
         container_registry = CuraContainerRegistry.getInstance()
-        results = container_registry.findContainers(id=root_material_id)
+        results = container_registry.findContainers(id = root_material_id)
         if not results:
             container_registry.addWrongContainerId(root_material_id)
 

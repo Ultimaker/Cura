@@ -46,3 +46,20 @@ class MaterialManagementModel(QObject):
             Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
             return
         return container_registry.findContainers(id = root_material_id)[0].setName(name)
+
+    ##  Deletes a material from Cura.
+    #
+    #   This function does not do any safety checking any more. Please call this
+    #   function only if:
+    #   - The material is not read-only.
+    #   - The material is not used in any stacks.
+    #   If the material was not lazy-loaded yet, this will fully load the
+    #   container. When removing this material node, all other materials with
+    #   the same base fill will also be removed.
+    #   \param material_node The material to remove.
+    @pyqtSlot("QVariant")
+    def removeMaterial(self, material_node: "MaterialNode") -> None:
+        container_registry = CuraContainerRegistry.getInstance()
+        materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
+        for material_metadata in materials_this_base_file:
+            container_registry.removeContainer(material_metadata["id"])
