@@ -565,7 +565,7 @@ TabView
         }
 
         // update the values
-        CuraApplication.getMaterialManager().setMaterialName(base.currentMaterialNode, new_name)
+        base.materialManagement.setMaterialName(base.currentMaterialNode, new_name)
         properties.name = new_name
     }
 
