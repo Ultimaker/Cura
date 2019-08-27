@@ -598,6 +598,8 @@ class MachineManager(QObject):
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return False
+        if not self.activeQualityGroup:
+            return False
         return self.activeQualityGroup.is_available
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
