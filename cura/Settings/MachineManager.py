@@ -1547,12 +1547,10 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityOrQualityChangesName(self) -> str:
-        name = empty_quality_container.getName()
-        if self._current_quality_changes_group:
-            name = self._current_quality_changes_group.name
-        elif self._current_quality_group:
-            name = self._current_quality_group.name
-        return name
+        global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if global_container_stack.qualityChanges != CuraApplication.getInstance().empty_quality_changes_container:
+            return global_container_stack.qualityChanges.getName()
+        return global_container_stack.quality.getName()
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
