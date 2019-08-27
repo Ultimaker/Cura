@@ -60,6 +60,14 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
     except KeyError:
         pass
 
+# GITHUB issue #6194: https://github.com/Ultimaker/Cura/issues/6194
+# With AppImage 2 on Linux, the current working directory will be somewhere in /tmp/<rand>/usr, which is owned
+# by root. For some reason, QDesktopServices.openUrl() requires to have a usable current working directory,
+# otherwise it doesn't work. This is a workaround on Linux that before we call QDesktopServices.openUrl(), we
+# switch to a directory where the user has the ownership.
+if Platform.isLinux() and hasattr(sys, "frozen"):
+    os.chdir(os.path.expanduser("~"))
+
 # WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
 # the default /usr/lib which causes the default site-packages

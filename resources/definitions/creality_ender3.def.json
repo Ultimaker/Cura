@@ -2,6 +2,11 @@
     "name": "Creality Ender-3",
     "version": 2,
     "inherits": "creality_base",
+    "metadata": {
+        "quality_definition": "creality_base",
+        "visible": true,
+        "platform": "creality_ender3.stl"
+    },
     "overrides": {
         "machine_name": { "default_value": "Creality Ender-3" },
         "machine_width": { "default_value": 220 },
@@ -23,10 +28,5 @@
         },
 
         "gantry_height": { "value": 25 }
-
-    },
-    "metadata": {
-        "quality_definition": "creality_base",
-        "visible": true
     }
 }

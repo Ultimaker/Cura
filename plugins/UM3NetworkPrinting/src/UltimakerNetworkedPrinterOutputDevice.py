@@ -26,7 +26,7 @@ from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 #  Currently used for local networking and cloud printing using Ultimaker Connect.
 #  This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
 class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
-    
+
     META_NETWORK_KEY = "um_network_key"
     META_CLUSTER_ID = "um_cloud_cluster_id"
 
@@ -42,21 +42,23 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     # States indicating if a print job is queued.
     QUEUED_PRINT_JOBS_STATES = {"queued", "error"}
-    
+
     # Time in seconds since last network response after which we consider this device offline.
     # We set this a bit higher than some of the other intervals to make sure they don't overlap.
-    NETWORK_RESPONSE_CONSIDER_OFFLINE = 12.0
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 10.0  # seconds
 
     def __init__(self, device_id: str, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType,
                  parent=None) -> None:
+
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
 
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
-        
+
         # Keeps track the last network response to determine if we are still connected.
         self._time_of_last_response = time()
+        self._time_of_last_request = time()
 
         # Set the display name from the properties
         self.setName(self.getProperty("name"))
@@ -101,15 +103,18 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         return [print_job for print_job in self._print_jobs if
                 print_job.assignedPrinter is not None and print_job.state not in self.QUEUED_PRINT_JOBS_STATES]
 
-    @pyqtProperty(bool, notify=printJobsChanged)
-    def receivedPrintJobs(self) -> bool:
-        return bool(self._print_jobs)
+    @pyqtProperty(bool, notify=_clusterPrintersChanged)
+    def receivedData(self) -> bool:
+        return self._has_received_printers
 
     # Get the amount of printers in the cluster.
     @pyqtProperty(int, notify=_clusterPrintersChanged)
     def clusterSize(self) -> int:
         if not self._has_received_printers:
-            return 1  # prevent false positives when discovering new devices
+            discovered_size = self.getProperty("cluster_size")
+            if discovered_size == "":
+                return 1  # prevent false positives for new devices
+            return int(discovered_size)
         return len(self._printers)
 
     # Get the amount of printer in the cluster per type.
@@ -294,6 +299,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
                 print_job_data.updateOutputModel(print_job)
                 if print_job_data.printer_uuid:
                     self._updateAssignedPrinter(print_job, print_job_data.printer_uuid)
+                if print_job_data.assigned_to:
+                    self._updateAssignedPrinter(print_job, print_job_data.assigned_to)
                 new_print_jobs.append(print_job)
 
         # Check which print job need to be removed (de-referenced).
@@ -312,6 +319,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         model = remote_job.createOutputModel(ClusterOutputController(self))
         if remote_job.printer_uuid:
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
+        if remote_job.assigned_to:
+            self._updateAssignedPrinter(model, remote_job.assigned_to)
         return model
 
     ## Updates the printer assignment for the given print job model.

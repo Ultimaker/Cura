@@ -33,7 +33,7 @@
         "weight": -2,
         "firmware_update_info": {
             "id": 9051,
-            "check_urls": ["http://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
+            "check_urls": ["https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
             "update_url": "https://ultimaker.com/firmware"
         }
     },
@@ -44,6 +44,7 @@
         "machine_depth": { "default_value": 240 },
         "machine_height": { "default_value": 300 },
         "machine_heated_bed": { "default_value": true },
+        "machine_heated_build_volume": { "default_value": true },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
         "machine_head_with_fans_polygon":

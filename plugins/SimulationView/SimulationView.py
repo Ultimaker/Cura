@@ -83,9 +83,13 @@ class SimulationView(CuraView):
         self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
         self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
+        self._max_feedrate = sys.float_info.min
+        self._min_feedrate = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+
         self._global_container_stack = None  # type: Optional[ContainerStack]
-        self._proxy = SimulationViewProxy()
-        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+        self._proxy = None
 
         self._resetSettings()
         self._legend_items = None
@@ -104,7 +108,6 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
 
-        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
         self._updateWithPreferences()
 
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
@@ -180,8 +183,7 @@ class SimulationView(CuraView):
 
     def _onSceneChanged(self, node: "SceneNode") -> None:
         if node.getMeshData() is None:
-            self.resetLayerData()
-
+            return
         self.setActivity(False)
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
@@ -441,6 +443,8 @@ class SimulationView(CuraView):
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        if self._proxy is None:
+            self._proxy = SimulationViewProxy(self)
         return self._proxy
 
     def endRendering(self) -> None:
@@ -460,6 +464,10 @@ class SimulationView(CuraView):
                 return True
 
         if event.type == Event.ViewActivateEvent:
+            # Start listening to changes.
+            Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
+            self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+
             # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
             # This can happen when you do the following steps:
             #   1. Start Cura
@@ -506,6 +514,8 @@ class SimulationView(CuraView):
             self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
 
         elif event.type == Event.ViewDeactivateEvent:
+            self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
+            Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
             self._wireprint_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
             if self._global_container_stack:

@@ -671,14 +671,20 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing g-code, encoded as UTF-8.
     def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
-        self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        try:
+            self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            pass  # Throw the message away.
 
     ##  Called when a g-code prefix message is received from the engine.
     #
     #   \param message The protobuf message containing the g-code prefix,
     #   encoded as UTF-8.
     def _onGCodePrefixMessage(self, message: Arcus.PythonMessage) -> None:
-        self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        try:
+            self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            pass  # Throw the message away.
 
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:

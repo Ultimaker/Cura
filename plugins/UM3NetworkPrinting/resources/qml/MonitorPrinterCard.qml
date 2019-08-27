@@ -250,13 +250,12 @@ Item
             enabled: !contextMenuButton.enabled
         }
 
-		// TODO: uncomment this tooltip as soon as the required firmware is released
-        // MonitorInfoBlurb
-        // {
-        //     id: contextMenuDisabledInfo
-        //     text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
-        //     target: contextMenuButton
-        // }
+        MonitorInfoBlurb
+        {
+            id: contextMenuDisabledInfo
+            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+            target: contextMenuButton
+        }
 
         CameraButton
         {
@@ -495,6 +494,25 @@ Item
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!
             visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
             onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
+            enabled: OutputDevice.supportsPrintJobActions
+        }
+
+        // For cloud printing, add this mouse area over the disabled details button to indicate that it's not available
+        MouseArea
+        {
+            id: detailsButtonDisabledButtonArea
+            anchors.fill: detailsButton
+            hoverEnabled: detailsButton.visible && !detailsButton.enabled
+            onEntered: overrideButtonDisabledInfo.open()
+            onExited: overrideButtonDisabledInfo.close()
+            enabled: !detailsButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: overrideButtonDisabledInfo
+            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+            target: detailsButton
         }
     }
 
