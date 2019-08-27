@@ -9,11 +9,12 @@ import cura.CuraApplication  # Imported like this to prevent circular dependenci
 from cura.Machines.MachineNode import MachineNode
 from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
 
-from typing import Dict, TYPE_CHECKING
+from typing import Dict, List, TYPE_CHECKING
 import time
 
 if TYPE_CHECKING:
     from cura.Machines.QualityGroup import QualityGroup
+    from cura.Machines.QualityChangesGroup import QualityChangesGroup
 
 ##  This class contains a look-up tree for which containers are available at
 #   which stages of configuration.
@@ -56,6 +57,22 @@ class ContainerTree:
         material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
         return self.machines[global_stack.definition.getId()].getQualityGroups(variant_names, material_bases, extruder_enabled)
+
+    ##  Get the quality changes groups available for the currently activated
+    #   printer.
+    #
+    #   This contains all quality changes groups, enabled or disabled. To check
+    #   whether the quality changes group can be activated, test for the
+    #   ``QualityChangesGroup.is_available`` property.
+    #   \return A list of all quality changes groups.
+    def getCurrentQualityChangesGroups(self) -> List["QualityChangesGroup"]:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return []
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
+        return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
     ##  Builds the initial container tree.
     def _loadAll(self):
