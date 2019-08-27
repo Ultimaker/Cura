@@ -245,6 +245,7 @@ class XmlMaterialProfile(InstanceContainer):
             variant_name = container.getMetaDataEntry("variant_name")
             if not variant_name:
                 machine_container_map[definition_id] = container
+                continue
 
             variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", str(VariantType.NOZZLE)),
                             "material_container": container}
@@ -344,7 +345,7 @@ class XmlMaterialProfile(InstanceContainer):
         stream = io.BytesIO()
         tree = ET.ElementTree(root)
         # this makes sure that the XML header states encoding="utf-8"
-        tree.write(stream, encoding = "utf-8", xml_declaration=True)
+        tree.write(stream, encoding = "utf-8", xml_declaration = True)
 
         return stream.getvalue().decode("utf-8")
 
