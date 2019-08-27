@@ -17,7 +17,6 @@ Item
     property var resetEnabled: false
     property var currentItem: null
 
-    property var materialManager: CuraApplication.getMaterialManager()
     property var materialManagementModel: CuraApplication.getMaterialManagementModel()
 
     property var hasCurrentItem: base.currentItem != null
