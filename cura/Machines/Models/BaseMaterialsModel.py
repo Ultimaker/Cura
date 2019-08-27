@@ -96,7 +96,7 @@ class BaseMaterialsModel(ListModel):
                 self._update()
             self.enabledChanged.emit()
 
-    @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
+    @pyqtProperty(bool, fset = setEnabled, notify = enabledChanged)
     def enabled(self):
         return self._enabled
 
@@ -169,4 +169,3 @@ class BaseMaterialsModel(ListModel):
             "is_favorite":          root_material_id in self._favorite_ids
         }
         return item
-
