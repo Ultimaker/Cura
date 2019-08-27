@@ -245,7 +245,7 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_container_map[definition_id] = container
                 continue
 
-            variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", str(VariantType.NOZZLE)),
+            variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", "nozzle"),
                             "material_container": container}
             machine_variant_map[definition_id][variant_name] = variant_dict
 
