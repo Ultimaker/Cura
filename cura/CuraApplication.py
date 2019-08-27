@@ -222,6 +222,7 @@ class CuraApplication(QtApplication):
         self._machine_error_checker = None
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
+        self._material_management_model = MaterialManagementModel()
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
@@ -976,6 +977,10 @@ class CuraApplication(QtApplication):
     def getMachineActionManager(self, *args):
         return self._machine_action_manager
 
+    @pyqtSlot(result = QObject)
+    def getMaterialManagementModel(self):
+        return self._material_management_model
+
     def getSimpleModeSettingsManager(self, *args):
         if self._simple_mode_settings_manager is None:
             self._simple_mode_settings_manager = SimpleModeSettingsManager()
@@ -1055,7 +1060,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
-        qmlRegisterType(MaterialManagementModel, "Cura", 1, 5, "MaterialManagementModel")
+        qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, "MaterialManagementModel", self.getMaterialManagementModel)
 
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
 

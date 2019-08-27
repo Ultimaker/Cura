@@ -18,6 +18,7 @@ Item
     property var currentItem: null
 
     property var materialManager: CuraApplication.getMaterialManager()
+    property var materialManagementModel: CuraApplication.getMaterialManagementModel()
 
     property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
@@ -40,11 +41,6 @@ Item
     {
         id: catalog
         name: "cura"
-    }
-
-    Cura.MaterialManagementModel
-    {
-        id: materialManagement
     }
 
     function resetExpandedActiveMaterial()
@@ -152,7 +148,7 @@ Item
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && materialManagement.canMaterialBeRemoved(base.currentItem.container_node)
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
             {
@@ -302,7 +298,7 @@ Item
         {
             // Set the active material as the fallback. It will be selected when the current material is deleted
             base.newRootMaterialIdToSwitchTo = base.active_root_material_id
-            base.materialManagement.removeMaterial(base.currentItem.container_node);
+            base.materialManagementModel.removeMaterial(base.currentItem.container_node);
         }
     }
 
