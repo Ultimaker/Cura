@@ -33,10 +33,11 @@ class VariantNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
         self.variant_name = container_registry.findContainersMetadata(id = container_id)[0]["name"]  # Store our own name so that we can filter more easily.
         container_registry.containerAdded.connect(self._materialAdded)
+        container_registry.containerRemoved.connect(self._materialRemoved)
         self._loadAll()
 
     ##  (Re)loads all materials under this variant.
-    def _loadAll(self):
+    def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
 
         if not self.machine.has_materials:
@@ -55,10 +56,8 @@ class VariantNode(ContainerNode):
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
             materials = materials_per_base_file.values()
 
-        filtered_materials = []
-        for material in materials:
-            if material["id"] not in self.machine.exclude_materials:
-                filtered_materials.append(material)
+        # Filter materials based on the exclude_materials property.
+        filtered_materials = [material for material in materials if material["id"] not in self.machine.exclude_materials]
 
         for material in filtered_materials:
             base_file = material["base_file"]
@@ -94,7 +93,7 @@ class VariantNode(ContainerNode):
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
-    def _materialAdded(self, container: ContainerInterface):
+    def _materialAdded(self, container: ContainerInterface) -> None:
         if container.getMetaDataEntry("type") != "material":
             return  # Not interested.
         if not self.machine.has_materials:
@@ -129,3 +128,32 @@ class VariantNode(ContainerNode):
         self.materials[base_file] = MaterialNode(container.getId(), variant = self)
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
+
+    def _materialRemoved(self, container: ContainerInterface) -> None:
+        if container.getMetaDataEntry("type") != "material":
+            return  # Only interested in materials.
+        base_file = container.getMetaDataEntry("base_file")
+        if base_file not in self.materials:
+            return  # We don't track this material anyway. No need to remove it.
+
+        original_node = self.materials[base_file]
+        del self.materials[base_file]
+        self.materialsChanged.emit(original_node)
+
+        # Now a different material from the same base file may have been hidden because it was not as specific as the one we deleted.
+        # Search for any submaterials from that base file that are still left.
+        materials_same_base_file = ContainerRegistry.getInstance().findContainersMetadata(base_file = base_file)
+        if materials_same_base_file:
+            most_specific_submaterial = materials_same_base_file[0]
+            for submaterial in materials_same_base_file:
+                if submaterial["definition"] == self.machine.container_id:
+                    if most_specific_submaterial["definition"] == "fdmprinter":
+                        most_specific_submaterial = submaterial
+                    if most_specific_submaterial.get("variant", "empty") == "empty" and submaterial.get("variant", "empty") == self.variant_name:
+                        most_specific_submaterial = submaterial
+            self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant = self)
+            self.materialsChanged.emit(self.materials[base_file])
+
+        if not self.materials:  # The last available material just got deleted and there is nothing with the same base file to replace it.
+            self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
+            self.materialsChanged.emit(self.materials["empty_material"])
