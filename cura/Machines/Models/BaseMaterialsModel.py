@@ -116,7 +116,9 @@ class BaseMaterialsModel(ListModel):
 
         # Update the available materials (ContainerNode) for the current active machine and extruder setup.
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        extruder_stack = global_stack.extruders[str(self._extruder_position)]
+        extruder_stack = global_stack.extruders.get(str(self._extruder_position))
+        if not extruder_stack:
+            return
         nozzle_name = extruder_stack.variant.getName()
         materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
         compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
