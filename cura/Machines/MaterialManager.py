@@ -132,7 +132,7 @@ class MaterialManager(QObject):
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
         materials = self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
         compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
-        result = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+        result = {key: material for key, material in materials.items() if material.container and material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
         return result
 
     #
@@ -268,6 +268,8 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
+        if material_node.container is None:
+            return
         root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is None:
             return
@@ -279,6 +281,8 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
+        if material_node.container is None:
+            return
         root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
@@ -343,6 +347,9 @@ class MaterialManager(QObject):
     #
     @pyqtSlot("QVariant", result = str)
     def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        if material_node.container is None:
+            Logger.log("e", "Material node {0} doesn't have container.".format(material_node.container_id))
+            return "ERROR"
         root_material_id = cast(str, material_node.container.getMetaDataEntry("base_file", ""))
         return self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
 
@@ -359,7 +366,11 @@ class MaterialManager(QObject):
         machine_manager = application.getMachineManager()
         extruder_stack = machine_manager.activeStack
 
-        machine_definition = application.getGlobalContainerStack().definition
+        global_stack = application.getGlobalContainerStack()
+        if global_stack is None:
+            Logger.log("e", "Global stack not present!")
+            return "ERROR"
+        machine_definition = global_stack.definition
         root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
 
         approximate_diameter = str(extruder_stack.approximateMaterialDiameter)

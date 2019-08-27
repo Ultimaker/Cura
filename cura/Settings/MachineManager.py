@@ -24,6 +24,7 @@ from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular references.
 
+from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
 from cura.Machines.MaterialManager import MaterialManager
@@ -1185,7 +1186,7 @@ class MachineManager(QObject):
     def _setMaterial(self, position: str, material_node: Optional["MaterialNode"] = None) -> None:
         if self._global_container_stack is None:
             return
-        if material_node:
+        if material_node and material_node.container:
             material_container = material_node.container
             self._global_container_stack.extruders[position].material = material_container
             root_material_id = material_container.getMetaDataEntry("base_file", None)
@@ -1239,6 +1240,9 @@ class MachineManager(QObject):
         # The current quality type is not available so we use the preferred quality type if it's available,
         # otherwise use one of the available quality types.
         quality_type = sorted(list(available_quality_types))[0]
+        if self._global_container_stack is None:
+            Logger.log("e", "Global stack not present!")
+            return
         preferred_quality_type = self._global_container_stack.getMetaDataEntry("preferred_quality_type")
         if preferred_quality_type in available_quality_types:
             quality_type = preferred_quality_type
@@ -1549,7 +1553,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        return global_container_stack and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
+        return (not global_container_stack is None) and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
 
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:

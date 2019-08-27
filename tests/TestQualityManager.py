@@ -50,13 +50,6 @@ def test_getQualityGroups(quality_mocked_application):
     assert "normal" in manager.getQualityGroups(mocked_stack)
 
 
-def test_getQualityGroupsForMachineDefinition(quality_mocked_application):
-    manager = QualityManager(quality_mocked_application)
-    manager.initialize()
-
-    assert "normal" in manager.getQualityGroupsForMachineDefinition(mocked_stack)
-
-
 def test_getQualityChangesGroup(quality_mocked_application):
     manager = QualityManager(quality_mocked_application)
     manager.initialize()

@@ -77,6 +77,9 @@ class MachineNode(ContainerNode):
         # Create the quality group for each available type.
         quality_groups = {}
         for quality_type, global_quality_node in self.global_qualities.items():
+            if not global_quality_node.container:
+                Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
+                continue
             quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
@@ -116,7 +119,7 @@ class MachineNode(ContainerNode):
     def getQualityChangesGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> List[QualityChangesGroup]:
         machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type = "quality_changes", definition = self.quality_definition)  # All quality changes for each extruder.
 
-        groups_by_name = {}  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
+        groups_by_name = {}  #type: Dict[str, QualityChangesGroup]  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
         for quality_changes in machine_quality_changes:
             name = quality_changes["name"]
             if name not in groups_by_name:
@@ -143,7 +146,7 @@ class MachineNode(ContainerNode):
     #   quality is taken.
     #   If there are no global qualities, an empty quality is returned.
     def preferredGlobalQuality(self) -> QualityNode:
-        return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities)))
+        return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
     ##  (Re)loads all variants under this printer.
     def _loadAll(self):

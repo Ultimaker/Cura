@@ -28,6 +28,7 @@ from . import GlobalStack
 
 import cura.CuraApplication
 from cura.Settings.cura_empty_instance_containers import empty_quality_container
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
@@ -386,8 +387,7 @@ class CuraContainerRegistry(ContainerRegistry):
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        quality_manager = cura.CuraApplication.CuraApplication.getInstance()._quality_manager
-        quality_group_dict = quality_manager.getQualityGroupsForMachineDefinition(global_stack)
+        quality_group_dict = ContainerTree.getInstance().machines[definition_id]
         # "not_supported" profiles can be imported.
         if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)

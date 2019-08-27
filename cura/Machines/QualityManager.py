@@ -112,12 +112,10 @@ class QualityManager(QObject):
         # Iterate over all quality_types in the machine node
         quality_group_dict = dict()
         for node in nodes_to_check:
-            if node and node.quality_type_map:
-                for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
-                    quality_group.setGlobalNode(quality_node)
-                    quality_group_dict[quality_type] = quality_group
-                break
+            if node and node.quality_type:
+                quality_group = QualityGroup(node.getMetaDataEntry("name", ""), node.quality_type)
+                quality_group.setGlobalNode(node)
+                quality_group_dict[node.quality_type] = quality_group
 
         return quality_group_dict
 

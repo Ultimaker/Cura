@@ -106,7 +106,10 @@ class BaseMaterialsModel(ListModel):
     def _materialsListChanged(self, material: MaterialNode) -> None:
         if material.variant.container_id != self._extruder_stack.variant.getId():
             return
-        if material.variant.machine.container_id != cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().definition.getId():
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+        if material.variant.machine.container_id != global_stack.definition.getId():
             return
         self._update()
 
