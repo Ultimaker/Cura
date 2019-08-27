@@ -1350,18 +1350,18 @@ class MachineManager(QObject):
                     disabled_used_extruder_position_set.add(int(position))
 
                 else:
-                    variant_container_node = self._variant_manager.getVariantNode(self._global_container_stack.definition.getId(),
-                                                                                  extruder_configuration.hotendID)
+                    machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
+                    variant_node = machine_node.variants.get(extruder_configuration.hotendID)
+                    if variant_node:
+                        self._setVariantNode(position, variant_node)
+                    else:
+                        self._global_container_stack.extruders[position].variant = empty_variant_container
+
                     material_container_node = MaterialManager.getInstance().getMaterialNodeByType(self._global_container_stack,
                                                                                            position,
                                                                                            extruder_configuration.hotendID,
                                                                                            configuration.buildplateConfiguration,
                                                                                            extruder_configuration.material.guid)
-                    if variant_container_node:
-                        self._setVariantNode(position, variant_container_node)
-                    else:
-                        self._global_container_stack.extruders[position].variant = empty_variant_container
-
                     if material_container_node:
                         self._setMaterial(position, material_container_node)
                     else:
@@ -1371,15 +1371,6 @@ class MachineManager(QObject):
 
             self.updateDefaultExtruder()
             self.updateNumberExtrudersEnabled()
-
-            if configuration.buildplateConfiguration is not None:
-                global_variant_container_node = self._variant_manager.getBuildplateVariantNode(self._global_container_stack.definition.getId(), configuration.buildplateConfiguration)
-                if global_variant_container_node:
-                    self._setGlobalVariant(global_variant_container_node)
-                else:
-                    self._global_container_stack.variant = empty_variant_container
-            else:
-                self._global_container_stack.variant = empty_variant_container
             self._updateQualityWithMaterial()
 
             if need_to_show_message:
