@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
 
-from UM.Application import Application
+import cura.CuraApplication
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
@@ -35,14 +35,12 @@ class QualitySettingsModel(ListModel):
         self.addRoleName(self.CategoryRole, "category")
 
         self._container_registry = ContainerRegistry.getInstance()
-        self._application = Application.getInstance()
-        self._quality_manager = self._application.getQualityManager()
+        self._application = cura.CuraApplication.CuraApplication.getInstance()
+        self._application.getMachineManager().activeStackChanged.connect(self._update)
 
         self._selected_position = self.GLOBAL_STACK_POSITION #Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
-
-        self._quality_manager.qualitiesUpdated.connect(self._update)
 
         self._update()
 
@@ -99,15 +97,25 @@ class QualitySettingsModel(ListModel):
         # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
         # the settings in that quality_changes_group.
         if quality_changes_group is not None:
+            container_registry = ContainerRegistry.getInstance()
+            global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
+            global_container = None if len(global_containers) == 0 else global_containers[0]
+            extruders_containers = {pos: container_registry.findContainers(id = quality_changes_group.metadata_per_extruder[pos]["id"]) for pos in quality_changes_group.metadata_per_extruder}
+            extruders_container = {pos: None if not containers else containers[0] for pos, containers in extruders_containers.items()}
             if self._selected_position == self.GLOBAL_STACK_POSITION:
-                quality_changes_node = quality_changes_group.node_for_global
+                quality_changes_metadata = global_container.getMetaData()
             else:
-                quality_changes_node = quality_changes_group.nodes_for_extruders.get(str(self._selected_position))
-            if quality_changes_node is not None and quality_changes_node.container is not None:  # it can be None if number of extruders are changed during runtime
-                quality_containers.insert(0, quality_changes_node.container)
-            settings_keys.update(quality_changes_group.getAllKeys())
+                quality_changes_metadata = extruders_container.get(str(self._selected_position))
+            if quality_changes_metadata is not None:  # It can be None if number of extruders are changed during runtime.
+                container = container_registry.findContainers(id = quality_changes_metadata["id"])
+                if container:
+                    quality_containers.insert(0, container[0])
 
-        # We iterate over all definitions instead of settings in a quality/qualtiy_changes group is because in the GUI,
+            settings_keys.update(global_container.getAllKeys())
+            for container in extruders_container.values():
+                settings_keys.update(container.getAllKeys())
+
+        # We iterate over all definitions instead of settings in a quality/quality_changes group is because in the GUI,
         # the settings are grouped together by categories, and we had to go over all the definitions to figure out
         # which setting belongs in which category.
         current_category = ""

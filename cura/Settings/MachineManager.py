@@ -1139,8 +1139,13 @@ class MachineManager(QObject):
             if quality_group is None:
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         quality_changes_container = empty_quality_changes_container
         quality_container = empty_quality_container  # type: Optional[InstanceContainer]
+        if quality_changes_group.metadata_for_global:
+            global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
+            if global_containers:
+                quality_changes_container = global_containers[0]
         if quality_changes_group.node_for_global and quality_changes_group.node_for_global.container:
             quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.container)
         if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.container:
@@ -1150,15 +1155,17 @@ class MachineManager(QObject):
         self._global_container_stack.qualityChanges = quality_changes_container
 
         for position, extruder in self._global_container_stack.extruders.items():
-            quality_changes_node = quality_changes_group.nodes_for_extruders.get(position)
             quality_node = None
             if quality_group is not None:
                 quality_node = quality_group.nodes_for_extruders.get(position)
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
-            if quality_changes_node and quality_changes_node.container:
-                quality_changes_container = cast(InstanceContainer, quality_changes_node.container)
+            quality_changes_metadata = quality_changes_group.metadata_for_extruders.get(position)
+            if quality_changes_metadata:
+                containers = container_registry.findContainers(id = quality_changes_metadata["id"])
+                if containers:
+                    quality_changes_container = cast(InstanceContainer, containers[0])
             if quality_node and quality_node.container:
                 quality_container = quality_node.container
 
