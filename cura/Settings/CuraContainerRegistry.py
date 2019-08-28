@@ -29,7 +29,6 @@ from . import GlobalStack
 import cura.CuraApplication
 from cura.Settings.cura_empty_instance_containers import empty_quality_container
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 from cura.ReaderWriters.ProfileReader import NoProfileException, ProfileReader
 
 from UM.i18n import i18nCatalog
