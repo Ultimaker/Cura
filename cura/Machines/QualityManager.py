@@ -146,18 +146,19 @@ class QualityManager(QObject):
     #
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
-        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
+        Logger.log("i", "Removing quality changes group {group_name}".format(group_name = quality_changes_group.name))
         removed_quality_changes_ids = set()
-        for node in quality_changes_group.getAllNodes():
-            container_id = node.container_id
-            self._container_registry.removeContainer(container_id)
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
+            container_id = metadata["id"]
+            container_registry.removeContainer(container_id)
             removed_quality_changes_ids.add(container_id)
 
-        # Reset all machines that have activated this quality changes to empty.
-        for global_stack in self._container_registry.findContainerStacks(type = "machine"):
+        # Reset all machines that have activated this custom profile.
+        for global_stack in container_registry.findContainerStacks(type = "machine"):
             if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 global_stack.qualityChanges = self._empty_quality_changes_container
-        for extruder_stack in self._container_registry.findContainerStacks(type = "extruder_train"):
+        for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
             if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 extruder_stack.qualityChanges = self._empty_quality_changes_container
 

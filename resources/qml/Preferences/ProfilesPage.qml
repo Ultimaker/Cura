@@ -254,7 +254,7 @@ Item
 
         onYes:
         {
-            base.qualityManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
             qualityListView.currentIndex = -1;  // Reset selection.
         }

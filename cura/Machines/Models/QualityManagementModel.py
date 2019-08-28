@@ -1,12 +1,18 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, pyqtSlot
+from typing import TYPE_CHECKING
+from PyQt5.QtCore import pyqtSlot, QObject, Qt
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+
 import cura.CuraApplication  # Imported this way to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
+
+if TYPE_CHECKING:
+    from cura.Machines.QualityChangesGroup import QualityChangesGroup
 
 #
 # This the QML model for the quality management page.
@@ -33,6 +39,27 @@ class QualityManagementModel(ListModel):
         self._machine_manager.globalContainerChanged.connect(self._update)
 
         self._update()
+
+    ##  Deletes a custom profile. It will be gone forever.
+    #   \param quality_changes_group The quality changes group representing the
+    #   profile to delete.
+    @pyqtSlot(QObject)
+    def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
+        Logger.log("i", "Removing quality changes group {group_name}".format(group_name = quality_changes_group.name))
+        removed_quality_changes_ids = set()
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
+            container_id = metadata["id"]
+            container_registry.removeContainer(container_id)
+            removed_quality_changes_ids.add(container_id)
+
+        # Reset all machines that have activated this custom profile.
+        for global_stack in container_registry.findContainerStacks(type = "machine"):
+            if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                global_stack.qualityChanges = empty_quality_changes_container
+        for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
+            if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
+                extruder_stack.qualityChanges = empty_quality_changes_container
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
