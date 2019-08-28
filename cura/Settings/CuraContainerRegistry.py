@@ -178,6 +178,7 @@ class CuraContainerRegistry(ContainerRegistry):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if not global_stack:
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
+        container_tree = ContainerTree.getInstance()
 
         machine_extruders = []
         for position in sorted(global_stack.extruders):
@@ -227,7 +228,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 # Make sure we have a profile_definition in the file:
                 if profile_definition is None:
                     break
-                machine_definitions = self.findDefinitionContainers(id = profile_definition)
+                machine_definitions = self.findContainers(id = profile_definition)
                 if not machine_definitions:
                     Logger.log("e", "Incorrect profile [%s]. Unknown machine type [%s]", file_name, profile_definition)
                     return {"status": "error",
@@ -237,8 +238,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
-                profile_definition = getMachineDefinitionIDForQualitySearch(machine_definition)
-                expected_machine_definition = getMachineDefinitionIDForQualitySearch(global_stack.definition)
+                profile_definition = container_tree.machines[machine_definition.getId()].quality_definition
+                expected_machine_definition = container_tree.machines[global_stack.definition.getId()].quality_definition
 
                 # And check if the profile_definition matches either one (showing error if not):
                 if profile_definition != expected_machine_definition:
