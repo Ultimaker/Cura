@@ -126,7 +126,7 @@ class SendMaterialJob(Job):
                                                         .format(file_name = signature_file_name), f.read()))
 
         Logger.log("d", "Syncing material {material_id} with cluster.".format(material_id = material_id))
-        self.device.postFormWithParts(target = "materials/", parts = parts, on_finished = self.sendingFinished)
+        self.device.postFormWithParts(target = "/materials/", parts = parts, on_finished = self.sendingFinished)
 
     ##  Check a reply from an upload to the printer and log an error when the call failed
     @staticmethod
