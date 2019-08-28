@@ -1121,11 +1121,9 @@ class MachineManager(QObject):
         self.activeQualityChangesGroupChanged.emit()
 
     def _fixQualityChangesGroupToNotSupported(self, quality_changes_group: "QualityChangesGroup") -> None:
-        nodes = [quality_changes_group.node_for_global] + list(quality_changes_group.nodes_for_extruders.values())
-        containers = [n.container for n in nodes if n is not None]
-        for container in containers:
-            if container:
-                container.setMetaDataEntry("quality_type", "not_supported")
+        metadatas = [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values())
+        for metadata in metadatas:
+            metadata["quality_type"] = "not_supported"  # This actually changes the metadata of the container since they are stored by reference!
         quality_changes_group.quality_type = "not_supported"
         quality_changes_group.intent_category = "default"
 
