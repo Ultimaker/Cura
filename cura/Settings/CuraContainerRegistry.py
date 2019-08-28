@@ -381,7 +381,8 @@ class CuraContainerRegistry(ContainerRegistry):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return None
-        definition_id = getMachineDefinitionIDForQualitySearch(global_stack.definition)
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        definition_id = machine_node.quality_definition
         profile.setDefinition(definition_id)
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
