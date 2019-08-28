@@ -66,10 +66,6 @@ class SendMaterialJob(Job):
     #   The given id's will be matched with filenames of the locally stored materials.
     #   \param materials_to_send A set with id's of materials that must be sent.
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
-
-        # Inform the user of this process.
-        MaterialSyncMessage(self.device).show()
-
         container_registry = CuraApplication.getInstance().getContainerRegistry()
         material_manager = CuraApplication.getInstance().getMaterialManager()
         material_group_dict = material_manager.getAllMaterialGroups()
@@ -114,13 +110,18 @@ class SendMaterialJob(Job):
                                       on_finished = self._sendingFinished)
 
     ##  Check a reply from an upload to the printer and log an error when the call failed
-    @staticmethod
-    def _sendingFinished(reply: QNetworkReply) -> None:
+    def _sendingFinished(self, reply: QNetworkReply) -> None:
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-            Logger.log("e", "Received error code from printer when syncing material: {code}, {text}".format(
-                code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute),
-                text = reply.errorString()
-            ))
+            Logger.log("w", "Error while syncing material: %s", reply.errorString())
+            return
+        body = reply.readAll().data().decode('utf8')
+        if "not added" in body:
+            # For some reason the cluster returns a 200 sometimes even when syncing failed.
+            Logger.log("w", "Error while syncing material: %s", body)
+            return
+        # Inform the user that materials have been synced. This message only shows itself when not already visible.
+        # Because of the guards above it is not shown when syncing failed (which is not always an actual problem).
+        MaterialSyncMessage(self.device).show()
 
     ##  Retrieves a list of local materials
     #   Only the new newest version of the local materials is returned
