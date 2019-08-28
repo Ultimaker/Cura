@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from .BaseModel import BaseModel
+from ..BaseModel import BaseModel
 
 
 class ClusterMaterial(BaseModel):
