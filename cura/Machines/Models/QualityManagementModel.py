@@ -12,6 +12,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 
 if TYPE_CHECKING:
+    from UM.Settings.Interfaces import ContainerInterface
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
 
 #
@@ -37,6 +38,9 @@ class QualityManagementModel(ListModel):
         self._extruder_manager = application.getExtruderManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
+        self._container_registry.containerAdded.connect(self._qualityChangesListChanged)
+        self._container_registry.containerRemoved.connect(self._qualityChangesListChanged)
+        self._container_registry.containerMetaDataChanged.connect(self._qualityChangesListChanged)
 
         self._update()
 
@@ -89,6 +93,14 @@ class QualityManagementModel(ListModel):
         application.getMachineManager().activeQualityGroupChanged.emit()
 
         return new_name
+
+    ##  Triggered when any container changed.
+    #
+    #   This filters the updates to the container manager: When it applies to
+    #   the list of quality changes, we need to update our list.
+    def _qualityChangesListChanged(self, container: "ContainerInterface") -> None:
+        if container.getMetaDataEntry("type") == "quality_changes":
+            self._update()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
