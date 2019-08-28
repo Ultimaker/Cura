@@ -26,7 +26,6 @@ import cura.CuraApplication  # Imported like this to prevent circular references
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch, QualityManager
 from cura.Machines.MaterialManager import MaterialManager
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
@@ -696,9 +695,10 @@ class MachineManager(QObject):
     #   \returns DefinitionID (string) if found, empty string otherwise
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
-        if self._global_container_stack:
-            return getMachineDefinitionIDForQualitySearch(self._global_container_stack.definition)
-        return ""
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return ""
+        return ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
 
     ##  Gets how the active definition calls variants
     #   Caveat: per-definition-variant-title is currently not translated (though the fallback is)
@@ -1468,9 +1468,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         # Get all the quality groups for this global stack and filter out by quality_type
-        quality_group_dict = self._application.getQualityManager().getQualityGroups(self._global_container_stack)
-        quality_group = quality_group_dict[quality_type]
-        self.setQualityGroup(quality_group)
+        self.setQualityGroup(ContainerTree.getInstance().getCurrentQualityGroups()[quality_type])
 
     ##  Optionally provide global_stack if you want to use your own
     #   The active global_stack is treated differently.
