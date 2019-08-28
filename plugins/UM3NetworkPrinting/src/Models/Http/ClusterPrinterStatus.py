@@ -13,6 +13,7 @@ from .ClusterBuildPlate import ClusterBuildPlate
 from .ClusterPrintCoreConfiguration import ClusterPrintCoreConfiguration
 from .ClusterPrinterMaterialStation import ClusterPrinterMaterialStation
 from .ClusterPrinterMaterialStationSlot import ClusterPrinterMaterialStationSlot
+from .ClusterPrinterConfigurationMaterial import ClusterPrinterConfigurationMaterial
 from ..BaseModel import BaseModel
 
 
@@ -92,31 +93,34 @@ class ClusterPrinterStatus(BaseModel):
             configuration.updateConfigurationModel(extruder_config)
 
     def _updateAvailableConfigurations(self, model: PrinterOutputModel) -> None:
-        # Generate a list of configurations for the left extruder.
-        left_configurations = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
-            slot = slot,
-            extruder_index = 0
-        )]
-        # Generate a list of configurations for the right extruder.
-        right_configurations = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
-            slot = slot,
-            extruder_index = 1
-        )]
-        # Create a list of all available combinations between both print cores.
         available_configurations = [self._createAvailableConfigurationFromPrinterConfiguration(
             left_slot = left_slot,
             right_slot = right_slot,
             printer_configuration = model.printerConfiguration
-        ) for left_slot, right_slot in product(left_configurations, right_configurations)]
-        # Let Cura know which available configurations there are.
+        ) for left_slot, right_slot in product(self._getSlotsForExtruder(0), self._getSlotsForExtruder(1))]
         model.setAvailableConfigurations(available_configurations)
+
+    ## Create a list of Material Station slots for the given extruder index.
+    #  Returns a list with a single empty material slot if none are found to ensure we don't miss configurations.
+    def _getSlotsForExtruder(self, extruder_index: int) -> List[ClusterPrinterMaterialStationSlot]:
+        slots = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
+            slot = slot,
+            extruder_index = extruder_index
+        )]
+        return slots or [self._createEmptyMaterialSlot(extruder_index)]
 
     ## Check if a configuration is supported in order to make it selectable by the user.
     #  We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
     @staticmethod
     def _isSupportedConfiguration(slot: ClusterPrinterMaterialStationSlot, extruder_index: int) -> bool:
-        return slot.extruder_index == extruder_index and slot.compatible and slot.material and \
-               slot.material_remaining != 0
+        return slot.extruder_index == extruder_index and slot.compatible and slot.material
+
+    ## Create an empty material slot with a fake empty material.
+    @staticmethod
+    def _createEmptyMaterialSlot(extruder_index: int) -> ClusterPrinterMaterialStationSlot:
+        empty_material = ClusterPrinterConfigurationMaterial(guid = "", material = "empty", brand = "", color = "")
+        return ClusterPrinterMaterialStationSlot(slot_index = 0, extruder_index = extruder_index,
+                                                 compatible = True, material_remaining = 0, material = empty_material)
 
     @staticmethod
     def _createAvailableConfigurationFromPrinterConfiguration(left_slot: ClusterPrinterMaterialStationSlot,
