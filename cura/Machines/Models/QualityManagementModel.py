@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+import cura.CuraApplication  # Imported this way to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
 
 #
@@ -24,13 +25,12 @@ class QualityManagementModel(ListModel):
         self.addRoleName(self.QualityGroupRole, "quality_group")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
-        from cura.CuraApplication import CuraApplication
-        self._container_registry = CuraApplication.getInstance().getContainerRegistry()
-        self._machine_manager = CuraApplication.getInstance().getMachineManager()
-        self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        self._container_registry = application.getContainerRegistry()
+        self._machine_manager = application.getMachineManager()
+        self._extruder_manager = application.getExtruderManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
 
         self._update()
 
