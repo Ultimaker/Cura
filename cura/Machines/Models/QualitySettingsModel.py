@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
@@ -93,8 +93,8 @@ class QualitySettingsModel(ListModel):
                 quality_node = quality_group.nodes_for_extruders.get(str(self._selected_position))
             settings_keys = quality_group.getAllKeys()
         quality_containers = []
-        if quality_node is not None and quality_node.getContainer() is not None:
-            quality_containers.append(quality_node.getContainer())
+        if quality_node is not None and quality_node.container is not None:
+            quality_containers.append(quality_node.container)
 
         # Here, if the user has selected a quality changes, then "quality_changes_group" will not be None, and we fetch
         # the settings in that quality_changes_group.
