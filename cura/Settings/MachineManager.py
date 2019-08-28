@@ -1146,8 +1146,10 @@ class MachineManager(QObject):
             global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
             if global_containers:
                 quality_changes_container = global_containers[0]
-        if quality_changes_group.node_for_global and quality_changes_group.node_for_global.container:
-            quality_changes_container = cast(InstanceContainer, quality_changes_group.node_for_global.container)
+        if quality_changes_group.metadata_for_global:
+            containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
+            if containers:
+                quality_changes_container = cast(InstanceContainer, containers[0])
         if quality_group is not None and quality_group.node_for_global and quality_group.node_for_global.container:
             quality_container = quality_group.node_for_global.container
 
