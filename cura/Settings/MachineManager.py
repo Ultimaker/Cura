@@ -38,7 +38,7 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.cura_empty_instance_containers import (empty_definition_changes_container, empty_variant_container,
                                                           empty_material_container, empty_quality_container,
-                                                          empty_quality_changes_container)
+                                                          empty_quality_changes_container, empty_intent_container)
 
 from .CuraStackBuilder import CuraStackBuilder
 
@@ -1127,6 +1127,7 @@ class MachineManager(QObject):
             if container:
                 container.setMetaDataEntry("quality_type", "not_supported")
         quality_changes_group.quality_type = "not_supported"
+        quality_changes_group.intent_category = "default"
 
     def _setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         if self._global_container_stack is None:
@@ -1165,6 +1166,8 @@ class MachineManager(QObject):
 
             extruder.quality = quality_container
             extruder.qualityChanges = quality_changes_container
+
+        self.setIntentByCategory(quality_changes_group.intent_category)
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1497,6 +1500,30 @@ class MachineManager(QObject):
         # See if we need to show the Discard or Keep changes screen
         if not no_dialog and self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
+
+    ##  Change the intent category of the current printer.
+    #
+    #   All extruders can change their profiles. If an intent profile is
+    #   available with the desired intent category, that one will get chosen.
+    #   Otherwise the intent profile will be left to the empty profile, which
+    #   represents the "default" intent category.
+    #   \param intent_category The intent category to change to.
+    def setIntentByCategory(self, intent_category: str) -> None:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        container_tree = ContainerTree.getInstance()
+        for extruder in global_stack.extruderList:
+            definition_id = global_stack.definition.getId()
+            variant_name = extruder.variant.getName()
+            material_base_file = extruder.material.getMetaDataEntry("base_file")
+            quality_id = extruder.quality.getId()
+            quality_node = container_tree.machines[definition_id].variants[variant_name].materials[material_base_file].qualities[quality_id]
+
+            for intent_node in quality_node.intents.values():
+                if intent_node.intent_category == intent_category:  # Found an intent with the correct category.
+                    extruder.intent = intent_node.container
+                    break
+            else:  # No intent had the correct category.
+                extruder.intent = empty_intent_container
 
     @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
