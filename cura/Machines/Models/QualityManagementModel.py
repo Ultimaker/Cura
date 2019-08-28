@@ -28,10 +28,9 @@ class QualityManagementModel(ListModel):
         self._container_registry = CuraApplication.getInstance().getContainerRegistry()
         self._machine_manager = CuraApplication.getInstance().getMachineManager()
         self._extruder_manager = CuraApplication.getInstance().getExtruderManager()
-        self._quality_manager = CuraApplication.getInstance().getQualityManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._quality_manager.qualitiesUpdated.connect(self._update)
+        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
 
         self._update()
 
@@ -43,8 +42,9 @@ class QualityManagementModel(ListModel):
             self.setItems([])
             return
 
-        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
-        quality_changes_group_list = self._quality_manager.getQualityChangesGroups(global_stack)
+        container_tree = ContainerTree.getInstance()
+        quality_group_dict = container_tree.getCurrentQualityGroups()
+        quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
 
         available_quality_types = set(quality_type for quality_type, quality_group in quality_group_dict.items()
                                       if quality_group.is_available)
