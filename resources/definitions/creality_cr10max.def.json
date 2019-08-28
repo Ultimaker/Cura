@@ -27,6 +27,7 @@
 
     },
     "metadata": {
-        "quality_definition": "creality_base"
+        "quality_definition": "creality_base",
+        "visible": true
     }
 }
