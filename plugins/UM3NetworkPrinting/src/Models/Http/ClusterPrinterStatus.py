@@ -81,9 +81,9 @@ class ClusterPrinterStatus(BaseModel):
         model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
         # Set the possible configurations based on whether a Material Station is present or not.
-        if self.material_station is not None and len(self.material_station.material_slots):
+        if self.material_station and self.material_station.material_slots:
             self._updateAvailableConfigurations(model)
-        if self.configuration is not None:
+        if self.configuration:
             self._updateActiveConfiguration(model)
 
     def _updateActiveConfiguration(self, model: PrinterOutputModel) -> None:
@@ -103,6 +103,8 @@ class ClusterPrinterStatus(BaseModel):
     ## Create a list of Material Station slots for the given extruder index.
     #  Returns a list with a single empty material slot if none are found to ensure we don't miss configurations.
     def _getSlotsForExtruder(self, extruder_index: int) -> List[ClusterPrinterMaterialStationSlot]:
+        if not self.material_station:  # typing guard
+            return []
         slots = [slot for slot in self.material_station.material_slots if self._isSupportedConfiguration(
             slot = slot,
             extruder_index = extruder_index
@@ -113,7 +115,7 @@ class ClusterPrinterStatus(BaseModel):
     #  We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
     @staticmethod
     def _isSupportedConfiguration(slot: ClusterPrinterMaterialStationSlot, extruder_index: int) -> bool:
-        return slot.extruder_index == extruder_index and slot.compatible and slot.material
+        return slot.extruder_index == extruder_index and slot.compatible
 
     ## Create an empty material slot with a fake empty material.
     @staticmethod

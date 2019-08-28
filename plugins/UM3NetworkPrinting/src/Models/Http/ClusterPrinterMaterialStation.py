@@ -14,7 +14,7 @@ class ClusterPrinterMaterialStation(BaseModel):
     #  \param: supported: Whether the material station is supported on this machine or not.
     #  \param material_slots: The active slots configurations of this material station.
     def __init__(self, status: str, supported: bool = False,
-                 material_slots: List[Union[None, Dict[str, Any], ClusterPrinterMaterialStationSlot]] = None,
+                 material_slots: List[Union[ClusterPrinterMaterialStationSlot, Dict[str, Any]]] = None,
                  **kwargs) -> None:
         self.status = status
         self.supported = supported
