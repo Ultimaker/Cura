@@ -23,6 +23,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
+from cura.Machines.ContainerTree import ContainerTree
 
 from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -992,8 +993,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
-        material_manager = Application.getInstance().getMaterialManager()
-        quality_manager = Application.getInstance().getQualityManager()
+        container_tree = ContainerTree.getInstance()
 
         machine_manager.setActiveMachine(global_stack.getId())
 
@@ -1003,7 +1003,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
-            quality_changes_group_list = quality_manager.getQualityChangesGroups(global_stack)
+            quality_changes_group_list = container_tree.getCurrentQualityChangesGroups()
             quality_changes_group = next((qcg for qcg in quality_changes_group_list if qcg.name == self._quality_changes_to_apply), None)
             if not quality_changes_group:
                 Logger.log("e", "Could not find quality_changes [%s]", self._quality_changes_to_apply)
@@ -1011,13 +1011,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_manager.setQualityChangesGroup(quality_changes_group, no_dialog = True)
         else:
             self._quality_type_to_apply = self._quality_type_to_apply.lower()
-            quality_group_dict = quality_manager.getQualityGroups(global_stack)
+            quality_group_dict = container_tree.getCurrentQualityGroups()
             if self._quality_type_to_apply in quality_group_dict:
                 quality_group = quality_group_dict[self._quality_type_to_apply]
             else:
                 Logger.log("i", "Could not find quality type [%s], switch to default", self._quality_type_to_apply)
                 preferred_quality_type = global_stack.getMetaDataEntry("preferred_quality_type")
-                quality_group_dict = quality_manager.getQualityGroups(global_stack)
                 quality_group = quality_group_dict.get(preferred_quality_type)
                 if quality_group is None:
                     Logger.log("e", "Could not get preferred quality type [%s]", preferred_quality_type)
