@@ -62,7 +62,7 @@ class MachineNode(ContainerNode):
             Logger.log("e", "The number of extruders in the list of variants (" + str(len(variant_names)) + ") is not equal to the number of extruders in the list of materials (" + str(len(material_bases)) + ") or the list of enabled extruders (" + str(len(extruder_enabled)) + ").")
             return {}
         # For each extruder, find which quality profiles are available. Later we'll intersect the quality types.
-        qualities_per_type_per_extruder = [{} for _ in range(len(variant_names))]  # type: List[Dict[str, QualityNode]]
+        qualities_per_type_per_extruder = [{}] * len(variant_names)  # type: List[Dict[str, QualityNode]]
         for extruder_nr, variant_name in enumerate(variant_names):
             if not extruder_enabled[extruder_nr]:
                 continue  # No qualities are available in this extruder. It'll get skipped when calculating the available quality types.
