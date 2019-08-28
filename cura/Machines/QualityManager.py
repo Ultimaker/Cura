@@ -141,26 +141,12 @@ class QualityManager(QObject):
     # Methods for GUI
     #
 
-    #
-    # Remove the given quality changes group.
-    #
+    ##  Deletes a custom profile. It will be gone forever.
+    #   \param quality_changes_group The quality changes group representing the
+    #   profile to delete.
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
-        Logger.log("i", "Removing quality changes group {group_name}".format(group_name = quality_changes_group.name))
-        removed_quality_changes_ids = set()
-        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
-            container_id = metadata["id"]
-            container_registry.removeContainer(container_id)
-            removed_quality_changes_ids.add(container_id)
-
-        # Reset all machines that have activated this custom profile.
-        for global_stack in container_registry.findContainerStacks(type = "machine"):
-            if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
-                global_stack.qualityChanges = self._empty_quality_changes_container
-        for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
-            if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
-                extruder_stack.qualityChanges = self._empty_quality_changes_container
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group)
 
     #
     # Rename a set of quality changes containers. Returns the new name.
