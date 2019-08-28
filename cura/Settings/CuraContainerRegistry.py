@@ -381,14 +381,13 @@ class CuraContainerRegistry(ContainerRegistry):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return None
-        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
-        definition_id = machine_node.quality_definition
+        definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         profile.setDefinition(definition_id)
 
         # Check to make sure the imported profile actually makes sense in context of the current configuration.
         # This prevents issues where importing a "draft" profile for a machine without "draft" qualities would report as
         # successfully imported but then fail to show up.
-        quality_group_dict = ContainerTree.getInstance().machines[definition_id]
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
         # "not_supported" profiles can be imported.
         if quality_type != empty_quality_container.getMetaDataEntry("quality_type") and quality_type not in quality_group_dict:
             return catalog.i18nc("@info:status", "Could not find a quality type {0} for the current configuration.", quality_type)
