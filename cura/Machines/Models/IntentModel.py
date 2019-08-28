@@ -6,7 +6,6 @@ from typing import Optional, List, Dict, Any
 from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
-from UM.Settings.ContainerRegistry import ContainerRegistry
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.IntentManager import IntentManager
@@ -25,9 +24,9 @@ class IntentModel(ListModel):
 
         self._intent_category = "engineering"
 
-        ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
-        ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
-
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.globalContainerChanged.connect(self._update)
+        machine_manager.activeStackChanged.connect(self._update)
         self._update()
 
     intentCategoryChanged = pyqtSignal()
@@ -41,10 +40,6 @@ class IntentModel(ListModel):
     @pyqtProperty(str, fset = setIntentCategory, notify = intentCategoryChanged)
     def intentCategory(self) -> str:
         return self._intent_category
-
-    def _onChanged(self, container):
-        if container.getMetaDataEntry("type") == "intent":
-            self._update()
 
     def _update(self) -> None:
         new_items = []  # type: List[Dict[str, Any]]
