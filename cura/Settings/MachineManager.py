@@ -1135,9 +1135,8 @@ class MachineManager(QObject):
         # A custom quality can be created based on "not supported".
         # In that case, do not set quality containers to empty.
         quality_group = None
-        if quality_type != "not_supported":
-            quality_group_dict = QualityManager.getInstance().getQualityGroups(self._global_container_stack)
-            quality_group = quality_group_dict.get(quality_type)
+        if quality_type != "not_supported":  # Find the quality group that the quality changes was based on.
+            quality_group = ContainerTree.getInstance().getCurrentQualityGroups().get(quality_type)
             if quality_group is None:
                 self._fixQualityChangesGroupToNotSupported(quality_changes_group)
 
