@@ -61,6 +61,35 @@ class QualityManagementModel(ListModel):
             if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 extruder_stack.qualityChanges = empty_quality_changes_container
 
+    ##  Rename a custom profile.
+    #
+    #   Because the names must be unique, the new name may not actually become
+    #   the name that was given. The actual name is returned by this function.
+    #   \param quality_changes_group The custom profile that must be renamed.
+    #   \param new_name The desired name for the profile.
+    #   \return The actual new name of the profile, after making the name
+    #   unique.
+    @pyqtSlot(QObject, str, result = str)
+    def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
+        Logger.log("i", "Renaming QualityChangesGroup {old_name} to {new_name}.".format(old_name = quality_changes_group.name, new_name = new_name))
+        if new_name == quality_changes_group.name:
+            Logger.log("i", "QualityChangesGroup name {name} unchanged.".format(name = quality_changes_group.name))
+            return new_name
+
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        new_name = application.getContainerRegistry().uniqueName(new_name)
+        for node in quality_changes_group.getAllNodes():
+            container = node.container
+            if container:
+                container.setName(new_name)
+
+        quality_changes_group.name = new_name
+
+        application.getMachineManager().activeQualityChanged.emit()
+        application.getMachineManager().activeQualityGroupChanged.emit()
+
+        return new_name
+
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 

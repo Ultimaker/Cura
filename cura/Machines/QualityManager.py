@@ -148,29 +148,17 @@ class QualityManager(QObject):
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group)
 
+    ##  Rename a custom profile.
     #
-    # Rename a set of quality changes containers. Returns the new name.
-    #
+    #   Because the names must be unique, the new name may not actually become
+    #   the name that was given. The actual name is returned by this function.
+    #   \param quality_changes_group The custom profile that must be renamed.
+    #   \param new_name The desired name for the profile.
+    #   \return The actual new name of the profile, after making the name
+    #   unique.
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
-        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
-        if new_name == quality_changes_group.name:
-            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
-            return new_name
-
-        new_name = self._container_registry.uniqueName(new_name)
-        for node in quality_changes_group.getAllNodes():
-            container = node.container
-            if container:
-                container.setName(new_name)
-
-        quality_changes_group.name = new_name
-
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        application.getMachineManager().activeQualityChanged.emit()
-        application.getMachineManager().activeQualityGroupChanged.emit()
-
-        return new_name
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group)
 
     #
     # Duplicates the given quality.
