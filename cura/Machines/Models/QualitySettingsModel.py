@@ -102,7 +102,7 @@ class QualitySettingsModel(ListModel):
             global_container = None if len(global_containers) == 0 else global_containers[0]
             extruders_containers = {pos: container_registry.findContainers(id = quality_changes_group.metadata_per_extruder[pos]["id"]) for pos in quality_changes_group.metadata_per_extruder}
             extruders_container = {pos: None if not containers else containers[0] for pos, containers in extruders_containers.items()}
-            if self._selected_position == self.GLOBAL_STACK_POSITION:
+            if self._selected_position == self.GLOBAL_STACK_POSITION and global_container:
                 quality_changes_metadata = global_container.getMetaData()
             else:
                 quality_changes_metadata = extruders_container.get(str(self._selected_position))
@@ -111,9 +111,11 @@ class QualitySettingsModel(ListModel):
                 if container:
                     quality_containers.insert(0, container[0])
 
-            settings_keys.update(global_container.getAllKeys())
+            if global_container:
+                settings_keys.update(global_container.getAllKeys())
             for container in extruders_container.values():
-                settings_keys.update(container.getAllKeys())
+                if container:
+                    settings_keys.update(container.getAllKeys())
 
         # We iterate over all definitions instead of settings in a quality/quality_changes group is because in the GUI,
         # the settings are grouped together by categories, and we had to go over all the definitions to figure out
