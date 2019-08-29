@@ -25,6 +25,10 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
         self.verification_code = None  # type: Optional[str]
 
+    # CURA-6609: Some browser seems to issue a HEAD instead of GET request as the callback.
+    def do_HEAD(self) -> None:
+        self.do_GET()
+
     def do_GET(self) -> None:
         # Extract values from the query string.
         parsed_url = urlparse(self.path)
