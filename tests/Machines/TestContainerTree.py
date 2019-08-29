@@ -2,10 +2,11 @@ from unittest.mock import patch, MagicMock
 import pytest
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.GlobalStack import GlobalStack
 
 
 def createMockedStack(definition_id: str):
-    result = MagicMock()
+    result = MagicMock(spec = GlobalStack)
     result.definition.getId = MagicMock(return_value = definition_id)
     return result
 
@@ -34,8 +35,11 @@ def test_newMachineAdded(container_registry):
         # machine_3 shouldn't be there, as on init it wasn't in the registry
         assert "machine_3" not in container_tree.machines
 
-        # But when it does get added (by manually triggering the _machineAdded), it should be there.
+        # It should only react when a globalStack is added.
         container_tree._machineAdded(mocked_definition_container)
+        assert "machine_3" not in container_tree.machines
+
+        container_tree._machineAdded(createMockedStack("machine_3"))
         assert "machine_3" in container_tree.machines
 
 

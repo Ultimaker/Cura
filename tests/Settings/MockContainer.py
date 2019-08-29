@@ -116,6 +116,9 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
     def getVersionFromSerialized(cls, serialized):
         raise NotImplementedError()
 
+    def isDirty(self):
+        return True
+
     metaDataChanged = Signal()
     propertyChanged = Signal()
     containersChanged = Signal()

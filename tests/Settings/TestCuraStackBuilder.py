@@ -69,12 +69,18 @@ def test_createMachine(application, container_registry, definition_container, gl
     metadata["preferred_quality_type"] = "normal"
 
     container_registry.addContainer(definition_container)
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
-        machine = CuraStackBuilder.createMachine("Whatever", "Test Definition")
+    quality_node = MagicMock()
+    machine_node = MagicMock()
+    machine_node.preferredGlobalQuality = MagicMock(return_value = quality_node)
+    quality_node.container = quality_container
 
-        assert machine.quality == quality_container
-        assert machine.definition == definition_container
-        assert machine.variant == global_variant
+    with patch("cura.Settings.CuraStackBuilder.MachineNode", MagicMock(return_value = machine_node)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+            machine = CuraStackBuilder.createMachine("Whatever", "Test Definition")
+
+            assert machine.quality == quality_container
+            assert machine.definition == definition_container
+            assert machine.variant == global_variant
 
 
 def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
