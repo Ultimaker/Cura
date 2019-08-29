@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Dict, List
+from typing import Optional, Dict, List, Callable, Any
 
 from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtCore import pyqtSlot, QUrl, pyqtSignal, pyqtProperty
@@ -13,12 +13,13 @@ from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from .ClusterApiClient import ClusterApiClient
+from .SendMaterialJob import SendMaterialJob
 from ..ExportFileJob import ExportFileJob
-from ..SendMaterialJob import SendMaterialJob
 from ..UltimakerNetworkedPrinterOutputDevice import UltimakerNetworkedPrinterOutputDevice
 from ..Messages.PrintJobUploadBlockedMessage import PrintJobUploadBlockedMessage
 from ..Messages.PrintJobUploadErrorMessage import PrintJobUploadErrorMessage
 from ..Messages.PrintJobUploadSuccessMessage import PrintJobUploadSuccessMessage
+from ..Models.Http.ClusterMaterial import ClusterMaterial
 
 
 I18N_CATALOG = i18nCatalog("cura")
@@ -100,10 +101,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._getApiClient().getPrintJobs(self._updatePrintJobs)
         self._updatePrintJobPreviewImages()
 
+    ## Get a list of materials that are installed on the cluster host.
+    def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
+        self._getApiClient().getMaterials(on_finished = on_finished)
+
     ## Sync the material profiles in Cura with the printer.
     #  This gets called when connecting to a printer as well as when sending a print.
     def sendMaterialProfiles(self) -> None:
-        job = SendMaterialJob(device=self)
+        job = SendMaterialJob(device = self)
         job.run()
 
     ## Send a print job to the cluster.
@@ -133,6 +138,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             self._createFormPart("name=owner", bytes(self._getUserName(), "utf-8"), "text/plain"),
             self._createFormPart("name=\"file\"; filename=\"%s\"" % job.getFileName(), job.getOutput())
         ]
+        # FIXME: move form posting to API client
         self.postFormWithParts("/cluster-api/v1/print_jobs/", parts, on_finished=self._onPrintUploadCompleted,
                                on_progress=self._onPrintJobUploadProgress)
 
