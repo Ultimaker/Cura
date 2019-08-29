@@ -17,7 +17,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode  # To create a node in the sc
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator  # Added to the resulting scene node.
 
 ##  Class that leverages Trimesh to import files.
-class Trimesh(MeshReader):
+class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
