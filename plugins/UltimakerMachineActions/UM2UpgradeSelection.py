@@ -1,13 +1,15 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
 
-from UM.Settings.ContainerRegistry import ContainerRegistry
-from cura.MachineAction import MachineAction
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import pyqtSignal, pyqtProperty
 
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Application import Application
 from UM.Util import parseBool
+
+from cura.MachineAction import MachineAction
+
 catalog = i18nCatalog("cura")
 
 

@@ -5,6 +5,7 @@ import json
 import os
 import platform
 import time
+from typing import cast, Optional, Set
 
 from PyQt5.QtCore import pyqtSlot, QObject
 
@@ -16,7 +17,7 @@ from UM.i18n import i18nCatalog
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import DurationFormat
-from typing import cast, Optional
+
 from .SliceInfoJob import SliceInfoJob
 
 
@@ -32,30 +33,21 @@ class SliceInfo(QObject, Extension):
     def __init__(self, parent = None):
         QObject.__init__(self, parent)
         Extension.__init__(self)
-        Application.getInstance().getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
-        Application.getInstance().getPreferences().addPreference("info/send_slice_info", True)
-        Application.getInstance().getPreferences().addPreference("info/asked_send_slice_info", False)
+
+        self._application = Application.getInstance()
+
+        self._application.getOutputDeviceManager().writeStarted.connect(self._onWriteStarted)
+        self._application.getPreferences().addPreference("info/send_slice_info", True)
+        self._application.getPreferences().addPreference("info/asked_send_slice_info", False)
 
         self._more_info_dialog = None
         self._example_data_content = None
 
-        if not Application.getInstance().getPreferences().getValue("info/asked_send_slice_info"):
-            self.send_slice_info_message = Message(catalog.i18nc("@info", "Cura collects anonymized usage statistics."),
-                                                   lifetime = 0,
-                                                   dismissable = False,
-                                                   title = catalog.i18nc("@info:title", "Collecting Data"))
-
-            self.send_slice_info_message.addAction("MoreInfo", name = catalog.i18nc("@action:button", "More info"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "See more information on what data Cura sends."), button_style = Message.ActionButtonStyle.LINK)
-
-            self.send_slice_info_message.addAction("Dismiss", name = catalog.i18nc("@action:button", "Allow"), icon = None,
-                    description = catalog.i18nc("@action:tooltip", "Allow Cura to send anonymized usage statistics to help prioritize future improvements to Cura. Some of your preferences and settings are sent, the Cura version and a hash of the models you're slicing."))
-            self.send_slice_info_message.actionTriggered.connect(self.messageActionTriggered)
-            self.send_slice_info_message.show()
-
-        Application.getInstance().initializationFinished.connect(self._onAppInitialized)
+        self._application.initializationFinished.connect(self._onAppInitialized)
 
     def _onAppInitialized(self):
+        # DO NOT read any preferences values in the constructor because at the time plugins are created, no version
+        # upgrade has been performed yet because version upgrades are plugins too!
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
 
@@ -70,7 +62,7 @@ class SliceInfo(QObject, Extension):
     def showMoreInfoDialog(self):
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
-        self._more_info_dialog.open()
+        self._more_info_dialog.show()
 
     def _createDialog(self, qml_name):
         Logger.log("d", "Creating dialog [%s]", qml_name)
@@ -85,7 +77,7 @@ class SliceInfo(QObject, Extension):
             if not plugin_path:
                 Logger.log("e", "Could not get plugin path!", self.getPluginId())
                 return None
-            file_path = os.path.join(plugin_path, "example_data.json")
+            file_path = os.path.join(plugin_path, "example_data.html")
             if file_path:
                 with open(file_path, "r", encoding = "utf-8") as f:
                     self._example_data_content = f.read()
@@ -95,13 +87,29 @@ class SliceInfo(QObject, Extension):
     def setSendSliceInfo(self, enabled: bool):
         Application.getInstance().getPreferences().setValue("info/send_slice_info", enabled)
 
+    def _getUserModifiedSettingKeys(self) -> list:
+        from cura.CuraApplication import CuraApplication
+        application = cast(CuraApplication, Application.getInstance())
+        machine_manager = application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        user_modified_setting_keys = set()  # type: Set[str]
+
+        for stack in [global_stack] + list(global_stack.extruders.values()):
+            # Get all settings in user_changes and quality_changes
+            all_keys = stack.userChanges.getAllKeys() | stack.qualityChanges.getAllKeys()
+            user_modified_setting_keys |= all_keys
+
+        return list(sorted(user_modified_setting_keys))
+
     def _onWriteStarted(self, output_device):
         try:
             if not Application.getInstance().getPreferences().getValue("info/send_slice_info"):
                 Logger.log("d", "'info/send_slice_info' is turned off.")
                 return  # Do nothing, user does not want to send data
 
-            application = Application.getInstance()
+            from cura.CuraApplication import CuraApplication
+            application = cast(CuraApplication, Application.getInstance())
             machine_manager = application.getMachineManager()
             print_information = application.getPrintInformation()
 
@@ -117,6 +125,10 @@ class SliceInfo(QObject, Extension):
                 data["active_mode"] = "recommended"
             else:
                 data["active_mode"] = "custom"
+
+            data["camera_view"] = application.getPreferences().getValue("general/camera_perspective_mode")
+            if data["camera_view"] == "orthographic":
+                data["camera_view"] = "orthogonal" #The database still only recognises the old name "orthogonal".
 
             definition_changes = global_stack.definitionChanges
             machine_settings_changed_by_user = False
@@ -164,6 +176,8 @@ class SliceInfo(QObject, Extension):
 
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
 
+            data["user_modified_setting_keys"] = self._getUserModifiedSettingKeys()
+
             data["models"] = []
             # Listing all files placed on the build plate
             for node in DepthFirstIterator(application.getController().getScene().getRoot()):
@@ -171,6 +185,8 @@ class SliceInfo(QObject, Extension):
                     model = dict()
                     model["hash"] = node.getMeshData().getHash()
                     bounding_box = node.getBoundingBox()
+                    if not bounding_box:
+                        continue
                     model["bounding_box"] = {"minimum": {"x": bounding_box.minimum.x,
                                                          "y": bounding_box.minimum.y,
                                                          "z": bounding_box.minimum.z},

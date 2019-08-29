@@ -12,9 +12,8 @@
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,
         "has_materials": true,
-        "has_machine_materials": true,
-        "has_variant_materials": true,
         "has_variants": true,
+        "exclude_materials": [ "generic_hips", "generic_petg", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
         "preferred_variant_name": "AA 0.4",
         "preferred_quality_type": "normal",
         "variants_name": "Print core",
@@ -25,7 +24,16 @@
         },
         "first_start_actions": [ "DiscoverUM3Action" ],
         "supported_actions": [ "DiscoverUM3Action" ],
-        "supports_usb_connection": false
+        "supports_usb_connection": false,
+        "supports_network_connection": true,
+        "firmware_update_info": {
+            "id": 9066,
+            "check_urls":
+            [
+                "https://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version"
+            ],
+            "update_url": "https://ultimaker.com/firmware"
+        }
     },
 
 
@@ -54,7 +62,7 @@
         "machine_max_feedrate_y": { "default_value": 300 },
         "machine_max_feedrate_z": { "default_value": 40 },
         "machine_acceleration": { "default_value": 3000 },
-        "gantry_height": { "default_value": 60 },
+        "gantry_height": { "value": "60" },
         "machine_disallowed_areas": { "default_value": [
             [[92.8, -53.4], [92.8, -97.5], [116.5, -97.5], [116.5, -53.4]],
             [[73.8, 107.5], [73.8, 100.5], [116.5, 100.5], [116.5, 107.5]],
@@ -70,7 +78,7 @@
         "prime_tower_position_x": { "value": "machine_depth - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) - 30" },
         "prime_tower_wipe_enabled": { "default_value": false },
 
-        "prime_blob_enable": { "enabled": true },
+        "prime_blob_enable": { "enabled": true, "default_value": true, "value": "resolveOrValue('print_sequence') != 'one_at_a_time'" },
 
         "acceleration_enabled": { "value": "True" },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
@@ -90,7 +98,7 @@
         "infill_overlap": { "value": "0" },
         "infill_pattern": { "value": "'triangles'" },
         "infill_wipe_dist": { "value": "0" },
-        "initial_layer_line_width_factor": { "value": "120" },		
+        "initial_layer_line_width_factor": { "value": "120" },
         "jerk_enabled": { "value": "True" },
         "jerk_layer_0": { "value": "jerk_topbottom" },
         "jerk_prime_tower": { "value": "math.ceil(jerk_print * 15 / 25)" },
@@ -110,7 +118,6 @@
         "material_bed_temperature": { "maximum_value": "115" },
         "material_bed_temperature_layer_0": { "maximum_value": "115" },
         "material_standby_temperature": { "value": "100" },
-        "meshfix_maximum_resolution": { "value": "0.04" },
         "multiple_mesh_overlap": { "value": "0" },
         "optimize_wall_printing_order": { "value": "True" },
         "prime_tower_enable": { "default_value": true },

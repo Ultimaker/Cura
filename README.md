@@ -20,8 +20,9 @@ Dependencies
 ------------
 * [Uranium](https://github.com/Ultimaker/Uranium) Cura is built on top of the Uranium framework.
 * [CuraEngine](https://github.com/Ultimaker/CuraEngine) This will be needed at runtime to perform the actual slicing.
+* [fdm_materials](https://github.com/Ultimaker/fdm_materials) Required to load a printer that has swappable material profiles.
 * [PySerial](https://github.com/pyserial/pyserial) Only required for USB printing support.
-* [python-zeroconf](https://github.com/jstasiak/python-zeroconf) Only required to detect mDNS-enabled printers
+* [python-zeroconf](https://github.com/jstasiak/python-zeroconf) Only required to detect mDNS-enabled printers.
 
 Build scripts
 -------------

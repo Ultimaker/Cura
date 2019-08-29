@@ -1,30 +1,32 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import math
+import re
+from typing import Dict, List, NamedTuple, Optional, Union
+
+import numpy
+
 from UM.Backend import Backend
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from UM.Message import Message
-from cura.Scene.CuraSceneNode import CuraSceneNode
 from UM.i18n import i18nCatalog
-
-catalog = i18nCatalog("cura")
 
 from cura.CuraApplication import CuraApplication
 from cura.LayerDataBuilder import LayerDataBuilder
 from cura.LayerDataDecorator import LayerDataDecorator
 from cura.LayerPolygon import LayerPolygon
+from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Settings.ExtruderManager import ExtruderManager
 
-import numpy
-import math
-import re
-from typing import Dict, List, NamedTuple, Optional, Union
+catalog = i18nCatalog("cura")
 
 PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optional[float]), ("z", Optional[float]), ("f", Optional[float]), ("e", Optional[float])])
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
+
 
 ##  This parser is intended to interpret the common firmware codes among all the
 #   different flavors
@@ -33,7 +35,7 @@ class FlavorParser:
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
         self._cancelled = False
-        self._message = None
+        self._message = None  # type: Optional[Message]
         self._layer_number = 0
         self._extruder_number = 0
         self._clearValues()
@@ -44,6 +46,7 @@ class FlavorParser:
         self._extruder_offsets = {}  # type: Dict[int, List[float]] # Offsets for multi extruders. key is index, value is [x-offset, y-offset]
         self._current_layer_thickness = 0.2  # default
         self._filament_diameter = 2.85       # default
+        self._previous_extrusion_value = 0.0  # keep track of the filament retractions
 
         CuraApplication.getInstance().getPreferences().addPreference("gcodereader/show_caution", True)
 
@@ -106,6 +109,8 @@ class FlavorParser:
             self._layer_data_builder.setLayerHeight(self._layer_number, path[0][2])
             self._layer_data_builder.setLayerThickness(self._layer_number, layer_thickness)
             this_layer = self._layer_data_builder.getLayer(self._layer_number)
+            if not this_layer:
+                return False
         except ValueError:
             return False
         count = len(path)
@@ -182,6 +187,7 @@ class FlavorParser:
             new_extrusion_value = params.e if self._is_absolute_extrusion else e[self._extruder_number] + params.e
             if new_extrusion_value > e[self._extruder_number]:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], self._layer_type])  # extrusion
+                self._previous_extrusion_value = new_extrusion_value
             else:
                 path.append([x, y, z, f, new_extrusion_value + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])  # retraction
             e[self._extruder_number] = new_extrusion_value
@@ -191,6 +197,8 @@ class FlavorParser:
             if z > self._previous_z and (z - self._previous_z < 1.5):
                 self._current_layer_thickness = z - self._previous_z # allow a tiny overlap
                 self._previous_z = z
+        elif self._previous_extrusion_value > e[self._extruder_number]:
+            path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveRetractionType])
         else:
             path.append([x, y, z, f, e[self._extruder_number] + self._extrusion_length_offset[self._extruder_number], LayerPolygon.MoveCombingType])
         return self._position(x, y, z, f, e)
@@ -227,6 +235,9 @@ class FlavorParser:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
             self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
+            self._previous_extrusion_value = params.e
+        else:
+            self._previous_extrusion_value = 0.0
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -275,7 +286,7 @@ class FlavorParser:
     ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
         result = {}
-        for extruder in ExtruderManager.getInstance().getExtruderStacks():
+        for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
                 extruder.getProperty("machine_nozzle_offset_x", "value"),
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
@@ -286,7 +297,7 @@ class FlavorParser:
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-        
+
         if not global_stack:
             return None
 
@@ -329,6 +340,7 @@ class FlavorParser:
         min_layer_number = 0
         negative_layers = 0
         previous_layer = 0
+        self._previous_extrusion_value = 0.0
 
         for line in stream.split("\n"):
             if self._cancelled:
@@ -356,6 +368,10 @@ class FlavorParser:
                     self._layer_type = LayerPolygon.SupportType
                 elif type == "FILL":
                     self._layer_type = LayerPolygon.InfillType
+                elif type == "SUPPORT-INTERFACE":
+                    self._layer_type = LayerPolygon.SupportInterfaceType
+                elif type == "PRIME-TOWER":
+                    self._layer_type = LayerPolygon.PrimeTowerType
                 else:
                     Logger.log("w", "Encountered a unknown type (%s) while parsing g-code.", type)
 
@@ -413,7 +429,8 @@ class FlavorParser:
 
             if line.startswith("M"):
                 M = self._getInt(line, "M")
-                self.processMCode(M, line, current_position, current_path)
+                if M is not None:
+                    self.processMCode(M, line, current_position, current_path)
 
         # "Flush" leftovers. Last layer paths are still stored
         if len(current_path) > 1:
@@ -451,7 +468,7 @@ class FlavorParser:
             Logger.log("w", "File doesn't contain any valid layers")
 
         settings = CuraApplication.getInstance().getGlobalContainerStack()
-        if not settings.getProperty("machine_center_is_zero", "value"):
+        if settings is not None and not settings.getProperty("machine_center_is_zero", "value"):
             machine_width = settings.getProperty("machine_width", "value")
             machine_depth = settings.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))

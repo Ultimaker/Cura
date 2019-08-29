@@ -12,9 +12,10 @@ import json
 import ssl
 import urllib.request
 import urllib.error
-import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
+import certifi
+
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
@@ -22,7 +23,6 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 from UM.Resources import Resources
 
 catalog = i18nCatalog("cura")
@@ -36,17 +36,13 @@ else:
     except ImportError:
         CuraDebugMode = False  # [CodeStyle: Reflecting imported value]
 
-# List of exceptions that should be considered "fatal" and abort the program.
-# These are primarily some exception types that we simply cannot really recover from
-# (MemoryError and SystemError) and exceptions that indicate grave errors in the
-# code that cause the Python interpreter to fail (SyntaxError, ImportError).
-fatal_exception_types = [
-    MemoryError,
-    SyntaxError,
-    ImportError,
-    SystemError,
+# List of exceptions that should not be considered "fatal" and abort the program.
+# These are primarily some exception types that we simply skip
+skip_exception_types = [
+    SystemExit,
+    KeyboardInterrupt,
+    GeneratorExit
 ]
-
 
 class CrashHandler:
     crash_url = "https://stats.ultimaker.com/api/cura"
@@ -70,7 +66,7 @@ class CrashHandler:
         # If Cura has fully started, we only show fatal errors.
         # If Cura has not fully started yet, we always show the early crash dialog. Otherwise, Cura will just crash
         # without any information.
-        if has_started and exception_type not in fatal_exception_types:
+        if has_started and exception_type in skip_exception_types:
             return
 
         if not has_started:
@@ -323,7 +319,8 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
+                                     " (Note: Developers may not speak your language, please use English if possible)"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected
@@ -355,11 +352,13 @@ class CrashHandler:
         # Convert data to bytes
         binary_data = json.dumps(self.data).encode("utf-8")
 
+        # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
+        context = ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
+        context.load_verify_locations(cafile = certifi.where())
         # Submit data
-        kwoptions = {"data": binary_data, "timeout": 5}
-
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
+        kwoptions = {"data": binary_data,
+                     "timeout": 5,
+                     "context": context}
 
         Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
         if not self.has_started:
@@ -387,7 +386,7 @@ class CrashHandler:
         Application.getInstance().callLater(self._show)
 
     def _show(self):
-        # When the exception is not in the fatal_exception_types list, the dialog is not created, so we don't need to show it
+        # When the exception is in the skip_exception_types list, the dialog is not created, so we don't need to show it
         if self.dialog:
             self.dialog.exec_()
         os._exit(1)

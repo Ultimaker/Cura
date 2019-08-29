@@ -1,5 +1,5 @@
-// Copyright (c) 2016 Ultimaker B.V.
-// Uranium is released under the terms of the LGPLv3 or higher.
+// Copyright (c) 2018 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 2.0
@@ -12,15 +12,24 @@ SettingItem
     id: base
     property var focusItem: control
 
+    // Somehow if we directory set control.model to CuraApplication.getExtrudersModelWithOptional()
+    // and in the Connections.onModelChanged use control.model as a reference, it will complain about
+    // non-existing properties such as "onModelChanged" and "getItem". I guess if we access the model
+    // via "control.model", it gives back a generic/abstract model instance. To avoid this, we add
+    // this extra property to keep the ExtrudersModel and use this in the rest of the code.
+    property var extrudersWithOptionalModel: CuraApplication.getExtrudersModelWithOptional()
+
     contents: ComboBox
     {
         id: control
         anchors.fill: parent
 
-        model: Cura.ExtrudersModel
+        model: base.extrudersWithOptionalModel
+
+        Connections
         {
-            onModelChanged: control.color = getItem(control.currentIndex).color
-            addOptionalExtruder: true
+            target: base.extrudersWithOptionalModel
+            onModelChanged: control.color = base.extrudersWithOptionalModel.getItem(control.currentIndex).color
         }
 
         textRole: "name"
@@ -31,12 +40,15 @@ SettingItem
             {
                 forceActiveFocus();
                 propertyProvider.setPropertyValue("value", model.getItem(index).index);
-            } else
+            }
+            else
             {
                 if (propertyProvider.properties.value == -1)
                 {
-                    control.currentIndex = model.rowCount() - 1;  // we know the last item is "Not overriden"
-                } else {
+                    control.currentIndex = model.count - 1;  // we know the last item is "Not overridden"
+                }
+                else
+                {
                     control.currentIndex = propertyProvider.properties.value;  // revert to the old value
                 }
             }
@@ -99,7 +111,7 @@ SettingItem
             sourceSize.width: width + 5 * screenScaleFactor
             sourceSize.height: width + 5 * screenScaleFactor
 
-            color: UM.Theme.getColor("setting_control_text");
+            color: UM.Theme.getColor("setting_control_button");
         }
 
         background: Rectangle
@@ -116,6 +128,7 @@ SettingItem
                 }
                 return UM.Theme.getColor("setting_control");
             }
+            radius: UM.Theme.getSize("setting_control_radius").width
             border.width: UM.Theme.getSize("default_lining").width
             border.color:
             {
@@ -140,6 +153,7 @@ SettingItem
             rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
             text: control.currentText
+            textFormat: Text.PlainText
             renderType: Text.NativeRendering
             font: UM.Theme.getFont("default")
             color: enabled ? UM.Theme.getColor("setting_control_text") : UM.Theme.getColor("setting_control_disabled_text")
@@ -147,20 +161,18 @@ SettingItem
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
 
-            background: Rectangle
+            background: UM.RecolorImage
             {
                 id: swatch
-                height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                height: Math.round(parent.height / 2)
                 width: height
-
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                radius: Math.round(width / 2)
-
+                sourceSize.width: width
+                sourceSize.height: height
+                source: UM.Theme.getIcon("extruder_button")
                 color: control.color
             }
         }
@@ -199,6 +211,7 @@ SettingItem
                 anchors.rightMargin: UM.Theme.getSize("setting_unit_margin").width
 
                 text: model.name
+                textFormat: Text.PlainText
                 renderType: Text.NativeRendering
                 color:
                 {
@@ -213,20 +226,18 @@ SettingItem
                 verticalAlignment: Text.AlignVCenter
                 rightPadding: swatch.width + UM.Theme.getSize("setting_unit_margin").width
 
-                background: Rectangle
+                background: UM.RecolorImage
                 {
                     id: swatch
-                    height: Math.round(UM.Theme.getSize("setting_control").height / 2)
+                    height: Math.round(parent.height / 2)
                     width: height
-
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
-                    anchors.margins: Math.round(UM.Theme.getSize("default_margin").width / 4)
+                    anchors.rightMargin: UM.Theme.getSize("thin_margin").width
 
-                    border.width: UM.Theme.getSize("default_lining").width
-                    border.color: enabled ? UM.Theme.getColor("setting_control_border") : UM.Theme.getColor("setting_control_disabled_border")
-                    radius: Math.round(width / 2)
-
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    source: UM.Theme.getIcon("extruder_button")
                     color: control.model.getItem(index).color
                 }
             }

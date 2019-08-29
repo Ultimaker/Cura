@@ -7,7 +7,6 @@
         "author": "TheTobby",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "has_materials": false,
         "has_machine_quality": true,
         "platform": "tevo_blackwidow.stl",
@@ -45,7 +44,7 @@
         },
         "gantry_height":
         {
-            "default_value": 0
+            "value": "0"
         },
         "machine_gcode_flavor":
         {

@@ -1,8 +1,0 @@
-{
-    "name": "UserAgreement",
-    "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "description": "Ask the user once if he/she agrees with our license.",
-    "api": 4,
-    "i18n-catalog": "cura"
-}

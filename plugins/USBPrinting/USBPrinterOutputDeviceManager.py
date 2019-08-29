@@ -2,20 +2,18 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import threading
-import platform
 import time
 import serial.tools.list_ports
+from os import environ
+from re import search
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
 
-from UM.Logger import Logger
-from UM.Resources import Resources
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
 
-from cura.PrinterOutputDevice import ConnectionState
-from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 from . import USBPrinterOutputDevice
 
@@ -68,7 +66,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             return
 
         changed_device = self._usb_output_devices[serial_port]
-        if changed_device.connectionState == ConnectionState.connected:
+        if changed_device.connectionState == ConnectionState.Connected:
             self.getOutputDeviceManager().addOutputDevice(changed_device)
         else:
             self.getOutputDeviceManager().removeOutputDevice(serial_port)
@@ -86,65 +84,6 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                     port_list = self.getSerialPortList(only_list_usb=True)
             self._addRemovePorts(port_list)
             time.sleep(5)
-
-    @pyqtSlot(result = str)
-    def getDefaultFirmwareName(self):
-        # Check if there is a valid global container stack
-        global_container_stack = self._application.getGlobalContainerStack()
-        if not global_container_stack:
-            Logger.log("e", "There is no global container stack. Can not update firmware.")
-            self._firmware_view.close()
-            return ""
-
-        # The bottom of the containerstack is the machine definition
-        machine_id = global_container_stack.getBottom().id
-
-        machine_has_heated_bed = global_container_stack.getProperty("machine_heated_bed", "value")
-
-        if platform.system() == "Linux":
-            baudrate = 115200
-        else:
-            baudrate = 250000
-
-        # NOTE: The keyword used here is the id of the machine. You can find the id of your machine in the *.json file, eg.
-        # https://github.com/Ultimaker/Cura/blob/master/resources/machines/ultimaker_original.json#L2
-        # The *.hex files are stored at a seperate repository:
-        # https://github.com/Ultimaker/cura-binary-data/tree/master/cura/resources/firmware
-        machine_without_extras  = {"bq_witbox"                : "MarlinWitbox.hex",
-                                   "bq_hephestos_2"           : "MarlinHephestos2.hex",
-                                   "ultimaker_original"       : "MarlinUltimaker-{baudrate}.hex",
-                                   "ultimaker_original_plus"  : "MarlinUltimaker-UMOP-{baudrate}.hex",
-                                   "ultimaker_original_dual"  : "MarlinUltimaker-{baudrate}-dual.hex",
-                                   "ultimaker2"               : "MarlinUltimaker2.hex",
-                                   "ultimaker2_go"            : "MarlinUltimaker2go.hex",
-                                   "ultimaker2_plus"          : "MarlinUltimaker2plus.hex",
-                                   "ultimaker2_extended"      : "MarlinUltimaker2extended.hex",
-                                   "ultimaker2_extended_plus" : "MarlinUltimaker2extended-plus.hex",
-                                   }
-        machine_with_heated_bed = {"ultimaker_original"       : "MarlinUltimaker-HBK-{baudrate}.hex",
-                                   "ultimaker_original_dual"  : "MarlinUltimaker-HBK-{baudrate}-dual.hex",
-                                   }
-        ##TODO: Add check for multiple extruders
-        hex_file = None
-        if machine_id in machine_without_extras.keys():  # The machine needs to be defined here!
-            if machine_id in machine_with_heated_bed.keys() and machine_has_heated_bed:
-                Logger.log("d", "Choosing firmware with heated bed enabled for machine %s.", machine_id)
-                hex_file = machine_with_heated_bed[machine_id]  # Return firmware with heated bed enabled
-            else:
-                Logger.log("d", "Choosing basic firmware for machine %s.", machine_id)
-                hex_file = machine_without_extras[machine_id]  # Return "basic" firmware
-        else:
-            Logger.log("w", "There is no firmware for machine %s.", machine_id)
-
-        if hex_file:
-            try:
-                return Resources.getPath(CuraApplication.ResourceTypes.Firmware, hex_file.format(baudrate=baudrate))
-            except FileNotFoundError:
-                Logger.log("w", "Could not find any firmware for machine %s.", machine_id)
-                return ""
-        else:
-            Logger.log("w", "Could not find any firmware for machine %s.", machine_id)
-            return ""
 
     ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):
@@ -175,6 +114,27 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                 port = (port.device, port.description, port.hwid)
             if only_list_usb and not port[2].startswith("USB"):
                 continue
+
+            # To prevent cura from messing with serial ports of other devices,
+            # filter by regular expressions passed in as environment variables.
+            # Get possible patterns with python3 -m serial.tools.list_ports -v
+
+            # set CURA_DEVICENAMES=USB[1-9] -> e.g. not matching /dev/ttyUSB0
+            pattern = environ.get('CURA_DEVICENAMES')
+            if pattern and not search(pattern, port[0]):
+                continue
+
+            # set CURA_DEVICETYPES=CP2102 -> match a type of serial converter
+            pattern = environ.get('CURA_DEVICETYPES')
+            if pattern and not search(pattern, port[1]):
+                continue
+
+            # set CURA_DEVICEINFOS=LOCATION=2-1.4 -> match a physical port
+            # set CURA_DEVICEINFOS=VID:PID=10C4:EA60 -> match a vendor:product
+            pattern = environ.get('CURA_DEVICEINFOS')
+            if pattern and not search(pattern, port[2]):
+                continue
+
             base_list += [port[0]]
 
         return list(base_list)

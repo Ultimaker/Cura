@@ -10,8 +10,6 @@
 
         "has_machine_quality": true,
         "has_materials": true,
-        "has_machine_materials": true,
-        "has_variant_materials": true,
         "has_variants": true,
 
         "variants_name": "Tool",
@@ -36,7 +34,7 @@
         "machine_extruder_count": { "default_value": 2 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
-        "gantry_height": { "default_value": 35 },
+        "gantry_height": { "value": "35" },
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 270 },
         "machine_width": { "default_value": 430 },

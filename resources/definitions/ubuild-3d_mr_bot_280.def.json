@@ -9,8 +9,6 @@
         "manufacturer": "uBuild-3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "icon": "icon_uBuild-3D",
-        "platform": "mr_bot_280_platform.stl",
         "has_materials": true,
         "preferred_quality_type": "draft",
         "machine_extruder_trains":
@@ -36,7 +34,7 @@
         "machine_nozzle_heat_up_speed": { "default_value": 2 },
         "machine_nozzle_cool_down_speed": { "default_value": 2 },
         "machine_head_with_fans_polygon": { "default_value": [[-20,20],[10,10],[10,10],[10,10]] },
-        "gantry_height": { "default_value": 275 },
+        "gantry_height": { "value": "275" },
         "machine_max_feedrate_z": { "default_value": 15 },
         "machine_max_feedrate_e": { "default_value": 60 },
         "machine_max_acceleration_z": { "default_value": 1000 },

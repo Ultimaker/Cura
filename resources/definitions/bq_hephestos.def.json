@@ -12,7 +12,8 @@
         "machine_extruder_trains":
         {
             "0": "bq_hephestos_extruder_0"
-        }
+        },
+        "firmware_file": "MarlinHephestos2.hex"
     },
 
     "overrides": {

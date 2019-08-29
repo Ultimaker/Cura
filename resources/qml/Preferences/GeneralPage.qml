@@ -1,4 +1,4 @@
-// Copyright (c) 2017 Ultimaker B.V.
+// Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
@@ -13,6 +13,7 @@ UM.PreferencesPage
 {
     //: General configuration page title
     title: catalog.i18nc("@title:tab","General")
+    id: generalPreferencesPage
 
     function setDefaultLanguage(languageCode)
     {
@@ -94,30 +95,20 @@ UM.PreferencesPage
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
 
+        UM.Preferences.resetPreference("general/camera_perspective_mode")
+        var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
+        setDefaultCameraMode(defaultCameraMode)
+
         UM.Preferences.resetPreference("cura/choice_on_profile_override")
         setDefaultDiscardOrKeepProfile(UM.Preferences.getValue("cura/choice_on_profile_override"))
 
         UM.Preferences.resetPreference("cura/choice_on_open_project")
         setDefaultOpenProjectOption(UM.Preferences.getValue("cura/choice_on_open_project"))
 
-        if (pluginExistsAndEnabled("SliceInfoPlugin")) {
-            UM.Preferences.resetPreference("info/send_slice_info")
-            sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
-        }
-        if (pluginExistsAndEnabled("UpdateChecker")) {
-            UM.Preferences.resetPreference("info/automatic_update_check")
-            checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
-        }
-    }
-
-    function pluginExistsAndEnabled(pluginName)
-    {
-        var pluginItem = plugins.find("id", pluginName)
-        if (pluginItem > -1)
-        {
-            return plugins.getItem(pluginItem).enabled
-        }
-        return false
+        UM.Preferences.resetPreference("info/send_slice_info")
+        sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
+        UM.Preferences.resetPreference("info/automatic_update_check")
+        checkUpdatesCheckbox.checked = boolCheck(UM.Preferences.getValue("info/automatic_update_check"))
     }
 
     ScrollView
@@ -129,11 +120,9 @@ UM.PreferencesPage
 
         Column
         {
-            //: Model used to check if a plugin exists
-            UM.PluginsModel { id: plugins }
 
             //: Language selection label
-            UM.I18nCatalog{id: catalog; name:"cura"}
+            UM.I18nCatalog{id: catalog; name: "cura"}
 
             Label
             {
@@ -150,7 +139,6 @@ UM.PreferencesPage
                 {
                     id: languageLabel
                     text: catalog.i18nc("@label","Language:")
-                    anchors.verticalCenter: languageComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -218,7 +206,6 @@ UM.PreferencesPage
                 {
                     id: currencyLabel
                     text: catalog.i18nc("@label","Currency:")
-                    anchors.verticalCenter: currencyField.verticalCenter
                 }
 
                 TextField
@@ -232,7 +219,6 @@ UM.PreferencesPage
                 {
                     id: themeLabel
                     text: catalog.i18nc("@label","Theme:")
-                    anchors.verticalCenter: themeComboBox.verticalCenter
                 }
 
                 ComboBox
@@ -283,9 +269,6 @@ UM.PreferencesPage
                 }
             }
 
-
-
-
             Label
             {
                 id: languageCaption
@@ -308,7 +291,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Slice automatically when changing settings.")
+                text: catalog.i18nc("@info:tooltip", "Slice automatically when changing settings.")
 
                 CheckBox
                 {
@@ -316,7 +299,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("general/auto_slice"))
                     onClicked: UM.Preferences.setValue("general/auto_slice", checked)
 
-                    text: catalog.i18nc("@option:check","Slice automatically");
+                    text: catalog.i18nc("@option:check", "Slice automatically");
                 }
             }
 
@@ -330,7 +313,7 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                text: catalog.i18nc("@label","Viewport behavior")
+                text: catalog.i18nc("@label", "Viewport behavior")
             }
 
             UM.TooltipArea
@@ -338,7 +321,7 @@ UM.PreferencesPage
                 width: childrenRect.width;
                 height: childrenRect.height;
 
-                text: catalog.i18nc("@info:tooltip","Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
+                text: catalog.i18nc("@info:tooltip", "Highlight unsupported areas of the model in red. Without support these areas will not print properly.")
 
                 CheckBox
                 {
@@ -347,14 +330,15 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("view/show_overhang"))
                     onClicked: UM.Preferences.setValue("view/show_overhang",  checked)
 
-                    text: catalog.i18nc("@option:check","Display overhang");
+                    text: catalog.i18nc("@option:check", "Display overhang");
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Moves the camera so the model is in the center of the view when a model is selected")
+                text: catalog.i18nc("@info:tooltip", "Moves the camera so the model is in the center of the view when a model is selected")
 
                 CheckBox
                 {
@@ -365,15 +349,16 @@ UM.PreferencesPage
                 }
             }
 
-            UM.TooltipArea {
+            UM.TooltipArea
+            {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip","Should the default zoom behavior of cura be inverted?")
+                text: catalog.i18nc("@info:tooltip", "Should the default zoom behavior of cura be inverted?")
 
                 CheckBox
                 {
                     id: invertZoomCheckbox
-                    text: catalog.i18nc("@action:button","Invert the direction of camera zoom.");
+                    text: catalog.i18nc("@action:button", "Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
                     onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
                 }
@@ -383,14 +368,30 @@ UM.PreferencesPage
             {
                 width: childrenRect.width;
                 height: childrenRect.height;
-                text: catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?")
+                text: zoomToMouseCheckbox.enabled ? catalog.i18nc("@info:tooltip", "Should zooming move in the direction of the mouse?") : catalog.i18nc("@info:tooltip", "Zooming towards the mouse is not supported in the orthographic perspective.")
 
                 CheckBox
                 {
                     id: zoomToMouseCheckbox
-                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction");
-                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
+                    text: catalog.i18nc("@action:button", "Zoom toward mouse direction")
+                    checked: boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled
                     onClicked: UM.Preferences.setValue("view/zoom_to_mouse", checked)
+                    enabled: UM.Preferences.getValue("general/camera_perspective_mode") !== "orthogonal"
+                }
+
+                //Because there is no signal for individual preferences, we need to manually link to the onPreferenceChanged signal.
+                Connections
+                {
+                    target: UM.Preferences
+                    onPreferenceChanged:
+                    {
+                        if(preference != "general/camera_perspective_mode")
+                        {
+                            return;
+                        }
+                        zoomToMouseCheckbox.enabled = UM.Preferences.getValue("general/camera_perspective_mode") !== "orthographic";
+                        zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse")) && zoomToMouseCheckbox.enabled;
+                    }
                 }
             }
 
@@ -454,6 +455,50 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "What type of camera rendering should be used?")
+                Column
+                {
+                    spacing: 4 * screenScaleFactor
+
+                    Label
+                    {
+                        text: catalog.i18nc("@window:text", "Camera rendering: ")
+                    }
+                    ComboBox
+                    {
+                        id: cameraComboBox
+
+                        model: ListModel
+                        {
+                            id: comboBoxList
+
+                            Component.onCompleted: {
+                                append({ text: catalog.i18n("Perspective"), code: "perspective" })
+                                append({ text: catalog.i18n("Orthographic"), code: "orthographic" })
+                            }
+                        }
+
+                        currentIndex:
+                        {
+                            var code = UM.Preferences.getValue("general/camera_perspective_mode");
+                            for(var i = 0; i < comboBoxList.count; ++i)
+                            {
+                                if(model.get(i).code == code)
+                                {
+                                    return i
+                                }
+                            }
+                            return 0
+                        }
+                        onActivated: UM.Preferences.setValue("general/camera_perspective_mode", model.get(index).code)
+                    }
                 }
             }
 
@@ -677,7 +722,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("UpdateChecker")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should Cura check for updates when the program is started?")
@@ -693,7 +737,6 @@ UM.PreferencesPage
 
             UM.TooltipArea
             {
-                visible: pluginExistsAndEnabled("SliceInfoPlugin")
                 width: childrenRect.width
                 height: visible ? childrenRect.height : 0
                 text: catalog.i18nc("@info:tooltip","Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored.")
@@ -751,6 +794,11 @@ UM.PreferencesPage
                 target: UM.Preferences
                 onPreferenceChanged:
                 {
+                    if (preference !== "info/send_slice_info")
+                    {
+                        return;
+                    }
+
                     sendDataCheckbox.checked = boolCheck(UM.Preferences.getValue("info/send_slice_info"))
                 }
             }

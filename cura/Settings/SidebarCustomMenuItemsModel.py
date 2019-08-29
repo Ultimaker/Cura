@@ -18,7 +18,7 @@ class SidebarCustomMenuItemsModel(ListModel):
         self.addRoleName(self.name_role, "name")
         self.addRoleName(self.actions_role, "actions")
         self.addRoleName(self.menu_item_role, "menu_item")
-        self.addRoleName(self.menu_item_icon_name_role, "iconName")
+        self.addRoleName(self.menu_item_icon_name_role, "icon_name")
         self._updateExtensionList()
 
     def _updateExtensionList(self)-> None:

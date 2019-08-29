@@ -17,24 +17,27 @@ Menu
 
         MenuItem
         {
-            text: (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
+            text:
+            {
+                var full_text = (model.layer_height != "") ? model.name + " - " + model.layer_height + model.layer_height_unit : model.name
+                full_text += model.is_experimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
+                return full_text
+            }
             checkable: true
             checked: Cura.MachineManager.activeQualityOrQualityChangesName == model.name
             exclusiveGroup: group
-            onTriggered: {
-                Cura.MachineManager.setQualityGroup(model.quality_group)
-            }
+            onTriggered: Cura.MachineManager.setQualityGroup(model.quality_group)
             visible: model.available
         }
 
-        onObjectAdded: menu.insertItem(index, object);
-        onObjectRemoved: menu.removeItem(object);
+        onObjectAdded: menu.insertItem(index, object)
+        onObjectRemoved: menu.removeItem(object)
     }
 
     MenuSeparator
     {
         id: customSeparator
-        visible: Cura.CustomQualityProfilesDropDownMenuModel.rowCount > 0
+        visible: Cura.CustomQualityProfilesDropDownMenuModel.count > 0
     }
 
     Instantiator
@@ -45,7 +48,7 @@ Menu
         Connections
         {
             target: Cura.CustomQualityProfilesDropDownMenuModel
-            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.rowCount() > 0
+            onModelReset: customSeparator.visible = Cura.CustomQualityProfilesDropDownMenuModel.count > 0
         }
 
         MenuItem
@@ -59,12 +62,12 @@ Menu
 
         onObjectAdded:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.insertItem(index, object);
         }
         onObjectRemoved:
         {
-            customSeparator.visible = model.rowCount() > 0;
+            customSeparator.visible = model.count > 0;
             menu.removeItem(object);
         }
     }

@@ -66,6 +66,11 @@ class Arrange:
                 continue
             vertices = vertices.getMinkowskiHull(Polygon.approximatedCircle(min_offset))
             points = copy.deepcopy(vertices._points)
+
+            # After scaling (like up to 0.1 mm) the node might not have points
+            if len(points) == 0:
+                continue
+
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
             arranger.place(0, 0, shape_arr)
 
@@ -211,11 +216,6 @@ class Arrange:
         # Set priority to low (= high number), so it won't get picked at trying out.
         prio_slice = self._priority[min_y:max_y, min_x:max_x]
         prio_slice[new_occupied] = 999
-
-        # If you want to see how the rasterized arranger build plate looks like, uncomment this code
-        # numpy.set_printoptions(linewidth=500, edgeitems=200)
-        # print(self._occupied.shape)
-        # print(self._occupied)
 
     @property
     def isEmpty(self):

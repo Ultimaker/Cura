@@ -76,6 +76,8 @@ class OneAtATimeIterator(Iterator):
                 continue
 
             bounding_box = node.getBoundingBox()
+            if not bounding_box:
+                continue
             from UM.Math.Polygon import Polygon
             bounding_box_polygon = Polygon([[bounding_box.left, bounding_box.front],
                                             [bounding_box.left, bounding_box.back],

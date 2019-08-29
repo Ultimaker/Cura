@@ -5,9 +5,8 @@
     "metadata": {
         "visible": true,
         "author": "Apsu, Nounours2099",
-        "manufacturer": "Prusa Research",
+        "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
         "has_materials": true,
         "machine_extruder_trains":
@@ -32,7 +31,7 @@
         "retraction_prime_speed": { "default_value": 35 },
         "adhesion_type": { "default_value": "skirt" },
         "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
-        "gantry_height": { "default_value": 28 },
+        "gantry_height": { "value": "28" },
         "machine_max_feedrate_z": { "default_value": 12 },
         "machine_max_feedrate_e": { "default_value": 120 },
         "machine_max_acceleration_z": { "default_value": 500 },

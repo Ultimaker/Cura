@@ -3,12 +3,10 @@
 
 from UM.Platform import Platform
 from UM.Logger import Logger
-from UM.i18n import i18nCatalog
-catalog = i18nCatalog("cura")
+
 
 def getMetaData():
-    return {
-    }
+    return {}
 
 def register(app):
     if Platform.isWindows():

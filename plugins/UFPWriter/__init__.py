@@ -11,16 +11,6 @@ except ImportError:
 
 from UM.i18n import i18nCatalog #To translate the file format description.
 from UM.Mesh.MeshWriter import MeshWriter #For the binary mode flag.
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
-
-
-MimeTypeDatabase.addMimeType(
-    MimeType(
-        name = "application/x-cura-stl-file",
-        comment = "Cura UFP File",
-        suffixes = ["ufp"]
-    )
-)
 
 i18n_catalog = i18nCatalog("cura")
 

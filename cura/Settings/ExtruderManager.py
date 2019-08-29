@@ -4,23 +4,20 @@
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
 from UM.FlameProfiler import pyqtSlot
 
-import cura.CuraApplication #To get the global container stack to find the current machine.
+import cura.CuraApplication # To get the global container stack to find the current machine.
+from cura.Settings.GlobalStack import GlobalStack
 from UM.Logger import Logger
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
-from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.SettingInstance import SettingInstance
-from UM.Settings.ContainerStack import ContainerStack
-from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
+from UM.Decorators import deprecated
 
-from typing import Optional, List, TYPE_CHECKING, Union, Dict
+from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
 if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
-    from cura.Settings.GlobalStack import GlobalStack
 
 
 ##  Manages all existing extruder stacks.
@@ -38,9 +35,13 @@ class ExtruderManager(QObject):
 
         self._application = cura.CuraApplication.CuraApplication.getInstance()
 
-        self._extruder_trains = {}  # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
+        # Per machine, a dictionary of extruder container stack IDs. Only for separately defined extruders.
+        self._extruder_trains = {}  # type: Dict[str, Dict[str, "ExtruderStack"]]
         self._active_extruder_index = -1  # Indicates the index of the active extruder stack. -1 means no active extruder stack
-        self._selected_object_extruders = []
+
+        # TODO; I have no idea why this is a union of ID's and extruder stacks. This needs to be fixed at some point.
+        self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
+
         self._addCurrentMachineExtruders()
 
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
@@ -62,52 +63,29 @@ class ExtruderManager(QObject):
         if not self._application.getGlobalContainerStack():
             return None  # No active machine, so no active extruder.
         try:
-            return self._extruder_trains[self._application.getGlobalContainerStack().getId()][str(self._active_extruder_index)].getId()
+            return self._extruder_trains[self._application.getGlobalContainerStack().getId()][str(self.activeExtruderIndex)].getId()
         except KeyError:  # Extruder index could be -1 if the global tab is selected, or the entry doesn't exist if the machine definition is wrong.
             return None
-
-    ##  Return extruder count according to extruder trains.
-    @pyqtProperty(int, notify = extrudersChanged)
-    def extruderCount(self):
-        if not self._application.getGlobalContainerStack():
-            return 0  # No active machine, so no extruders.
-        try:
-            return len(self._extruder_trains[self._application.getGlobalContainerStack().getId()])
-        except KeyError:
-            return 0
 
     ##  Gets a dict with the extruder stack ids with the extruder number as the key.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     def extruderIds(self) -> Dict[str, str]:
-        extruder_stack_ids = {}
+        extruder_stack_ids = {}  # type: Dict[str, str]
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
-            global_stack_id = global_container_stack.getId()
-
-            if global_stack_id in self._extruder_trains:
-                for position in self._extruder_trains[global_stack_id]:
-                    extruder_stack_ids[position] = self._extruder_trains[global_stack_id][position].getId()
+            extruder_stack_ids = {position: extruder.id for position, extruder in global_container_stack.extruders.items()}
 
         return extruder_stack_ids
-
-    @pyqtSlot(str, result = str)
-    def getQualityChangesIdByExtruderStackId(self, extruder_stack_id: str) -> str:
-        global_container_stack = self._application.getGlobalContainerStack()
-        if global_container_stack is not None:
-            for position in self._extruder_trains[global_container_stack.getId()]:
-                extruder = self._extruder_trains[global_container_stack.getId()][position]
-                if extruder.getId() == extruder_stack_id:
-                    return extruder.qualityChanges.getId()
-        return ""
 
     ##  Changes the active extruder by index.
     #
     #   \param index The index of the new active extruder.
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index: int) -> None:
-        self._active_extruder_index = index
-        self.activeExtruderChanged.emit()
+        if self._active_extruder_index != index:
+            self._active_extruder_index = index
+            self.activeExtruderChanged.emit()
 
     @pyqtProperty(int, notify = activeExtruderChanged)
     def activeExtruderIndex(self) -> int:
@@ -117,9 +95,10 @@ class ExtruderManager(QObject):
     #
     #   \param index The index of the extruder whose name to get.
     @pyqtSlot(int, result = str)
-    def getExtruderName(self, index):
+    @deprecated("Use Cura.MachineManager.activeMachine.extruders[index].name instead", "4.3")
+    def getExtruderName(self, index: int) -> str:
         try:
-            return list(self.getActiveExtruderStacks())[index].getName()
+            return self.getActiveExtruderStacks()[index].getName()
         except IndexError:
             return ""
 
@@ -128,15 +107,15 @@ class ExtruderManager(QObject):
 
     ##  Provides a list of extruder IDs used by the current selected objects.
     @pyqtProperty("QVariantList", notify = selectedObjectExtrudersChanged)
-    def selectedObjectExtruders(self) -> List[str]:
+    def selectedObjectExtruders(self) -> List[Union[str, "ExtruderStack"]]:
         if not self._selected_object_extruders:
             object_extruders = set()
 
             # First, build a list of the actual selected objects (including children of groups, excluding group nodes)
-            selected_nodes = []
+            selected_nodes = []  # type: List["SceneNode"]
             for node in Selection.getAllSelectedObjects():
                 if node.callDecoration("isGroup"):
-                    for grouped_node in BreadthFirstIterator(node): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                    for grouped_node in BreadthFirstIterator(node):
                         if grouped_node.callDecoration("isGroup"):
                             continue
 
@@ -145,14 +124,13 @@ class ExtruderManager(QObject):
                     selected_nodes.append(node)
 
             # Then, figure out which nodes are used by those selected nodes.
-            global_stack = self._application.getGlobalContainerStack()
-            current_extruder_trains = self._extruder_trains.get(global_stack.getId())
+            current_extruder_trains = self.getActiveExtruderStacks()
             for node in selected_nodes:
                 extruder = node.callDecoration("getActiveExtruder")
                 if extruder:
                     object_extruders.add(extruder)
                 elif current_extruder_trains:
-                    object_extruders.add(current_extruder_trains["0"].getId())
+                    object_extruders.add(current_extruder_trains[0].getId())
 
             self._selected_object_extruders = list(object_extruders)
 
@@ -168,14 +146,7 @@ class ExtruderManager(QObject):
 
     @pyqtSlot(result = QObject)
     def getActiveExtruderStack(self) -> Optional["ExtruderStack"]:
-        global_container_stack = self._application.getGlobalContainerStack()
-
-        if global_container_stack:
-            if global_container_stack.getId() in self._extruder_trains:
-                if str(self._active_extruder_index) in self._extruder_trains[global_container_stack.getId()]:
-                    return self._extruder_trains[global_container_stack.getId()][str(self._active_extruder_index)]
-
-        return None
+        return self.getExtruderStack(self.activeExtruderIndex)
 
     ##  Get an extruder stack by index
     def getExtruderStack(self, index) -> Optional["ExtruderStack"]:
@@ -186,16 +157,7 @@ class ExtruderManager(QObject):
                     return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
-    ##  Get all extruder stacks
-    def getExtruderStacks(self) -> List["ExtruderStack"]:
-        result = []
-        for i in range(self.extruderCount):
-            stack = self.getExtruderStack(i)
-            if stack:
-                result.append(stack)
-        return result
-
-    def registerExtruder(self, extruder_train, machine_id):
+    def registerExtruder(self, extruder_train: "ExtruderStack", machine_id: str) -> None:
         changed = False
 
         if machine_id not in self._extruder_trains:
@@ -214,23 +176,20 @@ class ExtruderManager(QObject):
         if changed:
             self.extrudersChanged.emit(machine_id)
 
-    def getAllExtruderValues(self, setting_key):
-        return self.getAllExtruderSettings(setting_key, "value")
-
     ##  Gets a property of a setting for all extruders.
     #
     #   \param setting_key  \type{str} The setting to get the property of.
     #   \param property  \type{str} The property to get.
     #   \return \type{List} the list of results
-    def getAllExtruderSettings(self, setting_key: str, prop: str):
+    def getAllExtruderSettings(self, setting_key: str, prop: str) -> List[Any]:
         result = []
-        for index in self.extruderIds:
-            extruder_stack_id = self.extruderIds[str(index)]
-            extruder_stack = ContainerRegistry.getInstance().findContainerStacks(id = extruder_stack_id)[0]
+
+        for extruder_stack in self.getActiveExtruderStacks():
             result.append(extruder_stack.getProperty(setting_key, prop))
+
         return result
 
-    def extruderValueWithDefault(self, value):
+    def extruderValueWithDefault(self, value: str) -> str:
         machine_manager = self._application.getMachineManager()
         if value == "-1":
             return machine_manager.defaultExtruderPosition
@@ -247,7 +206,7 @@ class ExtruderManager(QObject):
     #   list.
     #
     #   \return A list of extruder stacks.
-    def getUsedExtruderStacks(self) -> List["ContainerStack"]:
+    def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         global_stack = self._application.getGlobalContainerStack()
         container_registry = ContainerRegistry.getInstance()
 
@@ -266,7 +225,16 @@ class ExtruderManager(QObject):
 
         # Get the extruders of all printable meshes in the scene
         meshes = [node for node in DepthFirstIterator(scene_root) if isinstance(node, SceneNode) and node.isSelectable()] #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+
+        # Exclude anti-overhang meshes
+        mesh_list = []
         for mesh in meshes:
+            stack = mesh.callDecoration("getStack")
+            if stack is not None and (stack.getProperty("anti_overhang_mesh", "value") or stack.getProperty("support_mesh", "value")):
+                continue
+            mesh_list.append(mesh)
+
+        for mesh in mesh_list:
             extruder_stack_id = mesh.callDecoration("getActiveExtruder")
             if not extruder_stack_id:
                 # No per-object settings for this node
@@ -306,11 +274,14 @@ class ExtruderManager(QObject):
                 used_extruder_stack_ids.add(self.extruderIds[self.extruderValueWithDefault(str(global_stack.getProperty("support_roof_extruder_nr", "value")))])
 
         # The platform adhesion extruder. Not used if using none.
-        if global_stack.getProperty("adhesion_type", "value") != "none":
+        if global_stack.getProperty("adhesion_type", "value") != "none" or (
+                global_stack.getProperty("prime_tower_brim_enable", "value") and
+                global_stack.getProperty("adhesion_type", "value") != 'raft'):
             extruder_str_nr = str(global_stack.getProperty("adhesion_extruder_nr", "value"))
             if extruder_str_nr == "-1":
                 extruder_str_nr = self._application.getMachineManager().defaultExtruderPosition
-            used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
+            if extruder_str_nr in self.extruderIds:
+                used_extruder_stack_ids.add(self.extruderIds[extruder_str_nr])
 
         try:
             return [container_registry.findContainerStacks(id = stack_id)[0] for stack_id in used_extruder_stack_ids]
@@ -321,7 +292,7 @@ class ExtruderManager(QObject):
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #
     #   \param machine_id The machine to remove the extruders for.
-    def removeMachineExtruders(self, machine_id: str):
+    def removeMachineExtruders(self, machine_id: str) -> None:
         for extruder in self.getMachineExtruders(machine_id):
             ContainerRegistry.getInstance().removeContainer(extruder.userChanges.getId())
             ContainerRegistry.getInstance().removeContainer(extruder.getId())
@@ -331,23 +302,10 @@ class ExtruderManager(QObject):
     ##  Returns extruders for a specific machine.
     #
     #   \param machine_id The machine to get the extruders of.
-    def getMachineExtruders(self, machine_id: str):
+    def getMachineExtruders(self, machine_id: str) -> List["ExtruderStack"]:
         if machine_id not in self._extruder_trains:
             return []
         return [self._extruder_trains[machine_id][name] for name in self._extruder_trains[machine_id]]
-
-    ##  Returns a list containing the global stack and active extruder stacks.
-    #
-    #   The first element is the global container stack, followed by any extruder stacks.
-    #   \return \type{List[ContainerStack]}
-    def getActiveGlobalAndExtruderStacks(self) -> Optional[List[Union["ExtruderStack", "GlobalStack"]]]:
-        global_stack = self._application.getGlobalContainerStack()
-        if not global_stack:
-            return None
-
-        result = [global_stack]
-        result.extend(self.getActiveExtruderStacks())
-        return result
 
     ##  Returns the list of active extruder stacks, taking into account the machine extruder count.
     #
@@ -356,15 +314,7 @@ class ExtruderManager(QObject):
         global_stack = self._application.getGlobalContainerStack()
         if not global_stack:
             return []
-
-        result = []
-        if global_stack.getId() in self._extruder_trains:
-            for extruder in sorted(self._extruder_trains[global_stack.getId()]):
-                result.append(self._extruder_trains[global_stack.getId()][extruder])
-
-        machine_extruder_count = global_stack.getProperty("machine_extruder_count", "value")
-
-        return result[:machine_extruder_count]
+        return global_stack.extruderList
 
     def _globalContainerStackChanged(self) -> None:
         # If the global container changed, the machine changed and might have extruders that were not registered yet
@@ -399,102 +349,46 @@ class ExtruderManager(QObject):
                 extruder_train.setNextStack(global_stack)
                 extruders_changed = True
 
-            self._fixSingleExtrusionMachineExtruderDefinition(global_stack)
+            self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
             if extruders_changed:
                 self.extrudersChanged.emit(global_stack_id)
                 self.setActiveExtruderIndex(0)
+                self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
-    def _fixSingleExtrusionMachineExtruderDefinition(self, global_stack):
+    def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
+        container_registry = ContainerRegistry.getInstance()
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
-        extruder_stack_0 = global_stack.extruders["0"]
-        if extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
+        extruder_stack_0 = global_stack.extruders.get("0")
+        # At this point, extruder stacks for this machine may not have been loaded yet. In this case, need to look in
+        # the container registry as well.
+        if not global_stack.extruders:
+            extruder_trains = container_registry.findContainerStacks(type = "extruder_train",
+                                                                     machine = global_stack.getId())
+            if extruder_trains:
+                for extruder in extruder_trains:
+                    if extruder.getMetaDataEntry("position") == "0":
+                        extruder_stack_0 = extruder
+                        break
+
+        if extruder_stack_0 is None:
+            Logger.log("i", "No extruder stack for global stack [%s], create one", global_stack.getId())
+            # Single extrusion machine without an ExtruderStack, create it
+            from cura.Settings.CuraStackBuilder import CuraStackBuilder
+            CuraStackBuilder.createExtruderStackWithDefaultSetup(global_stack, 0)
+
+        elif extruder_stack_0.definition.getId() != expected_extruder_definition_0_id:
             Logger.log("e", "Single extruder printer [{printer}] expected extruder [{expected}], but got [{got}]. I'm making it [{expected}].".format(
                 printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
-            container_registry = ContainerRegistry.getInstance()
-            extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            try:
+                extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
+            except IndexError as e:
+                # It still needs to break, but we want to know what extruder ID made it break.
+                msg = "Unable to find extruder definition with the id [%s]" % expected_extruder_definition_0_id
+                Logger.logException("e", msg)
+                raise IndexError(msg)
             extruder_stack_0.definition = extruder_definition
-
-    ##  Get all extruder values for a certain setting.
-    #
-    #   This is exposed to SettingFunction so it can be used in value functions.
-    #
-    #   \param key The key of the setting to retrieve values for.
-    #
-    #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
-    #           If no extruder has the value, the list will contain the global value.
-    @staticmethod
-    def getExtruderValues(key):
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-
-        result = []
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
-            if not extruder.isEnabled:
-                continue
-            # only include values from extruders that are "active" for the current machine instance
-            if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value"):
-                continue
-
-            value = extruder.getRawProperty(key, "value")
-
-            if value is None:
-                continue
-
-            if isinstance(value, SettingFunction):
-                value = value(extruder)
-
-            result.append(value)
-
-        if not result:
-            result.append(global_stack.getProperty(key, "value"))
-
-        return result
-
-    ##  Get all extruder values for a certain setting. This function will skip the user settings container.
-    #
-    #   This is exposed to SettingFunction so it can be used in value functions.
-    #
-    #   \param key The key of the setting to retrieve values for.
-    #
-    #   \return A list of values for all extruders. If an extruder does not have a value, it will not be in the list.
-    #           If no extruder has the value, the list will contain the global value.
-    @staticmethod
-    def getDefaultExtruderValues(key):
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        context = PropertyEvaluationContext(global_stack)
-        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
-        context.context["override_operators"] = {
-            "extruderValue": ExtruderManager.getDefaultExtruderValue,
-            "extruderValues": ExtruderManager.getDefaultExtruderValues,
-            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
-        }
-
-        result = []
-        for extruder in ExtruderManager.getInstance().getMachineExtruders(global_stack.getId()):
-            # only include values from extruders that are "active" for the current machine instance
-            if int(extruder.getMetaDataEntry("position")) >= global_stack.getProperty("machine_extruder_count", "value", context = context):
-                continue
-
-            value = extruder.getRawProperty(key, "value", context = context)
-
-            if value is None:
-                continue
-
-            if isinstance(value, SettingFunction):
-                value = value(extruder, context = context)
-
-            result.append(value)
-
-        if not result:
-            result.append(global_stack.getProperty(key, "value", context = context))
-
-        return result
-
-    ##  Return the default extruder position from the machine manager
-    @staticmethod
-    def getDefaultExtruderPosition() -> str:
-        return cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition
 
     ##  Get all extruder values for a certain setting.
     #
@@ -504,62 +398,8 @@ class ExtruderManager(QObject):
     #
     #   \return String representing the extruder values
     @pyqtSlot(str, result="QVariant")
-    def getInstanceExtruderValues(self, key):
-        return ExtruderManager.getExtruderValues(key)
-
-    ##  Get the value for a setting from a specific extruder.
-    #
-    #   This is exposed to SettingFunction to use in value functions.
-    #
-    #   \param extruder_index The index of the extruder to get the value from.
-    #   \param key The key of the setting to get the value of.
-    #
-    #   \return The value of the setting for the specified extruder or for the
-    #   global stack if not found.
-    @staticmethod
-    def getExtruderValue(extruder_index, key):
-        if extruder_index == -1:
-            extruder_index = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
-        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-
-        if extruder:
-            value = extruder.getRawProperty(key, "value")
-            if isinstance(value, SettingFunction):
-                value = value(extruder)
-        else:
-            # Just a value from global.
-            value = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().getProperty(key, "value")
-
-        return value
-
-    ##  Get the default value from the given extruder. This function will skip the user settings container.
-    #
-    #   This is exposed to SettingFunction to use in value functions.
-    #
-    #   \param extruder_index The index of the extruder to get the value from.
-    #   \param key The key of the setting to get the value of.
-    #
-    #   \return The value of the setting for the specified extruder or for the
-    #   global stack if not found.
-    @staticmethod
-    def getDefaultExtruderValue(extruder_index, key):
-        extruder = ExtruderManager.getInstance().getExtruderStack(extruder_index)
-        context = PropertyEvaluationContext(extruder)
-        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
-        context.context["override_operators"] = {
-            "extruderValue": ExtruderManager.getDefaultExtruderValue,
-            "extruderValues": ExtruderManager.getDefaultExtruderValues,
-            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
-        }
-
-        if extruder:
-            value = extruder.getRawProperty(key, "value", context = context)
-            if isinstance(value, SettingFunction):
-                value = value(extruder, context = context)
-        else:  # Just a value from global.
-            value = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().getProperty(key, "value", context = context)
-
-        return value
+    def getInstanceExtruderValues(self, key: str) -> List:
+        return self._application.getCuraFormulaFunctions().getValuesInAllExtruders(key)
 
     ##  Get the resolve value or value for a given key
     #
@@ -569,31 +409,9 @@ class ExtruderManager(QObject):
     #
     #   \return The effective value
     @staticmethod
-    def getResolveOrValue(key):
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+    def getResolveOrValue(key: str) -> Any:
+        global_stack = cast(GlobalStack, cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack())
         resolved_value = global_stack.getProperty(key, "value")
-
-        return resolved_value
-
-    ##  Get the resolve value or value for a given key without looking the first container (user container)
-    #
-    #   This is the effective value for a given key, it is used for values in the global stack.
-    #   This is exposed to SettingFunction to use in value functions.
-    #   \param key The key of the setting to get the value of.
-    #
-    #   \return The effective value
-    @staticmethod
-    def getDefaultResolveOrValue(key):
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        context = PropertyEvaluationContext(global_stack)
-        context.context["evaluate_from_container_index"] = 1  # skip the user settings container
-        context.context["override_operators"] = {
-            "extruderValue": ExtruderManager.getDefaultExtruderValue,
-            "extruderValues": ExtruderManager.getDefaultExtruderValues,
-            "resolveOrValue": ExtruderManager.getDefaultResolveOrValue
-        }
-
-        resolved_value = global_stack.getProperty(key, "value", context = context)
 
         return resolved_value
 

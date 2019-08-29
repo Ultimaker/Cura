@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.2
+import QtQuick 2.10
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.1
@@ -17,7 +17,7 @@ UM.Dialog
     // This dialog asks the user whether he/she wants to open a project file as a project or import models.
     id: base
 
-    title: catalog.i18nc("@title:window", "Confirm uninstall ") + toolbox.pluginToUninstall
+    title: catalog.i18nc("@title:window", "Confirm uninstall") + toolbox.pluginToUninstall
     width: 450 * screenScaleFactor
     height: 50 * screenScaleFactor + dialogText.height + buttonBar.height
 
@@ -26,7 +26,7 @@ UM.Dialog
     minimumWidth: 450 * screenScaleFactor
     minimumHeight: 150 * screenScaleFactor
 
-    modality: UM.Application.platform == "linux" ? Qt.NonModal : Qt.WindowModal
+    modality: Qt.WindowModal
 
     Column
     {
@@ -66,6 +66,7 @@ UM.Dialog
             anchors.right: parent.right
             font: UM.Theme.getFont("default")
             wrapMode: Text.WordWrap
+            renderType: Text.NativeRendering
         }
 
         // Buttons

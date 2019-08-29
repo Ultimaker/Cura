@@ -24,8 +24,8 @@ class MaterialGroup:
     def __init__(self, name: str, root_material_node: "MaterialNode") -> None:
         self.name = name
         self.is_read_only = False
-        self.root_material_node = root_material_node # type: MaterialNode
-        self.derived_material_node_list = [] # type: List[MaterialNode]
+        self.root_material_node = root_material_node  # type: MaterialNode
+        self.derived_material_node_list = []  # type: List[MaterialNode]
 
     def __str__(self) -> str:
         return "%s[%s]" % (self.__class__.__name__, self.name)

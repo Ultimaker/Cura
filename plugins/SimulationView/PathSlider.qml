@@ -9,23 +9,22 @@ import QtQuick.Controls.Styles 1.1
 import UM 1.0 as UM
 import Cura 1.0 as Cura
 
-Item {
+Item
+{
     id: sliderRoot
 
     // handle properties
-    property real handleSize: 10
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
-    property color handleColor: "black"
-    property color handleActiveColor: "white"
-    property color rangeColor: "black"
+    property color handleColor: UM.Theme.getColor("slider_handle")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
+    property color rangeColor: UM.Theme.getColor("slider_groove_fill")
     property real handleLabelWidth: width
 
     // track properties
-    property real trackThickness: 4 // width of the slider track
-    property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
-    property real trackBorderWidth: 1 // width of the slider track border
-    property color trackBorderColor: "black"
+    property real trackThickness: UM.Theme.getSize("slider_groove").width
+    property real trackRadius: UM.Theme.getSize("slider_groove_radius").width
+    property color trackColor: UM.Theme.getColor("slider_groove")
 
     // value properties
     property real maximumValue: 100
@@ -34,26 +33,32 @@ Item {
     property real handleValue: maximumValue
 
     property bool pathsVisible: true
+    property bool manuallyChanged: true     // Indicates whether the value was changed manually or during simulation
 
-    function getHandleValueFromSliderHandle () {
+    function getHandleValueFromSliderHandle()
+    {
         return handle.getValue()
     }
 
-    function setHandleValue (value) {
+    function setHandleValue(value)
+    {
         handle.setValue(value)
         updateRangeHandle()
     }
 
-    function updateRangeHandle () {
+    function updateRangeHandle()
+    {
         rangeHandle.width = handle.x - sliderRoot.handleSize
     }
 
-    function normalizeValue(value) {
+    function normalizeValue(value)
+    {
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
     // slider track
-    Rectangle {
+    Rectangle
+    {
         id: track
 
         width: sliderRoot.width - sliderRoot.handleSize
@@ -61,13 +66,12 @@ Item {
         radius: sliderRoot.trackRadius
         anchors.centerIn: sliderRoot
         color: sliderRoot.trackColor
-        border.width: sliderRoot.trackBorderWidth
-        border.color: sliderRoot.trackBorderColor
         visible: sliderRoot.pathsVisible
     }
 
     // Progress indicator
-    Item {
+    Item
+    {
         id: rangeHandle
 
         x: handle.width
@@ -76,16 +80,19 @@ Item {
         anchors.verticalCenter: sliderRoot.verticalCenter
         visible: sliderRoot.pathsVisible
 
-        Rectangle {
-            height: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
+        Rectangle
+        {
+            height: sliderRoot.trackThickness
             width: parent.width + sliderRoot.handleSize
             anchors.centerIn: parent
+            radius: sliderRoot.trackRadius
             color: sliderRoot.rangeColor
         }
     }
 
     // Handle
-    Rectangle {
+    Rectangle
+    {
         id: handle
 
         x: sliderRoot.handleSize
@@ -96,7 +103,9 @@ Item {
         color: handleLabel.activeFocus ? sliderRoot.handleActiveColor : sliderRoot.handleColor
         visible: sliderRoot.pathsVisible
 
-        function onHandleDragged () {
+        function onHandleDragged()
+        {
+            sliderRoot.manuallyChanged = true
 
             // update the range handle
             sliderRoot.updateRangeHandle()
@@ -106,15 +115,23 @@ Item {
         }
 
         // get the value based on the slider position
-        function getValue () {
+        function getValue()
+        {
             var result = x / (sliderRoot.width - sliderRoot.handleSize)
             result = result * sliderRoot.maximumValue
             result = sliderRoot.roundValues ? Math.round(result) : result
             return result
         }
 
+        function setValueManually(value)
+        {
+            sliderRoot.manuallyChanged = true
+            handle.setValue(value)
+        }
+
         // set the slider position based on the value
-        function setValue (value) {
+        function setValue(value)
+        {
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -132,23 +149,23 @@ Item {
         Keys.onLeftPressed: handleLabel.setValue(handleLabel.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         // dragging
-        MouseArea {
+        MouseArea
+        {
             anchors.fill: parent
 
-            drag {
+            drag
+            {
                 target: parent
                 axis: Drag.XAxis
                 minimumX: 0
                 maximumX: sliderRoot.width - sliderRoot.handleSize
             }
-            onPressed: {
-                handleLabel.forceActiveFocus()
-            }
-
+            onPressed: handleLabel.forceActiveFocus()
             onPositionChanged: parent.onHandleDragged()
         }
 
-        SimulationSliderLabel {
+        SimulationSliderLabel
+        {
             id: handleLabel
 
             height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
@@ -162,7 +179,7 @@ Item {
             maximumValue: sliderRoot.maximumValue
             value: sliderRoot.handleValue
             busy: UM.SimulationView.busy
-            setValue: handle.setValue // connect callback functions
+            setValue: handle.setValueManually // connect callback functions
         }
     }
 }

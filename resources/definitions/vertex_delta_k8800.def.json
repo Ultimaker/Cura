@@ -3,10 +3,10 @@
   "version": 2,
   "inherits": "fdmprinter",
   "metadata": {
-    "manufacturer": "Velleman nv",
+    "manufacturer": "Velleman N.V.",
     "file_formats": "text/x-gcode",
     "visible": true,
-    "author": "Velleman",
+    "author": "Velleman N.V.",
     "has_machine_quality": true,
     "has_materials": true,
     "machine_extruder_trains":
@@ -30,26 +30,8 @@
     "machine_shape": {
       "default_value": "elliptic"
     },
-    "machine_head_shape_min_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_min_y": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_x": {
-      "default_value": 0
-    },
-    "machine_head_shape_max_y": {
-      "default_value": 0
-    },
     "gantry_height": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_x_1": {
-      "default_value": 0
-    },
-    "machine_nozzle_offset_y_1": {
-      "default_value": 0
+      "value": "0"
     },
     "machine_gcode_flavor": {
       "default_value": "RepRap (Marlin/Sprinter)"

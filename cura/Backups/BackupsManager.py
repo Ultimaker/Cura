@@ -1,11 +1,13 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, TYPE_CHECKING
 
 from UM.Logger import Logger
 from cura.Backups.Backup import Backup
-from cura.CuraApplication import CuraApplication
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 
 ##  The BackupsManager is responsible for managing the creating and restoring of
@@ -13,15 +15,15 @@ from cura.CuraApplication import CuraApplication
 #
 #   Back-ups themselves are represented in a different class.
 class BackupsManager:
-    def __init__(self):
-        self._application = CuraApplication.getInstance()
+    def __init__(self, application: "CuraApplication") -> None:
+        self._application = application
 
     ##  Get a back-up of the current configuration.
     #   \return A tuple containing a ZipFile (the actual back-up) and a dict
     #   containing some metadata (like version).
     def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         self._disableAutoSave()
-        backup = Backup()
+        backup = Backup(self._application)
         backup.makeFromCurrent()
         self._enableAutoSave()
         # We don't return a Backup here because we want plugins only to interact with our API and not full objects.
@@ -39,7 +41,7 @@ class BackupsManager:
 
         self._disableAutoSave()
 
-        backup = Backup(zip_file = zip_file, meta_data = meta_data)
+        backup = Backup(self._application, zip_file = zip_file, meta_data = meta_data)
         restored = backup.restore()
         if restored:
             # At this point, Cura will need to restart for the changes to take effect.
@@ -49,8 +51,18 @@ class BackupsManager:
     ##  Here we try to disable the auto-save plug-in as it might interfere with
     #   restoring a back-up.
     def _disableAutoSave(self) -> None:
-        self._application.setSaveDataEnabled(False)
+        auto_save = self._application.getAutoSave()
+        # The auto save is only not created if the application has not yet started.
+        if auto_save:
+            auto_save.setEnabled(False)
+        else:
+            Logger.log("e", "Unable to disable the autosave as application init has not been completed")
 
     ##  Re-enable auto-save after we're done.
     def _enableAutoSave(self) -> None:
-        self._application.setSaveDataEnabled(True)
+        auto_save = self._application.getAutoSave()
+        # The auto save is only not created if the application has not yet started.
+        if auto_save:
+            auto_save.setEnabled(True)
+        else:
+            Logger.log("e", "Unable to enable the autosave as application init has not been completed")

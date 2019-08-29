@@ -33,8 +33,6 @@ class NozzleModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        self.items.clear()
-
         global_stack = self._machine_manager.activeMachine
         if global_stack is None:
             self.setItems([])

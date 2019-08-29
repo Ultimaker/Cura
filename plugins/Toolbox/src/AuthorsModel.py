@@ -2,18 +2,19 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re
-from typing import Dict
+from typing import Dict, List, Optional, Union
 
 from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
 
 from UM.Qt.ListModel import ListModel
 
+
 ##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
 class AuthorsModel(ListModel):
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
-        self._metadata = None
+        self._metadata = None  # type: Optional[List[Dict[str, Union[str, List[str], int]]]]
 
         self.addRoleName(Qt.UserRole + 1, "id")
         self.addRoleName(Qt.UserRole + 2, "name")
@@ -25,36 +26,40 @@ class AuthorsModel(ListModel):
         self.addRoleName(Qt.UserRole + 8, "description")
 
         # List of filters for queries. The result is the union of the each list of results.
-        self._filter = {}  # type: Dict[str,str]
+        self._filter = {}  # type: Dict[str, str]
 
-    def setMetadata(self, data):
-        self._metadata = data
-        self._update()
+    def setMetadata(self, data: List[Dict[str, Union[str, List[str], int]]]):
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
-    def _update(self):
-        items = []
+    def _update(self) -> None:
+        items = []  # type: List[Dict[str, Union[str, List[str], int, None]]]
+        if not self._metadata:
+            self.setItems(items)
+            return
 
         for author in self._metadata:
             items.append({
-                "id":             author["author_id"],
-                "name":           author["display_name"],
-                "email":          author["email"] if "email" in author else None,
-                "website":        author["website"],
-                "package_count":  author["package_count"] if "package_count" in author else 0,
-                "package_types":  author["package_types"] if "package_types" in author else [],
-                "icon_url":       author["icon_url"] if "icon_url" in author else None,
-                "description":    "Material and quality profiles from {author_name}".format(author_name = author["display_name"])
+                "id":             author.get("author_id"),
+                "name":           author.get("display_name"),
+                "email":          author.get("email"),
+                "website":        author.get("website"),
+                "package_count":  author.get("package_count", 0),
+                "package_types":  author.get("package_types", []),
+                "icon_url":       author.get("icon_url"),
+                "description":    "Material and quality profiles from {author_name}".format(author_name = author.get("display_name", ""))
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "package_types":
-                key_filter = lambda item, value = value: value in item["package_types"]
+            if key == "package_types":
+                key_filter = lambda item, value = value: value in item["package_types"]  # type: ignore
             elif "*" in value:
-                key_filter = lambda item, key = key, value = value: self._matchRegExp(item, key, value)
+                key_filter = lambda item, key = key, value = value: self._matchRegExp(item, key, value)  # type: ignore
             else:
-                key_filter = lambda item, key = key, value = value: self._matchString(item, key, value)
-            items = filter(key_filter, items)
+                key_filter = lambda item, key = key, value = value: self._matchString(item, key, value)  # type: ignore
+            items = filter(key_filter, items)  # type: ignore
 
         # Execute all filters.
         filtered_items = list(items)

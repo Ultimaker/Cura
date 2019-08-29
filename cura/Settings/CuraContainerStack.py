@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, List, Optional, Union
+from typing import Any, cast, List, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -13,6 +13,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface, DefinitionContainerInterface
+from cura.Settings import cura_empty_instance_containers
 
 from . import Exceptions
 
@@ -39,14 +40,12 @@ class CuraContainerStack(ContainerStack):
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
-        self._container_registry = ContainerRegistry.getInstance() #type: ContainerRegistry
+        self._empty_instance_container = cura_empty_instance_containers.empty_container #type: InstanceContainer
 
-        self._empty_instance_container = self._container_registry.getEmptyInstanceContainer() #type: InstanceContainer
-
-        self._empty_quality_changes = self._container_registry.findInstanceContainers(id = "empty_quality_changes")[0] #type: InstanceContainer
-        self._empty_quality = self._container_registry.findInstanceContainers(id = "empty_quality")[0] #type: InstanceContainer
-        self._empty_material = self._container_registry.findInstanceContainers(id = "empty_material")[0] #type: InstanceContainer
-        self._empty_variant = self._container_registry.findInstanceContainers(id = "empty_variant")[0] #type: InstanceContainer
+        self._empty_quality_changes = cura_empty_instance_containers.empty_quality_changes_container #type: InstanceContainer
+        self._empty_quality = cura_empty_instance_containers.empty_quality_container #type: InstanceContainer
+        self._empty_material = cura_empty_instance_containers.empty_material_container #type: InstanceContainer
+        self._empty_variant = cura_empty_instance_containers.empty_variant_container #type: InstanceContainer
 
         self._containers = [self._empty_instance_container for i in range(len(_ContainerIndexes.IndexTypeMap))] #type: List[ContainerInterface]
         self._containers[_ContainerIndexes.QualityChanges] = self._empty_quality_changes
@@ -146,12 +145,10 @@ class CuraContainerStack(ContainerStack):
     def setDefinition(self, new_definition: DefinitionContainerInterface) -> None:
         self.replaceContainer(_ContainerIndexes.Definition, new_definition)
 
-    ##  Get the definition container.
-    #
-    #   \return The definition container. Should always be a valid container, but can be equal to the empty InstanceContainer.
-    @pyqtProperty(QObject, fset = setDefinition, notify = pyqtContainersChanged)
-    def definition(self) -> DefinitionContainer:
+    def getDefinition(self) -> "DefinitionContainer":
         return cast(DefinitionContainer, self._containers[_ContainerIndexes.Definition])
+
+    definition = pyqtProperty(QObject, fget = getDefinition, fset = setDefinition, notify = pyqtContainersChanged)
 
     @override(ContainerStack)
     def getBottom(self) -> "DefinitionContainer":
@@ -292,7 +289,7 @@ class CuraContainerStack(ContainerStack):
 
     # Helper to make sure we emit a PyQt signal on container changes.
     def _onContainersChanged(self, container: Any) -> None:
-        self.pyqtContainersChanged.emit()
+        Application.getInstance().callLater(self.pyqtContainersChanged.emit)
 
     # Helper that can be overridden to get the "machine" definition, that is, the definition that defines the machine
     # and its properties rather than, for example, the extruder. Defaults to simply returning the definition property.

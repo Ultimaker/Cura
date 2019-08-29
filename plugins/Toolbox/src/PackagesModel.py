@@ -5,10 +5,14 @@ import re
 from typing import Dict
 
 from PyQt5.QtCore import Qt, pyqtProperty
+
+from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+
 from .ConfigsModel import ConfigsModel
 
-##  Model that holds cura packages. By setting the filter property the instances held by this model can be changed.
+
+##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
@@ -29,26 +33,39 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
         self.addRoleName(Qt.UserRole + 14, "is_active")
-        self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
         self.addRoleName(Qt.UserRole + 18, "download_count")
         self.addRoleName(Qt.UserRole + 19, "tags")
+        self.addRoleName(Qt.UserRole + 20, "links")
+        self.addRoleName(Qt.UserRole + 21, "website")
+        self.addRoleName(Qt.UserRole + 22, "login_required")
+        self.addRoleName(Qt.UserRole + 23, "average_rating")
+        self.addRoleName(Qt.UserRole + 24, "num_ratings")
+        self.addRoleName(Qt.UserRole + 25, "user_rating")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data):
-        self._metadata = data
-        self._update()
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
     def _update(self):
         items = []
 
-        for package in self._metadata:
+        if self._metadata is None:
+            Logger.logException("w", "Failed to load packages for Marketplace")
+            self.setItems(items)
+            return
 
+        for package in self._metadata:
             has_configs = False
             configs_model = None
+
+            links_dict = {}
             if "data" in package:
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
@@ -56,41 +73,51 @@ class PackagesModel(ListModel):
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
 
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package["data"]["links"] if "links" in package["data"] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
+
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
                 package["author"]["display_name"] = ""
-                # raise Exception("Detected a package with malformed author data.")
 
             items.append({
-                "id":                package["package_id"],
-                "type":              package["package_type"],
-                "name":              package["display_name"],
-                "version":           package["package_version"],
-                "author_id":         package["author"]["author_id"],
-                "author_name":       package["author"]["display_name"],
-                "author_email":      package["author"]["email"] if "email" in package["author"] else None,
-                "description":       package["description"] if "description" in package else None,
-                "icon_url":          package["icon_url"] if "icon_url" in package else None,
-                "image_urls":        package["image_urls"] if "image_urls" in package else None,
-                "download_url":      package["download_url"] if "download_url" in package else None,
-                "last_updated":      package["last_updated"] if "last_updated" in package else None,
-                "is_bundled":        package["is_bundled"] if "is_bundled" in package else False,
-                "is_active":         package["is_active"] if "is_active" in package else False,
-                "is_installed":      package["is_installed"] if "is_installed" in package else False,
-                "has_configs":       has_configs,
-                "supported_configs": configs_model,
-                "download_count":    package["download_count"] if "download_count" in package else 0,
-                "tags":              package["tags"] if "tags" in package else []
+                "id":                   package["package_id"],
+                "type":                 package["package_type"],
+                "name":                 package["display_name"],
+                "version":              package["package_version"],
+                "author_id":            package["author"]["author_id"],
+                "author_name":          package["author"]["display_name"],
+                "author_email":         package["author"]["email"] if "email" in package["author"] else None,
+                "description":          package["description"] if "description" in package else None,
+                "icon_url":             package["icon_url"] if "icon_url" in package else None,
+                "image_urls":           package["image_urls"] if "image_urls" in package else None,
+                "download_url":         package["download_url"] if "download_url" in package else None,
+                "last_updated":         package["last_updated"] if "last_updated" in package else None,
+                "is_bundled":           package["is_bundled"] if "is_bundled" in package else False,
+                "is_active":            package["is_active"] if "is_active" in package else False,
+                "is_installed":         package["is_installed"] if "is_installed" in package else False,
+                "has_configs":          has_configs,
+                "supported_configs":    configs_model,
+                "download_count":       package["download_count"] if "download_count" in package else 0,
+                "tags":                 package["tags"] if "tags" in package else [],
+                "links":                links_dict,
+                "website":              package["website"] if "website" in package else None,
+                "login_required":       "login-required" in package.get("tags", []),
+                "average_rating":       float(package.get("rating", {}).get("average", 0)),
+                "num_ratings":          package.get("rating", {}).get("count", 0),
+                "user_rating":          package.get("rating", {}).get("user_rating", 0)
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "tags":
-                key_filter = lambda item, value = value: value in item["tags"]
+            if key == "tags":
+                key_filter = lambda item, v = value: v in item["tags"]
             elif "*" in value:
-                key_filter = lambda candidate, key = key, value = value: self._matchRegExp(candidate, key, value)
+                key_filter = lambda candidate, k = key, v = value: self._matchRegExp(candidate, k, v)
             else:
-                key_filter = lambda candidate, key = key, value = value: self._matchString(candidate, key, value)
+                key_filter = lambda candidate, k = key, v = value: self._matchString(candidate, k, v)
             items = filter(key_filter, items)
 
         # Execute all filters.

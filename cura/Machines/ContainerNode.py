@@ -9,9 +9,6 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer
 
-if TYPE_CHECKING:
-    from cura.Machines.QualityGroup import QualityGroup
-
 
 ##
 # A metadata / container combination. Use getContainer() to get the container corresponding to the metadata.
@@ -24,29 +21,34 @@ if TYPE_CHECKING:
 #     This is used in Variant, Material, and Quality Managers.
 #
 class ContainerNode:
-    __slots__ = ("metadata", "container", "children_map")
+    __slots__ = ("_metadata", "_container", "children_map")
 
     def __init__(self, metadata: Optional[Dict[str, Any]] = None) -> None:
-        self.metadata = metadata
-        self.container = None
-        self.children_map = OrderedDict() #type: OrderedDict[str, Union[QualityGroup, ContainerNode]]
+        self._metadata = metadata
+        self._container = None # type: Optional[InstanceContainer]
+        self.children_map = OrderedDict()  # type: ignore  # This is because it's children are supposed to override it.
 
     ##  Get an entry value from the metadata
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
-        if self.metadata is None:
+        if self._metadata is None:
             return default
-        return self.metadata.get(entry, default)
+        return self._metadata.get(entry, default)
+
+    def getMetadata(self) -> Dict[str, Any]:
+        if self._metadata is None:
+            return {}
+        return self._metadata
 
     def getChildNode(self, child_key: str) -> Optional["ContainerNode"]:
         return self.children_map.get(child_key)
 
     def getContainer(self) -> Optional["InstanceContainer"]:
-        if self.metadata is None:
+        if self._metadata is None:
             Logger.log("e", "Cannot get container for a ContainerNode without metadata.")
             return None
 
-        if self.container is None:
-            container_id = self.metadata["id"]
+        if self._container is None:
+            container_id = self._metadata["id"]
             from UM.Settings.ContainerRegistry import ContainerRegistry
             container_list = ContainerRegistry.getInstance().findInstanceContainers(id = container_id)
             if not container_list:
@@ -54,9 +56,9 @@ class ContainerNode:
                 error_message = ConfigurationErrorMessage.getInstance()
                 error_message.addFaultyContainers(container_id)
                 return None
-            self.container = container_list[0]
+            self._container = container_list[0]
 
-        return self.container
+        return self._container
 
     def __str__(self) -> str:
         return "%s[%s]" % (self.__class__.__name__, self.getMetaDataEntry("id"))

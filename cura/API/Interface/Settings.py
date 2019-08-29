@@ -1,7 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from cura.CuraApplication import CuraApplication
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
+
 
 ##  The Interface.Settings API provides a version-proof bridge between Cura's
 #   (currently) sidebar UI and plug-ins that hook into it.
@@ -19,8 +23,9 @@ from cura.CuraApplication import CuraApplication
 #       api.interface.settings.addContextMenuItem(data)``
 
 class Settings:
-    # Re-used instance of Cura:
-    application = CuraApplication.getInstance()  # type: CuraApplication
+
+    def __init__(self, application: "CuraApplication") -> None:
+        self.application = application
 
     ##  Add items to the sidebar context menu.
     #   \param menu_item dict containing the menu item to add.

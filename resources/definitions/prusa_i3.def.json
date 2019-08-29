@@ -5,9 +5,8 @@
     "metadata": {
         "visible": true,
         "author": "Quillford",
-        "manufacturer": "Prusajr",
+        "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "prusai3_platform.stl",
         "machine_extruder_trains":
         {
@@ -49,7 +48,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

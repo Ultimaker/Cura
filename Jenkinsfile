@@ -1,8 +1,11 @@
-parallel_nodes(['linux && cura', 'windows && cura']) {
-    timeout(time: 2, unit: "HOURS") {
+parallel_nodes(['linux && cura', 'windows && cura'])
+{
+    timeout(time: 2, unit: "HOURS")
+    {
 
         // Prepare building
-        stage('Prepare') {
+        stage('Prepare')
+        {
             // Ensure we start with a clean build directory.
             step([$class: 'WsCleanup'])
 
@@ -11,13 +14,17 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
         }
 
         // If any error occurs during building, we want to catch it and continue with the "finale" stage.
-        catchError {
+        catchError
+        {
             // Building and testing should happen in a subdirectory.
-            dir('build') {
+            dir('build')
+            {
                 // Perform the "build". Since Uranium is Python code, this basically only ensures CMake is setup.
-                stage('Build') {
+                stage('Build')
+                {
                     def branch = env.BRANCH_NAME
-                    if(!fileExists("${env.CURA_ENVIRONMENT_PATH}/${branch}")) {
+                    if(!fileExists("${env.CURA_ENVIRONMENT_PATH}/${branch}"))
+                    {
                         branch = "master"
                     }
 
@@ -27,18 +34,37 @@ parallel_nodes(['linux && cura', 'windows && cura']) {
                 }
 
                 // Try and run the unit tests. If this stage fails, we consider the build to be "unstable".
-                stage('Unit Test') {
-                    try {
-                        make('test')
-                    } catch(e) {
-                        currentBuild.result = "UNSTABLE"
+                stage('Unit Test')
+                {
+                    if (isUnix())
+                    {
+                        // For Linux
+                        try {
+                            sh 'make CTEST_OUTPUT_ON_FAILURE=TRUE test'
+                        } catch(e)
+                        {
+                            currentBuild.result = "UNSTABLE"
+                        }
+                    }
+                    else
+                    {
+                        // For Windows
+                        try
+                        {
+                            // This also does code style checks.
+                            bat 'ctest -V'
+                        } catch(e)
+                        {
+                            currentBuild.result = "UNSTABLE"
+                        }
                     }
                 }
             }
         }
 
         // Perform any post-build actions like notification and publishing of unit tests.
-        stage('Finalize') {
+        stage('Finalize')
+        {
             // Publish the test results to Jenkins.
             junit allowEmptyResults: true, testResults: 'build/junit*.xml'
 

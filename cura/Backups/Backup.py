@@ -4,18 +4,18 @@
 import io
 import os
 import re
-
 import shutil
-
-from typing import Dict, Optional
 from zipfile import ZipFile, ZIP_DEFLATED, BadZipfile
+from typing import Dict, Optional, TYPE_CHECKING
 
 from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
 from UM.Resources import Resources
-from cura.CuraApplication import CuraApplication
+
+if TYPE_CHECKING:
+    from cura.CuraApplication import CuraApplication
 
 
 ##  The back-up class holds all data about a back-up.
@@ -29,28 +29,30 @@ class Backup:
     # Re-use translation catalog.
     catalog = i18nCatalog("cura")
 
-    def __init__(self, zip_file: bytes = None, meta_data: Dict[str, str] = None) -> None:
+    def __init__(self, application: "CuraApplication", zip_file: bytes = None, meta_data: Dict[str, str] = None) -> None:
+        self._application = application
         self.zip_file = zip_file  # type: Optional[bytes]
         self.meta_data = meta_data  # type: Optional[Dict[str, str]]
 
     ##  Create a back-up from the current user config folder.
     def makeFromCurrent(self) -> None:
-        cura_release = CuraApplication.getInstance().getVersion()
+        cura_release = self._application.getVersion()
         version_data_dir = Resources.getDataStoragePath()
 
         Logger.log("d", "Creating backup for Cura %s, using folder %s", cura_release, version_data_dir)
 
         # Ensure all current settings are saved.
-        CuraApplication.getInstance().saveSettings()
+        self._application.saveSettings()
 
         # We copy the preferences file to the user data directory in Linux as it's in a different location there.
         # When restoring a backup on Linux, we move it back.
-        if Platform.isLinux():
-            preferences_file_name = CuraApplication.getInstance().getApplicationName()
+        if Platform.isLinux(): #TODO: This should check for the config directory not being the same as the data directory, rather than hard-coding that to Linux systems.
+            preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
-            Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
-            shutil.copyfile(preferences_file, backup_preferences_file)
+            if os.path.exists(preferences_file) and (not os.path.exists(backup_preferences_file) or not os.path.samefile(preferences_file, backup_preferences_file)):
+                Logger.log("d", "Copying preferences file from %s to %s", preferences_file, backup_preferences_file)
+                shutil.copyfile(preferences_file, backup_preferences_file)
 
         # Create an empty buffer and write the archive to it.
         buffer = io.BytesIO()
@@ -58,7 +60,7 @@ class Backup:
         if archive is None:
             return
         files = archive.namelist()
-        
+
         # Count the metadata items. We do this in a rather naive way at the moment.
         machine_count = len([s for s in files if "machine_instances/" in s]) - 1
         material_count = len([s for s in files if "materials/" in s]) - 1
@@ -112,14 +114,15 @@ class Backup:
                                    "Tried to restore a Cura backup without having proper data or meta data."))
             return False
 
-        current_version = CuraApplication.getInstance().getVersion()
+        current_version = self._application.getVersion()
         version_to_restore = self.meta_data.get("cura_release", "master")
-        if current_version != version_to_restore:
-            # Cannot restore version older or newer than current because settings might have changed.
-            # Restoring this will cause a lot of issues so we don't allow this for now.
+
+        if current_version < version_to_restore:
+            # Cannot restore version newer than current because settings might have changed.
+            Logger.log("d", "Tried to restore a Cura backup of version {version_to_restore} with cura version {current_version}".format(version_to_restore = version_to_restore, current_version = current_version))
             self._showMessage(
                 self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup that does not match your current version."))
+                                   "Tried to restore a Cura backup that is higher than the current version."))
             return False
 
         version_data_dir = Resources.getDataStoragePath()
@@ -128,7 +131,7 @@ class Backup:
 
         # Under Linux, preferences are stored elsewhere, so we copy the file to there.
         if Platform.isLinux():
-            preferences_file_name = CuraApplication.getInstance().getApplicationName()
+            preferences_file_name = self._application.getApplicationName()
             preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(preferences_file_name))
             backup_preferences_file = os.path.join(version_data_dir, "{}.cfg".format(preferences_file_name))
             Logger.log("d", "Moving preferences file from %s to %s", backup_preferences_file, preferences_file)
@@ -145,5 +148,9 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        archive.extractall(target_path)
+        try:
+            archive.extractall(target_path)
+        except PermissionError:
+            Logger.logException("e", "Unable to extract the backup due to permission errors")
+            return False
         return True
