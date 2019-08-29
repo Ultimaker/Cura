@@ -22,6 +22,11 @@ def getMetaData():
                 "extension": "gltf",
                 "description": i18n_catalog.i18nc("@item:inlistbox", "glTF Embedded JSON")
             },
+            # Trimesh seems to have a bug when reading OFF files.
+            #{
+            #    "extension": "off",
+            #    "description": i18n_catalog.i18nc("@item:inlistbox", "Geomview Object File Format")
+            #},
             {
                 "extension": "ply",
                 "description": i18n_catalog.i18nc("@item:inlistbox", "Stanford Triangle Format")

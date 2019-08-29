@@ -49,6 +49,14 @@ class TrimeshReader(MeshReader):
                 suffixes = ["gltf"]
             )
         )
+        # Trimesh seems to have a bug when reading .off files.
+        #MimeTypeDatabase.addMimeType(
+        #    MimeType(
+        #        name = "application/x-off",
+        #        comment = "Geomview Object File Format",
+        #        suffixes = ["off"]
+        #    )
+        #)
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ply",  # Wikipedia lists the MIME type as "text/plain" but that won't do as it's not unique to PLY files.
