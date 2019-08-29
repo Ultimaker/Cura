@@ -57,10 +57,11 @@ Item
             Item
             {
                 Layout.fillWidth: true
+                Layout.fillHeight: true
                 // The last item of the repeater needs to be shorter, as we don't need another part to fit
                 // the horizontal bar. The others should essentially not be limited.
                 Layout.maximumWidth: index + 1 === repeater.count ? activeComponent.width: 200000000
-                height: activeComponent.height
+
                 property bool isEnabled: model.available
                 // The horizontal bar between the checkable options.
                 // Note that the horizontal bar points towards the previous item.

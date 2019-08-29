@@ -78,7 +78,7 @@ Item
                     left: parent.left
                     right: parent.right
                 }
-                height: childrenRect.height
+                height: intentCategoryLabel.height
 
                 Label
                 {
@@ -108,6 +108,11 @@ Item
                         if(Cura.MachineManager.hasCustomQuality)
                         {
                             // When user created profile is active, no quality tickbox should be active.
+                            return false
+                        }
+
+                        if(modelItem === null)
+                        {
                             return false
                         }
                         return Cura.MachineManager.activeQualityType == modelItem.quality_type && Cura.MachineManager.activeIntentCategory == modelItem.intent_category
