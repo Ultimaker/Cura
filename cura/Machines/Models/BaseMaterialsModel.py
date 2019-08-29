@@ -103,6 +103,8 @@ class BaseMaterialsModel(ListModel):
     #   tree. This change may trigger an _update() call when the materials
     #   changed for the configuration that this model is looking for.
     def _materialsListChanged(self, material: MaterialNode) -> None:
+        if self._extruder_stack is None:
+            return
         if material.variant.container_id != self._extruder_stack.variant.getId():
             return
         if material.variant.machine.container_id != cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack().definition.getId():

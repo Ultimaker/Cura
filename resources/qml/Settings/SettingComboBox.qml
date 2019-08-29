@@ -20,8 +20,7 @@ SettingItem
         textRole: "value"
 
         anchors.fill: parent
-        highlighted: base.hovered
-
+        
         onActivated:
         {
             forceActiveFocus()
