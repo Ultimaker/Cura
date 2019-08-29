@@ -17,7 +17,7 @@ Item
     {
         anchors.left: parent.left
         anchors.right: parent.right
-        height: childrenRect.height
+        height: label.height
         spacing: 0
         Repeater
         {
@@ -27,9 +27,8 @@ Item
             Item
             {
                 Layout.fillWidth: true
-                Layout.fillHeight: true
                 Layout.maximumWidth: index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1)
-                height: childrenRect.height
+                height: label.height
                 Label
                 {
                     id: label
