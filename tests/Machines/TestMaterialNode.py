@@ -28,12 +28,13 @@ def getInstanceContainerSideEffect(*args, **kwargs):
     if material is not None and variant is not None:
         definition_dict = instance_container_metadata_dict.get(definition)
         variant_dict = definition_dict.get(variant)
-        material_dict = variant_dict.get(material)
+        material_dict = variant_dict.get("material_1")
         return material_dict
     if type == "quality":
         if variant is None:
             return instance_container_metadata_dict.get(definition).get("no_variant")
         else:
+            print(variant, definition, instance_container_metadata_dict.get(definition).get(variant).get("material_1"))
             return instance_container_metadata_dict.get(definition).get(variant).get("material_1")
     if definition is None:
         return [{"id": "material_1", "material": "material_1"}]
@@ -96,12 +97,12 @@ def test_onRemoved_rightContainer(container_registry):
     variant_node.machine.has_machine_quality = True
     variant_node.machine.quality_definition = "machine_1"
     with patch("cura.Machines.MaterialNode.QualityNode"):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance",MagicMock(return_value=container_registry)):
+        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             node = MaterialNode("material_1", variant_node)
 
-    container = createMockedInstanceContainer("material_1")
-    variant_node.materials = {"material_1": MagicMock()}
-    node._onRemoved(container)
+            container = createMockedInstanceContainer("material_1")
+            variant_node.materials = {"material_1": MagicMock()}
+            node._onRemoved(container)
 
     assert "material_1" not in variant_node.materials
 
