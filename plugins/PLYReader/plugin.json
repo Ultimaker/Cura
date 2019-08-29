@@ -1,7 +1,0 @@
-{
-    "name": "PLY Reader",
-    "author": "Ultimaker B.V.",
-    "version": "1.0.0",
-    "description": "Provides support for reading PLY files.",
-    "api": "6.0.0"
-}

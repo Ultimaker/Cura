@@ -5,19 +5,19 @@
 
 import numpy  # To create the mesh data.
 import os.path  # To create the mesh name for the resulting mesh.
-import trimesh  # To load the PLY files into a Trimesh.
+import trimesh  # To load the files into a Trimesh.
 
-from UM.Mesh.MeshData import MeshData, calculateNormalsFromIndexedVertices
-from UM.Mesh.MeshReader import MeshReader
-from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
+from UM.Mesh.MeshData import MeshData, calculateNormalsFromIndexedVertices  # To construct meshes from the Trimesh data.
+from UM.Mesh.MeshReader import MeshReader  # The plug-in type we're extending.
+from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType  # To add file types that we can open.
 
 from cura.CuraApplication import CuraApplication
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator  # Added to the resulting scene node.
+from cura.Scene.CuraSceneNode import CuraSceneNode  # To create a node in the scene after reading the file.
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator  # Added to the resulting scene node.
 
-##  Class that leverages Trimesh to read PLY files (Stanford Triangle Format).
-class PLYReader(MeshReader):
+##  Class that leverages Trimesh to import files.
+class Trimesh(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
@@ -30,10 +30,10 @@ class PLYReader(MeshReader):
             )
         )
 
-    ##  Reads the PLY file.
-    #   \param file_name The file path of the PLY file. This is assumed to be a
-    #   PLY file; it's not checked again.
-    #   \return A scene node that contains the PLY file's contents.
+    ##  Reads a file using Trimesh.
+    #   \param file_name The file path. This is assumed to be one of the file
+    #   types that Trimesh can read. It will not be checked again.
+    #   \return A scene node that contains the file's contents.
     def _read(self, file_name: str) -> CuraSceneNode:
         mesh = trimesh.load(file_name)
         mesh.merge_vertices()
@@ -50,6 +50,11 @@ class PLYReader(MeshReader):
         new_node.addDecorator(SliceableObjectDecorator())
         return new_node
 
+    ##  Converts a Trimesh to Uranium's MeshData.
+    #   \param tri_node A Trimesh containing the contents of a file that was
+    #   just read.
+    #   \return Mesh data from the Trimesh in a way that Uranium can understand
+    #   it.
     def _toMeshData(self, tri_node: trimesh.base.Trimesh) -> MeshData:
         tri_faces = tri_node.faces
         tri_vertices = tri_node.vertices
