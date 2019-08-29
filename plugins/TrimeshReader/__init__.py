@@ -11,8 +11,12 @@ def getMetaData():
     return {
         "mesh_reader": [
             {
+                "extension": "dae",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "COLLADA Digital Asset Exchange")
+            },
+            {
                 "extension": "ply",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "PLY File")
+                "description": i18n_catalog.i18nc("@item:inlistbox", "Stanford Triangle Format")
             }
         ]
     }

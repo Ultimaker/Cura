@@ -27,7 +27,14 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".ply"]
+        self._supported_extensions = [".dae", ".ply"]
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "model/vnd.collada+xml",
+                comment = "COLLADA Digital Asset Exchange",
+                suffixes = ["dae"]
+            )
+        )
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ply",  # Wikipedia lists the MIME type as "text/plain" but that won't do as it's not unique to PLY files.
