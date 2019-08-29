@@ -20,7 +20,7 @@ SettingItem
         textRole: "value"
 
         anchors.fill: parent
-        
+
         onActivated:
         {
             forceActiveFocus()

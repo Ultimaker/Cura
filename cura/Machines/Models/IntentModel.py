@@ -10,6 +10,7 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
 
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.IntentManager import IntentManager
 import cura.CuraApplication
 
@@ -61,18 +62,27 @@ class IntentModel(ListModel):
             return
         quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
+        container_tree = ContainerTree.getInstance()
+        machine_node = container_tree.machines[global_stack.definition.getId()]
+        active_extruder = ExtruderManager.getInstance().getActiveExtruderStack()
+        active_variant_name = active_extruder.variant.getMetaDataEntry("name")
+        active_variant_node = machine_node.variants[active_variant_name]
+        active_material_node = active_variant_node.materials[active_extruder.material.getMetaDataEntry("base_file")]
         layer_heights_added = []
-        for quality_tuple, quality_group in quality_groups.items():
-            # Add the intents that are of the correct category
-            if quality_tuple[0] == self._intent_category:
-                layer_height = self._fetchLayerHeight(quality_group)
-                new_items.append({"name": quality_group.name,
-                              "quality_type": quality_tuple[1],
-                              "layer_height": layer_height,
-                              "available": quality_group.is_available,
-                              "intent_category": self._intent_category
-                              })
+        for quality_id, quality_node in active_material_node.qualities.items():
+            quality_group = quality_groups[quality_node.quality_type]
+            layer_height = self._fetchLayerHeight(quality_group)
+
+            for intent_id, intent_node in quality_node.intents.items():
+                if intent_node.intent_category != self._intent_category:
+                    continue
                 layer_heights_added.append(layer_height)
+                new_items.append({"name": quality_group.name,
+                                  "quality_type": quality_group.quality_type,
+                                  "layer_height": layer_height,
+                                  "available": quality_group.is_available,
+                                  "intent_category": self._intent_category
+                                  })
 
         # Now that we added all intents that we found something for, ensure that we set add ticks (and layer_heights)
         # for all groups that we don't have anything for (and set it to not available)
