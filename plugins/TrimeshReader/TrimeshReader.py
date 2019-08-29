@@ -3,7 +3,7 @@
 
 # The _toMeshData function is taken from the AMFReader class which was built by fieldOfView.
 
-from typing import List, Union, TYPE_CHECKING
+from typing import Any, List, Union, TYPE_CHECKING
 import numpy  # To create the mesh data.
 import os.path  # To create the mesh name for the resulting mesh.
 import trimesh  # To load the files into a Trimesh.
@@ -85,14 +85,14 @@ class TrimeshReader(MeshReader):
     #   \return A scene node that contains the file's contents.
     def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
         mesh_or_scene = trimesh.load(file_name)
-        meshes = []
+        meshes = []  # type: List[Union[trimesh.Trimesh, trimesh.Scene, Any]]
         if isinstance(mesh_or_scene, trimesh.Trimesh):
             meshes = [mesh_or_scene]
         elif isinstance(mesh_or_scene, trimesh.Scene):
             meshes = [mesh for mesh in mesh_or_scene.geometry.values()]
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
-        nodes = []
+        nodes = []  # type: List[SceneNode]
         for mesh in meshes:
             if not isinstance(mesh, trimesh.Trimesh):  # Trimesh can also receive point clouds, 2D paths, 3D paths or metadata. Skip those.
                 continue
