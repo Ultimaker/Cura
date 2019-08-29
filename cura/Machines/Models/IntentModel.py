@@ -33,6 +33,8 @@ class IntentModel(ListModel):
 
         self._intent_category = "engineering"
 
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.globalContainerChanged.connect(self._update)
         ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
         self._layer_height_unit = ""  # This is cached

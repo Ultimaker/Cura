@@ -16,7 +16,7 @@ class QualityChangesGroup(QObject):
         self.quality_type = quality_type
         self.intent_category = intent_category
         self.is_available = False
-        self.metadata_for_global = None  # type: Optional[str]
+        self.metadata_for_global = {}    # type: Dict[str, Any]
         self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
 
     def __str__(self) -> str:

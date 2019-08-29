@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from collections import defaultdict
 import copy
 import uuid
@@ -7,19 +8,16 @@ from typing import Dict, Optional, TYPE_CHECKING, Any, List, cast
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
-import cura.CuraApplication #Imported like this to prevent circular imports.
+import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
-from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -134,7 +132,7 @@ class MaterialManager(QObject):
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
         materials = self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
         compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
-        result = {key: material for key, material in materials.items() if material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+        result = {key: material for key, material in materials.items() if material.container and material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
         return result
 
     #
@@ -248,7 +246,7 @@ class MaterialManager(QObject):
 
     def removeMaterialByRootId(self, root_material_id: str):
         container_registry = CuraContainerRegistry.getInstance()
-        results = container_registry.findContainers(id=root_material_id)
+        results = container_registry.findContainers(id = root_material_id)
         if not results:
             container_registry.addWrongContainerId(root_material_id)
 
@@ -260,8 +258,8 @@ class MaterialManager(QObject):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
         # corrupts the configuration)
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        ids_to_remove = [metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file=root_material_id)]
+        root_material_id = material_node.base_file
+        ids_to_remove = {metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file = root_material_id)}
 
         for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:
@@ -270,6 +268,8 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
+        if material_node.container is None:
+            return
         root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is None:
             return
@@ -281,6 +281,8 @@ class MaterialManager(QObject):
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
+        if material_node.container is None:
+            return
         root_material_id = material_node.container.getMetaDataEntry("base_file")
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
@@ -300,7 +302,6 @@ class MaterialManager(QObject):
 
         # Create a new ID & container to hold the data.
         new_containers = []
-        container_registry = CuraContainerRegistry.getInstance()
         if new_base_id is None:
             new_base_id = container_registry.uniqueName(base_container.getId())
         new_base_container = copy.deepcopy(base_container)
@@ -336,15 +337,19 @@ class MaterialManager(QObject):
 
         # if the duplicated material was favorite then the new material should also be added to favorite.
         if root_material_id in self.getFavorites():
-            self.addFavorite(new_base_id)
+            cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().addFavorite(new_base_id)
 
         return new_base_id
+
     #
     # Creates a duplicate of a material, which has the same GUID and base_file metadata.
     # Returns the root material ID of the duplicated material if successful.
     #
     @pyqtSlot("QVariant", result = str)
     def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        if material_node.container is None:
+            Logger.log("e", "Material node {0} doesn't have container.".format(material_node.container_id))
+            return "ERROR"
         root_material_id = cast(str, material_node.container.getMetaDataEntry("base_file", ""))
         return self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
 
@@ -361,7 +366,11 @@ class MaterialManager(QObject):
         machine_manager = application.getMachineManager()
         extruder_stack = machine_manager.activeStack
 
-        machine_definition = application.getGlobalContainerStack().definition
+        global_stack = application.getGlobalContainerStack()
+        if global_stack is None:
+            Logger.log("e", "Global stack not present!")
+            return "ERROR"
+        machine_definition = global_stack.definition
         root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
 
         approximate_diameter = str(extruder_stack.approximateMaterialDiameter)

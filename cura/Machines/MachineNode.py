@@ -36,7 +36,7 @@ class MachineNode(ContainerNode):
         self.has_variants = parseBool(my_metadata.get("has_variants", "false"))
         self.has_machine_materials = parseBool(my_metadata.get("has_machine_materials", "false"))
         self.has_machine_quality = parseBool(my_metadata.get("has_machine_quality", "false"))
-        self.quality_definition = my_metadata.get("quality_definition", container_id)
+        self.quality_definition = my_metadata.get("quality_definition", container_id) if self.has_machine_quality else "fdmprinter"
         self.exclude_materials = my_metadata.get("exclude_materials", [])
         self.preferred_variant_name = my_metadata.get("preferred_variant_name", "")
         self.preferred_material = my_metadata.get("preferred_material", "")
@@ -62,7 +62,7 @@ class MachineNode(ContainerNode):
             Logger.log("e", "The number of extruders in the list of variants (" + str(len(variant_names)) + ") is not equal to the number of extruders in the list of materials (" + str(len(material_bases)) + ") or the list of enabled extruders (" + str(len(extruder_enabled)) + ").")
             return {}
         # For each extruder, find which quality profiles are available. Later we'll intersect the quality types.
-        qualities_per_type_per_extruder = [{} for _ in range(len(variant_names))]  # type: List[Dict[str, QualityNode]]
+        qualities_per_type_per_extruder = [{}] * len(variant_names)  # type: List[Dict[str, QualityNode]]
         for extruder_nr, variant_name in enumerate(variant_names):
             if not extruder_enabled[extruder_nr]:
                 continue  # No qualities are available in this extruder. It'll get skipped when calculating the available quality types.
@@ -77,6 +77,9 @@ class MachineNode(ContainerNode):
         # Create the quality group for each available type.
         quality_groups = {}
         for quality_type, global_quality_node in self.global_qualities.items():
+            if not global_quality_node.container:
+                Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
+                continue
             quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
@@ -116,7 +119,7 @@ class MachineNode(ContainerNode):
     def getQualityChangesGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> List[QualityChangesGroup]:
         machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type = "quality_changes", definition = self.quality_definition)  # All quality changes for each extruder.
 
-        groups_by_name = {}  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
+        groups_by_name = {}  #type: Dict[str, QualityChangesGroup]  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
         for quality_changes in machine_quality_changes:
             name = quality_changes["name"]
             if name not in groups_by_name:
@@ -143,7 +146,7 @@ class MachineNode(ContainerNode):
     #   quality is taken.
     #   If there are no global qualities, an empty quality is returned.
     def preferredGlobalQuality(self) -> QualityNode:
-        return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities)))
+        return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
     ##  (Re)loads all variants under this printer.
     def _loadAll(self):

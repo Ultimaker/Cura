@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 Item
 {
@@ -17,7 +17,7 @@ Item
     property var resetEnabled: false
     property var currentItem: null
 
-    property var materialManager: CuraApplication.getMaterialManager()
+    property var materialManagementModel: CuraApplication.getMaterialManagementModel()
 
     property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
@@ -121,7 +121,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = base.materialManager.createMaterial();
+                base.newRootMaterialIdToSwitchTo = base.materialManagementModel.createMaterial();
                 base.toActivateNewMaterial = true;
             }
         }
@@ -136,7 +136,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = base.materialManager.duplicateMaterial(base.currentItem.container_node);
+                base.newRootMaterialIdToSwitchTo = base.materialManagementModel.duplicateMaterial(base.currentItem.container_node);
                 base.toActivateNewMaterial = true;
             }
         }
@@ -147,7 +147,7 @@ Item
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManager.canMaterialBeRemoved(base.currentItem.container_node)
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
 
             onClicked:
             {
@@ -297,7 +297,7 @@ Item
         {
             // Set the active material as the fallback. It will be selected when the current material is deleted
             base.newRootMaterialIdToSwitchTo = base.active_root_material_id
-            base.materialManager.removeMaterial(base.currentItem.container_node);
+            base.materialManagementModel.removeMaterial(base.currentItem.container_node);
         }
     }
 

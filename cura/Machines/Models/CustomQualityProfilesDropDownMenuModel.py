@@ -19,11 +19,7 @@ class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
             Logger.log("d", "No active GlobalStack, set %s as empty.", self.__class__.__name__)
             return
 
-        variant_names = [extruder.variant.getName() for extruder in active_global_stack.extruders.values()]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in active_global_stack.extruders.values()]
-        extruder_enabled = [extruder.isEnabled for extruder in active_global_stack.extruders.values()]
-        machine_node = ContainerTree.getInstance().machines[active_global_stack.definition.getId()]
-        quality_changes_list = machine_node.getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
+        quality_changes_list = ContainerTree.getInstance().getCurrentQualityChangesGroups()
 
         item_list = []
         for quality_changes_group in sorted(quality_changes_list, key = lambda qgc: qgc.name.lower()):

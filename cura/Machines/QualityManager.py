@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, Dict
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
@@ -14,6 +14,7 @@ import cura.CuraApplication
 from cura.Settings.ExtruderStack import ExtruderStack
 
 from cura.Machines.ContainerTree import ContainerTree  # The implementation that replaces this manager, to keep the deprecated interface working.
+from .QualityChangesGroup import QualityChangesGroup
 from .QualityGroup import QualityGroup
 from .QualityNode import QualityNode
 
@@ -75,7 +76,7 @@ class QualityManager(QObject):
             return
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
-    def getQualityChangesGroups(self, machine: "GlobalStack") -> dict:
+    def getQualityChangesGroups(self, machine: "GlobalStack") -> List[QualityChangesGroup]:
         variant_names = [extruder.variant.getName() for extruder in machine.extruders.values()]
         material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extruders.values()]
         extruder_enabled = [extruder.isEnabled for extruder in machine.extruders.values()]
@@ -111,12 +112,10 @@ class QualityManager(QObject):
         # Iterate over all quality_types in the machine node
         quality_group_dict = dict()
         for node in nodes_to_check:
-            if node and node.quality_type_map:
-                for quality_type, quality_node in node.quality_type_map.items():
-                    quality_group = QualityGroup(quality_node.getMetaDataEntry("name", ""), quality_type)
-                    quality_group.setGlobalNode(quality_node)
-                    quality_group_dict[quality_type] = quality_group
-                break
+            if node and node.quality_type:
+                quality_group = QualityGroup(node.getMetaDataEntry("name", ""), node.quality_type)
+                quality_group.setGlobalNode(node)
+                quality_group_dict[node.quality_type] = quality_group
 
         return quality_group_dict
 
@@ -142,76 +141,33 @@ class QualityManager(QObject):
     # Methods for GUI
     #
 
-    #
-    # Remove the given quality changes group.
-    #
+    ##  Deletes a custom profile. It will be gone forever.
+    #   \param quality_changes_group The quality changes group representing the
+    #   profile to delete.
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
-        Logger.log("i", "Removing quality changes group [%s]", quality_changes_group.name)
-        removed_quality_changes_ids = set()
-        for node in quality_changes_group.getAllNodes():
-            container_id = node.container_id
-            self._container_registry.removeContainer(container_id)
-            removed_quality_changes_ids.add(container_id)
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group)
 
-        # Reset all machines that have activated this quality changes to empty.
-        for global_stack in self._container_registry.findContainerStacks(type = "machine"):
-            if global_stack.qualityChanges.getId() in removed_quality_changes_ids:
-                global_stack.qualityChanges = self._empty_quality_changes_container
-        for extruder_stack in self._container_registry.findContainerStacks(type = "extruder_train"):
-            if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
-                extruder_stack.qualityChanges = self._empty_quality_changes_container
-
+    ##  Rename a custom profile.
     #
-    # Rename a set of quality changes containers. Returns the new name.
-    #
+    #   Because the names must be unique, the new name may not actually become
+    #   the name that was given. The actual name is returned by this function.
+    #   \param quality_changes_group The custom profile that must be renamed.
+    #   \param new_name The desired name for the profile.
+    #   \return The actual new name of the profile, after making the name
+    #   unique.
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
-        Logger.log("i", "Renaming QualityChangesGroup[%s] to [%s]", quality_changes_group.name, new_name)
-        if new_name == quality_changes_group.name:
-            Logger.log("i", "QualityChangesGroup name [%s] unchanged.", quality_changes_group.name)
-            return new_name
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group, new_name)
 
-        new_name = self._container_registry.uniqueName(new_name)
-        for node in quality_changes_group.getAllNodes():
-            container = node.container
-            if container:
-                container.setName(new_name)
-
-        quality_changes_group.name = new_name
-
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        application.getMachineManager().activeQualityChanged.emit()
-        application.getMachineManager().activeQualityGroupChanged.emit()
-
-        return new_name
-
-    #
-    # Duplicates the given quality.
-    #
+    ##  Duplicates a given quality profile OR quality changes profile.
+    #   \param new_name The desired name of the new profile. This will be made
+    #   unique, so it might end up with a different name.
+    #   \param quality_model_item The item of this model to duplicate, as
+    #   dictionary. See the descriptions of the roles of this list model.
     @pyqtSlot(str, "QVariantMap")
-    def duplicateQualityChanges(self, quality_changes_name: str, quality_model_item) -> None:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            Logger.log("i", "No active global stack, cannot duplicate quality changes.")
-            return
-
-        quality_group = quality_model_item["quality_group"]
-        quality_changes_group = quality_model_item["quality_changes_group"]
-        if quality_changes_group is None:
-            # create global quality changes only
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, new_name,
-                                                             global_stack, None)
-            self._container_registry.addContainer(new_quality_changes)
-        else:
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            for node in quality_changes_group.getAllNodes():
-                container = node.container
-                if not container:
-                    continue
-                new_id = self._container_registry.uniqueName(container.getId())
-                self._container_registry.addContainer(container.duplicate(new_id, new_name))
+    def duplicateQualityChanges(self, quality_changes_name: str, quality_model_item: Dict[str, Any]) -> None:
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().duplicateQualityChanges(quality_changes_name, quality_model_item)
 
     ##  Create quality changes containers from the user containers in the active stacks.
     #

@@ -223,10 +223,8 @@ class XmlMaterialProfile(InstanceContainer):
             for instance in self.findInstances():
                 self._addSettingElement(builder, instance)
 
-        machine_container_map = {} # type: Dict[str, InstanceContainer]
-        machine_variant_map = {} # type: Dict[str, Dict[str, Any]]
-
-        variant_manager = CuraApplication.getInstance().getVariantManager()
+        machine_container_map = {}  # type: Dict[str, InstanceContainer]
+        machine_variant_map = {}  # type: Dict[str, Dict[str, Any]]
 
         root_material_id = self.getMetaDataEntry("base_file")  # if basefile is self.getId, this is a basefile.
         all_containers = registry.findInstanceContainers(base_file = root_material_id)
@@ -243,16 +241,13 @@ class XmlMaterialProfile(InstanceContainer):
                 machine_variant_map[definition_id] = {}
 
             variant_name = container.getMetaDataEntry("variant_name")
-            if variant_name:
-                variant_node = variant_manager.getVariantNode(definition_id, variant_name)
-                if variant_node is None:
-                    continue
-                variant_dict = {"variant_node":variant_node ,
-                                "material_container": container}
-                machine_variant_map[definition_id][variant_name] = variant_dict
+            if not variant_name:
+                machine_container_map[definition_id] = container
                 continue
 
-            machine_container_map[definition_id] = container
+            variant_dict = {"variant_type": container.getMetaDataEntry("hardware_type", "nozzle"),
+                            "material_container": container}
+            machine_variant_map[definition_id][variant_name] = variant_dict
 
         # Map machine human-readable names to IDs
         product_id_map = self.getProductIdMap()
@@ -285,8 +280,7 @@ class XmlMaterialProfile(InstanceContainer):
             # Find all hotend sub-profiles corresponding to this material and machine and add them to this profile.
             buildplate_dict = {} # type: Dict[str, Any]
             for variant_name, variant_dict in machine_variant_map[definition_id].items():
-                variant_type = variant_dict["variant_node"].getMetaDataEntry("hardware_type", str(VariantType.NOZZLE))
-                variant_type = VariantType(variant_type)
+                variant_type = VariantType(variant_dict["variant_type"])
                 if variant_type == VariantType.NOZZLE:
                     # The hotend identifier is not the containers name, but its "name".
                     builder.start("hotend", {"id": variant_name})
@@ -349,7 +343,7 @@ class XmlMaterialProfile(InstanceContainer):
         stream = io.BytesIO()
         tree = ET.ElementTree(root)
         # this makes sure that the XML header states encoding="utf-8"
-        tree.write(stream, encoding = "utf-8", xml_declaration=True)
+        tree.write(stream, encoding = "utf-8", xml_declaration = True)
 
         return stream.getvalue().decode("utf-8")
 

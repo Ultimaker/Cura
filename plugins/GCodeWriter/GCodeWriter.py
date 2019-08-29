@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import re  # For escaping characters in the settings.
@@ -9,8 +9,7 @@ from UM.Mesh.MeshWriter import MeshWriter
 from UM.Logger import Logger
 from UM.Application import Application
 from UM.Settings.InstanceContainer import InstanceContainer
-
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.ContainerTree import ContainerTree
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -139,7 +138,7 @@ class GCodeWriter(MeshWriter):
             flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
-        machine_definition_id_for_quality = getMachineDefinitionIDForQualitySearch(stack.definition)
+        machine_definition_id_for_quality = ContainerTree.getInstance().machines[stack.definition.getId()].quality_definition
         flat_global_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
 
         serialized = flat_global_container.serialize()

@@ -4,6 +4,7 @@
 from typing import TYPE_CHECKING
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
+
 from cura.Machines.ContainerNode import ContainerNode
 
 if TYPE_CHECKING:
@@ -16,5 +17,4 @@ class IntentNode(ContainerNode):
     def __init__(self, container_id: str, quality: "QualityNode") -> None:
         super().__init__(container_id)
         self.quality = quality
-        my_metadata = ContainerRegistry.getInstance().findContainersMetadata(id=container_id)[0]
-        self.intent_category = my_metadata.get("intent_category", "default")
+        self.intent_category = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0].get("intent_category", "default")

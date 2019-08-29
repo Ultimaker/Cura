@@ -17,12 +17,9 @@ Item
     property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
     property var extrudersModel: CuraApplication.getExtrudersModel()
+    property var qualityManagementModel: CuraApplication.getQualityManagementModel()
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
-
-    Cura.QualityManagementModel {
-        id: qualitiesModel
-    }
 
     Label {
         id: titleLabel
@@ -40,7 +37,7 @@ Item
 
     property var currentItem: {
         var current_index = qualityListView.currentIndex;
-        return (current_index == -1) ? null : qualitiesModel.getItem(current_index);
+        return (current_index == -1) ? null : base.qualityManagementModel.getItem(current_index);
     }
 
     property var currentItemName: hasCurrentItem ? base.currentItem.name : ""
@@ -195,7 +192,7 @@ Item
     // This connection makes sure that we will switch to the correct quality after the model gets updated
     Connections
     {
-        target: qualitiesModel
+        target: base.qualityManagementModel
         onItemsChanged:
         {
             var toSelectItemName = base.currentItem == null ? "" : base.currentItem.name;
@@ -208,9 +205,9 @@ Item
             if (toSelectItemName != "")
             {
                 // Select the required quality name if given
-                for (var idx = 0; idx < qualitiesModel.count; ++idx)
+                for (var idx = 0; idx < base.qualityManagementModel.count; ++idx)
                 {
-                    var item = qualitiesModel.getItem(idx);
+                    var item = base.qualityManagementModel.getItem(idx);
                     if (item.name == toSelectItemName)
                     {
                         // Switch to the newly created profile if needed
@@ -257,7 +254,7 @@ Item
 
         onYes:
         {
-            base.qualityManager.removeQualityChangesGroup(base.currentItem.quality_changes_group);
+            base.qualityManagementModel.removeQualityChangesGroup(base.currentItem.quality_changes_group);
             // reset current item to the first if available
             qualityListView.currentIndex = -1;  // Reset selection.
         }
@@ -282,7 +279,7 @@ Item
         id: importDialog
         title: catalog.i18nc("@title:window", "Import Profile")
         selectExisting: true
-        nameFilters: qualitiesModel.getFileNameFilters("profile_reader")
+        nameFilters: base.qualityManagementModel.getFileNameFilters("profile_reader")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
@@ -308,7 +305,7 @@ Item
         id: exportDialog
         title: catalog.i18nc("@title:window", "Export Profile")
         selectExisting: false
-        nameFilters: qualitiesModel.getFileNameFilters("profile_writer")
+        nameFilters: base.qualityManagementModel.getFileNameFilters("profile_writer")
         folder: CuraApplication.getDefaultPath("dialog_profile_path")
         onAccepted:
         {
@@ -390,16 +387,16 @@ Item
             {
                 id: qualityListView
 
-                model: qualitiesModel
+                model: base.qualityManagementModel
 
                 Component.onCompleted:
                 {
                     var selectedItemName = Cura.MachineManager.activeQualityOrQualityChangesName;
 
                     // Select the required quality name if given
-                    for (var idx = 0; idx < qualitiesModel.count; idx++)
+                    for (var idx = 0; idx < base.qualityManagementModel.count; idx++)
                     {
-                        var item = qualitiesModel.getItem(idx);
+                        var item = base.qualityManagementModel.getItem(idx);
                         if (item.name == selectedItemName)
                         {
                             currentIndex = idx;

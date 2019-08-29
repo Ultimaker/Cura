@@ -83,6 +83,9 @@ class ContainerManager(QObject):
     #  Update: In order for QML to use objects and sub objects, those (sub) objects must all be QObject. Is that what we want?
     @pyqtSlot("QVariant", str, str)
     def setContainerMetaDataEntry(self, container_node: "ContainerNode", entry_name: str, entry_value: str) -> bool:
+        if container_node.container is None:
+            Logger.log("w", "Container node {0} doesn't have a container.".format(container_node.container_id))
+            return False
         root_material_id = container_node.container.getMetaDataEntry("base_file", "")
         if cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
@@ -341,6 +344,9 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant")
     def unlinkMaterial(self, material_node: "MaterialNode") -> None:
         # Get the material group
+        if material_node.container is None:
+            Logger.log("w", "Material node {0} doesn't have a container.".format(material_node.container_id))
+            return
         material_group = MaterialManager.getInstance().getMaterialGroup(material_node.container.getMetaDataEntry("base_file", ""))
 
         if material_group is None:
