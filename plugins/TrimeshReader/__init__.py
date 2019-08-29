@@ -34,6 +34,10 @@ def getMetaData():
             {
                 "extension": "ply",
                 "description": i18n_catalog.i18nc("@item:inlistbox", "Stanford Triangle Format")
+            },
+            {
+                "extension": "zae",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "Compressed COLLADA Digital Asset Exchange")
             }
         ]
     }

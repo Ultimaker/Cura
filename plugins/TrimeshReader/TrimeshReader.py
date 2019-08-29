@@ -27,7 +27,7 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".ctm", ".dae", ".gltf", ".glb", ".ply"]
+        self._supported_extensions = [".ctm", ".dae", ".gltf", ".glb", ".ply", ".zae"]
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ctm",
@@ -69,6 +69,13 @@ class TrimeshReader(MeshReader):
                 name = "application/x-ply",  # Wikipedia lists the MIME type as "text/plain" but that won't do as it's not unique to PLY files.
                 comment = "Stanford Triangle Format",
                 suffixes = ["ply"]
+            )
+        )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "model/vnd.collada+xml+zip",
+                comment = "Compressed COLLADA Digital Asset Exchange",
+                suffixes = ["zae"]
             )
         )
 
