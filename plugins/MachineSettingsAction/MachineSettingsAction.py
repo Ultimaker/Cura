@@ -9,6 +9,7 @@ import UM.i18n
 from UM.FlameProfiler import pyqtSlot
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
+from UM.Util import parseBool
 
 from cura.MachineAction import MachineAction
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
@@ -92,7 +93,7 @@ class MachineSettingsAction(MachineAction):
             return
 
         definition = global_stack.getDefinition()
-        if definition.getProperty("machine_gcode_flavor", "value") != "UltiGCode" or definition.getMetaDataEntry("has_materials", False):
+        if definition.getProperty("machine_gcode_flavor", "value") != "UltiGCode" or parseBool(definition.getMetaDataEntry("has_materials", False)):
             # In other words: only continue for the UM2 (extended), but not for the UM2+
             return
 
