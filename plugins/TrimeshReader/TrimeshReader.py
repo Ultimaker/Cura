@@ -27,7 +27,14 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".dae", ".gltf", ".glb", ".ply"]
+        self._supported_extensions = [".ctm", ".dae", ".gltf", ".glb", ".ply"]
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "application/x-ctm",
+                comment = "Open Compressed Triangle Mesh",
+                suffixes = ["ctm"]
+            )
+        )
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "model/vnd.collada+xml",

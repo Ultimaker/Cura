@@ -11,6 +11,10 @@ def getMetaData():
     return {
         "mesh_reader": [
             {
+                "extension": "ctm",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "Open Compressed Triangle Mesh")
+            },
+            {
                 "extension": "dae",
                 "description": i18n_catalog.i18nc("@item:inlistbox", "COLLADA Digital Asset Exchange")
             },
