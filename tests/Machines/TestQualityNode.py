@@ -44,6 +44,7 @@ def test_qualityNode_machine_1(container_registry):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
             node = QualityNode("quality_1", material_node)
 
-    assert len(node.intents) == 2
+    assert len(node.intents) == 3
     assert "intent_3" in node.intents
     assert "intent_4" in node.intents
+    assert "empty_intent" in node.intents
