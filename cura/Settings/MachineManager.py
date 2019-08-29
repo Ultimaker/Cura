@@ -1163,7 +1163,7 @@ class MachineManager(QObject):
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
-            quality_changes_metadata = quality_changes_group.metadata_for_extruders.get(position)
+            quality_changes_metadata = quality_changes_group.metadata_per_extruder.get(position)
             if quality_changes_metadata:
                 containers = container_registry.findContainers(id = quality_changes_metadata["id"])
                 if containers:
