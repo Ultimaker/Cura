@@ -65,6 +65,8 @@ class IntentModel(ListModel):
         container_tree = ContainerTree.getInstance()
         machine_node = container_tree.machines[global_stack.definition.getId()]
         active_extruder = ExtruderManager.getInstance().getActiveExtruderStack()
+        if not active_extruder:
+            return
         active_variant_name = active_extruder.variant.getMetaDataEntry("name")
         active_variant_node = machine_node.variants[active_variant_name]
         active_material_node = active_variant_node.materials[active_extruder.material.getMetaDataEntry("base_file")]
