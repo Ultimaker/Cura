@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from typing import Dict
     from cura.Machines.MachineNode import MachineNode
 
+
 ##  This class represents an extruder variant in the container tree.
 #
 #   The subnodes of these nodes are materials.
@@ -54,7 +55,7 @@ class VariantNode(ContainerNode):
             materials_per_base_file = {material["base_file"]: material for material in all_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
-            materials = materials_per_base_file.values()
+            materials = list(materials_per_base_file.values())
 
         # Filter materials based on the exclude_materials property.
         filtered_materials = [material for material in materials if material["id"] not in self.machine.exclude_materials]

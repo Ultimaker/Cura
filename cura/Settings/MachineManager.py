@@ -1515,6 +1515,8 @@ class MachineManager(QObject):
     #   \param intent_category The intent category to change to.
     def setIntentByCategory(self, intent_category: str) -> None:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return
         container_tree = ContainerTree.getInstance()
         for extruder in global_stack.extruderList:
             definition_id = global_stack.definition.getId()

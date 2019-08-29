@@ -152,7 +152,10 @@ class MaterialManagementModel(QObject):
         extruder_stack = application.getMachineManager().activeStack
         active_variant_name = extruder_stack.variant.getName()
         approximate_diameter = int(extruder_stack.approximateMaterialDiameter)
-        machine_node = ContainerTree.getInstance().machines[application.getGlobalContainerStack().definition.getId()]
+        global_container_stack = application.getGlobalContainerStack()
+        if not global_container_stack:
+            return ""
+        machine_node = ContainerTree.getInstance().machines[global_container_stack.definition.getId()]
         preferred_material_node = machine_node.variants[active_variant_name].preferredMaterial(approximate_diameter)
 
         # Create a new ID & new metadata for the new material.

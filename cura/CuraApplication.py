@@ -921,12 +921,12 @@ class CuraApplication(QtApplication):
 
     # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
-    def getMaterialManager(self, *args) -> "MaterialManager":
+    def getMaterialManager(self, *args) -> cura.Machines.MaterialManager.MaterialManager:
         return cura.Machines.MaterialManager.MaterialManager.getInstance()
 
     # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
-    def getQualityManager(self, *args) -> "QualityManager":
+    def getQualityManager(self, *args) -> cura.Machines.QualityManager.QualityManager:
         return cura.Machines.QualityManager.QualityManager.getInstance()
 
     def getIntentManager(self, *args) -> IntentManager:
