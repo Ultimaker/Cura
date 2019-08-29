@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING, Optional, Dict, List
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
@@ -158,34 +158,16 @@ class QualityManager(QObject):
     #   unique.
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
-        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group)
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group, new_name)
 
-    #
-    # Duplicates the given quality.
-    #
+    ##  Duplicates a given quality profile OR quality changes profile.
+    #   \param new_name The desired name of the new profile. This will be made
+    #   unique, so it might end up with a different name.
+    #   \param quality_model_item The item of this model to duplicate, as
+    #   dictionary. See the descriptions of the roles of this list model.
     @pyqtSlot(str, "QVariantMap")
-    def duplicateQualityChanges(self, quality_changes_name: str, quality_model_item) -> None:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_stack:
-            Logger.log("i", "No active global stack, cannot duplicate quality changes.")
-            return
-
-        quality_group = quality_model_item["quality_group"]
-        quality_changes_group = quality_model_item["quality_changes_group"]
-        if quality_changes_group is None:
-            # create global quality changes only
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, new_name,
-                                                             global_stack, None)
-            self._container_registry.addContainer(new_quality_changes)
-        else:
-            new_name = self._container_registry.uniqueName(quality_changes_name)
-            for node in quality_changes_group.getAllNodes():
-                container = node.container
-                if not container:
-                    continue
-                new_id = self._container_registry.uniqueName(container.getId())
-                self._container_registry.addContainer(container.duplicate(new_id, new_name))
+    def duplicateQualityChanges(self, quality_changes_name: str, quality_model_item: Dict[str, Any]) -> None:
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().duplicateQualityChanges(quality_changes_name, quality_model_item)
 
     ##  Create quality changes containers from the user containers in the active stacks.
     #

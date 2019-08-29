@@ -1,11 +1,12 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import Any, Dict, Optional, TYPE_CHECKING
 from PyQt5.QtCore import pyqtSlot, QObject, Qt
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+from UM.Settings.InstanceContainer import InstanceContainer  # To create new profiles.
 
 import cura.CuraApplication  # Imported this way to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
@@ -14,6 +15,8 @@ from cura.Settings.cura_empty_instance_containers import empty_quality_changes_c
 if TYPE_CHECKING:
     from UM.Settings.Interfaces import ContainerInterface
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
+    from cura.Settings.ExtruderStack import ExtruderStack
+    from cura.Settings.GlobalStack import GlobalStack
 
 #
 # This the QML model for the quality management page.
@@ -33,14 +36,14 @@ class QualityManagementModel(ListModel):
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
 
         application = cura.CuraApplication.CuraApplication.getInstance()
-        self._container_registry = application.getContainerRegistry()
+        container_registry = application.getContainerRegistry()
         self._machine_manager = application.getMachineManager()
         self._extruder_manager = application.getExtruderManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
-        self._container_registry.containerAdded.connect(self._qualityChangesListChanged)
-        self._container_registry.containerRemoved.connect(self._qualityChangesListChanged)
-        self._container_registry.containerMetaDataChanged.connect(self._qualityChangesListChanged)
+        container_registry.containerAdded.connect(self._qualityChangesListChanged)
+        container_registry.containerRemoved.connect(self._qualityChangesListChanged)
+        container_registry.containerMetaDataChanged.connect(self._qualityChangesListChanged)
 
         self._update()
 
@@ -93,6 +96,66 @@ class QualityManagementModel(ListModel):
         application.getMachineManager().activeQualityGroupChanged.emit()
 
         return new_name
+
+    ##  Duplicates a given quality profile OR quality changes profile.
+    #   \param new_name The desired name of the new profile. This will be made
+    #   unique, so it might end up with a different name.
+    #   \param quality_model_item The item of this model to duplicate, as
+    #   dictionary. See the descriptions of the roles of this list model.
+    @pyqtSlot(str, "QVariantMap")
+    def duplicateQualityChanges(self, new_name: str, quality_model_item: Dict[str, Any]) -> None:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            Logger.log("i", "No active global stack, cannot duplicate quality (changes) profile.")
+            return
+
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        new_name = container_registry.uniqueName(new_name)
+
+        quality_group = quality_model_item["quality_group"]
+        quality_changes_group = quality_model_item["quality_changes_group"]
+        if quality_changes_group is None:
+            # Create global quality changes only.
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, new_name, global_stack, extruder_stack = None)
+            container_registry.addContainer(new_quality_changes)
+        else:
+            for metadata in [quality_changes_group.metadata_for_global] + quality_changes_group.metadata_per_extruder.values():
+                containers = container_registry.findContainers(id = metadata["id"])
+                if not containers:
+                    continue
+                container = containers[0]
+                new_id = container_registry.uniqueName(container.getId())
+                container_registry.addContainer(container.duplicate(new_id, new_name))
+
+    ##  Create a quality changes container with the given set-up.
+    #   \param quality_type The quality type of the new container.
+    #   \param new_name The name of the container. This name must be unique.
+    #   \param machine The global stack to create the profile for.
+    #   \param extruder_stack The extruder stack to create the profile for. If
+    #   not provided, only a global container will be created.
+    def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        base_id = machine.definition.getId() if extruder_stack is None else extruder_stack.getId()
+        new_id = base_id + "_" + new_name
+        new_id = new_id.lower().replace(" ", "_")
+        new_id = container_registry.uniqueName(new_id)
+
+        # Create a new quality_changes container for the quality.
+        quality_changes = InstanceContainer(new_id)
+        quality_changes.setName(new_name)
+        quality_changes.setMetaDataEntry("type", "quality_changes")
+        quality_changes.setMetaDataEntry("quality_type", quality_type)
+
+        # If we are creating a container for an extruder, ensure we add that to the container.
+        if extruder_stack is not None:
+            quality_changes.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
+
+        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
+        machine_definition_id = ContainerTree.getInstance().machines[machine.definition.getId()].quality_definition
+        quality_changes.setDefinition(machine_definition_id)
+
+        quality_changes.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.getInstance().SettingVersion)
+        return quality_changes
 
     ##  Triggered when any container changed.
     #
