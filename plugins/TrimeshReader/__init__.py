@@ -15,6 +15,14 @@ def getMetaData():
                 "description": i18n_catalog.i18nc("@item:inlistbox", "COLLADA Digital Asset Exchange")
             },
             {
+                "extension": "glb",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "glTF Binary")
+            },
+            {
+                "extension": "gltf",
+                "description": i18n_catalog.i18nc("@item:inlistbox", "glTF Embedded JSON")
+            },
+            {
                 "extension": "ply",
                 "description": i18n_catalog.i18nc("@item:inlistbox", "Stanford Triangle Format")
             }

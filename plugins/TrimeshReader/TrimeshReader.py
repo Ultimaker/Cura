@@ -27,12 +27,26 @@ class TrimeshReader(MeshReader):
     def __init__(self) -> None:
         super().__init__()
 
-        self._supported_extensions = [".dae", ".ply"]
+        self._supported_extensions = [".dae", ".gltf", ".glb", ".ply"]
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "model/vnd.collada+xml",
                 comment = "COLLADA Digital Asset Exchange",
                 suffixes = ["dae"]
+            )
+        )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "model/gltf-binary",
+                comment = "glTF Binary",
+                suffixes = ["glb"]
+            )
+        )
+        MimeTypeDatabase.addMimeType(
+            MimeType(
+                name = "model/gltf+json",
+                comment = "glTF Embedded JSON",
+                suffixes = ["gltf"]
             )
         )
         MimeTypeDatabase.addMimeType(
