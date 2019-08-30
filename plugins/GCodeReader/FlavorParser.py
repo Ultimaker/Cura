@@ -3,7 +3,7 @@
 
 import math
 import re
-from typing import Dict, List, NamedTuple, Optional, Union
+from typing import Dict, List, NamedTuple, Optional, Union, Set
 
 import numpy
 
@@ -38,6 +38,8 @@ class FlavorParser:
         self._message = None  # type: Optional[Message]
         self._layer_number = 0
         self._extruder_number = 0
+        # All extruder numbers that have been seen
+        self._extruders_seen = {0}  # type: Set[int]
         self._clearValues()
         self._scene_node = None
         # X, Y, Z position, F feedrate and E extruder values are stored
@@ -418,6 +420,7 @@ class FlavorParser:
             if line.startswith("T"):
                 T = self._getInt(line, "T")
                 if T is not None:
+                    self._extruders_seen.add(T)
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
 
@@ -468,11 +471,15 @@ class FlavorParser:
         if self._layer_number == 0:
             Logger.log("w", "File doesn't contain any valid layers")
 
-        settings = CuraApplication.getInstance().getGlobalContainerStack()
-        if settings is not None and not settings.getProperty("machine_center_is_zero", "value"):
-            machine_width = settings.getProperty("machine_width", "value")
-            machine_depth = settings.getProperty("machine_depth", "value")
+        if not global_stack.getProperty("machine_center_is_zero", "value"):
+            machine_width = global_stack.getProperty("machine_width", "value")
+            machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
+
+        # Make sure that all seen extruders (if exist in the currently active machine) are enabled.
+        for extruder_nr in self._extruders_seen:
+            if str(extruder_nr) in global_stack.extruders:
+                CuraApplication.getInstance().getMachineManager().setExtruderEnabled(extruder_nr, True)
 
         Logger.log("d", "GCode loading finished")
 
