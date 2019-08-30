@@ -69,6 +69,7 @@ from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.CuraSceneController import CuraSceneController
 from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
 
@@ -1327,13 +1328,24 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Reloading all loaded mesh data.")
         nodes = []
         has_merged_nodes = False
+        gcode_filename = None  # type: Optional[str]
         for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            # Objects loaded from Gcode should also be included.
+            gcode_filename = node.callDecoration("getGcodeFileName")
+            if gcode_filename is not None:
+                break
+
             if not isinstance(node, CuraSceneNode) or not node.getMeshData():
                 if node.getName() == "MergedMesh":
                     has_merged_nodes = True
                 continue
 
             nodes.append(node)
+
+        # We can open only one gcode file at the same time. If the current view has a gcode file open, just reopen it
+        # for reloading.
+        if gcode_filename:
+            self._openFile(gcode_filename)
 
         if not nodes:
             return
