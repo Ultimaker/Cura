@@ -468,6 +468,9 @@ class SimulationView(CuraView):
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
 
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
+
             # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
             # This can happen when you do the following steps:
             #   1. Start Cura
