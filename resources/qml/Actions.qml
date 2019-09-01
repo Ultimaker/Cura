@@ -26,6 +26,7 @@ Item
 
     property alias deleteSelection: deleteSelectionAction;
     property alias centerSelection: centerSelectionAction;
+    property alias bottomFaceSelection: bottomFaceSelectionAction;
     property alias multiplySelection: multiplySelectionAction;
 
     property alias deleteObject: deleteObjectAction;
@@ -269,6 +270,15 @@ Item
         enabled: UM.Controller.toolsEnabled && UM.Selection.hasSelection;
         iconName: "align-vertical-center";
         onTriggered: CuraActions.centerSelection();
+    }
+
+    Action
+    {
+        id: bottomFaceSelectionAction;
+        text: catalog.i18nc("@action:inmenu menubar:edit", "Align Selected Face To Bottom");
+        enabled: UM.Controller.toolsEnabled && UM.Selection.hasFaceSelected;
+        // iconName: "NO-ICON-YET"; // TODO?
+        onTriggered: CuraActions.bottomFaceSelection();
     }
 
     Action

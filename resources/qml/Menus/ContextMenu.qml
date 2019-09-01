@@ -20,6 +20,7 @@ Menu
     // Selection-related actions.
     MenuItem { action: Cura.Actions.centerSelection; }
     MenuItem { action: Cura.Actions.deleteSelection; }
+    MenuItem { action: Cura.Actions.bottomFaceSelection; }
     MenuItem { action: Cura.Actions.multiplySelection; }
 
     // Extruder selection - only visible if there is more than 1 extruder
