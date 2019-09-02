@@ -86,10 +86,9 @@ class QualityManagementModel(ListModel):
 
         application = cura.CuraApplication.CuraApplication.getInstance()
         new_name = application.getContainerRegistry().uniqueName(new_name)
-        for node in quality_changes_group.getAllNodes():
-            container = node.container
-            if container:
-                container.setName(new_name)
+        quality_changes_group.metadata_for_global["name"] = new_name
+        for metadata in quality_changes_group.metadata_per_extruder.values():
+            metadata["name"] = new_name
 
         quality_changes_group.name = new_name
 
