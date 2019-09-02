@@ -168,7 +168,7 @@ class QualityManagementModel(ListModel):
                 continue
 
             extruder_stack = None
-            if isinstance(stack, ExtruderStack):
+            if stack.getMetaDataEntry("position") is not None:
                 extruder_stack = stack
             new_changes = self._createQualityChanges(quality_container.getMetaDataEntry("quality_type"), unique_name, global_stack, extruder_stack)
             container_manager._performMerge(new_changes, quality_changes_container, clear_settings = False)
