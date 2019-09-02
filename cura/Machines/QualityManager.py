@@ -183,33 +183,14 @@ class QualityManager(QObject):
     def createQualityChanges(self, base_name: str) -> None:
         return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().createQualityChanges(base_name)
 
-    #
-    # Create a quality changes container with the given setup.
-    #
-    def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack",
-                              extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
-        base_id = machine.definition.getId() if extruder_stack is None else extruder_stack.getId()
-        new_id = base_id + "_" + new_name
-        new_id = new_id.lower().replace(" ", "_")
-        new_id = self._container_registry.uniqueName(new_id)
-
-        # Create a new quality_changes container for the quality.
-        quality_changes = InstanceContainer(new_id)
-        quality_changes.setName(new_name)
-        quality_changes.setMetaDataEntry("type", "quality_changes")
-        quality_changes.setMetaDataEntry("quality_type", quality_type)
-
-        # If we are creating a container for an extruder, ensure we add that to the container
-        if extruder_stack is not None:
-            quality_changes.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
-
-        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
-        machine_definition_id = getMachineDefinitionIDForQualitySearch(machine.definition)
-        quality_changes.setDefinition(machine_definition_id)
-
-        quality_changes.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.getInstance().SettingVersion)
-        return quality_changes
-
+    ##  Create a quality changes container with the given set-up.
+    #   \param quality_type The quality type of the new container.
+    #   \param new_name The name of the container. This name must be unique.
+    #   \param machine The global stack to create the profile for.
+    #   \param extruder_stack The extruder stack to create the profile for. If
+    #   not provided, only a global container will be created.
+    def _createQualityChanges(self, quality_type: str, new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel()._createQualityChanges(quality_type, new_name, machine, extruder_stack)
 
 #
 # Gets the machine definition ID that can be used to search for Quality containers that are suitable for the given
