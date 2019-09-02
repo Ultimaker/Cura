@@ -221,8 +221,8 @@ class CuraApplication(QtApplication):
         self._cura_scene_controller = None
         self._machine_error_checker = None
 
-        self._machine_settings_manager = MachineSettingsManager(self, parent=self)
-        self._material_management_model = MaterialManagementModel()
+        self._machine_settings_manager = MachineSettingsManager(self, parent = self)
+        self._material_management_model = None
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
@@ -980,12 +980,14 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self):
+        if not self._material_management_model:
+            self._material_management_model = MaterialManagementModel(parent = self)
         return self._material_management_model
 
-    @pyqtSlot(result=QObject)
+    @pyqtSlot(result = QObject)
     def getQualityManagementModel(self):
         if not self._quality_management_model:
-            self._quality_management_model = QualityManagementModel()
+            self._quality_management_model = QualityManagementModel(parent = self)
         return self._quality_management_model
 
     def getSimpleModeSettingsManager(self, *args):
