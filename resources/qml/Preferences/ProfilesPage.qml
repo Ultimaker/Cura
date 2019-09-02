@@ -182,7 +182,7 @@ Item
         {
             base.newQualityNameToSelect = newName;  // We want to switch to the new profile once it's created
             base.toActivateNewQuality = true;
-            base.qualityManager.createQualityChanges(newName);
+            base.qualityManagementModel.createQualityChanges(newName);
         }
     }
 

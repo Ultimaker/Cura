@@ -9,6 +9,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.InstanceContainer import InstanceContainer  # To create new profiles.
 
 import cura.CuraApplication  # Imported this way to prevent circular imports.
+from cura.Settings.ContainerManager import ContainerManager
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 
@@ -126,6 +127,54 @@ class QualityManagementModel(ListModel):
                 container = containers[0]
                 new_id = container_registry.uniqueName(container.getId())
                 container_registry.addContainer(container.duplicate(new_id, new_name))
+
+    ##  Create quality changes containers from the user containers in the active
+    #   stacks.
+    #
+    #   This will go through the global and extruder stacks and create
+    #   quality_changes containers from the user containers in each stack. These
+    #   then replace the quality_changes containers in the stack and clear the
+    #   user settings.
+    #   \param base_name The new name for the quality changes profile. The final
+    #   name of the profile might be different from this, because it needs to be
+    #   made unique.
+    @pyqtSlot(str)
+    def createQualityChanges(self, base_name: str) -> None:
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+
+        global_stack = machine_manager.activeMachine
+        if not global_stack:
+            return
+
+        active_quality_name = machine_manager.activeQualityOrQualityChangesName
+        if active_quality_name == "":
+            Logger.log("w", "No quality container found in stack %s, cannot create profile", global_stack.getId())
+            return
+
+        machine_manager.blurSettings.emit()
+        if base_name is None or base_name == "":
+            base_name = active_quality_name
+        unique_name = self._container_registry.uniqueName(base_name)
+
+        # Go through the active stacks and create quality_changes containers from the user containers.
+        container_manager = ContainerManager.getInstance()
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        stack_list = [global_stack] + list(global_stack.extruders.values())
+        for stack in stack_list:
+            quality_container = stack.quality
+            quality_changes_container = stack.qualityChanges
+            if not quality_container or not quality_changes_container:
+                Logger.log("w", "No quality or quality changes container found in stack %s, ignoring it", stack.getId())
+                continue
+
+            extruder_stack = None
+            if isinstance(stack, ExtruderStack):
+                extruder_stack = stack
+            new_changes = self._createQualityChanges(quality_container.getMetaDataEntry("quality_type"), unique_name, global_stack, extruder_stack)
+            container_manager._performMerge(new_changes, quality_changes_container, clear_settings = False)
+            container_manager._performMerge(new_changes, stack.userChanges)
+
+            container_registry.addContainer(new_changes)
 
     ##  Create a quality changes container with the given set-up.
     #   \param quality_type The quality type of the new container.
