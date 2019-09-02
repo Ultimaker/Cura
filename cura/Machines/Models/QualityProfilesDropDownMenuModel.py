@@ -9,7 +9,7 @@ from UM.Settings.SettingFunction import SettingFunction
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.QualityManager import QualityGroup, QualityManager
+from cura.Machines.QualityManager import QualityGroup
 
 
 #
