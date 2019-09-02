@@ -4,6 +4,8 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.GlobalStack import GlobalStack
 
+import cura.CuraApplication  # DEBUG!
+
 
 def createMockedStack(definition_id: str):
     result = MagicMock(spec = GlobalStack)
@@ -54,3 +56,11 @@ def test_alreadyKnownMachineAdded(container_registry):
         # The ID is already there, so no machine should be added.
         container_tree._machineAdded(mocked_definition_container)
         assert len(container_tree.machines) == 2
+
+def test_getCurrentQualityGroupsNoGlobalStack(container_registry):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
+            container_tree = ContainerTree()
+            result = container_tree.getCurrentQualityGroups()
+
+    assert len(result) == 0
