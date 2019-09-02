@@ -386,7 +386,7 @@ class SimulationView(CuraView):
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
-                    except:
+                    except ValueError:
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
                         # the zero) can't be calculated
                         Logger.log("i", "Min thickness can't be calculated because all the values are zero")
