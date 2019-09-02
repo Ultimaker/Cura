@@ -158,7 +158,7 @@ class QualityManager(QObject):
     #   unique.
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
-        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().removeQualityChangesGroup(quality_changes_group, new_name)
+        return cura.CuraApplication.CuraApplication.getInstance().getQualityManagementModel().renameQualityChangesGroup(quality_changes_group, new_name)
 
     ##  Duplicates a given quality profile OR quality changes profile.
     #   \param new_name The desired name of the new profile. This will be made
