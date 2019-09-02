@@ -154,11 +154,11 @@ class QualityManagementModel(ListModel):
         machine_manager.blurSettings.emit()
         if base_name is None or base_name == "":
             base_name = active_quality_name
-        unique_name = self._container_registry.uniqueName(base_name)
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        unique_name = container_registry.uniqueName(base_name)
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         container_manager = ContainerManager.getInstance()
-        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         stack_list = [global_stack] + list(global_stack.extruders.values())
         for stack in stack_list:
             quality_container = stack.quality
