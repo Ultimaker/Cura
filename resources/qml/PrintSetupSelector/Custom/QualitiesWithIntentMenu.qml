@@ -61,6 +61,7 @@ Popup
                 {
                     id: headerLabel
                     text: model.name
+                    renderType: Text.NativeRendering
                     height: visible ? contentHeight: 0
                     enabled: false
                     visible: qualitiesList.visibleChildren.length > 0
@@ -198,6 +199,7 @@ Popup
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
                 Label
                 {
@@ -207,6 +209,7 @@ Popup
                     anchors.right: parent.right
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
             }
             onClicked:

@@ -44,5 +44,6 @@ Button
         verticalAlignment: Text.AlignVCenter
         anchors.left: button.left
         anchors.leftMargin: UM.Theme.getSize("wide_margin").width
+        renderType: Text.NativeRendering
     }
 }

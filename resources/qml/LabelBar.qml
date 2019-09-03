@@ -35,6 +35,7 @@ Item
                     text: model[modelKey]
                     color: UM.Theme.getColor("text")
                     font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
                     height: contentHeight
                     anchors
                     {

@@ -45,6 +45,7 @@ Item
             }
             text: catalog.i18nc("@label", "Profile")
             font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
         }
@@ -69,6 +70,7 @@ Item
                 anchors.verticalCenter: intentSelection.verticalCenter
                 height: contentHeight
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
 
             background: Rectangle
