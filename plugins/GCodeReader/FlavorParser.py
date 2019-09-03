@@ -476,11 +476,6 @@ class FlavorParser:
             machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
-        # Make sure that all seen extruders (if exist in the currently active machine) are enabled.
-        for extruder_nr in self._extruders_seen:
-            if str(extruder_nr) in global_stack.extruders:
-                CuraApplication.getInstance().getMachineManager().setExtruderEnabled(extruder_nr, True)
-
         Logger.log("d", "GCode loading finished")
 
         if CuraApplication.getInstance().getPreferences().getValue("gcodereader/show_caution"):
