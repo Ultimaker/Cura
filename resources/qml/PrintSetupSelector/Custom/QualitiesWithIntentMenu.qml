@@ -9,9 +9,7 @@ Popup
     implicitWidth: 400
     property var dataModel: Cura.IntentCategoryModel {}
 
-    property int defaultMargin: 5
-    property int checkmarkSize: 12
-    property int buttonHeight: 25
+    property int defaultMargin: UM.Theme.getSize("default_margin").width
     property color backgroundColor: UM.Theme.getColor("main_background")
     property color borderColor: UM.Theme.getColor("lining")
 
