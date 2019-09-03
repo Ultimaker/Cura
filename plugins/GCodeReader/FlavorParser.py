@@ -68,7 +68,7 @@ class FlavorParser:
         if n < 0:
             return None
         n += len(code)
-        pattern = re.compile("[;\s]")
+        pattern = re.compile("[;\\s]")
         match = pattern.search(line, n)
         m = match.start() if match is not None else -1
         try:
