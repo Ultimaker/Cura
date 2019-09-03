@@ -1,18 +1,19 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import UM 1.1 as UM
 
 Item
 {
     id: base
     property ButtonGroup buttonGroup: null
 
-    property color activeColor: "#3282ff"
-    property color inactiveColor: "#cccccc"
-    property color defaultItemColor: "#0a0850"
-    property int checkboxSize: 14
-    property int inactiveMarkerSize: 4
-    property int barSize: 2
+    property color activeColor: UM.Theme.getColor("primary")
+    property color inactiveColor: UM.Theme.getColor("slider_groove")
+    property color defaultItemColor: UM.Theme.getColor("small_button_active")
+    property int checkboxSize: UM.Theme.getSize("radio_button").height * 0.75
+    property int inactiveMarkerSize: 2 * barSize
+    property int barSize: UM.Theme.getSize("slider_groove_radius").height
     property var isCheckedFunction // Function that accepts the modelItem and returns if the item should be active.
 
     implicitWidth: 200
@@ -28,15 +29,13 @@ Item
 
         height: barSize
 
-        // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
-        // but not when using the exact same QML in Cura.
-        y: 0.5 * checkboxSize
         anchors
         {
             left: buttonBar.left
             right: buttonBar.right
             leftMargin: (checkboxSize - inactiveMarkerSize) / 2
             rightMargin: (checkboxSize - inactiveMarkerSize) / 2
+            verticalCenter: parent.verticalCenter
         }
     }
 
@@ -72,12 +71,11 @@ Item
                     height: barSize
                     width: buttonBar.width / (repeater.count - 1) - activeComponent.width - 2
                     color: defaultItemColor
-                    // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
-                    // but not when using the exact same QML in Cura.
-                    y: 0.5 * checkboxSize
+
                     anchors
                     {
                         right: activeComponent.left
+                        verticalCenter: parent.verticalCenter
                     }
                     visible: previousItem !== null && previousItem.isEnabled && isEnabled
                 }
@@ -105,7 +103,7 @@ Item
             {
                 // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
                 // but not when using the exact same QML in Cura.
-                y: 0.5 * checkboxSize - 1
+                anchors.verticalCenter: parent.verticalCenter
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: inactiveMarkerSize
                 width: inactiveMarkerSize
