@@ -1,7 +1,12 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+// Copyright (c) 2019 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+
 import UM 1.2 as UM
+
 // The labelBar shows a set of labels that are evenly spaced from oneother.
 // The first item is aligned to the left, the last is aligned to the right.
 // It's intended to be used together with RadioCheckBar. As such, it needs
@@ -27,8 +32,9 @@ Item
             Item
             {
                 Layout.fillWidth: true
-                Layout.maximumWidth: index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1)
+                Layout.maximumWidth: Math.round(index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1))
                 height: label.height
+
                 Label
                 {
                     id: label
@@ -47,7 +53,7 @@ Item
                         // We want the center of the label to align with the center of the item, so we negatively offset by half the contentWidth
                         right: index + 1 === repeater.count ? parent.right: undefined
                         left: index + 1 === repeater.count || index === 0 ? undefined: parent.left
-                        leftMargin: (0.5 * itemSize) - 0.5 * contentWidth
+                        leftMargin: Math.round((itemSize - contentWidth) * 0.5)
                     }
                 }
             }
