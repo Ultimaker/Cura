@@ -140,9 +140,9 @@ class SolidView(View):
                             1.0
                         ]
 
-                        # Color the currently selected face-id, 0x10001 is certain to be greater than the largest ID.
+                        # Color the currently selected face-id.
                         face = Selection.getSelectedFace()
-                        uniforms["selected_face"] = 0x10001 if not face or node != face[0] else face[1]
+                        uniforms["selected_face"] = Selection.endFaceSelectionId() if not face or node != face[0] else face[1]
                     except ValueError:
                         pass
 
