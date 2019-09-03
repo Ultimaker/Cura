@@ -32,8 +32,9 @@ Item
             Item
             {
                 Layout.fillWidth: true
-                Layout.maximumWidth: index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1)
+                Layout.maximumWidth: Math.round(index + 1 === repeater.count || repeater.count <= 1 ? itemSize : base.width / (repeater.count - 1))
                 height: label.height
+
                 Label
                 {
                     id: label
@@ -52,7 +53,7 @@ Item
                         // We want the center of the label to align with the center of the item, so we negatively offset by half the contentWidth
                         right: index + 1 === repeater.count ? parent.right: undefined
                         left: index + 1 === repeater.count || index === 0 ? undefined: parent.left
-                        leftMargin: (0.5 * itemSize) - 0.5 * contentWidth
+                        leftMargin: Math.round((itemSize - contentWidth) * 0.5)
                     }
                 }
             }
