@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import List, cast
+from typing import List, Optional, cast
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
@@ -85,7 +85,7 @@ class CuraActions(QObject):
 
         original_node, face_id = selected_face
         meshdata = original_node.getMeshDataTransformed()
-        if not meshdata or face_id < 0 or face_id > Selection.maxFaceSelectionId():
+        if not meshdata or face_id < 0 or face_id > Selection.getMaxFaceSelectionId():
             return
 
         rotation_point, face_normal = meshdata.getFacePlane(face_id)
@@ -94,12 +94,15 @@ class CuraActions(QObject):
         rotation_quaternion = Quaternion.rotationTo(face_normal_vector.normalized(), Vector(0.0, -1.0, 0.0))
 
         operation = GroupedOperation()
+        current_node = None  # type: Optional[SceneNode]
         for node in Selection.getAllSelectedObjects():
             current_node = node
             parent_node = current_node.getParent()
             while parent_node and parent_node.callDecoration("isGroup"):
                 current_node = parent_node
                 parent_node = current_node.getParent()
+        if current_node is None:
+            return
 
         rotate_operation = RotateOperation(current_node, rotation_quaternion, rotation_point_vector)
         operation.addOperation(rotate_operation)
