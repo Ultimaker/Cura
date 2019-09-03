@@ -1,9 +1,9 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.0
-import QtQuick.Controls 1.1 as OldControls
+import QtQuick 2.10
+import QtQuick.Controls 2.3
+import QtQuick.Controls 1.4 as OldControls
 
 import UM 1.3 as UM
 import Cura 1.6 as Cura

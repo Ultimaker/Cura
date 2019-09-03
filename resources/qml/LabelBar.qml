@@ -1,7 +1,12 @@
-import QtQuick 2.0
-import QtQuick.Controls 2.1
+// Copyright (c) 2019 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+
 import UM 1.2 as UM
+
 // The labelBar shows a set of labels that are evenly spaced from oneother.
 // The first item is aligned to the left, the last is aligned to the right.
 // It's intended to be used together with RadioCheckBar. As such, it needs
