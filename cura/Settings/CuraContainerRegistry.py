@@ -314,9 +314,9 @@ class CuraContainerRegistry(ContainerRegistry):
                     result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
                         return {"status": "error", "message": catalog.i18nc(
-                            "@info:status Don't translate the XML tags <filename> or <message>!",
+                            "@info:status Don't translate the XML tag <filename>!",
                             "Failed to import profile from <filename>{0}</filename>:",
-                            file_name) + " <message>" + result + "</message>"}
+                            file_name) + " " + result}
 
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
