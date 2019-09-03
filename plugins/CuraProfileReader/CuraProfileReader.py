@@ -93,7 +93,11 @@ class CuraProfileReader(ProfileReader):
             Logger.log("e", "Error while trying to parse profile: %s", str(e))
             return None
 
-        active_quality_definition = getMachineDefinitionIDForQualitySearch(CuraApplication.getInstance().getGlobalContainerStack().definition)
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return None
+
+        active_quality_definition = getMachineDefinitionIDForQualitySearch(global_stack.definition)
         if profile.getMetaDataEntry("definition") != active_quality_definition:
             profile.setMetaDataEntry("definition", active_quality_definition)
         return profile
