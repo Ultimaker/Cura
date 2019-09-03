@@ -68,7 +68,7 @@ class FlavorParser:
         if n < 0:
             return None
         n += len(code)
-        pattern = re.compile("[;\s]")
+        pattern = re.compile("[;\\s]")
         match = pattern.search(line, n)
         m = match.start() if match is not None else -1
         try:
@@ -475,11 +475,6 @@ class FlavorParser:
             machine_width = global_stack.getProperty("machine_width", "value")
             machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
-
-        # Make sure that all seen extruders (if exist in the currently active machine) are enabled.
-        for extruder_nr in self._extruders_seen:
-            if str(extruder_nr) in global_stack.extruders:
-                CuraApplication.getInstance().getMachineManager().setExtruderEnabled(extruder_nr, True)
 
         Logger.log("d", "GCode loading finished")
 
