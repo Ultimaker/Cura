@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2018-2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
@@ -265,7 +265,7 @@ class PauseAtHeight(Script):
 
                 if not is_griffin:
                     # Retraction
-                    prepend_gcode += self.putValue(M = 83) + "\n"
+                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -275,25 +275,25 @@ class PauseAtHeight(Script):
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
 
                     # This line should be ok
                     prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
 
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
-                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + "; standby temperature\n"
+                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + " ; standby temperature\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M = 0) + ";Do the actual pause\n"
+                prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
 
                 if not is_griffin:
                     if control_temperatures:
                         # Set extruder resume temperature
-                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
                     # Push the filament back,
                     if retraction_amount != 0:
@@ -309,7 +309,7 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
@@ -319,7 +319,7 @@ class PauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
                     prepend_gcode += self.putValue(G = 1, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
