@@ -85,7 +85,7 @@ class CuraActions(QObject):
 
         original_node, face_id = selected_face
         meshdata = original_node.getMeshDataTransformed()
-        if not meshdata or face_id < 0 or face_id > Selection.endFaceSelectionId():
+        if not meshdata or face_id < 0 or face_id > Selection.getEndFaceSelectionId():
             return
 
         rotation_point, face_normal = meshdata.getFacePlane(face_id)

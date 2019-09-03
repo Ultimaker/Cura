@@ -142,7 +142,7 @@ class SolidView(View):
 
                         # Color the currently selected face-id.
                         face = Selection.getSelectedFace()
-                        uniforms["selected_face"] = Selection.endFaceSelectionId() if not face or node != face[0] else face[1]
+                        uniforms["selected_face"] = Selection.getEndFaceSelectionId() if not face or node != face[0] else face[1]
                     except ValueError:
                         pass
 
