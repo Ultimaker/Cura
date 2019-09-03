@@ -32,6 +32,8 @@ fragment =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform lowp vec4 u_faceColor;
+    uniform highp int u_faceId;
 
     varying highp vec3 f_vertex;
     varying highp vec3 f_normal;
@@ -58,7 +60,7 @@ fragment =
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
-        finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+        finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         gl_FragColor = finalColor;
         gl_FragColor.a = 1.0;
@@ -99,6 +101,8 @@ fragment41core =
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
+    uniform lowp vec4 u_faceColor;
+    uniform highp int u_faceId;
 
     in highp vec3 f_vertex;
     in highp vec3 f_normal;
@@ -127,7 +131,7 @@ fragment41core =
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
-        finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+        finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         frag_color = finalColor;
         frag_color.a = 1.0;
@@ -138,6 +142,7 @@ u_ambientColor = [0.3, 0.3, 0.3, 1.0]
 u_diffuseColor = [1.0, 0.79, 0.14, 1.0]
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_overhangColor = [1.0, 0.0, 0.0, 1.0]
+u_faceColor = [0.0, 0.0, 1.0, 1.0]
 u_shininess = 20.0
 
 [bindings]
@@ -148,6 +153,7 @@ u_normalMatrix = normal_matrix
 u_viewPosition = view_position
 u_lightPosition = light_0_position
 u_diffuseColor = diffuse_color
+u_faceId = selected_face
 
 [attributes]
 a_vertex = vertex
