@@ -115,7 +115,7 @@ class ClusterPrinterStatus(BaseModel):
     #  We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
     @staticmethod
     def _isSupportedConfiguration(slot: ClusterPrinterMaterialStationSlot, extruder_index: int) -> bool:
-        return slot.extruder_index == extruder_index and slot.compatible
+        return slot.extruder_index == extruder_index and slot.compatible and not slot.material_empty
 
     ## Create an empty material slot with a fake empty material.
     @staticmethod
