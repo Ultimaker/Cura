@@ -20,6 +20,7 @@ Popup
     topPadding: UM.Theme.getSize("narrow_margin").height
     rightPadding: UM.Theme.getSize("default_lining").width
     leftPadding: UM.Theme.getSize("default_lining").width
+
     padding: 0
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     background: Cura.RoundedRectangle
