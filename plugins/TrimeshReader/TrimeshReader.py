@@ -90,8 +90,7 @@ class TrimeshReader(MeshReader):
         # doesn't like it. For some reason, this seems to happen with 3.5.7, but not 3.7.1. Below is a workaround to
         # pass a file object that has been opened with "r" instead "rb" to load a GLTF file.
         if file_name.endswith(".gltf"):
-            mesh_or_scene = trimesh.load(open(file_name, "r", encoding="utf-8"),
-                                         file_type = file_name.split(".")[-1].lower())
+            mesh_or_scene = trimesh.load(open(file_name, "r", encoding = "utf-8"), file_type = "gltf")
         else:
             mesh_or_scene = trimesh.load(file_name)
 
