@@ -22,7 +22,6 @@ Item
     {
         anchors.left: parent.left
         anchors.right: parent.right
-        height: label.height
         spacing: 0
         Repeater
         {
