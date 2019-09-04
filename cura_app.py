@@ -141,5 +141,19 @@ import Arcus #@UnusedImport
 import Savitar #@UnusedImport
 from cura.CuraApplication import CuraApplication
 
+
+# WORKAROUND: CURA-6739
+# The CTM file loading module in Trimesh requires the OpenCTM library to be dynamically loaded. It uses
+# ctypes.util.find_library() to find libopenctm.dylib, but this doesn't seem to look in the ".app" application folder
+# on Mac OS X. Adding the search path to environment variables such as DYLD_LIBRARY_PATH and DYLD_FALLBACK_LIBRARY_PATH
+# makes it work. The workaround here uses DYLD_FALLBACK_LIBRARY_PATH.
+if Platform.isOSX() and getattr(sys, "frozen", False):
+    old_env = os.environ["DYLD_FALLBACK_LIBRARY_PATH"]
+    search_path = os.path.join(CuraApplication.getInstallPrefix(), "MacOS")
+    path_list = old_env.split(":")
+    if search_path not in path_list:
+        path_list.append(search_path)
+    os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = ":".join(path_list)
+
 app = CuraApplication()
 app.run()
