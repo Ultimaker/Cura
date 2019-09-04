@@ -155,5 +155,20 @@ if Platform.isOSX() and getattr(sys, "frozen", False):
         path_list.append(search_path)
     os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = ":".join(path_list)
 
+# WORKAROUND: CURA-6739
+# Similar CTM file loading fix for Linux, but NOTE THAT this doesn't work directly with Python 3.5.7. There's a fix
+# for ctypes.util.find_library() in Python 3.6 and 3.7. That fix makes sure that find_library() will check
+# LD_LIBRARY_PATH. With Python 3.5, that fix needs to be backported to make this workaround work.
+if Platform.isLinux() and getattr(sys, "frozen", False):
+    old_env = os.environ.get("LD_LIBRARY_PATH", "")
+    # This is where libopenctm.so is in the AppImage.
+    search_path = os.path.join(CuraApplication.getInstallPrefix(), "bin")
+    path_list = old_env.split(":")
+    if search_path not in path_list:
+        path_list.append(search_path)
+    os.environ["LD_LIBRARY_PATH"] = ":".join(path_list)
+    import trimesh.exchange.load
+    os.environ["LD_LIBRARY_PATH"] = old_env
+
 app = CuraApplication()
 app.run()
