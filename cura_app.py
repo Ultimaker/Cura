@@ -149,11 +149,14 @@ from cura.CuraApplication import CuraApplication
 # makes it work. The workaround here uses DYLD_FALLBACK_LIBRARY_PATH.
 if Platform.isOSX() and getattr(sys, "frozen", False):
     old_env = os.environ.get("DYLD_FALLBACK_LIBRARY_PATH", "")
+    # This is where libopenctm.so is in the .app folder.
     search_path = os.path.join(CuraApplication.getInstallPrefix(), "MacOS")
     path_list = old_env.split(":")
     if search_path not in path_list:
         path_list.append(search_path)
     os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = ":".join(path_list)
+    import trimesh.exchange.load
+    os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = old_env
 
 # WORKAROUND: CURA-6739
 # Similar CTM file loading fix for Linux, but NOTE THAT this doesn't work directly with Python 3.5.7. There's a fix
