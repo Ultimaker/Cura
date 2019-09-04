@@ -368,7 +368,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Get quality type
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
+        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
+        quality_container_id = parser["containers"][str(index_map_version[_ContainerIndexes.Quality])]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
             quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
@@ -378,10 +379,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
+        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
+        definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
         if definition_changes_id not in ("empty", "empty_definition_changes"):
             self._machine_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
-        user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
+        user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
         if user_changes_id not in ("empty", "empty_user_changes"):
             self._machine_info.user_changes_info = instance_container_info_dict[user_changes_id]
 
@@ -391,8 +393,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
-            material_id = parser["containers"][str(_ContainerIndexes.Material)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
+            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
@@ -400,7 +402,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.root_material_id = root_material_id
             self._machine_info.extruder_info_dict[position] = extruder_info
         else:
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
             if variant_id not in ("empty", "empty_variant"):
                 self._machine_info.variant_info = instance_container_info_dict[variant_id]
 
@@ -412,13 +414,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
+            index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
             # So we check according to the positions
             position = parser["metadata"]["position"]
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
-            material_id = parser["containers"][str(_ContainerIndexes.Material)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
+            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
@@ -432,11 +435,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
 
-            definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
+            definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
 
-            user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
+            user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
