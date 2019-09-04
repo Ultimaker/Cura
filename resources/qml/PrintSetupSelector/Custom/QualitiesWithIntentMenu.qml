@@ -17,6 +17,9 @@ Popup
     property color backgroundColor: UM.Theme.getColor("main_background")
     property color borderColor: UM.Theme.getColor("lining")
 
+    topPadding: UM.Theme.getSize("narrow_margin").height
+    rightPadding: UM.Theme.getSize("default_lining").width
+    leftPadding: UM.Theme.getSize("default_lining").width
     padding: 0
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     background: Cura.RoundedRectangle
@@ -36,18 +39,6 @@ Popup
 
     contentItem: Column
     {
-        anchors
-        {
-            left: parent.left
-            leftMargin: UM.Theme.getSize("default_lining").width
-
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_lining").width
-
-            top: parent.top
-            topMargin: UM.Theme.getSize("narrow_margin").height
-        }
-
         // This repeater adds the intent labels
         Repeater
         {
