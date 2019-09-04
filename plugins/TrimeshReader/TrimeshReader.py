@@ -84,7 +84,17 @@ class TrimeshReader(MeshReader):
     #   types that Trimesh can read. It will not be checked again.
     #   \return A scene node that contains the file's contents.
     def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
-        mesh_or_scene = trimesh.load(file_name)
+        # CURA-6739
+        # GLTF files are essentially JSON files. If you directly give a file name to trimesh.load(), it will
+        # try to figure out the format, but for GLTF, it loads it as a binary file with flags "rb", and the json.load()
+        # doesn't like it. For some reason, this seems to happen with 3.5.7, but not 3.7.1. Below is a workaround to
+        # pass a file object that has been opened with "r" instead "rb" to load a GLTF file.
+        if file_name.endswith(".gltf"):
+            mesh_or_scene = trimesh.load(open(file_name, "r", encoding="utf-8"),
+                                         file_type = file_name.split(".")[-1].lower())
+        else:
+            mesh_or_scene = trimesh.load(file_name)
+
         meshes = []  # type: List[Union[trimesh.Trimesh, trimesh.Scene, Any]]
         if isinstance(mesh_or_scene, trimesh.Trimesh):
             meshes = [mesh_or_scene]
