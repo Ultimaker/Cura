@@ -18,7 +18,7 @@ Popup
     property color borderColor: UM.Theme.getColor("lining")
 
     padding: 0
-
+    closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     background: Cura.RoundedRectangle
     {
         color: backgroundColor
