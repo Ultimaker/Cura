@@ -36,11 +36,17 @@ Popup
 
     contentItem: Column
     {
-        anchors.left: parent.left
-        anchors.leftMargin: UM.Theme.getSize("default_lining").width
-        anchors.rightMargin: UM.Theme.getSize("default_lining").width
-        anchors.right: parent.right
-        anchors.top: parent.top
+        anchors
+        {
+            left: parent.left
+            leftMargin: UM.Theme.getSize("default_lining").width
+
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_lining").width
+
+            top: parent.top
+            topMargin: UM.Theme.getSize("narrow_margin").height
+        }
 
         // This repeater adds the intent labels
         Repeater
