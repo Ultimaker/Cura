@@ -148,7 +148,7 @@ from cura.CuraApplication import CuraApplication
 # on Mac OS X. Adding the search path to environment variables such as DYLD_LIBRARY_PATH and DYLD_FALLBACK_LIBRARY_PATH
 # makes it work. The workaround here uses DYLD_FALLBACK_LIBRARY_PATH.
 if Platform.isOSX() and getattr(sys, "frozen", False):
-    old_env = os.environ["DYLD_FALLBACK_LIBRARY_PATH"]
+    old_env = os.environ.get("DYLD_FALLBACK_LIBRARY_PATH", "")
     search_path = os.path.join(CuraApplication.getInstallPrefix(), "MacOS")
     path_list = old_env.split(":")
     if search_path not in path_list:
