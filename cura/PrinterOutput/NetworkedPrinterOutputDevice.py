@@ -35,6 +35,8 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     def __init__(self, device_id, address: str, properties: Dict[bytes, bytes], connection_type: ConnectionType = ConnectionType.NetworkConnection, parent: QObject = None) -> None:
         super().__init__(device_id = device_id, connection_type = connection_type, parent = parent)
         self._manager = None    # type: Optional[QNetworkAccessManager]
+        self._last_manager_create_time = None       # type: Optional[float]
+        self._recreate_network_manager_time = 30
         self._timeout_time = 10  # After how many seconds of no response should a timeout occur?
 
         self._last_response_time = None     # type: Optional[float]
@@ -131,6 +133,12 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
             self.setConnectionState(ConnectionState.Closed)
 
+            # We need to check if the manager needs to be re-created. If we don't, we get some issues when OSX goes to
+            # sleep.
+            if time_since_last_response > self._recreate_network_manager_time:
+                if self._last_manager_create_time is None or time() - self._last_manager_create_time > self._recreate_network_manager_time:
+                    self._createNetworkManager()
+                assert(self._manager is not None)
         elif self._connection_state == ConnectionState.Closed:
             # Go out of timeout.
             if self._connection_state_before_timeout is not None:   # sanity check, but it should never be None here
@@ -309,6 +317,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
         self._manager = QNetworkAccessManager()
         self._manager.finished.connect(self._handleOnFinished)
+        self._last_manager_create_time = time()
         self._manager.authenticationRequired.connect(self._onAuthenticationRequired)
 
         if self._properties.get(b"temporary", b"false") != b"true":
