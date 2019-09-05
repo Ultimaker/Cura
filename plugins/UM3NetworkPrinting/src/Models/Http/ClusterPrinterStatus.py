@@ -80,6 +80,11 @@ class ClusterPrinterStatus(BaseModel):
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
         model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
 
+        if not model.printerConfiguration:
+            # Prevent accessing printer configuration when not available.
+            # This sometimes happens when a printer was just added to a group and Cura is connected to that group.
+            return
+
         # Set the possible configurations based on whether a Material Station is present or not.
         if self.material_station and self.material_station.material_slots:
             self._updateAvailableConfigurations(model)
