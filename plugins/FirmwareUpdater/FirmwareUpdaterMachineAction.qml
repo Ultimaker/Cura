@@ -151,6 +151,8 @@ Cura.MachineAction
                             return catalog.i18nc("@label","Firmware update failed due to an input/output error.");
                         case 6:
                             return catalog.i18nc("@label","Firmware update failed due to missing firmware.");
+                        case 7:
+                            return catalog.i18nc("@label","Firmware update failed due to invalid firmware file.");
                     }
                 }
 
