@@ -294,6 +294,11 @@ class FlavorParser:
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
         return result
 
+    #
+    # CURA-6643
+    # This function needs the filename so it can be set to the SceneNode. Otherwise, if you load a GCode file and press
+    # F5, that gcode SceneNode will be removed because it doesn't have a file to be reloaded from.
+    #
     def processGCodeStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
         Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
