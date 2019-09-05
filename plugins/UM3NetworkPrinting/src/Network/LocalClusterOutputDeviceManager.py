@@ -236,7 +236,11 @@ class LocalClusterOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         machine.setMetaDataEntry("group_name", device.name)
-
-        device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
-        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
+
+        if not device.isConnected():
+            device.connect()
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)

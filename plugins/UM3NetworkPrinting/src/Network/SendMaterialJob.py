@@ -104,7 +104,6 @@ class SendMaterialJob(Job):
                 parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
                                                         .format(file_name = signature_file_name), f.read()))
 
-        Logger.log("d", "Syncing material %s with cluster.", material_id)
         # FIXME: move form posting to API client
         self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
                                       on_finished = self._sendingFinished)
@@ -117,7 +116,6 @@ class SendMaterialJob(Job):
         body = reply.readAll().data().decode('utf8')
         if "not added" in body:
             # For some reason the cluster returns a 200 sometimes even when syncing failed.
-            Logger.log("w", "Error while syncing material: %s", body)
             return
         # Inform the user that materials have been synced. This message only shows itself when not already visible.
         # Because of the guards above it is not shown when syncing failed (which is not always an actual problem).

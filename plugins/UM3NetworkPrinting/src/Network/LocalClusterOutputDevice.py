@@ -122,9 +122,6 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
         self.writeStarted.emit(self)
 
-        # Make sure the printer is aware of all new materials as the new print job might contain one.
-        self.sendMaterialProfiles()
-
         # Export the scene to the correct file type.
         job = ExportFileJob(file_handler=file_handler, nodes=nodes, firmware_version=self.firmwareVersion)
         job.finished.connect(self._onPrintJobCreated)
