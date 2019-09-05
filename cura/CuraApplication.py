@@ -979,13 +979,13 @@ class CuraApplication(QtApplication):
         return self._machine_action_manager
 
     @pyqtSlot(result = QObject)
-    def getMaterialManagementModel(self):
+    def getMaterialManagementModel(self) -> MaterialManagementModel:
         if not self._material_management_model:
             self._material_management_model = MaterialManagementModel(parent = self)
         return self._material_management_model
 
     @pyqtSlot(result = QObject)
-    def getQualityManagementModel(self):
+    def getQualityManagementModel(self) -> QualityManagementModel:
         if not self._quality_management_model:
             self._quality_management_model = QualityManagementModel(parent = self)
         return self._quality_management_model
