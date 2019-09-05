@@ -53,6 +53,10 @@ Item
                         right: index + 1 === repeater.count ? parent.right: undefined
                         left: index + 1 === repeater.count || index === 0 ? undefined: parent.left
                         leftMargin: Math.round((itemSize - contentWidth) * 0.5)
+
+                        // For some reason, the last label in the row gets misaligned with Qt 5.10. This lines seems to
+                        // fix it.
+                        verticalCenter: parent.verticalCenter
                     }
                 }
             }
