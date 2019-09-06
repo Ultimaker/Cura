@@ -19,7 +19,10 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from cura.CuraApplication import CuraApplication
 from cura.Machines.VariantType import VariantType
 
-from .XmlMaterialValidator import XmlMaterialValidator
+try:
+    from .XmlMaterialValidator import XmlMaterialValidator
+except (ImportError, SystemError):
+    import XmlMaterialValidator  # type: ignore  # This fixes the tests not being able to import.
 
 
 ##  Handles serializing and deserializing material containers from an XML file
