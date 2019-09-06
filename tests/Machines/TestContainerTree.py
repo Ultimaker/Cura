@@ -94,3 +94,11 @@ def test_getCurrentQualityGroups(container_registry, application):
     expected_is_enabled = [True, True]
 
     container_tree.machines["current_global_stack"].getQualityGroups.assert_called_with(expected_variant_names, expected_material_base_files, expected_is_enabled)
+
+def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
+            container_tree = ContainerTree()
+            result = container_tree.getCurrentQualityChangesGroups()
+
+    assert len(result) == 0
