@@ -77,4 +77,3 @@ def test_serializeNonBaseMaterial():
         with pytest.raises(NotImplementedError):
             # This material is not a base material, so it can't be serialized!
             material_1.serialize()
-            

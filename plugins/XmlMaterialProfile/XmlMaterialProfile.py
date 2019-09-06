@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, Tuple, cast, Set
+from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -837,9 +837,9 @@ class XmlMaterialProfile(InstanceContainer):
             ContainerRegistry.getInstance().addContainer(container_to_add)
 
     @classmethod
-    def _getSettingsDictForNode(cls, node) -> Tuple[dict, dict]:
-        node_mapped_settings_dict = dict()
-        node_unmapped_settings_dict = dict()
+    def _getSettingsDictForNode(cls, node) -> Tuple[Dict[str,  Any], Dict[str, Any]]:
+        node_mapped_settings_dict = dict()  # type: Dict[str, Any]
+        node_unmapped_settings_dict = dict()  # type: Dict[str, Any]
 
         # Fetch settings in the "um" namespace
         um_settings = node.iterfind("./um:setting", cls.__namespaces)
@@ -1212,7 +1212,7 @@ class XmlMaterialProfile(InstanceContainer):
         "break position": "material_break_retracted_position",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
-    }
+    }  # type: Dict[str, str]
     __unmapped_settings = [
         "hardware compatible",
         "hardware recommended"
