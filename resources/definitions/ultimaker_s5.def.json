@@ -35,7 +35,10 @@
             "id": 9051,
             "check_urls": ["https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
             "update_url": "https://ultimaker.com/firmware"
-        }
+        },
+        "bom_numbers": [
+            9051, 214475
+        ]
     },
 
     "overrides": {

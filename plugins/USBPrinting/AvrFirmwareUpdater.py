@@ -27,6 +27,9 @@ class AvrFirmwareUpdater(FirmwareUpdater):
         except (FileNotFoundError, AssertionError):
             Logger.log("e", "Unable to read provided hex file. Could not update firmware.")
             self._setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
+        except Exception:
+            Logger.logException("e", "Failed to read hex file '%s'", self._firmware_file)
+            self._setFirmwareUpdateState(FirmwareUpdateState.invalid_firmware_error)
             return
 
         programmer = stk500v2.Stk500v2()
