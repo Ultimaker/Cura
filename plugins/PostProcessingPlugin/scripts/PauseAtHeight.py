@@ -106,10 +106,17 @@ class PauseAtHeight(Script):
                 "standby_temperature":
                 {
                     "label": "Standby Temperature",
-                    "description": "Change the temperature during the pause",
+                    "description": "Change the temperature during the pause.",
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
+                },
+                "display_text":
+                {
+                    "label": "Display Text",
+                    "description": "Text that should appear on the display while paused.",
+                    "type": "str",
+                    "default_value": "Print paused."
                 }
             }
         }"""
@@ -144,6 +151,7 @@ class PauseAtHeight(Script):
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
+        display_text = self.getSettingValueByKey("display_text")
 
         is_griffin = False
 
@@ -286,6 +294,8 @@ class PauseAtHeight(Script):
                     if control_temperatures:
                         # Set extruder standby temperature
                         prepend_gcode += self.putValue(M = 104, S = standby_temperature) + " ; standby temperature\n"
+
+                prepend_gcode += "M117 " + display_text + "\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"

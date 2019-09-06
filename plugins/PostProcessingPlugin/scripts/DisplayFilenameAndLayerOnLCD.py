@@ -69,7 +69,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
             else:
                 lcd_text = "M117 Printing Layer "
         else:
-            lcd_text = "M117 Printing " + name + " - Layer "   
+            lcd_text = "M117 Printing " + name + " - Layer "
         i = self.getSettingValueByKey("startNum")
         for layer in data:
             display_text = lcd_text + str(i) + " " + name
