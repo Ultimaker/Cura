@@ -114,9 +114,9 @@ class PauseAtHeight(Script):
                 "display_text":
                 {
                     "label": "Display Text",
-                    "description": "Text that should appear on the display while paused.",
+                    "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
                     "type": "str",
-                    "default_value": "Print paused."
+                    "default_value": ""
                 }
             }
         }"""
@@ -295,7 +295,8 @@ class PauseAtHeight(Script):
                         # Set extruder standby temperature
                         prepend_gcode += self.putValue(M = 104, S = standby_temperature) + " ; standby temperature\n"
 
-                prepend_gcode += "M117 " + display_text + "\n"
+                if display_text:
+                    prepend_gcode += "M117 " + display_text + "\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
