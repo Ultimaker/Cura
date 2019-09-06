@@ -43,11 +43,11 @@ class XmlMaterialProfile(InstanceContainer):
     #
     #   \param xml_version: The version number found in an XML file.
     #   \return The corresponding setting_version.
-    @classmethod
-    def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
+    @staticmethod
+    def xmlVersionToSettingVersion(xml_version: str) -> int:
         if xml_version == "1.3":
             return CuraApplication.SettingVersion
-        return 0 #Older than 1.3.
+        return 0  # Older than 1.3.
 
     def getInheritedFiles(self):
         return self._inherited_files
@@ -1134,8 +1134,8 @@ class XmlMaterialProfile(InstanceContainer):
         builder.data(data)
         builder.end(tag_name)
 
-    @classmethod
-    def _profile_name(cls, material_name, color_name):
+    @staticmethod
+    def _profile_name(material_name, color_name):
         if material_name is None:
             return "Unknown Material"
         if color_name != "Generic":
@@ -1143,8 +1143,8 @@ class XmlMaterialProfile(InstanceContainer):
         else:
             return material_name
 
-    @classmethod
-    def getPossibleDefinitionIDsFromName(cls, name):
+    @staticmethod
+    def getPossibleDefinitionIDsFromName(name):
         name_parts = name.lower().split(" ")
         merged_name_parts = []
         for part in name_parts:
@@ -1182,8 +1182,8 @@ class XmlMaterialProfile(InstanceContainer):
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
-    @classmethod
-    def _parseCompatibleValue(cls, value: str):
+    @staticmethod
+    def _parseCompatibleValue(value: str):
         return value in {"yes", "unknown"}
 
     ##  Small string representation for debugging.
