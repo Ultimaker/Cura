@@ -19,8 +19,8 @@ def createMockedStack(definition_id: str):
     extruder_right_mock.variant.getName = MagicMock(return_value = definition_id + "_right_variant_name")
     extruder_right_mock.material.getMetaDataEntry = MagicMock(return_value = definition_id + "_right_material_base_file")
     extruder_right_mock.isEnabled = True
-    extruder_dict = {"1": extruder_right_mock, "0": extruder_left_mock}
-    result.extruders = extruder_dict
+    extruder_list = [extruder_left_mock, extruder_right_mock]
+    result.extrudersList = extruder_list
     return result
 
 
