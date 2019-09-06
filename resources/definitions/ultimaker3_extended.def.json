@@ -30,10 +30,7 @@
                 "https://software.ultimaker.com/releases/firmware/9066/stable/um-update.swu.version"
             ],
             "update_url": "https://ultimaker.com/firmware"
-        },
-        "bom_numbers": [
-            9511
-        ]
+        }
     },
 
     "overrides": {
