@@ -66,7 +66,7 @@ class ClusterPrinterStatus(BaseModel):
     ## Creates a new output model.
     #  \param controller - The controller of the model.
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
-        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
+        model = PrinterOutputModel(controller, 2, firmware_version = self.firmware_version)
         self.updateOutputModel(model)
         return model
 
