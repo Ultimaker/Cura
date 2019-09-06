@@ -66,7 +66,11 @@ class ClusterPrinterStatus(BaseModel):
     ## Creates a new output model.
     #  \param controller - The controller of the model.
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
-        model = PrinterOutputModel(controller, len(self.configuration), firmware_version = self.firmware_version)
+        # FIXME
+        # Note that we're using '2' here as extruder count. We have hardcoded this for now to prevent issues where the
+        # amount of extruders coming back from the API is actually lower (which it can be if a printer was just added
+        # to a cluster). This should be fixed in the future, probably also on the cluster API side.
+        model = PrinterOutputModel(controller, 2, firmware_version = self.firmware_version)
         self.updateOutputModel(model)
         return model
 
@@ -79,6 +83,11 @@ class ClusterPrinterStatus(BaseModel):
         model.updateState(self.status if self.enabled else "disabled")
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")
         model.setCameraUrl(QUrl("http://{}:8080/?action=stream".format(self.ip_address)))
+
+        if not model.printerConfiguration:
+            # Prevent accessing printer configuration when not available.
+            # This sometimes happens when a printer was just added to a group and Cura is connected to that group.
+            return
 
         # Set the possible configurations based on whether a Material Station is present or not.
         if self.material_station and self.material_station.material_slots:
