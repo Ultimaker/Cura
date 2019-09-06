@@ -34,7 +34,10 @@
             "id": 213482,
             "check_urls": ["https://software.ultimaker.com/releases/firmware/213482/stable/um-update.swu.version"],
             "update_url": "https://ultimaker.com/firmware"
-        }
+        },
+        "bom_numbers": [
+            213482
+        ]
     },
 
     "overrides": {
