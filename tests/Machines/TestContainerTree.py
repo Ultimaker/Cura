@@ -102,3 +102,18 @@ def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
             result = container_tree.getCurrentQualityChangesGroups()
 
     assert len(result) == 0
+
+def test_getCurrentQualityChangesGroups(container_registry, application):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        container_tree = ContainerTree()
+        container_tree.machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
+
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+            result = container_tree.getCurrentQualityChangesGroups()
+
+    # As defined in the fixture for application.
+    expected_variant_names = ["current_global_stack_left_variant_name", "current_global_stack_right_variant_name"]
+    expected_material_base_files = ["current_global_stack_left_material_base_file", "current_global_stack_right_material_base_file"]
+    expected_is_enabled = [True, True]
+
+    container_tree.machines["current_global_stack"].getQualityChangesGroups.assert_called_with(expected_variant_names, expected_material_base_files, expected_is_enabled)
