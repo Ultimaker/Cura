@@ -77,9 +77,9 @@ class QualityManager(QObject):
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> List[QualityChangesGroup]:
-        variant_names = [extruder.variant.getName() for extruder in machine.extruders.values()]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extruders.values()]
-        extruder_enabled = [extruder.isEnabled for extruder in machine.extruders.values()]
+        variant_names = [extruder.variant.getName() for extruder in machine.extrudersList]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extrudersList]
+        extruder_enabled = [extruder.isEnabled for extruder in machine.extrudersList]
         machine_node = ContainerTree.getInstance().machines[machine.definition.getId()]
         return machine_node.getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
@@ -92,9 +92,9 @@ class QualityManager(QObject):
     #   for those types as values.
     def getQualityGroups(self, global_stack: "GlobalStack") -> Dict[str, QualityGroup]:
         # Gather up the variant names and material base files for each extruder.
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extrudersList]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extrudersList]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extrudersList]
         definition_id = global_stack.definition.getId()
         return ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
 

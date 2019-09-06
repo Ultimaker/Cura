@@ -368,9 +368,9 @@ class Toolbox(QObject, Extension):
             default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
             machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
         for global_stack, extruder_nr, container_id in self._package_used_qualities:
-            variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
-            material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
-            extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
+            variant_names = [extruder.variant.getName() for extruder in global_stack.extrudersList]
+            material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extrudersList]
+            extruder_enabled = [extruder.isEnabled for extruder in global_stack.extrudersList]
             definition_id = global_stack.definition.getId()
             machine_node = container_tree.machines[definition_id]
             default_quality_group = machine_node.getQualityGroups(variant_names, material_bases, extruder_enabled)[machine_node.preferred_quality_type]

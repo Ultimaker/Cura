@@ -69,9 +69,9 @@ class ContainerTree:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return []
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extruders.values()]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruders.values()]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruders.values()]
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extrudersList]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extrudersList]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extrudersList]
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
     ##  Builds the initial container tree.
