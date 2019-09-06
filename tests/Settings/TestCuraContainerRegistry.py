@@ -36,6 +36,12 @@ def test_createUniqueName(container_registry):
     # It should add a #2 to test2
     assert container_registry.createUniqueName("user", "test", "test2", "nope") == "test2 #2"
 
+    # The provided suggestion is already correct, so nothing to do
+    assert container_registry.createUniqueName("user", "test", "test2 #2", "nope") == "test2 #2"
+
+    # In case we don't provide a new name, use the fallback
+    assert container_registry.createUniqueName("user", "test", "", "nope") == "nope"
+
 
 ##  Tests whether addContainer properly converts to ExtruderStack.
 def test_addContainerExtruderStack(container_registry, definition_container, definition_changes_container):
