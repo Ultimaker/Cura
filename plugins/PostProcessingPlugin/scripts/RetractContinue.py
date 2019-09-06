@@ -17,7 +17,7 @@ class RetractContinue(Script):
             {
                 "extra_retraction_speed":
                 {
-                    "label": "Extra Retraction Speed",
+                    "label": "Extra Retraction Ratio",
                     "description": "How much does it retract during the travel move, by ratio of the travel length.",
                     "type": "float",
                     "default_value": 0.05
