@@ -409,7 +409,8 @@ class XmlMaterialProfile(InstanceContainer):
         self._combineElement(self._expandMachinesXML(result), self._expandMachinesXML(second))
         return result
 
-    def _createKey(self, element):
+    @staticmethod
+    def _createKey(element):
         key = element.tag.split("}")[-1]
         if "key" in element.attrib:
             key += " key:" + element.attrib["key"]
@@ -425,15 +426,15 @@ class XmlMaterialProfile(InstanceContainer):
 
     # Recursively merges XML elements. Updates either the text or children if another element is found in first.
     # If it does not exist, copies it from second.
-    def _combineElement(self, first, second):
+    @staticmethod
+    def _combineElement(first, second):
         # Create a mapping from tag name to element.
-
         mapping = {}
         for element in first:
-            key = self._createKey(element)
+            key = XmlMaterialProfile._createKey(element)
             mapping[key] = element
         for element in second:
-            key = self._createKey(element)
+            key = XmlMaterialProfile._createKey(element)
             if len(element):  # Check if element has children.
                 try:
                     if "setting" in element.tag and not "settings" in element.tag:
@@ -443,7 +444,7 @@ class XmlMaterialProfile(InstanceContainer):
                         for child in element:
                             mapping[key].append(child)
                     else:
-                        self._combineElement(mapping[key], element)  # Multiple elements, handle those.
+                        XmlMaterialProfile._combineElement(mapping[key], element)  # Multiple elements, handle those.
                 except KeyError:
                     mapping[key] = element
                     first.append(element)
