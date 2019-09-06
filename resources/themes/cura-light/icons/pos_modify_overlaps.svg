@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>pms_modify_overlaps</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <polygon id="path-1" points="9.42307692 2 25.5769231 2 23.1538462 9.07692308 28 25 7 25 11.8461538 9.07692308"></polygon>
+        <mask id="mask-2" maskContentUnits="userSpaceOnUse" maskUnits="objectBoundingBox" x="0" y="0" width="21" height="23" fill="white">
+            <use xlink:href="#path-1"></use>
+        </mask>
+    </defs>
+    <g id="pms_modify_overlaps" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <polygon id="Path-Copy-3" fill="#000" points="2.42307692 2 18.5769231 2 16.1538462 9.07692308 21 25 0 25 4.84615385 9.07692308"></polygon>
+        <use id="Path-Copy-4" stroke="#08073F" mask="url(#mask-2)" stroke-width="2" stroke-dasharray="2,2" xlink:href="#path-1"></use>
+        <path d="M17.768,14.153 L18.085,15.161 L9.635,25 L8.453,25 L17.768,14.153 Z M18.496,16.467 L18.814,17.475 L12.351,25 L11.169,25 L18.496,16.467 Z M19.225,18.781 L19.542,19.789 L15.067,25 L13.885,25 L19.225,18.781 Z M19.954,21.096 L20.271,22.103 L17.783,25 L16.601,25 L19.954,21.096 Z M20.682,23.41 L21,24.417 L20.499,25 L19.317,25 L20.682,23.41 Z M17.039,11.84 L17.356,12.847 L8,23.743 L8.684,21.57 L17.039,11.84 Z M16.311,9.526 L16.628,10.532 L9.572,18.749 L10.256,16.577 L16.311,9.526 Z M17.706,4.737 L16.876,7.08 L11.144,13.756 L11.828,11.583 L17.706,4.737 Z M18.522,2 L12.567,8.935 L12.222,7.961 L17.341,2 L18.522,2 Z M15.806,2 L11.774,6.696 L11.429,5.722 L14.625,2 L15.806,2 Z M13.091,2 L10.981,4.458 L10.635,3.483 L11.909,2 L13.091,2 Z M10.375,2 L10.188,2.219 L10.1109336,2 L10.375,2 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+    </g>
+</svg>
