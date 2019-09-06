@@ -139,7 +139,7 @@ class LocalClusterOutputDeviceManager:
             machine_bom_numbers = machine.get("bom_numbers", [])
             if machine_type and machine_bom_numbers:
                 for bom_number in machine_bom_numbers:
-                    # This produces a n:1 mapping of bom numberss to machine types
+                    # This produces a n:1 mapping of bom numbers to machine types
                     # allowing the S5R1 and S5R2 hardware to use a single S5 definition.
                     found_machine_type_identifiers[str(bom_number)] = machine_type
         return found_machine_type_identifiers
