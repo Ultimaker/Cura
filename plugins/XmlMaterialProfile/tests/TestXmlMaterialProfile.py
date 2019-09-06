@@ -63,3 +63,18 @@ def test_setDirty():
 
     assert not material_1.isDirty()
     assert material_2.isDirty()
+
+
+def test_serializeNonBaseMaterial():
+    material_1 = createXmlMaterialProfile("herpderp")
+    material_1.getMetaData()["base_file"] = "omgzomg"
+
+    container_registry = MagicMock()
+    container_registry.isReadOnly = MagicMock(return_value=False)
+    container_registry.findContainers = MagicMock(return_value=[material_1])
+
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+        with pytest.raises(NotImplementedError):
+            # This material is not a base material, so it can't be serialized!
+            material_1.serialize()
+            
