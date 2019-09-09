@@ -1821,3 +1821,40 @@ class CuraApplication(QtApplication):
             return main_window.height()
         else:
             return 0
+
+    @pyqtSlot()
+    def deleteAll(self, only_selectable: bool = True) -> None:
+        super().deleteAll(only_selectable = only_selectable)
+
+        # Also remove nodes with LayerData
+        self._removeNodesWithLayerData(only_selectable = only_selectable)
+
+    def _removeNodesWithLayerData(self, only_selectable: bool = True) -> None:
+        Logger.log("i", "Clearing scene")
+        nodes = []
+        for node in DepthFirstIterator(self.getController().getScene().getRoot()):
+            if not isinstance(node, SceneNode):
+                continue
+            if not node.isEnabled():
+                continue
+            if (not node.getMeshData() and not node.callDecoration("getLayerData")) and not node.callDecoration("isGroup"):
+                continue  # Node that doesnt have a mesh and is not a group.
+            if only_selectable and not node.isSelectable():
+                continue  # Only remove nodes that are selectable.
+            if not node.callDecoration("isSliceable") and not node.callDecoration("getLayerData") and not node.callDecoration("isGroup"):
+                continue  # Grouped nodes don't need resetting as their parent (the group) is resetted)
+            nodes.append(node)
+        if nodes:
+            from UM.Operations.GroupedOperation import GroupedOperation
+            op = GroupedOperation()
+
+            for node in nodes:
+                from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+                op.addOperation(RemoveSceneNodeOperation(node))
+
+                # Reset the print information
+                self.getController().getScene().sceneChanged.emit(node)
+
+            op.push()
+            from UM.Scene.Selection import Selection
+            Selection.clear()

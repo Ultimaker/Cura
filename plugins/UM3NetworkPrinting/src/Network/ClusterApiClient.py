@@ -135,7 +135,7 @@ class ClusterApiClient:
                 result = model_class(**response)  # type: ClusterApiClientModel
                 on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
                 on_finished_item(result)
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.
