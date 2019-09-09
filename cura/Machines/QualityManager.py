@@ -77,9 +77,9 @@ class QualityManager(QObject):
 
     # Returns a dict of "custom profile name" -> QualityChangesGroup
     def getQualityChangesGroups(self, machine: "GlobalStack") -> List[QualityChangesGroup]:
-        variant_names = [extruder.variant.getName() for extruder in machine.extrudersList]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extrudersList]
-        extruder_enabled = [extruder.isEnabled for extruder in machine.extrudersList]
+        variant_names = [extruder.variant.getName() for extruder in machine.extruderList]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in machine.extruderList]
+        extruder_enabled = [extruder.isEnabled for extruder in machine.extruderList]
         machine_node = ContainerTree.getInstance().machines[machine.definition.getId()]
         return machine_node.getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
@@ -92,9 +92,9 @@ class QualityManager(QObject):
     #   for those types as values.
     def getQualityGroups(self, global_stack: "GlobalStack") -> Dict[str, QualityGroup]:
         # Gather up the variant names and material base files for each extruder.
-        variant_names = [extruder.variant.getName() for extruder in global_stack.extrudersList]
-        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extrudersList]
-        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extrudersList]
+        variant_names = [extruder.variant.getName() for extruder in global_stack.extruderList]
+        material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruderList]
+        extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
         definition_id = global_stack.definition.getId()
         return ContainerTree.getInstance().machines[definition_id].getQualityGroups(variant_names, material_bases, extruder_enabled)
 

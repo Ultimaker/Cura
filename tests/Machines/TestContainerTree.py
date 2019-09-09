@@ -20,7 +20,7 @@ def createMockedStack(definition_id: str):
     extruder_right_mock.material.getMetaDataEntry = MagicMock(return_value = definition_id + "_right_material_base_file")
     extruder_right_mock.isEnabled = True
     extruder_list = [extruder_left_mock, extruder_right_mock]
-    result.extrudersList = extruder_list
+    result.extruderList = extruder_list
     return result
 
 
