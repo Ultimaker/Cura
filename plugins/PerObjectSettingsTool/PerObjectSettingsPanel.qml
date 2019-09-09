@@ -87,7 +87,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_normal");
                 property bool needBorder: true
                 checkable: true
-                onClicked: base.setMeshType(normal_mesh_type);
+                onClicked: setMeshType(normal_mesh_type);
                 style: UM.Theme.styles.tool_button;
                 z: 4
             }
@@ -99,7 +99,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_print_as_support");
                 property bool needBorder: true
                 checkable:true
-                onClicked: base.setMeshType(support_mesh_type)
+                onClicked: setMeshType(support_mesh_type)
                 style: UM.Theme.styles.tool_button;
                 z: 3
             }
@@ -111,7 +111,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_modify_overlaps");
                 property bool needBorder: true
                 checkable:true
-                onClicked: base.setMeshType(infill_mesh_type)
+                onClicked: setMeshType(infill_mesh_type)
                 style: UM.Theme.styles.tool_button;
                 z: 2
             }
@@ -123,7 +123,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
                 property bool needBorder: true
                 checkable: true
-                onClicked: base.setMeshType(anti_overhang_mesh_type)
+                onClicked: setMeshType(anti_overhang_mesh_type)
                 style: UM.Theme.styles.tool_button;
                 z: 1
             }
@@ -160,7 +160,7 @@ Item
 
                 checked: current_mesh_type === infill_mesh_type
                 visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
-                onClicked: base.setOverhangsMeshType()
+                onClicked: setOverhangsMeshType()
             }
         }
 
