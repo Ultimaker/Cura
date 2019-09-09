@@ -11,7 +11,7 @@ import Cura 1.1 as Cura
 //
 // Cura-style TextArea with scrolls
 //
-ScrollView
+Cura.ScrollView
 {
     property alias textArea: _textArea
 
