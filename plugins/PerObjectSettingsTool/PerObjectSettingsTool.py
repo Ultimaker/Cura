@@ -20,14 +20,10 @@ class PerObjectSettingsTool(Tool):
 
         self.setExposedProperties("SelectedObjectId", "ContainerID", "SelectedActiveExtruder", "MeshType")
 
-        self._advanced_mode = False
         self._multi_extrusion = False
         self._single_model_selected = False
 
         Selection.selectionChanged.connect(self.propertyChanged)
-
-        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferenceChanged)
-        self._onPreferenceChanged("cura/active_mode")
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
@@ -103,11 +99,6 @@ class PerObjectSettingsTool(Tool):
 
         return ""
 
-    def _onPreferenceChanged(self, preference):
-        if preference == "cura/active_mode":
-            self._advanced_mode = Application.getInstance().getPreferences().getValue(preference) == 1
-            self._updateEnabled()
-
     def _onGlobalContainerChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -140,4 +131,4 @@ class PerObjectSettingsTool(Tool):
             self._single_model_selected = False # Group is selected, so tool needs to be disabled
         else:
             self._single_model_selected = True
-        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode and self._single_model_selected)
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._single_model_selected)
