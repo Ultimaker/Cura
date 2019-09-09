@@ -36,7 +36,7 @@
         "retraction_enable": { "default_value": true },
         "retraction_amount": { "default_value": 5 },
         "retraction_speed": { "default_value": 45 },
-        "gantry_height": { "default_value": 25 },
+        "gantry_height": { "value": "25" },
         "machine_width": { "default_value": 220 },
         "machine_height": { "default_value": 250 },
         "machine_depth": { "default_value": 220 },

@@ -118,7 +118,7 @@ class GlobalStack(CuraContainerStack):
     ##  \sa configuredConnectionTypes
     def removeConfiguredConnectionType(self, connection_type: int) -> None:
         configured_connection_types = self.configuredConnectionTypes
-        if connection_type in self.configured_connection_types:
+        if connection_type in configured_connection_types:
             # Store the values as a string.
             configured_connection_types.remove(connection_type)
             self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
@@ -264,17 +264,17 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    def getHasMaterials(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasMaterials(self):
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    def getHasVariants(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasVariants(self):
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    def getHasVariantsBuildPlates(self) -> bool:
+    @pyqtProperty(int, constant=True)
+    def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
-
-    def getHasMachineQuality(self) -> bool:
-        return parseBool(self.getMetaDataEntry("has_machine_quality", False))
 
     ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)

@@ -9,7 +9,7 @@ DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
 DEFAULT_CURA_BUILD_TYPE = ""
 DEFAULT_CURA_DEBUG_MODE = False
-DEFAULT_CURA_SDK_VERSION = "6.0.0"
+DEFAULT_CURA_SDK_VERSION = "6.2.0"
 
 try:
     from cura.CuraVersion import CuraAppName  # type: ignore
@@ -42,9 +42,7 @@ try:
 except ImportError:
     CuraDebugMode = DEFAULT_CURA_DEBUG_MODE
 
-try:
-    from cura.CuraVersion import CuraSDKVersion  # type: ignore
-    if CuraSDKVersion == "":
-        CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
-except ImportError:
-    CuraSDKVersion = DEFAULT_CURA_SDK_VERSION
+# Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
+# example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
+# CuraVersion.py.in template.
+CuraSDKVersion = "6.2.0"

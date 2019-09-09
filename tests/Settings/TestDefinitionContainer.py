@@ -36,15 +36,14 @@ def test_validateMachineDefinitionContainer(file_name, definition_container):
         return  # Stop checking, these are root files.
 
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions")
-    assert isDefinitionValid(definition_container, definition_path, file_name)
+    assertIsDefinitionValid(definition_container, definition_path, file_name)
 
 
-def isDefinitionValid(definition_container, path, file_name):
+def assertIsDefinitionValid(definition_container, path, file_name):
     with open(os.path.join(path, file_name), encoding = "utf-8") as data:
         json = data.read()
         parser, is_valid = definition_container.readAndValidateSerialized(json)
-        if not is_valid:
-            print("The definition '{0}', has invalid data.".format(file_name))
+        assert is_valid #The definition has invalid JSON structure.
         metadata = DefinitionContainer.deserializeMetadata(json, "whatever")
 
         # If the definition defines a platform file, it should be in /resources/meshes/
@@ -53,5 +52,3 @@ def isDefinitionValid(definition_container, path, file_name):
 
         if "platform_texture" in metadata[0]:
             assert metadata[0]["platform_texture"] in all_images
-
-        return is_valid

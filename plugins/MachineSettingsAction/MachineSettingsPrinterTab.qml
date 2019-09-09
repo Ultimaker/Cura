@@ -20,13 +20,13 @@ Item
     anchors.right: parent.right
     anchors.top: parent.top
 
-    property int labelWidth: 120 * screenScaleFactor
-    property int controlWidth: (UM.Theme.getSize("setting_control").width * 3 / 4) | 0
-    property var labelFont: UM.Theme.getFont("default")
-
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
-    property int propertyStoreIndex: manager.storeContainerIndex  // definition_changes
+    property int propertyStoreIndex: manager ? manager.storeContainerIndex : 1  // definition_changes
+
+    property int labelWidth: (columnWidth * 2 / 3 - UM.Theme.getSize("default_margin").width * 2) | 0
+    property int controlWidth: (columnWidth / 3) | 0
+    property var labelFont: UM.Theme.getFont("default")
 
     property string machineStackId: Cura.MachineManager.activeMachineId
 
@@ -59,6 +59,8 @@ Item
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Cura.NumericTextFieldWithUnit  // "X (Width)"
@@ -140,6 +142,18 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
+            Cura.SimpleCheckBox  // "Heated build volume"
+            {
+                id: heatedVolumeCheckBox
+                containerStackId: machineStackId
+                settingKey: "machine_heated_build_volume"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Heated build volume")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
             Cura.ComboBoxWithOptions  // "G-code flavor"
             {
                 id: gcodeFlavorComboBox
@@ -175,6 +189,8 @@ Item
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Cura.PrintHeadMinMaxTextField  // "X min"
@@ -191,6 +207,7 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "min"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -209,6 +226,7 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "min"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -227,6 +245,7 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "max"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -247,6 +266,7 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "max"
+                allowNegativeValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }

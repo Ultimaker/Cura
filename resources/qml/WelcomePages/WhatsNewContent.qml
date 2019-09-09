@@ -44,6 +44,7 @@ Item
         textArea.textFormat: Text.RichText
         textArea.wrapMode: Text.WordWrap
         textArea.readOnly: true
+        textArea.font: UM.Theme.getFont("medium")
     }
 
     Cura.PrimaryButton

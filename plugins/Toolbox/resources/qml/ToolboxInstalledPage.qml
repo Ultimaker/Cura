@@ -23,7 +23,12 @@ Cura.ScrollView
 
         Label
         {
-            width: parent.width - 2 * parent.padding
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
             text: catalog.i18nc("@title:tab", "Plugins")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("large")
@@ -32,9 +37,14 @@ Cura.ScrollView
 
         Rectangle
         {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
             id: installedPlugins
             color: "transparent"
-            width: parent.width - 2 * parent.padding
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
@@ -58,7 +68,12 @@ Cura.ScrollView
 
         Label
         {
-            width: parent.width - 2 * parent.padding
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
             text: catalog.i18nc("@title:tab", "Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
@@ -67,9 +82,14 @@ Cura.ScrollView
 
         Rectangle
         {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
             id: installedMaterials
             color: "transparent"
-            width: parent.width - 2 * parent.padding
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width

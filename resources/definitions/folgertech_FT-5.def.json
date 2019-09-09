@@ -18,7 +18,7 @@
         "machine_width": { "default_value": 300 },
         "machine_height": { "default_value": 400 },
         "machine_depth": { "default_value": 300 },
-        "gantry_height": { "default_value": 55 },
+        "gantry_height": { "value": "55" },
 
         "machine_start_gcode": {
             "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E3 ;extrude 3mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."

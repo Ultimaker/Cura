@@ -1,7 +1,8 @@
 [shaders]
 vertex =
     uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewProjectionMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
 
     attribute highp vec4 a_vertex;
 
@@ -10,7 +11,7 @@ vertex =
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
-        gl_Position = u_viewProjectionMatrix * world_space_vert;
+        gl_Position = u_projectionMatrix * u_viewMatrix * world_space_vert;
 
         v_vertex = world_space_vert.xyz;
     }
@@ -36,7 +37,8 @@ fragment =
 vertex41core =
     #version 410
     uniform highp mat4 u_modelMatrix;
-    uniform highp mat4 u_viewProjectionMatrix;
+    uniform highp mat4 u_viewMatrix;
+    uniform highp mat4 u_projectionMatrix;
 
     in highp vec4 a_vertex;
 
@@ -45,7 +47,7 @@ vertex41core =
     void main()
     {
         vec4 world_space_vert = u_modelMatrix * a_vertex;
-        gl_Position = u_viewProjectionMatrix * world_space_vert;
+        gl_Position = u_projectionMatrix * u_viewMatrix * world_space_vert;
 
         v_vertex = world_space_vert.xyz;
     }
@@ -75,7 +77,8 @@ fragment41core =
 
 [bindings]
 u_modelMatrix = model_matrix
-u_viewProjectionMatrix = view_projection_matrix
+u_viewMatrix = view_matrix
+u_projectionMatrix = projection_matrix
 u_normalMatrix = normal_matrix
 u_viewPosition = view_position
 

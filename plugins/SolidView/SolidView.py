@@ -139,6 +139,10 @@ class SolidView(View):
                             shade_factor * int(material_color[5:7], 16) / 255,
                             1.0
                         ]
+
+                        # Color the currently selected face-id.
+                        face = Selection.getSelectedFace()
+                        uniforms["selected_face"] = (Selection.getMaxFaceSelectionId() + 1) if not face or node != face[0] else face[1]
                     except ValueError:
                         pass
 

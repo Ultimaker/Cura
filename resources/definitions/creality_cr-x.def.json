@@ -30,7 +30,7 @@
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 70},
         "adhesion_type": { "default_value": "skirt" },
-        "gantry_height": { "default_value": 30 },
+        "gantry_height": { "value": "30" },
         "speed_print": { "default_value": 60 },
         "speed_travel": { "default_value": 120 },
         "machine_max_acceleration_x": { "default_value": 500 },

@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "samsector",
-        "manufacturer": "PrintrBot",
+        "manufacturer": "Printrbot",
         "platform": "printrbot_simple_metal_upgrade.stl",
         "platform_offset": [0, -0.3, 0],
         "file_formats": "text/x-gcode",
@@ -30,7 +30,7 @@
                 [ -49, -20 ]
             ]
         },
-        "gantry_height": { "default_value": 99999 },
+        "gantry_height": { "value": "99999" },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
 
         "machine_start_gcode": {

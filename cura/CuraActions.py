@@ -3,15 +3,17 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import List, TYPE_CHECKING, cast
+from typing import List, Optional, cast
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
+from UM.Math.Quaternion import Quaternion
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from UM.Operations.RotateOperation import RotateOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
@@ -23,9 +25,8 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 
-if TYPE_CHECKING:
-    from UM.Scene.SceneNode import SceneNode
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -72,6 +73,39 @@ class CuraActions(QObject):
             #   moving the node to negative whatever its position is:
             center_operation = TranslateOperation(current_node, -current_node._position)
             operation.addOperation(center_operation)
+        operation.push()
+
+    # Rotate the selection, so that the face that the mouse-pointer is on, faces the build-plate.
+    @pyqtSlot()
+    def bottomFaceSelection(self) -> None:
+        selected_face = Selection.getSelectedFace()
+        if not selected_face:
+            Logger.log("e", "Bottom face operation shouldn't have been called without a selected face.")
+            return
+
+        original_node, face_id = selected_face
+        meshdata = original_node.getMeshDataTransformed()
+        if not meshdata or face_id < 0 or face_id > Selection.getMaxFaceSelectionId():
+            return
+
+        rotation_point, face_normal = meshdata.getFacePlane(face_id)
+        rotation_point_vector = Vector(rotation_point[0], rotation_point[1], rotation_point[2])
+        face_normal_vector = Vector(face_normal[0], face_normal[1], face_normal[2])
+        rotation_quaternion = Quaternion.rotationTo(face_normal_vector.normalized(), Vector(0.0, -1.0, 0.0))
+
+        operation = GroupedOperation()
+        current_node = None  # type: Optional[SceneNode]
+        for node in Selection.getAllSelectedObjects():
+            current_node = node
+            parent_node = current_node.getParent()
+            while parent_node and parent_node.callDecoration("isGroup"):
+                current_node = parent_node
+                parent_node = current_node.getParent()
+        if current_node is None:
+            return
+
+        rotate_operation = RotateOperation(current_node, rotation_quaternion, rotation_point_vector)
+        operation.addOperation(rotate_operation)
         operation.push()
 
     ##  Multiply all objects in the selection

@@ -65,6 +65,7 @@ Item
     property alias about: aboutAction;
 
     property alias toggleFullScreen: toggleFullScreenAction;
+    property alias exitFullScreen: exitFullScreenAction
 
     property alias configureSettingVisibility: configureSettingVisibilityAction
 
@@ -82,10 +83,18 @@ Item
 
     Action
     {
-        id:toggleFullScreenAction
-        shortcut: StandardKey.FullScreen;
-        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen");
-        iconName: "view-fullscreen";
+        id: toggleFullScreenAction
+        shortcut: StandardKey.FullScreen
+        text: catalog.i18nc("@action:inmenu", "Toggle Full Screen")
+        iconName: "view-fullscreen"
+    }
+
+    Action
+    {
+        id: exitFullScreenAction
+        shortcut: StandardKey.Cancel
+        text: catalog.i18nc("@action:inmenu", "Exit Full Screen")
+        iconName: "view-fullscreen"
     }
 
     Action
@@ -101,7 +110,7 @@ Item
     Action
     {
         id: redoAction;
-        text: catalog.i18nc("@action:inmenu menubar:edit","&Redo");
+        text: catalog.i18nc("@action:inmenu menubar:edit", "&Redo");
         iconName: "edit-redo";
         shortcut: StandardKey.Redo;
         onTriggered: UM.OperationStack.redo();
@@ -110,65 +119,65 @@ Item
 
     Action
     {
-        id: quitAction;
-        text: catalog.i18nc("@action:inmenu menubar:file","&Quit");
-        iconName: "application-exit";
-        shortcut: StandardKey.Quit;
+        id: quitAction
+        text: catalog.i18nc("@action:inmenu menubar:file","&Quit")
+        iconName: "application-exit"
+        shortcut: StandardKey.Quit
     }
 
     Action
     {
-        id: view3DCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","3D View");
-        onTriggered: UM.Controller.rotateView("3d", 0);
+        id: view3DCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "3D View")
+        onTriggered: UM.Controller.setCameraRotation("3d", 0)
     }
 
     Action
     {
-        id: viewFrontCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Front View");
-        onTriggered: UM.Controller.rotateView("home", 0);
+        id: viewFrontCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Front View")
+        onTriggered: UM.Controller.setCameraRotation("home", 0)
     }
 
     Action
     {
-        id: viewTopCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Top View");
-        onTriggered: UM.Controller.rotateView("y", 90);
+        id: viewTopCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Top View")
+        onTriggered: UM.Controller.setCameraRotation("y", 90)
     }
 
     Action
     {
-        id: viewLeftSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Left Side View");
-        onTriggered: UM.Controller.rotateView("x", 90);
+        id: viewLeftSideCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Left Side View")
+        onTriggered: UM.Controller.setCameraRotation("x", 90)
     }
 
     Action
     {
-        id: viewRightSideCameraAction;
-        text: catalog.i18nc("@action:inmenu menubar:view","Right Side View");
-        onTriggered: UM.Controller.rotateView("x", -90);
+        id: viewRightSideCameraAction
+        text: catalog.i18nc("@action:inmenu menubar:view", "Right Side View")
+        onTriggered: UM.Controller.setCameraRotation("x", -90)
     }
 
     Action
     {
-        id: preferencesAction;
-        text: catalog.i18nc("@action:inmenu","Configure Cura...");
-        iconName: "configure";
+        id: preferencesAction
+        text: catalog.i18nc("@action:inmenu", "Configure Cura...")
+        iconName: "configure"
     }
 
     Action
     {
-        id: addMachineAction;
-        text: catalog.i18nc("@action:inmenu menubar:printer","&Add Printer...");
+        id: addMachineAction
+        text: catalog.i18nc("@action:inmenu menubar:printer", "&Add Printer...")
     }
 
     Action
     {
-        id: settingsAction;
-        text: catalog.i18nc("@action:inmenu menubar:printer","Manage Pr&inters...");
-        iconName: "configure";
+        id: settingsAction
+        text: catalog.i18nc("@action:inmenu menubar:printer", "Manage Pr&inters...")
+        iconName: "configure"
     }
 
     Action

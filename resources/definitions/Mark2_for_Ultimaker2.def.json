@@ -8,12 +8,10 @@
         "author": "TheUltimakerCommunity",
         "manufacturer": "Foehnsturm",
         "category": "Other",
+        "weight": 0,
         "has_variants": true,
         "has_materials": true,
-        "has_machine_materials": false,
         "has_machine_quality": false,
-        "has_variant_materials": false,
-        "weight": 2,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
@@ -37,7 +35,7 @@
             "default_value": 203
         },
         "gantry_height": {
-            "default_value": 52
+            "value": "52"
         },
         "machine_center_is_zero": {
             "default_value": false
@@ -201,12 +199,6 @@
         "extruder_prime_pos_x": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_y": { "default_value": 0.0, "enabled": false },
         "extruder_prime_pos_z": { "default_value": 0.0, "enabled": false },
-        "start_layers_at_same_position":
-        {
-            "default_value": false,
-            "enabled": false,
-            "value": false
-        },
         "layer_start_x":
         {
             "default_value": 105.0,

@@ -50,7 +50,7 @@
         "jerk_wall": { "value": "math.ceil(jerk_print * 10 / 25)" },
         "jerk_wall_0": { "value": "math.ceil(jerk_wall * 5 / 10)" },
 
-        "gantry_height": { "default_value": 25.0 },
+        "gantry_height": { "value": "25.0" },
         "skin_overlap": { "value": "10" },
 
         "acceleration_enabled": { "value": "True" },

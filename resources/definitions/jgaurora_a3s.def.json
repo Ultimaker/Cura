@@ -1,0 +1,93 @@
+{
+    "name": "JGAurora A3S",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Samuel Pinches",
+        "manufacturer": "JGAurora",
+        "file_formats": "text/x-gcode",
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains":
+        {
+            "0": "jgaurora_a3s_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "JGAurora A3S"
+        },
+        "machine_start_gcode": {
+            "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM104 S0                 ;turn off nozzle heater\nM140 S0                 ;turn off bed heater\nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament slightly\nG90                     ;set to absolute positioning\nG28 X0                  ;move to the X-axis origin (Home)\nG0 Y200 F600            ;bring the bed to the front for easy print removal\nM84                     ;turn off stepper motors\n; -- end of END GCODE --"
+        },        
+        "machine_width": {
+            "default_value": 205
+        },
+        "machine_height": {
+            "default_value": 205
+        },
+        "machine_depth": {
+            "default_value": 205
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "10"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "material_diameter": {
+            "default_value": 1.75
+        },
+        "material_print_temperature": {
+            "default_value": 210
+        },
+        "material_bed_temperature": {
+            "default_value": 65
+        },
+        "layer_height_0": {
+            "default_value": 0.12
+        },
+        "wall_thickness": {
+            "default_value": 1.2
+        },
+        "speed_print": {
+            "default_value": 35
+        },
+        "speed_infill": {
+            "default_value": 40
+        },
+        "speed_wall": {
+            "default_value": 30
+        },
+        "speed_topbottom": {
+            "default_value": 20
+        },
+        "speed_travel": {
+            "default_value": 100
+        },
+        "speed_layer_0": {
+            "default_value": 12
+        },
+        "support_enable": {
+            "default_value": true
+        },
+        "retraction_enable": {
+            "default_value": true
+        },
+        "retraction_amount": {
+            "default_value": 8
+        },
+        "retraction_speed": {
+            "default_value": 45
+        }
+    }
+}

@@ -2,15 +2,19 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
-import webbrowser
 from datetime import datetime, timedelta
+import os
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
+
 import requests.exceptions
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Platform import Platform
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
@@ -163,7 +167,7 @@ class AuthorizationService:
         })
 
         # Open the authorization page in a new browser window.
-        webbrowser.open_new("{}?{}".format(self._auth_url, query_string))
+        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)

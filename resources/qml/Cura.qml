@@ -260,15 +260,17 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
-            ObjectsList
+            ObjectSelector
             {
-                id: objectsList
-                visible: UM.Preferences.getValue("cura/use_multi_build_plate")
+                id: objectSelector
+                visible: CuraApplication.platformActivity
                 anchors
                 {
-                    bottom: viewOrientationControls.top
+                    bottom: jobSpecs.top
                     left: toolbar.right
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
+                    bottomMargin: UM.Theme.getSize("narrow_margin").height
                 }
             }
 
@@ -278,10 +280,12 @@ UM.MainWindow
                 visible: CuraApplication.platformActivity
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: viewOrientationControls.top
-                    margins: UM.Theme.getSize("default_margin").width
+                    leftMargin: UM.Theme.getSize("default_margin").width
+                    rightMargin: UM.Theme.getSize("default_margin").width
                     bottomMargin: UM.Theme.getSize("thin_margin").width
+                    topMargin: UM.Theme.getSize("thin_margin").width
                 }
             }
 
@@ -291,7 +295,7 @@ UM.MainWindow
 
                 anchors
                 {
-                    left: parent.left
+                    left: toolbar.right
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }
@@ -569,7 +573,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen();
+        onTriggered: base.toggleFullscreen()
+    }
+
+    Connections
+    {
+        target: Cura.Actions.exitFullScreen
+        onTriggered: base.exitFullscreen()
     }
 
     FileDialog
@@ -581,7 +591,12 @@ UM.MainWindow
         modality: Qt.WindowModal
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: CuraApplication.getDefaultPath("dialog_load_path")
+        folder:
+        {
+            //Because several implementations of the file dialog only update the folder when it is explicitly set.
+            folder = CuraApplication.getDefaultPath("dialog_load_path");
+            return CuraApplication.getDefaultPath("dialog_load_path");
+        }
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder
@@ -814,7 +829,12 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.addMachine
-        onTriggered: addMachineDialog.show()
+        onTriggered:
+        {
+            // Make sure to show from the first page when the dialog shows up.
+            addMachineDialog.resetModelState()
+            addMachineDialog.show()
+        }
     }
 
     AboutDialog

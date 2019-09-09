@@ -12,6 +12,10 @@ from .CuraContainerStack import CuraContainerStack
 
 
 class PerObjectContainerStack(CuraContainerStack):
+    def isDirty(self):
+        # This stack should never be auto saved, so always return that there is nothing to save. 
+        return False
+
     @override(CuraContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if context is None:

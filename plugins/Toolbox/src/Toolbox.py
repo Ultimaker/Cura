@@ -278,7 +278,7 @@ class Toolbox(QObject, Extension):
         for plugin_id in old_plugin_ids:
             # Neither the installed packages nor the packages that are scheduled to remove are old plugins
             if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
-                Logger.log("i", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
+                Logger.log("d", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
@@ -526,7 +526,7 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("i", "Requesting %s metadata from server.", request_type)
+        Logger.log("d", "Requesting %s metadata from server.", request_type)
         request = QNetworkRequest(self._request_urls[request_type])
         for header_name, header_value in self._request_headers:
             request.setRawHeader(header_name, header_value)
@@ -655,8 +655,12 @@ class Toolbox(QObject, Extension):
                 
                 # Check if the download was sucessfull
                 if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                    Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
-                    return
+                    try:
+                        Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
+                    except json.decoder.JSONDecodeError:
+                        Logger.logException("w", "Failed to download package and failed to parse a response from it")
+                    finally:
+                        return
                 # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
