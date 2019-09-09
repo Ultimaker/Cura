@@ -132,6 +132,7 @@ class MachineManager(QObject):
     activeMaterialChanged = pyqtSignal()
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
+    activeIntentChanged = pyqtSignal()
     activeStackChanged = pyqtSignal()  # Emitted whenever the active stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
     extruderChanged = pyqtSignal()
 
@@ -270,6 +271,7 @@ class MachineManager(QObject):
         self.activeQualityChanged.emit()
         self.activeVariantChanged.emit()
         self.activeMaterialChanged.emit()
+        self.activeIntentChanged.emit()
 
         self.rootMaterialChanged.emit()
         self.numberExtrudersEnabledChanged.emit()
@@ -608,6 +610,14 @@ class MachineManager(QObject):
         if not global_container_stack:
             return False
         return Util.parseBool(global_container_stack.quality.getMetaDataEntry("is_experimental", False))
+
+    @pyqtProperty(str, notify=activeIntentChanged)
+    def activeIntentCategory(self):
+
+        if not self._active_container_stack:
+            return ""
+        intent_category = self._active_container_stack.intent.getMetaDataEntry("intent_category")
+        return intent_category
 
     ##  Returns whether there is anything unsupported in the current set-up.
     #

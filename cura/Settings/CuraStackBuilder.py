@@ -160,6 +160,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = application.empty_intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 
@@ -208,6 +209,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = application.empty_intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 

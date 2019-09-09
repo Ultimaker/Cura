@@ -47,6 +47,7 @@ EMPTY_INTENT_CONTAINER_ID = "empty_intent"
 empty_intent_container = copy.deepcopy(empty_container)
 empty_intent_container.setMetaDataEntry("id", EMPTY_INTENT_CONTAINER_ID)
 empty_intent_container.setMetaDataEntry("type", "intent")
+empty_intent_container.setMetaDataEntry("intent_category", "default")
 empty_intent_container.setName(catalog.i18nc("@info:No intent profile selected", "Default"))
 
 

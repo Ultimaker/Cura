@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
@@ -99,12 +99,14 @@ Cura.ExpandablePopup
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         top: typeAndBrandNameLabel.bottom
+                        right: parent.right
+                        rightMargin:  UM.Theme.getSize("default_margin").width
                     }
                 }
             }
         }
 
-        //Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
+        // Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
         Label
         {
             text: catalog.i18nc("@label", "Select configuration")
