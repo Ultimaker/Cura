@@ -158,7 +158,8 @@ Item
 
                 style: UM.Theme.styles.checkbox;
 
-                checked: base.current_mesh_type === base.infill_mesh_type
+                checked: current_mesh_type === infill_mesh_type
+                visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
                 onClicked: base.setOverhangsMeshType()
             }
         }
