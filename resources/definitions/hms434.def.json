@@ -8,9 +8,7 @@
         "manufacturer": "MaukCC",
         "file_formats": "text/x-gcode",
 
-        "has_materials":         true,
-        "preferred_material":    "generic_pla",
-        "exclude_materials": [ "chromatik_pla", "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu", "fiberlogy_hd_pla", "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red", "imade3d_petg_green", "imade3d_petg_pink", "imade3d_pla_green", "imade3d_pla_pink", "innofill_innoflex60_175", "octofiber_pla", "imade3d_pla", "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla", "tizyx_abs", "tizyx_pla", "tizyx_pla_bois", "verbatim_bvoh_175", "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_TPU", "zyyx_pro_flex", "zyyx_pro_pla", "generic_cpe_175", "generic_nylon_175", "dsm_arnitel2045_175", "dsm_novamid1070_175", "generic_tpu_175", "generic_pc_175" ],
+        "has_materials":         false,
 
         "has_variants":           true,
         "variants_name":          "Tool",
@@ -41,6 +39,7 @@
         "machine_extruder_count":     {"default_value": 2 },
         "material_diameter":          {"default_value": 1.75 },
         "machine_heated_bed":         {"default_value": true },
+        "machine_heated_build_volume":{"default_value": true },
         "machine_center_is_zero":     {"default_value": false },
         "gantry_height":              {"value": "35" },
         "machine_height":             {"default_value": 400 },
@@ -103,7 +102,7 @@
         "speed_wall_x":            {"value": "speed_wall"},
         "speed_layer_0":           {"value": "(speed_print/5*4) if speed_print < 51 else speed_print"},
         "speed_topbottom":         {"value": "speed_layer_0"},
-        "speed_travel":            {"value": "100"},
+        "speed_travel":            {"value": "150"},
         "speed_travel_layer_0":    {"value": "speed_travel"},
         "speed_support_interface": {"value": "speed_topbottom"},
         "speed_slowdown_layers":   {"value": 1},
