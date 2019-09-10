@@ -1,10 +1,10 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import Dict, List, Tuple, cast
+from typing import cast, Dict, List, Optional, Tuple
 
 import xml.etree.ElementTree as ET
 
@@ -23,8 +23,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
-from cura.Machines.ContainerTree import ContainerTree
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -42,7 +42,7 @@ i18n_catalog = i18nCatalog("cura")
 
 
 class ContainerInfo:
-    def __init__(self, file_name: str, serialized: str, parser: ConfigParser) -> None:
+    def __init__(self, file_name: Optional[str], serialized: Optional[str], parser: Optional[ConfigParser]) -> None:
         self.file_name = file_name
         self.serialized = serialized
         self.parser = parser
@@ -579,9 +579,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         signals = [container_registry.containerAdded,
                    container_registry.containerRemoved,
                    container_registry.containerMetaDataChanged]
-        #
-        # We now have different managers updating their lookup tables upon container changes. It is critical to make
-        # sure that the managers have a complete set of data when they update.
+        # The container tree updates its lookup tables upon container changes.
+        # It is critical to make sure that it has a complete set of data when it
+        # updates.
         #
         # In project loading, lots of the container-related signals are loosely emitted, which can create timing gaps
         # for incomplete data update or other kinds of issues to happen.
@@ -747,7 +747,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         application = CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
@@ -773,11 +772,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     if position is not None:
                         extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type,
-                                                                      quality_changes_name,
-                                                                      global_stack, extruder_stack)
+                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
-                    container.setDirty(True)
                     self._container_registry.addContainer(container)
 
                     Logger.log("d", "Created new quality changes container [%s]", container.getId())
@@ -806,10 +802,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
-                container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                  global_stack, extruder_stack)
+                container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                 container_info.container = container
-                container.setDirty(True)
                 self._container_registry.addContainer(container)
 
                 Logger.log("d", "Created new quality changes container [%s]", container.getId())
@@ -835,16 +829,50 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if container_info.container is None:
                     extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                      global_stack, extruder_stack)
+                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
-                    container.setDirty(True)
                     self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)
 
         self._machine_info.quality_changes_info.name = quality_changes_name
+
+    ##  Helper class to create a new quality changes profile.
+    #
+    #   This will then later be filled with the appropriate data.
+    #   \param quality_type The quality type of the new profile.
+    #   \param name The name for the profile. This will later be made unique so
+    #   it doesn't need to be unique yet.
+    #   \param global_stack The global stack showing the configuration that the
+    #   profile should be created for.
+    #   \param extruder_stack The extruder stack showing the configuration that
+    #   the profile should be created for. If this is None, it will be created
+    #   for the global stack.
+    def _createNewQualityChanges(self, quality_type: str, name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
+        container_registry = CuraApplication.getInstance().getContainerRegistry()
+        base_id = global_stack.definition.getId() if extruder_stack is None else extruder_stack.getId()
+        new_id = base_id + "_" + name
+        new_id = new_id.lower().replace(" ", "_")
+        new_id = container_registry.uniqueName(new_id)
+
+        # Create a new quality_changes container for the quality.
+        quality_changes = InstanceContainer(new_id)
+        quality_changes.setName(name)
+        quality_changes.setMetaDataEntry("type", "quality_changes")
+        quality_changes.setMetaDataEntry("quality_type", quality_type)
+
+        # If we are creating a container for an extruder, ensure we add that to the container.
+        if extruder_stack is not None:
+            quality_changes.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
+
+        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
+        machine_definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
+        quality_changes.setDefinition(machine_definition_id)
+
+        quality_changes.setMetaDataEntry("setting_version", CuraApplication.getInstance().SettingVersion)
+        quality_changes.setDirty(True)
+        return quality_changes
 
     @staticmethod
     def _clearStack(stack):
