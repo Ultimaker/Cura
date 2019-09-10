@@ -5,8 +5,6 @@ from UM.VersionUpgrade import VersionUpgrade
 
 
 class VersionUpgrade43to44(VersionUpgrade):
-    pass
-
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
@@ -50,7 +48,6 @@ class VersionUpgrade43to44(VersionUpgrade):
 
         # Update version number.
         parser["metadata"]["setting_version"] = "10"
-        parser["general"]["version"] = "5"
 
         # We should only have 6 levels when we start.
         assert "7" not in parser["containers"]
