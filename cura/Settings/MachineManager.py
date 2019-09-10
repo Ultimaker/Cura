@@ -1169,7 +1169,7 @@ class MachineManager(QObject):
         for position, extruder in self._global_container_stack.extruders.items():
             quality_node = None
             if quality_group is not None:
-                quality_node = quality_group.nodes_for_extruders.get(position)
+                quality_node = quality_group.nodes_for_extruders.get(int(position))
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
