@@ -13,6 +13,7 @@ Cura.RoundedRectangle
     id: header
 
     property alias headerTitle: headerLabel.text
+    property alias xPosCloseButton: closeButton.left
 
     height: UM.Theme.getSize("expandable_component_content_header").height
     color: UM.Theme.getColor("secondary")

@@ -33,6 +33,8 @@ from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
+from PyQt5.QtCore import QCoreApplication
+
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
@@ -59,6 +61,9 @@ class MachineInfo:
         self.container_id = None
         self.name = None
         self.definition_id = None
+
+        self.metadata_dict = {}  # type: Dict[str, str]
+
         self.quality_type = None
         self.custom_quality_name = None
         self.quality_changes_info = None
@@ -227,6 +232,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             else:
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, definition_container_file)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if machine_definition_container_count != 1:
@@ -253,13 +259,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 Job.yieldThread()
 
         # Check if any quality_changes instance container is in conflict.
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         custom_quality_name = ""
-        num_settings_overriden_by_quality_changes = 0 # How many settings are changed by the quality changes
+        num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
 
@@ -297,7 +304,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 custom_quality_name = parser["general"]["name"]
                 values = parser["values"] if parser.has_section("values") else dict()
-                num_settings_overriden_by_quality_changes += len(values)
+                num_settings_overridden_by_quality_changes += len(values)
                 # Check if quality changes already exists.
                 quality_changes = self._container_registry.findInstanceContainers(name = custom_quality_name,
                                                                                   type = "quality_changes")
@@ -322,7 +329,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Ignore certain instance container types
                 Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
                 continue
-
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if self._machine_info.quality_changes_info.global_info is None:
@@ -342,6 +349,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         global_stack_id = self._stripFileToId(global_stack_file)
         serialized = archive.open(global_stack_file).read().decode("utf-8")
         machine_name = self._getMachineNameFromSerializedStack(serialized)
+        self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
+
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
         existing_global_stack = None
@@ -397,7 +406,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
             if variant_id not in ("empty", "empty_variant"):
                 self._machine_info.variant_info = instance_container_info_dict[variant_id]
-
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         Job.yieldThread()
 
         # if the global stack is found, we check if there are conflicts in the extruder stacks
@@ -419,13 +428,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             if parser.has_option("metadata", "enabled"):
                 extruder_info.enabled = parser["metadata"]["enabled"]
             if variant_id not in ("empty", "empty_variant"):
-                extruder_info.variant_info = instance_container_info_dict[variant_id]
+                if variant_id in instance_container_info_dict:
+                    extruder_info.variant_info = instance_container_info_dict[variant_id]
+
             if material_id not in ("empty", "empty_material"):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
+
             definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
+
             user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
@@ -515,7 +528,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
-        self._dialog.setNumSettingsOverridenByQualityChanges(num_settings_overriden_by_quality_changes)
+        self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
         self._dialog.setMachineName(machine_name)
@@ -648,6 +661,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         Logger.log("d", "Workspace loading is checking materials...")
         # Get all the material files and check if they exist. If not, add them.
@@ -697,6 +711,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.setDirty(True)
                     self._container_registry.addContainer(material_container)
                 Job.yieldThread()
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         # Handle quality changes if any
         self._processQualityChanges(global_stack)
@@ -820,13 +835,16 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
                                                                       global_stack, extruder_stack)
                     container_info.container = container
+                    container.setDirty(True)
+                    self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)
 
         self._machine_info.quality_changes_info.name = quality_changes_name
 
-    def _clearStack(self, stack):
+    @staticmethod
+    def _clearStack(stack):
         application = CuraApplication.getInstance()
 
         stack.definitionChanges.clear()
@@ -903,6 +921,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 continue
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
+                # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
+                node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE, global_stack)
+                if node is not None and node.getContainer() is not None:
+                    extruder_stack.variant = node.getContainer()
                 continue
             parser = extruder_info.variant_info.parser
 
@@ -971,6 +993,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.setMetaDataEntry("enabled", "True")
             extruder_stack.setMetaDataEntry("enabled", str(extruder_info.enabled))
 
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
+
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
         machine_manager = Application.getInstance().getMachineManager()
@@ -982,6 +1009,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_manager.initialize()
 
         machine_manager.setActiveMachine(global_stack.getId())
+
+        # Set metadata fields that are missing from the global stack
+        for key, value in self._machine_info.metadata_dict.items():
+            if key not in global_stack.getMetaData():
+                global_stack.setMetaDataEntry(key, value)
 
         if self._quality_changes_to_apply:
             quality_changes_group_dict = quality_manager.getQualityChangesGroups(global_stack)
@@ -1009,7 +1041,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
 
-    def _stripFileToId(self, file):
+    @staticmethod
+    def _stripFileToId(file):
         mime_type = MimeTypeDatabase.getMimeTypeForFile(file)
         file = mime_type.stripExtension(file)
         return file.replace("Cura/", "")
@@ -1018,7 +1051,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))
 
     ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
-    def _getContainerIdListFromSerialized(self, serialized):
+    @staticmethod
+    def _getContainerIdListFromSerialized(serialized):
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
 
@@ -1039,12 +1073,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return container_ids
 
-    def _getMachineNameFromSerializedStack(self, serialized):
+    @staticmethod
+    def _getMachineNameFromSerializedStack(serialized):
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
         return parser["general"].get("name", "")
 
-    def _getMaterialLabelFromSerialized(self, serialized):
+    @staticmethod
+    def _getMetaDataDictFromSerializedStack(serialized: str) -> Dict[str, str]:
+        parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
+        parser.read_string(serialized)
+        return dict(parser["metadata"])
+
+    @staticmethod
+    def _getMaterialLabelFromSerialized(serialized):
         data = ET.fromstring(serialized)
         metadata = data.iterfind("./um:metadata/um:name/um:label", {"um": "http://www.ultimaker.com/material"})
         for entry in metadata:

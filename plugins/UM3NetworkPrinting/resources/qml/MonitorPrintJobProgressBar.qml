@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -22,31 +22,18 @@ Item
     width: childrenRect.width
     height: 18 * screenScaleFactor // TODO: Theme!
 
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         anchors
         {
             verticalCenter: parent.verticalCenter
+            left: parent.left
         }
         value: printJob ? printJob.progress : 0
-        style: ProgressBarStyle
-        {
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("monitor_progress_bar_empty")
-                implicitHeight: visible ? 12 * screenScaleFactor : 0 // TODO: Theme!
-                implicitWidth: 180 * screenScaleFactor // TODO: Theme!
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-            progress: Rectangle
-            {
-                id: progressItem;
-                color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_progress_bar_fill") : UM.Theme.getColor("monitor_progress_bar_deactive")
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-        }
+        width: UM.Theme.getSize("monitor_column").width
     }
+
     Label
     {
         id: percentLabel
@@ -54,6 +41,7 @@ Item
         {
             left: progressBar.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
@@ -63,6 +51,7 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
     Label
     {
@@ -71,6 +60,7 @@ Item
         {
             left: percentLabel.right
             leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
         font: UM.Theme.getFont("medium") // 14pt, regular
@@ -115,5 +105,6 @@ Item
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
 }

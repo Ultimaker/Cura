@@ -45,7 +45,7 @@ SettingItem
             {
                 if (propertyProvider.properties.value == -1)
                 {
-                    control.currentIndex = model.count - 1;  // we know the last item is "Not overriden"
+                    control.currentIndex = model.count - 1;  // we know the last item is "Not overridden"
                 }
                 else
                 {

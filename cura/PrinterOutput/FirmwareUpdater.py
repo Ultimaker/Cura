@@ -9,7 +9,7 @@ from typing import Union
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 class FirmwareUpdater(QObject):
     firmwareProgressChanged = pyqtSignal()

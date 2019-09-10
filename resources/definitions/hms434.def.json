@@ -9,7 +9,6 @@
         "file_formats": "text/x-gcode",
 
         "has_materials":         true,
-        "has_machine_materials": false,
         "preferred_material":    "generic_pla",
         "exclude_materials": [ "chromatik_pla", "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu", "fiberlogy_hd_pla", "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red", "imade3d_petg_green", "imade3d_petg_pink", "imade3d_pla_green", "imade3d_pla_pink", "innofill_innoflex60_175", "octofiber_pla", "imade3d_pla", "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla", "tizyx_abs", "tizyx_pla", "tizyx_pla_bois", "verbatim_bvoh_175", "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_TPU", "zyyx_pro_flex", "zyyx_pro_pla", "generic_cpe_175", "generic_nylon_175", "dsm_arnitel2045_175", "dsm_novamid1070_175", "generic_tpu_175", "generic_pc_175" ],
 
@@ -43,18 +42,13 @@
         "material_diameter":          {"default_value": 1.75 },
         "machine_heated_bed":         {"default_value": true },
         "machine_center_is_zero":     {"default_value": false },
-        "gantry_height":              {"value": 35 },
+        "gantry_height":              {"value": "35" },
         "machine_height":             {"default_value": 400 },
         "machine_depth":              {"default_value": 325 },
         "machine_width":              {"default_value": 450 },
         "machine_gcode_flavor":       {"default_value": "RepRap (RepRap)" },
         "material_print_temp_wait":   {"default_value": true},
         "material_bed_temp_wait":     {"default_value": true },
-        "prime_tower_enable":         {"default_value": false },
-        "prime_tower_size":           {"value": 20.6 },
-        "prime_tower_position_x":     {"value": 125 },
-        "prime_tower_position_y":     {"value": 70 },
-        "prime_blob_enable":          {"default_value": false },
         "machine_max_feedrate_z":     {"default_value": 1200 },
         "machine_start_gcode":        {"default_value": "\n;Neither MaukCC nor any of MaukCC representatives has any liabilities or gives any warranties on this .gcode file, or on any or all objects made with this .gcode file.\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\n\nG1 X-44 Y-100 F9000;go to wipe point\nG1 Z0 F900\nG1 Z0.2 F900\nM117 HMS434 Printing ...\n\n" },
         "machine_end_gcode":          {"default_value": "" },
@@ -64,7 +58,6 @@
         "machine_nozzle_heat_up_speed":       {"default_value": 12},
         "machine_nozzle_cool_down_speed":     {"default_value": 20},
         "machine_min_cool_heat_time_window":  {"default_value": 5},
-
 
         "layer_height":                 {"maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
         "layer_height_0":               {"maximum_value": "(0.8 * min(extruderValues('machine_nozzle_size')))" },
@@ -91,7 +84,8 @@
         "infill_before_walls":   {"value": false},
 
         "material_print_temperature_layer_0": {"value": "material_print_temperature + 5"},
-        "material_initial_print_temperature": {"value": "material_print_temperature"},
+        "material_initial_print_temperature": {"value": "material_print_temperature",
+                                               "maximum_value_warning": "material_print_temperature + 15"},
         "material_final_print_temperature":   {"value": "material_print_temperature"},
         "material_bed_temperature_layer_0":   {"value": "material_bed_temperature + 1"},
         "material_flow":                      {"value": "100"},
@@ -112,7 +106,6 @@
         "speed_travel":            {"value": "100"},
         "speed_travel_layer_0":    {"value": "speed_travel"},
         "speed_support_interface": {"value": "speed_topbottom"},
-        "max_feedrate_z_override": {"value": 10},
         "speed_slowdown_layers":   {"value": 1},
         "acceleration_print":      {"value": 200},
         "acceleration_travel":     {"value": 200},
@@ -121,7 +114,7 @@
 
         "retraction_hop_enabled": {"value": false},
         "retraction_hop":         {"value": 1},
-        "retraction_combing":     {"value": "off"},
+        "retraction_combing":     {"value": "'off'"},
 
         "cool_fan_speed":                    {"value": 0},
         "cool_fan_enabled":                  {"value": true},
@@ -142,7 +135,6 @@
         "skirt_brim_minimal_length": {"value": 50},
 
         "prime_tower_enable":         {"value": false },
-        "prime_tower_wall_thickness": {"resolve": 0.7 },
         "prime_tower_size":           {"value": 20.6 },
         "prime_tower_position_x":     {"value": 125 },
         "prime_tower_position_y":     {"value": 70 },

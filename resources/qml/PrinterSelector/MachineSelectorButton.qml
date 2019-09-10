@@ -1,11 +1,12 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.1
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 
 import UM 1.1 as UM
 import Cura 1.0 as Cura
+
 
 Button
 {
@@ -18,12 +19,23 @@ Button
     checkable: true
     hoverEnabled: true
 
+    property bool selected: checked
+    property bool printerTypeLabelAutoFit: false
+
     property var outputDevice: null
     property var printerTypesList: []
 
+    // Indicates if only to update the printer types list when this button is checked
+    property bool updatePrinterTypesOnlyWhenChecked: true
+
+    property var updatePrinterTypesFunction: updatePrinterTypesList
+    // This function converts the printer type string to another string.
+    property var printerTypeLabelConversionFunction: Cura.MachineManager.getAbbreviatedMachineName
+
     function updatePrinterTypesList()
     {
-        printerTypesList = (checked && (outputDevice != null)) ? outputDevice.uniquePrinterTypes : []
+        var to_update = (updatePrinterTypesOnlyWhenChecked && checked) || !updatePrinterTypesOnlyWhenChecked
+        printerTypesList = (to_update && outputDevice != null) ? outputDevice.uniquePrinterTypes : []
     }
 
     contentItem: Item
@@ -41,7 +53,7 @@ Button
                 verticalCenter: parent.verticalCenter
             }
             text: machineSelectorButton.text
-            color: UM.Theme.getColor("text")
+            color: enabled ? UM.Theme.getColor("text") : UM.Theme.getColor("small_button_text")
             font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
@@ -66,7 +78,8 @@ Button
                 model: printerTypesList
                 delegate: Cura.PrinterTypeLabel
                 {
-                    text: Cura.MachineManager.getAbbreviatedMachineName(modelData)
+                    autoFit: printerTypeLabelAutoFit
+                    text: printerTypeLabelConversionFunction(modelData)
                 }
             }
         }
@@ -75,29 +88,30 @@ Button
     background: Rectangle
     {
         id: backgroundRect
-        color: machineSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        color:
+        {
+            if (!machineSelectorButton.enabled)
+            {
+                return UM.Theme.getColor("action_button_disabled")
+            }
+            return machineSelectorButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        }
         radius: UM.Theme.getSize("action_button_radius").width
         border.width: UM.Theme.getSize("default_lining").width
-        border.color: machineSelectorButton.checked ? UM.Theme.getColor("primary") : "transparent"
-    }
-
-    onClicked:
-    {
-        toggleContent()
-        Cura.MachineManager.setActiveMachine(model.id)
+        border.color: machineSelectorButton.selected ? UM.Theme.getColor("primary") : "transparent"
     }
 
     Connections
     {
         target: outputDevice
-        onUniqueConfigurationsChanged: updatePrinterTypesList()
+        onUniqueConfigurationsChanged: updatePrinterTypesFunction()
     }
 
     Connections
     {
         target: Cura.MachineManager
-        onOutputDevicesChanged: updatePrinterTypesList()
+        onOutputDevicesChanged: updatePrinterTypesFunction()
     }
 
-    Component.onCompleted: updatePrinterTypesList()
+    Component.onCompleted: updatePrinterTypesFunction()
 }

@@ -23,13 +23,17 @@ known_args = vars(parser.parse_known_args()[0])
 if not known_args["debug"]:
     def get_cura_dir_path():
         if Platform.isWindows():
-            return os.path.expanduser("~/AppData/Roaming/" + CuraAppName)
+            appdata_path = os.getenv("APPDATA")
+            if not appdata_path: #Defensive against the environment variable missing (should never happen).
+                appdata_path = "."
+            return os.path.join(appdata_path, CuraAppName)
         elif Platform.isLinux():
             return os.path.expanduser("~/.local/share/" + CuraAppName)
         elif Platform.isOSX():
             return os.path.expanduser("~/Library/Logs/" + CuraAppName)
 
-    if hasattr(sys, "frozen"):
+    # Do not redirect stdout and stderr to files if we are running CLI.
+    if hasattr(sys, "frozen") and "cli" not in os.path.basename(sys.argv[0]).lower():
         dirpath = get_cura_dir_path()
         os.makedirs(dirpath, exist_ok = True)
         sys.stdout = open(os.path.join(dirpath, "stdout.log"), "w", encoding = "utf-8")
@@ -55,6 +59,14 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
         del os.environ["PYTHONPATH"]
     except KeyError:
         pass
+
+# GITHUB issue #6194: https://github.com/Ultimaker/Cura/issues/6194
+# With AppImage 2 on Linux, the current working directory will be somewhere in /tmp/<rand>/usr, which is owned
+# by root. For some reason, QDesktopServices.openUrl() requires to have a usable current working directory,
+# otherwise it doesn't work. This is a workaround on Linux that before we call QDesktopServices.openUrl(), we
+# switch to a directory where the user has the ownership.
+if Platform.isLinux() and hasattr(sys, "frozen"):
+    os.chdir(os.path.expanduser("~"))
 
 # WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
@@ -128,6 +140,38 @@ faulthandler.enable(all_threads = True)
 import Arcus #@UnusedImport
 import Savitar #@UnusedImport
 from cura.CuraApplication import CuraApplication
+
+
+# WORKAROUND: CURA-6739
+# The CTM file loading module in Trimesh requires the OpenCTM library to be dynamically loaded. It uses
+# ctypes.util.find_library() to find libopenctm.dylib, but this doesn't seem to look in the ".app" application folder
+# on Mac OS X. Adding the search path to environment variables such as DYLD_LIBRARY_PATH and DYLD_FALLBACK_LIBRARY_PATH
+# makes it work. The workaround here uses DYLD_FALLBACK_LIBRARY_PATH.
+if Platform.isOSX() and getattr(sys, "frozen", False):
+    old_env = os.environ.get("DYLD_FALLBACK_LIBRARY_PATH", "")
+    # This is where libopenctm.so is in the .app folder.
+    search_path = os.path.join(CuraApplication.getInstallPrefix(), "MacOS")
+    path_list = old_env.split(":")
+    if search_path not in path_list:
+        path_list.append(search_path)
+    os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = ":".join(path_list)
+    import trimesh.exchange.load
+    os.environ["DYLD_FALLBACK_LIBRARY_PATH"] = old_env
+
+# WORKAROUND: CURA-6739
+# Similar CTM file loading fix for Linux, but NOTE THAT this doesn't work directly with Python 3.5.7. There's a fix
+# for ctypes.util.find_library() in Python 3.6 and 3.7. That fix makes sure that find_library() will check
+# LD_LIBRARY_PATH. With Python 3.5, that fix needs to be backported to make this workaround work.
+if Platform.isLinux() and getattr(sys, "frozen", False):
+    old_env = os.environ.get("LD_LIBRARY_PATH", "")
+    # This is where libopenctm.so is in the AppImage.
+    search_path = os.path.join(CuraApplication.getInstallPrefix(), "bin")
+    path_list = old_env.split(":")
+    if search_path not in path_list:
+        path_list.append(search_path)
+    os.environ["LD_LIBRARY_PATH"] = ":".join(path_list)
+    import trimesh.exchange.load
+    os.environ["LD_LIBRARY_PATH"] = old_env
 
 app = CuraApplication()
 app.run()

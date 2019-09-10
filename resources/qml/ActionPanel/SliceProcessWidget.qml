@@ -6,7 +6,7 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 1.4 as Controls1
 
-import UM 1.1 as UM
+import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 
@@ -27,15 +27,21 @@ Column
 
     property real progress: UM.Backend.progress
     property int backendState: UM.Backend.state
+    // As the collection of settings to send to the engine might take some time, we have an extra value to indicate
+    // That the user pressed the button but it's still waiting for the backend to acknowledge that it got it.
+    property bool waitingForSliceToStart: false
+    onBackendStateChanged: waitingForSliceToStart = false
 
     function sliceOrStopSlicing()
     {
         if (widget.backendState == UM.Backend.NotStarted)
         {
+            widget.waitingForSliceToStart = true
             CuraApplication.backend.forceSlice()
         }
         else
         {
+            widget.waitingForSliceToStart = false
             CuraApplication.backend.stopSlicing()
         }
     }
@@ -64,7 +70,7 @@ Column
     }
 
     // Progress bar, only visible when the backend is in the process of slice the printjob
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         width: parent.width
@@ -72,25 +78,6 @@ Column
         value: progress
         indeterminate: widget.backendState == UM.Backend.NotStarted
         visible: (widget.backendState == UM.Backend.Processing || (prepareButtons.autoSlice && widget.backendState == UM.Backend.NotStarted))
-
-        background: Rectangle
-        {
-            anchors.fill: parent
-            radius: UM.Theme.getSize("progressbar_radius").width
-            color: UM.Theme.getColor("progressbar_background")
-        }
-
-        contentItem: Item
-        {
-            anchors.fill: parent
-            Rectangle
-            {
-                width: progressBar.visualPosition * parent.width
-                height: parent.height
-                radius: UM.Theme.getSize("progressbar_radius").width
-                color: UM.Theme.getColor("progressbar_control")
-            }
-        }
     }
 
     Item
@@ -113,9 +100,9 @@ Column
             anchors.right: parent.right
             anchors.left: parent.left
 
-            text: catalog.i18nc("@button", "Slice")
+            text: widget.waitingForSliceToStart ? catalog.i18nc("@button", "Processing"): catalog.i18nc("@button", "Slice")
             tooltip: catalog.i18nc("@label", "Start the slicing process")
-            enabled: widget.backendState != UM.Backend.Error
+            enabled: widget.backendState != UM.Backend.Error && !widget.waitingForSliceToStart
             visible: widget.backendState == UM.Backend.NotStarted || widget.backendState == UM.Backend.Error
             onClicked: sliceOrStopSlicing()
         }

@@ -11,6 +11,7 @@ import Arcus #For typing.
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
@@ -107,7 +108,7 @@ class StartSliceJob(Job):
 
         for key in stack.getAllKeys():
             validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
                 Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
                 return True
             Job.yieldThread()
@@ -133,6 +134,14 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.BuildPlateError)
             return
 
+        # Wait for error checker to be done.
+        while CuraApplication.getInstance().getMachineErrorChecker().needToWaitForResult:
+            time.sleep(0.1)
+
+        if CuraApplication.getInstance().getMachineErrorChecker().hasError:
+            self.setResult(StartJobResult.SettingError)
+            return
+
         # Don't slice if the buildplate or the nozzle type is incompatible with the materials
         if not CuraApplication.getInstance().getMachineManager().variantBuildplateCompatible and \
                 not CuraApplication.getInstance().getMachineManager().variantBuildplateUsable:
@@ -150,7 +159,7 @@ class StartSliceJob(Job):
 
 
         # Don't slice if there is a per object setting with an error value.
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if not isinstance(node, CuraSceneNode) or not node.isSelectable():
                 continue
 
@@ -160,15 +169,16 @@ class StartSliceJob(Job):
 
         with self._scene.getSceneLock():
             # Remove old layer data.
-            for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for node in DepthFirstIterator(self._scene.getRoot()):
                 if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                    node.getParent().removeChild(node)
+                    # Singe we walk through all nodes in the scene, they always have a parent.
+                    cast(SceneNode, node.getParent()).removeChild(node)
                     break
 
             # Get the objects in their groups to print.
             object_groups = []
             if stack.getProperty("print_sequence", "value") == "one_at_a_time":
-                for node in OneAtATimeIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+                for node in OneAtATimeIterator(self._scene.getRoot()):
                     temp_list = []
 
                     # Node can't be printed, so don't bother sending it.
@@ -183,7 +193,8 @@ class StartSliceJob(Job):
                     children = node.getAllChildren()
                     children.append(node)
                     for child_node in children:
-                        if child_node.getMeshData() and child_node.getMeshData().getVertices() is not None:
+                        mesh_data = child_node.getMeshData()
+                        if mesh_data and mesh_data.getVertices() is not None:
                             temp_list.append(child_node)
 
                     if temp_list:
@@ -194,12 +205,10 @@ class StartSliceJob(Job):
             else:
                 temp_list = []
                 has_printing_mesh = False
-                for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
-                    if node.callDecoration("isSliceable") and node.getMeshData() and node.getMeshData().getVertices() is not None:
-                        per_object_stack = node.callDecoration("getStack")
-                        is_non_printing_mesh = False
-                        if per_object_stack:
-                            is_non_printing_mesh = any(per_object_stack.getProperty(key, "value") for key in NON_PRINTING_MESH_SETTINGS)
+                for node in DepthFirstIterator(self._scene.getRoot()):
+                    mesh_data = node.getMeshData()
+                    if node.callDecoration("isSliceable") and mesh_data and mesh_data.getVertices() is not None:
+                        is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
                         # Find a reason not to add the node
                         if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
@@ -213,7 +222,7 @@ class StartSliceJob(Job):
 
                     Job.yieldThread()
 
-                #If the list doesn't have any model with suitable settings then clean the list
+                # If the list doesn't have any model with suitable settings then clean the list
                 # otherwise CuraEngine will crash
                 if not has_printing_mesh:
                     temp_list.clear()
@@ -259,18 +268,19 @@ class StartSliceJob(Job):
             self._buildGlobalInheritsStackMessage(stack)
 
             # Build messages for extruder stacks
-            # Send the extruder settings in the order of extruder positions. Somehow, if you send e.g. extruder 3 first,
-            # then CuraEngine can slice with the wrong settings. This I think should be fixed in CuraEngine as well.
-            extruder_stack_list = sorted(list(global_stack.extruders.items()), key = lambda item: int(item[0]))
-            for _, extruder_stack in extruder_stack_list:
+            for extruder_stack in global_stack.extruderList:
                 self._buildExtruderMessage(extruder_stack)
 
             for group in filtered_object_groups:
                 group_message = self._slice_message.addRepeatedMessage("object_lists")
-                if group[0].getParent() is not None and group[0].getParent().callDecoration("isGroup"):
-                    self._handlePerObjectSettings(group[0].getParent(), group_message)
+                parent = group[0].getParent()
+                if parent is not None and parent.callDecoration("isGroup"):
+                    self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
+
                 for object in group:
                     mesh_data = object.getMeshData()
+                    if mesh_data is None:
+                        continue
                     rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
                     translate = object.getWorldTransformation().getData()[:3, 3]
 
@@ -294,7 +304,7 @@ class StartSliceJob(Job):
 
                     obj.vertices = flat_verts
 
-                    self._handlePerObjectSettings(object, obj)
+                    self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
 
                     Job.yieldThread()
 
@@ -337,25 +347,29 @@ class StartSliceJob(Job):
 
         return result
 
+    def _cacheAllExtruderSettings(self):
+        global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
+
+        # NB: keys must be strings for the string formatter
+        self._all_extruders_settings = {
+            "-1": self._buildReplacementTokens(global_stack)
+        }
+        for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
+            self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+
     ##  Replace setting tokens in a piece of g-code.
     #   \param value A piece of g-code to replace tokens in.
     #   \param default_extruder_nr Stack nr to use when no stack nr is specified, defaults to the global stack
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         if not self._all_extruders_settings:
-            global_stack = cast(ContainerStack, CuraApplication.getInstance().getGlobalContainerStack())
-
-            # NB: keys must be strings for the string formatter
-            self._all_extruders_settings = {
-                "-1": self._buildReplacementTokens(global_stack)
-            }
-
-            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
-                extruder_nr = extruder_stack.getProperty("extruder_nr", "value")
-                self._all_extruders_settings[str(extruder_nr)] = self._buildReplacementTokens(extruder_stack)
+            self._cacheAllExtruderSettings()
 
         try:
             # any setting can be used as a token
             fmt = GcodeStartEndFormatter(default_extruder_nr = default_extruder_nr)
+            if self._all_extruders_settings is None:
+                return ""
             settings = self._all_extruders_settings.copy()
             settings["default_extruder_nr"] = default_extruder_nr
             return str(fmt.format(value, **settings))
@@ -367,8 +381,14 @@ class StartSliceJob(Job):
     def _buildExtruderMessage(self, stack: ContainerStack) -> None:
         message = self._slice_message.addRepeatedMessage("extruders")
         message.id = int(stack.getMetaDataEntry("position"))
+        if not self._all_extruders_settings:
+            self._cacheAllExtruderSettings()
 
-        settings = self._buildReplacementTokens(stack)
+        if self._all_extruders_settings is None:
+            return
+
+        extruder_nr = stack.getProperty("extruder_nr", "value")
+        settings = self._all_extruders_settings[str(extruder_nr)].copy()
 
         # Also send the material GUID. This is a setting in fdmprinter, but we have no interface for it.
         settings["material_guid"] = stack.material.getMetaDataEntry("GUID", "")
@@ -392,7 +412,13 @@ class StartSliceJob(Job):
     #   The settings are taken from the global stack. This does not include any
     #   per-extruder settings or per-object settings.
     def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
-        settings = self._buildReplacementTokens(stack)
+        if not self._all_extruders_settings:
+            self._cacheAllExtruderSettings()
+
+        if self._all_extruders_settings is None:
+            return
+
+        settings = self._all_extruders_settings["-1"].copy()
 
         # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]

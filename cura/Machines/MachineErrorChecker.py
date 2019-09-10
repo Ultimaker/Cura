@@ -127,7 +127,7 @@ class MachineErrorChecker(QObject):
 
         # Populate the (stack, key) tuples to check
         self._stacks_and_keys_to_check = deque()
-        for stack in [global_stack] + list(global_stack.extruders.values()):
+        for stack in global_stack.extruders.values():
             for key in stack.getAllKeys():
                 self._stacks_and_keys_to_check.append((stack, key))
 
@@ -168,7 +168,7 @@ class MachineErrorChecker(QObject):
             if validator_type:
                 validator = validator_type(key)
                 validation_state = validator(stack)
-        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError):
+        if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
             # Finish
             self._setResult(True)
             return

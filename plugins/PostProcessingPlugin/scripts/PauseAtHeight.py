@@ -1,15 +1,16 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from ..Script import Script
 
 from UM.Application import Application #To get the current printer's settings.
+from typing import List, Tuple
 
 class PauseAtHeight(Script):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
-    def getSettingDataString(self):
+    def getSettingDataString(self) -> str:
         return """{
             "name": "Pause at height",
             "key": "PauseAtHeight",
@@ -105,19 +106,24 @@ class PauseAtHeight(Script):
                 "standby_temperature":
                 {
                     "label": "Standby Temperature",
-                    "description": "Change the temperature during the pause",
+                    "description": "Change the temperature during the pause.",
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
+                },
+                "display_text":
+                {
+                    "label": "Display Text",
+                    "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
+                    "type": "str",
+                    "default_value": ""
                 }
             }
         }"""
 
-    def getNextXY(self, layer: str):
-        """
-        Get the X and Y values for a layer (will be used to get X and Y of
-        the layer after the pause
-        """
+    ##  Get the X and Y values for a layer (will be used to get X and Y of the
+    #   layer after the pause).
+    def getNextXY(self, layer: str) -> Tuple[float, float]:
         lines = layer.split("\n")
         for line in lines:
             if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
@@ -126,8 +132,10 @@ class PauseAtHeight(Script):
                 return x, y
         return 0, 0
 
-    def execute(self, data: list):
-        """data is a list. Each index contains a layer"""
+    ##  Inserts the pause commands.
+    #   \param data: List of layers.
+    #   \return New list of layers.
+    def execute(self, data: List[str]) -> List[str]:
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
@@ -143,6 +151,7 @@ class PauseAtHeight(Script):
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
+        display_text = self.getSettingValueByKey("display_text")
 
         is_griffin = False
 
@@ -264,7 +273,7 @@ class PauseAtHeight(Script):
 
                 if not is_griffin:
                     # Retraction
-                    prepend_gcode += self.putValue(M = 83) + "\n"
+                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -274,25 +283,28 @@ class PauseAtHeight(Script):
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
 
                     # This line should be ok
                     prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
 
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
-                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + "; standby temperature\n"
+                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + " ; standby temperature\n"
+
+                if display_text:
+                    prepend_gcode += "M117 " + display_text + "\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M = 0) + ";Do the actual pause\n"
+                prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
 
                 if not is_griffin:
                     if control_temperatures:
                         # Set extruder resume temperature
-                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
                     # Push the filament back,
                     if retraction_amount != 0:
@@ -308,8 +320,10 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    if current_z < 15:
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -318,7 +332,7 @@ class PauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
                     prepend_gcode += self.putValue(G = 1, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"

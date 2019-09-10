@@ -55,6 +55,7 @@ Item
 
             delegate: Button
             {
+                id: stageSelectorButton
                 text: model.name.toUpperCase()
                 checkable: true
                 checked: UM.Controller.activeStage !== null && model.id == UM.Controller.activeStage.stageId
@@ -116,6 +117,25 @@ Item
             right: accountWidget.left
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
+        }
+
+        Cura.NotificationIcon
+        {
+            id: marketplaceNotificationIcon
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+                rightMargin: (-0.5 * width) | 0
+                topMargin: (-0.5 * height) | 0
+            }
+            visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
+
+            labelText:
+            {
+                const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
+                return itemCount > 9 ? "9+" : itemCount
+            }
         }
     }
 
