@@ -14,40 +14,34 @@ import Cura 1.1 as Cura
 ComboBox
 {
     id: control
-    property bool highlighted: False
+
+    states: [
+        State
+        {
+            name: "disabled"
+            when: !control.enabled
+            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_disabled_border")}
+            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_disabled")}
+            PropertyChanges { target: contentLabel; color: UM.Theme.getColor("setting_control_disabled_text")}
+        },
+        State
+        {
+            name: "highlighted"
+            when: control.hovered || control.activeFocus
+            PropertyChanges { target: backgroundRectangle.border; color: UM.Theme.getColor("setting_control_border_highlight") }
+            PropertyChanges { target: backgroundRectangle; color: UM.Theme.getColor("setting_control_highlight")}
+        }
+    ]
+
     background: Rectangle
     {
-        color:
-        {
-            if (!enabled)
-            {
-                return UM.Theme.getColor("setting_control_disabled")
-            }
-
-            if (control.hovered || control.activeFocus || control.highlighted)
-            {
-                return UM.Theme.getColor("setting_control_highlight")
-            }
-
-            return UM.Theme.getColor("setting_control")
-        }
+        id: backgroundRectangle
+        color: UM.Theme.getColor("setting_control")
 
         radius: UM.Theme.getSize("setting_control_radius").width
         border.width: UM.Theme.getSize("default_lining").width
-        border.color:
-        {
-            if (!enabled)
-            {
-                return UM.Theme.getColor("setting_control_disabled_border")
-            }
+        border.color: UM.Theme.getColor("setting_control_border")
 
-            if (control.hovered || control.activeFocus || control.highlighted)
-            {
-                return UM.Theme.getColor("setting_control_border_highlight")
-            }
-
-            return UM.Theme.getColor("setting_control_border")
-        }
     }
 
     indicator: UM.RecolorImage
@@ -67,6 +61,7 @@ ComboBox
 
     contentItem: Label
     {
+        id: contentLabel
         anchors.left: parent.left
         anchors.leftMargin: UM.Theme.getSize("setting_unit_margin").width
         anchors.verticalCenter: parent.verticalCenter
@@ -76,7 +71,7 @@ ComboBox
         textFormat: Text.PlainText
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
-        color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
+        color: UM.Theme.getColor("setting_control_text")
         elide: Text.ElideRight
         verticalAlignment: Text.AlignVCenter
     }

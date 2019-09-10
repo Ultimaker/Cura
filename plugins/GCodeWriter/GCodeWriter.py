@@ -116,17 +116,22 @@ class GCodeWriter(MeshWriter):
     #   \return A serialised string of the settings.
     def _serialiseSettings(self, stack):
         container_registry = self._application.getContainerRegistry()
-        quality_manager = self._application.getQualityManager()
 
         prefix = self._setting_keyword + str(GCodeWriter.version) + " "  # The prefix to put before each line.
         prefix_length = len(prefix)
 
         quality_type = stack.quality.getMetaDataEntry("quality_type")
         container_with_profile = stack.qualityChanges
+        machine_definition_id_for_quality = ContainerTree.getInstance().machines[stack.definition.getId()].quality_definition
         if container_with_profile.getId() == "empty_quality_changes":
             # If the global quality changes is empty, create a new one
             quality_name = container_registry.uniqueName(stack.quality.getName())
-            container_with_profile = quality_manager._createQualityChanges(quality_type, quality_name, stack, None)
+            quality_id = container_registry.uniqueName((stack.definition.getId() + "_" + quality_name).lower().replace(" ", "_"))
+            container_with_profile = InstanceContainer(quality_id)
+            container_with_profile.setName(quality_name)
+            container_with_profile.setMetaDataEntry("type", "quality_changes")
+            container_with_profile.setMetaDataEntry("quality_type", quality_type)
+            container_with_profile.setDefinition(machine_definition_id_for_quality)
 
         flat_global_container = self._createFlattenedContainerInstance(stack.userChanges, container_with_profile)
         # If the quality changes is not set, we need to set type manually
@@ -138,7 +143,6 @@ class GCodeWriter(MeshWriter):
             flat_global_container.setMetaDataEntry("quality_type", stack.quality.getMetaDataEntry("quality_type", "normal"))
 
         # Get the machine definition ID for quality profiles
-        machine_definition_id_for_quality = ContainerTree.getInstance().machines[stack.definition.getId()].quality_definition
         flat_global_container.setMetaDataEntry("definition", machine_definition_id_for_quality)
 
         serialized = flat_global_container.serialize()
@@ -150,7 +154,12 @@ class GCodeWriter(MeshWriter):
             if extruder_quality.getId() == "empty_quality_changes":
                 # Same story, if quality changes is empty, create a new one
                 quality_name = container_registry.uniqueName(stack.quality.getName())
-                extruder_quality = quality_manager._createQualityChanges(quality_type, quality_name, stack, None)
+                quality_id = container_registry.uniqueName((stack.definition.getId() + "_" + quality_name).lower().replace(" ", "_"))
+                extruder_quality = InstanceContainer(quality_id)
+                extruder_quality.setName(quality_name)
+                extruder_quality.setMetaDataEntry("type", "quality_changes")
+                extruder_quality.setMetaDataEntry("quality_type", quality_type)
+                extruder_quality.setDefinition(machine_definition_id_for_quality)
 
             flat_extruder_quality = self._createFlattenedContainerInstance(extruder.userChanges, extruder_quality)
             # If the quality changes is not set, we need to set type manually

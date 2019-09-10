@@ -1,10 +1,10 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import Dict, List, Tuple, cast
+from typing import cast, Dict, List, Optional, Tuple
 
 import xml.etree.ElementTree as ET
 
@@ -23,8 +23,8 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.Job import Job
 from UM.Preferences import Preferences
-from cura.Machines.ContainerTree import ContainerTree
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderManager import ExtruderManager
@@ -34,13 +34,15 @@ from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
+from PyQt5.QtCore import QCoreApplication
+
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
 
 
 class ContainerInfo:
-    def __init__(self, file_name: str, serialized: str, parser: ConfigParser) -> None:
+    def __init__(self, file_name: Optional[str], serialized: Optional[str], parser: Optional[ConfigParser]) -> None:
         self.file_name = file_name
         self.serialized = serialized
         self.parser = parser
@@ -231,6 +233,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             else:
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, definition_container_file)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if machine_definition_container_count != 1:
@@ -257,6 +260,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 Job.yieldThread()
 
         # Check if any quality_changes instance container is in conflict.
@@ -326,7 +330,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Ignore certain instance container types
                 Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
                 continue
-
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if self._machine_info.quality_changes_info.global_info is None:
@@ -368,7 +372,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Get quality type
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
+        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
+        quality_container_id = parser["containers"][str(index_map_version[_ContainerIndexes.Quality])]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
             quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
@@ -378,10 +383,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
+        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
+        definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
         if definition_changes_id not in ("empty", "empty_definition_changes"):
             self._machine_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
-        user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
+        user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
         if user_changes_id not in ("empty", "empty_user_changes"):
             self._machine_info.user_changes_info = instance_container_info_dict[user_changes_id]
 
@@ -391,8 +397,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
-            material_id = parser["containers"][str(_ContainerIndexes.Material)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
+            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
@@ -400,10 +406,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.root_material_id = root_material_id
             self._machine_info.extruder_info_dict[position] = extruder_info
         else:
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
             if variant_id not in ("empty", "empty_variant"):
                 self._machine_info.variant_info = instance_container_info_dict[variant_id]
-
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         Job.yieldThread()
 
         # if the global stack is found, we check if there are conflicts in the extruder stacks
@@ -412,13 +418,14 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
+            index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
             # So we check according to the positions
             position = parser["metadata"]["position"]
-            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
-            material_id = parser["containers"][str(_ContainerIndexes.Material)]
+            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
+            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
@@ -432,11 +439,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
 
-            definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
+            definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
 
-            user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
+            user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
@@ -572,9 +579,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         signals = [container_registry.containerAdded,
                    container_registry.containerRemoved,
                    container_registry.containerMetaDataChanged]
-        #
-        # We now have different managers updating their lookup tables upon container changes. It is critical to make
-        # sure that the managers have a complete set of data when they update.
+        # The container tree updates its lookup tables upon container changes.
+        # It is critical to make sure that it has a complete set of data when it
+        # updates.
         #
         # In project loading, lots of the container-related signals are loosely emitted, which can create timing gaps
         # for incomplete data update or other kinds of issues to happen.
@@ -658,6 +665,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         Logger.log("d", "Workspace loading is checking materials...")
         # Get all the material files and check if they exist. If not, add them.
@@ -707,6 +715,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.setDirty(True)
                     self._container_registry.addContainer(material_container)
                 Job.yieldThread()
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         # Handle quality changes if any
         self._processQualityChanges(global_stack)
@@ -738,7 +747,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             return
 
         application = CuraApplication.getInstance()
-        quality_manager = application.getQualityManager()
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
@@ -764,11 +772,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     if position is not None:
                         extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type,
-                                                                      quality_changes_name,
-                                                                      global_stack, extruder_stack)
+                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
-                    container.setDirty(True)
                     self._container_registry.addContainer(container)
 
                     Logger.log("d", "Created new quality changes container [%s]", container.getId())
@@ -797,10 +802,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
 
-                container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                  global_stack, extruder_stack)
+                container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                 container_info.container = container
-                container.setDirty(True)
                 self._container_registry.addContainer(container)
 
                 Logger.log("d", "Created new quality changes container [%s]", container.getId())
@@ -826,16 +829,50 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if container_info.container is None:
                     extruder_stack = global_stack.extruders[position]
-                    container = quality_manager._createQualityChanges(quality_changes_quality_type, quality_changes_name,
-                                                                      global_stack, extruder_stack)
+                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
-                    container.setDirty(True)
                     self._container_registry.addContainer(container)
 
                 for key, value in container_info.parser["values"].items():
                     container_info.container.setProperty(key, "value", value)
 
         self._machine_info.quality_changes_info.name = quality_changes_name
+
+    ##  Helper class to create a new quality changes profile.
+    #
+    #   This will then later be filled with the appropriate data.
+    #   \param quality_type The quality type of the new profile.
+    #   \param name The name for the profile. This will later be made unique so
+    #   it doesn't need to be unique yet.
+    #   \param global_stack The global stack showing the configuration that the
+    #   profile should be created for.
+    #   \param extruder_stack The extruder stack showing the configuration that
+    #   the profile should be created for. If this is None, it will be created
+    #   for the global stack.
+    def _createNewQualityChanges(self, quality_type: str, name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
+        container_registry = CuraApplication.getInstance().getContainerRegistry()
+        base_id = global_stack.definition.getId() if extruder_stack is None else extruder_stack.getId()
+        new_id = base_id + "_" + name
+        new_id = new_id.lower().replace(" ", "_")
+        new_id = container_registry.uniqueName(new_id)
+
+        # Create a new quality_changes container for the quality.
+        quality_changes = InstanceContainer(new_id)
+        quality_changes.setName(name)
+        quality_changes.setMetaDataEntry("type", "quality_changes")
+        quality_changes.setMetaDataEntry("quality_type", quality_type)
+
+        # If we are creating a container for an extruder, ensure we add that to the container.
+        if extruder_stack is not None:
+            quality_changes.setMetaDataEntry("position", extruder_stack.getMetaDataEntry("position"))
+
+        # If the machine specifies qualities should be filtered, ensure we match the current criteria.
+        machine_definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
+        quality_changes.setDefinition(machine_definition_id)
+
+        quality_changes.setMetaDataEntry("setting_version", CuraApplication.getInstance().SettingVersion)
+        quality_changes.setDirty(True)
+        return quality_changes
 
     @staticmethod
     def _clearStack(stack):

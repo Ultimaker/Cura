@@ -57,14 +57,6 @@ Menu
         onObjectRemoved: base.removeItem(object)
     }
 
-    // TODO Only show in dev mode. Remove check when feature ready
-    BuildplateMenu
-    {
-        title: catalog.i18nc("@title:menu", "&Build plate")
-        visible: CuraSDKVersion == "dev" && Cura.MachineManager.hasVariantBuildplates
-    }
-    ProfileMenu { title: catalog.i18nc("@title:settings", "&Profile") }
-
     MenuSeparator { }
 
     MenuItem { action: Cura.Actions.configureSettingVisibility }

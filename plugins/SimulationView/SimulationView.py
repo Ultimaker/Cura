@@ -386,7 +386,7 @@ class SimulationView(CuraView):
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
-                    except:
+                    except ValueError:
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
                         # the zero) can't be calculated
                         Logger.log("i", "Min thickness can't be calculated because all the values are zero")
@@ -467,6 +467,9 @@ class SimulationView(CuraView):
             # Start listening to changes.
             Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
             self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
 
             # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
             # This can happen when you do the following steps:

@@ -20,7 +20,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
+
 import cura.CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MaterialManager import MaterialManager
 
 if TYPE_CHECKING:
@@ -271,24 +273,30 @@ class ContainerManager(QObject):
     #   \return \type{bool} True if successful, False if not.
     @pyqtSlot(result = bool)
     def updateQualityChanges(self) -> bool:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = application.getMachineManager().activeMachine
         if not global_stack:
             return False
 
-        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().blurSettings.emit()
+        application.getMachineManager().blurSettings.emit()
 
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
         extruder_stacks = list(global_stack.extruders.values())
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        quality_manager = QualityManager.getInstance()
+        machine_definition_id = ContainerTree.getInstance().definitions[global_stack.definition.getId()].quality_definition
         for stack in [global_stack] + extruder_stacks:
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.qualityChanges
 
             if quality_changes.getId() == "empty_quality_changes":
-                quality_changes = quality_manager._createQualityChanges(current_quality_type, current_quality_changes_name,
-                                                                              global_stack, stack)
+                quality_changes = InstanceContainer(container_registry.uniqueName((stack.getId() + "_" + current_quality_changes_name).lower().replace(" ", "_")))
+                quality_changes.setName(current_quality_changes_name)
+                quality_changes.setMetaDataEntry("type", "quality_changes")
+                quality_changes.setMetaDataEntry("quality_type", current_quality_type)
+                quality_changes.setMetaDataEntry("position", stack.getMetaDataEntry("position"))
+                quality_changes.setMetaDataEntry("setting_version", application.SettingVersion)
+                quality_changes.setDefinition(machine_definition_id)
                 container_registry.addContainer(quality_changes)
                 stack.qualityChanges = quality_changes
 

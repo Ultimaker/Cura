@@ -29,6 +29,14 @@ def quality_container():
 
 
 @pytest.fixture
+def intent_container():
+    container = InstanceContainer(container_id="intent container")
+    container.setMetaDataEntry("type", "intent")
+
+    return container
+
+
+@pytest.fixture
 def quality_changes_container():
     container = InstanceContainer(container_id="quality changes container")
     container.setMetaDataEntry("type", "quality_changes")
@@ -44,7 +52,8 @@ def test_createMachineWithUnknownDefinition(application, container_registry):
             assert mocked_config_error.addFaultyContainers.called_with("NOPE")
 
 
-def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+def test_createMachine(application, container_registry, definition_container, global_variant, material_instance_container,
+                       quality_container, intent_container, quality_changes_container):
     variant_manager = MagicMock(name = "Variant Manager")
     quality_manager = MagicMock(name = "Quality Manager")
     global_variant_node = MagicMock( name = "global variant node")
@@ -61,6 +70,7 @@ def test_createMachine(application, container_registry, definition_container, gl
     application.getQualityManager = MagicMock(return_value = quality_manager)
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
+    application.empty_intent_container = intent_container
     application.empty_quality_changes_container = quality_changes_container
     application.empty_variant_container = global_variant
 
@@ -83,9 +93,11 @@ def test_createMachine(application, container_registry, definition_container, gl
             assert machine.variant == global_variant
 
 
-def test_createExtruderStack(application, definition_container, global_variant, material_instance_container, quality_container, quality_changes_container):
+def test_createExtruderStack(application, definition_container, global_variant, material_instance_container,
+                             quality_container, intent_container, quality_changes_container):
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
+    application.empty_intent_container = intent_container
     application.empty_quality_changes_container = quality_changes_container
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
         extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
