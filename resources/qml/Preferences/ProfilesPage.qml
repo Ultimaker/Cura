@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -14,7 +14,6 @@ Item
 {
     id: base
 
-    property QtObject qualityManager: CuraApplication.getQualityManager()
     property var resetEnabled: false  // Keep PreferencesDialog happy
     property var extrudersModel: CuraApplication.getExtrudersModel()
     property var qualityManagementModel: CuraApplication.getQualityManagementModel()
@@ -254,7 +253,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            base.qualityManager.duplicateQualityChanges(newName, base.currentItem);
+            base.qualityManagementModel.duplicateQualityChanges(newName, base.currentItem);
         }
     }
 
@@ -285,7 +284,7 @@ Item
         object: "<new name>"
         onAccepted:
         {
-            var actualNewName = base.qualityManager.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
+            var actualNewName = base.qualityManagementModel.renameQualityChangesGroup(base.currentItem.quality_changes_group, newName);
             base.newQualityNameToSelect = actualNewName;  // Select the new name after the model gets updated
         }
     }
