@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
@@ -8,7 +8,7 @@ import uuid
 
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
-from UM.Decorators import override
+from UM.Decorators import deprecated, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
@@ -61,12 +61,13 @@ class GlobalStack(CuraContainerStack):
     #
     #   \return The extruders registered with this stack.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
+    @deprecated("Please use extruderList instead.", "4.4")
     def extruders(self) -> Dict[str, "ExtruderStack"]:
         return self._extruders
 
     @pyqtProperty("QVariantList", notify = extrudersChanged)
     def extruderList(self) -> List["ExtruderStack"]:
-        result_tuple_list = sorted(list(self.extruders.items()), key=lambda x: int(x[0]))
+        result_tuple_list = sorted(list(self._extruders.items()), key=lambda x: int(x[0]))
         result_list = [item[1] for item in result_tuple_list]
 
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")

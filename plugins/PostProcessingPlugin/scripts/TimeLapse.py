@@ -77,10 +77,10 @@ class TimeLapse(Script):
         gcode_to_append = ";TimeLapse Begin\n"
 
         if park_print_head:
-            gcode_to_append += self.putValue(G = 1, F = feed_rate, X = x_park, Y = y_park) + ";Park print head\n"
-        gcode_to_append += self.putValue(M = 400) + ";Wait for moves to finish\n"
-        gcode_to_append += trigger_command + ";Snap Photo\n"
-        gcode_to_append += self.putValue(G = 4, P = pause_length) + ";Wait for camera\n"
+            gcode_to_append += self.putValue(G = 1, F = feed_rate, X = x_park, Y = y_park) + " ;Park print head\n"
+        gcode_to_append += self.putValue(M = 400) + " ;Wait for moves to finish\n"
+        gcode_to_append += trigger_command + " ;Snap Photo\n"
+        gcode_to_append += self.putValue(G = 4, P = pause_length) + " ;Wait for camera\n"
         gcode_to_append += ";TimeLapse End\n"
         for layer in data:
             # Check that a layer is being printed
