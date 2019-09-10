@@ -21,9 +21,11 @@ Item
 
     UM.I18nCatalog { id: catalog; name: "cura"; }
 
-    Label {
+    Label
+    {
         id: titleLabel
-        anchors {
+        anchors
+        {
             top: parent.top
             left: parent.left
             right: parent.right
@@ -35,28 +37,33 @@ Item
 
     property var hasCurrentItem: base.currentItem != null
 
-    property var currentItem: {
+    property var currentItem:
+    {
         var current_index = qualityListView.currentIndex;
         return (current_index == -1) ? null : base.qualityManagementModel.getItem(current_index);
     }
 
     property var currentItemName: hasCurrentItem ? base.currentItem.name : ""
 
-    property var isCurrentItemActivated: {
-        if (!base.currentItem) {
+    property var isCurrentItemActivated:
+    {
+        if (!base.currentItem)
+        {
             return false;
         }
         return base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
     }
 
-    property var canCreateProfile: {
+    property var canCreateProfile:
+    {
         return isCurrentItemActivated && Cura.MachineManager.hasUserSettings;
     }
 
     Row  // Button Row
     {
         id: buttonRow
-        anchors {
+        anchors
+        {
             left: parent.left
             right: parent.right
             top: titleLabel.bottom
@@ -70,10 +77,14 @@ Item
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
             enabled: !isCurrentItemActivated
-            onClicked: {
-                if (base.currentItem.is_read_only) {
+            onClicked:
+            {
+                if (base.currentItem.is_read_only)
+                {
                     Cura.MachineManager.setQualityGroup(base.currentItem.quality_group);
-                } else {
+                }
+                else
+                {
                     Cura.MachineManager.setQualityChangesGroup(base.currentItem.quality_changes_group);
                 }
             }
@@ -88,7 +99,8 @@ Item
             enabled: base.canCreateProfile && !Cura.MachineManager.stacksHaveErrors
             visible: base.canCreateProfile
 
-            onClicked: {
+            onClicked:
+            {
                 createQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
                 createQualityDialog.open();
                 createQualityDialog.selectText();
@@ -104,7 +116,8 @@ Item
             enabled: !base.canCreateProfile
             visible: !base.canCreateProfile
 
-            onClicked: {
+            onClicked:
+            {
                 duplicateQualityDialog.object = Cura.ContainerManager.makeUniqueName(base.currentItem.name);
                 duplicateQualityDialog.open();
                 duplicateQualityDialog.selectText();
@@ -118,7 +131,8 @@ Item
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated
-            onClicked: {
+            onClicked:
+            {
                 forceActiveFocus();
                 confirmRemoveQualityDialog.open();
             }
@@ -131,7 +145,8 @@ Item
             text: catalog.i18nc("@action:button", "Rename")
             iconName: "edit-rename"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
-            onClicked: {
+            onClicked:
+            {
                 renameQualityDialog.object = base.currentItem.name;
                 renameQualityDialog.open();
                 renameQualityDialog.selectText();
@@ -144,7 +159,8 @@ Item
             id: importMenuButton
             text: catalog.i18nc("@action:button", "Import")
             iconName: "document-import"
-            onClicked: {
+            onClicked:
+            {
                 importDialog.open();
             }
         }
@@ -156,7 +172,8 @@ Item
             text: catalog.i18nc("@action:button", "Export")
             iconName: "document-export"
             enabled: base.hasCurrentItem && !base.currentItem.is_read_only
-            onClicked: {
+            onClicked:
+            {
                 exportDialog.open();
             }
         }
@@ -285,13 +302,16 @@ Item
         {
             var result = Cura.ContainerManager.importProfile(fileUrl);
             messageDialog.text = result.message;
-            if (result.status == "ok") {
+            if (result.status == "ok")
+            {
                 messageDialog.icon = StandardIcon.Information;
             }
-            else if (result.status == "duplicate") {
+            else if (result.status == "duplicate")
+            {
                 messageDialog.icon = StandardIcon.Warning;
             }
-            else {
+            else
+            {
                 messageDialog.icon = StandardIcon.Critical;
             }
             messageDialog.open();
@@ -312,7 +332,8 @@ Item
             var result = Cura.ContainerManager.exportQualityChangesGroup(base.currentItem.quality_changes_group,
                                                                          fileUrl, selectedNameFilter);
 
-            if (result && result.status == "error") {
+            if (result && result.status == "error")
+            {
                 messageDialog.icon = StandardIcon.Critical;
                 messageDialog.text = result.message;
                 messageDialog.open();
@@ -323,10 +344,12 @@ Item
         }
     }
 
-    Item {
+    Item
+    {
         id: contentsItem
 
-        anchors {
+        anchors
+        {
             top: titleLabel.bottom
             left: parent.left
             right: parent.right
@@ -340,7 +363,8 @@ Item
 
     Item
     {
-        anchors {
+        anchors
+        {
             top: buttonRow.bottom
             topMargin: UM.Theme.getSize("default_margin").height
             left: parent.left
@@ -348,12 +372,16 @@ Item
             bottom: parent.bottom
         }
 
-        SystemPalette { id: palette }
+        SystemPalette
+        {
+            id: palette
+        }
 
         Label
         {
             id: captionLabel
-            anchors {
+            anchors
+            {
                 top: parent.top
                 left: parent.left
             }
@@ -366,14 +394,16 @@ Item
         ScrollView
         {
             id: profileScrollView
-            anchors {
+            anchors
+            {
                 top: captionLabel.visible ? captionLabel.bottom : parent.top
                 topMargin: captionLabel.visible ? UM.Theme.getSize("default_margin").height : 0
                 bottom: parent.bottom
                 left: parent.left
             }
 
-            Rectangle {
+            Rectangle
+            {
                 parent: viewport
                 anchors.fill: parent
                 color: palette.light
@@ -445,7 +475,8 @@ Item
                     MouseArea
                     {
                         anchors.fill: parent
-                        onClicked: {
+                        onClicked:
+                        {
                             parent.ListView.view.currentIndex = model.index;
                         }
                     }
@@ -458,7 +489,8 @@ Item
         {
             id: detailsPanel
 
-            anchors {
+            anchors
+            {
                 left: profileScrollView.right
                 leftMargin: UM.Theme.getSize("default_margin").width
                 top: parent.top
@@ -478,13 +510,15 @@ Item
                     width: parent.width
                     height: childrenRect.height
 
-                    Label {
+                    Label
+                    {
                         text: base.currentItemName
                         font: UM.Theme.getFont("large_bold")
                     }
                 }
 
-                Flow {
+                Flow
+                {
                     id: currentSettingsActions
                     visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
                     anchors.left: parent.left
@@ -507,7 +541,8 @@ Item
                     }
                 }
 
-                Column {
+                Column
+                {
                     id: profileNotices
                     anchors.top: currentSettingsActions.visible ? currentSettingsActions.bottom : currentSettingsActions.anchors.top
                     anchors.topMargin: UM.Theme.getSize("default_margin").height
@@ -515,14 +550,16 @@ Item
                     anchors.right: parent.right
                     spacing: UM.Theme.getSize("default_margin").height
 
-                    Label {
+                    Label
+                    {
                         id: defaultsMessage
                         visible: false
                         text: catalog.i18nc("@action:label", "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below.")
                         wrapMode: Text.WordWrap
                         width: parent.width
                     }
-                    Label {
+                    Label
+                    {
                         id: noCurrentSettingsMessage
                         visible: base.isCurrentItemActivated && !Cura.MachineManager.hasUserSettings
                         text: catalog.i18nc("@action:label", "Your current settings match the selected profile.")
