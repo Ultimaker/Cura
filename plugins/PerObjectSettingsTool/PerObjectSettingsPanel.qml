@@ -18,11 +18,11 @@ Item
     property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
 
-    readonly property var normal_mesh_type: ""
-    readonly property var support_mesh_type: "support_mesh"
-    readonly property var cutting_mesh_type: "cutting_mesh"
-    readonly property var infill_mesh_type: "infill_mesh"
-    readonly property var anti_overhang_mesh_type: "anti_overhang_mesh"
+    readonly property string normal_mesh_type: ""
+    readonly property string support_mesh_type: "support_mesh"
+    readonly property string cutting_mesh_type: "cutting_mesh"
+    readonly property string infill_mesh_type: "infill_mesh"
+    readonly property string anti_overhang_mesh_type: "anti_overhang_mesh"
 
     property var current_mesh_type: normal_mesh_type
 
