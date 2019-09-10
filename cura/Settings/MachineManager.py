@@ -1151,7 +1151,7 @@ class MachineManager(QObject):
 
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         quality_changes_container = empty_quality_changes_container
-        quality_container = empty_quality_container  # type: Optional[InstanceContainer]
+        quality_container = empty_quality_container  # type: InstanceContainer
         if quality_changes_group.metadata_for_global:
             global_containers = container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])
             if global_containers:
@@ -1173,7 +1173,7 @@ class MachineManager(QObject):
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
-            quality_changes_metadata = quality_changes_group.metadata_per_extruder.get(position)
+            quality_changes_metadata = quality_changes_group.metadata_per_extruder.get(int(position))
             if quality_changes_metadata:
                 containers = container_registry.findContainers(id = quality_changes_metadata["id"])
                 if containers:
