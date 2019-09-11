@@ -116,7 +116,7 @@ class QualityManagementModel(ListModel):
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
             # Create global quality changes only.
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, new_name, global_stack, extruder_stack = None)
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, None, new_name, global_stack, extruder_stack = None)
             container_registry.addContainer(new_quality_changes)
         else:
             for metadata in [quality_changes_group.metadata_for_global] + quality_changes_group.metadata_per_extruder.values():
