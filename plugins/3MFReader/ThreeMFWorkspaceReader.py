@@ -760,6 +760,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
+            quality_changes_intent_category_per_extruder = {position: info.parser["metadata"].get("intent_category", "default") for position, info in quality_changes_info.extruder_info_dict.items()}
 
             quality_changes_name = quality_changes_info.name
             create_new = self._resolve_strategies.get("quality_changes") != "override"
@@ -770,9 +771,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_name = self._container_registry.uniqueName(quality_changes_name)
                 for position, container_info in container_info_dict.items():
                     extruder_stack = None
+                    intent_category = None  # type: Optional[str]
                     if position is not None:
                         extruder_stack = global_stack.extruders[position]
-                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
+                        intent_category = quality_changes_intent_category_per_extruder[position]
+                    container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
                     self._container_registry.addContainer(container)
 
@@ -801,8 +804,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 if not global_stack.extruders:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
+                intent_category = quality_changes_intent_category_per_extruder["0"]
 
-                container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
+                container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                 container_info.container = container
                 self._container_registry.addContainer(container)
 
@@ -829,7 +833,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
                 if container_info.container is None:
                     extruder_stack = global_stack.extruders[position]
-                    container = self._createNewQualityChanges(quality_changes_quality_type, quality_changes_name, global_stack, extruder_stack)
+                    intent_category = quality_changes_intent_category_per_extruder[position]
+                    container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
                     self._container_registry.addContainer(container)
 
@@ -842,6 +847,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #
     #   This will then later be filled with the appropriate data.
     #   \param quality_type The quality type of the new profile.
+    #   \param intent_category The intent category of the new profile.
     #   \param name The name for the profile. This will later be made unique so
     #   it doesn't need to be unique yet.
     #   \param global_stack The global stack showing the configuration that the
@@ -849,7 +855,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #   \param extruder_stack The extruder stack showing the configuration that
     #   the profile should be created for. If this is None, it will be created
     #   for the global stack.
-    def _createNewQualityChanges(self, quality_type: str, name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
+    def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
         container_registry = CuraApplication.getInstance().getContainerRegistry()
         base_id = global_stack.definition.getId() if extruder_stack is None else extruder_stack.getId()
         new_id = base_id + "_" + name
@@ -861,6 +867,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         quality_changes.setName(name)
         quality_changes.setMetaDataEntry("type", "quality_changes")
         quality_changes.setMetaDataEntry("quality_type", quality_type)
+        if intent_category is not None:
+            quality_changes.setMetaDataEntry("intent_category", intent_category)
 
         # If we are creating a container for an extruder, ensure we add that to the container.
         if extruder_stack is not None:
