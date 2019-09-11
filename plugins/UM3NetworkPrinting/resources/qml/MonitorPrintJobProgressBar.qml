@@ -46,7 +46,7 @@ Item
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
 
         // FIXED-LINE-HEIGHT:
         height: 18 * screenScaleFactor // TODO: Theme!
@@ -63,7 +63,7 @@ Item
             verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
         text:
         {
             if (!printJob)
