@@ -31,7 +31,7 @@ Item
             left: parent.left
         }
         value: printJob ? printJob.progress : 0
-        width: UM.Theme.getSize("monitor_column").width
+        width: UM.Theme.getSize("monitor_progress_bar").width
     }
 
     Label
