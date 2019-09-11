@@ -14,7 +14,6 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
-from UM.Signal import postponeSignals, CompressTechnique
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -575,24 +574,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     #   \param file_name
     @call_on_qt_thread
     def read(self, file_name):
-        container_registry = ContainerRegistry.getInstance()
-        signals = [container_registry.containerAdded,
-                   container_registry.containerRemoved,
-                   container_registry.containerMetaDataChanged]
-        # The container tree updates its lookup tables upon container changes.
-        # It is critical to make sure that it has a complete set of data when it
-        # updates.
-        #
-        # In project loading, lots of the container-related signals are loosely emitted, which can create timing gaps
-        # for incomplete data update or other kinds of issues to happen.
-        #
-        # To avoid this, we postpone all signals so they don't get emitted immediately. But, please also be aware that,
-        # because of this, do not expect to have the latest data in the lookup tables in project loading.
-        #
-        with postponeSignals(*signals, compress = CompressTechnique.NoCompression):
-            return self._read(file_name)
-
-    def _read(self, file_name):
         application = CuraApplication.getInstance()
         material_manager = application.getMaterialManager()
 
