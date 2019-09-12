@@ -1375,19 +1375,18 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id"),
-                           "um_network_key": self.activeMachineNetworkKey(),
-                           }
+        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id")}
         new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
-            new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
-            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
-            new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
+            
+            for metadata_key in self._global_container_stack.getMetaData():
+                if metadata_key in new_machine.getMetaData():
+                    continue  # Don't copy the already preset stuff.
+                new_machine.setMetaDataEntry(metadata_key, self._global_container_stack.getMetaDataEntry(metadata_key))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
 
