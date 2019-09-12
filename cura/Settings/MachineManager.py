@@ -46,7 +46,6 @@ catalog = i18nCatalog("cura")
 from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
-    from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
@@ -265,7 +264,11 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
+        if self._active_container_stack is not None:
+            self._active_container_stack.pyqtContainersChanged.disconnect(self.activeStackChanged)  # Unplug from the old one.
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if self._active_container_stack is not None:
+            self._active_container_stack.pyqtContainersChanged.connect(self.activeStackChanged)  # Plug into the new one.
 
     def __emitChangedSignals(self) -> None:
         self.activeQualityChanged.emit()
