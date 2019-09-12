@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer
+from typing import TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -9,7 +10,9 @@ from UM.Settings.SettingFunction import SettingFunction
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.QualityManager import QualityGroup
+
+if TYPE_CHECKING:
+    from cura.Machines import QualityGroup
 
 
 #
