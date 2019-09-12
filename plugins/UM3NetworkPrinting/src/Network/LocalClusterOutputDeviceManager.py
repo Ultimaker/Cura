@@ -67,7 +67,7 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        api_client = ClusterApiClient(address, lambda error: Logger.log("e", error))
+        api_client = ClusterApiClient(address, lambda error: Logger.log("e", str(error)))
         api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status, callback))
 
     ## Remove a manually added networked printer.

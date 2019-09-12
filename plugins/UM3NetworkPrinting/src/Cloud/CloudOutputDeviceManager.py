@@ -38,7 +38,7 @@ class CloudOutputDeviceManager:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", error))
+        self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
 
         # Create a timer to update the remote cluster list

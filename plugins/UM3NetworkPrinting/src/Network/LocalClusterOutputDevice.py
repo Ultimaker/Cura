@@ -169,5 +169,5 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Get the API client instance.
     def _getApiClient(self) -> ClusterApiClient:
         if not self._cluster_api:
-            self._cluster_api = ClusterApiClient(self.address, on_error = lambda error: Logger.log("e", error))
+            self._cluster_api = ClusterApiClient(self.address, on_error = lambda error: Logger.log("e", str(error)))
         return self._cluster_api
