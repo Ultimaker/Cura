@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, Dict, Optional, TYPE_CHECKING
+from typing import Any, cast, Dict, Optional, TYPE_CHECKING
 from PyQt5.QtCore import pyqtSlot, QObject, Qt
 
 from UM.Logger import Logger
@@ -85,10 +85,13 @@ class QualityManagementModel(ListModel):
             return new_name
 
         application = cura.CuraApplication.CuraApplication.getInstance()
-        new_name = application.getContainerRegistry().uniqueName(new_name)
-        quality_changes_group.metadata_for_global["name"] = new_name
+        container_registry = application.getContainerRegistry()
+        new_name = container_registry.uniqueName(new_name)
+        global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
+        global_container.setName(new_name)
         for metadata in quality_changes_group.metadata_per_extruder.values():
-            metadata["name"] = new_name
+            extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
+            extruder_container.setName(new_name)
 
         quality_changes_group.name = new_name
 
@@ -215,6 +218,7 @@ class QualityManagementModel(ListModel):
     #   This filters the updates to the container manager: When it applies to
     #   the list of quality changes, we need to update our list.
     def _qualityChangesListChanged(self, container: "ContainerInterface") -> None:
+        print("QualityChangesListChanged", container)
         if container.getMetaDataEntry("type") == "quality_changes":
             self._update()
 
