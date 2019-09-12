@@ -13,6 +13,7 @@ from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Messages.CloudPrinterDetectedMessage import CloudPrinterDetectedMessage
 
 
 ## The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
@@ -108,6 +109,7 @@ class CloudOutputDeviceManager:
         )
         self._remote_clusters[device.getId()] = device
         self.discoveredDevicesChanged.emit()
+        self._checkIfNewClusterWasAdded(device.clusterData.cluster_id)
         self._connectToActiveMachine()
 
     def _onDiscoveredDeviceUpdated(self, cluster_data: CloudClusterResponse) -> None:
@@ -179,3 +181,10 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key not in output_device_manager.getOutputDeviceIds():
             output_device_manager.addOutputDevice(device)
+
+    ## Checks if Cura has a machine stack (printer) for the given cluster ID and shows a message if it hasn't.
+    def _checkIfNewClusterWasAdded(self, cluster_id: str) -> None:
+        container_registry = CuraApplication.getInstance().getContainerRegistry()
+        cloud_machines = container_registry.findContainersMetadata(**{self.META_CLUSTER_ID: "*"})  # all cloud machines
+        if not any(machine[self.META_CLUSTER_ID] == cluster_id for machine in cloud_machines):
+            CloudPrinterDetectedMessage().show()
