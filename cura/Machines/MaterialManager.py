@@ -198,7 +198,7 @@ class MaterialManager(QObject):
         return results
 
     #
-    # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
+    # Built-in quality profiles may be based on generic material IDs such as "generic_pla".
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
     # the generic material IDs to search for qualities.
     #
