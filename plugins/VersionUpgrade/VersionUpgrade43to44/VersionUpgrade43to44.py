@@ -37,6 +37,10 @@ class VersionUpgrade43to44(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "10"
 
+        # Intent profiles were added, so the quality changes should match with no intent (so "default")
+        if parser["metadata"].get("type", "") == "quality_changes":
+            parser["metadata"]["intent_category"] = "default"
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
