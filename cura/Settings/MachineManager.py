@@ -1573,7 +1573,7 @@ class MachineManager(QObject):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack or global_stack.qualityChanges == empty_quality_changes_container:
             return None
-        for group in ContainerTree.getInstance().getCurrentQualityGroups():  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
+        for group in ContainerTree.getInstance().getCurrentQualityChangesGroups():  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
             if group.metadata_for_global and group.metadata_for_global["id"] == global_stack.qualityChanges.getId():
                 return group
         return None
