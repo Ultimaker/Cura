@@ -2699,7 +2699,7 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "enabled": "retraction_enable",
+                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },

@@ -303,6 +303,17 @@ class GlobalStack(CuraContainerStack):
             Logger.log("w", "Firmware file %s not found.", hex_file)
             return ""
 
+    def getName(self) -> str:
+        return self._metadata.get("group_name", self._metadata.get("name", ""))
+
+    def setName(self, name: "str") -> None:
+        super().setName(name)
+
+    nameChanged = pyqtSignal()
+    name = pyqtProperty(str, fget=getName, fset=setName, notify=nameChanged)
+
+
+
 ## private:
 global_stack_mime = MimeType(
     name = "application/x-cura-globalstack",

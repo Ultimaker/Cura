@@ -619,6 +619,8 @@
         "monitor_empty_state_offset": [5.6, 5.6],
         "monitor_empty_state_size": [35.0, 25.0],
         "monitor_external_link_icon": [1.16, 1.16],
-        "monitor_column": [18.0, 1.0]
+        "monitor_column": [18.0, 1.0],
+        "monitor_progress_bar": [16.5, 1.0],
+        "monitor_margin": [1.5, 1.5]
     }
 }
