@@ -101,7 +101,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
     ##  Exports an profile to a file
     #
-    #   \param container_list \type{list} the containers to export
+    #   \param container_list \type{list} the containers to export. This is not
+    #   necessarily in any order!
     #   \param file_name \type{str} the full path and filename to export to.
     #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
     #   \return True if the export succeeded, false otherwise.

@@ -4,7 +4,7 @@
 import os
 import urllib.parse
 import uuid
-from typing import Dict, Union, Any, TYPE_CHECKING, List
+from typing import Any, cast, Dict, List, TYPE_CHECKING, Union
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtWidgets import QMessageBox
@@ -30,8 +30,6 @@ if TYPE_CHECKING:
     from cura.Machines.ContainerNode import ContainerNode
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
-
-    from cura.Machines.QualityManager import QualityManager
 
 catalog = i18nCatalog("cura")
 
@@ -448,7 +446,10 @@ class ContainerManager(QObject):
         if not path:
             return
 
-        container_list = [n.container for n in quality_changes_group.getAllNodes() if n.container is not None]
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        container_list = [cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])]  # type: List[InstanceContainer]
+        for metadata in quality_changes_group.metadata_per_extruder.values():
+            container_list.append(cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0]))
         cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().exportQualityProfile(container_list, path, file_type)
 
     __instance = None   # type: ContainerManager
