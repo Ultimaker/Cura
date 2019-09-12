@@ -34,7 +34,6 @@ def getInstanceContainerSideEffect(*args, **kwargs):
         if variant is None:
             return instance_container_metadata_dict.get(definition).get("no_variant")
         else:
-            print(variant, definition, instance_container_metadata_dict.get(definition).get(variant).get("material_1"))
             return instance_container_metadata_dict.get(definition).get(variant).get("material_1")
     if definition is None:
         return [{"id": "material_1", "material": "material_1"}]

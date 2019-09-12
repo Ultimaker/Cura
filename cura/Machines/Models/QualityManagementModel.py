@@ -218,7 +218,6 @@ class QualityManagementModel(ListModel):
     #   This filters the updates to the container manager: When it applies to
     #   the list of quality changes, we need to update our list.
     def _qualityChangesListChanged(self, container: "ContainerInterface") -> None:
-        print("QualityChangesListChanged", container)
         if container.getMetaDataEntry("type") == "quality_changes":
             self._update()
 
