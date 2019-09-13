@@ -213,26 +213,26 @@ Item
 
                 model: UM.SettingDefinitionsModel
                 {
-                    id: addedSettingsModel;
+                    id: addedSettingsModel
                     containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                     expanded: [ "*" ]
                     filter:
                     {
                         if (printSequencePropertyProvider.properties.value == "one_at_a_time")
                         {
-                            return {"settable_per_meshgroup": true};
+                            return {"settable_per_meshgroup": true}
                         }
-                        return {"settable_per_mesh": true};
+                        return {"settable_per_mesh": true}
                     }
                     exclude:
                     {
-                        var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+                        var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
                         if(current_mesh_type == "support_mesh")
                         {
-                            excluded_settings = excluded_settings.concat(base.all_categories_except_support);
+                            excluded_settings = excluded_settings.concat(base.all_categories_except_support)
                         }
-                        return excluded_settings;
+                        return excluded_settings
                     }
 
                     visibilityHandler: Cura.PerObjectSettingVisibilityHandler
@@ -243,7 +243,7 @@ Item
                     // For some reason the model object is updated after removing him from the memory and
                     // it happens only on Windows. For this reason, set the destroyed value manually.
                     Component.onDestruction: {
-                        setDestroyed(true);
+                        setDestroyed(true)
                     }
                 }
 
@@ -353,7 +353,7 @@ Item
                         target: inheritStackProvider
                         onPropertiesChanged:
                         {
-                            provider.forcePropertiesChanged();
+                            provider.forcePropertiesChanged()
                         }
                     }
 
@@ -366,22 +366,22 @@ Item
                             // so here we connect to the signal and update the those values.
                             if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                             {
-                                const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
+                                const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
                                 if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
                                 {
-                                    addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId;
+                                    addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
                                 }
                             }
                             if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                             {
-                                const containerId = UM.ActiveTool.properties.getValue("ContainerID");
+                                const containerId = UM.ActiveTool.properties.getValue("ContainerID")
                                 if (provider.containerStackId != containerId)
                                 {
-                                    provider.containerStackId = containerId;
+                                    provider.containerStackId = containerId
                                 }
                                 if (inheritStackProvider.containerStackId != containerId)
                                 {
-                                    inheritStackProvider.containerStackId = containerId;
+                                    inheritStackProvider.containerStackId = containerId
                                 }
                             }
                         }
@@ -415,17 +415,17 @@ Item
 
             function updateFilter()
             {
-                var new_filter = {};
-                new_filter["settable_per_mesh"] = true;
+                var new_filter = {}
+                new_filter["settable_per_mesh"] = true
                 // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
                 //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
 
                 if(filterInput.text != "")
                 {
-                    new_filter["i18n_label"] = "*" + filterInput.text;
+                    new_filter["i18n_label"] = "*" + filterInput.text
                 }
 
-                listview.model.filter = new_filter;
+                listview.model.filter = new_filter
             }
 
             TextField {
@@ -438,7 +438,7 @@ Item
                     rightMargin: UM.Theme.getSize("default_margin").width
                 }
 
-                placeholderText: catalog.i18nc("@label:textbox", "Filter...");
+                placeholderText: catalog.i18nc("@label:textbox", "Filter...")
 
                 onTextChanged: settingPickDialog.updateFilter()
             }
@@ -456,7 +456,7 @@ Item
                 checked: listview.model.showAll
                 onClicked:
                 {
-                    listview.model.showAll = checked;
+                    listview.model.showAll = checked
                 }
             }
 
@@ -466,25 +466,25 @@ Item
 
                 anchors
                 {
-                    top: filterInput.bottom;
-                    left: parent.left;
-                    right: parent.right;
-                    bottom: parent.bottom;
+                    top: filterInput.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
                 }
                 ListView
                 {
                     id:listview
                     model: UM.SettingDefinitionsModel
                     {
-                        id: definitionsModel;
+                        id: definitionsModel
                         containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
                         expanded: [ "*" ]
                         exclude:
                         {
-                            var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
-                            excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings);
-                            return excluded_settings;
+                            var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
+                            excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings)
+                            return excluded_settings
                         }
                     }
                     delegate:Loader
@@ -492,7 +492,7 @@ Item
                         id: loader
 
                         width: parent.width
-                        height: model.type != undefined ? UM.Theme.getSize("section").height : 0;
+                        height: model.type != undefined ? UM.Theme.getSize("section").height : 0
 
                         property var definition: model
                         property var settingDefinitionsModel: definitionsModel
@@ -515,9 +515,9 @@ Item
 
             rightButtons: [
                 Button {
-                    text: catalog.i18nc("@action:button", "Close");
+                    text: catalog.i18nc("@action:button", "Close")
                     onClicked: {
-                        settingPickDialog.visible = false;
+                        settingPickDialog.visible = false
                     }
                 }
             ]
@@ -543,25 +543,25 @@ Item
         storeIndex: 0
     }
 
-    SystemPalette { id: palette; }
+    SystemPalette { id: palette }
 
     Component
     {
-        id: settingTextField;
+        id: settingTextField
 
         Cura.SettingTextField { }
     }
 
     Component
     {
-        id: settingComboBox;
+        id: settingComboBox
 
         Cura.SettingComboBox { }
     }
 
     Component
     {
-        id: settingExtruder;
+        id: settingExtruder
 
         Cura.SettingExtruder { }
     }
@@ -575,21 +575,21 @@ Item
 
     Component
     {
-        id: settingCheckBox;
+        id: settingCheckBox
 
         Cura.SettingCheckBox { }
     }
 
     Component
     {
-        id: settingCategory;
+        id: settingCategory
 
         Cura.SettingCategory { }
     }
 
     Component
     {
-        id: settingUnknown;
+        id: settingUnknown
 
         Cura.SettingUnknown { }
     }
