@@ -181,7 +181,7 @@ Item
             onClicked:
             {
                 settingPickDialog.visible = true;
-                if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                if (current_mesh_type == "support_mesh")
                 {
                     settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
                 }
@@ -409,7 +409,7 @@ Item
                 if(visible)
                 {
                     // Set skip setting, it will prevent from resetting selected mesh_type
-                    contents.model.visibilityHandler.addSkipResetSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
+                    contents.model.visibilityHandler.addSkipResetSetting(current_mesh_type)
                     listview.model.forceUpdate()
 
                     updateFilter()
