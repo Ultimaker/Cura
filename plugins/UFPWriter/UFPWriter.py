@@ -81,7 +81,7 @@ class UFPWriter(MeshWriter):
         # Store the material.
         application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
-        material_manager = application.getMaterialManager()
+        container_registry = application.getContainerRegistry()
         global_stack = machine_manager.activeMachine
 
         material_extension = "xml.fdm_material"
@@ -107,12 +107,12 @@ class UFPWriter(MeshWriter):
                 continue
 
             material_root_id = material.getMetaDataEntry("base_file")
-            material_group = material_manager.getMaterialGroup(material_root_id)
-            if material_group is None:
-                Logger.log("e", "Cannot find material container with root id [%s]", material_root_id)
+            material_root_query = container_registry.findContainers(id = material_root_id)
+            if not material_root_query:
+                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id = material_root_id))
                 return False
+            material_container = material_root_query[0]
 
-            material_container = material_group.root_material_node.container
             try:
                 serialized_material = material_container.serialize()
             except NotImplementedError:
