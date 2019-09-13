@@ -60,7 +60,11 @@ fragment =
         highp float NdotR = clamp(dot(viewVector, reflectedLight), 0.0, 1.0);
         finalColor += pow(NdotR, u_shininess) * u_specularColor;
 
+    #if __VERSION__ >= 150
         finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
+    #else
+        finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
+    #endif
 
         gl_FragColor = finalColor;
         gl_FragColor.a = 1.0;
@@ -153,7 +157,7 @@ u_normalMatrix = normal_matrix
 u_viewPosition = view_position
 u_lightPosition = light_0_position
 u_diffuseColor = diffuse_color
-u_faceId = selected_face
+u_faceId = hover_face
 
 [attributes]
 a_vertex = vertex

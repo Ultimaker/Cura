@@ -119,10 +119,10 @@ class VersionUpgrade42to43(VersionUpgrade):
                 if key in parser["values"]:
                     del parser["values"][key]
 
-        if "support_infill_angles" in parser["values"]:
-            old_value = float(parser["values"]["support_infill_angles"])
-            new_value = [int(round(old_value))]
-            parser["values"]["support_infill_angles"] = str(new_value)
+            if "support_infill_angles" in parser["values"]:
+                old_value = float(parser["values"]["support_infill_angles"])
+                new_value = [int(round(old_value))]
+                parser["values"]["support_infill_angles"] = str(new_value)
 
         result = io.StringIO()
         parser.write(result)

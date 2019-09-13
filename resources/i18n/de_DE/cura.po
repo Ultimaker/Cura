@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.2\n"
+"Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-07-16 14:38+0200\n"
+"POT-Creation-Date: 2019-09-10 16:55+0200\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: German <info@lionbridge.com>, German <info@bothof.nl>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 2.2.3\n"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:27
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:28
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Geräteeinstellungen"
@@ -90,30 +90,40 @@ msgctxt "@item:inlistbox"
 msgid "AMF File"
 msgstr "AMF-Datei"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:37
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:42
 msgctxt "@item:inmenu"
 msgid "USB printing"
 msgstr "USB-Drucken"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:38
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:43
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
 msgstr "Über USB drucken"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:39
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:44
 msgctxt "@info:tooltip"
 msgid "Print via USB"
 msgstr "Über USB drucken"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:75
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:80
 msgctxt "@info:status"
 msgid "Connected via USB"
 msgstr "Über USB verbunden"
 
-#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:100
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:105
 msgctxt "@label"
 msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "Ein USB-Druck wird ausgeführt. Das Schließen von Cura beendet diesen Druck. Sind Sie sicher?"
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
+msgctxt "@message"
+msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
+msgctxt "@message"
+msgid "Print in Progress"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
@@ -164,7 +174,7 @@ msgid "Save to Removable Drive {0}"
 msgstr "Auf Wechseldatenträger speichern {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:64
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:106
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/MeshFormatHandler.py:107
 msgctxt "@info:status"
 msgid "There are no file formats available to write with!"
 msgstr "Es sind keine Dateiformate zum Schreiben vorhanden!"
@@ -201,10 +211,9 @@ msgid "Could not save to removable drive {0}: {1}"
 msgstr "Konnte nicht auf dem Wechseldatenträger gespeichert werden {0}: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:188
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:134
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:141
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1622
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:137
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1634
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Fehler"
@@ -233,9 +242,9 @@ msgstr "Wechseldatenträger auswerfen {0}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:197
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1612
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1712
+#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:201
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1624
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1724
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Warnhinweis"
@@ -262,342 +271,149 @@ msgctxt "@item:intext"
 msgid "Removable Drive"
 msgstr "Wechseldatenträger"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:75
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:93
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UltimakerNetworkedPrinterAction.py:26
+msgctxt "@action"
+msgid "Connect via Network"
+msgstr "Anschluss über Netzwerk"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:52
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Drucken über Netzwerk"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:76
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:94
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:53
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Drücken über Netzwerk"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:95
-msgctxt "@info:status"
-msgid "Connected over the network."
-msgstr "Über Netzwerk verbunden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:98
-msgctxt "@info:status"
-msgid "Connected over the network. Please approve the access request on the printer."
-msgstr "Über Netzwerk verbunden. Geben Sie die Zugriffsanforderung für den Drucker frei."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:100
-msgctxt "@info:status"
-msgid "Connected over the network. No access to control the printer."
-msgstr "Über Netzwerk verbunden. Kein Zugriff auf die Druckerverwaltung."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:105
-msgctxt "@info:status"
-msgid "Access to the printer requested. Please approve the request on the printer"
-msgstr "Zugriff auf Drucker erforderlich. Bestätigen Sie den Zugriff auf den Drucker"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:108
-msgctxt "@info:title"
-msgid "Authentication status"
-msgstr "Authentifizierungsstatus"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:110
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:116
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:120
-msgctxt "@info:title"
-msgid "Authentication Status"
-msgstr "Authentifizierungsstatus"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:111
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:198
-msgctxt "@action:button"
-msgid "Retry"
-msgstr "Erneut versuchen"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:112
-msgctxt "@info:tooltip"
-msgid "Re-send the access request"
-msgstr "Zugriffanforderung erneut senden"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:115
-msgctxt "@info:status"
-msgid "Access to the printer accepted"
-msgstr "Zugriff auf den Drucker genehmigt"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:119
-msgctxt "@info:status"
-msgid "No access to print with this printer. Unable to send print job."
-msgstr "Kein Zugriff auf das Drucken mit diesem Drucker. Druckauftrag kann nicht gesendet werden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:121
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:65
-msgctxt "@action:button"
-msgid "Request Access"
-msgstr "Zugriff anfordern"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:123
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:66
-msgctxt "@info:tooltip"
-msgid "Send access request to the printer"
-msgstr "Zugriffsanforderung für den Drucker senden"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:208
-msgctxt "@label"
-msgid "Unable to start a new print job."
-msgstr "Es kann kein neuer Druckauftrag gestartet werden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:210
-msgctxt "@label"
-msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
-msgstr "Es liegt ein Problem mit der Konfiguration Ihres Ultimaker vor, das den Druckstart verhindert. Lösen Sie dieses Problem bitte, bevor Sie fortfahren."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:216
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:238
-msgctxt "@window:title"
-msgid "Mismatched configuration"
-msgstr "Konfiguration nicht übereinstimmend"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:230
-msgctxt "@label"
-msgid "Are you sure you wish to print with the selected configuration?"
-msgstr "Möchten Sie wirklich mit der gewählten Konfiguration drucken?"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:232
-msgctxt "@label"
-msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "Anforderungen zwischen der Druckerkonfiguration oder -kalibrierung und Cura stimmen nicht überein. Für optimale Ergebnisse schneiden Sie stets für die PrintCores und Materialien, die in Ihren Drucker eingelegt wurden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:259
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:176
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:181
-msgctxt "@info:status"
-msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
-msgstr "Das Senden neuer Aufträge ist (vorübergehend) blockiert; der vorherige Druckauftrag wird noch gesendet."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:266
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:194
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:211
-msgctxt "@info:status"
-msgid "Sending data to printer"
-msgstr "Daten werden zum Drucker gesendet"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:267
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:196
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:213
-msgctxt "@info:title"
-msgid "Sending Data"
-msgstr "Daten werden gesendet"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:268
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:214
-#: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:18
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:81
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:410
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
-#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:149
-#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:283
-msgctxt "@action:button"
-msgid "Cancel"
-msgstr "Abbrechen"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:331
-#, python-brace-format
-msgctxt "@info:status"
-msgid "No Printcore loaded in slot {slot_number}"
-msgstr "Kein PrintCore geladen in Steckplatz {slot_number}"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:337
-#, python-brace-format
-msgctxt "@info:status"
-msgid "No material loaded in slot {slot_number}"
-msgstr "Kein Material geladen in Steckplatz {slot_number}"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:360
-#, python-brace-format
-msgctxt "@label"
-msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
-msgstr "Abweichender PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) für Extruder gewählt {extruder_id}"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:369
-#, python-brace-format
-msgctxt "@label"
-msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
-msgstr "Abweichendes Material (Cura: {0}, Drucker: {1}) für Extruder {2} gewählt"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:555
-msgctxt "@window:title"
-msgid "Sync with your printer"
-msgstr "Synchronisieren Ihres Druckers"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:557
-msgctxt "@label"
-msgid "Would you like to use your current printer configuration in Cura?"
-msgstr "Möchten Sie Ihre aktuelle Druckerkonfiguration in Cura verwenden?"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/LegacyUM3OutputDevice.py:559
-msgctxt "@label"
-msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
-msgstr "Die PrintCores und/oder Materialien auf Ihrem Drucker unterscheiden sich von denen Ihres aktuellen Projekts. Für optimale Ergebnisse schneiden Sie stets für die PrintCores und Materialien, die in Ihren Drucker eingelegt wurden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:96
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:54
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Über Netzwerk verbunden"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:289
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:370
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
-msgid "Print job was successfully sent to the printer."
-msgstr "Der Druckauftrag wurde erfolgreich an den Drucker gesendet."
+msgid "Please wait until the current job has been sent."
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:291
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:371
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:16
 msgctxt "@info:title"
-msgid "Data Sent"
-msgstr "Daten gesendet"
+msgid "Print error"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:292
-msgctxt "@action:button"
-msgid "View in Monitor"
-msgstr "In Monitor überwachen"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:411
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:318
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
 msgctxt "@info:status"
-msgid "Printer '{printer_name}' has finished printing '{job_name}'."
-msgstr "Drucker '{printer_name}' hat '{job_name}' vollständig gedrückt."
+msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:413
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:322
-#, python-brace-format
-msgctxt "@info:status"
-msgid "The print job '{job_name}' was finished."
-msgstr "Der Druckauftrag '{job_name}' wurde ausgeführt."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:414
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:316
-msgctxt "@info:status"
-msgid "Print finished"
-msgstr "Druck vollendet"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:595
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:629
-msgctxt "@label:material"
-msgid "Empty"
-msgstr "Leer"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:596
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/ClusterUM3OutputDevice.py:630
-msgctxt "@label:material"
-msgid "Unknown"
-msgstr "Unbekannt"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:169
-msgctxt "@action:button"
-msgid "Print via Cloud"
-msgstr "Über Cloud drucken"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:170
-msgctxt "@properties:tooltip"
-msgid "Print via Cloud"
-msgstr "Über Cloud drucken"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:171
-msgctxt "@info:status"
-msgid "Connected via Cloud"
-msgstr "Über Cloud verbunden"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:182
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:359
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
 msgctxt "@info:title"
-msgid "Cloud error"
-msgstr "Cloudfehler"
+msgid "Not a group host"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:199
-msgctxt "@info:status"
-msgid "Could not export print job."
-msgstr "Druckauftrag konnte nicht exportiert werden."
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:35
+msgctxt "@action"
+msgid "Configure group"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:358
-msgctxt "@info:text"
-msgid "Could not upload the data to the printer."
-msgstr "Daten konnten nicht in Drucker geladen werden."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/Utils.py:51
-msgctxt "@info:status"
-msgid "tomorrow"
-msgstr "morgen"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/Utils.py:54
-msgctxt "@info:status"
-msgid "today"
-msgstr "heute"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDeviceManager.py:187
-msgctxt "@info:description"
-msgid "There was an error connecting to the cloud."
-msgstr "Es liegt ein Fehler beim Verbinden mit der Cloud vor."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:14
-msgctxt "@info:status"
-msgid "Sending Print Job"
-msgstr "Druckauftrag senden"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudProgressMessage.py:15
-msgctxt "@info:status"
-msgid "Uploading via Ultimaker Cloud"
-msgstr "Über Ultimaker Cloud hochladen"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:621
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
 msgid "Send and monitor print jobs from anywhere using your Ultimaker account."
 msgstr "Druckaufträge mithilfe Ihres Ultimaker-Kontos von einem anderen Ort aus senden und überwachen."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:627
-msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:33
+msgctxt "@info:status Ultimaker Cloud should not be translated."
 msgid "Connect to Ultimaker Cloud"
-msgstr "Verbinden mit Ultimaker Cloud"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:628
-msgctxt "@action"
-msgid "Don't ask me again for this printer."
-msgstr "Nicht mehr für diesen Drucker nachfragen."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:631
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:36
 msgctxt "@action"
 msgid "Get started"
 msgstr "Erste Schritte"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:637
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:14
 msgctxt "@info:status"
-msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
-msgstr "Sie können jetzt Druckaufträge mithilfe Ihres Ultimaker-Kontos von einem anderen Ort aus senden und überwachen."
+msgid "Sending Print Job"
+msgstr "Druckauftrag senden"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:643
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
-msgid "Connected!"
-msgstr "Verbunden!"
+msgid "Uploading print job to printer."
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/UM3OutputDevicePlugin.py:645
-msgctxt "@action"
-msgid "Review your connection"
-msgstr "Ihre Verbindung überprüfen"
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
+msgctxt "@info:status"
+msgid "Print job was successfully sent to the printer."
+msgstr "Der Druckauftrag wurde erfolgreich an den Drucker gesendet."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/DiscoverUM3Action.py:30
-msgctxt "@action"
-msgid "Connect via Network"
-msgstr "Anschluss über Netzwerk"
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:16
+msgctxt "@info:title"
+msgid "Data Sent"
+msgstr "Daten gesendet"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
+msgctxt "@info:status"
+msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
+msgctxt "@info:title"
+msgid "Update your printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:24
+#, python-brace-format
+msgctxt "@info:status"
+msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
+msgctxt "@info:title"
+msgid "Sending materials to printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadErrorMessage.py:15
+msgctxt "@info:text"
+msgid "Could not upload the data to the printer."
+msgstr "Daten konnten nicht in Drucker geladen werden."
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadErrorMessage.py:16
+msgctxt "@info:title"
+msgid "Network error"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Utils.py:27
+msgctxt "@info:status"
+msgid "tomorrow"
+msgstr "morgen"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Utils.py:30
+msgctxt "@info:status"
+msgid "today"
+msgstr "heute"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:138
+msgctxt "@action:button"
+msgid "Print via Cloud"
+msgstr "Über Cloud drucken"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:139
+msgctxt "@properties:tooltip"
+msgid "Print via Cloud"
+msgstr "Über Cloud drucken"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Cloud/CloudOutputDevice.py:140
+msgctxt "@info:status"
+msgid "Connected via Cloud"
+msgstr "Über Cloud verbunden"
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/__init__.py:14
 msgctxt "@item:inmenu"
 msgid "Monitor"
 msgstr "Überwachen"
 
-#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:118
+#: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:125
 msgctxt "@info"
 msgid "Could not access update information."
 msgstr "Zugriff auf Update-Informationen nicht möglich."
@@ -624,12 +440,12 @@ msgctxt "@item:inlistbox"
 msgid "Layer view"
 msgstr "Schichtenansicht"
 
-#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:114
+#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:117
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled"
 msgstr "Cura zeigt die Schichten nicht akkurat an, wenn Wire Printing aktiviert ist"
 
-#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:115
+#: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:118
 msgctxt "@info:title"
 msgid "Simulation View"
 msgstr "Simulationsansicht"
@@ -683,6 +499,36 @@ msgstr "BMP-Bilddatei"
 msgctxt "@item:inlistbox"
 msgid "GIF Image"
 msgstr "GIF-Bilddatei"
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:15
+msgctxt "@item:inlistbox"
+msgid "Open Compressed Triangle Mesh"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:19
+msgctxt "@item:inlistbox"
+msgid "COLLADA Digital Asset Exchange"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:23
+msgctxt "@item:inlistbox"
+msgid "glTF Binary"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:27
+msgctxt "@item:inlistbox"
+msgid "glTF Embedded JSON"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:36
+msgctxt "@item:inlistbox"
+msgid "Stanford Triangle Format"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:40
+msgctxt "@item:inlistbox"
+msgid "Compressed COLLADA Digital Asset Exchange"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:331
 msgctxt "@info:status"
@@ -764,19 +610,19 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "3MF-Datei"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:191
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:775
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:194
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:774
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Düse"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:474
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:479
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Projektdatei <filename>{0}</filename> enthält einen unbekannten Maschinentyp <message>{1}</message>. Importieren der Maschine ist nicht möglich. Stattdessen werden die Modelle importiert."
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:477
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:482
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Projektdatei öffnen"
@@ -791,18 +637,18 @@ msgctxt "@item:inlistbox"
 msgid "G File"
 msgstr "G-Datei"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:328
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:335
 msgctxt "@info:status"
 msgid "Parsing G-code"
 msgstr "G-Code parsen"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:330
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:483
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:337
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:491
 msgctxt "@info:title"
 msgid "G-code Details"
 msgstr "G-Code-Details"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:481
+#: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:489
 msgctxt "@info:generic"
 msgid "Make sure the g-code is suitable for your printer and printer configuration before sending the file to it. The g-code representation may not be accurate."
 msgstr "Stellen Sie sicher, dass der G-Code für Ihren Drucker und Ihre Druckerkonfiguration geeignet ist, bevor Sie die Datei senden. Der Darstellung des G-Codes ist möglicherweise nicht korrekt."
@@ -908,13 +754,13 @@ msgid "Not supported"
 msgstr "Nicht unterstützt"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:203
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:122
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Datei bereits vorhanden"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:204
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:124
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
@@ -926,116 +772,110 @@ msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "Ungültige Datei-URL:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:925
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:924
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "Die Einstellungen wurden an die aktuell verfügbaren Extruder angepasst:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:927
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:926
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "Einstellungen aktualisiert"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1481
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1483
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Extruder deaktiviert"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:132
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:135
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Export des Profils nach <filename>{0}</filename> fehlgeschlagen: <message>{1}</message>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:139
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:142
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Export des Profils nach <filename>{0}</filename> fehlgeschlagen: Fehlermeldung von Writer-Plugin."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:147
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Profil wurde nach <filename>{0}</filename> exportiert"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:145
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Export erfolgreich ausgeführt"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:172
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:175
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Import des Profils aus Datei <filename>{0}</filename>: {1} fehlgeschlagen"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:176
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:179
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Import des Profils aus Datei <filename>{0}</filename> kann erst durchgeführt werden, wenn ein Drucker hinzugefügt wurde."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:192
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:195
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Kein benutzerdefiniertes Profil für das Importieren in Datei <filename>{0}</filename>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:196
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:199
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Import des Profils aus Datei <filename>{0}</filename> fehlgeschlagen:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:220
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:230
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:223
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:233
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Dieses Profil <filename>{0}</filename> enthält falsche Daten, Importieren nicht möglich."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:243
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
 #, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
-msgstr "Die Maschine, die im Profil <filename>{0}</filename> ({1}) definiert wurde, entspricht nicht Ihrer derzeitigen Maschine ({2}). Importieren nicht möglich."
-
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:315
-#, python-brace-format
-msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "Import des Profils aus Datei <filename>{0}</filename> fehlgeschlagen:"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:318
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:320
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "Profil erfolgreich importiert {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:321
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:323
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "Datei {0} enthält kein gültiges Profil."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:324
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:326
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Profil {0} hat einen unbekannten Dateityp oder ist beschädigt."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:359
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:361
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Benutzerdefiniertes Profil"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:375
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:377
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "Für das Profil fehlt eine Qualitätsangabe."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:389
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:392
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
@@ -1113,7 +953,7 @@ msgctxt "@action:button"
 msgid "Next"
 msgstr "Weiter"
 
-#: /home/ruben/Projects/Cura/cura/UI/ObjectsModel.py:61
+#: /home/ruben/Projects/Cura/cura/UI/ObjectsModel.py:62
 #, python-brace-format
 msgctxt "@label"
 msgid "Group #{group_nr}"
@@ -1121,7 +961,6 @@ msgstr "Gruppe #{group_nr}"
 
 #: /home/ruben/Projects/Cura/cura/UI/WhatsNewPagesModel.py:17
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:85
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:508
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:124
@@ -1131,11 +970,26 @@ msgid "Close"
 msgstr "Schließen"
 
 #: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:17
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:91
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:67
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:48
 msgctxt "@action:button"
 msgid "Add"
 msgstr "Hinzufügen"
+
+#: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:18
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:81
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:355
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
+#: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:149
+#: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:87
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:283
+msgctxt "@action:button"
+msgid "Cancel"
+msgstr "Abbrechen"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:208
 msgctxt "@menuitem"
@@ -1156,7 +1010,6 @@ msgstr "Alle Dateien (*)"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:86
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:182
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:223
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:269
 msgctxt "@label"
 msgid "Unknown"
 msgstr "Unbekannt"
@@ -1182,12 +1035,12 @@ msgctxt "@label"
 msgid "Custom"
 msgstr "Benutzerdefiniert"
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:89
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:90
 msgctxt "@info:status"
 msgid "The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent the gantry from colliding with printed models."
 msgstr "Die Höhe der Druckabmessung wurde aufgrund des Wertes der Einstellung „Druckreihenfolge“ reduziert, um eine Kollision der Brücke mit den gedruckten Modellen zu verhindern."
 
-#: /home/ruben/Projects/Cura/cura/BuildVolume.py:91
+#: /home/ruben/Projects/Cura/cura/BuildVolume.py:92
 msgctxt "@info:title"
 msgid "Build Volume"
 msgstr "Produktabmessungen"
@@ -1212,39 +1065,44 @@ msgctxt "@message"
 msgid "Could not read response."
 msgstr "Antwort konnte nicht gelesen werden."
 
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:197
+#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:201
 msgctxt "@info"
 msgid "Unable to reach the Ultimaker account server."
 msgstr "Der Ultimaker-Konto-Server konnte nicht erreicht werden."
 
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:66
+#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:202
+msgctxt "@action:button"
+msgid "Retry"
+msgstr "Erneut versuchen"
+
+#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:70
 msgctxt "@message"
 msgid "Please give the required permissions when authorizing this application."
 msgstr "Erteilen Sie bitte die erforderlichen Freigaben bei der Autorisierung dieser Anwendung."
 
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:73
+#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:77
 msgctxt "@message"
 msgid "Something unexpected happened when trying to log in, please try again."
 msgstr "Bei dem Versuch, sich anzumelden, trat ein unerwarteter Fehler auf. Bitte erneut versuchen."
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:27
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:29
 msgctxt "@info:status"
 msgid "Multiplying and placing objects"
 msgstr "Objekte vervielfältigen und platzieren"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:28
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:30
 msgctxt "@info:title"
 msgid "Placing Objects"
 msgstr "Objekte platzieren"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:100
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:108
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsJob.py:103
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:149
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
 msgstr "Innerhalb der Druckabmessung für alle Objekte konnte keine Position gefunden werden"
 
-#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:100
+#: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:108
 msgctxt "@info:title"
 msgid "Placing Object"
 msgstr "Objekt-Platzierung"
@@ -1401,40 +1259,40 @@ msgctxt "@action:button"
 msgid "Send report"
 msgstr "Bericht senden"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:504
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:505
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Geräte werden geladen..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:819
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:820
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Die Szene wird eingerichtet..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:854
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:855
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Die Benutzeroberfläche wird geladen..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1133
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1134
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1611
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1623
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Es kann nur jeweils ein G-Code gleichzeitig geladen werden. Wichtige {0} werden übersprungen."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1621
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1633
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Wenn G-Code geladen wird, kann keine weitere Datei geöffnet werden. Wichtige {0} werden übersprungen."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1711
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1723
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "Das gewählte Modell war zu klein zum Laden."
@@ -1452,11 +1310,11 @@ msgstr "X (Breite)"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:76
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:90
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:194
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:213
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:232
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:253
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:272
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:206
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:244
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:284
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
@@ -1492,50 +1350,55 @@ msgstr "Heizbares Bett"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:151
 msgctxt "@label"
+msgid "Heated build volume"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:163
+msgctxt "@label"
 msgid "G-code flavor"
 msgstr "G-Code-Variante"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:176
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:188
 msgctxt "@title:label"
 msgid "Printhead Settings"
 msgstr "Druckkopfeinstellungen"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:190
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:202
 msgctxt "@label"
 msgid "X min"
 msgstr "X min."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:209
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:221
 msgctxt "@label"
 msgid "Y min"
 msgstr "Y min."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:228
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:240
 msgctxt "@label"
 msgid "X max"
 msgstr "X max."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:249
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:261
 msgctxt "@label"
 msgid "Y max"
 msgstr "Y max."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:268
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:280
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Brückenhöhe"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:282
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:294
 msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Anzahl Extruder"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:353
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Start G-Code"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:355
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:367
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Ende G-Code"
@@ -1606,13 +1469,13 @@ msgctxt "@label"
 msgid "ratings"
 msgstr "Bewertungen"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:38
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:32
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:30
 msgctxt "@title:tab"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:70
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:77
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:44
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:80
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:417
@@ -1728,17 +1591,17 @@ msgctxt "@info:button"
 msgid "Quit Cura"
 msgstr "Quit Cura"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:31
 msgctxt "@label"
 msgid "Community Contributions"
 msgstr "Community-Beiträge"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:34
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:31
 msgctxt "@label"
 msgid "Community Plugins"
 msgstr "Community-Plugins"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:43
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDownloadsPage.qml:40
 msgctxt "@label"
 msgid "Generic Materials"
 msgstr "Generische Materialien"
@@ -1799,27 +1662,52 @@ msgctxt "@label"
 msgid "Featured"
 msgstr "Unterstützter"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:66
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:34
 msgctxt "@label"
 msgid "Compatibility"
 msgstr "Kompatibilität"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:203
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:124
+msgctxt "@label:table_header"
+msgid "Machine"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:131
+msgctxt "@label:table_header"
+msgid "Print Core"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:137
+msgctxt "@label:table_header"
+msgid "Build Plate"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:143
+msgctxt "@label:table_header"
+msgid "Support"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:149
+msgctxt "@label:table_header"
+msgid "Quality"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:170
 msgctxt "@action:label"
 msgid "Technical Data Sheet"
 msgstr "Technisches Datenblatt"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:212
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:179
 msgctxt "@action:label"
 msgid "Safety Data Sheet"
 msgstr "Sicherheitsdatenblatt"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:221
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:188
 msgctxt "@action:label"
 msgid "Printing Guidelines"
 msgstr "Druckrichtlinien"
 
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:230
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:197
 msgctxt "@action:label"
 msgid "Website"
 msgstr "Website"
@@ -1919,70 +1807,76 @@ msgctxt "@label"
 msgid "Firmware update failed due to missing firmware."
 msgstr "Die Firmware-Aktualisierung ist aufgrund von fehlender Firmware fehlgeschlagen."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:144
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:181
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:155
+msgctxt "@label link to Connect and Cloud interfaces"
+msgid "Manage printer"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:192
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:183
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:153
 msgctxt "@label"
 msgid "Glass"
 msgstr "Glas"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:208
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:249
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:256
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:514
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:248
 msgctxt "@info"
 msgid "Please update your printer's firmware to manage the queue remotely."
 msgstr "Damit Sie die Warteschlange aus der Ferne verwalten können, müssen Sie die Druckfirmware aktualisieren."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:241
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:289
 msgctxt "@info"
 msgid "The webcam is not available because you are monitoring a cloud printer."
 msgstr "Die Webcam ist nicht verfügbar, weil Sie einen Cloud-Drucker überwachen."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:300
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:348
 msgctxt "@label:status"
 msgid "Loading..."
 msgstr "Lädt..."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:304
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:352
 msgctxt "@label:status"
 msgid "Unavailable"
 msgstr "Nicht verfügbar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:308
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:356
 msgctxt "@label:status"
 msgid "Unreachable"
 msgstr "Nicht erreichbar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:312
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:360
 msgctxt "@label:status"
 msgid "Idle"
 msgstr "Leerlauf"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:353
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:401
 msgctxt "@label"
 msgid "Untitled"
 msgstr "Unbenannt"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:374
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:422
 msgctxt "@label"
 msgid "Anonymous"
 msgstr "Anonym"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:401
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:449
 msgctxt "@label:status"
 msgid "Requires configuration changes"
 msgstr "Erfordert Konfigurationsänderungen"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:439
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:487
 msgctxt "@action:button"
 msgid "Details"
 msgstr "Details"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:130
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:132
 msgctxt "@label"
 msgid "Unavailable printer"
 msgstr "Drucker nicht verfügbar"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:132
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:134
 msgctxt "@label"
 msgid "First available"
 msgstr "Zuerst verfügbar"
@@ -2002,53 +1896,42 @@ msgctxt "@label"
 msgid "There are no print jobs in the queue. Slice and send a job to add one."
 msgstr "Die Warteschlange enthält keine Druckaufträge. Slicen Sie einen Auftrag und schicken Sie ihn ab, um ihn zur Warteschlange hinzuzufügen."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:116
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:115
 msgctxt "@label"
 msgid "Print jobs"
 msgstr "Druckaufträge"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:132
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:131
 msgctxt "@label"
 msgid "Total print time"
 msgstr "Druckdauer insgesamt"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:148
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:147
 msgctxt "@label"
 msgid "Waiting for"
 msgstr "Warten auf"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:50
-msgctxt "@window:title"
-msgid "Existing Connection"
-msgstr "Vorhandene Verbindung"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:52
-msgctxt "@message:text"
-msgid "This printer/group is already added to Cura. Please select another printer/group."
-msgstr "Diese/r Drucker/Gruppe wurde bereits zu Cura hinzugefügt. Wählen Sie bitte eine/n andere/n Drucker/Gruppe."
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:69
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:45
 msgctxt "@title:window"
 msgid "Connect to Networked Printer"
 msgstr "Anschluss an vernetzten Drucker"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:57
 msgctxt "@label"
 msgid "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
-msgstr "Um direkt auf Ihrem Drucker über das Netzwerk zu drucken, muss der Drucker über ein Netzwerkkabel oder per WLAN mit dem Netzwerk verbunden sein. Wenn Sie"
-" Cura nicht mit Ihrem Drucker verbinden, können Sie G-Code-Dateien auf einen USB-Stick kopieren und diesen am Drucker anschließen."
+msgstr "Um direkt auf Ihrem Drucker über das Netzwerk zu drucken, muss der Drucker über ein Netzwerkkabel oder per WLAN mit dem Netzwerk verbunden sein. Wenn Sie Cura nicht mit Ihrem Drucker verbinden, können Sie G-Code-Dateien auf einen USB-Stick kopieren und diesen am Drucker anschließen."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:81
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:57
 msgctxt "@label"
 msgid "Select your printer from the list below:"
 msgstr "Wählen Sie Ihren Drucker aus der folgenden Liste aus:"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:101
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:77
 msgctxt "@action:button"
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:112
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:146
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:55
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:121
@@ -2056,78 +1939,77 @@ msgctxt "@action:button"
 msgid "Remove"
 msgstr "Entfernen"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:120
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:96
 msgctxt "@action:button"
 msgid "Refresh"
 msgstr "Aktualisieren"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:215
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:176
 msgctxt "@label"
 msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
 msgstr "Wenn Ihr Drucker nicht aufgeführt ist, lesen Sie die <a href='%1'>Anleitung für Fehlerbehebung für Netzwerkdruck</a>"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:244
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:258
 msgctxt "@label"
 msgid "Type"
 msgstr "Typ"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:283
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:228
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:274
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Firmware-Version"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:242
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:290
 msgctxt "@label"
 msgid "Address"
 msgstr "Adresse"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:321
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:266
 msgctxt "@label"
 msgid "This printer is not set up to host a group of printers."
 msgstr "Dieser Drucker ist nicht eingerichtet um eine Gruppe von Druckern anzusteuern."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:325
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:270
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Dieser Drucker steuert eine Gruppe von %1 Druckern an."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:336
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:281
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "Der Drucker unter dieser Adresse hat nicht reagiert."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:341
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:74
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:286
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Verbinden"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:354
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:299
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Ungültige IP-Adresse"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:355
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:300
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Bitte eine gültige IP-Adresse eingeben."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:366
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:311
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Druckeradresse"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:389
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:334
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
-msgid "Enter the IP address or hostname of your printer on the network."
-msgstr "Geben Sie die IP-Adresse oder den Hostnamen Ihres Druckers auf dem Netzwerk ein."
+msgid "Enter the IP address of your printer on the network."
+msgstr ""
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:419
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:364
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:138
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:181
 msgctxt "@action:button"
@@ -2323,16 +2205,6 @@ msgctxt "@label"
 msgid "Aluminum"
 msgstr "Aluminium"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/UM3InfoComponents.qml:75
-msgctxt "@info:tooltip"
-msgid "Connect to a printer"
-msgstr "Mit einem Drucker verbinden"
-
-#: /home/ruben/Projects/Cura/plugins/SettingsGuide/resources/qml/SettingsGuide.qml:16
-msgctxt "@title"
-msgid "Cura Settings Guide"
-msgstr "Anleitung für Cura-Einstellungen"
-
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:100
 msgctxt "@info"
 msgid ""
@@ -2340,8 +2212,10 @@ msgid ""
 "- Check if the printer is turned on.\n"
 "- Check if the printer is connected to the network.\n"
 "- Check if you are signed in to discover cloud-connected printers."
-msgstr "Stellen Sie sicher, dass der Drucker verbunden ist:\n– Prüfen Sie, ob der Drucker eingeschaltet ist.– Prüfen Sie, ob der Drucker mit dem Netzwerk verbunden"
-" ist.\n– Prüfen Sie, ob Sie angemeldet sind, falls Sie über die Cloud verbundene Drucker suchen möchten."
+msgstr ""
+"Stellen Sie sicher, dass der Drucker verbunden ist:\n"
+"– Prüfen Sie, ob der Drucker eingeschaltet ist.– Prüfen Sie, ob der Drucker mit dem Netzwerk verbunden ist.\n"
+"– Prüfen Sie, ob Sie angemeldet sind, falls Sie über die Cloud verbundene Drucker suchen möchten."
 
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:117
 msgctxt "@info"
@@ -2972,97 +2846,97 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "Soll das Drucken wirklich abgebrochen werden?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:73
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:71
 msgctxt "@title"
 msgid "Information"
 msgstr "Informationen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:102
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:100
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "Änderung Durchmesser bestätigen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:103
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:101
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
 msgstr "Der neue Filament-Durchmesser wurde auf %1 mm eingestellt, was nicht kompatibel mit dem aktuellen Extruder ist. Möchten Sie fortfahren?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:127
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:125
 msgctxt "@label"
 msgid "Display Name"
 msgstr "Namen anzeigen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:137
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:135
 msgctxt "@label"
 msgid "Brand"
 msgstr "Marke"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:147
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:145
 msgctxt "@label"
 msgid "Material Type"
 msgstr "Materialtyp"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:157
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:155
 msgctxt "@label"
 msgid "Color"
 msgstr "Farbe"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:207
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:205
 msgctxt "@label"
 msgid "Properties"
 msgstr "Eigenschaften"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:209
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:207
 msgctxt "@label"
 msgid "Density"
 msgstr "Dichte"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:224
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:222
 msgctxt "@label"
 msgid "Diameter"
 msgstr "Durchmesser"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:258
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:256
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr "Filamentkosten"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:275
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:273
 msgctxt "@label"
 msgid "Filament weight"
 msgstr "Filamentgewicht"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:293
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:291
 msgctxt "@label"
 msgid "Filament length"
 msgstr "Filamentlänge"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:302
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:300
 msgctxt "@label"
 msgid "Cost per Meter"
 msgstr "Kosten pro Meter"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:316
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:314
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
 msgstr "Dieses Material ist mit %1 verknüpft und teilt sich damit einige seiner Eigenschaften."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:323
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:321
 msgctxt "@label"
 msgid "Unlink Material"
 msgstr "Material trennen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:334
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:332
 msgctxt "@label"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:347
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:345
 msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "Haftungsinformationen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:373
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:371
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
 msgctxt "@label"
 msgid "Print settings"
@@ -3258,8 +3132,8 @@ msgstr "Soll das Zoomen in Richtung der Maus erfolgen?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
-msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
-msgstr "Das Zoomen in Mausrichtung wird in der Orthogonalansicht nicht unterstützt."
+msgid "Zooming towards the mouse is not supported in the orthographic perspective."
+msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3321,8 +3195,8 @@ msgid "Perspective"
 msgstr "Ansicht"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
-msgid "Orthogonal"
-msgstr "Orthogonal"
+msgid "Orthographic"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -3580,7 +3454,7 @@ msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Globale Einstellungen"
 
-#: /home/ruben/Projects/Cura/resources/qml/MainWindow/MainWindowHeader.qml:89
+#: /home/ruben/Projects/Cura/resources/qml/MainWindow/MainWindowHeader.qml:90
 msgctxt "@action:button"
 msgid "Marketplace"
 msgstr "Marktplatz"
@@ -3858,54 +3732,54 @@ msgctxt "@tooltip of G-code command input"
 msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
 msgstr "Einen benutzerdefinierten G-Code-Befehl an den verbundenen Drucker senden. „Eingabe“ drücken, um den Befehl zu senden."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:38
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:41
 msgctxt "@label"
 msgid "Extruder"
 msgstr "Extruder"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:68
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:71
 msgctxt "@tooltip"
 msgid "The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If this is 0, the hotend heating is turned off."
 msgstr "Die Zieltemperatur des Hotend. Das Hotend wird auf diese Temperatur aufgeheizt oder abgekühlt. Wenn der Wert 0 beträgt, wird die Hotend-Heizung ausgeschaltet."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:100
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:103
 msgctxt "@tooltip"
 msgid "The current temperature of this hotend."
 msgstr "Die aktuelle Temperatur dieses Hotends."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:174
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:177
 msgctxt "@tooltip of temperature input"
 msgid "The temperature to pre-heat the hotend to."
 msgstr "Die Temperatur, auf die das Hotend vorgeheizt wird."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:338
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:332
 msgctxt "@button Cancel pre-heating"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:344
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:335
 msgctxt "@button"
 msgid "Pre-heat"
 msgstr "Vorheizen"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:367
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:370
 msgctxt "@tooltip of pre-heat"
 msgid "Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, and you won't have to wait for the hotend to heat up when you're ready to print."
 msgstr "Heizen Sie das Hotend vor Druckbeginn auf. Sie können Ihren Druck während des Aufheizens weiter anpassen und müssen nicht warten, bis das Hotend aufgeheizt ist, wenn Sie druckbereit sind."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:403
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:406
 msgctxt "@tooltip"
 msgid "The colour of the material in this extruder."
 msgstr "Die Farbe des Materials in diesem Extruder."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:435
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:438
 msgctxt "@tooltip"
 msgid "The material in this extruder."
 msgstr "Das Material in diesem Extruder."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:467
+#: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:470
 msgctxt "@tooltip"
 msgid "The nozzle inserted in this extruder."
 msgstr "Die in diesem Extruder eingesetzte Düse."
@@ -3965,32 +3839,32 @@ msgctxt "@title:menu menubar:settings"
 msgid "&Printer"
 msgstr "Dr&ucker"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:32
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:27
 msgctxt "@title:menu"
 msgid "&Material"
 msgstr "&Material"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:41
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:36
 msgctxt "@action:inmenu"
 msgid "Set as Active Extruder"
 msgstr "Als aktiven Extruder festlegen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:47
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:42
 msgctxt "@action:inmenu"
 msgid "Enable Extruder"
 msgstr "Extruder aktivieren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:54
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:49
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Extruder deaktivieren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:68
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:63
 msgctxt "@title:menu"
 msgid "&Build plate"
 msgstr "&Druckplatte"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:71
+#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:66
 msgctxt "@title:settings"
 msgid "&Profile"
 msgstr "&Profil"
@@ -4035,17 +3909,17 @@ msgctxt "@action:inmenu"
 msgid "Manage Setting Visibility..."
 msgstr "Sichtbarkeit einstellen verwalten..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:32
+#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:33
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
 msgstr "&Speichern..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:53
+#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:54
 msgctxt "@title:menu menubar:file"
 msgid "&Export..."
 msgstr "&Exportieren..."
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:64
+#: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:65
 msgctxt "@action:inmenu menubar:file"
 msgid "Export Selection..."
 msgstr "Auswahl exportieren..."
@@ -4548,27 +4422,27 @@ msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Datei(en) öffnen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:691
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:696
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Paket installieren"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:699
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:704
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Datei(en) öffnen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:702
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:707
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Es wurden eine oder mehrere G-Code-Datei(en) innerhalb der von Ihnen gewählten Dateien gefunden. Sie können nur eine G-Code-Datei auf einmal öffnen. Wenn Sie eine G-Code-Datei öffnen möchten wählen Sie bitte nur eine Datei."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:805
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:810
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Drucker hinzufügen"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:813
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:818
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "Neuheiten"
@@ -5210,23 +5084,13 @@ msgstr "Ausgabegerät-Plugin für Wechseldatenträger"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
-msgid "Manages network connections to Ultimaker 3 printers."
-msgstr "Verwaltet Netzwerkverbindungen zu Ultimaker 3-Druckern."
+msgid "Manages network connections to Ultimaker networked printers."
+msgstr ""
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
-msgid "UM3 Network Connection"
-msgstr "UM3-Netzwerkverbindung"
-
-#: SettingsGuide/plugin.json
-msgctxt "description"
-msgid "Provides extra information and explanations about settings in Cura, with images and animations."
-msgstr "Bietet zusätzliche Informationen und Erklärungen zu den Einstellungen in Cura mit Abbildungen und Animationen."
-
-#: SettingsGuide/plugin.json
-msgctxt "name"
-msgid "Settings Guide"
-msgstr "Anleitung für Einstellungen"
+msgid "Ultimaker Network Connection"
+msgstr ""
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5458,6 +5322,16 @@ msgctxt "name"
 msgid "Version Upgrade 2.2 to 2.4"
 msgstr "Upgrade von Version 2.2 auf 2.4"
 
+#: VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
+msgstr ""
+
+#: VersionUpgrade/VersionUpgrade42to43/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.2 to 4.3"
+msgstr ""
+
 #: ImageReader/plugin.json
 msgctxt "description"
 msgid "Enables ability to generate printable geometry from 2D image files."
@@ -5467,6 +5341,16 @@ msgstr "Ermöglicht Erstellung von druckbarer Geometrie aus einer 2D-Bilddatei."
 msgctxt "name"
 msgid "Image Reader"
 msgstr "Bild-Reader"
+
+#: TrimeshReader/plugin.json
+msgctxt "description"
+msgid "Provides support for reading model files."
+msgstr ""
+
+#: TrimeshReader/plugin.json
+msgctxt "name"
+msgid "Trimesh Reader"
+msgstr ""
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"
@@ -5587,6 +5471,221 @@ msgstr "Ermöglicht das Importieren von Cura-Profilen."
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Cura-Profil-Reader"
+
+#~ msgctxt "@info:status"
+#~ msgid "Connected over the network."
+#~ msgstr "Über Netzwerk verbunden."
+
+#~ msgctxt "@info:status"
+#~ msgid "Connected over the network. Please approve the access request on the printer."
+#~ msgstr "Über Netzwerk verbunden. Geben Sie die Zugriffsanforderung für den Drucker frei."
+
+#~ msgctxt "@info:status"
+#~ msgid "Connected over the network. No access to control the printer."
+#~ msgstr "Über Netzwerk verbunden. Kein Zugriff auf die Druckerverwaltung."
+
+#~ msgctxt "@info:status"
+#~ msgid "Access to the printer requested. Please approve the request on the printer"
+#~ msgstr "Zugriff auf Drucker erforderlich. Bestätigen Sie den Zugriff auf den Drucker"
+
+#~ msgctxt "@info:title"
+#~ msgid "Authentication status"
+#~ msgstr "Authentifizierungsstatus"
+
+#~ msgctxt "@info:title"
+#~ msgid "Authentication Status"
+#~ msgstr "Authentifizierungsstatus"
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Re-send the access request"
+#~ msgstr "Zugriffanforderung erneut senden"
+
+#~ msgctxt "@info:status"
+#~ msgid "Access to the printer accepted"
+#~ msgstr "Zugriff auf den Drucker genehmigt"
+
+#~ msgctxt "@info:status"
+#~ msgid "No access to print with this printer. Unable to send print job."
+#~ msgstr "Kein Zugriff auf das Drucken mit diesem Drucker. Druckauftrag kann nicht gesendet werden."
+
+#~ msgctxt "@action:button"
+#~ msgid "Request Access"
+#~ msgstr "Zugriff anfordern"
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Send access request to the printer"
+#~ msgstr "Zugriffsanforderung für den Drucker senden"
+
+#~ msgctxt "@label"
+#~ msgid "Unable to start a new print job."
+#~ msgstr "Es kann kein neuer Druckauftrag gestartet werden."
+
+#~ msgctxt "@label"
+#~ msgid "There is an issue with the configuration of your Ultimaker, which makes it impossible to start the print. Please resolve this issues before continuing."
+#~ msgstr "Es liegt ein Problem mit der Konfiguration Ihres Ultimaker vor, das den Druckstart verhindert. Lösen Sie dieses Problem bitte, bevor Sie fortfahren."
+
+#~ msgctxt "@window:title"
+#~ msgid "Mismatched configuration"
+#~ msgstr "Konfiguration nicht übereinstimmend"
+
+#~ msgctxt "@label"
+#~ msgid "Are you sure you wish to print with the selected configuration?"
+#~ msgstr "Möchten Sie wirklich mit der gewählten Konfiguration drucken?"
+
+#~ msgctxt "@label"
+#~ msgid "There is a mismatch between the configuration or calibration of the printer and Cura. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+#~ msgstr "Anforderungen zwischen der Druckerkonfiguration oder -kalibrierung und Cura stimmen nicht überein. Für optimale Ergebnisse schneiden Sie stets für die PrintCores und Materialien, die in Ihren Drucker eingelegt wurden."
+
+#~ msgctxt "@info:status"
+#~ msgid "Sending new jobs (temporarily) blocked, still sending the previous print job."
+#~ msgstr "Das Senden neuer Aufträge ist (vorübergehend) blockiert; der vorherige Druckauftrag wird noch gesendet."
+
+#~ msgctxt "@info:status"
+#~ msgid "Sending data to printer"
+#~ msgstr "Daten werden zum Drucker gesendet"
+
+#~ msgctxt "@info:title"
+#~ msgid "Sending Data"
+#~ msgstr "Daten werden gesendet"
+
+#~ msgctxt "@info:status"
+#~ msgid "No Printcore loaded in slot {slot_number}"
+#~ msgstr "Kein PrintCore geladen in Steckplatz {slot_number}"
+
+#~ msgctxt "@info:status"
+#~ msgid "No material loaded in slot {slot_number}"
+#~ msgstr "Kein Material geladen in Steckplatz {slot_number}"
+
+#~ msgctxt "@label"
+#~ msgid "Different PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) selected for extruder {extruder_id}"
+#~ msgstr "Abweichender PrintCore (Cura: {cura_printcore_name}, Printer: {remote_printcore_name}) für Extruder gewählt {extruder_id}"
+
+#~ msgctxt "@label"
+#~ msgid "Different material (Cura: {0}, Printer: {1}) selected for extruder {2}"
+#~ msgstr "Abweichendes Material (Cura: {0}, Drucker: {1}) für Extruder {2} gewählt"
+
+#~ msgctxt "@window:title"
+#~ msgid "Sync with your printer"
+#~ msgstr "Synchronisieren Ihres Druckers"
+
+#~ msgctxt "@label"
+#~ msgid "Would you like to use your current printer configuration in Cura?"
+#~ msgstr "Möchten Sie Ihre aktuelle Druckerkonfiguration in Cura verwenden?"
+
+#~ msgctxt "@label"
+#~ msgid "The PrintCores and/or materials on your printer differ from those within your current project. For the best result, always slice for the PrintCores and materials that are inserted in your printer."
+#~ msgstr "Die PrintCores und/oder Materialien auf Ihrem Drucker unterscheiden sich von denen Ihres aktuellen Projekts. Für optimale Ergebnisse schneiden Sie stets für die PrintCores und Materialien, die in Ihren Drucker eingelegt wurden."
+
+#~ msgctxt "@action:button"
+#~ msgid "View in Monitor"
+#~ msgstr "In Monitor überwachen"
+
+#~ msgctxt "@info:status"
+#~ msgid "Printer '{printer_name}' has finished printing '{job_name}'."
+#~ msgstr "Drucker '{printer_name}' hat '{job_name}' vollständig gedrückt."
+
+#~ msgctxt "@info:status"
+#~ msgid "The print job '{job_name}' was finished."
+#~ msgstr "Der Druckauftrag '{job_name}' wurde ausgeführt."
+
+#~ msgctxt "@info:status"
+#~ msgid "Print finished"
+#~ msgstr "Druck vollendet"
+
+#~ msgctxt "@label:material"
+#~ msgid "Empty"
+#~ msgstr "Leer"
+
+#~ msgctxt "@label:material"
+#~ msgid "Unknown"
+#~ msgstr "Unbekannt"
+
+#~ msgctxt "@info:title"
+#~ msgid "Cloud error"
+#~ msgstr "Cloudfehler"
+
+#~ msgctxt "@info:status"
+#~ msgid "Could not export print job."
+#~ msgstr "Druckauftrag konnte nicht exportiert werden."
+
+#~ msgctxt "@info:description"
+#~ msgid "There was an error connecting to the cloud."
+#~ msgstr "Es liegt ein Fehler beim Verbinden mit der Cloud vor."
+
+#~ msgctxt "@info:status"
+#~ msgid "Uploading via Ultimaker Cloud"
+#~ msgstr "Über Ultimaker Cloud hochladen"
+
+#~ msgctxt "@info:status Ultimaker Cloud is a brand name and shouldn't be translated."
+#~ msgid "Connect to Ultimaker Cloud"
+#~ msgstr "Verbinden mit Ultimaker Cloud"
+
+#~ msgctxt "@action"
+#~ msgid "Don't ask me again for this printer."
+#~ msgstr "Nicht mehr für diesen Drucker nachfragen."
+
+#~ msgctxt "@info:status"
+#~ msgid "You can now send and monitor print jobs from anywhere using your Ultimaker account."
+#~ msgstr "Sie können jetzt Druckaufträge mithilfe Ihres Ultimaker-Kontos von einem anderen Ort aus senden und überwachen."
+
+#~ msgctxt "@info:status"
+#~ msgid "Connected!"
+#~ msgstr "Verbunden!"
+
+#~ msgctxt "@action"
+#~ msgid "Review your connection"
+#~ msgstr "Ihre Verbindung überprüfen"
+
+#~ msgctxt "@info:status Don't translate the XML tags <filename>!"
+#~ msgid "The machine defined in profile <filename>{0}</filename> ({1}) doesn't match with your current machine ({2}), could not import it."
+#~ msgstr "Die Maschine, die im Profil <filename>{0}</filename> ({1}) definiert wurde, entspricht nicht Ihrer derzeitigen Maschine ({2}). Importieren nicht möglich."
+
+#~ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
+#~ msgid "Failed to import profile from <filename>{0}</filename>:"
+#~ msgstr "Import des Profils aus Datei <filename>{0}</filename> fehlgeschlagen:"
+
+#~ msgctxt "@window:title"
+#~ msgid "Existing Connection"
+#~ msgstr "Vorhandene Verbindung"
+
+#~ msgctxt "@message:text"
+#~ msgid "This printer/group is already added to Cura. Please select another printer/group."
+#~ msgstr "Diese/r Drucker/Gruppe wurde bereits zu Cura hinzugefügt. Wählen Sie bitte eine/n andere/n Drucker/Gruppe."
+
+#~ msgctxt "@label"
+#~ msgid "Enter the IP address or hostname of your printer on the network."
+#~ msgstr "Geben Sie die IP-Adresse oder den Hostnamen Ihres Druckers auf dem Netzwerk ein."
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Connect to a printer"
+#~ msgstr "Mit einem Drucker verbinden"
+
+#~ msgctxt "@title"
+#~ msgid "Cura Settings Guide"
+#~ msgstr "Anleitung für Cura-Einstellungen"
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Zooming towards the mouse is not supported in the orthogonal perspective."
+#~ msgstr "Das Zoomen in Mausrichtung wird in der Orthogonalansicht nicht unterstützt."
+
+#~ msgid "Orthogonal"
+#~ msgstr "Orthogonal"
+
+#~ msgctxt "description"
+#~ msgid "Manages network connections to Ultimaker 3 printers."
+#~ msgstr "Verwaltet Netzwerkverbindungen zu Ultimaker 3-Druckern."
+
+#~ msgctxt "name"
+#~ msgid "UM3 Network Connection"
+#~ msgstr "UM3-Netzwerkverbindung"
+
+#~ msgctxt "description"
+#~ msgid "Provides extra information and explanations about settings in Cura, with images and animations."
+#~ msgstr "Bietet zusätzliche Informationen und Erklärungen zu den Einstellungen in Cura mit Abbildungen und Animationen."
+
+#~ msgctxt "name"
+#~ msgid "Settings Guide"
+#~ msgstr "Anleitung für Einstellungen"
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Cura Settings Guide"
