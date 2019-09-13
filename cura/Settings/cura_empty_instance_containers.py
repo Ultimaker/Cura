@@ -25,6 +25,9 @@ EMPTY_MATERIAL_CONTAINER_ID = "empty_material"
 empty_material_container = copy.deepcopy(empty_container)
 empty_material_container.setMetaDataEntry("id", EMPTY_MATERIAL_CONTAINER_ID)
 empty_material_container.setMetaDataEntry("type", "material")
+empty_material_container.setMetaDataEntry("base_file", "empty_material")
+empty_material_container.setMetaDataEntry("GUID", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")
+empty_material_container.setMetaDataEntry("material", "empty")
 
 # Empty quality
 EMPTY_QUALITY_CONTAINER_ID = "empty_quality"
