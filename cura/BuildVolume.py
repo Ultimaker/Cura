@@ -269,10 +269,11 @@ class BuildVolume(SceneNode):
                     continue
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
-                if extruder_position not in self._global_container_stack.extruders:
-                    continue
-                if not self._global_container_stack.extruders[extruder_position].isEnabled:
-                    node.setOutsideBuildArea(True)
+                try:
+                    if not self._global_container_stack.extrudersList[int(extruder_position)].isEnabled:
+                        node.setOutsideBuildArea(True)
+                        continue
+                except IndexError:
                     continue
 
                 node.setOutsideBuildArea(False)
@@ -319,7 +320,7 @@ class BuildVolume(SceneNode):
 
             # Mark the node as outside build volume if the set extruder is disabled
             extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if not self._global_container_stack.extruders[extruder_position].isEnabled:
+            if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
                 node.setOutsideBuildArea(True)
                 return
 
@@ -549,7 +550,7 @@ class BuildVolume(SceneNode):
             return
 
         old_raft_thickness = self._raft_thickness
-        if self._global_container_stack.extruders:
+        if self._global_container_stack.extruderList:
             # This might be called before the extruder stacks have initialised, in which case getting the adhesion_type fails
             self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
         self._raft_thickness = 0.0
@@ -1098,7 +1099,7 @@ class BuildVolume(SceneNode):
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
     def getEdgeDisallowedSize(self):
-        if not self._global_container_stack or not self._global_container_stack.extruders:
+        if not self._global_container_stack or not self._global_container_stack.extruderList:
             return 0
 
         container_stack = self._global_container_stack

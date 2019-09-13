@@ -67,7 +67,7 @@ class MachineErrorChecker(QObject):
             self._global_stack.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.disconnect(self.startErrorCheck)
 
-            for extruder in self._global_stack.extruders.values():
+            for extruder in self._global_stack.extruderList:
                 extruder.propertyChanged.disconnect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.disconnect(self.startErrorCheck)
 
@@ -77,7 +77,7 @@ class MachineErrorChecker(QObject):
             self._global_stack.propertyChanged.connect(self.startErrorCheckPropertyChanged)
             self._global_stack.containersChanged.connect(self.startErrorCheck)
 
-            for extruder in self._global_stack.extruders.values():
+            for extruder in self._global_stack.extruderList:
                 extruder.propertyChanged.connect(self.startErrorCheckPropertyChanged)
                 extruder.containersChanged.connect(self.startErrorCheck)
 
@@ -127,7 +127,7 @@ class MachineErrorChecker(QObject):
 
         # Populate the (stack, key) tuples to check
         self._stacks_and_keys_to_check = deque()
-        for stack in global_stack.extruders.values():
+        for stack in global_stack.extruderList:
             for key in stack.getAllKeys():
                 self._stacks_and_keys_to_check.append((stack, key))
 
