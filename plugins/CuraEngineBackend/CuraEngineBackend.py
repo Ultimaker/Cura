@@ -543,6 +543,15 @@ class CuraEngineBackend(QObject, Backend):
         if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
+    # Check if there's any slicable object in the scene.
+    def hasSlicableObject(self) -> bool:
+        has_slicable = False
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("isSliceable"):
+                has_slicable = True
+                break
+        return has_slicable
+
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
         # Clear out any old gcode
@@ -561,6 +570,10 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self) -> None:
+        # CURA-6604: If there's no slicable object, do not (try to) trigger slice, which will clear all the current
+        # gcode. This can break Gcode file loading if it tries to remove it afterwards.
+        if not self.hasSlicableObject():
+            return
         self.determineAutoSlicing()
         self.stopSlicing()
         self.markSliceAll()
@@ -632,7 +645,10 @@ class CuraEngineBackend(QObject, Backend):
         self.setState(BackendState.Done)
         self.processingProgress.emit(1.0)
 
-        gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
+        try:
+            gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            gcode_list = []
         for index, line in enumerate(gcode_list):
             replaced = line.replace("{print_time}", str(self._application.getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
             replaced = replaced.replace("{filament_amount}", str(self._application.getPrintInformation().materialLengths))

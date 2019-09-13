@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Dict, Optional, Callable, List
 
 from UM import i18nCatalog
@@ -66,7 +67,7 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        api_client = ClusterApiClient(address, lambda error: print(error))
+        api_client = ClusterApiClient(address, lambda error: Logger.log("e", str(error)))
         api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status, callback))
 
     ## Remove a manually added networked printer.
@@ -135,10 +136,13 @@ class LocalClusterOutputDeviceManager:
         ultimaker_machines = container_registry.findContainersMetadata(type="machine", manufacturer="Ultimaker B.V.")
         found_machine_type_identifiers = {}  # type: Dict[str, str]
         for machine in ultimaker_machines:
-            machine_bom_number = machine.get("firmware_update_info", {}).get("id", None)
             machine_type = machine.get("id", None)
-            if machine_bom_number and machine_type:
-                found_machine_type_identifiers[str(machine_bom_number)] = machine_type
+            machine_bom_numbers = machine.get("bom_numbers", [])
+            if machine_type and machine_bom_numbers:
+                for bom_number in machine_bom_numbers:
+                    # This produces a n:1 mapping of bom numbers to machine types
+                    # allowing the S5R1 and S5R2 hardware to use a single S5 definition.
+                    found_machine_type_identifiers[str(bom_number)] = machine_type
         return found_machine_type_identifiers
 
     ## Add a new device.
@@ -236,7 +240,11 @@ class LocalClusterOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         machine.setMetaDataEntry("group_name", device.name)
-
-        device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
-        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
+
+        if not device.isConnected():
+            device.connect()
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)

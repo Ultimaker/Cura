@@ -14,7 +14,7 @@ import Cura 1.1 as Cura
 ComboBox
 {
     id: control
-    property bool highlighted: False
+    property bool highlighted: false
     background: Rectangle
     {
         color:

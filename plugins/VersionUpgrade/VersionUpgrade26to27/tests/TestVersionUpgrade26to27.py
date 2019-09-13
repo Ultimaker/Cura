@@ -3,7 +3,9 @@
 
 import configparser #To check whether the appropriate exceptions are raised.
 import pytest #To register tests with.
-
+import os.path
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 import VersionUpgrade26to27 #The module we're testing.
 
 ##  Creates an instance of the upgrader to test with.

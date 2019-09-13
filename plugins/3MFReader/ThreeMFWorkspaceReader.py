@@ -33,6 +33,8 @@ from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
 
+from PyQt5.QtCore import QCoreApplication
+
 from .WorkspaceDialog import WorkspaceDialog
 
 i18n_catalog = i18nCatalog("cura")
@@ -230,6 +232,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             else:
                 Logger.log("w", "Unknown definition container type %s for %s",
                            definition_container_type, definition_container_file)
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if machine_definition_container_count != 1:
@@ -256,6 +259,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     containers_found_dict["material"] = True
                     if not self._container_registry.isReadOnly(container_id):  # Only non readonly materials can be in conflict
                         material_conflict = True
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
                 Job.yieldThread()
 
         # Check if any quality_changes instance container is in conflict.
@@ -325,7 +329,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 # Ignore certain instance container types
                 Logger.log("w", "Ignoring instance container [%s] with type [%s]", container_id, container_type)
                 continue
-
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
             Job.yieldThread()
 
         if self._machine_info.quality_changes_info.global_info is None:
@@ -402,7 +406,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
             if variant_id not in ("empty", "empty_variant"):
                 self._machine_info.variant_info = instance_container_info_dict[variant_id]
-
+        QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
         Job.yieldThread()
 
         # if the global stack is found, we check if there are conflicts in the extruder stacks
@@ -657,6 +661,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     definition_container = self._container_registry.findDefinitionContainers(id = "fdmprinter")[0] #Fall back to defaults.
                 self._container_registry.addContainer(definition_container)
             Job.yieldThread()
+            QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         Logger.log("d", "Workspace loading is checking materials...")
         # Get all the material files and check if they exist. If not, add them.
@@ -706,6 +711,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     material_container.setDirty(True)
                     self._container_registry.addContainer(material_container)
                 Job.yieldThread()
+                QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
 
         # Handle quality changes if any
         self._processQualityChanges(global_stack)
