@@ -8,7 +8,7 @@ from UM.Logger import Logger
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer  # The new profile to make.
 from cura.CuraApplication import CuraApplication
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
+from cura.Machines.ContainerTree import ContainerTree
 from cura.ReaderWriters.ProfileReader import ProfileReader
 
 import zipfile
@@ -97,7 +97,7 @@ class CuraProfileReader(ProfileReader):
         if global_stack is None:
             return None
 
-        active_quality_definition = getMachineDefinitionIDForQualitySearch(global_stack.definition)
+        active_quality_definition = ContainerTree.getInstance().machines[global_stack.definition.container_id].quality_definition
         if profile.getMetaDataEntry("definition") != active_quality_definition:
             profile.setMetaDataEntry("definition", active_quality_definition)
         return profile

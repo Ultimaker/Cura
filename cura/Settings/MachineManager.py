@@ -46,7 +46,6 @@ catalog = i18nCatalog("cura")
 from cura.Settings.GlobalStack import GlobalStack
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
-    from cura.Settings.CuraContainerStack import CuraContainerStack
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Machines.QualityGroup import QualityGroup
@@ -265,7 +264,11 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
+        if self._active_container_stack is not None:
+            self._active_container_stack.pyqtContainersChanged.disconnect(self.activeStackChanged)  # Unplug from the old one.
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
+        if self._active_container_stack is not None:
+            self._active_container_stack.pyqtContainersChanged.connect(self.activeStackChanged)  # Plug into the new one.
 
     def __emitChangedSignals(self) -> None:
         self.activeQualityChanged.emit()
@@ -1314,19 +1317,18 @@ class MachineManager(QObject):
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
-        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id"),
-                           "um_network_key": self.activeMachineNetworkKey(),
-                           }
+        metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id")}
         new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
         # If there is no machine, then create a new one and set it to the non-hidden instance
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
                 return
-            new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
-            new_machine.setMetaDataEntry("um_network_key", self.activeMachineNetworkKey())
-            new_machine.setMetaDataEntry("group_name", self.activeMachineNetworkGroupName)
-            new_machine.setMetaDataEntry("connection_type", self._global_container_stack.getMetaDataEntry("connection_type"))
+            
+            for metadata_key in self._global_container_stack.getMetaData():
+                if metadata_key in new_machine.getMetaData():
+                    continue  # Don't copy the already preset stuff.
+                new_machine.setMetaDataEntry(metadata_key, self._global_container_stack.getMetaDataEntry(metadata_key))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
 
@@ -1573,9 +1575,8 @@ class MachineManager(QObject):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack or global_stack.qualityChanges == empty_quality_changes_container:
             return None
-        candidate_groups = ContainerTree.getInstance().getCurrentQualityChangesGroups()
-        for group in candidate_groups:  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
-            if group.node_for_global and group.node_for_global.container_id == global_stack.qualityChanges.getId():
+        for group in ContainerTree.getInstance().getCurrentQualityChangesGroups():  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
+            if group.metadata_for_global and group.metadata_for_global["id"] == global_stack.qualityChanges.getId():
                 return group
         return None
 

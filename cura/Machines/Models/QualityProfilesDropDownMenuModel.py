@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer
+from typing import TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -9,7 +10,9 @@ from UM.Settings.SettingFunction import SettingFunction
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.QualityManager import QualityGroup
+
+if TYPE_CHECKING:
+    from cura.Machines import QualityGroup
 
 
 #
@@ -42,6 +45,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         application.globalContainerStackChanged.connect(self._onChange)
         machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        machine_manager.activeStackChanged.connect(self._onChange)
         machine_manager.extruderChanged.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
@@ -74,7 +78,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
 
         item_list = []
-        for key in sorted(quality_group_dict):
+        for key in quality_group_dict:
             quality_group = quality_group_dict[key]
 
             layer_height = self._fetchLayerHeight(quality_group)

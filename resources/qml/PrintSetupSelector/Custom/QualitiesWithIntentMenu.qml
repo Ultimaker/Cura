@@ -106,13 +106,75 @@ Popup
                                 if(Cura.MachineManager.hasCustomQuality)
                                 {
                                     // When user created profile is active, no quality tickbox should be active.
-                                    return false
+                                    return false;
                                 }
-                                return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category
+                                return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category;
                             }
                             ButtonGroup.group: buttonGroup
 
                         }
+                    }
+                }
+            }
+        }
+
+        //Another "intent category" for custom profiles.
+        Item
+        {
+            height: childrenRect.height
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+            }
+
+            Label
+            {
+                id: customProfileHeader
+                text: catalog.i18nc("@label:header", "Custom profiles")
+                renderType: Text.NativeRendering
+                height: visible ? contentHeight: 0
+                enabled: false
+                visible: profilesList.visibleChildren.length > 0
+                anchors.left: parent.left
+                anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            }
+
+            Column
+            {
+                id: profilesList
+                anchors
+                {
+                    top: customProfileHeader.bottom
+                    left: parent.left
+                    right: parent.right
+                }
+
+                //We set it by means of a binding, since then we can use the
+                //"when" condition, which we need to prevent a binding loop.
+                Binding
+                {
+                    target: parent
+                    property: "height"
+                    value: parent.childrenRect.height
+                    when: parent.visibleChildren.length > 0
+                }
+
+                //Add all the custom profiles.
+                Repeater
+                {
+                    visible: false
+                    model: Cura.CustomQualityProfilesDropDownMenuModel
+                    MenuButton
+                    {
+                        onClicked: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
+
+                        width: parent.width
+                        checkable: true
+                        visible: model.available
+                        text: model.name + " - " + model.layer_height + " mm"
+                        checked: Cura.MachineManager.activeQualityChangesGroup == model.quality_changes_group
+                        ButtonGroup.group: buttonGroup
                     }
                 }
             }
