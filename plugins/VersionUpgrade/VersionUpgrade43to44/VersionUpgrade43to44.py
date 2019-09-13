@@ -54,7 +54,8 @@ class VersionUpgrade43to44(VersionUpgrade):
         parser["metadata"]["setting_version"] = "10"
 
         # We should only have 6 levels when we start.
-        assert "7" not in parser["containers"]
+        if "7" in parser["containers"]:
+            return ([], [])
 
         # We added the intent container in Cura 4.4. This means that all other containers move one step down.
         parser["containers"]["7"] = parser["containers"]["6"]
