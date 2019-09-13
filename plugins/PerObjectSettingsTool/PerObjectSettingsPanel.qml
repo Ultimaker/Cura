@@ -27,6 +27,8 @@ Item
     property var current_mesh_type: UM.ActiveTool.properties.getValue("MeshType")
 
 
+    onCurrent_mesh_typeChanged: updateView(current_mesh_type)
+
     function setOverhangsMeshType(){
         if (infillOnlyCheckbox.checked)
         {
@@ -38,8 +40,11 @@ Item
         }
     }
 
-    function setMeshType(type) {
+    function setMeshType(type){
         UM.ActiveTool.setProperty("MeshType", type)
+    }
+
+    function updateView(type) {
 
         // set checked state of mesh type buttons
         normalButton.checked = type === normal_mesh_type
@@ -66,8 +71,6 @@ Item
         anchors.left: parent.left;
 
         spacing: UM.Theme.getSize("default_margin").height
-
-        Component.onCompleted: setMeshType(UM.ActiveTool.properties.getValue("MeshType"))
 
         Row // Mesh type buttons
         {
