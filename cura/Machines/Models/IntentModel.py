@@ -74,6 +74,8 @@ class IntentModel(ListModel):
         active_material_node = active_variant_node.materials[active_extruder.material.getMetaDataEntry("base_file")]
         layer_heights_added = []
         for quality_id, quality_node in active_material_node.qualities.items():
+            if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
+                continue
             quality_group = quality_groups[quality_node.quality_type]
             layer_height = self._fetchLayerHeight(quality_group)
 
