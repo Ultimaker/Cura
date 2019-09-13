@@ -12,7 +12,7 @@ import cura.CuraApplication  # Imported this way to prevent circular dependencie
 from cura.Machines.ContainerTree import ContainerTree
 
 if TYPE_CHECKING:
-    from cura.Machines import QualityGroup
+    from cura.Machines.QualityGroup import QualityGroup
 
 
 #
