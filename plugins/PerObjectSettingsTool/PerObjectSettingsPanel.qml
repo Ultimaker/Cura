@@ -124,84 +124,67 @@ Item
 
         }
 
-        Row // Selected mesh type label
+         Label
         {
-            spacing: UM.Theme.getSize("default_margin").width
-
-             Label
-            {
-                id: meshTypeLabel
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                height: UM.Theme.getSize("setting").height
-                verticalAlignment: Text.AlignVCenter
-            }
-
+            id: meshTypeLabel
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            height: UM.Theme.getSize("setting").height
+            verticalAlignment: Text.AlignVCenter
         }
 
-        Row // Infill-only checkbox (visible for overhang mesh button)
+        CheckBox
         {
-            spacing: UM.Theme.getSize("default_margin").width
+            id: infillOnlyCheckbox
 
+            text: catalog.i18nc("@action:checkbox","Infill only");
 
-            CheckBox
-            {
-                id: infillOnlyCheckbox
+            style: UM.Theme.styles.checkbox;
 
-                text: catalog.i18nc("@action:checkbox","Infill only");
-
-                style: UM.Theme.styles.checkbox;
-
-                checked: current_mesh_type === infill_mesh_type
-                visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
-                onClicked: setOverhangsMeshType()
-            }
+            checked: current_mesh_type === infill_mesh_type
+            visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
+            onClicked: setOverhangsMeshType()
         }
 
-        Row
+        Button
         {
-            spacing: UM.Theme.getSize("default_margin").width
+            id: customiseSettingsButton;
+            height: UM.Theme.getSize("setting_control").height;
+            visible: currentSettings.visible
 
-            Button
+            text: catalog.i18nc("@action:button", "Select settings");
+
+            style: ButtonStyle
             {
-                id: customiseSettingsButton;
-                height: UM.Theme.getSize("setting_control").height;
-                visible: currentSettings.visible
-
-                text: catalog.i18nc("@action:button", "Select settings");
-
-                style: ButtonStyle
+                background: Rectangle
                 {
-                    background: Rectangle
-                    {
-                        width: control.width;
-                        height: control.height;
-                        border.width: UM.Theme.getSize("default_lining").width;
-                        border.color: control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                      control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                        color: control.pressed ? UM.Theme.getColor("action_button_active") :
-                               control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                    }
-                    label: Label
-                    {
-                        text: control.text;
-                        color: UM.Theme.getColor("setting_control_text");
-                        font: UM.Theme.getFont("default")
-                        anchors.centerIn: parent
-                    }
+                    width: control.width;
+                    height: control.height;
+                    border.width: UM.Theme.getSize("default_lining").width;
+                    border.color: control.pressed ? UM.Theme.getColor("action_button_active_border") :
+                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
+                    color: control.pressed ? UM.Theme.getColor("action_button_active") :
+                           control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
                 }
-
-                onClicked:
+                label: Label
                 {
-                    settingPickDialog.visible = true;
-                    if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
-                    {
-                        settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
-                    }
-                    else
-                    {
-                        settingPickDialog.additional_excluded_settings = []
-                    }
+                    text: control.text;
+                    color: UM.Theme.getColor("setting_control_text");
+                    font: UM.Theme.getFont("default")
+                    anchors.centerIn: parent
+                }
+            }
+
+            onClicked:
+            {
+                settingPickDialog.visible = true;
+                if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                {
+                    settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
+                }
+                else
+                {
+                    settingPickDialog.additional_excluded_settings = []
                 }
             }
         }
