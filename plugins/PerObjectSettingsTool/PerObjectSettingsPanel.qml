@@ -41,13 +41,10 @@ Item
     }
 
     function setMeshType(type){
-        print("setting mesh type to " + type)
         UM.ActiveTool.setProperty("MeshType", type)
     }
 
     function updateView(type) {
-        print("updating view for type " + type)
-
         // set checked state of mesh type buttons
         normalButton.checked = type === normal_mesh_type
         supportMeshButton.checked = type === support_mesh_type
@@ -146,9 +143,14 @@ Item
 
             style: UM.Theme.styles.checkbox;
 
-            checked: current_mesh_type === infill_mesh_type
             visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
             onClicked: setOverhangsMeshType()
+
+            Binding {
+                target: infillOnlyCheckbox
+                property: "checked"
+                value: current_mesh_type === infill_mesh_type
+            }
         }
 
         Column // Settings Dialog
