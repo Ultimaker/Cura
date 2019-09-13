@@ -66,7 +66,11 @@ class PerObjectSettingsTool(Tool):
             selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
-    def setMeshType(self, mesh_type):
+    ## Returns True when the mesh_type was changed, False when current mesh_type == mesh_type
+    def setMeshType(self, mesh_type) -> bool:
+        if self.getMeshType() == mesh_type:
+            return False
+
         selected_object = Selection.getSelectedObject(0)
         stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
         if not stack:
@@ -85,6 +89,9 @@ class PerObjectSettingsTool(Tool):
                     new_instance.setProperty("value", True)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
+
+        self.propertyChanged.emit()
+        return True
 
     def getMeshType(self):
         selected_object = Selection.getSelectedObject(0)

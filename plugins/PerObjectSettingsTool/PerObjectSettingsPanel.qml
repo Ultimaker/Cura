@@ -24,11 +24,11 @@ Item
     readonly property string infill_mesh_type: "infill_mesh"
     readonly property string anti_overhang_mesh_type: "anti_overhang_mesh"
 
-    property var current_mesh_type: normal_mesh_type
+    property var current_mesh_type: UM.ActiveTool.properties.getValue("MeshType")
 
 
     function setOverhangsMeshType(){
-        if(infillOnlyCheckbox.checked)
+        if (infillOnlyCheckbox.checked)
         {
             setMeshType(infill_mesh_type)
         }
@@ -39,19 +39,13 @@ Item
     }
 
     function setMeshType(type) {
-        current_mesh_type = type
-
-        // update the active object
-        if(UM.ActiveTool.properties.getValue("MeshType") !== type)
-        {
-            UM.ActiveTool.setProperty("MeshType", type)
-        }
+        UM.ActiveTool.setProperty("MeshType", type)
 
         // set checked state of mesh type buttons
-        normalButton.checked = current_mesh_type === normal_mesh_type
-        supportMeshButton.checked = current_mesh_type === support_mesh_type
-        overhangMeshButton.checked = current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
-        antiOverhangMeshButton.checked = current_mesh_type === anti_overhang_mesh_type
+        normalButton.checked = type === normal_mesh_type
+        supportMeshButton.checked = type === support_mesh_type
+        overhangMeshButton.checked = type === infill_mesh_type || type === cutting_mesh_type
+        antiOverhangMeshButton.checked = type === anti_overhang_mesh_type
 
         // update active type label
         for (var button in meshTypeButtons.children)
