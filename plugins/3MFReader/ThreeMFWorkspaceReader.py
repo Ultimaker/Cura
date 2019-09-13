@@ -942,7 +942,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
                 # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
-                node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE, global_stack)
+                machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+                node = machine_node.variants[machine_node.preferred_variant_name]
                 if node is not None and node.container is not None:
                     extruder_stack.variant = node.container
                 continue
@@ -951,7 +952,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             variant_name = parser["general"]["name"]
             variant_type = VariantType.NOZZLE
 
-            node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
+            node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
             if node is not None and node.container is not None:
                 extruder_stack.variant = node.container
 
