@@ -75,36 +75,19 @@ class XmlMaterialProfile(InstanceContainer):
                 if k in self.__material_properties_setting_map:
                     new_setting_values_dict[self.__material_properties_setting_map[k]] = v
 
-        # Prevent recursion
-        if not apply_to_all:
-            super().setMetaDataEntry(key, value)
+        if not apply_to_all:  # Historical: If you only want to modify THIS container. We only used that to prevent recursion but with the below code that's no longer necessary.
+            container_query = registry.findContainers(id = self.getId())
+        else:
+            container_query = registry.findContainers(base_file = self.getMetaDataEntry("base_file"))
+
+        for container in container_query:
+            if key not in container.getMetaData() or container.getMetaData()[key] != value:
+                container.getMetaData()[key] = value
+                container.setDirty(True)
+                container.metaDataChanged.emit(container)
             for k, v in new_setting_values_dict.items():
                 self.setProperty(k, "value", v)
             return
-
-        # Get the MaterialGroup
-        material_manager = CuraApplication.getInstance().getMaterialManager()
-        root_material_id = self.getMetaDataEntry("base_file")  #if basefile is self.getId, this is a basefile.
-        material_group = material_manager.getMaterialGroup(root_material_id)
-        if not material_group: #If the profile is not registered in the registry but loose/temporary, it will not have a base file tree.
-            super().setMetaDataEntry(key, value)
-            for k, v in new_setting_values_dict.items():
-                self.setProperty(k, "value", v)
-            return
-        # Update the root material container
-        root_material_container = material_group.root_material_node.container
-        if root_material_container is not None:
-            root_material_container.setMetaDataEntry(key, value, apply_to_all = False)
-            for k, v in new_setting_values_dict.items():
-                root_material_container.setProperty(k, "value", v)
-
-        # Update all containers derived from it
-        for node in material_group.derived_material_node_list:
-            container = node.container
-            if container is not None:
-                container.setMetaDataEntry(key, value, apply_to_all = False)
-                for k, v in new_setting_values_dict.items():
-                    container.setProperty(k, "value", v)
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
