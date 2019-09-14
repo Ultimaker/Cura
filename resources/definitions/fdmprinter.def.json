@@ -1787,6 +1787,18 @@
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "infill_scaling_z":
+                {
+                    "label": "Infill Vertical Scaling",
+                    "description": "Scales the vertical infill pattern. Values larger than 100% stretch the pattern, values less than 100% compress the pattern.",
+                    "unit": "%",
+                    "minimum_value": "1",
+                    "maximum_value": "1000000",
+                    "default_value": 100,
+                    "type": "float",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern.startswith('gyroid')",
+                    "settable_per_mesh": true
+                },
                 "infill_randomize_start_location":
                 {
                     "label": "Randomize Infill Start",
