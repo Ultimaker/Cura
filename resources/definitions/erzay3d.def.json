@@ -66,7 +66,7 @@
     "material_print_temperature_layer_0": { "default_value": 220 },
     "material_initial_print_temperature": { "default_value": 220 },
     "material_final_print_temperature": { "default_value": 220 },
-    "retraction_amount": { "default_value": 4 },
+    "retraction_amount": { "default_value": 6.5 },
 
     "speed_print": { "default_value": 40 },
     "speed_infill": { "default_value": 60 },

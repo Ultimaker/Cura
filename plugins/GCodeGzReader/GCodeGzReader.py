@@ -27,6 +27,6 @@ class GCodeGzReader(MeshReader):
             file_data = file.read()
         uncompressed_gcode = gzip.decompress(file_data).decode("utf-8")
         PluginRegistry.getInstance().getPluginObject("GCodeReader").preReadFromStream(uncompressed_gcode)
-        result = PluginRegistry.getInstance().getPluginObject("GCodeReader").readFromStream(uncompressed_gcode)
+        result = PluginRegistry.getInstance().getPluginObject("GCodeReader").readFromStream(uncompressed_gcode, file_name)
 
         return result

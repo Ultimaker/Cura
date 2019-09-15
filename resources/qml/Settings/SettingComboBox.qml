@@ -12,7 +12,6 @@ SettingItem
 {
     id: base
     property var focusItem: control
-
     contents: Cura.ComboBox
     {
         id: control
@@ -21,6 +20,7 @@ SettingItem
         textRole: "value"
 
         anchors.fill: parent
+        highlighted: base.hovered
 
         onActivated:
         {

@@ -14,7 +14,7 @@ import Cura 1.1 as Cura
 ComboBox
 {
     id: control
-
+    property bool highlighted: false
     background: Rectangle
     {
         color:
@@ -24,7 +24,7 @@ ComboBox
                 return UM.Theme.getColor("setting_control_disabled")
             }
 
-            if (control.hovered || control.activeFocus)
+            if (control.hovered || control.activeFocus || control.highlighted)
             {
                 return UM.Theme.getColor("setting_control_highlight")
             }
@@ -41,7 +41,7 @@ ComboBox
                 return UM.Theme.getColor("setting_control_disabled_border")
             }
 
-            if (control.hovered || control.activeFocus)
+            if (control.hovered || control.activeFocus || control.highlighted)
             {
                 return UM.Theme.getColor("setting_control_border_highlight")
             }

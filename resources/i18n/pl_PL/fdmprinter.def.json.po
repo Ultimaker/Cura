@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
+"Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-05-14 12:48+0000\n"
+"POT-Creation-Date: 2019-09-10 16:55+0000\n"
 "PO-Revision-Date: 2019-05-27 22:32+0200\n"
 "Last-Translator: Mariusz Matłosz <matliks@gmail.com>\n"
 "Language-Team: Mariusz Matłosz <matliks@gmail.com>, reprapy.pl\n"
@@ -216,6 +216,16 @@ msgid "Whether the machine has a heated build plate present."
 msgstr "Określa czy maszyna posiada podgrzewany stół."
 
 #: fdmprinter.def.json
+msgctxt "machine_heated_build_volume label"
+msgid "Has Build Volume Temperature Stabilization"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_heated_build_volume description"
+msgid "Whether the machine is able to stabilize the build volume temperature."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr "Środek to Początek"
@@ -337,8 +347,8 @@ msgstr "Minimalny czas, w jakim ekstruder musi być nieużywany, aby schłodzić
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
-msgid "G-code Flavour"
-msgstr "Wersja G-code"
+msgid "G-code Flavor"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor description"
@@ -1271,6 +1281,56 @@ msgid "Sharpest Corner"
 msgstr "Najostrzejszy róg"
 
 #: fdmprinter.def.json
+msgctxt "z_seam_position label"
+msgid "Z Seam Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position description"
+msgid "The position near where to start printing each part in a layer."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backleft"
+msgid "Back Left"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option back"
+msgid "Back"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backright"
+msgid "Back Right"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option right"
+msgid "Right"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontright"
+msgid "Front Right"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option front"
+msgid "Front"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontleft"
+msgid "Front Left"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option left"
+msgid "Left"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_x label"
 msgid "Z Seam X"
 msgstr "Szew X"
@@ -1297,8 +1357,8 @@ msgstr "Wybór Rogu Szwu"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr "Kontroluje, czy rogi na zewn. linii modelu wpływają na pozycję szwu. Brak oznacza, że rogi nie mają wpływu na pozycję szwu. Ukryj Szew powoduje, że szew będzie się bardziej pojawiał na wewn. rogach. Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na zewn. rogach. Ukryj lub Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na wewn. lub zewn. rogach."
+msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
@@ -1321,6 +1381,11 @@ msgid "Hide or Expose Seam"
 msgstr "Ukryj lub Pokaż Szew"
 
 #: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_weighted"
+msgid "Smart Hiding"
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_relative label"
 msgid "Z Seam Relative"
 msgstr "Względny Szew Z"
@@ -1332,13 +1397,13 @@ msgstr "Kiedy włączone, współrzędne szwu są względne do każdego środka 
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
-msgid "Ignore Small Z Gaps"
-msgstr "Zignoruj Małe Luki Z"
+msgid "No Skin in Z Gaps"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
-msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
-msgstr "Jeśli model ma małe, pionowe szczeliny, to można wykorzystać dodatkowe 5% mocy obliczeniowej do wygenerowania górnej i dolnej skóry w wąskich przestrzeniach. W takim wypadku, wyłącz tę opcję."
+msgid "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
@@ -1357,8 +1422,8 @@ msgstr "Włącz Prasowanie"
 
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
-msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr "Przejedź nad górną powierzchnią dodatkowy raz, ale bez ekstrudowania materiału. Topi to plastyk na górze, co powoduje gładszą powierzchnię."
+msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -1449,6 +1514,26 @@ msgstr "Zryw Prasowania"
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
 msgstr "Maksymalna nagła zmiana prędkości podczas przeprowadzania prasowania."
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap label"
+msgid "Skin Overlap Percentage"
+msgstr "Procent Nakładania się Skóry"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu, jako procent szerokości linii obrysu i najbardziej wewnętrznej ściany. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap_mm label"
+msgid "Skin Overlap"
+msgstr "Nakładanie się Skóry"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap_mm description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1616,6 +1701,16 @@ msgid "The infill pattern is moved this distance along the Y axis."
 msgstr "Wzór wypełnienia jest przesunięty o tę odległość wzdłuż osi Y."
 
 #: fdmprinter.def.json
+msgctxt "infill_randomize_start_location label"
+msgid "Randomize Infill Start"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_randomize_start_location description"
+msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "infill_multiplier label"
 msgid "Infill Line Multiplier"
 msgstr "Mnożnik Linii Wypełnienia"
@@ -1668,26 +1763,6 @@ msgstr "Zachodzenie Wypełnienia"
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
 msgstr "Ilość nałożenia pomiędzy wypełnieniem a ścianami. Nieznaczne nałożenie pozwala ściśle łączyć się z wypełnieniem."
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap label"
-msgid "Skin Overlap Percentage"
-msgstr "Procent Nakładania się Skóry"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap description"
-msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu, jako procent szerokości linii obrysu i najbardziej wewnętrznej ściany. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap_mm label"
-msgid "Skin Overlap"
-msgstr "Nakładanie się Skóry"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap_mm description"
-msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "Dostosuj zachodzenie pomiędzy ścianami, a (punktami końcowymi) linią obrysu. Niewielkie zachodzenie na siebie pozwala ścianom połączyć się mocno z obrysem. Zauważ, że przy równej szerokości obrysu i szerokości ściany, każdy procent powyżej 50% może spowodować przekroczenie ściany przez obrys, ponieważ pozycja dyszy ekstrudera obrysu może sięgać poza środek ściany."
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1876,8 +1951,8 @@ msgstr "Temperatura obszaru roboczego"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
-msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr "Temperatura stosowana dla obszaru roboczego. Jeżeli jest ustawione 0, temperatura nie będzie ustawiona."
+msgid "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -1990,6 +2065,86 @@ msgid "Shrinkage ratio in percentage."
 msgstr "Współczynnik skurczu w procentach."
 
 #: fdmprinter.def.json
+msgctxt "material_crystallinity label"
+msgid "Crystalline Material"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_crystallinity description"
+msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position label"
+msgid "Anti-ooze Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position description"
+msgid "How far the material needs to be retracted before it stops oozing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed label"
+msgid "Anti-ooze Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed description"
+msgid "How fast the material needs to be retracted during a filament switch to prevent oozing."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position label"
+msgid "Break Preparation Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position description"
+msgid "How far the filament can be stretched before it breaks, while heated."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed label"
+msgid "Break Preparation Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed description"
+msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position label"
+msgid "Break Retracted Position"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position description"
+msgid "How far to retract the filament in order to break it cleanly."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed label"
+msgid "Break Retraction Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed description"
+msgid "The speed at which to retract the filament in order to break it cleanly."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature label"
+msgid "Break Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature description"
+msgid "The temperature at which the filament is broken for a clean break."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_flow label"
 msgid "Flow"
 msgstr "Przepływ"
@@ -1998,6 +2153,126 @@ msgstr "Przepływ"
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "Kompensacja przepływu: ilość ekstrudowanego materiału jest mnożona przez tę wartość."
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow label"
+msgid "Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow description"
+msgid "Flow compensation on wall lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow label"
+msgid "Outer Wall Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow description"
+msgid "Flow compensation on the outermost wall line."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow label"
+msgid "Inner Wall(s) Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow description"
+msgid "Flow compensation on wall lines for all wall lines except the outermost one."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow label"
+msgid "Top/Bottom Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow description"
+msgid "Flow compensation on top/bottom lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow label"
+msgid "Top Surface Skin Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow description"
+msgid "Flow compensation on lines of the areas at the top of the print."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow label"
+msgid "Infill Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow description"
+msgid "Flow compensation on infill lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow label"
+msgid "Skirt/Brim Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow description"
+msgid "Flow compensation on skirt or brim lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow label"
+msgid "Support Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow description"
+msgid "Flow compensation on support structure lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow label"
+msgid "Support Interface Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow description"
+msgid "Flow compensation on lines of support roof or floor."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow label"
+msgid "Support Roof Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow description"
+msgid "Flow compensation on support roof lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow label"
+msgid "Support Floor Flow"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow description"
+msgid "Flow compensation on support floor lines."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow label"
+msgid "Prime Tower Flow"
+msgstr "Przepływ Wieży Czyszczącej"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow description"
+msgid "Flow compensation on prime tower lines."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2116,8 +2391,8 @@ msgstr "Ogranicz Retrakcje Pomiędzy Podporami"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr "Unikaj retrakcji podczas poruszania się od podpory do podpory w linii prostej. Załączenie tej funkcji spowoduje skrócenie czasu druku, lecz może prowadzić do nadmiernego nitkowania wewnątrz struktur podporowych."
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2168,6 +2443,16 @@ msgstr "Prędk. Czyszcz. przy Zmianie Dyszy"
 msgctxt "switch_extruder_prime_speed description"
 msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
 msgstr "Prędkość, z jaką filament jest cofany podczas retrakcji po zmianie dyszy."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -2360,14 +2645,14 @@ msgid "The speed at which the skirt and brim are printed. Normally this is done 
 msgstr "Prędkość, z jaką jest drukowana obwódka i obrys. Zwykle jest to wykonywane przy szybkości początkowej warstwy, ale czasami możesz chcieć drukować obwódkę lub obrys z inną prędkością."
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override label"
-msgid "Maximum Z Speed"
-msgstr "Maksymalna Prędk. Z"
+msgctxt "speed_z_hop label"
+msgid "Z Hop Speed"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override description"
-msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
-msgstr "Maksymalna prędkość przesuwu stołu. Ustawienie na zero powoduje, że druk używa domyślnych ustawień oprogramowania dla maksymalnej prędkości z."
+msgctxt "speed_z_hop description"
+msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
@@ -2870,16 +3155,6 @@ msgid "The distance between the nozzle and already printed parts when avoiding d
 msgstr "Odległość między dyszą a już wydrukowanym elementem, gdy są one omijane podczas ruchu jałowego."
 
 #: fdmprinter.def.json
-msgctxt "start_layers_at_same_position label"
-msgid "Start Layers with the Same Part"
-msgstr "Rozp. Warstwy w tym Samym Punkcie"
-
-#: fdmprinter.def.json
-msgctxt "start_layers_at_same_position description"
-msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr "Na każdej warstwie rozpocznij drukowanie obiektu blisko tego samego punktu, abyśmy nie rozpoczynali nowej warstwy w miejscu gdzie skończyła się poprzednia warstwa. Powoduje to lepsze nawisy i małe elementy, ale wydłuża czas druku."
-
-#: fdmprinter.def.json
 msgctxt "layer_start_x label"
 msgid "Layer Start X"
 msgstr "Początek Warstwy X"
@@ -3285,14 +3560,14 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "Odległość między drukowanymi liniami struktury podpory w początkowej warstwie. To ustawienie jest obliczane na podstawie gęstości podpory."
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "Kierunek Linii Wypełnienia Podpory"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
-msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
-msgstr "Orientacja wzoru wypełnienia dla podpór. Wzór podpory jest obracany w płaszczyźnie poziomej."
+msgctxt "support_infill_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
@@ -3421,8 +3696,8 @@ msgstr "Odległość Łączenia Podpór"
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
-msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
-msgstr "Maksymalna odległość między podporami w kierunkach X/Y. Gdy oddzielne struktury są bliżej siebie niż ta wartość, struktury łączą się w jedną."
+msgid "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_offset label"
@@ -3760,6 +4035,36 @@ msgid "Amount of offset applied to the floors of the support."
 msgstr "Wartość przesunięcia zastosowana do obszaru podłoża podpór."
 
 #: fdmprinter.def.json
+msgctxt "support_interface_angles label"
+msgid "Support Interface Line Directions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_interface_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_angles label"
+msgid "Support Roof Line Directions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_roof_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_angles label"
+msgid "Support Floor Line Directions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "support_fan_enable label"
 msgid "Fan Speed Override"
 msgstr "Nadpisanie Prędkości Wentylatora"
@@ -3800,14 +4105,14 @@ msgid "The diameter of a special tower."
 msgstr "Średnica wieży specjalnej."
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter label"
-msgid "Minimum Diameter"
-msgstr "Minimalna Średnica"
+msgctxt "support_tower_maximum_supported_diameter label"
+msgid "Maximum Tower-Supported Diameter"
+msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter description"
-msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
-msgstr "Minimalna średnica w kierunkach X/Y o małej powierzchni, który jest wspierana przez specjalną wieżę wspierającą."
+msgctxt "support_tower_maximum_supported_diameter description"
+msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle label"
@@ -4304,16 +4609,6 @@ msgid "Print a tower next to the print which serves to prime the material after 
 msgstr "Wydrukuj wieżę obok wydruku, która służy do zmiany materiału po każdym przełączeniu dyszy."
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_circular label"
-msgid "Circular Prime Tower"
-msgstr "Okrągła Wieża Czyszcząca"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_circular description"
-msgid "Make the prime tower as a circular shape."
-msgstr "Twórz wieżę czyszczącą o okrągłym kształcie."
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "Rozmiar Wieży Czyszczącej"
@@ -4352,16 +4647,6 @@ msgstr "Pozycja Wieży Czyszcz. Y"
 msgctxt "prime_tower_position_y description"
 msgid "The y coordinate of the position of the prime tower."
 msgstr "Współrzędna Y położenia wieży czyszczącej."
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_flow label"
-msgid "Prime Tower Flow"
-msgstr "Przepływ Wieży Czyszczącej"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value."
-msgstr "Kompensacja przepływu: ilość ekstrudowanego materiału jest mnożona przez tę wartość."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
@@ -4665,8 +4950,8 @@ msgstr "Wygładź Spiralne Kontury"
 
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
-msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr "Wygładź spiralny kontur, aby zmniejszyć widoczność szwu Z (szew Z powinien być ledwo widoczny na wydruku, ale nadal będzie widoczny w widoku warstwy). Należy pamiętać, że wygładzanie będzie miało tendencję do rozmycia drobnych szczegółów powierzchni."
+msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
@@ -4905,8 +5190,8 @@ msgstr "Maksymalne odchylenie"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
-msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr "Maksymalne odchylenie dozwolone przy zmniejszaniu rozdzielczości dla ustawienia „Maksymalna rozdzielczość”. Jeśli to zwiększysz, wydruk będzie mniej dokładny, ale G-Code będzie mniejszy."
+msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -5165,8 +5450,8 @@ msgstr "Włącz Podpory Stożkowe"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled description"
-msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
-msgstr "Opcja eksperymentalna: W dolnym obszarze podpory powinny być mniejsze niż na zwisie."
+msgid "Make support areas smaller at the bottom than at the overhang."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_conical_angle label"
@@ -5908,6 +6193,46 @@ msgid "The distance to move the head back and forth across the brush."
 msgstr "Odległość, którą głowica musi pokonać w tę i z powrotem po szczotce."
 
 #: fdmprinter.def.json
+msgctxt "small_hole_max_size label"
+msgid "Small Hole Max Size"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_hole_max_size description"
+msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_max_length label"
+msgid "Small Feature Max Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_max_length description"
+msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor label"
+msgid "Small Feature Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor description"
+msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor_0 label"
+msgid "First Layer Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor_0 description"
+msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "Ustawienia Wiersza Polecenia"
@@ -5966,6 +6291,90 @@ msgstr "Forma Obrotu Siatki"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Forma przesunięcia, która ma być zastosowana do modelu podczas ładowania z pliku."
+
+#~ msgctxt "ironing_enabled description"
+#~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
+#~ msgstr "Przejedź nad górną powierzchnią dodatkowy raz, ale bez ekstrudowania materiału. Topi to plastyk na górze, co powoduje gładszą powierzchnię."
+
+#~ msgctxt "start_layers_at_same_position label"
+#~ msgid "Start Layers with the Same Part"
+#~ msgstr "Rozp. Warstwy w tym Samym Punkcie"
+
+#~ msgctxt "start_layers_at_same_position description"
+#~ msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
+#~ msgstr "Na każdej warstwie rozpocznij drukowanie obiektu blisko tego samego punktu, abyśmy nie rozpoczynali nowej warstwy w miejscu gdzie skończyła się poprzednia warstwa. Powoduje to lepsze nawisy i małe elementy, ale wydłuża czas druku."
+
+#~ msgctxt "support_infill_angles description"
+#~ msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
+#~ msgstr "Orientacja wzoru wypełnienia dla podpór. Wzór podpory jest obracany w płaszczyźnie poziomej."
+
+#~ msgctxt "meshfix_maximum_deviation description"
+#~ msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
+#~ msgstr "Maksymalne odchylenie dozwolone przy zmniejszaniu rozdzielczości dla ustawienia „Maksymalna rozdzielczość”. Jeśli to zwiększysz, wydruk będzie mniej dokładny, ale G-Code będzie mniejszy."
+
+#~ msgctxt "machine_gcode_flavor label"
+#~ msgid "G-code Flavour"
+#~ msgstr "Wersja G-code"
+
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
+#~ msgstr "Kontroluje, czy rogi na zewn. linii modelu wpływają na pozycję szwu. Brak oznacza, że rogi nie mają wpływu na pozycję szwu. Ukryj Szew powoduje, że szew będzie się bardziej pojawiał na wewn. rogach. Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na zewn. rogach. Ukryj lub Pokaż Szew powoduje, że szew będzie się bardziej pojawiał na wewn. lub zewn. rogach."
+
+#~ msgctxt "skin_no_small_gaps_heuristic label"
+#~ msgid "Ignore Small Z Gaps"
+#~ msgstr "Zignoruj Małe Luki Z"
+
+#~ msgctxt "skin_no_small_gaps_heuristic description"
+#~ msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
+#~ msgstr "Jeśli model ma małe, pionowe szczeliny, to można wykorzystać dodatkowe 5% mocy obliczeniowej do wygenerowania górnej i dolnej skóry w wąskich przestrzeniach. W takim wypadku, wyłącz tę opcję."
+
+#~ msgctxt "build_volume_temperature description"
+#~ msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
+#~ msgstr "Temperatura stosowana dla obszaru roboczego. Jeżeli jest ustawione 0, temperatura nie będzie ustawiona."
+
+#~ msgctxt "limit_support_retractions description"
+#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+#~ msgstr "Unikaj retrakcji podczas poruszania się od podpory do podpory w linii prostej. Załączenie tej funkcji spowoduje skrócenie czasu druku, lecz może prowadzić do nadmiernego nitkowania wewnątrz struktur podporowych."
+
+#~ msgctxt "max_feedrate_z_override label"
+#~ msgid "Maximum Z Speed"
+#~ msgstr "Maksymalna Prędk. Z"
+
+#~ msgctxt "max_feedrate_z_override description"
+#~ msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
+#~ msgstr "Maksymalna prędkość przesuwu stołu. Ustawienie na zero powoduje, że druk używa domyślnych ustawień oprogramowania dla maksymalnej prędkości z."
+
+#~ msgctxt "support_join_distance description"
+#~ msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
+#~ msgstr "Maksymalna odległość między podporami w kierunkach X/Y. Gdy oddzielne struktury są bliżej siebie niż ta wartość, struktury łączą się w jedną."
+
+#~ msgctxt "support_minimal_diameter label"
+#~ msgid "Minimum Diameter"
+#~ msgstr "Minimalna Średnica"
+
+#~ msgctxt "support_minimal_diameter description"
+#~ msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+#~ msgstr "Minimalna średnica w kierunkach X/Y o małej powierzchni, który jest wspierana przez specjalną wieżę wspierającą."
+
+#~ msgctxt "prime_tower_circular label"
+#~ msgid "Circular Prime Tower"
+#~ msgstr "Okrągła Wieża Czyszcząca"
+
+#~ msgctxt "prime_tower_circular description"
+#~ msgid "Make the prime tower as a circular shape."
+#~ msgstr "Twórz wieżę czyszczącą o okrągłym kształcie."
+
+#~ msgctxt "prime_tower_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
+#~ msgstr "Kompensacja przepływu: ilość ekstrudowanego materiału jest mnożona przez tę wartość."
+
+#~ msgctxt "smooth_spiralized_contours description"
+#~ msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+#~ msgstr "Wygładź spiralny kontur, aby zmniejszyć widoczność szwu Z (szew Z powinien być ledwo widoczny na wydruku, ale nadal będzie widoczny w widoku warstwy). Należy pamiętać, że wygładzanie będzie miało tendencję do rozmycia drobnych szczegółów powierzchni."
+
+#~ msgctxt "support_conical_enabled description"
+#~ msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
+#~ msgstr "Opcja eksperymentalna: W dolnym obszarze podpory powinny być mniejsze niż na zwisie."
 
 #~ msgctxt "extruders_enabled_count label"
 #~ msgid "Number of Extruders that are enabled"

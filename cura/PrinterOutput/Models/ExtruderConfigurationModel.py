@@ -25,7 +25,7 @@ class ExtruderConfigurationModel(QObject):
         return self._position
 
     def setMaterial(self, material: Optional[MaterialOutputModel]) -> None:
-        if self._hotend_id != material:
+        if self._material != material:
             self._material = material
             self.extruderConfigurationChanged.emit()
 
@@ -33,7 +33,7 @@ class ExtruderConfigurationModel(QObject):
     def activeMaterial(self) -> Optional[MaterialOutputModel]:
         return self._material
 
-    @pyqtProperty(QObject, fset=setMaterial, notify=extruderConfigurationChanged)
+    @pyqtProperty(QObject, fset = setMaterial, notify = extruderConfigurationChanged)
     def material(self) -> Optional[MaterialOutputModel]:
         return self._material
 

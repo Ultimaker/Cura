@@ -142,6 +142,18 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
+            Cura.SimpleCheckBox  // "Heated build volume"
+            {
+                id: heatedVolumeCheckBox
+                containerStackId: machineStackId
+                settingKey: "machine_heated_build_volume"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Heated build volume")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
             Cura.ComboBoxWithOptions  // "G-code flavor"
             {
                 id: gcodeFlavorComboBox

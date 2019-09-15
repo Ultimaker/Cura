@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -20,7 +20,7 @@ Item
     property var printJob: null
 
     width: childrenRect.width
-    height: 18 * screenScaleFactor // TODO: Theme!
+    height: UM.Theme.getSize("monitor_text_line").height
 
     UM.ProgressBar
     {
@@ -31,7 +31,7 @@ Item
             left: parent.left
         }
         value: printJob ? printJob.progress : 0
-        width: UM.Theme.getSize("monitor_column").width
+        width: UM.Theme.getSize("monitor_progress_bar").width
     }
 
     Label
@@ -40,16 +40,16 @@ Item
         anchors
         {
             left: progressBar.right
-            leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("monitor_margin").width
             verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
 
         // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: UM.Theme.getSize("monitor_text_line").height
         verticalAlignment: Text.AlignVCenter
         renderType: Text.NativeRendering
     }
@@ -59,11 +59,11 @@ Item
         anchors
         {
             left: percentLabel.right
-            leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("monitor_margin").width
             verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
         text:
         {
             if (!printJob)
@@ -103,7 +103,7 @@ Item
         width: contentWidth
 
         // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: UM.Theme.getSize("monitor_text_line").height
         verticalAlignment: Text.AlignVCenter
         renderType: Text.NativeRendering
     }

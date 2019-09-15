@@ -1,14 +1,20 @@
-from UM.Mesh.MeshBuilder import MeshBuilder
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import List
 import numpy
+
+from UM.Mesh.MeshBuilder import MeshBuilder
+from UM.Mesh.MeshData import MeshData
+from cura.LayerPolygon import LayerPolygon
 
 
 class Layer:
-    def __init__(self, layer_id):
+    def __init__(self, layer_id: int) -> None:
         self._id = layer_id
         self._height = 0.0
         self._thickness = 0.0
-        self._polygons = []
+        self._polygons = []  # type: List[LayerPolygon]
         self._element_count = 0
 
     @property
@@ -20,7 +26,7 @@ class Layer:
         return self._thickness
 
     @property
-    def polygons(self):
+    def polygons(self) -> List[LayerPolygon]:
         return self._polygons
 
     @property
@@ -33,14 +39,14 @@ class Layer:
     def setThickness(self, thickness):
         self._thickness = thickness
 
-    def lineMeshVertexCount(self):
+    def lineMeshVertexCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshVertexCount()
 
         return result
 
-    def lineMeshElementCount(self):
+    def lineMeshElementCount(self) -> int:
         result = 0
         for polygon in self._polygons:
             result += polygon.lineMeshElementCount()
@@ -57,18 +63,18 @@ class Layer:
             result_index_offset += polygon.lineMeshElementCount()
             self._element_count += polygon.elementCount
 
-        return (result_vertex_offset, result_index_offset)
+        return result_vertex_offset, result_index_offset
 
-    def createMesh(self):
+    def createMesh(self) -> MeshData:
         return self.createMeshOrJumps(True)
 
-    def createJumps(self):
+    def createJumps(self) -> MeshData:
         return self.createMeshOrJumps(False)
 
     # Defines the two triplets of local point indices to use to draw the two faces for each line segment in createMeshOrJump
     __index_pattern = numpy.array([[0, 3, 2, 0, 1, 3]], dtype = numpy.int32 )
 
-    def createMeshOrJumps(self, make_mesh):
+    def createMeshOrJumps(self, make_mesh: bool) -> MeshData:
         builder = MeshBuilder()
         
         line_count = 0
@@ -79,14 +85,14 @@ class Layer:
             for polygon in self._polygons:
                 line_count += polygon.jumpCount
 
-        # Reserve the neccesary space for the data upfront
+        # Reserve the necessary space for the data upfront
         builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
         
         for polygon in self._polygons:
-            # Filter out the types of lines we are not interesed in depending on whether we are drawing the mesh or the jumps.
+            # Filter out the types of lines we are not interested in depending on whether we are drawing the mesh or the jumps.
             index_mask = numpy.logical_not(polygon.jumpMask) if make_mesh else polygon.jumpMask
 
-            # Create an array with rows [p p+1] and only keep those we whant to draw based on make_mesh
+            # Create an array with rows [p p+1] and only keep those we want to draw based on make_mesh
             points = numpy.concatenate((polygon.data[:-1], polygon.data[1:]), 1)[index_mask.ravel()]
             # Line types of the points we want to draw
             line_types = polygon.types[index_mask]

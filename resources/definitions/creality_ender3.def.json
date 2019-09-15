@@ -1,99 +1,32 @@
 {
     "name": "Creality Ender-3",
     "version": 2,
-    "inherits": "fdmprinter",
+    "inherits": "creality_base",
     "metadata": {
+        "quality_definition": "creality_base",
         "visible": true,
-        "author": "Sacha Telgenhof",
-        "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode",
-        "platform": "creality_ender3_platform.stl",
-        "preferred_quality_type": "draft",
-        "machine_extruder_trains":
-        {
-            "0": "creality_ender3_extruder_0"
-        }
+        "platform": "creality_ender3.stl"
     },
     "overrides": {
-        "machine_name": {
-            "default_value": "Creality Ender-3"
-        },
-        "machine_width": {
-            "default_value": 235
-        },
-        "machine_height": {
-            "default_value": 250
-        },
-        "machine_depth": {
-            "default_value": 235
-        },
-        "machine_heated_bed": {
-            "default_value": true
-        },
-        "gantry_height": {
-            "value": "30"
-        },
-        "machine_head_polygon": {
-            "default_value": [
-                [-30, 34],
-                [-30, -32],
-                [30, -32],
-                [30, 34]
+        "machine_name": { "default_value": "Creality Ender-3" },
+        "machine_width": { "default_value": 220 },
+        "machine_depth": { "default_value": 220 },
+        "machine_height": { "default_value": 250 },
+        "machine_head_polygon": { "default_value": [
+                [-1, 1],
+                [-1, -1],
+                [1, -1],
+                [1, 1]
             ]
         },
-        "material_diameter": {
-            "default_value": 1.75
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
         },
-        "acceleration_enabled": {
-            "default_value": true
-        },
-        "acceleration_print": {
-            "default_value": 500
-        },
-        "acceleration_travel": {
-            "value": "acceleration_print"
-        },
-        "jerk_enabled": {
-            "default_value": true
-        },
-        "jerk_print": {
-            "value": "10"
-        },
-        "jerk_travel": {
-            "value": "jerk_print"
-        },
-        "machine_max_jerk_z": {
-            "default_value": 0.3
-        },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "top_bottom_thickness": {
-            "default_value": 0.6
-        },
-        "retraction_amount": {
-            "default_value": 6
-        },
-        "retraction_speed": {
-            "default_value": 25
-        },
-        "cool_min_layer_time": {
-            "default_value": 10
-        },
-        "skirt_line_count": {
-            "default_value": 4
-        },
-        "skirt_gap": {
-            "default_value": 5
-        },
-        "machine_start_gcode": {
-            "default_value": "; Ender 3 Custom Start G-code\nG28 ; Home all axes\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X0.1 Y20 Z0.3 F5000.0 ; Move to start position\nG1 X0.1 Y200.0 Z0.3 F1500.0 E15 ; Draw the first line\nG1 X0.4 Y200.0 Z0.3 F5000.0 ; Move to side a little\nG1 X0.4 Y20 Z0.3 F1500.0 E30 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\n; End of custom start GCode"
-        },
-        "machine_end_gcode": {
-            "default_value": "; Ender 3 Custom End G-code\nG4 ; Wait\nM220 S100 ; Reset Speed factor override percentage to default (100%)\nM221 S100 ; Reset Extrude factor override percentage to default (100%)\nG91 ; Set coordinates to relative\nG1 F1800 E-3 ; Retract filament 3 mm to prevent oozing\nG1 F3000 Z20 ; Move Z Axis up 20 mm to allow filament ooze freely\nG90 ; Set coordinates to absolute\nG1 X0 Y{machine_depth} F1000 ; Move Heat Bed to the front for easy print removal\nM84 ; Disable stepper motors\n; End of custom end GCode"
-        }
+
+        "gantry_height": { "value": 25 }
     }
 }

@@ -3,7 +3,7 @@
 
 import math
 import re
-from typing import Dict, List, NamedTuple, Optional, Union
+from typing import Dict, List, NamedTuple, Optional, Union, Set
 
 import numpy
 
@@ -38,6 +38,8 @@ class FlavorParser:
         self._message = None  # type: Optional[Message]
         self._layer_number = 0
         self._extruder_number = 0
+        # All extruder numbers that have been seen
+        self._extruders_seen = {0}  # type: Set[int]
         self._clearValues()
         self._scene_node = None
         # X, Y, Z position, F feedrate and E extruder values are stored
@@ -66,7 +68,7 @@ class FlavorParser:
         if n < 0:
             return None
         n += len(code)
-        pattern = re.compile("[;\s]")
+        pattern = re.compile("[;\\s]")
         match = pattern.search(line, n)
         m = match.start() if match is not None else -1
         try:
@@ -292,7 +294,12 @@ class FlavorParser:
                 extruder.getProperty("machine_nozzle_offset_y", "value")]
         return result
 
-    def processGCodeStream(self, stream: str) -> Optional[CuraSceneNode]:
+    #
+    # CURA-6643
+    # This function needs the filename so it can be set to the SceneNode. Otherwise, if you load a GCode file and press
+    # F5, that gcode SceneNode will be removed because it doesn't have a file to be reloaded from.
+    #
+    def processGCodeStream(self, stream: str, filename: str) -> Optional["CuraSceneNode"]:
         Logger.log("d", "Preparing to load GCode")
         self._cancelled = False
         # We obtain the filament diameter from the selected extruder to calculate line widths
@@ -418,6 +425,7 @@ class FlavorParser:
             if line.startswith("T"):
                 T = self._getInt(line, "T")
                 if T is not None:
+                    self._extruders_seen.add(T)
                     self._createPolygon(self._current_layer_thickness, current_path, self._extruder_offsets.get(self._extruder_number, [0, 0]))
                     current_path.clear()
 
@@ -453,6 +461,7 @@ class FlavorParser:
         scene_node.addDecorator(decorator)
 
         gcode_list_decorator = GCodeListDecorator()
+        gcode_list_decorator.setGcodeFileName(filename)
         gcode_list_decorator.setGCodeList(gcode_list)
         scene_node.addDecorator(gcode_list_decorator)
 
@@ -467,10 +476,9 @@ class FlavorParser:
         if self._layer_number == 0:
             Logger.log("w", "File doesn't contain any valid layers")
 
-        settings = CuraApplication.getInstance().getGlobalContainerStack()
-        if settings is not None and not settings.getProperty("machine_center_is_zero", "value"):
-            machine_width = settings.getProperty("machine_width", "value")
-            machine_depth = settings.getProperty("machine_depth", "value")
+        if not global_stack.getProperty("machine_center_is_zero", "value"):
+            machine_width = global_stack.getProperty("machine_width", "value")
+            machine_depth = global_stack.getProperty("machine_depth", "value")
             scene_node.setPosition(Vector(-machine_width / 2, 0, machine_depth / 2))
 
         Logger.log("d", "GCode loading finished")

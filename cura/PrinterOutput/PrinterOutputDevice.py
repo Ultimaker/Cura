@@ -144,7 +144,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return None
 
     def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
-                     file_handler: Optional["FileHandler"] = None, **kwargs: str) -> None:
+                     file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         raise NotImplementedError("requestWrite needs to be implemented")
 
     @pyqtProperty(QObject, notify = printersChanged)
@@ -220,11 +220,15 @@ class PrinterOutputDevice(QObject, OutputDevice):
         return self._unique_configurations
 
     def _updateUniqueConfigurations(self) -> None:
-        self._unique_configurations = sorted(
-            {printer.printerConfiguration for printer in self._printers if printer.printerConfiguration is not None},
-            key=lambda config: config.printerType,
-        )
-        self.uniqueConfigurationsChanged.emit()
+        all_configurations = set()
+        for printer in self._printers:
+            if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
+                all_configurations.add(printer.printerConfiguration)
+            all_configurations.update(printer.availableConfigurations)
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType)
+        if new_configurations != self._unique_configurations:
+            self._unique_configurations = new_configurations
+            self.uniqueConfigurationsChanged.emit()
 
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
@@ -234,6 +238,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def _onPrintersChanged(self) -> None:
         for printer in self._printers:
             printer.configurationChanged.connect(self._updateUniqueConfigurations)
+            printer.availableConfigurationsChanged.connect(self._updateUniqueConfigurations)
 
         # At this point there may be non-updated configurations
         self._updateUniqueConfigurations()

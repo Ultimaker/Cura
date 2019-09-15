@@ -154,8 +154,13 @@ class QualityManager(QObject):
     def _updateQualityGroupsAvailability(self, machine: "GlobalStack", quality_group_list) -> None:
         used_extruders = set()
         for i in range(machine.getProperty("machine_extruder_count", "value")):
-            if str(i) in machine.extruders and machine.extruders[str(i)].isEnabled:
-                used_extruders.add(str(i))
+            try:
+                extruder = machine.extruderList[int(i)]
+            except IndexError:
+                pass
+            else:
+                if extruder.isEnabled:
+                    used_extruders.add(str(i))
 
         # Update the "is_available" flag for each quality group.
         for quality_group in quality_group_list:

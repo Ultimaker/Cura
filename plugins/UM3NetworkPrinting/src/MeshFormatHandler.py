@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import io
 from typing import Optional, Dict, Union, List, cast
@@ -32,7 +32,7 @@ class MeshFormatHandler:
     #  \return A dict with the file format details, with the following keys:
     #       {id: str, extension: str, description: str, mime_type: str, mode: int, hide_in_file_dialog: bool}
     @property
-    def preferred_format(self) -> Optional[Dict[str, Union[str, int, bool]]]:
+    def preferred_format(self) -> Dict[str, Union[str, int, bool]]:
         return self._preferred_format
 
     ## Gets the file writer for the given file handler and mime type.
@@ -90,6 +90,7 @@ class MeshFormatHandler:
 
         machine_file_formats = global_stack.getMetaDataEntry("file_formats").split(";")
         machine_file_formats = [file_type.strip() for file_type in machine_file_formats]
+
         # Exception for UM3 firmware version >=4.4: UFP is now supported and should be the preferred file format.
         if "application/x-ufp" not in machine_file_formats and Version(firmware_version) >= Version("4.4"):
             machine_file_formats = ["application/x-ufp"] + machine_file_formats

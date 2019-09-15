@@ -6,7 +6,7 @@ import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
 import sys
-from typing import Any, Dict, List, Optional, Tuple, cast, Set
+from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
 from UM.Resources import Resources
@@ -19,7 +19,10 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from cura.CuraApplication import CuraApplication
 from cura.Machines.VariantType import VariantType
 
-from .XmlMaterialValidator import XmlMaterialValidator
+try:
+    from .XmlMaterialValidator import XmlMaterialValidator
+except (ImportError, SystemError):
+    import XmlMaterialValidator  # type: ignore  # This fixes the tests not being able to import.
 
 
 ##  Handles serializing and deserializing material containers from an XML file
@@ -40,11 +43,11 @@ class XmlMaterialProfile(InstanceContainer):
     #
     #   \param xml_version: The version number found in an XML file.
     #   \return The corresponding setting_version.
-    @classmethod
-    def xmlVersionToSettingVersion(cls, xml_version: str) -> int:
+    @staticmethod
+    def xmlVersionToSettingVersion(xml_version: str) -> int:
         if xml_version == "1.3":
             return CuraApplication.SettingVersion
-        return 0 #Older than 1.3.
+        return 0  # Older than 1.3.
 
     def getInheritedFiles(self):
         return self._inherited_files
@@ -190,13 +193,16 @@ class XmlMaterialProfile(InstanceContainer):
         ## End Name Block
 
         for key, value in metadata.items():
-            builder.start(key) # type: ignore
+            key_to_use = key
+            if key in self._metadata_tags_that_have_cura_namespace:
+                key_to_use = "cura:" + key_to_use
+            builder.start(key_to_use) # type: ignore
             if value is not None: #Nones get handled well by the builder.
                 #Otherwise the builder always expects a string.
                 #Deserialize expects the stringified version.
                 value = str(value)
             builder.data(value)
-            builder.end(key)
+            builder.end(key_to_use)
 
         builder.end("metadata")
         ## End Metadata Block
@@ -406,7 +412,8 @@ class XmlMaterialProfile(InstanceContainer):
         self._combineElement(self._expandMachinesXML(result), self._expandMachinesXML(second))
         return result
 
-    def _createKey(self, element):
+    @staticmethod
+    def _createKey(element):
         key = element.tag.split("}")[-1]
         if "key" in element.attrib:
             key += " key:" + element.attrib["key"]
@@ -422,15 +429,15 @@ class XmlMaterialProfile(InstanceContainer):
 
     # Recursively merges XML elements. Updates either the text or children if another element is found in first.
     # If it does not exist, copies it from second.
-    def _combineElement(self, first, second):
+    @staticmethod
+    def _combineElement(first, second):
         # Create a mapping from tag name to element.
-
         mapping = {}
         for element in first:
-            key = self._createKey(element)
+            key = XmlMaterialProfile._createKey(element)
             mapping[key] = element
         for element in second:
-            key = self._createKey(element)
+            key = XmlMaterialProfile._createKey(element)
             if len(element):  # Check if element has children.
                 try:
                     if "setting" in element.tag and not "settings" in element.tag:
@@ -440,7 +447,7 @@ class XmlMaterialProfile(InstanceContainer):
                         for child in element:
                             mapping[key].append(child)
                     else:
-                        self._combineElement(mapping[key], element)  # Multiple elements, handle those.
+                        XmlMaterialProfile._combineElement(mapping[key], element)  # Multiple elements, handle those.
                 except KeyError:
                     mapping[key] = element
                     first.append(element)
@@ -830,9 +837,9 @@ class XmlMaterialProfile(InstanceContainer):
             ContainerRegistry.getInstance().addContainer(container_to_add)
 
     @classmethod
-    def _getSettingsDictForNode(cls, node) -> Tuple[dict, dict]:
-        node_mapped_settings_dict = dict()
-        node_unmapped_settings_dict = dict()
+    def _getSettingsDictForNode(cls, node) -> Tuple[Dict[str,  Any], Dict[str, Any]]:
+        node_mapped_settings_dict = dict()  # type: Dict[str, Any]
+        node_unmapped_settings_dict = dict()  # type: Dict[str, Any]
 
         # Fetch settings in the "um" namespace
         um_settings = node.iterfind("./um:setting", cls.__namespaces)
@@ -966,7 +973,7 @@ class XmlMaterialProfile(InstanceContainer):
                     machine_compatibility = cls._parseCompatibleValue(entry.text)
 
             for identifier in machine.iterfind("./um:machine_identifier", cls.__namespaces):
-                machine_id_list = product_id_map.get(identifier.get("product"), [])
+                machine_id_list = product_id_map.get(identifier.get("product", ""), [])
                 if not machine_id_list:
                     machine_id_list = cls.getPossibleDefinitionIDsFromName(identifier.get("product"))
 
@@ -998,7 +1005,7 @@ class XmlMaterialProfile(InstanceContainer):
                     result_metadata.append(new_material_metadata)
 
                     buildplates = machine.iterfind("./um:buildplate", cls.__namespaces)
-                    buildplate_map = {} # type: Dict[str, Dict[str, bool]]
+                    buildplate_map = {}  # type: Dict[str, Dict[str, bool]]
                     buildplate_map["buildplate_compatible"] = {}
                     buildplate_map["buildplate_recommended"] = {}
                     for buildplate in buildplates:
@@ -1127,8 +1134,8 @@ class XmlMaterialProfile(InstanceContainer):
         builder.data(data)
         builder.end(tag_name)
 
-    @classmethod
-    def _profile_name(cls, material_name, color_name):
+    @staticmethod
+    def _profile_name(material_name, color_name):
         if material_name is None:
             return "Unknown Material"
         if color_name != "Generic":
@@ -1136,8 +1143,8 @@ class XmlMaterialProfile(InstanceContainer):
         else:
             return material_name
 
-    @classmethod
-    def getPossibleDefinitionIDsFromName(cls, name):
+    @staticmethod
+    def getPossibleDefinitionIDsFromName(name):
         name_parts = name.lower().split(" ")
         merged_name_parts = []
         for part in name_parts:
@@ -1175,13 +1182,15 @@ class XmlMaterialProfile(InstanceContainer):
         return product_to_id_map
 
     ##  Parse the value of the "material compatible" property.
-    @classmethod
-    def _parseCompatibleValue(cls, value: str):
+    @staticmethod
+    def _parseCompatibleValue(value: str):
         return value in {"yes", "unknown"}
 
     ##  Small string representation for debugging.
     def __str__(self):
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
+
+    _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
 
     # Map XML file setting names to internal names
     __material_settings_setting_map = {
@@ -1196,7 +1205,14 @@ class XmlMaterialProfile(InstanceContainer):
         "surface energy": "material_surface_energy",
         "shrinkage percentage": "material_shrinkage_percentage",
         "build volume temperature": "build_volume_temperature",
-    }
+        "anti ooze retract position": "material_anti_ooze_retracted_position",
+        "anti ooze retract speed": "material_anti_ooze_retraction_speed",
+        "break preparation position": "material_break_preparation_retracted_position",
+        "break preparation speed": "material_break_preparation_speed",
+        "break position": "material_break_retracted_position",
+        "break speed": "material_break_speed",
+        "break temperature": "material_break_temperature"
+    }  # type: Dict[str, str]
     __unmapped_settings = [
         "hardware compatible",
         "hardware recommended"

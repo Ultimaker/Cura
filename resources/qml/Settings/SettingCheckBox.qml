@@ -91,32 +91,56 @@ SettingItem
             }
             width: height
 
-            color:
+            radius: UM.Theme.getSize("setting_control_radius").width
+            border.width: UM.Theme.getSize("default_lining").width
+
+            border.color:
             {
+                if(!enabled)
+                {
+                    return UM.Theme.getColor("setting_control_disabled_border")
+                }
+                switch (propertyProvider.properties.validationState)
+                {
+                    case "ValidatorState.Invalid":
+                    case "ValidatorState.Exception":
+                    case "ValidatorState.MinimumError":
+                    case "ValidatorState.MaximumError":
+                        return UM.Theme.getColor("setting_validation_error");
+                    case "ValidatorState.MinimumWarning":
+                    case "ValidatorState.MaximumWarning":
+                        return UM.Theme.getColor("setting_validation_warning");
+                }
+                // Validation is OK.
+                if (control.containsMouse || control.activeFocus || hovered)
+                {
+                    return UM.Theme.getColor("setting_control_border_highlight")
+                }
+                return UM.Theme.getColor("setting_control_border")
+            }
+
+            color: {
                 if (!enabled)
                 {
                     return UM.Theme.getColor("setting_control_disabled")
                 }
+                switch (propertyProvider.properties.validationState)
+                {
+                    case "ValidatorState.Invalid":
+                    case "ValidatorState.Exception":
+                    case "ValidatorState.MinimumError":
+                    case "ValidatorState.MaximumError":
+                        return UM.Theme.getColor("setting_validation_error_background")
+                    case "ValidatorState.MinimumWarning":
+                    case "ValidatorState.MaximumWarning":
+                        return UM.Theme.getColor("setting_validation_warning_background")
+                }
+                // Validation is OK.
                 if (control.containsMouse || control.activeFocus)
                 {
                     return UM.Theme.getColor("setting_control_highlight")
                 }
                 return UM.Theme.getColor("setting_control")
-            }
-
-            radius: UM.Theme.getSize("setting_control_radius").width
-            border.width: UM.Theme.getSize("default_lining").width
-            border.color:
-            {
-                if (!enabled)
-                {
-                    return UM.Theme.getColor("setting_control_disabled_border")
-                }
-                if (control.containsMouse || control.activeFocus)
-                {
-                    return UM.Theme.getColor("setting_control_border_highlight")
-                }
-                return UM.Theme.getColor("setting_control_border")
             }
 
             UM.RecolorImage

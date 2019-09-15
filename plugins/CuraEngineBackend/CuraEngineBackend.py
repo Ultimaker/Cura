@@ -369,7 +369,7 @@ class CuraEngineBackend(QObject, Backend):
 
         elif job.getResult() == StartJobResult.ObjectSettingError:
             errors = {}
-            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+            for node in DepthFirstIterator(self._application.getController().getScene().getRoot()):
                 stack = node.callDecoration("getStack")
                 if not stack:
                     continue
@@ -438,7 +438,7 @@ class CuraEngineBackend(QObject, Backend):
 
         if not self._application.getPreferences().getValue("general/auto_slice"):
             enable_timer = False
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("isBlockSlicing"):
                 enable_timer = False
                 self.setState(BackendState.Disabled)
@@ -460,7 +460,7 @@ class CuraEngineBackend(QObject, Backend):
     ##  Return a dict with number of objects per build plate
     def _numObjectsPerBuildPlate(self) -> Dict[int, int]:
         num_objects = defaultdict(int) #type: Dict[int, int]
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             # Only count sliceable objects
             if node.callDecoration("isSliceable"):
                 build_plate_number = node.callDecoration("getBuildPlateNumber")
@@ -543,15 +543,25 @@ class CuraEngineBackend(QObject, Backend):
         if error.getErrorCode() == Arcus.ErrorCode.BindFailedError and self._start_slice_job is not None:
             self._start_slice_job.setIsCancelled(False)
 
+    # Check if there's any slicable object in the scene.
+    def hasSlicableObject(self) -> bool:
+        has_slicable = False
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("isSliceable"):
+                has_slicable = True
+                break
+        return has_slicable
+
     ##  Remove old layer data (if any)
     def _clearLayerData(self, build_plate_numbers: Set = None) -> None:
         # Clear out any old gcode
         self._scene.gcode_dict = {}  # type: ignore
 
-        for node in DepthFirstIterator(self._scene.getRoot()): #type: ignore #Ignore type error because iter() should get called automatically by Python syntax.
+        for node in DepthFirstIterator(self._scene.getRoot()):
             if node.callDecoration("getLayerData"):
                 if not build_plate_numbers or node.callDecoration("getBuildPlateNumber") in build_plate_numbers:
-                    node.getParent().removeChild(node)
+                    # We can asume that all nodes have a parent as we're looping through the scene (and filter out root)
+                    cast(SceneNode, node.getParent()).removeChild(node)
 
     def markSliceAll(self) -> None:
         for build_plate_number in range(self._application.getMultiBuildPlateModel().maxBuildPlate + 1):
@@ -560,6 +570,10 @@ class CuraEngineBackend(QObject, Backend):
 
     ##  Convenient function: mark everything to slice, emit state and clear layer data
     def needsSlicing(self) -> None:
+        # CURA-6604: If there's no slicable object, do not (try to) trigger slice, which will clear all the current
+        # gcode. This can break Gcode file loading if it tries to remove it afterwards.
+        if not self.hasSlicableObject():
+            return
         self.determineAutoSlicing()
         self.stopSlicing()
         self.markSliceAll()
@@ -631,7 +645,10 @@ class CuraEngineBackend(QObject, Backend):
         self.setState(BackendState.Done)
         self.processingProgress.emit(1.0)
 
-        gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
+        try:
+            gcode_list = self._scene.gcode_dict[self._start_slice_job_build_plate] #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            gcode_list = []
         for index, line in enumerate(gcode_list):
             replaced = line.replace("{print_time}", str(self._application.getPrintInformation().currentPrintTime.getDisplayString(DurationFormat.Format.ISO8601)))
             replaced = replaced.replace("{filament_amount}", str(self._application.getPrintInformation().materialLengths))
@@ -670,14 +687,20 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param message The protobuf message containing g-code, encoded as UTF-8.
     def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
-        self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        try:
+            self._scene.gcode_dict[self._start_slice_job_build_plate].append(message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            pass  # Throw the message away.
 
     ##  Called when a g-code prefix message is received from the engine.
     #
     #   \param message The protobuf message containing the g-code prefix,
     #   encoded as UTF-8.
     def _onGCodePrefixMessage(self, message: Arcus.PythonMessage) -> None:
-        self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        try:
+            self._scene.gcode_dict[self._start_slice_job_build_plate].insert(0, message.data.decode("utf-8", "replace")) #type: ignore #Because we generate this attribute dynamically.
+        except KeyError:  # Can occur if the g-code has been cleared while a slice message is still arriving from the other end.
+            pass  # Throw the message away.
 
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:
@@ -811,9 +834,8 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
-            extruders = list(self._global_container_stack.extruders.values())
 
-            for extruder in extruders:
+            for extruder in self._global_container_stack.extruderList:
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
                 extruder.containersChanged.disconnect(self._onChanged)
 
@@ -822,8 +844,8 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
-            extruders = list(self._global_container_stack.extruders.values())
-            for extruder in extruders:
+
+            for extruder in self._global_container_stack.extruderList:
                 extruder.propertyChanged.connect(self._onSettingChanged)
                 extruder.containersChanged.connect(self._onChanged)
             self._onChanged()
