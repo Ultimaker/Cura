@@ -70,7 +70,12 @@ class BaseMaterialsModel(ListModel):
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.disconnect(self._update)
             self._extruder_stack.approximateMaterialDiameterChanged.disconnect(self._update)
-        self._extruder_stack = global_stack.extruders.get(str(self._extruder_position))
+
+        try:
+            self._extruder_stack = global_stack.extruderList[self._extruder_position]
+        except IndexError:
+            self._extruder_stack = None
+
         if self._extruder_stack is not None:
             self._extruder_stack.pyqtContainersChanged.connect(self._update)
             self._extruder_stack.approximateMaterialDiameterChanged.connect(self._update)
@@ -113,12 +118,11 @@ class BaseMaterialsModel(ListModel):
         if global_stack is None or not self._enabled:
             return False
 
-        extruder_position = str(self._extruder_position)
-
-        if extruder_position not in global_stack.extruders:
+        try:
+            extruder_stack = global_stack.extruderList[self._extruder_position]
+        except IndexError:
             return False
-        
-        extruder_stack = global_stack.extruders[extruder_position]
+
         self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
         if self._available_materials is None:
             return False

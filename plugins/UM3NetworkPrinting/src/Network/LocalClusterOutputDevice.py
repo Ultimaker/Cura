@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Dict, List, Callable, Any
 
 from PyQt5.QtGui import QDesktopServices
@@ -8,6 +9,7 @@ from PyQt5.QtNetwork import QNetworkReply
 
 from UM.FileHandler.FileHandler import FileHandler
 from UM.i18n import i18nCatalog
+from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from cura.PrinterOutput.NetworkedPrinterOutputDevice import AuthState
 from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
@@ -167,5 +169,5 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Get the API client instance.
     def _getApiClient(self) -> ClusterApiClient:
         if not self._cluster_api:
-            self._cluster_api = ClusterApiClient(self.address, on_error=lambda error: print(error))
+            self._cluster_api = ClusterApiClient(self.address, on_error = lambda error: Logger.log("e", str(error)))
         return self._cluster_api

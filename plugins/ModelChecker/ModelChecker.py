@@ -76,7 +76,9 @@ class ModelChecker(QObject, Extension):
 
             # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
             # has not done yet.
-            if str(node_extruder_position) not in global_container_stack.extruders:
+            try:
+                extruder = global_container_stack.extruderList[int(node_extruder_position)]
+            except IndexError:
                 Application.getInstance().callLater(lambda: self.onChanged.emit())
                 return False
 
@@ -131,9 +133,9 @@ class ModelChecker(QObject, Extension):
 
         material_shrinkage = {}
         # Get all shrinkage values of materials used
-        for extruder_position, extruder in global_container_stack.extruders.items():
+        for extruder_position, extruder in enumerate(global_container_stack.extruderList):
             shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
             if shrinkage is None:
                 shrinkage = 0
-            material_shrinkage[extruder_position] = shrinkage
+            material_shrinkage[str(extruder_position)] = shrinkage
         return material_shrinkage
