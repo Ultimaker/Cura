@@ -992,7 +992,10 @@ class MachineManager(QObject):
     @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
     def _getExtruder(self, position) -> Optional[ExtruderStack]:
         if self._global_container_stack:
-            return self._global_container_stack.extruderList[int(position)]
+            try:
+                return self._global_container_stack.extruderList[int(position)]
+            except IndexError:
+                return None
         return None
 
     def updateDefaultExtruder(self) -> None:
@@ -1186,9 +1189,12 @@ class MachineManager(QObject):
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruderList[int(position)].quality = node.getContainer()
-            if empty_quality_changes:
-                self._global_container_stack.extruderList[int(position)].qualityChanges = empty_quality_changes_container
+            try:
+                self._global_container_stack.extruderList[int(position)].quality = node.getContainer()
+                if empty_quality_changes:
+                    self._global_container_stack.extruderList[int(position)].qualityChanges = empty_quality_changes_container
+            except IndexError:
+                return
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
