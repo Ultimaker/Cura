@@ -142,7 +142,7 @@ def test_resetSettingForAllExtruders(machine_manager):
     extruder_2 = createMockedExtruder("extruder_2")
     extruder_1.userChanges = createMockedInstanceContainer("settings_1")
     extruder_2.userChanges = createMockedInstanceContainer("settings_2")
-    global_stack.extruders = {"1": extruder_1, "2": extruder_2}
+    global_stack.extruderList = [extruder_1, extruder_2]
 
     machine_manager.resetSettingForAllExtruders("whatever")
 
