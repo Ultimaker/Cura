@@ -1194,7 +1194,7 @@ class MachineManager(QObject):
                 if empty_quality_changes:
                     self._global_container_stack.extruderList[int(position)].qualityChanges = empty_quality_changes_container
             except IndexError:
-                return
+                continue  # This can be ignored as in some cases the quality group gets set for an extruder that's not active (eg custom fff printer)
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1231,7 +1231,7 @@ class MachineManager(QObject):
         self._global_container_stack.qualityChanges = quality_changes_container
 
         for extruder in self._global_container_stack.extruderList:
-            position = str(extruder.getMetaDataEntry("position", "0"))
+            position = int(extruder.getMetaDataEntry("position", "0"))
             quality_changes_node = quality_changes_group.nodes_for_extruders.get(position)
             quality_node = None
             if quality_group is not None:
@@ -1343,7 +1343,10 @@ class MachineManager(QObject):
             buildplate_name = self._global_container_stack.variant.getName()
 
         for position_item in position_list:
-            extruder = self._global_container_stack.extruderList[int(position_item)]
+            try:
+                extruder = self._global_container_stack.extruderList[int(position_item)]
+            except IndexError:
+                continue
 
             current_material_base_name = extruder.material.getMetaDataEntry("base_file")
             current_nozzle_name = None
