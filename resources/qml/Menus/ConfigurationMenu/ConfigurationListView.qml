@@ -1,7 +1,7 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
@@ -63,7 +63,7 @@ Item
         }
     }
 
-    ScrollView
+    Cura.ScrollView
     {
         id: container
         width: parent.width
@@ -71,20 +71,6 @@ Item
         height: Math.round(Math.min(configurationList.height, maximumHeight))
         contentHeight: configurationList.height
         clip: true
-
-        ScrollBar.vertical.policy: (configurationList.height > maximumHeight) ? ScrollBar.AlwaysOn : ScrollBar.AlwaysOff //The AsNeeded policy also hides it when the cursor is away, and we don't want that.
-        ScrollBar.vertical.background: Rectangle
-        {
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            radius: width / 2
-            color: UM.Theme.getColor("scrollbar_background")
-        }
-        ScrollBar.vertical.contentItem: Rectangle
-        {
-            implicitWidth: UM.Theme.getSize("scrollbar").width
-            radius: width / 2
-            color: UM.Theme.getColor(parent.pressed ? "scrollbar_handle_down" : parent.hovered ? "scrollbar_handle_hover" : "scrollbar_handle")
-        }
 
         ButtonGroup
         {
