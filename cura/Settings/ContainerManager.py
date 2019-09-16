@@ -87,14 +87,15 @@ class ContainerManager(QObject):
             Logger.log("w", "Container node {0} doesn't have a container.".format(container_node.container_id))
             return False
         root_material_id = container_node.container.getMetaDataEntry("base_file", "")
-        if cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().isReadOnly(root_material_id):
+        container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
+        if container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
             return False
-
-        material_group = MaterialManager.getInstance().getMaterialGroup(root_material_id)
-        if material_group is None:
-            Logger.log("w", "Unable to find material group for: %s.", root_material_id)
+        root_material_query = container_registry.findContainers(id = root_material_id)
+        if not root_material_query:
+            Logger.log("w", "Unable to find root material: {root_material}.".format(root_material = root_material_id))
             return False
+        root_material = root_material_query[0]
 
         entries = entry_name.split("/")
         entry_name = entries.pop()
@@ -102,7 +103,7 @@ class ContainerManager(QObject):
         sub_item_changed = False
         if entries:
             root_name = entries.pop(0)
-            root = material_group.root_material_node.container.getMetaDataEntry(root_name)
+            root = root_material.getMetaDataEntry(root_name)
 
             item = root
             for _ in range(len(entries)):
@@ -115,11 +116,9 @@ class ContainerManager(QObject):
             entry_name = root_name
             entry_value = root
 
-        container = material_group.root_material_node.container
-        if container is not None:
-            container.setMetaDataEntry(entry_name, entry_value)
-            if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
-                container.metaDataChanged.emit(container)
+        root_material.setMetaDataEntry(entry_name, entry_value)
+        if sub_item_changed: #If it was only a sub-item that has changed then the setMetaDataEntry won't correctly notice that something changed, and we must manually signal that the metadata changed.
+            root_material.metaDataChanged.emit(root_material)
         return True
 
     @pyqtSlot(str, result = str)
@@ -355,11 +354,11 @@ class ContainerManager(QObject):
         if material_node.container is None:
             Logger.log("w", "Material node {0} doesn't have a container.".format(material_node.container_id))
             return
-        material_group = MaterialManager.getInstance().getMaterialGroup(material_node.container.getMetaDataEntry("base_file", ""))
-
-        if material_group is None:
+        root_material_query = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findInstanceContainers(id = material_node.getMetaDataEntry("base_file", ""))
+        if not root_material_query:
             Logger.log("w", "Unable to find material group for %s", material_node)
             return
+        root_material = root_material_query[0]
 
         # Generate a new GUID
         new_guid = str(uuid.uuid4())
@@ -367,9 +366,7 @@ class ContainerManager(QObject):
         # Update the GUID
         # NOTE: We only need to set the root material container because XmlMaterialProfile.setMetaDataEntry() will
         # take care of the derived containers too
-        container = material_group.root_material_node.container
-        if container is not None:
-            container.setMetaDataEntry("GUID", new_guid)
+        root_material.setMetaDataEntry("GUID", new_guid)
 
     def _performMerge(self, merge_into: InstanceContainer, merge: InstanceContainer, clear_settings: bool = True) -> None:
         if merge == merge_into:
