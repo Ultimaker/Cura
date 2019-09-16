@@ -1,6 +1,6 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
-
+from UM.Logger import Logger
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -67,11 +67,15 @@ class PerObjectSettingsTool(Tool):
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
     ## Returns True when the mesh_type was changed, False when current mesh_type == mesh_type
-    def setMeshType(self, mesh_type) -> bool:
+    def setMeshType(self, mesh_type: str) -> bool:
         if self.getMeshType() == mesh_type:
             return False
 
         selected_object = Selection.getSelectedObject(0)
+        if selected_object is None:
+            Logger.log("w", "Tried setting the mesh type of the selected object, but no object was selected")
+            return False
+
         stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
         if not stack:
             selected_object.addDecorator(SettingOverrideDecorator())
