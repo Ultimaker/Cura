@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "Ultimaker 2 with Olsson Block",
+    "inherits": "ultimaker2",
+    "metadata": {
+        "has_variants": true
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2 with Olsson Block" }
+    }
+}
