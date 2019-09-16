@@ -51,19 +51,32 @@ class VersionUpgrade43to44(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "10"
+        if "metadata" in parser:
+            parser["metadata"]["setting_version"] = "10"
 
-        # We should only have 6 levels when we start.
-        if "7" in parser["containers"]:
-            return ([], [])
+        if "containers" in parser:
+            # With the ContainerTree refactor, UM2 with Olsson block got moved to a separate definition.
+            if "6" in parser["containers"]:
+                if parser["containers"]["6"] == "ultimaker2":
+                    if "metadata" in parser and "has_variants" in parser["metadata"] and parser["metadata"]["has_variants"] == "True":  # This is an Olsson block upgraded UM2!
+                        parser["containers"]["6"] = "ultimaker2_olsson"
+                        del parser["metadata"]["has_variants"]
+                elif parser["containers"]["6"] == "ultimaker2_extended":
+                    if "metadata" in parser and "has_variants" in parser["metadata"] and parser["metadata"]["has_variants"] == "True":  # This is an Olsson block upgraded UM2E!
+                        parser["containers"]["6"] = "ultimaker2_extended_olsson"
+                        del parser["metadata"]["has_variants"]
 
-        # We added the intent container in Cura 4.4. This means that all other containers move one step down.
-        parser["containers"]["7"] = parser["containers"]["6"]
-        parser["containers"]["6"] = parser["containers"]["5"]
-        parser["containers"]["5"] = parser["containers"]["4"]
-        parser["containers"]["4"] = parser["containers"]["3"]
-        parser["containers"]["3"] = parser["containers"]["2"]
-        parser["containers"]["2"] = "empty_intent"
+            # We should only have 6 levels when we start.
+            if "7" in parser["containers"]:
+                return ([], [])
+
+            # We added the intent container in Cura 4.4. This means that all other containers move one step down.
+            parser["containers"]["7"] = parser["containers"]["6"]
+            parser["containers"]["6"] = parser["containers"]["5"]
+            parser["containers"]["5"] = parser["containers"]["4"]
+            parser["containers"]["4"] = parser["containers"]["3"]
+            parser["containers"]["3"] = parser["containers"]["2"]
+            parser["containers"]["2"] = "empty_intent"
 
         result = io.StringIO()
         parser.write(result)
