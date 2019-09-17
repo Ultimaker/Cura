@@ -28,7 +28,7 @@ class CloudFlowMessage(Message):
             lifetime=0,
             dismissable=True,
             option_state=False,
-            image_source=image_path,
+            image_source=QUrl.fromLocalFile(image_path),
             image_caption=I18N_CATALOG.i18nc("@info:status Ultimaker Cloud should not be translated.",
                                              "Connect to Ultimaker Cloud"),
         )

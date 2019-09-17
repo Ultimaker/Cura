@@ -660,14 +660,14 @@ class CuraApplication(QtApplication):
     def discardOrKeepProfileChangesClosed(self, option: str) -> None:
         global_stack = self.getGlobalContainerStack()
         if option == "discard":
-            for extruder in global_stack.extruders.values():
+            for extruder in global_stack.extruderList:
                 extruder.userChanges.clear()
             global_stack.userChanges.clear()
 
         # if the user decided to keep settings then the user settings should be re-calculated and validated for errors
         # before slicing. To ensure that slicer uses right settings values
         elif option == "keep":
-            for extruder in global_stack.extruders.values():
+            for extruder in global_stack.extruderList:
                 extruder.userChanges.update()
             global_stack.userChanges.update()
 
@@ -1668,7 +1668,7 @@ class CuraApplication(QtApplication):
         arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = fixed_nodes)
         min_offset = 8
         default_extruder_position = self.getMachineManager().defaultExtruderPosition
-        default_extruder_id = self._global_container_stack.extruders[default_extruder_position].getId()
+        default_extruder_id = self._global_container_stack.extruderList[int(default_extruder_position)].getId()
 
         select_models_on_load = self.getPreferences().getValue("cura/select_models_on_load")
 

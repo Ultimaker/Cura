@@ -74,7 +74,7 @@ class ExtruderManager(QObject):
 
         global_container_stack = self._application.getGlobalContainerStack()
         if global_container_stack:
-            extruder_stack_ids = {position: extruder.id for position, extruder in global_container_stack.extruders.items()}
+            extruder_stack_ids = {extruder.getMetaDataEntry("position", ""): extruder.id for extruder in global_container_stack.extruderList}
 
         return extruder_stack_ids
 
@@ -360,10 +360,14 @@ class ExtruderManager(QObject):
     def fixSingleExtrusionMachineExtruderDefinition(self, global_stack: "GlobalStack") -> None:
         container_registry = ContainerRegistry.getInstance()
         expected_extruder_definition_0_id = global_stack.getMetaDataEntry("machine_extruder_trains")["0"]
-        extruder_stack_0 = global_stack.extruders.get("0")
+        try:
+            extruder_stack_0 = global_stack.extruderList[0]
+        except IndexError:
+            extruder_stack_0 = None
+
         # At this point, extruder stacks for this machine may not have been loaded yet. In this case, need to look in
         # the container registry as well.
-        if not global_stack.extruders:
+        if not global_stack.extruderList:
             extruder_trains = container_registry.findContainerStacks(type = "extruder_train",
                                                                      machine = global_stack.getId())
             if extruder_trains:

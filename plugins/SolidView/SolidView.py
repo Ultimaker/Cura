@@ -57,9 +57,12 @@ class SolidView(View):
         # As the rendering is called a *lot* we really, dont want to re-evaluate the property every time. So we store em!
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
-            support_extruder_nr = global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr")
-            support_angle_stack = global_container_stack.extruders.get(str(support_extruder_nr))
-            if support_angle_stack:
+            support_extruder_nr = int(global_container_stack.getExtruderPositionValueWithDefault("support_extruder_nr"))
+            try:
+                support_angle_stack = global_container_stack.extruderList[support_extruder_nr]
+            except IndexError:
+                pass
+            else:
                 self._support_angle = support_angle_stack.getProperty("support_angle", "value")
 
     def beginRendering(self):
