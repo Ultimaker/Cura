@@ -171,9 +171,11 @@ class MaterialManager(QObject):
     def getMaterialNodeByType(self, global_stack: "GlobalStack", position: str, nozzle_name: str,
                               buildplate_name: Optional[str], material_guid: str) -> Optional["MaterialNode"]:
         machine_definition = global_stack.definition
-        variant_name = global_stack.extruders[position].variant.getName()
+        extruder = global_stack.extruderList[int(position)]
+        variant_name = extruder.variant.getName()
+        approximate_diameter = extruder.getApproximateMaterialDiameter()
 
-        return self.getMaterialNode(machine_definition.getId(), variant_name, buildplate_name, 3, material_guid)
+        return self.getMaterialNode(machine_definition.getId(), variant_name, buildplate_name, approximate_diameter, material_guid)
 
     #   There are 2 ways to get fallback materials;
     #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
