@@ -61,7 +61,7 @@ def main():
     plugins.sort()
 
     mods = ["cura"] + plugins + findModules("plugins/VersionUpgrade")
-    result = 0
+    success_code = 0
     for mod in mods:
         print("------------- Checking module {mod}".format(**locals()))
         if sys.platform == "win32":
@@ -70,10 +70,10 @@ def main():
             result = subprocess.run([sys.executable, mypy_module, "-p", mod, "--ignore-missing-imports"])
         if result.returncode != 0:
             print("\nModule {mod} failed checking. :(".format(**locals()))
-            result = 1
+            success_code = 1
     else:
         print("\n\nDone checking. All is good.")
-    return result
+    return success_code
 
 
 if __name__ == "__main__":
