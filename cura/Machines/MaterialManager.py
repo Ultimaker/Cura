@@ -275,13 +275,19 @@ class MaterialManager(QObject):
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
         return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node, name)
 
+    ##  Deletes a material from Cura.
+    #
+    #   This function does not do any safety checking any more. Please call this
+    #   function only if:
+    #   - The material is not read-only.
+    #   - The material is not used in any stacks.
+    #   If the material was not lazy-loaded yet, this will fully load the
+    #   container. When removing this material node, all other materials with
+    #   the same base fill will also be removed.
+    #   \param material_node The material to remove.
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
-        if material_node.container is None:
-            return
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        if root_material_id is not None:
-            self.removeMaterialByRootId(root_material_id)
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node)
 
     def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
         result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterialByBaseFile(root_material_id, new_base_id, new_metadata)
