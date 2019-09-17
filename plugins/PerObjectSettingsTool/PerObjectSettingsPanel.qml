@@ -24,12 +24,30 @@ Item
     readonly property string infill_mesh_type: "infill_mesh"
     readonly property string anti_overhang_mesh_type: "anti_overhang_mesh"
 
-    property var current_mesh_type: UM.ActiveTool.properties.getValue("MeshType")
+    property var currentMeshType: UM.ActiveTool.properties.getValue("MeshType")
 
+    // Update the view every time the currentMeshType changes
+    onCurrentMeshTypeChanged:
+    {
+        // set checked state of mesh type buttons
+        normalButton.checked = currentMeshType === normal_mesh_type
+        supportMeshButton.checked = currentMeshType === support_mesh_type
+        overhangMeshButton.checked = currentMeshType === infill_mesh_type || currentMeshType === cutting_mesh_type
+        antiOverhangMeshButton.checked = currentMeshType === anti_overhang_mesh_type
 
-    onCurrent_mesh_typeChanged: updateView(current_mesh_type)
+        // update active type label
+        for (var button in meshTypeButtons.children)
+        {
+            if (meshTypeButtons.children[button].checked)
+            {
+                meshTypeLabel.text = catalog.i18nc("@label","Mesh Type") + ": " + meshTypeButtons.children[button].text
+                break
+            }
+        }
+    }
 
-    function setOverhangsMeshType(){
+    function setOverhangsMeshType()
+    {
         if (infillOnlyCheckbox.checked)
         {
             setMeshType(infill_mesh_type)
@@ -40,25 +58,9 @@ Item
         }
     }
 
-    function setMeshType(type){
+    function setMeshType(type)
+    {
         UM.ActiveTool.setProperty("MeshType", type)
-    }
-
-    function updateView(type) {
-        // set checked state of mesh type buttons
-        normalButton.checked = type === normal_mesh_type
-        supportMeshButton.checked = type === support_mesh_type
-        overhangMeshButton.checked = type === infill_mesh_type || type === cutting_mesh_type
-        antiOverhangMeshButton.checked = type === anti_overhang_mesh_type
-
-        // update active type label
-        for (var button in meshTypeButtons.children)
-        {
-            if(meshTypeButtons.children[button].checked){
-                meshTypeLabel.text = catalog.i18nc("@label","Mesh Type") + ": " + meshTypeButtons.children[button].text
-                break
-            }
-        }
     }
 
     UM.I18nCatalog { id: catalog; name: "uranium"}
@@ -143,13 +145,14 @@ Item
 
             style: UM.Theme.styles.checkbox;
 
-            visible: current_mesh_type === infill_mesh_type || current_mesh_type === cutting_mesh_type
+            visible: currentMeshType === infill_mesh_type || currentMeshType === cutting_mesh_type
             onClicked: setOverhangsMeshType()
 
-            Binding {
+            Binding
+            {
                 target: infillOnlyCheckbox
                 property: "checked"
-                value: current_mesh_type === infill_mesh_type
+                value: currentMeshType === infill_mesh_type
             }
         }
 
@@ -160,7 +163,7 @@ Item
             id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
-            visible: current_mesh_type != "anti_overhang_mesh"
+            visible: currentMeshType != "anti_overhang_mesh"
 
             ScrollView
             {
@@ -190,7 +193,7 @@ Item
                         {
                             var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
-                            if(current_mesh_type == "support_mesh")
+                            if(currentMeshType == "support_mesh")
                             {
                                 excluded_settings = excluded_settings.concat(base.all_categories_except_support)
                             }
@@ -204,7 +207,8 @@ Item
 
                         // For some reason the model object is updated after removing him from the memory and
                         // it happens only on Windows. For this reason, set the destroyed value manually.
-                        Component.onDestruction: {
+                        Component.onDestruction:
+                        {
                             setDestroyed(true)
                         }
                     }
@@ -229,7 +233,8 @@ Item
                             //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
                             asynchronous: model.type != "enum" && model.type != "extruder"
 
-                            onLoaded: {
+                            onLoaded:
+                            {
                                 settingLoader.item.showRevertButton = false
                                 settingLoader.item.showInheritButton = false
                                 settingLoader.item.showLinkedSettingIcon = false
@@ -385,7 +390,7 @@ Item
             onClicked:
             {
                 settingPickDialog.visible = true;
-                if (current_mesh_type == "support_mesh")
+                if (currentMeshType == "support_mesh")
                 {
                     settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
                 }
@@ -413,7 +418,7 @@ Item
             if(visible)
             {
                 // Set skip setting, it will prevent from resetting selected mesh_type
-                contents.model.visibilityHandler.addSkipResetSetting(current_mesh_type)
+                contents.model.visibilityHandler.addSkipResetSetting(currentMeshType)
                 listview.model.forceUpdate()
 
                 updateFilter()
@@ -435,10 +440,12 @@ Item
             listview.model.filter = new_filter
         }
 
-        TextField {
+        TextField
+        {
             id: filterInput
 
-            anchors {
+            anchors
+            {
                 top: parent.top
                 left: parent.left
                 right: toggleShowAll.left
@@ -454,7 +461,8 @@ Item
         {
             id: toggleShowAll
 
-            anchors {
+            anchors
+            {
                 top: parent.top
                 right: parent.right
             }
@@ -521,11 +529,10 @@ Item
         }
 
         rightButtons: [
-            Button {
+            Button
+            {
                 text: catalog.i18nc("@action:button", "Close")
-                onClicked: {
-                    settingPickDialog.visible = false
-                }
+                onClicked: settingPickDialog.visible = false
             }
         ]
     }
