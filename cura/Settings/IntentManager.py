@@ -13,9 +13,6 @@ if TYPE_CHECKING:
 
 ##  Front-end for querying which intents are available for a certain
 #   configuration.
-#
-#   CURRENTLY THIS CLASS CONTAINS ONLY SOME PSEUDOCODE OF WHAT WE ARE SUPPOSED
-#   TO IMPLEMENT.
 class IntentManager(QObject):
     __instance = None
 
@@ -43,9 +40,9 @@ class IntentManager(QObject):
     #   \param material_id ID of the material.
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
-    def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
+    def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
         registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        return registry.findContainersMetadata(type = "intent", definition = definition_id, variant = nozzle_name, material = material_id)
+        return registry.findContainersMetadata(type = "intent", definition = definition_id, variant = nozzle_name, material = material_base_file)
 
     ##  Collects and returns all intent categories available for the given
     #   parameters. Note that the 'default' category is always available.
