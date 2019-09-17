@@ -268,18 +268,12 @@ class MaterialManager(QObject):
                 return False
         return True
 
+    ##  Change the user-visible name of a material.
+    #   \param material_node The ContainerTree node of the material to rename.
+    #   \param name The new name for the material.
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
-        if material_node.container is None:
-            return
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        if root_material_id is None:
-            return
-        if CuraContainerRegistry.getInstance().isReadOnly(root_material_id):
-            Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
-            return
-        containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = root_material_id)
-        containers[0].setName(name)
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node, name)
 
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
