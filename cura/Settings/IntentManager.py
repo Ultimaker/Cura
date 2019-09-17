@@ -37,12 +37,16 @@ class IntentManager(QObject):
     #
     #   \param definition_id ID of the printer.
     #   \param nozzle_name Name of the nozzle.
-    #   \param material_id ID of the material.
+    #   \param material_base_file The base_file of the material.
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
-        registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        return registry.findContainersMetadata(type = "intent", definition = definition_id, variant = nozzle_name, material = material_base_file)
+        material_node = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials[material_base_file]
+        intent_metadatas = []
+        for quality_node in material_node.qualities.values():
+            for intent_node in quality_node.intents.values():
+                intent_metadatas.append(intent_node.getMetadata())
+        return intent_metadatas
 
     ##  Collects and returns all intent categories available for the given
     #   parameters. Note that the 'default' category is always available.
