@@ -113,11 +113,8 @@ class MachineSettingsAction(MachineAction):
             return
 
         machine_manager = self._application.getMachineManager()
-        material_manager = self._application.getMaterialManager()
-        extruder_positions = list(global_stack.extruders.keys())
         has_materials = global_stack.getProperty("machine_gcode_flavor", "value") != "UltiGCode"
 
-        material_node = None
         if has_materials:
             global_stack.setMetaDataEntry("has_materials", True)
         else:
@@ -129,10 +126,12 @@ class MachineSettingsAction(MachineAction):
         self._updateHasMaterialsInContainerTree()
 
         # set materials
-        for position in extruder_positions:
-            if has_materials:
-                material_node = material_manager.getDefaultMaterial(global_stack, position, None)
-            machine_manager.setMaterial(position, material_node)
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        for position, extruder in enumerate(global_stack.extruderList):
+            #Find out what material we need to default to.
+            approximate_diameter = round(extruder.getProperty("material_diameter", "value"))
+            material_node = machine_node.variants[extruder.variant.getName()].preferredMaterial(approximate_diameter)
+            machine_manager.setMaterial(str(position), material_node)
 
         self._application.globalContainerStackChanged.emit()
 
