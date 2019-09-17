@@ -1300,8 +1300,7 @@ class MachineManager(QObject):
                 self._setMaterial(position_item, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                material_diameter = self._global_container_stack.extruders[position].getCompatibleMaterialDiameter()
-                approximate_material_diameter = round(material_diameter)
+                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
                 material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
                 self._setMaterial(position_item, material_node)
 
