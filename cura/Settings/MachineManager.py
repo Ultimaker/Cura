@@ -201,7 +201,8 @@ class MachineManager(QObject):
 
         # An empty build plate configuration from the network printer is presented as an empty string, so use "" for an
         # empty build plate.
-        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.getProperty("machine_buildplate_type", "value") if self._global_container_stack.variant != empty_variant_container else ""
+        self._current_printer_configuration.buildplateConfiguration = self._global_container_stack.getProperty("machine_buildplate_type", "value")\
+            if self._global_container_stack.variant != empty_variant_container else self._global_container_stack.getProperty("machine_buildplate_type", "default_value")
         self.currentConfigurationChanged.emit()
 
     @pyqtSlot(QObject, result = bool)
