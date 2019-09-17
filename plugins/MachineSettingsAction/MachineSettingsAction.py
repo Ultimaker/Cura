@@ -11,7 +11,9 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Util import parseBool
 
+import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.MachineAction import MachineAction
+from cura.Machines.ContainerTree import ContainerTree  # To re-build the machine node when hasMaterials changes.
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.cura_empty_instance_containers import isEmptyContainer
 
@@ -41,6 +43,9 @@ class MachineSettingsAction(MachineAction):
         self._backend = self._application.getBackend()
         self.onFinished.connect(self._onFinished)
 
+        # If the g-code flavour changes between UltiGCode and another flavour, we need to update the container tree.
+        self._application.globalContainerStackChanged.connect(self._updateHasMaterialsInContainerTree)
+
     # Which container index in a stack to store machine setting changes.
     @pyqtProperty(int, constant = True)
     def storeContainerIndex(self) -> int:
@@ -50,6 +55,16 @@ class MachineSettingsAction(MachineAction):
         # Add this action as a supported action to all machine definitions
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             self._application.getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
+
+    ##  Triggered when the global container stack changes or when the g-code
+    #   flavour setting is changed.
+    def _updateHasMaterialsInContainerTree(self) -> None:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+
+        if machine_node.has_materials != parseBool(global_stack.getMetaDataEntry("has_materials")):  # May have changed due to the g-code flavour.
+            machine_node.has_materials = parseBool(global_stack.getMetaDataEntry("has_materials"))
+            machine_node._loadAll()
 
     def _reset(self):
         global_stack = self._application.getMachineManager().activeMachine
@@ -110,6 +125,8 @@ class MachineSettingsAction(MachineAction):
             # Because any non-empty string evaluates to a boolean True, we have to remove the entry to make it False.
             if "has_materials" in global_stack.getMetaData():
                 global_stack.removeMetaDataEntry("has_materials")
+
+        self._updateHasMaterialsInContainerTree()
 
         # set materials
         for position in extruder_positions:
