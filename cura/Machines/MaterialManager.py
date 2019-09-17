@@ -311,38 +311,16 @@ class MaterialManager(QObject):
             return "ERROR"
         return result
 
-    # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
-    # Returns the ID of the newly created material.
+    ##  Create a new material by cloning the preferred material for the current
+    #   material diameter and generate a new GUID.
+    #
+    #   The material type is explicitly left to be the one from the preferred
+    #   material, since this allows the user to still have SOME profiles to work
+    #   with.
+    #   \return The ID of the newly created material.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
-        from UM.i18n import i18nCatalog
-        catalog = i18nCatalog("cura")
-        # Ensure all settings are saved.
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        application.saveSettings()
-
-        machine_manager = application.getMachineManager()
-        extruder_stack = machine_manager.activeStack
-
-        global_stack = application.getGlobalContainerStack()
-        if global_stack is None:
-            Logger.log("e", "Global stack not present!")
-            return "ERROR"
-        machine_definition = global_stack.definition
-        root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
-
-        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
-        root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-
-        # Create a new ID & container to hold the data.
-        new_id = CuraContainerRegistry.getInstance().uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
-                        "brand": catalog.i18nc("@label", "Custom"),
-                        "GUID": str(uuid.uuid4()),
-                        }
-
-        self.duplicateMaterialByRootId(root_material_id, new_base_id = new_id, new_metadata = new_metadata)
-        return new_id
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().createMaterial()
 
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str) -> None:
