@@ -289,74 +289,27 @@ class MaterialManager(QObject):
         if root_material_id is not None:
             self.removeMaterialByRootId(root_material_id)
 
-    def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None,
-                                  new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
-        container_registry = CuraContainerRegistry.getInstance()
-        results = container_registry.findContainers(id=root_material_id)
-
-        if not results:
-            Logger.log("i", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return None
-
-        base_container = results[0]
-
-        # Ensure all settings are saved.
-        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
-
-        # Create a new ID & container to hold the data.
-        new_containers = []
-        if new_base_id is None:
-            new_base_id = container_registry.uniqueName(base_container.getId())
-        new_base_container = copy.deepcopy(base_container)
-        new_base_container.getMetaData()["id"] = new_base_id
-        new_base_container.getMetaData()["base_file"] = new_base_id
-        if new_metadata is not None:
-            for key, value in new_metadata.items():
-                new_base_container.getMetaData()[key] = value
-        new_containers.append(new_base_container)
-
-        # Clone all of them.
-        for container_to_copy in container_registry.findContainers(base_file=root_material_id):
-            if container_to_copy.getId() == root_material_id:
-                continue  # We already have that one, skip it
-            new_id = new_base_id
-            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
-                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant_name"):
-                    nozzle_name = container_to_copy.getMetaDataEntry("variant_name")
-                    new_id += "_" + nozzle_name.replace(" ", "_")
-
-            new_container = copy.deepcopy(container_to_copy)
-            new_container.getMetaData()["id"] = new_id
-            new_container.getMetaData()["base_file"] = new_base_id
-            if new_metadata is not None:
-                for key, value in new_metadata.items():
-                    new_container.getMetaData()[key] = value
-            new_containers.append(new_container)
-
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            container_registry.addContainer(container_to_add)
-
-        # if the duplicated material was favorite then the new material should also be added to favorite.
-        if root_material_id in self.getFavorites():
-            cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().addFavorite(new_base_id)
-
-        return new_base_id
-
-    #
-    # Creates a duplicate of a material, which has the same GUID and base_file metadata.
-    # Returns the root material ID of the duplicated material if successful.
-    #
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None,
-                          new_metadata: Optional[Dict[str, Any]] = None) -> str:
-        if material_node.container is None:
-            Logger.log("e", "Material node {0} doesn't have container.".format(material_node.container_id))
+    def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterialByBaseFile(root_material_id, new_base_id, new_metadata)
+        if result is None:
             return "ERROR"
-        root_material_id = cast(str, material_node.container.getMetaDataEntry("base_file", ""))
-        new_material_id = self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
-        return new_material_id if new_material_id is not None else "ERROR"
+        return result
+
+    ##  Creates a duplicate of a material with the same GUID and base_file
+    #   metadata.
+    #   \param material_node The node representing the material to duplicate.
+    #   \param new_base_id A new material ID for the base material. The IDs of
+    #   the submaterials will be based off this one. If not provided, a material
+    #   ID will be generated automatically.
+    #   \param new_metadata Metadata for the new material. If not provided, this
+    #   will be duplicated from the original material.
+    #   \return The root material ID of the duplicate material.
+    @pyqtSlot("QVariant", result = str)
+    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> str:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterial(material_node, new_base_id, new_metadata)
+        if result is None:
+            return "ERROR"
+        return result
 
     # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
     # Returns the ID of the newly created material.

@@ -73,20 +73,19 @@ class MaterialManagementModel(QObject):
 
     ##  Creates a duplicate of a material with the same GUID and base_file
     #   metadata.
-    #   \param material_node The node representing the material to duplicate.
+    #   \param base_file: The base file of the material to duplicate.
     #   \param new_base_id A new material ID for the base material. The IDs of
     #   the submaterials will be based off this one. If not provided, a material
     #   ID will be generated automatically.
     #   \param new_metadata Metadata for the new material. If not provided, this
     #   will be duplicated from the original material.
     #   \return The root material ID of the duplicate material.
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+    def duplicateMaterialByBaseFile(self, base_file: str, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
         container_registry = CuraContainerRegistry.getInstance()
 
-        root_materials = container_registry.findContainers(id = material_node.base_file)
+        root_materials = container_registry.findContainers(id = base_file)
         if not root_materials:
-            Logger.log("i", "Unable to duplicate the root material with ID {root_id}, because it doesn't exist.".format(root_id = material_node.base_file))
+            Logger.log("i", "Unable to duplicate the root material with ID {root_id}, because it doesn't exist.".format(root_id = base_file))
             return None
         root_material = root_materials[0]
 
@@ -105,8 +104,8 @@ class MaterialManagementModel(QObject):
         new_containers = [new_root_material]
 
         # Clone all submaterials.
-        for container_to_copy in container_registry.findInstanceContainers(base_file = material_node.base_file):
-            if container_to_copy.getId() == material_node.base_file:
+        for container_to_copy in container_registry.findInstanceContainers(base_file = base_file):
+            if container_to_copy.getId() == base_file:
                 continue  # We already have that one. Skip it.
             new_id = new_base_id
             definition = container_to_copy.getMetaDataEntry("definition")
@@ -129,11 +128,24 @@ class MaterialManagementModel(QObject):
 
         # If the duplicated material was favorite then the new material should also be added to the favorites.
         favorites_set = set(application.getPreferences().getValue("cura/favorite_materials").split(";"))
-        if material_node.base_file in favorites_set:
+        if base_file in favorites_set:
             favorites_set.add(new_base_id)
             application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites_set))
 
         return new_base_id
+
+    ##  Creates a duplicate of a material with the same GUID and base_file
+    #   metadata.
+    #   \param material_node The node representing the material to duplicate.
+    #   \param new_base_id A new material ID for the base material. The IDs of
+    #   the submaterials will be based off this one. If not provided, a material
+    #   ID will be generated automatically.
+    #   \param new_metadata Metadata for the new material. If not provided, this
+    #   will be duplicated from the original material.
+    #   \return The root material ID of the duplicate material.
+    @pyqtSlot("QVariant", result = str)
+    def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+        return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     ##  Create a new material by cloning the preferred material for the current
     #   material diameter and generate a new GUID.
