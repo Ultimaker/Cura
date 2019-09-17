@@ -78,7 +78,6 @@ class IntentManager(QObject):
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
             #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
         quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
-        # TODO: These quality nodes in that tree already contain the intent nodes. We can optimise this.
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]
