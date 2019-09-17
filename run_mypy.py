@@ -71,6 +71,8 @@ def main():
         if result.returncode != 0:
             print("\nModule {mod} failed checking. :(".format(**locals()))
             success_code = 1
+    if success_code:
+        print("\n\nSome modules failed checking!")
     else:
         print("\n\nDone checking. All is good.")
     return success_code
