@@ -121,7 +121,7 @@ Item
             Button
             {
                 id: overhangMeshButton
-                text: catalog.i18nc("@label", "Modify settings for overlays")
+                text: catalog.i18nc("@label", "Modify settings for overlaps")
                 iconSource: UM.Theme.getIcon("pos_modify_overlaps");
                 property bool needBorder: true
                 checkable:true
