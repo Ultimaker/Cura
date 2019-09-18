@@ -358,34 +358,13 @@ Item
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: customiseSettingsButton;
             height: UM.Theme.getSize("setting_control").height;
             visible: currentSettings.visible
 
             text: catalog.i18nc("@action:button", "Select settings");
-
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    width: control.width;
-                    height: control.height;
-                    border.width: UM.Theme.getSize("default_lining").width;
-                    border.color: control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                    color: control.pressed ? UM.Theme.getColor("action_button_active") :
-                           control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                }
-                label: Label
-                {
-                    text: control.text;
-                    color: UM.Theme.getColor("setting_control_text");
-                    font: UM.Theme.getFont("default")
-                    anchors.centerIn: parent
-                }
-            }
 
             onClicked:
             {
