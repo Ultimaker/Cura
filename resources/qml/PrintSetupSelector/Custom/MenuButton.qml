@@ -22,7 +22,7 @@ Button
     background: Rectangle
     {
         id: backgroundRectangle
-        border.width: 1
+        border.width: UM.Theme.getSize("default_lining").width
         border.color: button.checked ? UM.Theme.getColor("setting_control_border_highlight") : "transparent"
         color: button.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
         radius: UM.Theme.getSize("action_button_radius").width
