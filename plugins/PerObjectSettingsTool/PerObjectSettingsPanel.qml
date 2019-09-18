@@ -15,14 +15,14 @@ Item
     id: base
     width: childrenRect.width
     height: childrenRect.height
-    property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
+    property var allCategoriesExceptSupport: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
 
-    readonly property string normal_mesh_type: ""
-    readonly property string support_mesh_type: "support_mesh"
-    readonly property string cutting_mesh_type: "cutting_mesh"
-    readonly property string infill_mesh_type: "infill_mesh"
-    readonly property string anti_overhang_mesh_type: "anti_overhang_mesh"
+    readonly property string normalMeshType: ""
+    readonly property string supportMeshType: "support_mesh"
+    readonly property string cuttingMeshType: "cutting_mesh"
+    readonly property string infillMeshType: "infill_mesh"
+    readonly property string antiOverhangMeshType: "anti_overhang_mesh"
 
     property var currentMeshType: UM.ActiveTool.properties.getValue("MeshType")
 
@@ -30,17 +30,16 @@ Item
     onCurrentMeshTypeChanged:
     {
         // set checked state of mesh type buttons
-        normalButton.checked = currentMeshType === normal_mesh_type
-        supportMeshButton.checked = currentMeshType === support_mesh_type
-        overhangMeshButton.checked = currentMeshType === infill_mesh_type || currentMeshType === cutting_mesh_type
-        antiOverhangMeshButton.checked = currentMeshType === anti_overhang_mesh_type
+        normalButton.checked = type === normalMeshType
+        supportMeshButton.checked = type === supportMeshType
+        overhangMeshButton.checked = type === infillMeshType || type === cuttingMeshType
+        antiOverhangMeshButton.checked = type === antiOverhangMeshType
 
         // update active type label
         for (var button in meshTypeButtons.children)
         {
-            if (meshTypeButtons.children[button].checked)
-            {
-                meshTypeLabel.text = catalog.i18nc("@label","Mesh Type") + ": " + meshTypeButtons.children[button].text
+            if (meshTypeButtons.children[button].checked){
+                meshTypeLabel.text = catalog.i18nc("@label", "Mesh Type") + ": " + meshTypeButtons.children[button].text
                 break
             }
         }
@@ -50,17 +49,34 @@ Item
     {
         if (infillOnlyCheckbox.checked)
         {
-            setMeshType(infill_mesh_type)
+            setMeshType(infillMeshType)
         }
         else
         {
-            setMeshType(cutting_mesh_type)
+            setMeshType(cuttingMeshType)
         }
     }
 
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
+    }
+
+    function updateView(type) {
+        // set checked state of mesh type buttons
+        normalButton.checked = type === normal_mesh_type
+        supportMeshButton.checked = type === support_mesh_type
+        overhangMeshButton.checked = type === infill_mesh_type || type === cutting_mesh_type
+        antiOverhangMeshButton.checked = type === anti_overhang_mesh_type
+
+        // update active type label
+        for (var button in meshTypeButtons.children)
+        {
+            if(meshTypeButtons.children[button].checked){
+                meshTypeLabel.text = catalog.i18nc("@label","Mesh Type") + ": " + meshTypeButtons.children[button].text
+                break
+            }
+        }
     }
 
     UM.I18nCatalog { id: catalog; name: "uranium"}
@@ -85,7 +101,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_normal");
                 property bool needBorder: true
                 checkable: true
-                onClicked: setMeshType(normal_mesh_type);
+                onClicked: setMeshType(normalMeshType);
                 style: UM.Theme.styles.tool_button;
                 z: 4
             }
@@ -97,7 +113,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_print_as_support");
                 property bool needBorder: true
                 checkable:true
-                onClicked: setMeshType(support_mesh_type)
+                onClicked: setMeshType(supportMeshType)
                 style: UM.Theme.styles.tool_button;
                 z: 3
             }
@@ -109,7 +125,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_modify_overlaps");
                 property bool needBorder: true
                 checkable:true
-                onClicked: setMeshType(infill_mesh_type)
+                onClicked: setMeshType(infillMeshType)
                 style: UM.Theme.styles.tool_button;
                 z: 2
             }
@@ -121,7 +137,7 @@ Item
                 iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
                 property bool needBorder: true
                 checkable: true
-                onClicked: setMeshType(anti_overhang_mesh_type)
+                onClicked: setMeshType(antiOverhangMeshType)
                 style: UM.Theme.styles.tool_button;
                 z: 1
             }
@@ -141,18 +157,18 @@ Item
         {
             id: infillOnlyCheckbox
 
-            text: catalog.i18nc("@action:checkbox","Infill only");
+            text: catalog.i18nc("@action:checkbox", "Infill only");
 
             style: UM.Theme.styles.checkbox;
 
-            visible: currentMeshType === infill_mesh_type || currentMeshType === cutting_mesh_type
+            visible: currentMeshType === infillMeshType || currentMeshType === cuttingMeshType
             onClicked: setOverhangsMeshType()
 
             Binding
             {
                 target: infillOnlyCheckbox
                 property: "checked"
-                value: currentMeshType === infill_mesh_type
+                value: currentMeshType === infillMeshType
             }
         }
 
@@ -193,9 +209,9 @@ Item
                         {
                             var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
-                            if(currentMeshType == "support_mesh")
+                            if (currentMeshType == "support_mesh")
                             {
-                                excluded_settings = excluded_settings.concat(base.all_categories_except_support)
+                                excluded_settings = excluded_settings.concat(base.allCategoriesExceptSupport)
                             }
                             return excluded_settings
                         }
@@ -371,7 +387,7 @@ Item
                 settingPickDialog.visible = true;
                 if (currentMeshType == "support_mesh")
                 {
-                    settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
+                    settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
                 }
                 else
                 {
@@ -394,7 +410,7 @@ Item
         onVisibilityChanged:
         {
             // force updating the model to sync it with addedSettingsModel
-            if(visible)
+            if (visible)
             {
                 // Set skip setting, it will prevent from resetting selected mesh_type
                 contents.model.visibilityHandler.addSkipResetSetting(currentMeshType)
@@ -411,7 +427,7 @@ Item
             // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
             //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
 
-            if(filterInput.text != "")
+            if (filterInput.text != "")
             {
                 new_filter["i18n_label"] = "*" + filterInput.text
             }
