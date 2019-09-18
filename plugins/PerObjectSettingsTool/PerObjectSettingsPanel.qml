@@ -29,6 +29,8 @@ Item
     // Update the view every time the currentMeshType changes
     onCurrentMeshTypeChanged:
     {
+        var type = currentMeshType
+
         // set checked state of mesh type buttons
         normalButton.checked = type === normalMeshType
         supportMeshButton.checked = type === supportMeshType
@@ -60,23 +62,6 @@ Item
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
-    }
-
-    function updateView(type) {
-        // set checked state of mesh type buttons
-        normalButton.checked = type === normal_mesh_type
-        supportMeshButton.checked = type === support_mesh_type
-        overhangMeshButton.checked = type === infill_mesh_type || type === cutting_mesh_type
-        antiOverhangMeshButton.checked = type === anti_overhang_mesh_type
-
-        // update active type label
-        for (var button in meshTypeButtons.children)
-        {
-            if(meshTypeButtons.children[button].checked){
-                meshTypeLabel.text = catalog.i18nc("@label","Mesh Type") + ": " + meshTypeButtons.children[button].text
-                break
-            }
-        }
     }
 
     UM.I18nCatalog { id: catalog; name: "uranium"}
