@@ -4,12 +4,14 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
+from UM.Logger import Logger
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
 from UM.Settings.InstanceContainer import InstanceContainer
 
 if TYPE_CHECKING:
     from UM.Settings.InstanceContainer import InstanceContainer
+
 
 ##  Front-end for querying which intents are available for a certain
 #   configuration.
@@ -131,6 +133,7 @@ class IntentManager(QObject):
     ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
+        Logger.log("i", "Attempting to set intent_category to [%s] and quality type to [%s]", intent_category, quality_type)
         old_intent_category = self.currentIntentCategory
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
