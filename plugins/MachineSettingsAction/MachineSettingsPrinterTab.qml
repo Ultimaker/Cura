@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -28,24 +29,25 @@ Item
 
     property var forceUpdateFunction: manager.forceUpdate
 
-    Item
+    RowLayout
     {
         id: upperBlock
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
-
-        height: childrenRect.height
-
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
+        spacing: UM.Theme.getSize("default_margin").width
+        
         // =======================================
         // Left-side column for "Printer Settings"
         // =======================================
         Column
         {
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: base.columnWidth
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
@@ -173,9 +175,8 @@ Item
         // =======================================
         Column
         {
-            anchors.top: parent.top
-            anchors.right: parent.right
-            width: base.columnWidth
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
@@ -329,22 +330,23 @@ Item
         }
     }
 
-    Item  // Start and End G-code
+    RowLayout  // Start and End G-code
     {
         id: lowerBlock
-        anchors.top: upperBlock.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("default_margin").width
+        anchors
+        {
+            top: upperBlock.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
 
         Cura.GcodeTextArea   // "Start G-code"
         {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            width: base.columnWidth - UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             labelText: catalog.i18nc("@title:label", "Start G-code")
             containerStackId: machineStackId
@@ -354,11 +356,8 @@ Item
 
         Cura.GcodeTextArea   // "End G-code"
         {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            anchors.right: parent.right
-            width: base.columnWidth - UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             labelText: catalog.i18nc("@title:label", "End G-code")
             containerStackId: machineStackId
