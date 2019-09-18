@@ -69,9 +69,9 @@ class SendMaterialJob(Job):
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
         container_registry = CuraApplication.getInstance().getContainerRegistry()
         all_materials = container_registry.findInstanceContainersMetadata(type = "material")
-        all_root_materials = {material["base_file"] for material in all_materials if "base_file" in material}  # Filters out uniques by making it a set. Don't include files without base file (i.e. empty material).
+        all_base_files = {material["base_file"] for material in all_materials if "base_file" in material}  # Filters out uniques by making it a set. Don't include files without base file (i.e. empty material).
 
-        for root_material_id in all_root_materials:
+        for root_material_id in all_base_files:
             if root_material_id not in materials_to_send:
                 # If the material does not have to be sent we skip it.
                 continue
