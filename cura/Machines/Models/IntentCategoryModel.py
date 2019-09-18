@@ -10,7 +10,7 @@ from cura.Settings.IntentManager import IntentManager
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry #To update the list if anything changes.
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
-
+import cura.CuraApplication
 if TYPE_CHECKING:
     from UM.Settings.ContainerRegistry import ContainerInterface
 
@@ -48,7 +48,7 @@ class IntentCategoryModel(ListModel):
 
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
-        IntentManager.getInstance().configurationChanged.connect(self.update)
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.update)
 
         self.update()
 

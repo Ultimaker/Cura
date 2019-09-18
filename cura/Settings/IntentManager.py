@@ -18,12 +18,6 @@ if TYPE_CHECKING:
 class IntentManager(QObject):
     __instance = None
 
-    def __init__(self) -> None:
-        super().__init__()
-        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
-        self.configurationChanged.connect(self.selectDefaultIntent)
-        pass
-
     ##  This class is a singleton.
     @classmethod
     def getInstance(cls):
@@ -31,7 +25,6 @@ class IntentManager(QObject):
             cls.__instance = IntentManager()
         return cls.__instance
 
-    configurationChanged = pyqtSignal() #Triggered when something changed in the rest of the stack.
     intentCategoryChanged = pyqtSignal() #Triggered when we switch categories.
 
     ##  Gets the metadata dictionaries of all intent profiles for a given
@@ -151,12 +144,3 @@ class IntentManager(QObject):
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
         if old_intent_category != intent_category:
             self.intentCategoryChanged.emit()
-
-    ##  Selects the default intents on every extruder.
-    def selectDefaultIntent(self) -> None:
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        global_stack = application.getGlobalContainerStack()
-        if global_stack is None:
-            return
-        for extruder_stack in global_stack.extruderList:
-            extruder_stack.intent = self.getDefaultIntent()
