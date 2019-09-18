@@ -5991,6 +5991,34 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "spiralize_min_line_width":
+                {
+                    "label": "Minimum Spiralized Line Width",
+                    "description": "The minimum width of a spiralized contour line as a percentage of the normal line width. Setting this to a value less than 100 enables variable width spiralized contours.",
+                    "type": "float",
+                    "unit": "%",
+                    "enabled": "magic_spiralize",
+                    "default_value": 100,
+                    "minimum_value": "20",
+                    "minimum_value_warning": "50",
+                    "maximum_value": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
+                "spiralize_max_line_width":
+                {
+                    "label": "Maximum Spiralized Line Width",
+                    "description": "The maximum width of a spiralized contour line as a percentage of the normal line width. Setting this to a value greater than 100 enables variable width spiralized contours.",
+                    "type": "float",
+                    "unit": "%",
+                    "enabled": "magic_spiralize",
+                    "default_value": 100,
+                    "minimum_value": "100",
+                    "maximum_value": "500",
+                    "maximum_value_warning": "200",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false
+                },
                 "relative_extrusion":
                 {
                     "label": "Relative Extrusion",
