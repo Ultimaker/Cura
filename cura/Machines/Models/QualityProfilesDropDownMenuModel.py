@@ -78,9 +78,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
         quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
 
         item_list = []
-        for key in quality_group_dict:
-            quality_group = quality_group_dict[key]
-
+        for quality_group in quality_group_dict.values():
             layer_height = self._fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
