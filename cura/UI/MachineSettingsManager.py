@@ -2,10 +2,11 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING
-
 from PyQt5.QtCore import QObject, pyqtSlot
 
 from UM.i18n import i18nCatalog
+
+from cura.Machines.ContainerTree import ContainerTree
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -42,7 +43,7 @@ class MachineSettingsManager(QObject):
         # it was moved to the machine manager instead. Now this method just calls the machine manager.
         self._application.getMachineManager().setActiveMachineExtruderCount(extruder_count)
 
-    # Function for the Machine Settings panel (QML) to update after the usre changes "Number of Extruders".
+    # Function for the Machine Settings panel (QML) to update after the user changes "Number of Extruders".
     #
     # fieldOfView: The Ultimaker 2 family (not 2+) does not have materials in Cura by default, because the material is
     # to be set on the printer. But when switching to Marlin flavor, the printer firmware can not change/insert material
@@ -51,8 +52,6 @@ class MachineSettingsManager(QObject):
     @pyqtSlot()
     def updateHasMaterialsMetadata(self):
         machine_manager = self._application.getMachineManager()
-        material_manager = self._application.getMaterialManager()
-
         global_stack = machine_manager.activeMachine
 
         definition = global_stack.definition
@@ -76,7 +75,10 @@ class MachineSettingsManager(QObject):
         # set materials
         for position in extruder_positions:
             if has_materials:
-                material_node = material_manager.getDefaultMaterial(global_stack, position, None)
+                extruder = global_stack.extruderList[int(position)]
+                approximate_diameter = extruder.getApproximateMaterialDiameter()
+                variant_node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
+                material_node = variant_node.preferredMaterial(approximate_diameter)
             machine_manager.setMaterial(position, material_node)
 
         self.forceUpdate()
