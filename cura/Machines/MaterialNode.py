@@ -73,8 +73,8 @@ class MaterialNode(ContainerNode):
                 if self.variant.machine.has_variants:
                     qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name)
                 else:
-                    qualities_any_material = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition)
-
+                    qualities_any_material = container_registry.findInstanceContainersMetadata(type="quality", definition = self.variant.machine.quality_definition)
+                    qualities_any_material = [metadata for metadata in qualities_any_material if metadata.get("global_quality", "False") != "True"]
                 for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type):
                     qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
                 if not qualities:  # No quality profiles found. Go by GUID then.
