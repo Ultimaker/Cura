@@ -575,7 +575,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     @call_on_qt_thread
     def read(self, file_name):
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
 
         archive = zipfile.ZipFile(file_name, "r")
 
@@ -673,7 +672,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if self._resolve_strategies["material"] == "override":
                             # Remove the old materials and then deserialize the one from the project
                             root_material_id = material_container.getMetaDataEntry("base_file")
-                            material_manager.removeMaterialByRootId(root_material_id)
+                            application.getContainerRegistry().removeContainer(root_material_id)
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
@@ -726,8 +725,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _processQualityChanges(self, global_stack):
         if self._machine_info.quality_changes_info is None:
             return
-
-        application = CuraApplication.getInstance()
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
@@ -957,9 +954,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
-        application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
-
+        machine_node = ContainerTree.getInstance().machines[global_stack]
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
@@ -970,18 +965,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
-            build_plate_id = global_stack.variant.getId()
-
-            # get material diameter of this extruder
-            machine_material_diameter = extruder_stack.getCompatibleMaterialDiameter()
-            material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
-                                                             extruder_stack.variant.getName(),
-                                                             build_plate_id,
-                                                             machine_material_diameter,
-                                                             root_material_id)
-
-            if material_node is not None and material_node.container is not None:
-                extruder_stack.material = material_node.container  # type: InstanceContainer
+            material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
+            extruder_stack.material = material_node.container  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

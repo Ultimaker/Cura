@@ -255,7 +255,7 @@ class MaterialManager(QObject):
         for result in results:
             container_registry.removeContainer(result.getMetaDataEntry("id", ""))
 
-    @pyqtSlot("QVariant", result=bool)
+    @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode"):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
