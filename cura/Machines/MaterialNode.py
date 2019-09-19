@@ -63,11 +63,18 @@ class MaterialNode(ContainerNode):
         elif not self.variant.machine.has_materials:
             qualities = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition)
         else:
-            # Need to find the qualities that specify a material profile with the same material type.
-            qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name, material = self.container_id)  # First try by exact material ID.
+            if self.variant.machine.has_variants:
+                # Need to find the qualities that specify a material profile with the same material type.
+                qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name, material = self.container_id)  # First try by exact material ID.
+            else:
+                qualities = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition, material=self.container_id)
             if not qualities:
                 my_material_type = self.material_type
-                qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name)
+                if self.variant.machine.has_variants:
+                    qualities_any_material = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name)
+                else:
+                    qualities_any_material = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition)
+
                 for material_metadata in container_registry.findInstanceContainersMetadata(type = "material", material = my_material_type):
                     qualities.extend((quality for quality in qualities_any_material if quality["material"] == material_metadata["id"]))
                 if not qualities:  # No quality profiles found. Go by GUID then.
