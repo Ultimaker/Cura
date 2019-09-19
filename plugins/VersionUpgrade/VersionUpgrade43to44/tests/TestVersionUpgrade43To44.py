@@ -1,6 +1,6 @@
 import configparser
 
-import VersionUpgrade41to42
+import VersionUpgrade43to44
 
 before_update = """[general]
 version = 4
@@ -22,7 +22,7 @@ type = machine
 
 
 def test_upgrade():
-    upgrader = VersionUpgrade41to42.VersionUpgrade41to42()
+    upgrader = VersionUpgrade43to44.VersionUpgrade43to44()
     file_name, new_data =  upgrader.upgradeStack(before_update, "whatever")
     parser = configparser.ConfigParser(interpolation=None)
     parser.read_string(new_data[0])

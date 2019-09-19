@@ -1324,9 +1324,10 @@ class MachineManager(QObject):
                 self._setMaterial(position_item, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
-                material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
-                self._setMaterial(position_item, material_node)
+                if position is not None:
+                    approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+                    material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
+                    self._setMaterial(position_item, material_node)
 
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
     #   instance with the same network key.

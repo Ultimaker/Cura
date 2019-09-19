@@ -308,18 +308,6 @@ class VersionUpgrade41to42(VersionUpgrade):
 
         # Update version number.
         parser["metadata"]["setting_version"] = "8"
-        parser["general"]["version"] = "5"
-
-        # We should only have 6 levels when we start.
-        assert "7" not in parser["containers"]
-
-        # We added the intent container in Cura 4.2. This means that all other containers move one step down.
-        parser["containers"]["7"] = parser["containers"]["6"]
-        parser["containers"]["6"] = parser["containers"]["5"]
-        parser["containers"]["5"] = parser["containers"]["4"]
-        parser["containers"]["4"] = parser["containers"]["3"]
-        parser["containers"]["3"] = parser["containers"]["2"]
-        parser["containers"]["2"] = "empty_intent"
 
         # Change renamed profiles.
         if "containers" in parser:
