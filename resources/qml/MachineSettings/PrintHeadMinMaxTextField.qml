@@ -43,11 +43,14 @@ NumericTextFieldWithUnit
         {
             result = func(result, polygon[i][item])
         }
-        result = Math.abs(result)
         return result
     }
 
-    valueValidator: RegExpValidator { regExp: /[0-9\.,]{0,6}/ }
+    valueValidator: DoubleValidator {
+        bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
+        decimals: 6
+        notation: DoubleValidator.StandardNotation
+    }
     valueText: axisValue
 
     editingFinishedFunction: function()
@@ -55,19 +58,18 @@ NumericTextFieldWithUnit
         var polygon = JSON.parse(propertyProvider.properties.value)
 
         var newValue = parseFloat(valueText.replace(',', '.'))
+
         if (axisName == "x")  // x min/x max
         {
             var start_i1 = (axisMinOrMax == "min") ? 0 : 2
-            var factor = (axisMinOrMax == "min") ? -1 : 1
-            polygon[start_i1][0] = newValue * factor
-            polygon[start_i1 + 1][0] = newValue * factor
+            polygon[start_i1][0] = newValue
+            polygon[start_i1 + 1][0] = newValue
         }
         else  // y min/y max
         {
             var start_i1 = (axisMinOrMax == "min") ? 1 : 0
-            var factor = (axisMinOrMax == "min") ? -1 : 1
-            polygon[start_i1][1] = newValue * factor
-            polygon[start_i1 + 2][1] = newValue * factor
+            polygon[start_i1][1] = newValue
+            polygon[start_i1 + 2][1] = newValue
         }
         var polygon_string = JSON.stringify(polygon)
         if (polygon_string != propertyProvider.properties.value)

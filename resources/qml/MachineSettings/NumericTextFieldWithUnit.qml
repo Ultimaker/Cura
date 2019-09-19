@@ -35,6 +35,7 @@ UM.TooltipArea
     property alias labelWidth: fieldLabel.width
     property alias unitText: unitLabel.text
 
+    property alias textField: textFieldWithUnit
     property alias valueText: textFieldWithUnit.text
     property alias valueValidator: textFieldWithUnit.validator
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
