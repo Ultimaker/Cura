@@ -10,7 +10,6 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineNode import MachineNode
-from cura.Machines.MaterialManager import MaterialManager
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 

@@ -48,7 +48,6 @@ class QualityManager(QObject):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
         application = cura.CuraApplication.CuraApplication.getInstance()
-        self._material_manager = application.getMaterialManager()
         self._container_registry = application.getContainerRegistry()
 
         self._empty_quality_container = application.empty_quality_container
