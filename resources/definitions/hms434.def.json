@@ -65,8 +65,8 @@
         "machine_depth":              {"default_value": 325 },
         "machine_width":              {"default_value": 450 },
         "machine_gcode_flavor":       {"default_value": "RepRap (RepRap)" },
-        "material_print_temp_wait":   {"default_value": true},
-        "material_bed_temp_wait":     {"default_value": true },
+        "material_print_temp_wait":   {"default_value": false },
+        "material_bed_temp_wait":     {"default_value": false },
         "machine_max_feedrate_z":     {"default_value": 1200 },
         "machine_start_gcode":        {"default_value": "\n;Neither Hybrid AM Systems nor any of Hybrid AM Systems representatives has any liabilities or gives any warranties on this .gcode file, or on any or all objects made with this .gcode file.\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\n\nG1 X-44 Y-100 F9000;go to wipe point\nG1 Z0 F900\nG1 Z0.2 F900\nM117 HMS434 Printing ...\n\n" },
         "machine_end_gcode":          {"default_value": "" },
@@ -148,7 +148,7 @@
         "support_interface_height":  {"value": 0.5},
         "support_interface_pattern": {"value": "'lines'"},
 
-        "adhesion_type":             {"value": "'skirt'"},
+        "adhesion_type":             {"value": "'none'"},
         "skirt_gap":                 {"value": 1},
         "skirt_brim_minimal_length": {"value": 50},
 
