@@ -60,6 +60,8 @@ class MachineSettingsAction(MachineAction):
     #   flavour setting is changed.
     def _updateHasMaterialsInContainerTree(self) -> None:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
         if machine_node.has_materials != parseBool(global_stack.getMetaDataEntry("has_materials")):  # May have changed due to the g-code flavour.
