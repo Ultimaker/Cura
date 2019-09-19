@@ -1109,6 +1109,7 @@ class MachineManager(QObject):
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
+        self._updateIntentWithQuality()
 
     def _setQualityGroup(self, quality_group: Optional["QualityGroup"], empty_quality_changes: bool = True) -> None:
         if self._global_container_stack is None:
@@ -1136,6 +1137,7 @@ class MachineManager(QObject):
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
+        self._updateIntentWithQuality()
 
     def _fixQualityChangesGroupToNotSupported(self, quality_changes_group: "QualityChangesGroup") -> None:
         metadatas = [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values())
@@ -1276,6 +1278,21 @@ class MachineManager(QObject):
         Logger.log("i", "The current quality type [%s] is not available, switching to [%s] instead",
                    current_quality_type, quality_type)
         self._setQualityGroup(candidate_quality_groups[quality_type], empty_quality_changes = True)
+
+    ## Update the current intent after the quality changed
+    def _updateIntentWithQuality(self):
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return
+        Logger.log("d", "Updating intent due to quality change")
+
+        category = "default"
+
+        for extruder in global_stack.extruderList:
+            current_category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if current_category != "default" and current_category != category:
+                category = current_category
+        self.setIntentByCategory(category)
 
     ##  Update the material profile in the current stacks when the variant is
     #   changed.
