@@ -618,7 +618,7 @@ class MachineManager(QObject):
 
         if not self._active_container_stack:
             return ""
-        intent_category = self._active_container_stack.intent.getMetaDataEntry("intent_category")
+        intent_category = self._active_container_stack.intent.getMetaDataEntry("intent_category", "default")
         return intent_category
 
     ##  Returns whether there is anything unsupported in the current set-up.
