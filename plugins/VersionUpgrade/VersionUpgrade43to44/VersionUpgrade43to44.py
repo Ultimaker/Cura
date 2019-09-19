@@ -3,6 +3,13 @@ from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
+_renamed_container_id_map = {
+    "ultimaker2_0.25": "ultimaker2_olsson_0.25",
+    "ultimaker2_0.4": "ultimaker2_olsson_0.4",
+    "ultimaker2_0.6": "ultimaker2_olsson_0.6",
+    "ultimaker2_0.8": "ultimaker2_olsson_0.8",
+}
+
 
 class VersionUpgrade43to44(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
@@ -77,6 +84,11 @@ class VersionUpgrade43to44(VersionUpgrade):
             parser["containers"]["4"] = parser["containers"]["3"]
             parser["containers"]["3"] = parser["containers"]["2"]
             parser["containers"]["2"] = "empty_intent"
+
+            # Update renamed containers
+            for key, value in parser["containers"].items():
+                if value in _renamed_container_id_map:
+                    parser["containers"][key] = _renamed_container_id_map[value]
 
         result = io.StringIO()
         parser.write(result)
