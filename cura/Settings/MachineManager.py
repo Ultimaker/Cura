@@ -1433,15 +1433,11 @@ class MachineManager(QObject):
     def setMaterialById(self, position: str, root_material_id: str) -> None:
         if self._global_container_stack is None:
             return
-        buildplate_name = None
-        if self._global_container_stack.variant.getId() != "empty_variant":
-            buildplate_name = self._global_container_stack.variant.getName()
 
         machine_definition_id = self._global_container_stack.definition.id
         position = str(position)
         extruder_stack = self._global_container_stack.extruders[position]
         nozzle_name = extruder_stack.variant.getName()
-        material_diameter = extruder_stack.getApproximateMaterialDiameter()
         material_node = ContainerTree.getInstance().machines[machine_definition_id].variants[nozzle_name].materials[root_material_id]
         self.setMaterial(position, material_node)
 
@@ -1625,7 +1621,3 @@ class MachineManager(QObject):
                 abbr_machine += stripped_word
 
         return abbr_machine
-
-    # Gets all machines that belong to the given group_id.
-    def getMachinesInGroup(self, group_id: str) -> List["GlobalStack"]:
-        return self._container_registry.findContainerStacks(type = "machine", group_id = group_id)
