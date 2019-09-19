@@ -15,7 +15,7 @@ from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qm
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application
-from UM.Decorators import override
+from UM.Decorators import override, deprecated
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Message import Message
@@ -23,7 +23,6 @@ from UM.Platform import Platform
 from UM.PluginError import PluginNotFoundError
 from UM.Resources import Resources
 from UM.Preferences import Preferences
-from UM.Qt.Bindings import MainWindow
 from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
 import UM.Util
 from UM.View.SelectionPass import SelectionPass  # For typing.
@@ -47,7 +46,6 @@ from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
 
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.SettingFunction import SettingFunction
@@ -73,7 +71,10 @@ from cura.Scene.GCodeListDecorator import GCodeListDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
 
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
+import cura.Machines.MaterialManager #Imported like this to prevent circular imports.
+import cura.Machines.QualityManager #Imported like this to prevent circular imports.
 from cura.Machines.VariantManager import VariantManager
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
@@ -85,6 +86,7 @@ from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachine
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.GlobalStacksModel import GlobalStacksModel
 from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
+from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 from cura.Machines.Models.NozzleModel import NozzleModel
 from cura.Machines.Models.QualityManagementModel import QualityManagementModel
@@ -137,8 +139,6 @@ from cura import ApplicationMetadata, UltimakerCloudAuthentication
 from cura.Settings.GlobalStack import GlobalStack
 
 if TYPE_CHECKING:
-    from cura.Machines.MaterialManager import MaterialManager
-    from cura.Machines.QualityManager import QualityManager
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
 
 numpy.seterr(all = "ignore")
@@ -148,7 +148,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 9
+    SettingVersion = 10
 
     Created = False
 
@@ -206,9 +206,7 @@ class CuraApplication(QtApplication):
         self.empty_quality_container = None  # type: EmptyInstanceContainer
         self.empty_quality_changes_container = None  # type: EmptyInstanceContainer
 
-        self._variant_manager = None
         self._material_manager = None
-        self._quality_manager = None
         self._machine_manager = None
         self._extruder_manager = None
         self._container_manager = None
@@ -225,6 +223,8 @@ class CuraApplication(QtApplication):
         self._machine_error_checker = None
 
         self._machine_settings_manager = MachineSettingsManager(self, parent = self)
+        self._material_management_model = None
+        self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
@@ -515,6 +515,8 @@ class CuraApplication(QtApplication):
 
         self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
 
+        self._container_registry.allMetadataLoaded.connect(ContainerRegistry.getInstance)
+
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
@@ -735,21 +737,6 @@ class CuraApplication(QtApplication):
 
     def run(self):
         super().run()
-        container_registry = self._container_registry
-
-        Logger.log("i", "Initializing variant manager")
-        self._variant_manager = VariantManager(container_registry)
-        self._variant_manager.initialize()
-
-        Logger.log("i", "Initializing material manager")
-        from cura.Machines.MaterialManager import MaterialManager
-        self._material_manager = MaterialManager(container_registry, parent = self)
-        self._material_manager.initialize()
-
-        Logger.log("i", "Initializing quality manager")
-        from cura.Machines.QualityManager import QualityManager
-        self._quality_manager = QualityManager(self, parent = self)
-        self._quality_manager.initialize()
 
         Logger.log("i", "Initializing machine manager")
         self._machine_manager = MachineManager(self, parent = self)
@@ -929,16 +916,19 @@ class CuraApplication(QtApplication):
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
 
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
     def getVariantManager(self, *args) -> VariantManager:
-        return self._variant_manager
+        return VariantManager.getInstance()
 
+    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
-    def getMaterialManager(self, *args) -> "MaterialManager":
-        return self._material_manager
+    def getMaterialManager(self, *args) -> cura.Machines.MaterialManager.MaterialManager:
+        return cura.Machines.MaterialManager.MaterialManager.getInstance()
 
+    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
     @pyqtSlot(result = QObject)
-    def getQualityManager(self, *args) -> "QualityManager":
-        return self._quality_manager
+    def getQualityManager(self, *args) -> cura.Machines.QualityManager.QualityManager:
+        return cura.Machines.QualityManager.QualityManager.getInstance()
 
     def getIntentManager(self, *args) -> IntentManager:
         return IntentManager.getInstance()
@@ -988,6 +978,18 @@ class CuraApplication(QtApplication):
     #   It wants to give this function an engine and script engine, but we don't care about that.
     def getMachineActionManager(self, *args):
         return self._machine_action_manager
+
+    @pyqtSlot(result = QObject)
+    def getMaterialManagementModel(self) -> MaterialManagementModel:
+        if not self._material_management_model:
+            self._material_management_model = MaterialManagementModel(parent = self)
+        return self._material_management_model
+
+    @pyqtSlot(result = QObject)
+    def getQualityManagementModel(self) -> QualityManagementModel:
+        if not self._quality_management_model:
+            self._quality_management_model = QualityManagementModel(parent = self)
+        return self._quality_management_model
 
     def getSimpleModeSettingsManager(self, *args):
         if self._simple_mode_settings_manager is None:
@@ -1067,7 +1069,8 @@ class CuraApplication(QtApplication):
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
-        qmlRegisterType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel")
+        qmlRegisterSingletonType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel", self.getQualityManagementModel)
+        qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, "MaterialManagementModel", self.getMaterialManagementModel)
 
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
 

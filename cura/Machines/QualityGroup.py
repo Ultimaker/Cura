@@ -5,6 +5,7 @@ from typing import Dict, Optional, List, Set
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
+from UM.Logger import Logger
 from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
@@ -43,7 +44,7 @@ class QualityGroup(QObject):
         for node in [self.node_for_global] + list(self.nodes_for_extruders.values()):
             if node is None:
                 continue
-            container = node.getContainer()
+            container = node.container
             if container:
                 result.update(container.getAllKeys())
         return result
@@ -60,12 +61,18 @@ class QualityGroup(QObject):
         self.node_for_global = node
 
         # Update is_experimental flag
-        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        if not node.container:
+            Logger.log("w", "Node {0} doesn't have a container.".format(node.container_id))
+            return
+        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental
 
     def setExtruderNode(self, position: int, node: "ContainerNode") -> None:
         self.nodes_for_extruders[position] = node
 
         # Update is_experimental flag
-        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
+        if not node.container:
+            Logger.log("w", "Node {0} doesn't have a container.".format(node.container_id))
+            return
+        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental

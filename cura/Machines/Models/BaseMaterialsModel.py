@@ -1,18 +1,21 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional, Dict, Set
 
 from PyQt5.QtCore import Qt, pyqtSignal, pyqtProperty
+
 from UM.Qt.ListModel import ListModel
 
+import cura.CuraApplication  # Imported like this to prevent a circular reference.
+from cura.Machines.ContainerTree import ContainerTree
+from cura.Machines.MaterialNode import MaterialNode
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 ## This is the base model class for GenericMaterialsModel and MaterialBrandsModel.
 #  Those 2 models are used by the material drop down menu to show generic materials and branded materials separately.
 #  The extruder position defined here is being used to bound a menu to the correct extruder. This is used in the top
 #  bar menu "Settings" -> "Extruder nr" -> "Material" -> this menu
-from cura.Machines.MaterialNode import MaterialNode
-
-
 class BaseMaterialsModel(ListModel):
 
     extruderPositionChanged = pyqtSignal()
@@ -24,19 +27,24 @@ class BaseMaterialsModel(ListModel):
 
         self._application = CuraApplication.getInstance()
 
+        self._available_materials = {}  # type: Dict[str, MaterialNode]
+        self._favorite_ids = set()  # type: Set[str]
+
         # Make these managers available to all material models
         self._container_registry = self._application.getInstance().getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
-        self._material_manager = self._application.getMaterialManager()
+
+        self._extruder_position = 0
+        self._extruder_stack = None
+        self._enabled = True
 
         # Update the stack and the model data when the machine changes
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
+        self._updateExtruderStack()
 
-        # Update this model when switching machines
+        # Update this model when switching machines, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._update)
-        
-        # Update this model when list of materials changes
-        self._material_manager.materialsUpdated.connect(self._update)
+        ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
 
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
@@ -54,13 +62,6 @@ class BaseMaterialsModel(ListModel):
         self.addRoleName(Qt.UserRole + 14, "is_read_only")
         self.addRoleName(Qt.UserRole + 15, "container_node")
         self.addRoleName(Qt.UserRole + 16, "is_favorite")
-
-        self._extruder_position = 0
-        self._extruder_stack = None
-
-        self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
-        self._favorite_ids = set()  # type: Set[str]
-        self._enabled = True
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -95,32 +96,52 @@ class BaseMaterialsModel(ListModel):
                 self._update()
             self.enabledChanged.emit()
 
-    @pyqtProperty(bool, fset=setEnabled, notify=enabledChanged)
+    @pyqtProperty(bool, fset = setEnabled, notify = enabledChanged)
     def enabled(self):
         return self._enabled
+
+    ##  Triggered when a list of materials changed somewhere in the container
+    #   tree. This change may trigger an _update() call when the materials
+    #   changed for the configuration that this model is looking for.
+    def _materialsListChanged(self, material: MaterialNode) -> None:
+        if self._extruder_stack is None:
+            return
+        if material.variant.container_id != self._extruder_stack.variant.getId():
+            return
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+        if material.variant.machine.container_id != global_stack.definition.getId():
+            return
+        self._update()
 
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.
     def _update(self):
-        pass
+        self._favorite_ids = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
+
+        # Update the available materials (ContainerNode) for the current active machine and extruder setup.
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack.hasMaterials:
+            return  # There are no materials for this machine, so nothing to do.
+        extruder_stack = global_stack.extruders.get(str(self._extruder_position))
+        if not extruder_stack:
+            return
+        nozzle_name = extruder_stack.variant.getName()
+        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
+        approximate_material_diameter = extruder_stack.getApproximateMaterialDiameter()
+        self._available_materials = {key: material for key, material in materials.items() if float(material.container.getMetaDataEntry("approximate_diameter")) == approximate_material_diameter}
 
     ## This method is used by all material models in the beginning of the
     #  _update() method in order to prevent errors. It's the same in all models
     #  so it's placed here for easy access.
     def _canUpdate(self):
         global_stack = self._machine_manager.activeMachine
-
         if global_stack is None or not self._enabled:
             return False
 
         extruder_position = str(self._extruder_position)
-
         if extruder_position not in global_stack.extruders:
-            return False
-        
-        extruder_stack = global_stack.extruders[extruder_position]
-        self._available_materials = self._material_manager.getAvailableMaterialsForMachineExtruder(global_stack, extruder_stack)
-        if self._available_materials is None:
             return False
 
         return True
@@ -128,7 +149,10 @@ class BaseMaterialsModel(ListModel):
     ## This is another convenience function which is shared by all material
     #  models so it's put here to avoid having so much duplicated code.
     def _createMaterialItem(self, root_material_id, container_node):
-        metadata = container_node.getMetadata()
+        metadata_list = CuraContainerRegistry.getInstance().findContainersMetadata(id = container_node.container_id)
+        if not metadata_list:
+            return None
+        metadata = metadata_list[0]
         item = {
             "root_material_id":     root_material_id,
             "id":                   metadata["id"],
@@ -149,4 +173,3 @@ class BaseMaterialsModel(ListModel):
             "is_favorite":          root_material_id in self._favorite_ids
         }
         return item
-

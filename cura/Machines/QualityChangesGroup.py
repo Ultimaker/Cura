@@ -1,33 +1,23 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from PyQt5.QtCore import QObject
+from typing import Any, Dict, Optional
 
-from UM.Application import Application
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
-
-from .QualityGroup import QualityGroup
-
-if TYPE_CHECKING:
-    from cura.Machines.QualityNode import QualityNode
-
-
-class QualityChangesGroup(QualityGroup):
-    def __init__(self, name: str, quality_type: str, parent = None) -> None:
-        super().__init__(name, quality_type, parent)
-        self._container_registry = Application.getInstance().getContainerRegistry()
-
-    def addNode(self, node: "QualityNode") -> None:
-        extruder_position = node.getMetaDataEntry("position")
-
-        if extruder_position is None and self.node_for_global is not None or extruder_position in self.nodes_for_extruders: #We would be overwriting another node.
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(node.getMetaDataEntry("id"))
-            return
-
-        if extruder_position is None:  # Then we're a global quality changes profile.
-            self.node_for_global = node
-        else:  # This is an extruder's quality changes profile.
-            self.nodes_for_extruders[extruder_position] = node
+##  Data struct to group several quality changes instance containers together.
+#
+#   Each group represents one "custom profile" as the user sees it, which
+#   contains an instance container for the global stack and one instance
+#   container per extruder.
+class QualityChangesGroup(QObject):
+    def __init__(self, name: str, quality_type: str, intent_category: str, parent = None) -> None:
+        super().__init__(parent)
+        self.name = name
+        self.quality_type = quality_type
+        self.intent_category = intent_category
+        self.is_available = False
+        self.metadata_for_global = {}    # type: Dict[str, Any]
+        self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
 
     def __str__(self) -> str:
-        return "%s[<%s>, available = %s]" % (self.__class__.__name__, self.name, self.is_available)
+        return "{class_name}[{name}, available = {is_available}]".format(class_name = self.__class__.__name__, name = self.name, is_available = self.is_available)

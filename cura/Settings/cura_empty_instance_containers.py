@@ -25,6 +25,9 @@ EMPTY_MATERIAL_CONTAINER_ID = "empty_material"
 empty_material_container = copy.deepcopy(empty_container)
 empty_material_container.setMetaDataEntry("id", EMPTY_MATERIAL_CONTAINER_ID)
 empty_material_container.setMetaDataEntry("type", "material")
+empty_material_container.setMetaDataEntry("base_file", "empty_material")
+empty_material_container.setMetaDataEntry("GUID", "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF")
+empty_material_container.setMetaDataEntry("material", "empty")
 
 # Empty quality
 EMPTY_QUALITY_CONTAINER_ID = "empty_quality"
@@ -41,12 +44,14 @@ empty_quality_changes_container = copy.deepcopy(empty_container)
 empty_quality_changes_container.setMetaDataEntry("id", EMPTY_QUALITY_CHANGES_CONTAINER_ID)
 empty_quality_changes_container.setMetaDataEntry("type", "quality_changes")
 empty_quality_changes_container.setMetaDataEntry("quality_type", "not_supported")
+empty_quality_changes_container.setMetaDataEntry("intent_category", "not_supported")
 
 # Empty intent
 EMPTY_INTENT_CONTAINER_ID = "empty_intent"
 empty_intent_container = copy.deepcopy(empty_container)
 empty_intent_container.setMetaDataEntry("id", EMPTY_INTENT_CONTAINER_ID)
 empty_intent_container.setMetaDataEntry("type", "intent")
+empty_intent_container.setMetaDataEntry("intent_category", "default")
 empty_intent_container.setName(catalog.i18nc("@info:No intent profile selected", "Default"))
 
 

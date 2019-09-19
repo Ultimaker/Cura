@@ -1,23 +1,23 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from collections import defaultdict, OrderedDict
+from collections import defaultdict
 import copy
 import uuid
-from typing import Dict, Optional, TYPE_CHECKING, Any, Set, List, cast, Tuple
+from typing import Dict, Optional, TYPE_CHECKING, Any, List, cast
 
 from PyQt5.Qt import QTimer, QObject, pyqtSignal, pyqtSlot
 
-from UM.Application import Application
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
+from UM.Decorators import deprecated
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
 from UM.Util import parseBool
+import cura.CuraApplication  # Imported like this to prevent circular imports.
+from cura.Machines.ContainerTree import ContainerTree
+from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 from .MaterialNode import MaterialNode
 from .MaterialGroup import MaterialGroup
-from .VariantType import VariantType
 
 if TYPE_CHECKING:
     from UM.Settings.DefinitionContainer import DefinitionContainer
@@ -37,29 +37,25 @@ if TYPE_CHECKING:
 # because it's simple.
 #
 class MaterialManager(QObject):
+    __instance = None
+
+    @classmethod
+    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
+    def getInstance(cls) -> "MaterialManager":
+        if cls.__instance is None:
+            cls.__instance = MaterialManager()
+        return cls.__instance
 
     materialsUpdated = pyqtSignal()  # Emitted whenever the material lookup tables are updated.
     favoritesUpdated = pyqtSignal()  # Emitted whenever the favorites are changed
 
-    def __init__(self, container_registry, parent = None):
+    def __init__(self, parent = None):
         super().__init__(parent)
-        self._application = Application.getInstance()
-        self._container_registry = container_registry  # type: ContainerRegistry
-
         # Material_type -> generic material metadata
         self._fallback_materials_map = dict()  # type: Dict[str, Dict[str, Any]]
 
         # Root_material_id -> MaterialGroup
         self._material_group_map = dict()  # type: Dict[str, MaterialGroup]
-
-        # Approximate diameter str
-        self._diameter_machine_nozzle_buildplate_material_map = dict()  # type: Dict[str, Dict[str, MaterialNode]]
-
-        # We're using these two maps to convert between the specific diameter material id and the generic material id
-        # because the generic material ids are used in qualities and definitions, while the specific diameter material is meant
-        # i.e. generic_pla -> generic_pla_175
-        # root_material_id -> approximate diameter str -> root_material_id for that diameter
-        self._material_diameter_map = defaultdict(dict)  # type: Dict[str, Dict[str, str]]
 
         # Material id including diameter (generic_pla_175) -> material root id (generic_pla)
         self._diameter_material_map = dict()  # type: Dict[str, str]
@@ -68,218 +64,19 @@ class MaterialManager(QObject):
         # GUID -> a list of material_groups
         self._guid_material_groups_map = defaultdict(list)  # type: Dict[str, List[MaterialGroup]]
 
-        # The machine definition ID for the non-machine-specific materials.
-        # This is used as the last fallback option if the given machine-specific material(s) cannot be found.
-        self._default_machine_definition_id = "fdmprinter"
-        self._default_approximate_diameter_for_quality_search = "3"
-
-        # When a material gets added/imported, there can be more than one InstanceContainers. In those cases, we don't
-        # want to react on every container/metadata changed signal. The timer here is to buffer it a bit so we don't
-        # react too many time.
-        self._update_timer = QTimer(self)
-        self._update_timer.setInterval(300)
-        self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self._updateMaps)
-
-        self._container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
-        self._container_registry.containerAdded.connect(self._onContainerMetadataChanged)
-        self._container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
-
-        self._favorites = set()  # type: Set[str]
-
-    def initialize(self) -> None:
-        # Find all materials and put them in a matrix for quick search.
-        material_metadatas = {metadata["id"]: metadata for metadata in
-                              self._container_registry.findContainersMetadata(type = "material") if
-                              metadata.get("GUID")} # type: Dict[str, Dict[str, Any]]
-
-        self._material_group_map = dict()
-                
-        # Map #1
-        #    root_material_id -> MaterialGroup
-        for material_id, material_metadata in material_metadatas.items():
-            # We don't store empty material in the lookup tables
-            if material_id == "empty_material":
-                continue
-
-            root_material_id = material_metadata.get("base_file", "")
-            if root_material_id not in material_metadatas: #Not a registered material profile. Don't store this in the look-up tables.
-                continue
-            if root_material_id not in self._material_group_map:
-                self._material_group_map[root_material_id] = MaterialGroup(root_material_id, MaterialNode(material_metadatas[root_material_id]))
-                self._material_group_map[root_material_id].is_read_only = self._container_registry.isReadOnly(root_material_id)
-            group = self._material_group_map[root_material_id]
-
-            # Store this material in the group of the appropriate root material.
-            if material_id != root_material_id:
-                new_node = MaterialNode(material_metadata)
-                group.derived_material_node_list.append(new_node)
-
-        # Order this map alphabetically so it's easier to navigate in a debugger
-        self._material_group_map = OrderedDict(sorted(self._material_group_map.items(), key = lambda x: x[0]))
-
-        # Map #1.5
-        #    GUID -> material group list
-        self._guid_material_groups_map = defaultdict(list)
-        for root_material_id, material_group in self._material_group_map.items():
-            guid = material_group.root_material_node.getMetaDataEntry("GUID", "")
-            self._guid_material_groups_map[guid].append(material_group)
-
-        # Map #2
-        # Lookup table for material type -> fallback material metadata, only for read-only materials
-        grouped_by_type_dict = dict()  # type: Dict[str, Any]
-        material_types_without_fallback = set()
-        for root_material_id, material_node in self._material_group_map.items():
-            material_type = material_node.root_material_node.getMetaDataEntry("material", "")
-            if material_type not in grouped_by_type_dict:
-                grouped_by_type_dict[material_type] = {"generic": None,
-                                                       "others": []}
-                material_types_without_fallback.add(material_type)
-            brand = material_node.root_material_node.getMetaDataEntry("brand", "")
-            if brand.lower() == "generic":
-                to_add = True
-                if material_type in grouped_by_type_dict:
-                    diameter = material_node.root_material_node.getMetaDataEntry("approximate_diameter", "")
-                    if diameter != self._default_approximate_diameter_for_quality_search:
-                        to_add = False  # don't add if it's not the default diameter
-
-                if to_add:
-                    # Checking this first allow us to differentiate between not read only materials:
-                    #  - if it's in the list, it means that is a new material without fallback
-                    #  - if it is not, then it is a custom material with a fallback material (parent)
-                    if material_type in material_types_without_fallback:
-                        grouped_by_type_dict[material_type] = material_node.root_material_node._metadata
-                        material_types_without_fallback.remove(material_type)
-
-        # Remove the materials that have no fallback materials
-        for material_type in material_types_without_fallback:
-            del grouped_by_type_dict[material_type]
-        self._fallback_materials_map = grouped_by_type_dict
-
-        # Map #3
-        # There can be multiple material profiles for the same material with different diameters, such as "generic_pla"
-        # and "generic_pla_175". This is inconvenient when we do material-specific quality lookup because a quality can
-        # be for either "generic_pla" or "generic_pla_175", but not both. This map helps to get the correct material ID
-        # for quality search.
-        self._material_diameter_map = defaultdict(dict)
-        self._diameter_material_map = dict()
-
-        # Group the material IDs by the same name, material, brand, and color but with different diameters.
-        material_group_dict = dict()  # type: Dict[Tuple[Any], Dict[str, str]]
-        keys_to_fetch = ("name", "material", "brand", "color")
-        for root_material_id, machine_node in self._material_group_map.items():
-            root_material_metadata = machine_node.root_material_node._metadata
-
-            key_data_list = []  # type: List[Any]
-            for key in keys_to_fetch:
-                key_data_list.append(machine_node.root_material_node.getMetaDataEntry(key))
-            key_data = cast(Tuple[Any], tuple(key_data_list))  # type: Tuple[Any]
-
-            # If the key_data doesn't exist, it doesn't matter if the material is read only...
-            if key_data not in material_group_dict:
-                material_group_dict[key_data] = dict()
-            else:
-                # ...but if key_data exists, we just overwrite it if the material is read only, otherwise we skip it
-                if not machine_node.is_read_only:
-                    continue
-            approximate_diameter = machine_node.root_material_node.getMetaDataEntry("approximate_diameter", "")
-            material_group_dict[key_data][approximate_diameter] = machine_node.root_material_node.getMetaDataEntry("id", "")
-
-        # Map [root_material_id][diameter] -> root_material_id for this diameter
-        for data_dict in material_group_dict.values():
-            for root_material_id1 in data_dict.values():
-                if root_material_id1 in self._material_diameter_map:
-                    continue
-                diameter_map = data_dict
-                for root_material_id2 in data_dict.values():
-                    self._material_diameter_map[root_material_id2] = diameter_map
-
-            default_root_material_id = data_dict.get(self._default_approximate_diameter_for_quality_search)
-            if default_root_material_id is None:
-                default_root_material_id = list(data_dict.values())[0]  # no default diameter present, just take "the" only one
-            for root_material_id in data_dict.values():
-                self._diameter_material_map[root_material_id] = default_root_material_id
-
-        # Map #4
-        # "machine" -> "nozzle name" -> "buildplate name" -> "root material ID" -> specific material InstanceContainer
-        self._diameter_machine_nozzle_buildplate_material_map = dict()
-        for material_metadata in material_metadatas.values():
-            self.__addMaterialMetadataIntoLookupTree(material_metadata)
-
-        favorites = self._application.getPreferences().getValue("cura/favorite_materials")
-        for item in favorites.split(";"):
-            self._favorites.add(item)
-
+        self._favorites = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
         self.materialsUpdated.emit()
 
-    def __addMaterialMetadataIntoLookupTree(self, material_metadata: Dict[str, Any]) -> None:
-        material_id = material_metadata["id"]
+        self._update_timer = QTimer(self)
+        self._update_timer.setInterval(300)
 
-        # We don't store empty material in the lookup tables
-        if material_id == "empty_material":
-            return
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self.materialsUpdated)
 
-        root_material_id = material_metadata["base_file"]
-        definition = material_metadata["definition"]
-        approximate_diameter = str(material_metadata["approximate_diameter"])
-
-        if approximate_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-            self._diameter_machine_nozzle_buildplate_material_map[approximate_diameter] = {}
-
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[
-            approximate_diameter]
-        if definition not in machine_nozzle_buildplate_material_map:
-            machine_nozzle_buildplate_material_map[definition] = MaterialNode()
-
-        # This is a list of information regarding the intermediate nodes:
-        #    nozzle -> buildplate
-        nozzle_name = material_metadata.get("variant_name")
-        buildplate_name = material_metadata.get("buildplate_name")
-        intermediate_node_info_list = [(nozzle_name, VariantType.NOZZLE),
-                                       (buildplate_name, VariantType.BUILD_PLATE),
-                                       ]
-
-        variant_manager = self._application.getVariantManager()
-
-        machine_node = machine_nozzle_buildplate_material_map[definition]
-        current_node = machine_node
-        current_intermediate_node_info_idx = 0
-        error_message = None  # type: Optional[str]
-        while current_intermediate_node_info_idx < len(intermediate_node_info_list):
-            variant_name, variant_type = intermediate_node_info_list[current_intermediate_node_info_idx]
-            if variant_name is not None:
-                # The new material has a specific variant, so it needs to be added to that specific branch in the tree.
-                variant = variant_manager.getVariantNode(definition, variant_name, variant_type)
-                if variant is None:
-                    error_message = "Material {id} contains a variant {name} that does not exist.".format(
-                        id = material_metadata["id"], name = variant_name)
-                    break
-
-                # Update the current node to advance to a more specific branch
-                if variant_name not in current_node.children_map:
-                    current_node.children_map[variant_name] = MaterialNode()
-                current_node = current_node.children_map[variant_name]
-
-            current_intermediate_node_info_idx += 1
-
-        if error_message is not None:
-            Logger.log("e", "%s It will not be added into the material lookup tree.", error_message)
-            self._container_registry.addWrongContainerId(material_metadata["id"])
-            return
-
-        # Add the material to the current tree node, which is the deepest (the most specific) branch we can find.
-        # Sanity check: Make sure that there is no duplicated materials.
-        if root_material_id in current_node.material_map:
-            Logger.log("e", "Duplicated material [%s] with root ID [%s]. It has already been added.",
-                       material_id, root_material_id)
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(root_material_id)
-            return
-
-        current_node.material_map[root_material_id] = MaterialNode(material_metadata)
-
-    def _updateMaps(self):
-        Logger.log("i", "Updating material lookup data ...")
-        self.initialize()
+        container_registry = ContainerRegistry.getInstance()
+        container_registry.containerMetaDataChanged.connect(self._onContainerMetadataChanged)
+        container_registry.containerAdded.connect(self._onContainerMetadataChanged)
+        container_registry.containerRemoved.connect(self._onContainerMetadataChanged)
 
     def _onContainerMetadataChanged(self, container):
         self._onContainerChanged(container)
@@ -290,13 +87,22 @@ class MaterialManager(QObject):
             return
 
         # update the maps
+
         self._update_timer.start()
 
     def getMaterialGroup(self, root_material_id: str) -> Optional[MaterialGroup]:
         return self._material_group_map.get(root_material_id)
 
     def getRootMaterialIDForDiameter(self, root_material_id: str, approximate_diameter: str) -> str:
-        return self._material_diameter_map.get(root_material_id, {}).get(approximate_diameter, root_material_id)
+        original_material = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(id=root_material_id)[0]
+        if original_material["approximate_diameter"] == approximate_diameter:
+            return root_material_id
+
+        matching_materials = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "material", brand = original_material["brand"], definition = original_material["definition"], material = original_material["material"], color_name = original_material["color_name"])
+        for material in matching_materials:
+            if material["approximate_diameter"] == approximate_diameter:
+                return material["id"]
+        return root_material_id
 
     def getRootMaterialIDWithoutDiameter(self, root_material_id: str) -> str:
         return self._diameter_material_map.get(root_material_id, "")
@@ -308,73 +114,26 @@ class MaterialManager(QObject):
     def getAllMaterialGroups(self) -> Dict[str, "MaterialGroup"]:
         return self._material_group_map
 
-    #
-    # Return a dict with all root material IDs (k) and ContainerNodes (v) that's suitable for the given setup.
-    #
-    def getAvailableMaterials(self, machine_definition: "DefinitionContainer", nozzle_name: Optional[str],
-                              buildplate_name: Optional[str], diameter: float) -> Dict[str, MaterialNode]:
-        # round the diameter to get the approximate diameter
-        rounded_diameter = str(round(diameter))
-        if rounded_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-            Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s])", diameter, rounded_diameter)
-            return dict()
-
-        machine_definition_id = machine_definition.getId()
-
-        # If there are nozzle-and-or-buildplate materials, get the nozzle-and-or-buildplate material
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]
-        machine_node = machine_nozzle_buildplate_material_map.get(machine_definition_id)
-        default_machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
-        nozzle_node = None
-        buildplate_node = None
-        if nozzle_name is not None and machine_node is not None:
-            nozzle_node = machine_node.getChildNode(nozzle_name)
-            # Get buildplate node if possible
-            if nozzle_node is not None and buildplate_name is not None:
-                buildplate_node = nozzle_node.getChildNode(buildplate_name)
-
-        nodes_to_check = [buildplate_node, nozzle_node, machine_node, default_machine_node]
-        # Fallback mechanism of finding materials:
-        #  1. buildplate-specific material
-        #  2. nozzle-specific material
-        #  3. machine-specific material
-        #  4. generic material (for fdmprinter)
-        machine_exclude_materials = machine_definition.getMetaDataEntry("exclude_materials", [])
-
-        material_id_metadata_dict = dict()  # type: Dict[str, MaterialNode]
-        excluded_materials = set()
-        for current_node in nodes_to_check:
-            if current_node is None:
-                continue
-
-            # Only exclude the materials that are explicitly specified in the "exclude_materials" field.
-            # Do not exclude other materials that are of the same type.
-            for material_id, node in current_node.material_map.items():
-                if material_id in machine_exclude_materials:
-                    excluded_materials.add(material_id)
-                    continue
-
-                if material_id not in material_id_metadata_dict:
-                    material_id_metadata_dict[material_id] = node
-
-        if excluded_materials:
-            Logger.log("d", "Exclude materials {excluded_materials} for machine {machine_definition_id}".format(excluded_materials = ", ".join(excluded_materials), machine_definition_id = machine_definition_id))
-
-        return material_id_metadata_dict
+    ##  Gives a dictionary of all root material IDs and their associated
+    #   MaterialNodes from the ContainerTree that are available for the given
+    #   printer and variant.
+    def getAvailableMaterials(self, definition_id: str, nozzle_name: Optional[str]) -> Dict[str, MaterialNode]:
+        return ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
 
     #
     # A convenience function to get available materials for the given machine with the extruder position.
     #
     def getAvailableMaterialsForMachineExtruder(self, machine: "GlobalStack",
-                                                extruder_stack: "ExtruderStack") -> Optional[Dict[str, MaterialNode]]:
-        buildplate_name = machine.getBuildplateName()
+                                                extruder_stack: "ExtruderStack") -> Dict[str, MaterialNode]:
         nozzle_name = None
         if extruder_stack.variant.getId() != "empty_variant":
             nozzle_name = extruder_stack.variant.getName()
-        diameter = extruder_stack.getApproximateMaterialDiameter()
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
-        return self.getAvailableMaterials(machine.definition, nozzle_name, buildplate_name, diameter)
+        materials = self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
+        compatible_material_diameter = extruder_stack.getApproximateMaterialDiameter()
+        result = {key: material for key, material in materials.items() if material.container and float(material.container.getMetaDataEntry("approximate_diameter")) == compatible_material_diameter}
+        return result
 
     #
     # Gets MaterialNode for the given extruder and machine with the given material name.
@@ -384,41 +143,22 @@ class MaterialManager(QObject):
     #
     def getMaterialNode(self, machine_definition_id: str, nozzle_name: Optional[str],
                         buildplate_name: Optional[str], diameter: float, root_material_id: str) -> Optional["MaterialNode"]:
-        # round the diameter to get the approximate diameter
-        rounded_diameter = str(round(diameter))
-        if rounded_diameter not in self._diameter_machine_nozzle_buildplate_material_map:
-            Logger.log("i", "Cannot find materials with diameter [%s] (rounded to [%s]) for root material id [%s]",
-                       diameter, rounded_diameter, root_material_id)
+        container_tree = ContainerTree.getInstance()
+        machine_node = container_tree.machines.get(machine_definition_id)
+        if machine_node is None:
+            Logger.log("w", "Could not find machine with definition %s in the container tree", machine_definition_id)
             return None
 
-        # If there are nozzle materials, get the nozzle-specific material
-        machine_nozzle_buildplate_material_map = self._diameter_machine_nozzle_buildplate_material_map[rounded_diameter]  # type: Dict[str, MaterialNode]
-        machine_node = machine_nozzle_buildplate_material_map.get(machine_definition_id)
-        nozzle_node = None
-        buildplate_node = None
+        variant_node = machine_node.variants.get(nozzle_name)
+        if variant_node is None:
+            Logger.log("w", "Could not find variant %s for machine with definition %s in the container tree", nozzle_name, machine_definition_id )
+            return None
 
-        # Fallback for "fdmprinter" if the machine-specific materials cannot be found
-        if machine_node is None:
-            machine_node = machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)
-        if machine_node is not None and nozzle_name is not None:
-            nozzle_node = machine_node.getChildNode(nozzle_name)
-        if nozzle_node is not None and buildplate_name is not None:
-            buildplate_node = nozzle_node.getChildNode(buildplate_name)
+        material_node = variant_node.materials.get(root_material_id)
 
-        # Fallback mechanism of finding materials:
-        #  1. buildplate-specific material
-        #  2. nozzle-specific material
-        #  3. machine-specific material
-        #  4. generic material (for fdmprinter)
-        nodes_to_check = [buildplate_node, nozzle_node, machine_node,
-                          machine_nozzle_buildplate_material_map.get(self._default_machine_definition_id)]
-
-        material_node = None
-        for node in nodes_to_check:
-            if node is not None:
-                material_node = node.material_map.get(root_material_id)
-                if material_node:
-                    break
+        if material_node is None:
+            Logger.log("w", "Could not find material %s for machine with definition %s and variant %s in the container tree", root_material_id, machine_definition_id, nozzle_name)
+            return None
 
         return material_node
 
@@ -430,27 +170,12 @@ class MaterialManager(QObject):
     #
     def getMaterialNodeByType(self, global_stack: "GlobalStack", position: str, nozzle_name: str,
                               buildplate_name: Optional[str], material_guid: str) -> Optional["MaterialNode"]:
-        node = None
         machine_definition = global_stack.definition
-        extruder_definition = global_stack.extruders[position].definition
-        if parseBool(machine_definition.getMetaDataEntry("has_materials", False)):
-            material_diameter = extruder_definition.getProperty("material_diameter", "value")
-            if isinstance(material_diameter, SettingFunction):
-                material_diameter = material_diameter(global_stack)
+        extruder = global_stack.extruderList[int(position)]
+        variant_name = extruder.variant.getName()
+        approximate_diameter = extruder.getApproximateMaterialDiameter()
 
-            # Look at the guid to material dictionary
-            root_material_id = None
-            for material_group in self._guid_material_groups_map[material_guid]:
-                root_material_id = cast(str, material_group.root_material_node.getMetaDataEntry("id", ""))
-                break
-
-            if not root_material_id:
-                Logger.log("i", "Cannot find materials with guid [%s] ", material_guid)
-                return None
-
-            node = self.getMaterialNode(machine_definition.getId(), nozzle_name, buildplate_name,
-                                        material_diameter, root_material_id)
-        return node
+        return self.getMaterialNode(machine_definition.getId(), variant_name, buildplate_name, approximate_diameter, material_guid)
 
     #   There are 2 ways to get fallback materials;
     #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
@@ -475,7 +200,7 @@ class MaterialManager(QObject):
         return results
 
     #
-    # Used by QualityManager. Built-in quality profiles may be based on generic material IDs such as "generic_pla".
+    # Built-in quality profiles may be based on generic material IDs such as "generic_pla".
     # For materials such as ultimaker_pla_orange, no quality profiles may be found, so we should fall back to use
     # the generic material IDs to search for qualities.
     #
@@ -501,200 +226,101 @@ class MaterialManager(QObject):
     ##  Get default material for given global stack, extruder position and extruder nozzle name
     #   you can provide the extruder_definition and then the position is ignored (useful when building up global stack in CuraStackBuilder)
     def getDefaultMaterial(self, global_stack: "GlobalStack", position: str, nozzle_name: Optional[str],
-                           extruder_definition: Optional["DefinitionContainer"] = None) -> Optional["MaterialNode"]:
-        node = None
-
-        buildplate_name = global_stack.getBuildplateName()
-        machine_definition = global_stack.definition
-
-        # The extruder-compatible material diameter in the extruder definition may not be the correct value because
-        # the user can change it in the definition_changes container.
-        if extruder_definition is None:
-            extruder_stack_or_definition = global_stack.extruders[position]
-            is_extruder_stack = True
+                           extruder_definition: Optional["DefinitionContainer"] = None) -> "MaterialNode":
+        definition_id = global_stack.definition.getId()
+        machine_node = ContainerTree.getInstance().machines[definition_id]
+        if nozzle_name in machine_node.variants:
+            nozzle_node = machine_node.variants[nozzle_name]
         else:
-            extruder_stack_or_definition = extruder_definition
-            is_extruder_stack = False
+            Logger.log("w", "Could not find variant {nozzle_name} for machine with definition {definition_id} in the container tree".format(nozzle_name = nozzle_name, definition_id = definition_id))
+            nozzle_node = next(iter(machine_node.variants))
 
-        if extruder_stack_or_definition and parseBool(global_stack.getMetaDataEntry("has_materials", False)):
-            if is_extruder_stack:
-                material_diameter = extruder_stack_or_definition.getCompatibleMaterialDiameter()
-            else:
-                material_diameter = extruder_stack_or_definition.getProperty("material_diameter", "value")
+        if not parseBool(global_stack.getMetaDataEntry("has_materials", False)):
+            return next(iter(nozzle_node.materials))
 
-            if isinstance(material_diameter, SettingFunction):
-                material_diameter = material_diameter(global_stack)
-            approximate_material_diameter = str(round(material_diameter))
-            root_material_id = machine_definition.getMetaDataEntry("preferred_material")
-            root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_material_diameter)
-            node = self.getMaterialNode(machine_definition.getId(), nozzle_name, buildplate_name,
-                                        material_diameter, root_material_id)
-        return node
+        if extruder_definition is not None:
+            material_diameter = extruder_definition.getProperty("material_diameter", "value")
+        else:
+            material_diameter = global_stack.extruders[position].getCompatibleMaterialDiameter()
+        approximate_material_diameter = round(material_diameter)
+
+        return nozzle_node.preferredMaterial(approximate_material_diameter)
 
     def removeMaterialByRootId(self, root_material_id: str):
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("i", "Unable to remove the material with id %s, because it doesn't exist.", root_material_id)
-            return
+        container_registry = CuraContainerRegistry.getInstance()
+        results = container_registry.findContainers(id = root_material_id)
+        if not results:
+            container_registry.addWrongContainerId(root_material_id)
 
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        # Sort all nodes with respect to the container ID lengths in the ascending order so the base material container
-        # will be the first one to be removed. We need to do this to ensure that all containers get loaded & deleted.
-        nodes_to_remove = sorted(nodes_to_remove, key = lambda x: len(x.getMetaDataEntry("id", "")))
-        # Try to load all containers first. If there is any faulty ones, they will be put into the faulty container
-        # list, so removeContainer() can ignore those ones.
-        for node in nodes_to_remove:
-            container_id = node.getMetaDataEntry("id", "")
-            results = self._container_registry.findContainers(id = container_id)
-            if not results:
-                self._container_registry.addWrongContainerId(container_id)
-        for node in nodes_to_remove:
-            self._container_registry.removeContainer(node.getMetaDataEntry("id", ""))
+        for result in results:
+            container_registry.removeContainer(result.getMetaDataEntry("id", ""))
 
-    #
-    # Methods for GUI
-    #
     @pyqtSlot("QVariant", result=bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode"):
         # Check if the material is active in any extruder train. In that case, the material shouldn't be removed!
         # In the future we might enable this again, but right now, it's causing a ton of issues if we do (since it
         # corrupts the configuration)
-        root_material_id = material_node.getMetaDataEntry("base_file")
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            return False
+        root_material_id = material_node.base_file
+        ids_to_remove = {metadata.get("id", "") for metadata in CuraContainerRegistry.getInstance().findInstanceContainersMetadata(base_file = root_material_id)}
 
-        nodes_to_remove = [material_group.root_material_node] + material_group.derived_material_node_list
-        ids_to_remove = [node.getMetaDataEntry("id", "") for node in nodes_to_remove]
-
-        for extruder_stack in self._container_registry.findContainerStacks(type="extruder_train"):
+        for extruder_stack in CuraContainerRegistry.getInstance().findContainerStacks(type = "extruder_train"):
             if extruder_stack.material.getId() in ids_to_remove:
                 return False
         return True
 
+    ##  Change the user-visible name of a material.
+    #   \param material_node The ContainerTree node of the material to rename.
+    #   \param name The new name for the material.
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
-        root_material_id = material_node.getMetaDataEntry("base_file")
-        if root_material_id is None:
-            return
-        if self._container_registry.isReadOnly(root_material_id):
-            Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
-            return
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node, name)
 
-        material_group = self.getMaterialGroup(root_material_id)
-        if material_group:
-            container = material_group.root_material_node.getContainer()
-            if container:
-                container.setName(name)
-
+    ##  Deletes a material from Cura.
     #
-    # Removes the given material.
-    #
+    #   This function does not do any safety checking any more. Please call this
+    #   function only if:
+    #   - The material is not read-only.
+    #   - The material is not used in any stacks.
+    #   If the material was not lazy-loaded yet, this will fully load the
+    #   container. When removing this material node, all other materials with
+    #   the same base fill will also be removed.
+    #   \param material_node The material to remove.
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
-        root_material_id = material_node.getMetaDataEntry("base_file")
-        if root_material_id is not None:
-            self.removeMaterialByRootId(root_material_id)
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node)
 
-    #
-    # Creates a duplicate of a material, which has the same GUID and base_file metadata.
-    # Returns the root material ID of the duplicated material if successful.
-    #
+    def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterialByBaseFile(root_material_id, new_base_id, new_metadata)
+        if result is None:
+            return "ERROR"
+        return result
+
+    ##  Creates a duplicate of a material with the same GUID and base_file
+    #   metadata.
+    #   \param material_node The node representing the material to duplicate.
+    #   \param new_base_id A new material ID for the base material. The IDs of
+    #   the submaterials will be based off this one. If not provided, a material
+    #   ID will be generated automatically.
+    #   \param new_metadata Metadata for the new material. If not provided, this
+    #   will be duplicated from the original material.
+    #   \return The root material ID of the duplicate material.
     @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
-        root_material_id = cast(str, material_node.getMetaDataEntry("base_file", ""))
+    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> str:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterial(material_node, new_base_id, new_metadata)
+        if result is None:
+            return "ERROR"
+        return result
 
-        material_group = self.getMaterialGroup(root_material_id)
-        if not material_group:
-            Logger.log("i", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return None
-
-        base_container = material_group.root_material_node.getContainer()
-        if not base_container:
-            return None
-
-        # Ensure all settings are saved.
-        self._application.saveSettings()
-
-        # Create a new ID & container to hold the data.
-        new_containers = []
-        if new_base_id is None:
-            new_base_id = self._container_registry.uniqueName(base_container.getId())
-        new_base_container = copy.deepcopy(base_container)
-        new_base_container.getMetaData()["id"] = new_base_id
-        new_base_container.getMetaData()["base_file"] = new_base_id
-        if new_metadata is not None:
-            for key, value in new_metadata.items():
-                new_base_container.getMetaData()[key] = value
-        new_containers.append(new_base_container)
-
-        # Clone all of them.
-        for node in material_group.derived_material_node_list:
-            container_to_copy = node.getContainer()
-            if not container_to_copy:
-                continue
-            # Create unique IDs for every clone.
-            new_id = new_base_id
-            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
-                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant_name"):
-                    nozzle_name = container_to_copy.getMetaDataEntry("variant_name")
-                    new_id += "_" + nozzle_name.replace(" ", "_")
-
-            new_container = copy.deepcopy(container_to_copy)
-            new_container.getMetaData()["id"] = new_id
-            new_container.getMetaData()["base_file"] = new_base_id
-            if new_metadata is not None:
-                for key, value in new_metadata.items():
-                    new_container.getMetaData()[key] = value
-
-            new_containers.append(new_container)
-
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            self._container_registry.addContainer(container_to_add)
-
-        # if the duplicated material was favorite then the new material should also be added to favorite.
-        if root_material_id in self.getFavorites():
-            self.addFavorite(new_base_id)
-
-        return new_base_id
-
+    ##  Create a new material by cloning the preferred material for the current
+    #   material diameter and generate a new GUID.
     #
-    # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
-    # Returns the ID of the newly created material.
+    #   The material type is explicitly left to be the one from the preferred
+    #   material, since this allows the user to still have SOME profiles to work
+    #   with.
+    #   \return The ID of the newly created material.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
-        from UM.i18n import i18nCatalog
-        catalog = i18nCatalog("cura")
-        # Ensure all settings are saved.
-        self._application.saveSettings()
-
-        machine_manager = self._application.getMachineManager()
-        extruder_stack = machine_manager.activeStack
-
-        machine_definition = self._application.getGlobalContainerStack().definition
-        root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
-
-        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
-        root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-        material_group = self.getMaterialGroup(root_material_id)
-
-        if not material_group:  # This should never happen
-            Logger.log("w", "Cannot get the material group of %s.", root_material_id)
-            return ""
-
-        # Create a new ID & container to hold the data.
-        new_id = self._container_registry.uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
-                        "brand": catalog.i18nc("@label", "Custom"),
-                        "GUID": str(uuid.uuid4()),
-                        }
-
-        self.duplicateMaterial(material_group.root_material_node,
-                               new_base_id = new_id,
-                               new_metadata = new_metadata)
-        return new_id
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().createMaterial()
 
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str) -> None:
@@ -702,8 +328,8 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
-        self._application.saveSettings()
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
 
     @pyqtSlot(str)
     def removeFavorite(self, root_material_id: str) -> None:
@@ -715,8 +341,8 @@ class MaterialManager(QObject):
         self.materialsUpdated.emit()
 
         # Ensure all settings are saved.
-        self._application.getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
-        self._application.saveSettings()
+        cura.CuraApplication.CuraApplication.getInstance().getPreferences().setValue("cura/favorite_materials", ";".join(list(self._favorites)))
+        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
 
     @pyqtSlot()
     def getFavorites(self):
