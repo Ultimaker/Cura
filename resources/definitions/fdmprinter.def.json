@@ -12,6 +12,7 @@
         "visible": false,
         "has_materials": true,
         "has_variants": false,
+        "has_machine_quality": false,
         "preferred_material": "generic_pla",
         "preferred_quality_type": "normal",
         "machine_extruder_trains":

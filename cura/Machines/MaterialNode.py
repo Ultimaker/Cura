@@ -60,6 +60,8 @@ class MaterialNode(ContainerNode):
         # Find all quality profiles that fit on this material.
         if not self.variant.machine.has_machine_quality:  # Need to find the global qualities.
             qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter")
+        elif not self.variant.machine.has_materials:
+            qualities = container_registry.findInstanceContainersMetadata(type="quality", definition=self.variant.machine.quality_definition)
         else:
             # Need to find the qualities that specify a material profile with the same material type.
             qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.variant.machine.quality_definition, variant = self.variant.variant_name, material = self.container_id)  # First try by exact material ID.
