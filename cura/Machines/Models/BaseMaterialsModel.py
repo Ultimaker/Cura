@@ -27,6 +27,9 @@ class BaseMaterialsModel(ListModel):
 
         self._application = CuraApplication.getInstance()
 
+        self._available_materials = {}  # type: Dict[str, MaterialNode]
+        self._favorite_ids = set()  # type: Set[str]
+
         # Make these managers available to all material models
         self._container_registry = self._application.getInstance().getContainerRegistry()
         self._machine_manager = self._application.getMachineManager()
@@ -59,9 +62,6 @@ class BaseMaterialsModel(ListModel):
         self.addRoleName(Qt.UserRole + 14, "is_read_only")
         self.addRoleName(Qt.UserRole + 15, "container_node")
         self.addRoleName(Qt.UserRole + 16, "is_favorite")
-
-        self._available_materials = None  # type: Optional[Dict[str, MaterialNode]]
-        self._favorite_ids = set()  # type: Set[str]
 
     def _updateExtruderStack(self):
         global_stack = self._machine_manager.activeMachine
@@ -122,6 +122,8 @@ class BaseMaterialsModel(ListModel):
 
         # Update the available materials (ContainerNode) for the current active machine and extruder setup.
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack.hasMaterials:
+            return  # There are no materials for this machine, so nothing to do.
         extruder_stack = global_stack.extruders.get(str(self._extruder_position))
         if not extruder_stack:
             return
