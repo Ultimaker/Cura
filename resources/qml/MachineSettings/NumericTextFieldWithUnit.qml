@@ -44,6 +44,8 @@ UM.TooltipArea
 
     // whether negative value is allowed. This affects the validation of the input field.
     property bool allowNegativeValue: false
+    // whether positive value is allowed. This affects the validation of the input field.
+    property bool allowPositiveValue: true
 
     // callback functions
     property var afterOnEditingFinishedFunction: dummy_func
