@@ -156,7 +156,13 @@ UM.TooltipArea
             const value = propertyProvider.properties.value
             return value ? value : ""
         }
-        validator: RegExpValidator { regExp: allowNegativeValue ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
+        validator: DoubleValidator
+        {
+            bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
+            top: allowPositiveValue ? Number.POSITIVE_INFINITY : 0
+            decimals: 6
+            notation: DoubleValidator.StandardNotation
+        }
 
         onEditingFinished: editingFinishedFunction()
 

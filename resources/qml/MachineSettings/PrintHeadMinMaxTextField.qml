@@ -55,10 +55,23 @@ NumericTextFieldWithUnit
 
     valueText: axisValue
 
+    Connections
+    {
+        target: textField
+        onActiveFocusChanged:
+        {
+            // When this text field loses focus and the entered text is not valid, make sure to recreate the binding to
+            // show the correct value.
+            if (!textField.activeFocus && !textField.acceptableInput)
+            {
+                valueText = axisValue
+            }
+        }
+    }
+
     editingFinishedFunction: function()
     {
         var polygon = JSON.parse(propertyProvider.properties.value)
-
         var newValue = parseFloat(valueText.replace(',', '.'))
 
         if (axisName == "x")  // x min/x max
@@ -79,5 +92,8 @@ NumericTextFieldWithUnit
             propertyProvider.setPropertyValue("value", polygon_string)
             forceUpdateOnChangeFunction()
         }
+
+        // Recreate the binding to show the correct value.
+        valueText = axisValue
     }
 }
