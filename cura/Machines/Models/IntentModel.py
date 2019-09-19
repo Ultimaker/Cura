@@ -35,6 +35,7 @@ class IntentModel(ListModel):
 
         machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
         machine_manager.globalContainerChanged.connect(self._update)
+        machine_manager.extruderChanged.connect(self._update)  # We also need to update if an extruder gets disabled
         ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
         self._layer_height_unit = ""  # This is cached
@@ -74,6 +75,8 @@ class IntentModel(ListModel):
 
         active_extruder = None
         for extruder in global_stack.extruderList:
+            if not extruder.isEnabled:
+                continue
             if extruder.intent.getMetaDataEntry("intent_category", "default") == "default":
                 if active_extruder is None:
                     active_extruder = extruder  # If there is no extruder found and the intent is default, use that.

@@ -1289,6 +1289,8 @@ class MachineManager(QObject):
         category = "default"
 
         for extruder in global_stack.extruderList:
+            if not extruder.isEnabled:
+                continue
             current_category = extruder.intent.getMetaDataEntry("intent_category", "default")
             if current_category != "default" and current_category != category:
                 category = current_category
