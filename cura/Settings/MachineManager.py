@@ -615,10 +615,15 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify=activeIntentChanged)
     def activeIntentCategory(self):
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
 
-        if not self._active_container_stack:
+        if not global_container_stack:
             return ""
-        intent_category = self._active_container_stack.intent.getMetaDataEntry("intent_category", "default")
+        intent_category = "default"
+        for extruder in global_container_stack.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != "default" and category != intent_category:
+                intent_category = category
         return intent_category
 
     ##  Returns whether there is anything unsupported in the current set-up.
