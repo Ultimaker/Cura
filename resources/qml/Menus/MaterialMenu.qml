@@ -56,7 +56,7 @@ Menu
             exclusiveGroup: group
         }
         onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
+        onObjectRemoved: menu.removeItem(index)
     }
 
     MenuSeparator {}
@@ -78,7 +78,7 @@ Menu
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
             onObjectAdded: genericMenu.insertItem(index, object)
-            onObjectRemoved: genericMenu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
+            onObjectRemoved: genericMenu.removeItem(index)
         }
     }
 
