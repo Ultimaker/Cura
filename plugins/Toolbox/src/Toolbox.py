@@ -360,12 +360,14 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def resetMaterialsQualitiesAndUninstall(self) -> None:
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
         machine_manager = application.getMachineManager()
         container_tree = ContainerTree.getInstance()
 
         for global_stack, extruder_nr, container_id in self._package_used_materials:
-            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            extruder = global_stack.extruderList[int(extruder_nr)]
+            approximate_diameter = extruder.getApproximateMaterialDiameter()
+            variant_node = container_tree.machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
+            default_material_node = variant_node.preferredMaterial(approximate_diameter)
             machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
         for global_stack, extruder_nr, container_id in self._package_used_qualities:
             variant_names = [extruder.variant.getName() for extruder in global_stack.extruderList]
