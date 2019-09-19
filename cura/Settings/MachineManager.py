@@ -26,7 +26,6 @@ import cura.CuraApplication  # Imported like this to prevent circular references
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.MaterialManager import MaterialManager
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
@@ -616,10 +615,15 @@ class MachineManager(QObject):
 
     @pyqtProperty(str, notify=activeIntentChanged)
     def activeIntentCategory(self):
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
 
-        if not self._active_container_stack:
+        if not global_container_stack:
             return ""
-        intent_category = self._active_container_stack.intent.getMetaDataEntry("intent_category")
+        intent_category = "default"
+        for extruder in global_container_stack.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != "default" and category != intent_category:
+                intent_category = category
         return intent_category
 
     ##  Returns whether there is anything unsupported in the current set-up.
@@ -1301,8 +1305,7 @@ class MachineManager(QObject):
                 self._setMaterial(position_item, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                material_diameter = self._global_container_stack.extruders[position].getCompatibleMaterialDiameter()
-                approximate_material_diameter = round(material_diameter)
+                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
                 material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
                 self._setMaterial(position_item, material_node)
 
@@ -1343,6 +1346,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         self.blurSettings.emit()
+        container_registry = CuraContainerRegistry.getInstance()
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self.switchPrinterType(configuration.printerType)
 
@@ -1379,20 +1383,18 @@ class MachineManager(QObject):
                 else:
                     machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
                     variant_node = machine_node.variants.get(extruder_configuration.hotendID)
-                    if variant_node:
-                        self._setVariantNode(position, variant_node)
-                    else:
-                        self._global_container_stack.extruders[position].variant = empty_variant_container
+                    self._setVariantNode(position, variant_node)
 
-                    material_container_node = MaterialManager.getInstance().getMaterialNodeByType(self._global_container_stack,
-                                                                                           position,
-                                                                                           extruder_configuration.hotendID,
-                                                                                           configuration.buildplateConfiguration,
-                                                                                           extruder_configuration.material.guid)
-                    if material_container_node:
-                        self._setMaterial(position, material_container_node)
-                    else:
-                        self._global_container_stack.extruders[position].material = empty_material_container
+                    # Find the material profile that the printer has stored.
+                    # This might find one of the duplicates if the user duplicated the material to sync with. But that's okay; both have this GUID so both are correct.
+                    approximate_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+                    materials_with_guid = container_registry.findInstanceContainersMetadata(guid = extruder_configuration.material.guid, approximate_diameter = approximate_diameter)
+                    material_container_node = variant_node.preferredMaterial(approximate_diameter)
+                    if materials_with_guid:  # We also have the material profile that the printer wants to share.
+                        base_file = materials_with_guid[0]["base_file"]
+                        material_container_node = variant_node.materials.get(base_file, default = material_container_node)  # If Cura thinks that the selected material is not available for this printer, revert to the preferred material.
+
+                    self._setMaterial(position, material_container_node)
                     self._global_container_stack.extruders[position].setEnabled(True)
                     self.updateMaterialWithVariant(position)
 
@@ -1431,17 +1433,12 @@ class MachineManager(QObject):
     def setMaterialById(self, position: str, root_material_id: str) -> None:
         if self._global_container_stack is None:
             return
-        buildplate_name = None
-        if self._global_container_stack.variant.getId() != "empty_variant":
-            buildplate_name = self._global_container_stack.variant.getName()
 
         machine_definition_id = self._global_container_stack.definition.id
         position = str(position)
         extruder_stack = self._global_container_stack.extruders[position]
         nozzle_name = extruder_stack.variant.getName()
-        material_diameter = extruder_stack.getApproximateMaterialDiameter()
-        material_node = MaterialManager.getInstance().getMaterialNode(machine_definition_id, nozzle_name, buildplate_name,
-                                                               material_diameter, root_material_id)
+        material_node = ContainerTree.getInstance().machines[machine_definition_id].variants[nozzle_name].materials[root_material_id]
         self.setMaterial(position, material_node)
 
     ##  Global_stack: if you want to provide your own global_stack instead of the current active one
@@ -1624,7 +1621,3 @@ class MachineManager(QObject):
                 abbr_machine += stripped_word
 
         return abbr_machine
-
-    # Gets all machines that belong to the given group_id.
-    def getMachinesInGroup(self, group_id: str) -> List["GlobalStack"]:
-        return self._container_registry.findContainerStacks(type = "machine", group_id = group_id)

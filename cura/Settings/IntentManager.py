@@ -4,6 +4,7 @@
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
 import cura.CuraApplication
+from UM.Logger import Logger
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -11,19 +12,11 @@ from UM.Settings.InstanceContainer import InstanceContainer
 if TYPE_CHECKING:
     from UM.Settings.InstanceContainer import InstanceContainer
 
+
 ##  Front-end for querying which intents are available for a certain
 #   configuration.
-#
-#   CURRENTLY THIS CLASS CONTAINS ONLY SOME PSEUDOCODE OF WHAT WE ARE SUPPOSED
-#   TO IMPLEMENT.
 class IntentManager(QObject):
     __instance = None
-
-    def __init__(self) -> None:
-        super().__init__()
-        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.configurationChanged)
-        self.configurationChanged.connect(self.selectDefaultIntent)
-        pass
 
     ##  This class is a singleton.
     @classmethod
@@ -32,7 +25,6 @@ class IntentManager(QObject):
             cls.__instance = IntentManager()
         return cls.__instance
 
-    configurationChanged = pyqtSignal() #Triggered when something changed in the rest of the stack.
     intentCategoryChanged = pyqtSignal() #Triggered when we switch categories.
 
     ##  Gets the metadata dictionaries of all intent profiles for a given
@@ -40,12 +32,16 @@ class IntentManager(QObject):
     #
     #   \param definition_id ID of the printer.
     #   \param nozzle_name Name of the nozzle.
-    #   \param material_id ID of the material.
+    #   \param material_base_file The base_file of the material.
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
-    def intentMetadatas(self, definition_id: str, nozzle_name: str, material_id: str) -> List[Dict[str, Any]]:
-        registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        return registry.findContainersMetadata(type = "intent", definition = definition_id, variant = nozzle_name, material = material_id)
+    def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
+        material_node = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials[material_base_file]
+        intent_metadatas = []
+        for quality_node in material_node.qualities.values():
+            for intent_node in quality_node.intents.values():
+                intent_metadatas.append(intent_node.getMetadata())
+        return intent_metadatas
 
     ##  Collects and returns all intent categories available for the given
     #   parameters. Note that the 'default' category is always available.
@@ -77,7 +73,6 @@ class IntentManager(QObject):
             #       even though there should always be defaults. The problem then is what to do with the quality_types.
             #       Currently _also_ inconsistent with 'currentAvailableIntentCategories', which _does_ return default.
         quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
-        # TODO: These quality nodes in that tree already contain the intent nodes. We can optimise this.
         available_quality_types = {quality_group.quality_type for quality_group in quality_groups.values() if quality_group.node_for_global is not None}
 
         final_intent_ids = set()  # type: Set[str]
@@ -131,6 +126,7 @@ class IntentManager(QObject):
     ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
+        Logger.log("i", "Attempting to set intent_category to [%s] and quality type to [%s]", intent_category, quality_type)
         old_intent_category = self.currentIntentCategory
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
@@ -148,12 +144,3 @@ class IntentManager(QObject):
         application.getMachineManager().setQualityGroupByQualityType(quality_type)
         if old_intent_category != intent_category:
             self.intentCategoryChanged.emit()
-
-    ##  Selects the default intents on every extruder.
-    def selectDefaultIntent(self) -> None:
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        global_stack = application.getGlobalContainerStack()
-        if global_stack is None:
-            return
-        for extruder_stack in global_stack.extruderList:
-            extruder_stack.intent = self.getDefaultIntent()

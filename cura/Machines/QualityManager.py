@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 
-from UM.Logger import Logger
 from UM.Util import parseBool
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Decorators import deprecated

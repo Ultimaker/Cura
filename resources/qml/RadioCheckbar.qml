@@ -14,7 +14,7 @@ Item
     property color activeColor: UM.Theme.getColor("primary")
     property color inactiveColor: UM.Theme.getColor("slider_groove")
     property color defaultItemColor: UM.Theme.getColor("small_button_active")
-    property int checkboxSize: UM.Theme.getSize("radio_button").height * 0.75
+    property int checkboxSize: Math.round(UM.Theme.getSize("radio_button").height * 0.75)
     property int inactiveMarkerSize: 2 * barSize
     property int barSize: UM.Theme.getSize("slider_groove_radius").height
     property var isCheckedFunction // Function that accepts the modelItem and returns if the item should be active.
@@ -36,8 +36,8 @@ Item
         {
             left: buttonBar.left
             right: buttonBar.right
-            leftMargin: (checkboxSize - inactiveMarkerSize) / 2
-            rightMargin: (checkboxSize - inactiveMarkerSize) / 2
+            leftMargin: Math.round((checkboxSize - inactiveMarkerSize) / 2)
+            rightMargin: Math.round((checkboxSize - inactiveMarkerSize) / 2)
             verticalCenter: parent.verticalCenter
         }
     }
@@ -72,7 +72,7 @@ Item
                     property Item previousItem: repeater.itemAt(index - 1)
 
                     height: barSize
-                    width: buttonBar.width / (repeater.count - 1) - activeComponent.width - 2
+                    width: Math.round(buttonBar.width / (repeater.count - 1) - activeComponent.width - 2)
                     color: defaultItemColor
 
                     anchors
@@ -110,7 +110,7 @@ Item
                 anchors.horizontalCenter: parent.horizontalCenter
                 height: inactiveMarkerSize
                 width: inactiveMarkerSize
-                radius: width / 2
+                radius: Math.round(width / 2)
                 color: inactiveColor
             }
         }
@@ -132,7 +132,7 @@ Item
             {
                 height: checkboxSize
                 width: checkboxSize
-                radius: width / 2
+                radius: Math.round(width / 2)
 
                 border.color: defaultItemColor
 
@@ -143,7 +143,7 @@ Item
                         margins: 3
                         fill: parent
                     }
-                    radius: width / 2
+                    radius: Math.round(width / 2)
                     color: activeColor
                     visible: checkbox.checked
                 }

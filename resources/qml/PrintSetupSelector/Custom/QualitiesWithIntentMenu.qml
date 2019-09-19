@@ -182,11 +182,12 @@ Popup
 
         Rectangle
         {
-            height: 1
+            height: UM.Theme.getSize("default_lining").height
             anchors.left: parent.left
             anchors.right: parent.right
             color: borderColor
         }
+
         MenuButton
         {
             labelText: Cura.Actions.addProfile.text

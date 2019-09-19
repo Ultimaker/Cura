@@ -131,8 +131,8 @@ class MaterialManager(QObject):
 
         # Fetch the available materials (ContainerNode) for the current active machine and extruder setup.
         materials = self.getAvailableMaterials(machine.definition.getId(), nozzle_name)
-        compatible_material_diameter = str(round(extruder_stack.getCompatibleMaterialDiameter()))
-        result = {key: material for key, material in materials.items() if material.container and material.container.getMetaDataEntry("approximate_diameter") == compatible_material_diameter}
+        compatible_material_diameter = extruder_stack.getApproximateMaterialDiameter()
+        result = {key: material for key, material in materials.items() if material.container and float(material.container.getMetaDataEntry("approximate_diameter")) == compatible_material_diameter}
         return result
 
     #
@@ -171,9 +171,11 @@ class MaterialManager(QObject):
     def getMaterialNodeByType(self, global_stack: "GlobalStack", position: str, nozzle_name: str,
                               buildplate_name: Optional[str], material_guid: str) -> Optional["MaterialNode"]:
         machine_definition = global_stack.definition
-        variant_name = global_stack.extruders[position].variant.getName()
+        extruder = global_stack.extruderList[int(position)]
+        variant_name = extruder.variant.getName()
+        approximate_diameter = extruder.getApproximateMaterialDiameter()
 
-        return self.getMaterialNode(machine_definition.getId(), variant_name, buildplate_name, 3, material_guid)
+        return self.getMaterialNode(machine_definition.getId(), variant_name, buildplate_name, approximate_diameter, material_guid)
 
     #   There are 2 ways to get fallback materials;
     #   - A fallback by type (@sa getFallbackMaterialIdByMaterialType), which adds the generic version of this material
@@ -266,128 +268,59 @@ class MaterialManager(QObject):
                 return False
         return True
 
+    ##  Change the user-visible name of a material.
+    #   \param material_node The ContainerTree node of the material to rename.
+    #   \param name The new name for the material.
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
-        if material_node.container is None:
-            return
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        if root_material_id is None:
-            return
-        if CuraContainerRegistry.getInstance().isReadOnly(root_material_id):
-            Logger.log("w", "Cannot set name of read-only container %s.", root_material_id)
-            return
-        containers = CuraContainerRegistry.getInstance().findInstanceContainers(id = root_material_id)
-        containers[0].setName(name)
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node, name)
 
+    ##  Deletes a material from Cura.
+    #
+    #   This function does not do any safety checking any more. Please call this
+    #   function only if:
+    #   - The material is not read-only.
+    #   - The material is not used in any stacks.
+    #   If the material was not lazy-loaded yet, this will fully load the
+    #   container. When removing this material node, all other materials with
+    #   the same base fill will also be removed.
+    #   \param material_node The material to remove.
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
-        if material_node.container is None:
-            return
-        root_material_id = material_node.container.getMetaDataEntry("base_file")
-        if root_material_id is not None:
-            self.removeMaterialByRootId(root_material_id)
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().setMaterialName(material_node)
 
-    def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None,
-                                  new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
-        container_registry = CuraContainerRegistry.getInstance()
-        results = container_registry.findContainers(id=root_material_id)
-
-        if not results:
-            Logger.log("i", "Unable to duplicate the material with id %s, because it doesn't exist.", root_material_id)
-            return None
-
-        base_container = results[0]
-
-        # Ensure all settings are saved.
-        cura.CuraApplication.CuraApplication.getInstance().saveSettings()
-
-        # Create a new ID & container to hold the data.
-        new_containers = []
-        if new_base_id is None:
-            new_base_id = container_registry.uniqueName(base_container.getId())
-        new_base_container = copy.deepcopy(base_container)
-        new_base_container.getMetaData()["id"] = new_base_id
-        new_base_container.getMetaData()["base_file"] = new_base_id
-        if new_metadata is not None:
-            for key, value in new_metadata.items():
-                new_base_container.getMetaData()[key] = value
-        new_containers.append(new_base_container)
-
-        # Clone all of them.
-        for container_to_copy in container_registry.findContainers(base_file=root_material_id):
-            if container_to_copy.getId() == root_material_id:
-                continue  # We already have that one, skip it
-            new_id = new_base_id
-            if container_to_copy.getMetaDataEntry("definition") != "fdmprinter":
-                new_id += "_" + container_to_copy.getMetaDataEntry("definition")
-                if container_to_copy.getMetaDataEntry("variant_name"):
-                    nozzle_name = container_to_copy.getMetaDataEntry("variant_name")
-                    new_id += "_" + nozzle_name.replace(" ", "_")
-
-            new_container = copy.deepcopy(container_to_copy)
-            new_container.getMetaData()["id"] = new_id
-            new_container.getMetaData()["base_file"] = new_base_id
-            if new_metadata is not None:
-                for key, value in new_metadata.items():
-                    new_container.getMetaData()[key] = value
-            new_containers.append(new_container)
-
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            container_registry.addContainer(container_to_add)
-
-        # if the duplicated material was favorite then the new material should also be added to favorite.
-        if root_material_id in self.getFavorites():
-            cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().addFavorite(new_base_id)
-
-        return new_base_id
-
-    #
-    # Creates a duplicate of a material, which has the same GUID and base_file metadata.
-    # Returns the root material ID of the duplicated material if successful.
-    #
-    @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None,
-                          new_metadata: Optional[Dict[str, Any]] = None) -> str:
-        if material_node.container is None:
-            Logger.log("e", "Material node {0} doesn't have container.".format(material_node.container_id))
+    def duplicateMaterialByRootId(self, root_material_id: str, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterialByBaseFile(root_material_id, new_base_id, new_metadata)
+        if result is None:
             return "ERROR"
-        root_material_id = cast(str, material_node.container.getMetaDataEntry("base_file", ""))
-        new_material_id = self.duplicateMaterialByRootId(root_material_id, new_base_id, new_metadata)
-        return new_material_id if new_material_id is not None else "ERROR"
+        return result
 
-    # Create a new material by cloning Generic PLA for the current material diameter and generate a new GUID.
-    # Returns the ID of the newly created material.
+    ##  Creates a duplicate of a material with the same GUID and base_file
+    #   metadata.
+    #   \param material_node The node representing the material to duplicate.
+    #   \param new_base_id A new material ID for the base material. The IDs of
+    #   the submaterials will be based off this one. If not provided, a material
+    #   ID will be generated automatically.
+    #   \param new_metadata Metadata for the new material. If not provided, this
+    #   will be duplicated from the original material.
+    #   \return The root material ID of the duplicate material.
+    @pyqtSlot("QVariant", result = str)
+    def duplicateMaterial(self, material_node: MaterialNode, new_base_id: Optional[str] = None, new_metadata: Optional[Dict[str, Any]] = None) -> str:
+        result = cura.CuraApplication.CuraApplication.getInstance().getMaterialManagementModel().duplicateMaterial(material_node, new_base_id, new_metadata)
+        if result is None:
+            return "ERROR"
+        return result
+
+    ##  Create a new material by cloning the preferred material for the current
+    #   material diameter and generate a new GUID.
+    #
+    #   The material type is explicitly left to be the one from the preferred
+    #   material, since this allows the user to still have SOME profiles to work
+    #   with.
+    #   \return The ID of the newly created material.
     @pyqtSlot(result = str)
     def createMaterial(self) -> str:
-        from UM.i18n import i18nCatalog
-        catalog = i18nCatalog("cura")
-        # Ensure all settings are saved.
-        application = cura.CuraApplication.CuraApplication.getInstance()
-        application.saveSettings()
-
-        machine_manager = application.getMachineManager()
-        extruder_stack = machine_manager.activeStack
-
-        global_stack = application.getGlobalContainerStack()
-        if global_stack is None:
-            Logger.log("e", "Global stack not present!")
-            return "ERROR"
-        machine_definition = global_stack.definition
-        root_material_id = machine_definition.getMetaDataEntry("preferred_material", default = "generic_pla")
-
-        approximate_diameter = str(extruder_stack.approximateMaterialDiameter)
-        root_material_id = self.getRootMaterialIDForDiameter(root_material_id, approximate_diameter)
-
-        # Create a new ID & container to hold the data.
-        new_id = CuraContainerRegistry.getInstance().uniqueName("custom_material")
-        new_metadata = {"name": catalog.i18nc("@label", "Custom Material"),
-                        "brand": catalog.i18nc("@label", "Custom"),
-                        "GUID": str(uuid.uuid4()),
-                        }
-
-        self.duplicateMaterialByRootId(root_material_id, new_base_id = new_id, new_metadata = new_metadata)
-        return new_id
+        return cura.CuraApplication.CuraApplication.getMaterialManagementModel().createMaterial()
 
     @pyqtSlot(str)
     def addFavorite(self, root_material_id: str) -> None:

@@ -66,12 +66,26 @@ class IntentModel(ListModel):
 
         container_tree = ContainerTree.getInstance()
         machine_node = container_tree.machines[global_stack.definition.getId()]
-        active_extruder = ExtruderManager.getInstance().getActiveExtruderStack()
+
+        # We can't just look at the active extruder, since it is possible for only one extruder to have an intent
+        # and the other extruders have no intent (eg, default). It is not possible for one extruder to have intent A and
+        # the other to have B.
+        # So we will use the first extruder that we find that has an intent that is not default as the "active" extruder
+
+        active_extruder = None
+        for extruder in global_stack.extruderList:
+            if extruder.intent.getMetaDataEntry("intent_category", "default") == "default":
+                if active_extruder is None:
+                    active_extruder = extruder  # If there is no extruder found and the intent is default, use that.
+            else:  # We found an intent, use that extruder as "active"
+                active_extruder = extruder
+
         if not active_extruder:
             return
         active_variant_name = active_extruder.variant.getMetaDataEntry("name")
         active_variant_node = machine_node.variants[active_variant_name]
         active_material_node = active_variant_node.materials[active_extruder.material.getMetaDataEntry("base_file")]
+
         layer_heights_added = []
         for quality_id, quality_node in active_material_node.qualities.items():
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
