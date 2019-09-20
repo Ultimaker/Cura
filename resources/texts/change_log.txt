@@ -55,7 +55,6 @@ The available configurations drop down will display information about a Ultimake
 - Tool handles move when rotating. Fixed an issue where rotate tool handles would change location when rotating. 
 - F5 reload. Fixed an issue where F5 doesn't reload GCODE. 
 - Application not starting before the splash screen. Fixed an issue where the application wouldn’t start before the splash window. 
-- Error combining profiles in the PPA. Combiner in the PPA doesn't show error with inconsistent PVA or BAM compatibility anymore. 
 - Qt 5.13 crashes. Fixed an issue where the ShaderEffect crashes using Qt 5.13 
 - Can’t select other materials in print setting tab. Fixed an issue where other materials couldn’t be selected using the print settings tab. 
 - Drop down to buildplate after resize. Models don’t drop down to the build plate if they are scaled down from ‘too large to fit’. 
@@ -69,7 +68,6 @@ The available configurations drop down will display information about a Ultimake
 - Hide temperature settings. The "Default Print Temperature" setting is currently editable, but editing this setting can cause problems with temperatures later especially when you have it in your custom profile. We decided to hide this setting so users can no longer edit it in the later releases to avoid confusion. The "Default Build Plate Temperature" has also been hidden because it causes a similar issue. 
 - Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
 - Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg. 
-- PPA build plate disappearing. Fixed an issue with missing build plate when using PPA or open GCODE file. 
 - Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle. 
 
 *Third-party printer definitions 
