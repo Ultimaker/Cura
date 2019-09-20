@@ -920,41 +920,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         extruder_stack.userChanges.setProperty(key, "value", value)
 
     def _applyVariants(self, global_stack, extruder_stack_dict):
-        application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
+        # Take the global variant from the machine info if available.
         if self._machine_info.variant_info is not None:
-            parser = self._machine_info.variant_info.parser
-            variant_name = parser["general"]["name"]
-
-            variant_type = VariantType.BUILD_PLATE
-
-            node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None and node.container is not None:
-                global_stack.variant = node.container
+            variant_name = self._machine_info.variant_info.parser["general"]["name"]
+            global_stack.variant = machine_node.variants[variant_name].container
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
-                # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
-                machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
-                node = machine_node.variants[machine_node.preferred_variant_name]
-                if node is not None and node.container is not None:
-                    extruder_stack.variant = node.container
-                continue
-            parser = extruder_info.variant_info.parser
-
-            variant_name = parser["general"]["name"]
-            variant_type = VariantType.NOZZLE
-
-            node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
-            if node is not None and node.container is not None:
-                extruder_stack.variant = node.container
+                # If there is no variant_info, try to use the default variant. Otherwise, any available variant.
+                node = machine_node.variants.get(machine_node.preferred_variant_name, next(iter(machine_node.variants.values())))
+            else:
+                variant_name = extruder_info.variant_info.parser["general"]["name"]
+                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
+            extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
-        machine_node = ContainerTree.getInstance().machines[global_stack]
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
