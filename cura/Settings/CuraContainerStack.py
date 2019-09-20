@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Any, cast, Dict, List, Optional
+from typing import Any, cast, List, Optional
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, QObject
 
 from UM.Application import Application
@@ -364,22 +364,3 @@ class _ContainerIndexes:
 
     # Reverse lookup: type -> index
     TypeIndexMap = dict([(v, k) for k, v in IndexTypeMap.items()])
-
-    # Mapping to old values before Intent introduction. Used for reading older versions of input files.
-    IndexToOldIndexMap = {
-        UserChanges: 0,
-        QualityChanges: 1,
-        Intent: -1,  # Wasn't there in the old 'format'!
-        Quality: 2,
-        Material: 3,
-        Variant: 4,
-        DefinitionChanges: 5,
-        Definition: 6,
-    }
-
-    # Reverse lookup: old index -> new index
-    OldIndexToIndexMap = dict([(v, k) for k, v in IndexToOldIndexMap.items()])
-
-    @classmethod
-    def getIndexMapping(cls, setting_version: int) -> Dict[int, int]:
-        return dict([(x, x) for x in list(range(99))]) if setting_version >= 10 else cls.IndexToOldIndexMap
