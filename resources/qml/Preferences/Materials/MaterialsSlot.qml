@@ -82,11 +82,12 @@ Rectangle
         {
             if (materialSlot.is_favorite)
             {
-                CuraApplication.getMaterialManager().removeFavorite(material.root_material_id)
-                return
+                CuraApplication.getMaterialManagementModel().removeFavorite(material.root_material_id)
             }
-            CuraApplication.getMaterialManager().addFavorite(material.root_material_id)
-            return
+            else
+            {
+                CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
+            }
         }
         style: ButtonStyle
         {

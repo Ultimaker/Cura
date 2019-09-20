@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy  # To duplicate materials.
-from PyQt5.QtCore import QObject, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot  # To allow the preference page proxy to be used from the actual preferences page.
 from typing import Any, Dict, Optional, TYPE_CHECKING
 import uuid  # To generate new GUIDs for new materials.
 
@@ -23,6 +23,11 @@ catalog = i18nCatalog("cura")
 #   This class handles the actions in that page, such as creating new materials,
 #   renaming them, etc.
 class MaterialManagementModel(QObject):
+    ##  Triggered when a favorite is added or removed.
+    #   \param The base file of the material is provided as parameter when this
+    #   emits.
+    favoritesChanged = pyqtSignal(str)
+
     ##  Can a certain material be deleted, or is it still in use in one of the
     #   container stacks anywhere?
     #
@@ -179,3 +184,30 @@ class MaterialManagementModel(QObject):
 
         self.duplicateMaterial(preferred_material_node, new_base_id = new_id, new_metadata = new_metadata)
         return new_id
+
+    ##  Adds a certain material to the favorite materials.
+    #   \param material_base_file The base file of the material to add.
+    @pyqtSlot(str)
+    def addFavorite(self, material_base_file: str) -> None:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        favorites = application.getPreferences().getValue("cura/favorite_materials").split(";")
+        if material_base_file not in favorites:
+            favorites.append(material_base_file)
+            application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites))
+            application.saveSettings()
+            self.favoritesChanged.emit(material_base_file)
+
+    ##  Removes a certain material from the favorite materials.
+    #
+    #   If the material was not in the favorite materials, nothing happens.
+    @pyqtSlot(str)
+    def removeFavorite(self, material_base_file: str) -> None:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        favorites = application.getPreferences().getValue("cura/favorite_materials").split(";")
+        try:
+            favorites.remove(material_base_file)
+            application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites))
+            application.saveSettings()
+            self.favoritesChanged.emit(material_base_file)
+        except ValueError:  # Material was not in the favorites list.
+            Logger.log("w", "Material {material_base_file} was already not a favorite material.".format(material_base_file = material_base_file))
