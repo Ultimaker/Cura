@@ -93,6 +93,11 @@
         "filter_out_tiny_gaps":      {"value": false },
         "fill_outline_gaps":         {"value": true },
         "skin_outline_count":        {"value": "0"},
+        "ironing_enabled":           {"value": true },
+        "ironing_line_spacing":      {"value": "line_width"},
+        "ironing_flow":              {"value": "0"},
+        "ironing_inset":             {"value": "line_width"},
+        "speed_ironing":             {"value": "150"},
  
         "infill_sparse_density": {"value": 30},
         "infill_pattern":        {"value": "'lines'"},
