@@ -45,6 +45,7 @@ class BaseMaterialsModel(ListModel):
         # Update this model when switching machines, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._update)
         ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
+        self._application.getMaterialManagementModel().favoritesChanged.connect(self._update)
 
         self.addRoleName(Qt.UserRole + 1, "root_material_id")
         self.addRoleName(Qt.UserRole + 2, "id")
@@ -114,6 +115,11 @@ class BaseMaterialsModel(ListModel):
         if material.variant.machine.container_id != global_stack.definition.getId():
             return
         self._update()
+
+    ##  Triggered when the list of favorite materials is changed.
+    def _favoritesChanged(self, material_base_file: str) -> None:
+        if material_base_file in self._available_materials:
+            self._update()
 
     ## This is an abstract method that needs to be implemented by the specific
     #  models themselves.

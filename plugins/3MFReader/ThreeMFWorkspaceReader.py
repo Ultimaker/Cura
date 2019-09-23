@@ -371,8 +371,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Get quality type
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
-        quality_container_id = parser["containers"][str(index_map_version[_ContainerIndexes.Quality])]
+        quality_container_id = parser["containers"][str(_ContainerIndexes.Quality)]
         quality_type = "empty_quality"
         if quality_container_id not in ("empty", "empty_quality"):
             quality_type = instance_container_info_dict[quality_container_id].parser["metadata"]["quality_type"]
@@ -382,11 +381,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         parser = ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
-        definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
+        definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
         if definition_changes_id not in ("empty", "empty_definition_changes"):
             self._machine_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
-        user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
+        user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
         if user_changes_id not in ("empty", "empty_user_changes"):
             self._machine_info.user_changes_info = instance_container_info_dict[user_changes_id]
 
@@ -396,8 +394,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
-            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
-            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
+            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
+            material_id = parser["containers"][str(_ContainerIndexes.Material)]
             if variant_id not in ("empty", "empty_variant"):
                 extruder_info.variant_info = instance_container_info_dict[variant_id]
             if material_id not in ("empty", "empty_material"):
@@ -405,7 +403,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.root_material_id = root_material_id
             self._machine_info.extruder_info_dict[position] = extruder_info
         else:
-            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
+            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
             if variant_id not in ("empty", "empty_variant"):
                 self._machine_info.variant_info = instance_container_info_dict[variant_id]
         QCoreApplication.processEvents()  # Ensure that the GUI does not freeze.
@@ -417,14 +415,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = ExtruderStack._updateSerialized(serialized, extruder_stack_file)
             parser = ConfigParser(interpolation = None)
             parser.read_string(serialized)
-            index_map_version = _ContainerIndexes.getIndexMapping(int(parser["metadata"]["setting_version"]))
 
             # The check should be done for the extruder stack that's associated with the existing global stack,
             # and those extruder stacks may have different IDs.
             # So we check according to the positions
             position = parser["metadata"]["position"]
-            variant_id = parser["containers"][str(index_map_version[_ContainerIndexes.Variant])]
-            material_id = parser["containers"][str(index_map_version[_ContainerIndexes.Material])]
+            variant_id = parser["containers"][str(_ContainerIndexes.Variant)]
+            material_id = parser["containers"][str(_ContainerIndexes.Material)]
 
             extruder_info = ExtruderInfo()
             extruder_info.position = position
@@ -438,11 +435,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 root_material_id = reverse_material_id_dict[material_id]
                 extruder_info.root_material_id = root_material_id
 
-            definition_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.DefinitionChanges])]
+            definition_changes_id = parser["containers"][str(_ContainerIndexes.DefinitionChanges)]
             if definition_changes_id not in ("empty", "empty_definition_changes"):
                 extruder_info.definition_changes_info = instance_container_info_dict[definition_changes_id]
 
-            user_changes_id = parser["containers"][str(index_map_version[_ContainerIndexes.UserChanges])]
+            user_changes_id = parser["containers"][str(_ContainerIndexes.UserChanges)]
             if user_changes_id not in ("empty", "empty_user_changes"):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
@@ -575,7 +572,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     @call_on_qt_thread
     def read(self, file_name):
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
 
         archive = zipfile.ZipFile(file_name, "r")
 
@@ -673,7 +669,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         if self._resolve_strategies["material"] == "override":
                             # Remove the old materials and then deserialize the one from the project
                             root_material_id = material_container.getMetaDataEntry("base_file")
-                            material_manager.removeMaterialByRootId(root_material_id)
+                            application.getContainerRegistry().removeContainer(root_material_id)
                         elif self._resolve_strategies["material"] == "new":
                             # Note that we *must* deserialize it with a new ID, as multiple containers will be
                             # auto created & added.
@@ -726,8 +722,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _processQualityChanges(self, global_stack):
         if self._machine_info.quality_changes_info is None:
             return
-
-        application = CuraApplication.getInstance()
 
         # If we have custom profiles, load them
         quality_changes_name = self._machine_info.quality_changes_info.name
@@ -923,43 +917,27 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                         extruder_stack.userChanges.setProperty(key, "value", value)
 
     def _applyVariants(self, global_stack, extruder_stack_dict):
-        application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
+        # Take the global variant from the machine info if available.
         if self._machine_info.variant_info is not None:
-            parser = self._machine_info.variant_info.parser
-            variant_name = parser["general"]["name"]
-
-            variant_type = VariantType.BUILD_PLATE
-
-            node = variant_manager.getVariantNode(global_stack.definition.getId(), variant_name, variant_type)
-            if node is not None and node.container is not None:
-                global_stack.variant = node.container
+            variant_name = self._machine_info.variant_info.parser["general"]["name"]
+            global_stack.variant = machine_node.variants[variant_name].container
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
             extruder_info = self._machine_info.extruder_info_dict[position]
             if extruder_info.variant_info is None:
-                # If there is no variant_info, try to use the default variant. Otherwise, leave it be.
-                machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
-                node = machine_node.variants[machine_node.preferred_variant_name]
-                if node is not None and node.container is not None:
-                    extruder_stack.variant = node.container
-                continue
-            parser = extruder_info.variant_info.parser
-
-            variant_name = parser["general"]["name"]
-            variant_type = VariantType.NOZZLE
-
-            node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
-            if node is not None and node.container is not None:
-                extruder_stack.variant = node.container
+                # If there is no variant_info, try to use the default variant. Otherwise, any available variant.
+                node = machine_node.variants.get(machine_node.preferred_variant_name, next(iter(machine_node.variants.values())))
+            else:
+                variant_name = extruder_info.variant_info.parser["general"]["name"]
+                node = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[variant_name]
+            extruder_stack.variant = node.container
 
     def _applyMaterials(self, global_stack, extruder_stack_dict):
-        application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
-
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
                 continue
@@ -970,18 +948,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             root_material_id = extruder_info.root_material_id
             root_material_id = self._old_new_materials.get(root_material_id, root_material_id)
 
-            build_plate_id = global_stack.variant.getId()
-
-            # get material diameter of this extruder
-            machine_material_diameter = extruder_stack.getCompatibleMaterialDiameter()
-            material_node = material_manager.getMaterialNode(global_stack.definition.getId(),
-                                                             extruder_stack.variant.getName(),
-                                                             build_plate_id,
-                                                             machine_material_diameter,
-                                                             root_material_id)
-
-            if material_node is not None and material_node.container is not None:
-                extruder_stack.material = material_node.container  # type: InstanceContainer
+            material_node = machine_node.variants[extruder_stack.variant.getName()].materials[root_material_id]
+            extruder_stack.material = material_node.container  # type: InstanceContainer
 
     def _applyChangesToMachine(self, global_stack, extruder_stack_dict):
         # Clear all first

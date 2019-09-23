@@ -23,7 +23,6 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 import cura.CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.MaterialManager import MaterialManager
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication

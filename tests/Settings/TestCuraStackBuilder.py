@@ -66,8 +66,6 @@ def test_createMachine(application, container_registry, definition_container, gl
     quality_manager.getQualityGroups = MagicMock(return_value = {"normal": quality_group})
 
     application.getContainerRegistry = MagicMock(return_value=container_registry)
-    application.getVariantManager = MagicMock(return_value = variant_manager)
-    application.getQualityManager = MagicMock(return_value = quality_manager)
     application.empty_material_container = material_instance_container
     application.empty_quality_container = quality_container
     application.empty_intent_container = intent_container
