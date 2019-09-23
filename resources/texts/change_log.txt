@@ -1,3 +1,84 @@
+[4.3.0]
+*Ultimaker S3. 
+This release includes a new profile for our latest S-line of 3D printers: the Ultimaker S3. Eagle-eyed beta testers may have noticed this extra printer profile in the beta release, too. Well done to those who spotted it. Learn more about the Ultimaker S3 by reading the blog on Ultimaker.com. 
+
+*Even more 3D file formats. 
+This version is compatible with even more 3D file formats out-of-the-box, so you can integrate CAD software, 3D scanning software, and 3D modeling software into your workflow with ease. Natively open Collada, GLTF, OpenCTM, and PLY formats, to name a few. And don’t forget, downloading plugins from the Ultimaker Marketplace brings in support for many more. 
+
+*Align faces to the build plate. 
+Orienting your models with the rotation tool or the lay flat tool can be a hassle with complex geometries. This new time-saving feature lets you select a face of your model to rest on the build plate, so you can get the orientation you need quickly and easily. Please note this is disabled in compatibility mode (and if your machine is running OpenGL 3.2 or lower). 
+
+*Support infill/interface line directions. 
+Improve reliability with more precise control over certain aspects of your print. Choose the angle that support-infill and interfaces print at, thanks to a contribution from vgribinchuck. Input a set of angles you want lines generated at, and these will be placed sequentially throughout your 3D print. 
+
+*Randomize infill start. 
+Randomize which infill line is printed first. This distributes strength across the model, preventing one segment becoming the weakest link, at the cost of an additional travel move. 
+
+*Print small features slower. 
+Smartavionics has contributed a setting which recognizes small perimeters and reduces print speed in order to boost the reliability and accuracy of small printed features. This is especially useful for small perimeters such as printed holes, as they tend to get ripped away from the build plate easily due to their low contact area. 
+
+*Easy selector for Z seam positions. 
+Z seams are now easier to position on your model, thanks to a contribution by trouch. A drop down selection box has been added to custom mode, giving you a list of presets to place the z seam on your model. 
+
+*Colorblind assist theme. 
+Nubnubbud has added a new theme for colorblind users which makes more distinction between colors, such as the yellow/green line colors in the layer view. 
+
+*DisplayFilenameAndLayerOnLCD script. 
+Some improvements for this post processing script from the community. N95JPL has contributed updates to offer a wider range of optional information. Adecastilho has contributed updates so that the layer count is displayed before the filename to prevent the layer number getting truncated in the event of long filename, as well as an option to start layer count at either 0 or 1. The ':' in the display string has also been removed as it is a GCODE command that splits the line into two different commands. 
+
+*Peripheral information for output devices. 
+Architectural changes in Ultimaker Cura to allow display information about peripherals in the printer output device, so that I can use it to later on show that information in the Monitor stage plugin. 
+
+*Quality changes on import. 
+Users can now import profiles that have been created on a different machine other than the active one. 
+
+*Remove prime after coasting. 
+Reduce the visibility of the z seam when printing with coasting by preventing nozzle priming. 
+
+*Map Material Station slot data. 
+The available configurations drop down will display information about a Ultimaker S5 Material Station if connected. Read more about the Ultimaker S5 Material Station on ultimaker.com 
+
+* Bug fixes
+- Uninstall in silent mode. Fixed an issue where a dialog displays when uninstalling in silent mode. 
+- Build Interface if Support is Present. In some cases, support could be pushed away by large support XY distance, but interfaces could be left on overhangs which leads to situation when interface is generated without support. This has been fixed. 
+- Install in silent mode. The bundled Arduino driver is signed by a certificate that's not trusted on Windows by default, so there was no way to suppress the prompt or to have the installer skip driver installation. This has been fixed. 
+- 3MF project printer connection not included. When loading a project file that was saved while a network connection was active, the network connection is not re-established. This has been fixed. 
+- Thin Walls broken. Fixed an error with thin walls being broken. 
+- Tray icon remaining. Fixed a bug where the tray icon would remain after closing the application. 
+- Marketplace text. Fixed an issue where Marketplace text is blurry on some screens 
+- Unsupported profile imports. Fixed an issue where exported profiles could not be reimported. 
+- Loading file message. Added visual feedback when loading files such as STLs 
+- Loading GCODE on disabled extruders. Fixed an issue where GCODE imported using multi-extrusion fails to load if an extruder is disabled. 
+- Support brim with concentric support pattern. Fixed an issue where support would be in mid-air. 
+- Reduced cloud logging. Logging has been reduced for cloud connections on unstable connections. 
+- Application menu extruder menu. Fixed an issue where changing the extruder via the application menu didn’t work. 
+- Tool handles move when rotating. Fixed an issue where rotate tool handles would change location when rotating. 
+- F5 reload. Fixed an issue where F5 doesn't reload GCODE. 
+- Application not starting before the splash screen. Fixed an issue where the application wouldn’t start before the splash window. 
+- Qt 5.13 crashes. Fixed an issue where the ShaderEffect crashes using Qt 5.13 
+- Can’t select other materials in print setting tab. Fixed an issue where other materials couldn’t be selected using the print settings tab. 
+- Drop down to buildplate after resize. Models don’t drop down to the build plate if they are scaled down from ‘too large to fit’. 
+- Unsupported quality profiles. Fixed unsupported quality profiles appearing for 0.25 + 0.8 print core combinations. 
+- 'Arrange all models' for groups. Fixed an issue where arrange all models hangs for grouped models. 
+- Update Checker not working. Fixed this so that updates are visible if using a legacy version. 
+- Missing support brim. Fixed an issue where support brim was missing if platform adhesion set to ‘None’. 
+- Multiply non-normal mesh doesn't work. Fixed instances where processes stopped and messages would hang. 
+- Settings not updating in GUI with inheritance. Fixed settings not updating GUI with inheritance. 
+- Prevent 'generic'-part in name of specific materials. Introduced checks for ‘generic’ material types to help material categorization. 
+- Hide temperature settings. The "Default Print Temperature" setting is currently editable, but editing this setting can cause problems with temperatures later especially when you have it in your custom profile. We decided to hide this setting so users can no longer edit it in the later releases to avoid confusion. The "Default Build Plate Temperature" has also been hidden because it causes a similar issue. 
+- Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
+- Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg. 
+- Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle. 
+
+*Third-party printer definitions 
+New machine definitions added for: 
+- IMADE3D Jellybox. Contributed by filipgoc for IMADE3D Jellybox printers, which adds JellyBOX 2 printer and revises settings of JellyBOX Original. 
+- Vertex Nano. Contributed by velbn 
+- Felix Pro 2. Contributed by pnks 
+- JGAurora A35. Contributed by pinchies. 
+- eMotionTech Strateo3D. Contributed by KOUBeMT. 
+- NWA3D A31. Contributed by DragonJe. 
+
 [4.2.0]
 *Orthographic view. 
 When preparing prints, professional users wanted more control over the 3D view type, so this version introduces an orthographic view, which is the same view type used by most professional CAD software packages. Find the orthographic view in View > Camera view > Orthographic, and compare the dimensions of your model to your CAD design with ease.
