@@ -5350,7 +5350,7 @@ msgstr "Fournit la prise en charge de la lecture de fichiers modèle 3D."
 #: TrimeshReader/plugin.json
 msgctxt "name"
 msgid "Trimesh Reader"
-msgstr "Lecteur de mailles triangulaires"
+msgstr "Lecteur de Trimesh"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"

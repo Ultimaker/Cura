@@ -4060,7 +4060,7 @@ msgstr "사용할 정수 선 방향 리스트입니다. 리스트의 요소는 �
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles label"
 msgid "Support Floor Line Directions"
-msgstr "Support Floor Line Directions"
+msgstr "바닥 지붕 선 방향"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles description"
