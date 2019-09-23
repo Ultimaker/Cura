@@ -5351,7 +5351,7 @@ msgstr "Biedt ondersteuning voor het lezen van modelbestanden."
 #: TrimeshReader/plugin.json
 msgctxt "name"
 msgid "Trimesh Reader"
-msgstr "Driehoeksnetlezer"
+msgstr "Trimesh-lezer"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"

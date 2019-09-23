@@ -1298,7 +1298,7 @@ msgstr "Linksachter"
 #: fdmprinter.def.json
 msgctxt "z_seam_position option back"
 msgid "Back"
-msgstr "Terug"
+msgstr "Achter"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backright"
@@ -1424,7 +1424,7 @@ msgstr "Strijken inschakelen"
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
 msgstr "Nog een extra keer over de bovenlaag gaan, dit keer zonder veel materiaal te extruderen. Hierdoor wordt de kunststof aan de bovenkant verder gesmolten,"
-" waardoor een gladder oppervlak wordt verkregen. De kamerdruk in de nozzle wordt hoog gehouden zodat de vouwen in het oppervlak met materiaal worden gevuld."
+" waardoor een gladder oppervlak wordt verkregen. De kamerdruk in de nozzle wordt hoog gehouden zodat de spleten in het oppervlak met materiaal worden gevuld."
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -6234,7 +6234,7 @@ msgstr "Klein kenmerksnelheid"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr "Kleine kernmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en"
+msgstr "Kleine kenmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en"
 " nauwkeurigheid verbeteren."
 
 #: fdmprinter.def.json
