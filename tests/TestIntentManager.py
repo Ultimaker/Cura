@@ -11,10 +11,50 @@ from cura.Machines.QualityGroup import QualityGroup
 
 from tests.Settings.MockContainer import MockContainer
 
+mocked_intent_metadata = [
+    {"id": "um3_aa4_pla_smooth_normal", "GUID": "abcxyz", "definition": "ultimaker3", "variant": "AA 0.4",
+     "material_id": "generic_pla", "intent_category": "smooth", "quality_type": "normal"},
+    {"id": "um3_aa4_pla_strong_abnorm", "GUID": "defqrs", "definition": "ultimaker3", "variant": "AA 0.4",
+     "material_id": "generic_pla", "intent_category": "strong", "quality_type": "abnorm"}]  # type:List[Dict[str, str]]
+
+mocked_qualitygroup_metadata = {
+    "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
+    "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
+
 @pytest.fixture()
 def mock_container_tree() -> MagicMock:
     container_tree = MagicMock()
     container_tree.getCurrentQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
+    container_tree.machines = {
+        "ultimaker3": MagicMock(
+            variants = {
+                "AA 0.4": MagicMock(
+                    materials = {
+                        "generic_pla": MagicMock(
+                            qualities = {
+                                "um3_aa4_pla_normal": MagicMock(
+                                    intents = {
+                                        "smooth": MagicMock(
+                                            intent_category = "smooth",
+                                            getMetadata = MagicMock(return_value = mocked_intent_metadata[0])
+                                        )
+                                    }
+                                ),
+                                "um3_aa4_pla_abnorm": MagicMock(
+                                    intents = {
+                                        "strong": MagicMock(
+                                            intent_category = "strong",
+                                            getMetadata = MagicMock(return_value = mocked_intent_metadata[1])
+                                        )
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+            }
+        )
+    }
     return container_tree
 
 @pytest.fixture()
@@ -26,17 +66,6 @@ def intent_manager(application, extruder_manager, machine_manager, container_reg
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             manager = IntentManager()
     return manager
-
-mocked_intent_metadata = [
-    {"id": "um3_aa4_pla_smooth_normal", "GUID": "abcxyz", "definition": "ultimaker3", "variant": "AA 0.4",
-     "material_id": "generic_pla", "intent_category": "smooth", "quality_type": "normal"},
-    {"id": "um3_aa4_pla_strong_abnorm", "GUID": "defqrs", "definition": "ultimaker3", "variant": "AA 0.4",
-     "material_id": "generic_pla", "intent_category": "strong", "quality_type": "abnorm"}]  # type:List[Dict[str, str]]
-
-mocked_qualitygroup_metadata = {
-    "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
-    "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
-
 
 def mockFindMetadata(**kwargs) -> List[Dict[str, Any]]:
     if "id" in kwargs:
@@ -82,16 +111,12 @@ def doSetup(application, extruder_manager, container_registry, global_stack) -> 
     extruder_manager.getUsedExtruderStacks = MagicMock(return_value = [extruder_stack_a, extruder_stack_b])
 
 
-def test_intentCategories(application, intent_manager, container_registry):
-    # Mock .findContainersMetadata so we also test .intentMetadatas (the latter is mostly a wrapper around the former).
-    container_registry.findContainersMetadata = MagicMock(return_value = mocked_intent_metadata)
-
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
-        with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-            categories = intent_manager.intentCategories("ultimaker3", "AA 0.4", "generic_pla")  # type:List[str]
-            assert "default" in categories, "default should always be in categories"
-            assert "strong" in categories, "strong should be in categories"
-            assert "smooth" in categories, "smooth should be in categories"
+def test_intentCategories(intent_manager, mock_container_tree):
+    with patch("cura.Machines.ContainerTree.ContainerTree.getInstance", MagicMock(return_value = mock_container_tree)):
+        categories = intent_manager.intentCategories("ultimaker3", "AA 0.4", "generic_pla")  # type:List[str]
+        assert "default" in categories, "default should always be in categories"
+        assert "strong" in categories, "strong should be in categories"
+        assert "smooth" in categories, "smooth should be in categories"
 
 
 def test_getCurrentAvailableIntents(application, extruder_manager, intent_manager, container_registry, global_stack, mock_container_tree):
