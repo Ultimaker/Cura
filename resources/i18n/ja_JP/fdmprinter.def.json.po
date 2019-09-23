@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-09-10 16:55+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2019-09-23 14:15+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -3350,7 +3350,6 @@ msgid "Regular Fan Speed"
 msgstr "標準ファン速度"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_min description"
 msgid "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed."
 msgstr "しきい値に達する前のファンの回転スピード。プリント速度がしきい値より速くなると、ファンの速度は上がっていきます。"
@@ -3381,7 +3380,6 @@ msgid "Initial Fan Speed"
 msgstr "初期ファン速度"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_0 description"
 msgid "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height."
 msgstr "プリント開始時にファンが回転する速度。後続のレイヤーでは、ファン速度は、高さに応じて早くなります。"
