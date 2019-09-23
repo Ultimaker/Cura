@@ -62,6 +62,7 @@ def intent_manager(application, extruder_manager, machine_manager, container_reg
     application.getExtruderManager = MagicMock(return_value = extruder_manager)
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     application.getMachineManager = MagicMock(return_value = machine_manager)
+    machine_manager.setIntentByCategory = MagicMock()
     with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
         with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
             manager = IntentManager()
