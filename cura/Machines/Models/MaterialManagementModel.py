@@ -39,7 +39,7 @@ class MaterialManagementModel(QObject):
     #   \param material_node The ContainerTree node of the material to check.
     #   \return Whether or not the material can be removed.
     @pyqtSlot("QVariant", result = bool)
-    def canMaterialBeRemoved(self, material_node: "MaterialNode"):
+    def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
         container_registry = CuraContainerRegistry.getInstance()
         ids_to_remove = {metadata.get("id", "") for metadata in container_registry.findInstanceContainersMetadata(base_file = material_node.base_file)}
         for extruder_stack in container_registry.findContainerStacks(type = "extruder_train"):
@@ -85,7 +85,8 @@ class MaterialManagementModel(QObject):
     #   \param new_metadata Metadata for the new material. If not provided, this
     #   will be duplicated from the original material.
     #   \return The root material ID of the duplicate material.
-    def duplicateMaterialByBaseFile(self, base_file: str, new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+    def duplicateMaterialByBaseFile(self, base_file: str, new_base_id: Optional[str] = None,
+                                    new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
         container_registry = CuraContainerRegistry.getInstance()
 
         root_materials = container_registry.findContainers(id = base_file)
@@ -149,7 +150,8 @@ class MaterialManagementModel(QObject):
     #   will be duplicated from the original material.
     #   \return The root material ID of the duplicate material.
     @pyqtSlot("QVariant", result = str)
-    def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None, new_metadata: Dict[str, Any] = None) -> Optional[str]:
+    def duplicateMaterial(self, material_node: "MaterialNode", new_base_id: Optional[str] = None,
+                          new_metadata: Optional[Dict[str, Any]] = None) -> Optional[str]:
         return self.duplicateMaterialByBaseFile(material_node.base_file, new_base_id, new_metadata)
 
     ##  Create a new material by cloning the preferred material for the current
