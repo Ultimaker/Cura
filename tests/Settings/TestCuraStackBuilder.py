@@ -82,7 +82,8 @@ def test_createMachine(application, container_registry, definition_container, gl
     machine_node.preferredGlobalQuality = MagicMock(return_value = quality_node)
     quality_node.container = quality_container
 
-    with patch("cura.Settings.CuraStackBuilder.MachineNode", MagicMock(return_value = machine_node)):
+    # Patch out the creation of MachineNodes since that isn't under test (and would require quite a bit of extra setup)
+    with patch("cura.Machines.ContainerTree.MachineNode", MagicMock(return_value = machine_node)):
         with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
             machine = CuraStackBuilder.createMachine("Whatever", "Test Definition")
 
