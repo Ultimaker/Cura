@@ -8,6 +8,10 @@ _renamed_container_id_map = {
     "ultimaker2_0.4": "ultimaker2_olsson_0.4",
     "ultimaker2_0.6": "ultimaker2_olsson_0.6",
     "ultimaker2_0.8": "ultimaker2_olsson_0.8",
+    "ultimaker2_extended_0.25": "ultimaker2_extended_olsson_0.25",
+    "ultimaker2_extended_0.4": "ultimaker2_extended_olsson_0.4",
+    "ultimaker2_extended_0.6": "ultimaker2_extended_olsson_0.6",
+    "ultimaker2_extended_0.8": "ultimaker2_extended_olsson_0.8",
 }
 
 
