@@ -74,6 +74,18 @@ class ContainerTree:
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
+    # Add a machine node by the id of it's definition.
+    # This is automatically called by the _machineAdded function, but it's sometimes needed to add a machine node
+    # faster than would have been done when waiting on any signals (for instance; when creating an entirely new machine)
+    def addMachineNodeByDefinitionId(self, definition_id: str) -> None:
+        if definition_id in self.machines:
+            return  # Already have this definition ID.
+
+        start_time = time.time()
+        self.machines[definition_id] = MachineNode(definition_id)
+        self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
+        Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+
     ##  Builds the initial container tree.
     def _loadAll(self):
         Logger.log("i", "Building container tree.")
@@ -90,16 +102,9 @@ class ContainerTree:
                 Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - definition_start_time))
 
         Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
-        
+
     ##  When a printer gets added, we need to build up the tree for that container.
-    def _machineAdded(self, container_stack: ContainerInterface):
+    def _machineAdded(self, container_stack: ContainerInterface) -> None:
         if not isinstance(container_stack, GlobalStack):
             return  # Not our concern.
-        definition_id = container_stack.definition.getId()
-        if definition_id in self.machines:
-            return  # Already have this definition ID.
-
-        start_time = time.time()
-        self.machines[definition_id] = MachineNode(definition_id)
-        self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
-        Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+        self.addMachineNodeByDefinitionId(container_stack.definition.getId())
