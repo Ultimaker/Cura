@@ -1,3 +1,4 @@
+from UM.Logger import Logger
 from ..Script import Script
 class PauseAtHeightforRepetier(Script):
     def __init__(self):
@@ -73,6 +74,7 @@ class PauseAtHeightforRepetier(Script):
     def execute(self, data):
         x = 0.
         y = 0.
+        current_f = 0
         current_z = 0.
         pause_z = self.getSettingValueByKey("pause_height")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
@@ -94,6 +96,7 @@ class PauseAtHeightforRepetier(Script):
 
                 if self.getValue(line, 'G') == 1 or self.getValue(line, 'G') == 0:
                     current_z = self.getValue(line, 'Z')
+                    current_f = self.getValue(line, 'F', current_f)
                     x = self.getValue(line, 'X', x)
                     y = self.getValue(line, 'Y', y)
                     if current_z != None:
@@ -150,7 +153,12 @@ class PauseAtHeightforRepetier(Script):
                             prepend_gcode +="G1 X%f Y%f F9000\n" % (x, y)
                             if retraction_amount != 0:
                                 prepend_gcode +="G1 E%f F6000\n" % (retraction_amount)
-                            prepend_gcode +="G1 F9000\n"
+
+                            if current_f != 0:
+                                prepend_gcode += self.putValue(G=1, F=current_f) + "\n"
+                            else:
+                                Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
+
                             prepend_gcode +="M82\n"
 
                             # reset extrude value to pre pause value
