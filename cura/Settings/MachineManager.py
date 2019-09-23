@@ -1028,12 +1028,14 @@ class MachineManager(QObject):
     def _onMaterialNameChanged(self) -> None:
         self.activeMaterialChanged.emit()
 
+    ##  Get the signals that signal that the containers changed for all stacks.
+    #
+    #   This includes the global stack and all extruder stacks. So if any
+    #   container changed anywhere.
     def _getContainerChangedSignals(self) -> List[Signal]:
         if self._global_container_stack is None:
             return []
-        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        stacks.append(self._global_container_stack)
-        return [ s.containersChanged for s in stacks ]
+        return [s.containersChanged for s in ExtruderManager.getInstance().getActiveExtruderStacks() + [self._global_container_stack]]
 
     @pyqtSlot(str, str, str)
     def setSettingForAllExtruders(self, setting_name: str, property_name: str, property_value: str) -> None:

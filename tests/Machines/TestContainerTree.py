@@ -4,8 +4,6 @@ from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.GlobalStack import GlobalStack
 
-import cura.CuraApplication  # DEBUG!
-
 
 def createMockedStack(definition_id: str):
     result = MagicMock(spec = GlobalStack)

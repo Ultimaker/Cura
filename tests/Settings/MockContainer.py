@@ -50,10 +50,16 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
         return default
 
     ##  Gets a human-readable name for this container.
-    #
-    #   \return Always returns "MockContainer".
+    #   \return The name from the metadata, or "MockContainer" if there was no
+    #   name provided.
     def getName(self):
-        return "MockContainer"
+        return self._metadata.get("name", "MockContainer")
+
+    ##  Get whether a container stack is enabled or not.
+    #   \return Always returns True.
+    @property
+    def isEnabled(self):
+        return True
 
     ##  Get whether the container item is stored on a read only location in the filesystem.
     #

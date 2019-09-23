@@ -21,7 +21,7 @@ mocked_qualitygroup_metadata = {
     "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
     "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
 
-@pytest.fixture()
+@pytest.fixture
 def mock_container_tree() -> MagicMock:
     container_tree = MagicMock()
     container_tree.getCurrentQualityGroups = MagicMock(return_value = mocked_qualitygroup_metadata)
@@ -57,7 +57,7 @@ def mock_container_tree() -> MagicMock:
     }
     return container_tree
 
-@pytest.fixture()
+@pytest.fixture
 def intent_manager(application, extruder_manager, machine_manager, container_registry, global_stack) -> IntentManager:
     application.getExtruderManager = MagicMock(return_value = extruder_manager)
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
@@ -98,16 +98,18 @@ def doSetup(application, extruder_manager, container_registry, global_stack) -> 
         qualitygroup.node_for_global = MagicMock(name = "Node for global")
 
     global_stack.definition = MockContainer({"id": "ultimaker3"})
-    application.getGlobalContainerStack = MagicMock(return_value = global_stack)
 
     extruder_stack_a = MockContainer({"id": "Extruder The First"})
     extruder_stack_a.variant = MockContainer({"name": "AA 0.4"})
+    extruder_stack_a.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_a.material = MockContainer({"base_file": "generic_pla"})
     extruder_stack_b = MockContainer({"id": "Extruder II: Plastic Boogaloo"})
     extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
+    extruder_stack_b.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
+    global_stack.extruderList = [extruder_stack_a, extruder_stack_b]
 
-    application.getGlobalContainerStack().extruderList = [extruder_stack_a, extruder_stack_b]
+    application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     extruder_manager.getUsedExtruderStacks = MagicMock(return_value = [extruder_stack_a, extruder_stack_b])
 
 
