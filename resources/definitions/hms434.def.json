@@ -89,6 +89,7 @@
         "top_layers":                {"value": "4" },
         "bottom_layers":             {"value": "(top_layers)" },
         "wall_0_inset":              {"value": "0" },
+        "outer_inset_first":         {"value": true },
         "alternate_extra_perimeter": {"value": false },
         "filter_out_tiny_gaps":      {"value": false },
         "fill_outline_gaps":         {"value": true },
