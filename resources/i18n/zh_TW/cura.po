@@ -3993,7 +3993,7 @@ msgstr "在此耗材組合下，使用膠水以獲得較佳的附著。"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:128
 msgctxt "@label"
 msgid "This configuration is not available because %1 is not recognized. Please visit %2 to download the correct material profile."
-msgstr "由於無法識別 ％1，因此無法使用此設定。 請連上 ％2 下載正確的耗材參數設定。"
+msgstr "由於無法識別 %1，因此無法使用此設定。 請連上 %2 下載正確的耗材參數設定。"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:129
 msgctxt "@label"
@@ -6465,7 +6465,7 @@ msgstr "Cura 列印參數讀取器"
 
 #~ msgctxt "@label"
 #~ msgid "This printer is the host for a group of %1 Ultimaker 3 printers."
-#~ msgstr "這台印表機是 ％1 台 Ultimaker 3 印表機群組的主機。"
+#~ msgstr "這台印表機是 %1 台 Ultimaker 3 印表機群組的主機。"
 
 #~ msgctxt "@label: arg 1 is group name"
 #~ msgid "%1 is not set up to host a group of connected Ultimaker 3 printers"
@@ -7464,7 +7464,7 @@ msgstr "Cura 列印參數讀取器"
 
 #~ msgctxt "@label"
 #~ msgid "This printer is the host for a group of %1 connected Ultimaker 3 printers"
-#~ msgstr "這台印表機是 ％1 台 Ultimaker 3 印表機群組的主機"
+#~ msgstr "這台印表機是 %1 台 Ultimaker 3 印表機群組的主機"
 
 #~ msgctxt "@label"
 #~ msgid "Completed on: "

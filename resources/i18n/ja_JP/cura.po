@@ -2178,7 +2178,7 @@ msgstr "プリンター %1 が割り当てられましたが、ジョブには�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:99
 msgctxt "@label"
 msgid "Change material %1 from %2 to %3."
-msgstr "材料 ％1 を ％2 から %3 に変更します。"
+msgstr "材料 %1 を %2 から %3 に変更します。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:102
 msgctxt "@label"
@@ -2188,7 +2188,7 @@ msgstr "%3 を 材料 %1 にロードします（これは上書きできませ�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:105
 msgctxt "@label"
 msgid "Change print core %1 from %2 to %3."
-msgstr "プリントコア ％1 を ％2 から %3 に変更します。"
+msgstr "プリントコア %1 を %2 から %3 に変更します。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:108
 msgctxt "@label"
@@ -6078,7 +6078,7 @@ msgstr "Curaプロファイルリーダー"
 
 #~ msgctxt "@label"
 #~ msgid "Starting a print job with an incompatible configuration could damage your 3D printer. Are you sure you want to override the configuration and print %1?"
-#~ msgstr "互換性のない構成で印刷ジョブを開始すると3Dプリンターを損傷することがあります。構成と印刷 ％1 を上書きしますか？"
+#~ msgstr "互換性のない構成で印刷ジョブを開始すると3Dプリンターを損傷することがあります。構成と印刷 %1 を上書きしますか？"
 
 #~ msgctxt "@window:title"
 #~ msgid "Override configuration configuration and start print"
