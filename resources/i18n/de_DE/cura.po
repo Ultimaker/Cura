@@ -118,7 +118,7 @@ msgstr "Ein USB-Druck wird ausgeführt. Das Schließen von Cura beendet diesen D
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
-msgstr "Druck in Bearbeitung. Cura kann keinen weiteren Druck via USB starten, bis der vorherige Druck abgeschlossen wurde."
+msgstr "Druck wird bearbeitet. Cura kann keinen weiteren Druck via USB starten, bis der vorherige Druck abgeschlossen wurde."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"

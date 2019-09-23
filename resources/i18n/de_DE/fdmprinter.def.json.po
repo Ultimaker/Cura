@@ -223,7 +223,7 @@ msgstr "Verfügt über Temperaturstabilisierung für den Druckraum"
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
-msgstr "Zeigt an, ob Gerät die Temperatur im Druckraum zu stabilisieren kann."
+msgstr "Zeigt an, ob das Gerät die Temperatur im Druckraum stabilisieren kann."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -6236,7 +6236,7 @@ msgstr "Detailgeschwindigkeit"
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
 msgstr "Bei kleinen Details wird die Geschwindigkeit auf diesen Prozentsatz der normalen Druckgeschwindigkeit gesetzt. Durch eine niedrigere Druckgeschwindigkeit"
-" können die Haftung und die Genauigkeit verbessert werden."
+" kann die Haftung und die Genauigkeit verbessert werden."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
@@ -6247,7 +6247,7 @@ msgstr "Geschwindigkeit für erste Schicht"
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
 msgstr "Bei kleinen Details wird die Geschwindigkeit bei der ersten Schicht auf diesen Prozentsatz der normalen Druckgeschwindigkeit gesetzt. Durch eine niedrigere"
-" Druckgeschwindigkeit können die Haftung und die Genauigkeit verbessert werden."
+" Druckgeschwindigkeit kann die Haftung und die Genauigkeit verbessert werden."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
