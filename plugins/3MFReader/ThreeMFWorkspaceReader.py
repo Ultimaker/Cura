@@ -24,11 +24,11 @@ from UM.Job import Job
 from UM.Preferences import Preferences
 
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.VariantType import VariantType
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.IntentManager import IntentManager
 from cura.Settings.CuraContainerStack import _ContainerIndexes
 from cura.CuraApplication import CuraApplication
 from cura.Utils.Threading import call_on_qt_thread
@@ -65,6 +65,7 @@ class MachineInfo:
         self.metadata_dict = {}  # type: Dict[str, str]
 
         self.quality_type = None
+        self.intent_category = None
         self.custom_quality_name = None
         self.quality_changes_info = None
         self.variant_info = None
@@ -84,6 +85,7 @@ class ExtruderInfo:
 
         self.definition_changes_info = None
         self.user_changes_info = None
+        self.intent_info = None
 
 
 ##    Base implementation for reading 3MF workspace files.
@@ -266,6 +268,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         instance_container_files = [name for name in cura_file_names if name.endswith(self._instance_container_suffix)]
         quality_name = ""
         custom_quality_name = ""
+        intent_name = ""
+        intent_category = ""
         num_settings_overridden_by_quality_changes = 0 # How many settings are changed by the quality changes
         num_user_settings = 0
         quality_changes_conflict = False
@@ -323,6 +327,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             elif container_type == "quality":
                 if not quality_name:
                     quality_name = parser["general"]["name"]
+            elif container_type == "intent":
+                if not intent_name:
+                    intent_name = parser["general"]["name"]
+                    intent_category = parser["metadata"]["intent_category"]
             elif container_type == "user":
                 num_user_settings += len(parser["values"])
             elif container_type in self._ignored_instance_container_types:
@@ -444,6 +452,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.user_changes_info = instance_container_info_dict[user_changes_id]
             self._machine_info.extruder_info_dict[position] = extruder_info
 
+            intent_id = parser["containers"][str(_ContainerIndexes.Intent)]
+            if intent_id not in ("empty", "empty_intent"):
+                extruder_info.intent_info = instance_container_info_dict[intent_id]
+
             if not machine_conflict and containers_found_dict["machine"]:
                 if position not in global_stack.extruders:
                     continue
@@ -508,6 +520,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._machine_info.definition_id = machine_definition_id
         self._machine_info.quality_type = quality_type
         self._machine_info.custom_quality_name = quality_name
+        self._machine_info.intent_category = intent_category
 
         if machine_conflict and not self._is_same_machine_type:
             machine_conflict = False
@@ -528,6 +541,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._dialog.setNumVisibleSettings(num_visible_settings)
         self._dialog.setQualityName(quality_name)
         self._dialog.setQualityType(quality_type)
+        self._dialog.setIntentName(intent_name)
         self._dialog.setNumSettingsOverriddenByQualityChanges(num_settings_overridden_by_quality_changes)
         self._dialog.setNumUserSettings(num_user_settings)
         self._dialog.setActiveMode(active_mode)
@@ -965,10 +979,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # prepare the quality to select
         self._quality_changes_to_apply = None
         self._quality_type_to_apply = None
+        self._intent_category_to_apply = None
         if self._machine_info.quality_changes_info is not None:
             self._quality_changes_to_apply = self._machine_info.quality_changes_info.name
         else:
             self._quality_type_to_apply = self._machine_info.quality_type
+            self._intent_category_to_apply = self._machine_info.intent_category
 
         # Set enabled/disabled for extruders
         for position, extruder_stack in extruder_stack_dict.items():
@@ -1017,6 +1033,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             if quality_group is not None:
                 machine_manager.setQualityGroup(quality_group, no_dialog = True)
+
+                # Also apply intent if available
+                available_intent_category_list = IntentManager.getInstance().currentAvailableIntentCategories()
+                if self._intent_category_to_apply is not None and self._intent_category_to_apply in available_intent_category_list:
+                    machine_manager.setIntentByCategory(self._intent_category_to_apply)
 
         # Notify everything/one that is to notify about changes.
         global_stack.containersChanged.emit(global_stack.getTop())
