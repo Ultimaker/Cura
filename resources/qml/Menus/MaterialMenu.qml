@@ -14,8 +14,7 @@ Menu
 
     property int extruderIndex: 0
     property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
-
-    property string activeMaterialId: Cura.MachineManager.activeMachine.extruders[extruderIndex].material.id
+    property string activeMaterialId: Cura.MachineManager.activeMachine.extruderList[extruderIndex].material.id
     property bool updateModels: true
     Cura.FavoriteMaterialsModel
     {
@@ -53,7 +52,7 @@ Menu
             checkable: true
             checked: model.root_material_id === menu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
-            exclusiveGroup: group
+            exclusiveGroup: favoriteGroup  // One favorite and one item from the others can be active at the same time.
         }
         onObjectAdded: menu.insertItem(index, object)
         onObjectRemoved: menu.removeItem(index)
@@ -127,8 +126,14 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    ExclusiveGroup {
+    ExclusiveGroup
+    {
         id: group
+    }
+
+    ExclusiveGroup
+    {
+        id: favoriteGroup
     }
 
     MenuSeparator {}
