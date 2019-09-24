@@ -133,10 +133,29 @@ class IntentManager(QObject):
         if global_stack is None:
             return
         current_definition_id = global_stack.definition.getId()
+        machine_node = ContainerTree.getInstance().machines[current_definition_id]
         for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
-            intent = application.getContainerRegistry().findContainers(definition = current_definition_id, variant = nozzle_name, material = material_id, quality_type = quality_type, intent_category = intent_category)
+
+            material_node = machine_node.variants[nozzle_name].materials[material_id]
+
+            # Since we want to switch to a certain quality type, check the tree if we have one.
+            quality_node = None
+            for q_node in material_node.qualities.values():
+                if q_node.quality_type == quality_type:
+                    quality_node = q_node
+
+            if quality_node is None:
+                Logger.log("w", "Unable to find quality_type [%s] for extruder [%s]", quality_type, extruder_stack.getId())
+                continue
+
+            # Check that quality node if we can find a matching intent.
+            intent_id = None
+            for id, intent_node in quality_node.intents.items():
+                if intent_node.intent_category == intent_category:
+                    intent_id = id
+            intent = application.getContainerRegistry().findContainers(id = intent_id)
             if intent:
                 extruder_stack.intent = intent[0]
             else:
