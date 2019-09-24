@@ -356,6 +356,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # To simplify this, only check if the global stack exists or not
         global_stack_id = self._stripFileToId(global_stack_file)
         serialized = archive.open(global_stack_file).read().decode("utf-8")
+        serialized = GlobalStack._updateSerialized(serialized, global_stack_file)
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
 
