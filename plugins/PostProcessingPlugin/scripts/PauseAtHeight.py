@@ -154,7 +154,7 @@ class PauseAtHeight(Script):
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0
         current_z = 0
-        current_f = 0
+        current_extrusion_f = 0
         got_first_g_cmd_on_layer_0 = False
         current_t = 0 #Tracks the current extruder for tracking the target temperature.
         target_temperature = {} #Tracks the current target temperature for each extruder.
@@ -188,9 +188,9 @@ class PauseAtHeight(Script):
                 if not layers_started:
                     continue
 
-                # If a F instruction is in the line, read the current F
-                if self.getValue(line, "F") is not None:
-                    current_f = self.getValue(line, "F")
+                # Look for the feed rate of an extrusion instruction
+                if self.getValue(line, "F") is not None and self.getValue(line, "E") is not None:
+                    current_extrusion_f = self.getValue(line, "F")
 
                 # If a Z instruction is in the line, read the current Z
                 if self.getValue(line, "Z") is not None:
@@ -328,8 +328,8 @@ class PauseAtHeight(Script):
                         else:
                             prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
 
-                    if current_f != 0:
-                        prepend_gcode += self.putValue(G = 1, F = current_f) + "\n"
+                    if current_extrusion_f != 0:
+                        prepend_gcode += self.putValue(G = 1, F = current_extrusion_f) + " ; restore extrusion feedrate\n"
                     else:
                         Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
 
