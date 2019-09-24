@@ -36,7 +36,13 @@ Users can now import profiles that have been created on a different machine othe
 Reduce the visibility of the z seam when printing with coasting by preventing nozzle priming. 
 
 *Map Material Station slot data. 
-The available configurations drop down will display information about a Ultimaker S5 Material Station if connected. Read more about the Ultimaker S5 Material Station on ultimaker.com 
+The available configurations drop down will display information about a Ultimaker S5 Material Station if connected. Read more about the Ultimaker S5 Material Station on ultimaker.com
+
+*Manage Printer link. 
+Added a “Manage Printer” link in the monitor tab which takes you to Ultimaker Connect.
+
+*Improvement in code quality.
+Improved code quality resulting in improved stability.
 
 * Bug fixes
 - Uninstall in silent mode. Fixed an issue where a dialog displays when uninstalling in silent mode. 
@@ -69,6 +75,11 @@ The available configurations drop down will display information about a Ultimake
 - Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
 - Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg. 
 - Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle. 
+- “Print via Cloud” is no longer possible without an Internet connection
+- Monitor tab no longer sometimes shows incorrect printer name or type  
+- Long print job names are no longer overlapping other text in the monitor tab 
+- “Connected to Cloud” pop-up now only displays when the currently selected printer is connected to Ultimaker cloud. 
+- Monitor tab is no longer greyed out when idle. 
 
 *Third-party printer definitions 
 New machine definitions added for: 
