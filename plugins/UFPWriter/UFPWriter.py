@@ -38,7 +38,11 @@ class UFPWriter(MeshWriter):
     def _createSnapshot(self, *args):
         # must be called from the main thread because of OpenGL
         Logger.log("d", "Creating thumbnail image...")
-        self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        try:
+            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        except Exception:
+            Logger.logException("w", "Failed to create snapshot image")
+            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
 
     # This needs to be called on the main thread (Qt thread) because the serialization of material containers can
     # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
