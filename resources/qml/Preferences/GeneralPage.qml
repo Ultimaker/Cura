@@ -761,6 +761,7 @@ UM.PreferencesPage
                 }
             }
 
+            /* Multi-buildplate functionality is disabled because it's broken. See CURA-4975 for the ticket to remove it.
             Item
             {
                 //: Spacer
@@ -787,7 +788,7 @@ UM.PreferencesPage
                     checked: boolCheck(UM.Preferences.getValue("cura/use_multi_build_plate"))
                     onCheckedChanged: UM.Preferences.setValue("cura/use_multi_build_plate", checked)
                 }
-            }
+            }*/
 
             Connections
             {
