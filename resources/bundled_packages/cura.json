@@ -475,6 +475,23 @@
             }
         }
     },
+    "TrimeshReader": {
+        "package_info": {
+            "package_id": "TrimeshReader",
+            "package_type": "plugin",
+            "display_name": "Trimesh Reader",
+            "description": "Provides support for reading model files.",
+            "package_version": "1.0.0",
+            "sdk_version": "6.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "Toolbox": {
         "package_info": {
             "package_id": "Toolbox",

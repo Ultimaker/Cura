@@ -128,7 +128,7 @@ Item
             TableViewColumn
             {
                 role: "print_core"
-                title: catalog.i18nc("@label:table_header", "Print Core")
+                title: "Print Core" //This term should not be translated.
                 width: Math.floor(table.width * 0.2)
             }
             TableViewColumn

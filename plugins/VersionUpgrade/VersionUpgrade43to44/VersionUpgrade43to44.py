@@ -12,6 +12,15 @@ _renamed_container_id_map = {
     "ultimaker2_extended_0.4": "ultimaker2_extended_olsson_0.4",
     "ultimaker2_extended_0.6": "ultimaker2_extended_olsson_0.6",
     "ultimaker2_extended_0.8": "ultimaker2_extended_olsson_0.8",
+    # HMS434 "extra coarse", "super coarse", and "ultra coarse" are removed.
+    "hms434_global_Extra_Coarse_Quality": "hms434_global_Normal_Quality",
+    "hms434_global_Super_Coarse_Quality": "hms434_global_Normal_Quality",
+    "hms434_global_Ultra_Coarse_Quality": "hms434_global_Normal_Quality",
+    # HMS434 "0.25", "0.6", "1.2", and "1.5" nozzles are removed.
+    "hms434_0.25tpnozzle": "hms434_0.4tpnozzle",
+    "hms434_0.6tpnozzle": "hms434_0.4tpnozzle",
+    "hms434_1.2tpnozzle": "hms434_0.4tpnozzle",
+    "hms434_1.5tpnozzle": "hms434_0.4tpnozzle",
 }
 
 
@@ -42,7 +51,7 @@ class VersionUpgrade43to44(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         # Update version number.
@@ -58,12 +67,13 @@ class VersionUpgrade43to44(VersionUpgrade):
 
     ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation=None)
+        parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
         # Update version number.
-        if "metadata" in parser:
-            parser["metadata"]["setting_version"] = "10"
+        if "metadata" not in parser:
+            parser["metadata"] = {}
+        parser["metadata"]["setting_version"] = "10"
 
         if "containers" in parser:
             # With the ContainerTree refactor, UM2 with Olsson block got moved to a separate definition.

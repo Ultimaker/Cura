@@ -59,4 +59,3 @@ def getMetaData() -> Dict[str, Any]:
 
 def register(app: "Application") -> Dict[str, Any]:
     return {"version_upgrade": upgrade}
-

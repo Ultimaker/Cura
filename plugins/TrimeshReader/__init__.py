@@ -12,7 +12,7 @@ def getMetaData():
         "mesh_reader": [
             {
                 "extension": "ctm",
-                "description": i18n_catalog.i18nc("@item:inlistbox", "Open Compressed Triangle Mesh")
+                "description": i18n_catalog.i18nc("@item:inlistbox 'Open' is part of the name of this file format.", "Open Compressed Triangle Mesh")
             },
             {
                 "extension": "dae",

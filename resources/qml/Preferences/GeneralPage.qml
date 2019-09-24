@@ -469,7 +469,7 @@ UM.PreferencesPage
 
                     Label
                     {
-                        text: catalog.i18nc("@window:text", "Camera rendering: ")
+                        text: catalog.i18nc("@window:text", "Camera rendering:")
                     }
                     ComboBox
                     {

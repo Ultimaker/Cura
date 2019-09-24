@@ -85,8 +85,10 @@ class Snapshot:
             preview_pass.setCamera(camera)
             preview_pass.render()
             pixel_output = preview_pass.getOutput()
-
-            min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+            try:
+                min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+            except ValueError:
+                return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
             if size > 0.5 or satisfied:

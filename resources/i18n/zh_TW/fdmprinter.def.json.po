@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-09-10 16:55+0000\n"
-"PO-Revision-Date: 2019-07-23 21:08+0800\n"
+"PO-Revision-Date: 2019-09-23 11:59+0200\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language: zh_TW\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -218,12 +218,12 @@ msgstr "機器是否有熱床。"
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume label"
 msgid "Has Build Volume Temperature Stabilization"
-msgstr ""
+msgstr "具有列印空間溫度穩定性"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
-msgstr ""
+msgstr "機器是否能夠穩定列印空間溫度。"
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -1283,52 +1283,52 @@ msgstr "最尖銳的轉角"
 #: fdmprinter.def.json
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
-msgstr ""
+msgstr "Z 接縫位置"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
-msgstr ""
+msgstr "每一層開始列印位置要靠近哪個方向。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backleft"
 msgid "Back Left"
-msgstr ""
+msgstr "左後方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option back"
 msgid "Back"
-msgstr ""
+msgstr "後方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backright"
 msgid "Back Right"
-msgstr ""
+msgstr "右後方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option right"
 msgid "Right"
-msgstr ""
+msgstr "右方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option frontright"
 msgid "Front Right"
-msgstr ""
+msgstr "右前方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
-msgstr ""
+msgstr "前方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option frontleft"
 msgid "Front Left"
-msgstr ""
+msgstr "左前方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option left"
 msgid "Left"
-msgstr ""
+msgstr "左方"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1423,7 +1423,7 @@ msgstr "啟用燙平"
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
-msgstr ""
+msgstr "噴頭額外跑過上表層一次，但這次擠出的材料非常少。這是為了進一步融化頂部的塑料，創造更平滑的表面。噴頭中的壓力會保持很高，將表面中的細縫中填滿材料。"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -1703,12 +1703,12 @@ msgstr "填充樣式在 Y 軸方向平移此距離。"
 #: fdmprinter.def.json
 msgctxt "infill_randomize_start_location label"
 msgid "Randomize Infill Start"
-msgstr ""
+msgstr "隨機填充起始位置"
 
 #: fdmprinter.def.json
 msgctxt "infill_randomize_start_location description"
 msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr ""
+msgstr "隨機選擇第一條填充線列印。 這可以防止強度集中在某一個部分，但會花費額外的空跑。"
 
 #: fdmprinter.def.json
 msgctxt "infill_multiplier label"
@@ -2112,7 +2112,7 @@ msgstr "回抽切斷前速度"
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_speed description"
 msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
-msgstr "回抽切斷前，耗材回抽的速度"
+msgstr "回抽切斷前，耗材回抽的速度。"
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
@@ -3567,7 +3567,7 @@ msgstr "支撐填充線條方向"
 #: fdmprinter.def.json
 msgctxt "support_infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees."
-msgstr ""
+msgstr "要使用的線條方向清單。清單中的項目隨著列印層增加順序使用，當到達清單的末端時，會再從頭開始。清單項目以逗號分隔，整個清單以中括號括住。預設值為空的清單，表示使用預設角度 0 度。"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
@@ -4037,32 +4037,32 @@ msgstr "套用到支撐底板多邊形的偏移量。"
 #: fdmprinter.def.json
 msgctxt "support_interface_angles label"
 msgid "Support Interface Line Directions"
-msgstr ""
+msgstr "支撐介面線條方向"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "要使用的線條方向清單。清單中的項目隨著列印層增加順序使用，當到達清單的末端時，會再從頭開始。清單項目以逗號分隔，整個清單以中括號括住。預設值為空的清單，表示使用預設角度（預設 90 度，若介面較厚則以 45 度和 135 度交替）。"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_angles label"
 msgid "Support Roof Line Directions"
-msgstr ""
+msgstr "支撐頂板線條方向"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "要使用的線條方向清單。清單中的項目隨著列印層增加順序使用，當到達清單的末端時，會再從頭開始。清單項目以逗號分隔，整個清單以中括號括住。預設值為空的清單，表示使用預設角度（預設 90 度，若介面較厚則以 45 度和 135 度交替）。"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles label"
 msgid "Support Floor Line Directions"
-msgstr ""
+msgstr "支撐底板線條方向"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "要使用的線條方向清單。清單中的項目隨著列印層增加順序使用，當到達清單的末端時，會再從頭開始。清單項目以逗號分隔，整個清單以中括號括住。預設值為空的清單，表示使用預設角度（預設 90 度，若介面較厚則以 45 度和 135 度交替）。"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -5191,7 +5191,7 @@ msgstr "最大偏差值"
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
-msgstr ""
+msgstr "降低「最高解析度」設定時允許的最大偏差範圍。假如你增加這個設定值，列印精度會降低，但 G-code 會較小。最大偏差是最高解析度的限制，所以當兩者衝突時，會以最大偏差成立為優先。"
 
 #: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
@@ -6195,42 +6195,42 @@ msgstr "將噴頭來回移動經過刷子的距離。"
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
-msgstr ""
+msgstr "細部模式最大直徑"
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
-msgstr ""
+msgstr "小於此直徑的孔洞和零件輪廓，使用細部模式速度列印。"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length label"
 msgid "Small Feature Max Length"
-msgstr ""
+msgstr "細部模式最大長度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length description"
 msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
-msgstr ""
+msgstr "輪廓長度小於此值時，使用細部模式速度列印。"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr ""
+msgstr "細部模式速度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr ""
+msgstr "細部模式將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "First Layer Speed"
-msgstr ""
+msgstr "第一層速度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr ""
+msgstr "細部模式第一層將以正常列印速度的此百分比值列印。 較慢的列印有助於黏合和精度。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

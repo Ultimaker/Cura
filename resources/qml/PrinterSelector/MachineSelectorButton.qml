@@ -72,6 +72,7 @@ Button
                 verticalCenter: parent.verticalCenter
             }
             spacing: UM.Theme.getSize("narrow_margin").width
+            visible: (updatePrinterTypesOnlyWhenChecked && machineSelectorButton.checked) || !updatePrinterTypesOnlyWhenChecked
 
             Repeater
             {
