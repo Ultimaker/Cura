@@ -23,15 +23,17 @@ class QualityNode(ContainerNode):
 
         my_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0]
         self.quality_type = my_metadata["quality_type"]
-
+        # The material type of the parent doesn't need to be the same as this due to generic fallbacks.
+        self._material = my_metadata.get("material")
         self._loadAll()
 
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
+
         # Find all intent profiles that fit the current configuration.
         from cura.Machines.MachineNode import MachineNode
         if not isinstance(self.parent, MachineNode):  # Not a global profile.
-            for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.parent.variant.machine.quality_definition, variant = self.parent.variant.variant_name, material = self.parent.base_file, quality_type = self.quality_type):
+            for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.parent.variant.machine.quality_definition, variant = self.parent.variant.variant_name, material = self._material, quality_type = self.quality_type):
                 self.intents[intent["id"]] = IntentNode(intent["id"], quality = self)
 
         self.intents["empty_intent"] = IntentNode("empty_intent", quality = self)
