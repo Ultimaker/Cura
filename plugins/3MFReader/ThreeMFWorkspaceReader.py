@@ -937,7 +937,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         # Take the global variant from the machine info if available.
         if self._machine_info.variant_info is not None:
             variant_name = self._machine_info.variant_info.parser["general"]["name"]
-            global_stack.variant = machine_node.variants[variant_name].container
+            if variant_name in machine_node.variants:
+                global_stack.variant = machine_node.variants[variant_name].container
+            else:
+                Logger.log("w", "Could not find global variant '{0}'.".format(variant_name))
 
         for position, extruder_stack in extruder_stack_dict.items():
             if position not in self._machine_info.extruder_info_dict:
