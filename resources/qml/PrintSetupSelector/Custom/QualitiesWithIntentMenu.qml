@@ -163,7 +163,6 @@ Popup
                 //Add all the custom profiles.
                 Repeater
                 {
-                    visible: false
                     model: Cura.CustomQualityProfilesDropDownMenuModel
                     MenuButton
                     {
@@ -172,8 +171,8 @@ Popup
                         width: parent.width
                         checkable: true
                         visible: model.available
-                        text: model.name + " - " + model.layer_height + " mm"
-                        checked: Cura.MachineManager.activeQualityChangesGroup == model.quality_changes_group
+                        text: model.name
+                        checked: Cura.MachineManager.activeQualityChangesGroup.getName() == model.quality_changes_group.getName()
                         ButtonGroup.group: buttonGroup
                     }
                 }

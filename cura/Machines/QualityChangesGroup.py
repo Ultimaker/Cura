@@ -1,8 +1,10 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject
 from typing import Any, Dict, Optional
+
+from PyQt5.QtCore import QObject, pyqtSlot
+
 
 ##  Data struct to group several quality changes instance containers together.
 #
@@ -19,6 +21,10 @@ class QualityChangesGroup(QObject):
         self.is_available = False
         self.metadata_for_global = {}    # type: Dict[str, Any]
         self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
+
+    @pyqtSlot(result = str)
+    def getName(self) -> str:
+        return self.name
 
     def __str__(self) -> str:
         return "{class_name}[{name}, available = {is_available}]".format(class_name = self.__class__.__name__, name = self.name, is_available = self.is_available)
