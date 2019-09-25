@@ -1,6 +1,6 @@
  {
  	"version": 2,
- 	"name": "Hellbot Magna dual",
+ 	"name": "Hellbot Magna DUAL",
  	"inherits": "fdmprinter",
  	"metadata": {
  		"visible": true,
@@ -18,7 +18,7 @@
  	},
  	"overrides": {
  		"machine_name": {
- 			"default_value": "Hellbot Magna I"
+ 			"default_value": "Hellbot Magna DUAL"
  		},
  		"machine_width": {
  			"default_value": 220

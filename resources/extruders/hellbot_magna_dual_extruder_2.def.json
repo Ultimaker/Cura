@@ -5,7 +5,7 @@
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "hellbot_magna_dual",
-        "position": "0"
+        "position": "1"
     },
 
     "overrides": {
