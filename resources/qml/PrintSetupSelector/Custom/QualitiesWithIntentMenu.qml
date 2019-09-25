@@ -103,7 +103,7 @@ Popup
                             text: model.name + " - " + model.layer_height + " mm"
                             checked:
                             {
-                                if(Cura.MachineManager.hasCustomQuality)
+                                if (Cura.MachineManager.hasCustomQuality)
                                 {
                                     // When user created profile is active, no quality tickbox should be active.
                                     return false;

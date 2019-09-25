@@ -7,10 +7,12 @@ import cura.CuraApplication  # Imported this way to prevent circular references.
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfilesDropDownMenuModel
 
+
 ##  This model is used for the custom profile items in the profile drop down
 #   menu.
 class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
-    def _update(self):
+
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         active_global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
