@@ -26,8 +26,17 @@ from cura.Machines.ContainerNode import ContainerNode
 #
 class QualityGroup(QObject):
 
-    def __init__(self, name: str, quality_type: str, parent = None) -> None:
+    def __init__(self, name: str, quality_type: str, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
+
+        # CURA-6599
+        # Same as QualityChangesGroup.
+        # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
+        # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
+        # parent to application seems to work.
+        from cura.CuraApplication import CuraApplication
+        self.setParent(CuraApplication.getInstance())
+
         self.name = name
         self.node_for_global = None  # type: Optional[ContainerNode]
         self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]

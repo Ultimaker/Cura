@@ -15,6 +15,14 @@ class QualityChangesGroup(QObject):
 
     def __init__(self, name: str, quality_type: str, intent_category: str, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
+
+        # CURA-6599
+        # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
+        # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
+        # parent to application seems to work.
+        from cura.CuraApplication import CuraApplication
+        self.setParent(CuraApplication.getInstance())
+
         self.name = name
         self.quality_type = quality_type
         self.intent_category = intent_category

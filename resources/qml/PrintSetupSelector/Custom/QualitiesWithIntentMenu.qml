@@ -172,7 +172,16 @@ Popup
                         checkable: true
                         visible: model.available
                         text: model.name
-                        checked: Cura.MachineManager.activeQualityChangesGroup.getName() == model.quality_changes_group.getName()
+                        checked:
+                        {
+                            var active_quality_group = Cura.MachineManager.activeQualityChangesGroup
+
+                            if (active_quality_group != null)
+                            {
+                                return active_quality_group.getName() == model.quality_changes_group.getName()
+                            }
+                            return false
+                        }
                         ButtonGroup.group: buttonGroup
                     }
                 }

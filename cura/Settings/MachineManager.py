@@ -1599,12 +1599,17 @@ class MachineManager(QObject):
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
     def activeQualityChangesGroup(self) -> Optional["QualityChangesGroup"]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_stack or global_stack.qualityChanges == empty_quality_changes_container:
+        if global_stack is None or global_stack.qualityChanges == empty_quality_changes_container:
             return None
-        for group in ContainerTree.getInstance().getCurrentQualityChangesGroups():  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
+
+        all_group_list = ContainerTree.getInstance().getCurrentQualityChangesGroups()
+        the_group = None
+        for group in all_group_list:  # Match on the container ID of the global stack to find the quality changes group belonging to the active configuration.
             if group.metadata_for_global and group.metadata_for_global["id"] == global_stack.qualityChanges.getId():
-                return group
-        return None
+                the_group = group
+                break
+
+        return the_group
 
     @pyqtProperty(bool, notify = activeQualityChangesGroupChanged)
     def hasCustomQuality(self) -> bool:
