@@ -219,12 +219,12 @@ msgstr "Se a máquina tem ou não uma base de construção aquecida."
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume label"
 msgid "Has Build Volume Temperature Stabilization"
-msgstr ""
+msgstr "Tem estabilização da temperatura do volume de construção"
 
 #: fdmprinter.def.json
 msgctxt "machine_heated_build_volume description"
 msgid "Whether the machine is able to stabilize the build volume temperature."
-msgstr ""
+msgstr "Se a máquina consegue ou não estabilizar a temperatura do volume de construção."
 
 #: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
@@ -1320,52 +1320,52 @@ msgstr "Canto mais Acentuado"
 #: fdmprinter.def.json
 msgctxt "z_seam_position label"
 msgid "Z Seam Position"
-msgstr ""
+msgstr "Posição da Junta-Z"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position description"
 msgid "The position near where to start printing each part in a layer."
-msgstr ""
+msgstr "A posição próxima do local onde a impressão de cada parte de uma camada será iniciada."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backleft"
 msgid "Back Left"
-msgstr ""
+msgstr "Posterior esquerda"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option back"
 msgid "Back"
-msgstr ""
+msgstr "Anterior"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option backright"
 msgid "Back Right"
-msgstr ""
+msgstr "Posterior direita"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option right"
 msgid "Right"
-msgstr ""
+msgstr "Direita"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option frontright"
 msgid "Front Right"
-msgstr ""
+msgstr "Frontal direita"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option front"
 msgid "Front"
-msgstr ""
+msgstr "Frontal"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option frontleft"
 msgid "Front Left"
-msgstr ""
+msgstr "Frontal esquerda"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_position option left"
 msgid "Left"
-msgstr ""
+msgstr "Esquerda"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1472,7 +1472,9 @@ msgstr "Ativar Engomar (Ironing)"
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
 msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
-msgstr ""
+msgstr "Passar novamente sobre o revestimento superior, mas desta vez extrudindo muito pouco material. O objetivo é derreter mais o plástico da camada superior,"
+" criando uma superfície mais suave. A pressão na câmara do nozzle é mantida elevada de modo que os vincos existentes na superfície sejam preenchidos com"
+" material."
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -1761,12 +1763,12 @@ msgstr "O padrão geométrico de enchimento é deslocado por esta distância ao 
 #: fdmprinter.def.json
 msgctxt "infill_randomize_start_location label"
 msgid "Randomize Infill Start"
-msgstr ""
+msgstr "Início aleatório do enchimento"
 
 #: fdmprinter.def.json
 msgctxt "infill_randomize_start_location description"
 msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
-msgstr ""
+msgstr "A linha de enchimento que é impressa primeiro é aleatória. Isso impede que um segmento se torne o mais forte, mas exige um movimento adicional."
 
 #: fdmprinter.def.json
 msgctxt "infill_multiplier label"
@@ -3691,7 +3693,9 @@ msgstr "Direção da linha de enchimento do suporte"
 #: fdmprinter.def.json
 msgctxt "support_infill_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees."
-msgstr ""
+msgstr "Lista de ângulos (números inteiros) relativos às direções de linha a utilizar. Os valores da lista são utilizados em sequência, à medida que as camadas"
+" progridem, voltando ao início assim que a lista chega ao fim. Os itens da lista são separados por vírgulas e a lista completa é escrita entre parênteses"
+" retos. Por defeito, a lista está vazia, o que significa a utilização dos ângulos predefinidos de 0 graus."
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
@@ -4164,32 +4168,41 @@ msgstr "Quantidade do desvio aplicado aos pisos de suporte."
 #: fdmprinter.def.json
 msgctxt "support_interface_angles label"
 msgid "Support Interface Line Directions"
-msgstr ""
+msgstr "Direções da linha da interface do suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "Lista de ângulos (números inteiros) relativos às direções de linha a utilizar. Os valores da lista são utilizados em sequência, à medida que as camadas"
+" progridem, voltando ao início assim que a lista chega ao fim. Os itens da lista são separados por vírgulas e a lista completa é escrita entre parênteses"
+" retos. Por defeito, a lista está vazia, o que significa a utilização dos ângulos predefinidos (que alternam entre 45 e 135 graus se as interfaces forem"
+" bastante espessas ou 90 graus)."
 
 #: fdmprinter.def.json
 msgctxt "support_roof_angles label"
 msgid "Support Roof Line Directions"
-msgstr ""
+msgstr "Direções da linha do teto do suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_roof_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "Uma lista de ângulos (números inteiros) relativos às direções de linha a utilizar. Os valores da lista são utilizados em sequência, à medida que as camadas"
+" progridem, voltando ao início assim que a lista chega ao fim. Os itens da lista são separados por vírgulas e a lista completa é escrita entre parênteses"
+" retos. Por defeito, a lista está vazia, o que significa a utilização dos ângulos predefinidos (que alternam entre 45 e 135 graus se as interfaces forem"
+" bastante espessas ou 90 graus)."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles label"
 msgid "Support Floor Line Directions"
-msgstr ""
+msgstr "Direções da linha do piso do suporte"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_angles description"
 msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
-msgstr ""
+msgstr "Lista de ângulos (números inteiros) relativos às direções de linha a utilizar. Os valores da lista são utilizados em sequência, à medida que as camadas"
+" progridem, voltando ao início assim que a lista chega ao fim. Os itens da lista são separados por vírgulas e a lista completa é escrita entre parênteses"
+" retos. Por defeito, a lista está vazia, o que significa a utilização dos ângulos predefinidos (que alternam entre 45 e 135 graus se as interfaces forem"
+" bastante espessas ou 90 graus)."
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -5349,7 +5362,8 @@ msgstr "Desvio máximo"
 #: fdmprinter.def.json
 msgctxt "meshfix_maximum_deviation description"
 msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
-msgstr ""
+msgstr "O desvio máximo permitido ao reduzir a resolução da definição de Resolução máxima. Se aumentar esta definição, a impressão será menos precisa, mas o G-code"
+" será menor. O Desvio máximo é um limite para a Resolução máxima, pelo que, se estiverem em conflito, o Desvio máximo é sempre considerado verdadeiro."
 
 # rever!
 # Is the english string correct? for the label?
@@ -6367,42 +6381,44 @@ msgstr "A distância de deslocação da cabeça para trás e para a frente pela 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size label"
 msgid "Small Hole Max Size"
-msgstr ""
+msgstr "Tamanho máximo do buraco pequeno"
 
 #: fdmprinter.def.json
 msgctxt "small_hole_max_size description"
 msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
-msgstr ""
+msgstr "Os buracos e os contornos das peças com um diâmetro inferior a este valor serão impressos à Velocidade de elemento pequeno."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length label"
 msgid "Small Feature Max Length"
-msgstr ""
+msgstr "Comprimento máximo do elemento pequeno"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_max_length description"
 msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
-msgstr ""
+msgstr "Os contornos do elemento com um comprimento inferior a este serão impressos à Velocidade de elemento pequeno."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor label"
 msgid "Small Feature Speed"
-msgstr ""
+msgstr "Velocidade de elemento pequeno"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr ""
+msgstr "Os elementos pequenos serão impressos a esta percentagem da velocidade de impressão normal. A impressão mais lenta poderá contribuir para uma maior aderência"
+" e precisão."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "First Layer Speed"
-msgstr ""
+msgstr "Velocidade da primeira camada"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr ""
+msgstr "Os elementos pequenos da primeira camada serão impressos a esta percentagem da velocidade de impressão normal. A impressão mais lenta poderá contribuir"
+" para uma maior aderência e precisão."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
