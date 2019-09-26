@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, Optional
 
-from PyQt5.QtCore import QObject, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty
 
 
 ##  Data struct to group several quality changes instance containers together.
@@ -23,16 +23,16 @@ class QualityChangesGroup(QObject):
         from cura.CuraApplication import CuraApplication
         self.setParent(CuraApplication.getInstance())
 
-        self.name = name
+        self._name = name
         self.quality_type = quality_type
         self.intent_category = intent_category
         self.is_available = False
         self.metadata_for_global = {}    # type: Dict[str, Any]
         self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
 
-    @pyqtSlot(result = str)
-    def getName(self) -> str:
-        return self.name
+    @pyqtProperty(str, constant = True)
+    def name(self) -> str:
+        return self._name
 
     def __str__(self) -> str:
         return "{class_name}[{name}, available = {is_available}]".format(class_name = self.__class__.__name__, name = self.name, is_available = self.is_available)

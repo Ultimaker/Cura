@@ -177,7 +177,7 @@ Popup
 
                             if (active_quality_group != null)
                             {
-                                return active_quality_group.getName() == model.quality_changes_group.getName()
+                                return active_quality_group.name == model.quality_changes_group.name
                             }
                             return false
                         }
