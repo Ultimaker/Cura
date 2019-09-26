@@ -1,0 +1,34 @@
+ {
+ 	"version": 2,
+ 	"name": "Hellbot Magna DUAL",
+ 	"inherits": "fdmprinter",
+ 	"metadata": {
+ 		"visible": true,
+ 		"author": "MUX team",
+ 		"manufacturer": "Hellbot",
+ 		"file_formats": "text/x-gcode",
+ 		"platform": "hellbot_magna.obj",
+ 		"platform_texture": "hellbot.png",
+ 		"platform_offset": [0, -1, 0],
+ 		"has_materials": true,
+ 		"machine_extruder_trains": {
+ 			"0": "hellbot_magna_dual_extruder_1",
+ 			"1": "hellbot_magna_dual_extruder_2"
+ 		}
+ 	},
+ 	"overrides": {
+ 		"machine_name": {
+ 			"default_value": "Hellbot Magna DUAL"
+ 		},
+ 		"machine_width": {
+ 			"default_value": 220
+ 		},
+ 		"machine_depth": {
+ 			"default_value": 220
+ 		},
+ 		"machine_height": {
+ 			"default_value": 260
+ 		}
+
+ 	}
+ }
