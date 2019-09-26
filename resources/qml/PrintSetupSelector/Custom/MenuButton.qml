@@ -48,5 +48,7 @@ Button
         anchors.left: button.left
         anchors.leftMargin: UM.Theme.getSize("wide_margin").width
         renderType: Text.NativeRendering
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text")
     }
 }
