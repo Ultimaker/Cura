@@ -114,6 +114,8 @@
         "material_final_print_temperature":   {"value": "material_print_temperature"},
         "material_bed_temperature_layer_0":   {"value": "material_bed_temperature + 1"},
         "material_flow":                      {"value": "100"},
+        "retraction_enable":                  {"value": true },
+        "retract_at_layer_change":            {"value": true },
         "retraction_amount":                  {"value": "1"},
         "retraction_speed":                   {"value": "20"},
         "retraction_prime_speed":             {"value": "8"},
