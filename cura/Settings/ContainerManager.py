@@ -280,7 +280,7 @@ class ContainerManager(QObject):
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
         extruder_stacks = list(global_stack.extruders.values())
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
-        machine_definition_id = ContainerTree.getInstance().definitions[global_stack.definition.getId()].quality_definition
+        machine_definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         for stack in [global_stack] + extruder_stacks:
             # Find the quality_changes container for this stack and merge the contents of the top container into it.
             quality_changes = stack.qualityChanges

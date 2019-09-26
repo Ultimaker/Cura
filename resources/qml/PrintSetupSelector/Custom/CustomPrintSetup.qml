@@ -67,6 +67,8 @@ Item
             {
                 id: textLabel
                 text: intentSelection.text
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text")
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                 anchors.verticalCenter: intentSelection.verticalCenter

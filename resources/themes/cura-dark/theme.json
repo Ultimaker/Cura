@@ -88,7 +88,7 @@
         "action_button": [39, 44, 48, 255],
         "action_button_text": [255, 255, 255, 200],
         "action_button_border": [255, 255, 255, 30],
-        "action_button_hovered": [39, 44, 48, 255],
+        "action_button_hovered": [79, 85, 89, 255],
         "action_button_hovered_text": [255, 255, 255, 255],
         "action_button_hovered_border": [255, 255, 255, 30],
         "action_button_active": [39, 44, 48, 30],

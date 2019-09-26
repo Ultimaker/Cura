@@ -111,7 +111,6 @@ Popup
                                 return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category;
                             }
                             ButtonGroup.group: buttonGroup
-
                         }
                     }
                 }
@@ -271,6 +270,8 @@ Popup
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width + UM.Theme.getSize("narrow_margin").width
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
                 }
                 Label
                 {
@@ -281,6 +282,8 @@ Popup
                     anchors.rightMargin: UM.Theme.getSize("default_margin").width
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
                 }
             }
             onClicked:
