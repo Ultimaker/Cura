@@ -1,5 +1,4 @@
- {
-    "id": "hellbot_magna_dual_extruder_1",
+{
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
