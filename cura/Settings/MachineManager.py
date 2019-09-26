@@ -1561,6 +1561,9 @@ class MachineManager(QObject):
             variant_name = extruder.variant.getName()
             material_base_file = extruder.material.getMetaDataEntry("base_file")
             quality_id = extruder.quality.getId()
+            if quality_id == empty_quality_container.getId():
+                extruder.intent = empty_intent_container
+                continue
             quality_node = container_tree.machines[definition_id].variants[variant_name].materials[material_base_file].qualities[quality_id]
 
             for intent_node in quality_node.intents.values():
