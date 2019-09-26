@@ -8,7 +8,7 @@ import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
 import Cura 1.6 as Cura
-
+import ".."
 Item
 {
     id: qualityRow
@@ -121,6 +121,18 @@ Item
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
                     elide: Text.ElideRight
+                }
+
+                NoIntentIcon
+                {
+                    affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
+                    intent_type: model.name
+                    anchors.right: intentCategoryLabel.right
+                    anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+                    width: intentCategoryLabel.height * 0.75
+                    anchors.verticalCenter: parent.verticalCenter
+                    height: width
+                    visible: Cura.MachineManager.activeIntentCategory == model.intent_category && affected_extruders.length
                 }
 
                 Cura.RadioCheckbar

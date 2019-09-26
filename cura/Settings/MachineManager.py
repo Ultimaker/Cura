@@ -627,6 +627,24 @@ class MachineManager(QObject):
                 intent_category = category
         return intent_category
 
+    # Provies a list of extruder positions that have a different intent from the active one.
+    @pyqtProperty("QStringList", notify=activeIntentChanged)
+    def extruderPositionsWithNonActiveIntent(self):
+        global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+
+        if not global_container_stack:
+            return []
+
+        active_intent_category = self.activeIntentCategory
+        result = []
+        for extruder in global_container_stack.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != active_intent_category:
+                result.append(str(int(extruder.getMetaDataEntry("position")) + 1))
+
+        return result
+
+
     ##  Returns whether there is anything unsupported in the current set-up.
     #
     #   The current set-up signifies the global stack and all extruder stacks,
