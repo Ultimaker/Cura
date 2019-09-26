@@ -4403,6 +4403,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
+                    "minimum_value_warning": "support_xy_distance - support_line_width * 2",
                     "maximum_value_warning": "support_xy_distance",
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
