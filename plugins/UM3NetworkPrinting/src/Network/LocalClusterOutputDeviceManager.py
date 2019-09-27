@@ -92,10 +92,7 @@ class LocalClusterOutputDeviceManager:
 
     ## Connect the active machine to a given device.
     def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
-            return
-        self._connectToOutputDevice(device, active_machine)
+        self._createMachineFromDiscoveredDevice(device.getId())
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
@@ -111,7 +108,7 @@ class LocalClusterOutputDeviceManager:
                 self._connectToOutputDevice(device, active_machine)
             elif device.key in output_device_manager.getOutputDeviceIds():
                 # Remove device if it is not meant for the active machine.
-                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
+                output_device_manager.removeOutputDevice(device.key)
 
     ## Callback for when a manual device check request was responded to.
     def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus,
@@ -201,7 +198,7 @@ class LocalClusterOutputDeviceManager:
         if not active_machine:
             return
         self._connectToOutputDevice(device, active_machine)
-        CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
+        self._showCloudFlowMessage(device)
 
     ## Add an address to the stored preferences.
     def _storeManualAddress(self, address: str) -> None:
@@ -248,3 +245,14 @@ class LocalClusterOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key not in output_device_manager.getOutputDeviceIds():
             output_device_manager.addOutputDevice(device)
+
+    ## Nudge the user to start using Ultimaker Cloud.
+    @staticmethod
+    def _showCloudFlowMessage(device: LocalClusterOutputDevice) -> None:
+        if CuraApplication.getInstance().getMachineManager().activeMachineIsUsingCloudConnection:
+            # This printer is already cloud connected, so we do not bother the user anymore.
+            return
+        if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
+            # Do not show the message if the user is not signed in.
+            return
+        CloudFlowMessage(device.ipAddress).show()
