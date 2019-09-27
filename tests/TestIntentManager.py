@@ -19,7 +19,7 @@ mocked_intent_metadata = [
 
 mocked_qualitygroup_metadata = {
     "normal": QualityGroup("um3_aa4_pla_normal", "normal"),
-    "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type:Dict[str, QualityGroup]
+    "abnorm": QualityGroup("um3_aa4_pla_abnorm", "abnorm")}  # type: Dict[str, QualityGroup]
 
 @pytest.fixture
 def mock_container_tree() -> MagicMock:
@@ -33,6 +33,7 @@ def mock_container_tree() -> MagicMock:
                         "generic_pla": MagicMock(
                             qualities = {
                                 "um3_aa4_pla_normal": MagicMock(
+                                    quality_type = "normal",
                                     intents = {
                                         "smooth": MagicMock(
                                             intent_category = "smooth",
@@ -41,6 +42,7 @@ def mock_container_tree() -> MagicMock:
                                     }
                                 ),
                                 "um3_aa4_pla_abnorm": MagicMock(
+                                    quality_type = "abnorm",
                                     intents = {
                                         "strong": MagicMock(
                                             intent_category = "strong",
@@ -104,10 +106,12 @@ def doSetup(application, extruder_manager, container_registry, global_stack) -> 
     extruder_stack_a.variant = MockContainer({"name": "AA 0.4"})
     extruder_stack_a.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_a.material = MockContainer({"base_file": "generic_pla"})
+    extruder_stack_a.intent = MockContainer({"id": "empty_intent", "intent_category": "default"})
     extruder_stack_b = MockContainer({"id": "Extruder II: Plastic Boogaloo"})
     extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
     extruder_stack_b.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
+    extruder_stack_b.intent = MockContainer({"id": "empty_intent", "intent_category": "default"})
     global_stack.extruderList = [extruder_stack_a, extruder_stack_b]
 
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
