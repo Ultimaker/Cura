@@ -98,6 +98,13 @@ class LocalClusterOutputDeviceManager:
         self._connectToOutputDevice(device, active_machine)
         self._connectToActiveMachine()
 
+        # Pre-select the correct machine type of the group host.
+        # We first need to find the correct definition because the machine manager only takes name as input, not ID.
+        definitions = CuraApplication.getInstance().getContainerRegistry().findContainers(id = device.printerType)
+        if not definitions:
+            return
+        CuraApplication.getInstance().getMachineManager().switchPrinterType(definitions[0].getName())
+
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
@@ -249,13 +256,6 @@ class LocalClusterOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key not in output_device_manager.getOutputDeviceIds():
             output_device_manager.addOutputDevice(device)
-
-        # Pre-select the correct machine type of the group host.
-        # We first need to find the correct definition because the machine manager only takes name as input, not ID.
-        definitions = CuraApplication.getInstance().getContainerRegistry().findContainers(id=device.printerType)
-        if not definitions:
-            return
-        CuraApplication.getInstance().getMachineManager().switchPrinterType(definitions[0].getName())
 
     ## Nudge the user to start using Ultimaker Cloud.
     @staticmethod
