@@ -805,7 +805,7 @@ class CuraApplication(QtApplication):
 
     def _onPostStart(self):
         for file_name in self._files_to_open:
-            self.callLater(self._openFile, file_name, True)
+            self.callLater(self._openFile, file_name)
         for file_name in self._open_file_queue:  # Open all the files that were queued up while plug-ins were loading.
             self.callLater(self._openFile, file_name)
 
@@ -1549,8 +1549,8 @@ class CuraApplication(QtApplication):
             return
         job._node.setMeshData(mesh_data)
 
-    def _openFile(self, filename, skip_project_file_check = False):
-        self.readLocalFile(QUrl.fromLocalFile(filename), skip_project_file_check)
+    def _openFile(self, filename):
+        self.readLocalFile(QUrl.fromLocalFile(filename))
 
     def _addProfileReader(self, profile_reader):
         # TODO: Add the profile reader to the list of plug-ins that can be used when importing profiles.
