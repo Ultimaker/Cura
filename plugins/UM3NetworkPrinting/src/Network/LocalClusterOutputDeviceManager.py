@@ -250,6 +250,13 @@ class LocalClusterOutputDeviceManager:
         if device.key not in output_device_manager.getOutputDeviceIds():
             output_device_manager.addOutputDevice(device)
 
+        # Pre-select the correct machine type of the group host.
+        # We first need to find the correct definition because the machine manager only takes name as input, not ID.
+        definitions = CuraApplication.getInstance().getContainerRegistry().findContainers(id=device.printerType)
+        if not definitions:
+            return
+        CuraApplication.getInstance().getMachineManager().switchPrinterType(definitions[0].getName())
+
     ## Nudge the user to start using Ultimaker Cloud.
     @staticmethod
     def _showCloudFlowMessage(device: LocalClusterOutputDevice) -> None:
