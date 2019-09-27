@@ -1546,7 +1546,7 @@ class MachineManager(QObject):
                 return
             # This is not changing the quality for the active machine !!!!!!!!
             global_stack.quality = quality_group.node_for_global.container
-            for extruder_nr, extruder_stack in global_stack.extruders.items():
+            for extruder_nr, extruder_stack in enumerate(global_stack.extruderList):
                 quality_container = empty_quality_container
                 if extruder_nr in quality_group.nodes_for_extruders:
                     container = quality_group.nodes_for_extruders[extruder_nr].container
