@@ -97,10 +97,11 @@ Item
     Component
     {
         id: disabledComponent
-        Item
+        Rectangle
         {
             height: checkboxSize
             width: checkboxSize
+            color: "transparent"
 
             Rectangle
             {
