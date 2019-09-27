@@ -266,9 +266,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self) -> Polygon:
-        if self._global_stack:
-            return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
-        return Polygon()
+        if not self._global_stack:
+            return Polygon()
+
+        polygon = Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
+        offset_x = self._getSettingProperty("machine_nozzle_offset_x", "value")
+        offset_y = self._getSettingProperty("machine_nozzle_offset_y", "value")
+        return polygon.translate(-offset_x, -offset_y)
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
