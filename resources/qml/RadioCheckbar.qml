@@ -97,18 +97,17 @@ Item
     Component
     {
         id: disabledComponent
-        Rectangle
+        Item
         {
             height: checkboxSize
             width: checkboxSize
-            color: "transparent"
 
             Rectangle
             {
                 // This can (and should) be done wiht a verticalCenter. For some reason it does work in QtCreator
                 // but not when using the exact same QML in Cura.
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent ? parent.verticalCenter : undefined
+                anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                 height: inactiveMarkerSize
                 width: inactiveMarkerSize
                 radius: Math.round(width / 2)
