@@ -35,7 +35,7 @@ def mock_container_tree() -> MagicMock:
                                 "um3_aa4_pla_normal": MagicMock(
                                     quality_type = "normal",
                                     intents = {
-                                        "smooth": MagicMock(
+                                        "um3_aa4_pla_smooth_normal": MagicMock(
                                             intent_category = "smooth",
                                             getMetadata = MagicMock(return_value = mocked_intent_metadata[0])
                                         )
@@ -44,7 +44,7 @@ def mock_container_tree() -> MagicMock:
                                 "um3_aa4_pla_abnorm": MagicMock(
                                     quality_type = "abnorm",
                                     intents = {
-                                        "strong": MagicMock(
+                                        "um3_aa4_pla_strong_abnorm": MagicMock(
                                             intent_category = "strong",
                                             getMetadata = MagicMock(return_value = mocked_intent_metadata[1])
                                         )
