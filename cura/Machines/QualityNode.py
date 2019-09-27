@@ -12,7 +12,9 @@ if TYPE_CHECKING:
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.MachineNode import MachineNode
 
-##  Represents a material profile in the container tree.
+##  Represents a quality profile in the container tree.
+#
+#   This may either be a normal quality profile or a global quality profile.
 #
 #   Its subcontainers are intent profiles.
 class QualityNode(ContainerNode):
