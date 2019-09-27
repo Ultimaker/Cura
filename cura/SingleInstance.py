@@ -87,9 +87,9 @@ class SingleInstance:
                 if command == "clear-all":
                     self._application.callLater(lambda: self._application.deleteAll())
 
-                # Command: Load a model file
+                # Command: Load a model or project file
                 elif command == "open":
-                    self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
+                    self._application.callLater(lambda f, skip_check = payload["filePath"]: self._application._openFile(f, skip_check))
 
                 # Command: Activate the window and bring it to the top.
                 elif command == "focus":
