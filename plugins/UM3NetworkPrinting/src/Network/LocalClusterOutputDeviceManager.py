@@ -92,7 +92,11 @@ class LocalClusterOutputDeviceManager:
 
     ## Connect the active machine to a given device.
     def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
-        self._createMachineFromDiscoveredDevice(device.getId())
+        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
+        if not active_machine:
+            return
+        self._connectToOutputDevice(device, active_machine)
+        self._connectToActiveMachine()
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
