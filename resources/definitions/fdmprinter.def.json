@@ -4757,7 +4757,7 @@
                 "minimum_interface_area": 
                 {
                     "label": "Minimum Support Interface Area",
-                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated.",
+                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
                     "unit": "mm²",
                     "type": "float",
                     "default_value": 1.0,
@@ -4771,7 +4771,7 @@
                         "minimum_roof_area": 
                         {
                             "label": "Minimum Support Roof Area",
-                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
                             "unit": "mm²",
                             "type": "float",
                             "default_value": 1.0,
@@ -4785,7 +4785,7 @@
                         "minimum_bottom_area": 
                         {
                             "label": "Minimum Support Floor Area",
-                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
                             "unit": "mm²",
                             "type": "float",
                             "default_value": 1.0,
