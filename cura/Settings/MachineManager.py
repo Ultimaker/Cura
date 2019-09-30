@@ -1318,6 +1318,13 @@ class MachineManager(QObject):
             current_category = extruder.intent.getMetaDataEntry("intent_category", "default")
             if current_category != "default" and current_category != category:
                 category = current_category
+                continue
+            # It's also possible that the qualityChanges has an opinion about the intent_category.
+            # This is in the case that a QC was made on an intent, but none of the materials have that intent.
+            # If the user switches back, we do want the intent to be selected again.
+            current_category = extruder.qualityChanges.getMetaDataEntry("intent_category", "default")
+            if current_category != "default" and current_category != category:
+                category = current_category
         self.setIntentByCategory(category)
 
     ##  Update the material profile in the current stacks when the variant is
