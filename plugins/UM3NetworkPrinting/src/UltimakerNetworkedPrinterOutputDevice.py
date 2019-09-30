@@ -60,8 +60,12 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         self._time_of_last_response = time()
         self._time_of_last_request = time()
 
-        # Set the display name from the properties
+        # Set the display name from the properties.
         self.setName(self.getProperty("name"))
+
+        # Set the display name of the printer type.
+        definitions = CuraApplication.getInstance().getContainerRegistry().findContainers(id = self.printerType)
+        self._printer_type_name = definitions[0].getName() if definitions else ""
 
         # Keeps track of all printers in the cluster.
         self._printers = []  # type: List[PrinterOutputModel]
@@ -86,6 +90,11 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     @pyqtProperty(str, constant=True)
     def address(self) -> str:
         return self._address
+
+    ##  The display name of the printer.
+    @pyqtProperty(str, constant=True)
+    def printerTypeName(self) -> str:
+        return self._printer_type_name
 
     # Get all print jobs for this cluster.
     @pyqtProperty("QVariantList", notify=printJobsChanged)
