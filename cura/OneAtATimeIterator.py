@@ -4,7 +4,6 @@
 from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
-from UM.Application import Application
 
 ## Iterator that returns a list of nodes in the order that they need to be printed
 #  If there is no solution an empty list is returned.
