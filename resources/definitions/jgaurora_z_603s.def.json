@@ -21,7 +21,7 @@
             "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nM420 S1                 ;turn on mesh bed levelling if enabled in firmware\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
         },
         "machine_end_gcode": {
-            "default_value": "; -- END GCODE --\nM104 S0                 ;turn off nozzle heater\nM140 S0                 ;turn off bed heater\nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament slightly\nG90                     ;set to absolute positioning\nG28 X0                  ;move to the X-axis origin (Home)\nG28 Y0            ;move to the Y-axis origin (Home) for easy print removal\nM84                     ;turn off stepper motors\n; -- end of END GCODE --"
+            "default_value": "; -- END GCODE --\nM104 S0                 ;turn off nozzle heater\nM140 S0                 ;turn off bed heater\nG91                     ;set to relative positioning\nG1 E-10 F300            ;retract the filament slightly\nG90                     ;set to absolute positioning\nG28 X0 Y0 F600                  ;move to the X/Y-axis origin (Home)\nM84                     ;turn off stepper motors\n; -- end of END GCODE --"
         },        
         "machine_width": {
             "default_value": 280
