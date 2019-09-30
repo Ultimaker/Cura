@@ -632,9 +632,17 @@ class CuraApplication(QtApplication):
 
     ## A reusable dialogbox
     #
-    showMessageBox = pyqtSignal(str, str, str, str, int, int, arguments = ["title", "text", "informativeText", "detailedText", "buttons", "icon"])
+    showMessageBox = pyqtSignal(str,str, str, str, int, int,
+                                arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
 
-    def messageBox(self, title, text, informativeText = "", detailedText = "", buttons = QMessageBox.Ok, icon = QMessageBox.NoIcon, callback = None, callback_arguments = []):
+    def messageBox(self, title, text,
+                   informativeText = "",
+                   detailedText = "",
+                   buttons = QMessageBox.Ok,
+                   icon = QMessageBox.NoIcon,
+                   callback = None,
+                   callback_arguments = []
+                   ):
         self._message_box_callback = callback
         self._message_box_callback_arguments = callback_arguments
         self.showMessageBox.emit(title, text, informativeText, detailedText, buttons, icon)
