@@ -1,6 +1,8 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from typing import List
+
 from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
@@ -9,12 +11,14 @@ from functools import cmp_to_key
 #  If there is no solution an empty list is returned.
 #  Take note that the list of nodes can have children (that may or may not contain mesh data)
 class OneAtATimeIterator(Iterator.Iterator):
-    def __init__(self, scene_node):
-        super().__init__(scene_node) # Call super to make multiple inheritence work.
-        self._hit_map = [[]]
-        self._original_node_list = []
+    def __init__(self, scene_node) -> None:
+        super().__init__(scene_node) # Call super to make multiple inheritance work.
+        self._hit_map = [[]]  # type: List[List[bool]]  # For each node, which other nodes this hits. A grid of booleans on which nodes hit which.
+        self._original_node_list = []  # type: List[SceneNode]  # The nodes that need to be checked for collisions.
 
-    def _fillStack(self):
+    ##  Fills the ``_node_stack`` with a list of scene nodes that need to be
+    #   printed in order.
+    def _fillStack(self) -> None:
         node_list = []
         for node in self._scene_node.getChildren():
             if not issubclass(type(node), SceneNode):
@@ -34,9 +38,9 @@ class OneAtATimeIterator(Iterator.Iterator):
         ## Initialise the hit map (pre-compute all hits between all objects)
         self._hit_map = [[self._checkHit(i,j) for i in node_list] for j in node_list]
 
-        # Check if we have to files that block eachother. If this is the case, there is no solution!
-        for a in range(0,len(node_list)):
-            for b in range(0,len(node_list)):
+        # Check if we have to files that block each other. If this is the case, there is no solution!
+        for a in range(0, len(node_list)):
+            for b in range(0, len(node_list)):
                 if a != b and self._hit_map[a][b] and self._hit_map[b][a]:
                     return
 
@@ -56,16 +60,14 @@ class OneAtATimeIterator(Iterator.Iterator):
                     new_order = current.order[:] + [node]
                     if len(new_todo_list) == 0:
                         # We have no more nodes to check, so quit looking.
-                        todo_node_list = None
                         self._node_stack = new_order
-
                         return
                     todo_node_list.append(_ObjectOrder(new_order, new_todo_list))
         self._node_stack = [] #No result found!
 
 
     # Check if first object can be printed before the provided list (using the hit map)
-    def _checkHitMultiple(self, node, other_nodes):
+    def _checkHitMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
         node_index = self._original_node_list.index(node)
         for other_node in other_nodes:
             other_node_index = self._original_node_list.index(other_node)
@@ -73,7 +75,10 @@ class OneAtATimeIterator(Iterator.Iterator):
                 return True
         return False
 
-    def _checkBlockMultiple(self, node, other_nodes):
+    ##  Check for a node whether it hits any of the other nodes.
+    #   \param node The node to check whether it collides with the other nodes.
+    #   \param other_nodes The nodes to check for collisions.
+    def _checkBlockMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
         node_index = self._original_node_list.index(node)
         for other_node in other_nodes:
             other_node_index = self._original_node_list.index(other_node)
@@ -82,13 +87,13 @@ class OneAtATimeIterator(Iterator.Iterator):
         return False
 
     ##  Calculate score simply sums the number of other objects it 'blocks'
-    def _calculateScore(self, a, b):
+    def _calculateScore(self, a: SceneNode, b: SceneNode) -> int:
         score_a = sum(self._hit_map[self._original_node_list.index(a)])
         score_b = sum(self._hit_map[self._original_node_list.index(b)])
         return score_a - score_b
 
     #   Checks if A can be printed before B
-    def _checkHit(self, a, b):
+    def _checkHit(self, a: SceneNode, b: SceneNode) -> bool:
         if a == b:
             return False
 
@@ -99,13 +104,12 @@ class OneAtATimeIterator(Iterator.Iterator):
             return False
 
 
-## Internal object used to keep track of a possible order in which to print objects.
-class _ObjectOrder():
-    def __init__(self, order, todo):
-        """
-        :param order:   List of indexes in which to print objects, ordered by printing order.
-        :param todo:    List of indexes which are not yet inserted into the order list.
-        """
+##  Internal object used to keep track of a possible order in which to print objects.
+class _ObjectOrder:
+    ##  Creates the _ObjectOrder instance.
+    #   \param order List of indices in which to print objects, ordered by printing
+    #   order.
+    #   \param todo: List of indices which are not yet inserted into the order list.
+    def __init__(self, order: List[SceneNode], todo: List[SceneNode]):
         self.order = order
         self.todo = todo
-
