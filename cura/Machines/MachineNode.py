@@ -7,11 +7,13 @@ from UM.Logger import Logger
 from UM.Signal import Signal
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
+
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construct groups of quality changes profiles that belong together.
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
+
 
 ##  This class represents a machine in the container tree.
 #
@@ -80,7 +82,15 @@ class MachineNode(ContainerNode):
             if not global_quality_node.container:
                 Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
                 continue
-            quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
+            # CURA-6599
+            # Same as QualityChangesGroup.
+            # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
+            # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
+            # parent to application seems to work.
+            from cura.CuraApplication import CuraApplication
+            quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"),
+                                                        quality_type = quality_type,
+                                                        parent = CuraApplication.getInstance())
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
@@ -123,7 +133,14 @@ class MachineNode(ContainerNode):
         for quality_changes in machine_quality_changes:
             name = quality_changes["name"]
             if name not in groups_by_name:
-                groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"], intent_category = quality_changes.get("intent_category", "default"))
+                # CURA-6599
+                # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
+                # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
+                # parent to application seems to work.
+                from cura.CuraApplication import CuraApplication
+                groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],
+                                                           intent_category = quality_changes.get("intent_category", "default"),
+                                                           parent = CuraApplication.getInstance())
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
             if "position" in quality_changes:  # An extruder profile.
@@ -147,7 +164,7 @@ class MachineNode(ContainerNode):
     #   If the preferred global quality is not in there, an arbitrary global
     #   quality is taken.
     #   If there are no global qualities, an empty quality is returned.
-    def preferredGlobalQuality(self) -> QualityNode:
+    def preferredGlobalQuality(self) -> "QualityNode":
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
     ##  (Re)loads all variants under this printer.
