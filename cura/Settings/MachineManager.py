@@ -1355,7 +1355,7 @@ class MachineManager(QObject):
             if candidate_materials:
                 candidate_material = list(candidate_materials.values())[0]
                 old_approximate_material_diameter = int(round(float(candidate_material.diameter)))
-            new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+            new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
 
             # Only switch to the old candidate material if the approximate material diameter of the extruder stays the
             # same.
@@ -1366,7 +1366,7 @@ class MachineManager(QObject):
             else:
                 # The current material is not available, find the preferred one.
                 if position is not None:
-                    approximate_material_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
+                    approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
                     material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
                     self._setMaterial(position_item, material_node)
 
