@@ -107,11 +107,13 @@ def doSetup(application, extruder_manager, container_registry, global_stack) -> 
     extruder_stack_a.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_a.material = MockContainer({"base_file": "generic_pla"})
     extruder_stack_a.intent = MockContainer({"id": "empty_intent", "intent_category": "default"})
+    extruder_stack_a.qualityChanges = MockContainer({"id": "empty_quality_changes", "intent_category": "default"})
     extruder_stack_b = MockContainer({"id": "Extruder II: Plastic Boogaloo"})
     extruder_stack_b.variant = MockContainer({"name": "AA 0.4"})
     extruder_stack_b.quality = MockContainer({"id": "um3_aa4_pla_normal"})
     extruder_stack_b.material = MockContainer({"base_file": "generic_pla"})
     extruder_stack_b.intent = MockContainer({"id": "empty_intent", "intent_category": "default"})
+    extruder_stack_b.qualityChanges = MockContainer({"id": "empty_quality_changes", "intent_category": "default"})
     global_stack.extruderList = [extruder_stack_a, extruder_stack_b]
 
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
