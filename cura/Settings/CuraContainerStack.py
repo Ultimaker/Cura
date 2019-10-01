@@ -91,12 +91,12 @@ class CuraContainerStack(ContainerStack):
     #
     #   \param new_intent The new intent container. It is expected to have a "type" metadata entry with the value "intent".
     def setIntent(self, new_intent: InstanceContainer, postpone_emit: bool = False) -> None:
-        self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit=postpone_emit)
+        self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit = postpone_emit)
 
     ##  Get the quality container.
     #
     #   \return The intent container. Should always be a valid container, but can be equal to the empty InstanceContainer.
-    @pyqtProperty(InstanceContainer, fset=setIntent, notify=pyqtContainersChanged)
+    @pyqtProperty(InstanceContainer, fset = setIntent, notify = pyqtContainersChanged)
     def intent(self) -> InstanceContainer:
         return cast(InstanceContainer, self._containers[_ContainerIndexes.Intent])
 

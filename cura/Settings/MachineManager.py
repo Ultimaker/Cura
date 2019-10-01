@@ -1322,6 +1322,10 @@ class MachineManager(QObject):
             # It's also possible that the qualityChanges has an opinion about the intent_category.
             # This is in the case that a QC was made on an intent, but none of the materials have that intent.
             # If the user switches back, we do want the intent to be selected again.
+            #
+            # Do not ask empty quality changes for intent category.
+            if extruder.qualityChanges.getId() == empty_quality_changes_container.getId():
+                continue
             current_category = extruder.qualityChanges.getMetaDataEntry("intent_category", "default")
             if current_category != "default" and current_category != category:
                 category = current_category
