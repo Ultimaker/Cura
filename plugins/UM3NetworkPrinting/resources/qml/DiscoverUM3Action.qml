@@ -212,10 +212,7 @@ Cura.MachineAction
                         text:
                         {
                             if (base.selectedDevice) {
-                                // It would be great to use a more readable machine type here,
-                                // but the new discoveredPrintersModel is not used yet in the UM networking actions.
-                                // TODO: remove actions or replace 'connect via network' button with new flow?
-                                return base.selectedDevice.printerType
+                                return base.selectedDevice.printerTypeName
                             }
                             return ""
                         }

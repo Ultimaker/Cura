@@ -4304,7 +4304,7 @@
                     "default_value": 8.0,
                     "minimum_value": "0.0",
                     "maximum_value_warning": "50.0",
-                    "enabled": "support_enable or support_tree_enable",
+                    "enabled": "(support_enable or support_tree_enable) and support_brim_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "limit_to_extruder": "support_infill_extruder_nr",
@@ -4319,7 +4319,7 @@
                             "minimum_value": "0",
                             "maximum_value_warning": "50 / skirt_brim_line_width",
                             "value": "math.ceil(support_brim_width / (skirt_brim_line_width * initial_layer_line_width_factor / 100.0))",
-                            "enabled": "support_enable or support_tree_enable",
+                            "enabled": "(support_enable or support_tree_enable) and support_brim_enable",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true,
                             "limit_to_extruder": "support_infill_extruder_nr"
@@ -4405,6 +4405,7 @@
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
+                    "minimum_value_warning": "support_xy_distance - support_line_width * 2",
                     "maximum_value_warning": "support_xy_distance",
                     "default_value": 0.2,
                     "value": "machine_nozzle_size / 2",
@@ -4759,7 +4760,7 @@
                 "minimum_interface_area": 
                 {
                     "label": "Minimum Support Interface Area",
-                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated.",
+                    "description": "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support.",
                     "unit": "mm²",
                     "type": "float",
                     "default_value": 1.0,
@@ -4773,7 +4774,7 @@
                         "minimum_roof_area": 
                         {
                             "label": "Minimum Support Roof Area",
-                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "description": "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support.",
                             "unit": "mm²",
                             "type": "float",
                             "default_value": 1.0,
@@ -4787,7 +4788,7 @@
                         "minimum_bottom_area": 
                         {
                             "label": "Minimum Support Floor Area",
-                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated.",
+                            "description": "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support.",
                             "unit": "mm²",
                             "type": "float",
                             "default_value": 1.0,
@@ -4862,6 +4863,7 @@
                             "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
                             "type": "[int]",
                             "default_value": "[ ]",
+                            "value": "support_interface_angles",
                             "limit_to_extruder": "support_roof_extruder_nr",
                             "enabled": "support_roof_enable and support_roof_pattern != 'concentric'",
                             "settable_per_mesh": false,
@@ -4873,6 +4875,7 @@
                             "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees).",
                             "type": "[int]",
                             "default_value": "[ ]",
+                            "value": "support_interface_angles",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and support_bottom_pattern != 'concentric'",
                             "settable_per_mesh": false,
@@ -7084,7 +7087,7 @@
                 "wall_overhang_angle":
                 {
                     "label": "Overhanging Wall Angle",
-                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging.",
+                    "description": "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either.",
                     "unit": "°",
                     "type": "float",
                     "minimum_value": "0",
