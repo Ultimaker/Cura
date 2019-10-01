@@ -9,6 +9,7 @@ from UM.Logger import Logger  # To log errors talking to the API.
 from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 
 from .CloudApiClient import CloudApiClient
@@ -140,14 +141,12 @@ class CloudOutputDeviceManager:
         if not device:
             return
 
-        # The newly added machine is automatically activated.
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        machine_manager.addMachine(device.printerType, device.clusterData.friendly_name)
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
-            return
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device, active_machine)
+        # Create a new machine and activate it.
+        # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        new_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+        self._connectToOutputDevice(device, new_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
