@@ -49,7 +49,7 @@ class VariantNode(ContainerNode):
         else:  # Printer has its own material profiles. Look for material profiles with this printer's definition.
             base_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
             printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id)
-            variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant = self.variant_name)  # If empty_variant, this won't return anything.
+            variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant_name = self.variant_name)  # If empty_variant, this won't return anything.
             materials_per_base_file = {material["base_file"]: material for material in base_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
@@ -105,7 +105,7 @@ class VariantNode(ContainerNode):
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.machine.container_id:
                 return
-            material_variant = container.getMetaDataEntry("variant", "empty")
+            material_variant = container.getMetaDataEntry("variant_name", "empty")
             if material_variant != "empty" and material_variant != self.variant_name:
                 return
         else:  # We already have this base profile. Replace the base profile if the new one is more specific.
@@ -115,8 +115,8 @@ class VariantNode(ContainerNode):
             if new_definition != self.machine.container_id:
                 return  # Doesn't match this set-up.
             original_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = self.materials[base_file].container_id)[0]
-            original_variant = original_metadata.get("variant", "empty")
-            if original_variant != "empty" or container.getMetaDataEntry("variant", "empty") == "empty":
+            original_variant = original_metadata.get("variant_name", "empty")
+            if original_variant != "empty" or container.getMetaDataEntry("variant_name", "empty") == "empty":
                 return  # Original was already specific or just as unspecific as the new one.
 
         if "empty_material" in self.materials:
@@ -145,7 +145,7 @@ class VariantNode(ContainerNode):
                 if submaterial["definition"] == self.machine.container_id:
                     if most_specific_submaterial["definition"] == "fdmprinter":
                         most_specific_submaterial = submaterial
-                    if most_specific_submaterial.get("variant", "empty") == "empty" and submaterial.get("variant", "empty") == self.variant_name:
+                    if most_specific_submaterial.get("variant_name", "empty") == "empty" and submaterial.get("variant_name", "empty") == self.variant_name:
                         most_specific_submaterial = submaterial
             self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant = self)
             self.materialsChanged.emit(self.materials[base_file])
