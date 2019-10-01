@@ -1246,7 +1246,7 @@ class MachineManager(QObject):
             self._global_container_stack.extruderList[int(position)].material = empty_material_container
             root_material_id = None
         # The _current_root_material_id is used in the MaterialMenu to see which material is selected
-        if root_material_id != self._current_root_material_id[position]:
+        if position not in self._current_root_material_id or root_material_id != self._current_root_material_id[position]:
             self._current_root_material_id[position] = root_material_id
             self.rootMaterialChanged.emit()
 
