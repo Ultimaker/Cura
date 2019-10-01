@@ -116,6 +116,7 @@ class QualityManager(QObject):
                 # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
                 # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
                 # parent to application seems to work.
+                from cura.CuraApplication import CuraApplication
                 quality_group = QualityGroup(node.getMetaDataEntry("name", ""), node.quality_type,
                                              parent = CuraApplication.getInstance())
                 quality_group.setGlobalNode(node)
