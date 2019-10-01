@@ -108,3 +108,19 @@ class ContainerTree:
         if not isinstance(container_stack, GlobalStack):
             return  # Not our concern.
         self.addMachineNodeByDefinitionId(container_stack.definition.getId())
+
+    ##  For debugging purposes, visualise the entire container tree as it stands
+    #   now.
+    def _visualise_tree(self) -> str:
+        lines = ["% CONTAINER TREE"]  # Start with array and then combine into string, for performance.
+        for machine in self.machines.values():
+            lines.append("  # " + machine.container_id)
+            for variant in machine.variants.values():
+                lines.append("    * " + variant.container_id)
+                for material in variant.materials.values():
+                    lines.append("      + " + material.container_id)
+                    for quality in material.qualities.values():
+                        lines.append("        - " + quality.container_id)
+                        for intent in quality.intents.values():
+                            lines.append("          . " + intent.container_id)
+        return "\n".join(lines)
