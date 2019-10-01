@@ -1450,11 +1450,14 @@ class MachineManager(QObject):
                     # Find the material profile that the printer has stored.
                     # This might find one of the duplicates if the user duplicated the material to sync with. But that's okay; both have this GUID so both are correct.
                     approximate_diameter = int(self._global_container_stack.extruderList[int(position)].getApproximateMaterialDiameter())
-                    materials_with_guid = container_registry.findInstanceContainersMetadata(guid = extruder_configuration.material.guid, approximate_diameter = approximate_diameter)
+                    materials_with_guid = container_registry.findInstanceContainersMetadata(GUID = extruder_configuration.material.guid, approximate_diameter = str(approximate_diameter), ignore_case = True)
                     material_container_node = variant_node.preferredMaterial(approximate_diameter)
                     if materials_with_guid:  # We also have the material profile that the printer wants to share.
                         base_file = materials_with_guid[0]["base_file"]
-                        material_container_node = variant_node.materials.get(base_file, default = material_container_node)  # If Cura thinks that the selected material is not available for this printer, revert to the preferred material.
+                        keep_ref = material_container_node  # WORKAROUND: Somehow 'default = ...' doesn't work for the following get, so it's now done in this cumbersome way.
+                        material_container_node = variant_node.materials.get(base_file)
+                        if not material_container_node:  # If Cura thinks that the selected material is not available for this printer, revert to the preferred material.
+                            material_container_node = keep_ref
 
                     self._setMaterial(position, material_container_node)
                     self._global_container_stack.extruders[position].setEnabled(True)
