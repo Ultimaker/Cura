@@ -208,6 +208,9 @@ class LocalClusterOutputDeviceManager:
         # We do not use use MachineManager.addMachine here because we need to set the network key before activating it.
         # If we do not do this the auto-pairing with the cloud-equivalent device will not work.
         new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        if not new_machine:
+            Logger.log("e", "Failed creating a new machine")
+            return
         new_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
         self._connectToOutputDevice(device, new_machine)
