@@ -63,6 +63,13 @@ class QualityProfilesDropDownMenuModel(ListModel):
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
+        # CURA-6836
+        # LabelBar is a repeater that creates labels for quality layer heights. Because of an optimization in
+        # UM.ListModel, the model will not remove all items and recreate new ones every time there's an update.
+        # Because LabelBar uses Repeater with Labels anchoring to "undefined" in certain cases, the anchoring will be
+        # kept the same as before.
+        self.setItems([])
+
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
