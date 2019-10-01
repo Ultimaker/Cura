@@ -36,7 +36,6 @@ class MachineNode(ContainerNode):
         # Otherwise you need to keep it up-to-date during runtime.
         self.has_materials = parseBool(my_metadata.get("has_materials", "true"))
         self.has_variants = parseBool(my_metadata.get("has_variants", "false"))
-        self.has_machine_materials = parseBool(my_metadata.get("has_machine_materials", "false"))
         self.has_machine_quality = parseBool(my_metadata.get("has_machine_quality", "false"))
         self.quality_definition = my_metadata.get("quality_definition", container_id) if self.has_machine_quality else "fdmprinter"
         self.exclude_materials = my_metadata.get("exclude_materials", [])

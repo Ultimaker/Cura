@@ -46,13 +46,11 @@ class VariantNode(ContainerNode):
             return  # There should not be any materials loaded for this printer.
 
         # Find all the materials for this variant's name.
-        if not self.machine.has_machine_materials:  # Printer has no specific materials. Look for all fdmprinter materials.
-            materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")  # These are ONLY the base materials.
         else:  # Printer has its own material profiles. Look for material profiles with this printer's definition.
-            all_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
+            base_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
             printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id)
             variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant = self.variant_name)  # If empty_variant, this won't return anything.
-            materials_per_base_file = {material["base_file"]: material for material in all_materials}
+            materials_per_base_file = {material["base_file"]: material for material in base_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.
             materials_per_base_file.update({material["base_file"]: material for material in variant_specific_materials})  # Variant-specific profiles override all of those.
             materials = list(materials_per_base_file.values())
@@ -100,9 +98,6 @@ class VariantNode(ContainerNode):
         if not self.machine.has_materials:
             return  # We won't add any materials.
         material_definition = container.getMetaDataEntry("definition")
-        if not self.machine.has_machine_materials:
-            if material_definition != "fdmprinter":
-                return
 
         base_file = container.getMetaDataEntry("base_file")
         if base_file in self.machine.exclude_materials:

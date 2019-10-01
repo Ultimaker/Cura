@@ -7,7 +7,6 @@ from cura.Machines.MachineNode import MachineNode
 metadata_dict = {
     "has_materials": "false",
     "has_variants": "true",
-    "has_machine_materials": "true",
     "has_machine_quality": "true",
     "quality_definition": "test_quality_definition",
     "exclude_materials": ["excluded_material_1", "excluded_material_2"],
