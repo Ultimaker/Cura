@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 #
 #   Its subcontainers are quality profiles.
 class MaterialNode(ContainerNode):
-    def __init__(self, container_id, variant: "VariantNode") -> None:
+    def __init__(self, container_id: str, variant: "VariantNode") -> None:
         super().__init__(container_id)
         self.variant = variant
         self.qualities = {}  # type: Dict[str, QualityNode] # Mapping container IDs to quality profiles.
@@ -29,10 +29,6 @@ class MaterialNode(ContainerNode):
         self.base_file = my_metadata["base_file"]
         self.material_type = my_metadata["material"]
         self.guid = my_metadata["GUID"]
-        # MaterialNode can represent an empty_material container, which has no diameter.
-        self.diameter = None  # type: Optional[str]
-        if "properties" in my_metadata:
-            self.diameter = my_metadata["properties"]["diameter"]
         self._loadAll()
         container_registry.containerRemoved.connect(self._onRemoved)
         container_registry.containerMetaDataChanged.connect(self._onMetadataChanged)
@@ -133,8 +129,6 @@ class MaterialNode(ContainerNode):
         self.material_type = new_metadata["material"]
         old_guid = self.guid
         self.guid = new_metadata["GUID"]
-        if "properties" in new_metadata:
-            self.diameter = new_metadata["properties"]["diameter"]
         if self.base_file != old_base_file or self.material_type != old_material_type or self.guid != old_guid:  # List of quality profiles could've changed.
             self.qualities = {}
             self._loadAll()  # Re-load the quality profiles for this node.

@@ -1354,7 +1354,8 @@ class MachineManager(QObject):
             old_approximate_material_diameter = None  # type: Optional[float]
             if candidate_materials:
                 candidate_material = list(candidate_materials.values())[0]
-                old_approximate_material_diameter = int(round(float(candidate_material.diameter)))
+                default_material_diameter = "2.85"
+                old_approximate_material_diameter = int(round(float(candidate_material.container.getMetaDataEntry("properties/diameter", default_material_diameter))))
             new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
 
             # Only switch to the old candidate material if the approximate material diameter of the extruder stays the
