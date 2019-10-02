@@ -140,7 +140,6 @@ Item
                 {
                     anchors
                     {
-                        margins: 3
                         fill: parent
                     }
                     radius: Math.round(width / 2)
