@@ -1454,10 +1454,7 @@ class MachineManager(QObject):
                     material_container_node = variant_node.preferredMaterial(approximate_diameter)
                     if materials_with_guid:  # We also have the material profile that the printer wants to share.
                         base_file = materials_with_guid[0]["base_file"]
-                        keep_ref = material_container_node  # WORKAROUND: Somehow 'default = ...' doesn't work for the following get, so it's now done in this cumbersome way.
-                        material_container_node = variant_node.materials.get(base_file)
-                        if not material_container_node:  # If Cura thinks that the selected material is not available for this printer, revert to the preferred material.
-                            material_container_node = keep_ref
+                        material_container_node = variant_node.materials.get(base_file, material_container_node)
 
                     self._setMaterial(position, material_container_node)
                     self._global_container_stack.extruders[position].setEnabled(True)
