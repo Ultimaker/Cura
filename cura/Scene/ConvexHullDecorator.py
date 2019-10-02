@@ -76,7 +76,18 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def __deepcopy__(self, memo):
         return ConvexHullDecorator()
 
-    ##  Get the unmodified 2D projected convex hull of the node (if any)
+
+    ## The polygon representing the 2D adhesion area.
+    # If no adhesion is used, the regular convex hull is returned
+    def getAdhesionArea(self) -> Optional[Polygon]:
+        if self._node is None:
+            return None
+
+        hull = self._compute2DConvexHull()
+        return self._add2DAdhesionMargin(hull)
+
+
+    ##  Get the unmodified 2D projected convex hull with 2D adhesion area of the node (if any)
     def getConvexHull(self) -> Optional[Polygon]:
         if self._node is None:
             return None

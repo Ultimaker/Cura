@@ -92,12 +92,24 @@ class OneAtATimeIterator(Iterator.Iterator):
         score_b = sum(self._hit_map[self._original_node_list.index(b)])
         return score_a - score_b
 
-    #   Checks if A can be printed before B
+    ## Checks if A can be printed before B
     def _checkHit(self, a: SceneNode, b: SceneNode) -> bool:
         if a == b:
             return False
 
-        overlap = a.callDecoration("getConvexHullBoundary").intersectsPolygon(b.callDecoration("getConvexHullHeadFull"))
+        a_hit_hull = a.callDecoration("getConvexHullBoundary")
+        b_hit_hull = b.callDecoration("getConvexHullHeadFull")
+        overlap = a_hit_hull.intersectsPolygon(b_hit_hull)
+
+        if overlap:
+            return True
+
+        # Adhesion areas must never overlap, regardless of printing order
+        # This would cause over-extrusion
+        a_hit_hull = a.callDecoration("getAdhesionArea")
+        b_hit_hull = b.callDecoration("getAdhesionArea")
+        overlap = a_hit_hull.intersectsPolygon(b_hit_hull)
+
         if overlap:
             return True
         else:
