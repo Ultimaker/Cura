@@ -1602,9 +1602,9 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(QUrl, str)
     ## Open a local file
-    # \param force_project_mode \type{str} Either "open_as_model" or "open_as_project". This parameter is only
-    # considered if the file is a project file.
-    def readLocalFile(self, file, force_project_mode = None):
+    # \param project_mode How to handle project files. Either None(default): Follow user preference, "open_as_model" or
+    # "open_as_project". This parameter is only considered if the file is a project file.
+    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None):
         if not file.isValid():
             return
 
@@ -1616,7 +1616,6 @@ class CuraApplication(QtApplication):
                 break
 
         is_project_file = self.checkIsValidProjectFile(file)
-        project_mode = force_project_mode
 
         if project_mode is None:
             project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
