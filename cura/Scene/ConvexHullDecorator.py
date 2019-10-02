@@ -76,7 +76,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def __deepcopy__(self, memo):
         return ConvexHullDecorator()
 
-    ##  Get the unmodified 2D projected convex hull of the node (if any)
+    ## The polygon representing the 2D adhesion area.
+    # If no adhesion is used, the regular convex hull is returned
+    def getAdhesionArea(self) -> Optional[Polygon]:
+        if self._node is None:
+            return None
+
+        hull = self._compute2DConvexHull()
+        if hull is None:
+            return None
+
+        return self._add2DAdhesionMargin(hull)
+
+    ##  Get the unmodified 2D projected convex hull with 2D adhesion area of the node (if any)
     def getConvexHull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
@@ -266,9 +278,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self) -> Polygon:
-        if self._global_stack:
-            return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
-        return Polygon()
+        if not self._global_stack:
+            return Polygon()
+
+        polygon = Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
+        offset_x = self._getSettingProperty("machine_nozzle_offset_x", "value")
+        offset_y = self._getSettingProperty("machine_nozzle_offset_y", "value")
+        return polygon.translate(-offset_x, -offset_y)
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
