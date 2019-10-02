@@ -260,6 +260,8 @@ class MachineManager(QObject):
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
                 extruder_stack.containersChanged.connect(self._onContainersChanged)
 
+            self._onRootMaterialChanged()
+
         self.activeQualityGroupChanged.emit()
 
     def _onActiveExtruderStackChanged(self) -> None:
