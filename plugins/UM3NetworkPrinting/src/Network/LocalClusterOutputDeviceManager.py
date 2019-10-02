@@ -9,6 +9,7 @@ from UM.Signal import Signal
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 
 from .ZeroConfClient import ZeroConfClient
@@ -203,12 +204,16 @@ class LocalClusterOutputDeviceManager:
         if device is None:
             return
 
-        # The newly added machine is automatically activated.
-        CuraApplication.getInstance().getMachineManager().addMachine(device.printerType, device.name)
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
+        # Create a new machine and activate it.
+        # We do not use use MachineManager.addMachine here because we need to set the network key before activating it.
+        # If we do not do this the auto-pairing with the cloud-equivalent device will not work.
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        if not new_machine:
+            Logger.log("e", "Failed creating a new machine")
             return
-        self._connectToOutputDevice(device, active_machine)
+        new_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
+        CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+        self._connectToOutputDevice(device, new_machine)
         self._showCloudFlowMessage(device)
 
     ## Add an address to the stored preferences.
