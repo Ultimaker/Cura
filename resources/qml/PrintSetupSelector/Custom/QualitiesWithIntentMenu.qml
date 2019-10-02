@@ -134,7 +134,7 @@ Popup
                 renderType: Text.NativeRendering
                 height: visible ? contentHeight: 0
                 enabled: false
-                visible: profilesList.visibleChildren.length > 0
+                visible: profilesList.visibleChildren.length > 1
                 anchors.left: parent.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
             }
@@ -156,7 +156,7 @@ Popup
                     target: parent
                     property: "height"
                     value: parent.childrenRect.height
-                    when: parent.visibleChildren.length > 0
+                    when: parent.visibleChildren.length > 1
                 }
 
                 //Add all the custom profiles.
