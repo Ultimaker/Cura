@@ -66,7 +66,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         self._node_stack = [] #No result found!
 
 
-    # Check if first object can be printed before the provided list (using the hit map)
+    #  Check if first object can be printed before the provided list (using the hit map)
     def _checkHitMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
         node_index = self._original_node_list.index(node)
         for other_node in other_nodes:
@@ -92,7 +92,7 @@ class OneAtATimeIterator(Iterator.Iterator):
         score_b = sum(self._hit_map[self._original_node_list.index(b)])
         return score_a - score_b
 
-    ## Checks if A can be printed before B
+    ##  Checks if A can be printed before B
     def _checkHit(self, a: SceneNode, b: SceneNode) -> bool:
         if a == b:
             return False
