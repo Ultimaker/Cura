@@ -261,7 +261,9 @@ Popup
 
             contentItem: Item
             {
-                width: manageProfilesButton.width
+                width: parent.width
+                height: childrenRect.height
+
                 Label
                 {
                     id: textLabel
