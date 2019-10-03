@@ -238,9 +238,10 @@ Popup
                 Cura.ContainerManager.clearUserContainers()
             }
         }
+
         Rectangle
         {
-            height: 1
+            height: UM.Theme.getSize("default_lining").width
             anchors.left: parent.left
             anchors.right: parent.right
             color: borderColor
