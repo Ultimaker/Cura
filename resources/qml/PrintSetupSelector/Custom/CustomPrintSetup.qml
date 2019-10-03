@@ -88,14 +88,18 @@ Item
 
             function generateActiveQualityText()
             {
+                var result = Cura.MachineManager.activeQualityOrQualityChangesName
 
-                var result = ""
-                if(Cura.MachineManager.activeIntentCategory != "default")
+                // If this is a custom quality, add intent (if present) and quality it is based on
+                if (Cura.MachineManager.isActiveQualityCustom)
                 {
-                    result += Cura.MachineManager.activeIntentCategory + " - "
+                    if (Cura.MachineManager.activeIntentName != "")
+                    {
+                        result += " - " + Cura.MachineManager.activeIntentName
+                    }
+                    result += " - " + Cura.MachineManager.activeQualityName
                 }
 
-                result += Cura.MachineManager.activeQualityOrQualityChangesName
                 if (Cura.MachineManager.isActiveQualityExperimental)
                 {
                     result += " (Experimental)"
