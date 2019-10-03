@@ -238,7 +238,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
-                profile_definition = container_tree.machines[machine_definition.getId()].quality_definition
+                profile_definition = machine_definition.getMetaDataEntry("quality_definition", "")
                 expected_machine_definition = container_tree.machines[global_stack.definition.getId()].quality_definition
 
                 # And check if the profile_definition matches either one (showing error if not):
