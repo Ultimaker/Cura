@@ -131,6 +131,14 @@ class GlobalStack(CuraContainerStack):
             return "machine_stack"
         return configuration_type
 
+    def getIntentCategory(self) -> str:
+        intent_category = "default"
+        for extruder in self.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != "default" and category != intent_category:
+                intent_category = category
+        return intent_category
+
     def getBuildplateName(self) -> Optional[str]:
         name = None
         if self.variant.getId() != "empty_variant":

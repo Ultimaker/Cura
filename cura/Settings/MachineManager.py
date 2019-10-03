@@ -632,13 +632,7 @@ class MachineManager(QObject):
 
         if not global_container_stack:
             return ""
-        intent_category = "default"
-        for extruder in global_container_stack.extruderList:
-            category = extruder.intent.getMetaDataEntry("intent_category", "default")
-            if category != "default" and category != intent_category:
-                intent_category = category
-
-        return intent_category
+        return global_container_stack.getIntentCategory()
 
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
