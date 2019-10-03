@@ -87,11 +87,23 @@ class QualityManagementModel(ListModel):
         application = cura.CuraApplication.CuraApplication.getInstance()
         container_registry = application.getContainerRegistry()
         new_name = container_registry.uniqueName(new_name)
-        global_container = cast(InstanceContainer, container_registry.findContainers(id = quality_changes_group.metadata_for_global["id"])[0])
-        global_container.setName(new_name)
+        # CURA-6842
+        # FIXME: setName() will trigger metaDataChanged signal that are connected with type Qt.AutoConnection. In this
+        # case, setName() will trigger direct connections which in turn causes the quality changes group and the models
+        # to update. Because multiple containers need to be renamed, and every time a container gets renamed, updates
+        # gets triggered and this results in partial updates. For example, if we rename the global quality changes
+        # container first, the rest of the system still thinks that I have selected "my_profile" instead of
+        # "my_new_profile", but an update already gets triggered, and the quality changes group that's selected will
+        # have no container for the global stack, because "my_profile" just got renamed to "my_new_profile". This results
+        # in crashes because the rest of the system assumes that all data in a QualityChangesGroup will be correct.
+        #
+        # Renaming the container for the global stack in the end seems to be ok, because the assumption is mostly based
+        # on the quality changes container for the global stack.
         for metadata in quality_changes_group.metadata_per_extruder.values():
             extruder_container = cast(InstanceContainer, container_registry.findContainers(id = metadata["id"])[0])
             extruder_container.setName(new_name)
+        global_container = cast(InstanceContainer, container_registry.findContainers(id=quality_changes_group.metadata_for_global["id"])[0])
+        global_container.setName(new_name)
 
         quality_changes_group.name = new_name
 
