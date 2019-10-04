@@ -1,18 +1,15 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from typing import Optional, List, Dict, Any
+from typing import Optional, Dict, Any, Set, List
 
 from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
 
+import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingFunction import SettingFunction
-
+from cura.Machines import MaterialNode, QualityGroup
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Settings.ExtruderManager import ExtruderManager
-from cura.Settings.IntentManager import IntentManager
-import cura.CuraApplication
 
 
 class IntentModel(ListModel):
@@ -65,47 +62,16 @@ class IntentModel(ListModel):
             return
         quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
-        container_tree = ContainerTree.getInstance()
-        machine_node = container_tree.machines[global_stack.definition.getId()]
-
-        # We can't just look at the active extruder, since it is possible for only one extruder to have an intent
-        # and the other extruders have no intent (eg, default). It is not possible for one extruder to have intent A and
-        # the other to have B.
-        # So we will use the first extruder that we find that has an intent that is not default as the "active" extruder
-
-        active_extruder = None
-        for extruder in global_stack.extruderList:
-            if not extruder.isEnabled:
-                continue
-            if extruder.intent.getMetaDataEntry("intent_category", "default") == "default":
-                if active_extruder is None:
-                    active_extruder = extruder  # If there is no extruder found and the intent is default, use that.
-            else:  # We found an intent, use that extruder as "active"
-                active_extruder = extruder
-
-        if not active_extruder:
-            return
-        active_variant_name = active_extruder.variant.getMetaDataEntry("name")
-        active_variant_node = machine_node.variants[active_variant_name]
-        active_material_node = active_variant_node.materials[active_extruder.material.getMetaDataEntry("base_file")]
+        material_nodes = self._get_active_materials()
 
         layer_heights_added = []
-        for quality_id, quality_node in active_material_node.qualities.items():
-            if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
-                continue
-            quality_group = quality_groups[quality_node.quality_type]
-            layer_height = self._fetchLayerHeight(quality_group)
 
-            for intent_id, intent_node in quality_node.intents.items():
-                if intent_node.intent_category != self._intent_category:
-                    continue
-                layer_heights_added.append(layer_height)
-                new_items.append({"name": quality_group.name,
-                                  "quality_type": quality_group.quality_type,
-                                  "layer_height": layer_height,
-                                  "available": quality_group.is_available,
-                                  "intent_category": self._intent_category
-                                  })
+        for material_node in material_nodes:
+            intents = self._get_intents_for_material(material_node, quality_groups)
+            for intent in intents:
+                if intent["layer_height"] not in layer_heights_added:
+                    new_items.append(intent)
+                    layer_heights_added.append(intent["layer_height"])
 
         # Now that we added all intents that we found something for, ensure that we set add ticks (and layer_heights)
         # for all groups that we don't have anything for (and set it to not available)
@@ -124,8 +90,43 @@ class IntentModel(ListModel):
         new_items = sorted(new_items, key=lambda x: x["layer_height"])
         self.setItems(new_items)
 
+    ##  Get the active materials for all extruders. No duplicates will be returned
+    def _get_active_materials(self) -> Set[MaterialNode]:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        container_tree = ContainerTree.getInstance()
+        machine_node = container_tree.machines[global_stack.definition.getId()]
+        nodes = set([])
+
+        for extruder in global_stack.extruderList:
+            active_variant_name = extruder.variant.getMetaDataEntry("name")
+            active_variant_node = machine_node.variants[active_variant_name]
+            active_material_node = active_variant_node.materials[extruder.material.getMetaDataEntry("base_file")]
+            nodes.add(active_material_node)
+
+        return nodes
+
+    def _get_intents_for_material(self, active_material_node: MaterialNode, quality_groups: Dict[str, QualityGroup]) -> List[Dict[str, Any]]:
+        extruder_intents = []  # type: List[Dict[str, Any]]
+
+        for quality_id, quality_node in active_material_node.qualities.items():
+            if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
+                continue
+            quality_group = quality_groups[quality_node.quality_type]
+            layer_height = self._fetchLayerHeight(quality_group)
+
+            for intent_id, intent_node in quality_node.intents.items():
+                if intent_node.intent_category != self._intent_category:
+                    continue
+                extruder_intents.append({"name": quality_group.name,
+                                  "quality_type": quality_group.quality_type,
+                                  "layer_height": layer_height,
+                                  "available": quality_group.is_available,
+                                  "intent_category": self._intent_category
+                                  })
+        return extruder_intents
+
     #TODO: Copied this from QualityProfilesDropdownMenuModel for the moment. This code duplication should be fixed.
-    def _fetchLayerHeight(self, quality_group) -> float:
+    def _fetchLayerHeight(self, quality_group: QualityGroup) -> float:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
         if not self._layer_height_unit:
             unit = global_stack.definition.getProperty("layer_height", "unit")
