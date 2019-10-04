@@ -80,7 +80,7 @@ class IntentManager(QObject):
         for extruder_stack in global_stack.extruderList:
             nozzle_name = extruder_stack.variant.getMetaDataEntry("name")
             material_id = extruder_stack.material.getMetaDataEntry("base_file")
-            final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata["quality_type"] in available_quality_types}
+            final_intent_ids |= {metadata["id"] for metadata in self.intentMetadatas(current_definition_id, nozzle_name, material_id) if metadata.get("quality_type") in available_quality_types}
 
         result = set()  # type: Set[Tuple[str, str]]
         for intent_id in final_intent_ids:

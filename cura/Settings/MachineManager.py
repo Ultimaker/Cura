@@ -636,6 +636,7 @@ class MachineManager(QObject):
             category = extruder.intent.getMetaDataEntry("intent_category", "default")
             if category != "default" and category != intent_category:
                 intent_category = category
+
         return intent_category
 
     # Provies a list of extruder positions that have a different intent from the active one.
@@ -1625,6 +1626,7 @@ class MachineManager(QObject):
     #   Otherwise the intent profile will be left to the empty profile, which
     #   represents the "default" intent category.
     #   \param intent_category The intent category to change to.
+    @pyqtSlot(str)
     def setIntentByCategory(self, intent_category: str) -> None:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
