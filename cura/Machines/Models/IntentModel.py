@@ -7,9 +7,10 @@ from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
 import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
-from UM.Settings.SettingFunction import SettingFunction
-from cura.Machines import MaterialNode, QualityGroup
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Machines.MaterialNode import MaterialNode
+from cura.Machines.Models.MachineModelUtils import fetch_layer_height
+from cura.Machines.QualityGroup import QualityGroup
 
 
 class IntentModel(ListModel):
@@ -78,7 +79,7 @@ class IntentModel(ListModel):
         for quality_tuple, quality_group in quality_groups.items():
             # Add the intents that are of the correct category
             if quality_tuple[0] != self._intent_category:
-                layer_height = self._fetchLayerHeight(quality_group)
+                layer_height = fetch_layer_height(quality_group)
                 if layer_height not in layer_heights_added:
                     new_items.append({"name": "Unavailable",
                                       "quality_type": "",
@@ -95,7 +96,7 @@ class IntentModel(ListModel):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         container_tree = ContainerTree.getInstance()
         machine_node = container_tree.machines[global_stack.definition.getId()]
-        nodes = set([])
+        nodes = set()  # type: Set[MaterialNode]
 
         for extruder in global_stack.extruderList:
             active_variant_name = extruder.variant.getMetaDataEntry("name")
@@ -112,7 +113,7 @@ class IntentModel(ListModel):
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
                 continue
             quality_group = quality_groups[quality_node.quality_type]
-            layer_height = self._fetchLayerHeight(quality_group)
+            layer_height = fetch_layer_height(quality_group)
 
             for intent_id, intent_node in quality_node.intents.items():
                 if intent_node.intent_category != self._intent_category:
@@ -124,36 +125,6 @@ class IntentModel(ListModel):
                                   "intent_category": self._intent_category
                                   })
         return extruder_intents
-
-    #TODO: Copied this from QualityProfilesDropdownMenuModel for the moment. This code duplication should be fixed.
-    def _fetchLayerHeight(self, quality_group: QualityGroup) -> float:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
-        if not self._layer_height_unit:
-            unit = global_stack.definition.getProperty("layer_height", "unit")
-            if not unit:
-                unit = ""
-            self._layer_height_unit = unit
-
-        default_layer_height = global_stack.definition.getProperty("layer_height", "value")
-
-        # Get layer_height from the quality profile for the GlobalStack
-        if quality_group.node_for_global is None:
-            return float(default_layer_height)
-        container = quality_group.node_for_global.container
-
-        layer_height = default_layer_height
-        if container and container.hasProperty("layer_height", "value"):
-            layer_height = container.getProperty("layer_height", "value")
-        else:
-            # Look for layer_height in the GlobalStack from material -> definition
-            container = global_stack.definition
-            if container and container.hasProperty("layer_height", "value"):
-                layer_height = container.getProperty("layer_height", "value")
-
-        if isinstance(layer_height, SettingFunction):
-            layer_height = layer_height(global_stack)
-
-        return float(layer_height)
 
     def __repr__(self):
         return str(self.items)
