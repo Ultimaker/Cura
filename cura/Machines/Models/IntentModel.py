@@ -94,6 +94,9 @@ class IntentModel(ListModel):
     ##  Get the active materials for all extruders. No duplicates will be returned
     def _get_active_materials(self) -> Set[MaterialNode]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return set()
+
         container_tree = ContainerTree.getInstance()
         machine_node = container_tree.machines[global_stack.definition.getId()]
         nodes = set()  # type: Set[MaterialNode]
