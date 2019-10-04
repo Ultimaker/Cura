@@ -123,6 +123,14 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # For updating active quality display name
+        self.activeQualityChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeIntentChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityGroupChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
+
+    activeQualityDisplayNameChanged = pyqtSignal()
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -640,12 +648,13 @@ class MachineManager(QObject):
         active_intent_category = self.activeIntentCategory
         result = []
         for extruder in global_container_stack.extruderList:
+            if not extruder.isEnabled:
+                continue
             category = extruder.intent.getMetaDataEntry("intent_category", "default")
             if category != active_intent_category:
                 result.append(str(int(extruder.getMetaDataEntry("position")) + 1))
 
         return result
-
 
     ##  Returns whether there is anything unsupported in the current set-up.
     #
@@ -1044,6 +1053,7 @@ class MachineManager(QObject):
         self.forceUpdateAllSettings()
         # Also trigger the build plate compatibility to update
         self.activeMaterialChanged.emit()
+        self.activeIntentChanged.emit()
 
     def _onMachineNameChanged(self) -> None:
         self.globalContainerChanged.emit()
@@ -1357,11 +1367,7 @@ class MachineManager(QObject):
             # If we can keep the current material after the switch, try to do so.
             nozzle_node = ContainerTree.getInstance().machines[self._global_container_stack.definition.getId()].variants[current_nozzle_name]
             candidate_materials = nozzle_node.materials
-            old_approximate_material_diameter = None  # type: Optional[float]
-            if candidate_materials:
-                candidate_material = list(candidate_materials.values())[0]
-                default_material_diameter = "2.85"
-                old_approximate_material_diameter = int(round(float(candidate_material.container.getMetaDataEntry("properties/diameter", default_material_diameter))))
+            old_approximate_material_diameter = int(extruder.material.getMetaDataEntry("approximate_diameter", default = 3))
             new_approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
 
             # Only switch to the old candidate material if the approximate material diameter of the extruder stays the
@@ -1583,6 +1589,34 @@ class MachineManager(QObject):
         if not no_dialog and self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
+    # The display name of currently active quality.
+    # This display name is:
+    #  - For built-in qualities (quality/intent): the quality type name, such as "Fine", "Normal", etc.
+    #  - For custom qualities: <custom_quality_name> - <intent_name> - <quality_type_name>
+    #        Examples:
+    #          - "my_profile - Fine" (only based on a default quality, no intent involved)
+    #          - "my_profile - Engineering - Fine" (based on an intent)
+    @pyqtProperty(str, notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayName(self) -> str:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return ""
+
+        # Not a custom quality
+        display_name = self.activeQualityOrQualityChangesName
+        if global_stack.qualityChanges == empty_quality_changes_container:
+            return display_name
+
+        # A custom quality
+        intent_category = self.activeIntentCategory
+        if intent_category != "default":
+            from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
+            intent_display_name = IntentCategoryModel.name_translation.get(intent_category, catalog.i18nc("@label", "Unknown"))
+            display_name += " - {intent_name}".format(intent_name = intent_display_name)
+
+        display_name += " - {quality_level_name}".format(quality_level_name = global_stack.quality.getName())
+        return display_name
+
     ##  Change the intent category of the current printer.
     #
     #   All extruders can change their profiles. If an intent profile is
@@ -1671,6 +1705,13 @@ class MachineManager(QObject):
     def hasNotSupportedQuality(self) -> bool:
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         return (not global_container_stack is None) and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
+
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
+    def isActiveQualityCustom(self) -> bool:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return False
+        return global_stack.qualityChanges != empty_quality_changes_container
 
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:

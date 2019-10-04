@@ -3,7 +3,7 @@
 
 from typing import Any, Dict, Optional
 
-from PyQt5.QtCore import QObject, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 
 ##  Data struct to group several quality changes instance containers together.
@@ -22,7 +22,14 @@ class QualityChangesGroup(QObject):
         self.metadata_for_global = {}    # type: Dict[str, Any]
         self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
 
-    @pyqtProperty(str, constant = True)
+    nameChanged = pyqtSignal()
+
+    def setName(self, name: str) -> None:
+        if self._name != name:
+            self._name = name
+            self.nameChanged.emit()
+
+    @pyqtProperty(str, fset = setName, notify = nameChanged)
     def name(self) -> str:
         return self._name
 

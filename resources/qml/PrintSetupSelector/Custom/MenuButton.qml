@@ -49,6 +49,6 @@ Button
         anchors.leftMargin: UM.Theme.getSize("wide_margin").width
         renderType: Text.NativeRendering
         font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text")
+        color: button.enabled ? UM.Theme.getColor("text") :UM.Theme.getColor("text_inactive")
     }
 }

@@ -97,7 +97,7 @@ class CuraProfileReader(ProfileReader):
         if global_stack is None:
             return None
 
-        active_quality_definition = ContainerTree.getInstance().machines[global_stack.definition.container_id].quality_definition
+        active_quality_definition = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         if profile.getMetaDataEntry("definition") != active_quality_definition:
             profile.setMetaDataEntry("definition", active_quality_definition)
         return profile

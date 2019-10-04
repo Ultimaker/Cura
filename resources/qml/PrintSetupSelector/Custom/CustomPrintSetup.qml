@@ -7,7 +7,7 @@ import QtQuick.Controls 1.4 as OldControls
 
 import UM 1.3 as UM
 import Cura 1.6 as Cura
-
+import ".."
 
 Item
 {
@@ -50,6 +50,18 @@ Item
             verticalAlignment: Text.AlignVCenter
         }
 
+        NoIntentIcon
+        {
+            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
+            intent_type: Cura.MachineManager.activeIntentCategory
+            anchors.right: intentSelection.left
+            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+            width: Math.round(profileLabel.height * 0.5)
+            anchors.verticalCenter: parent.verticalCenter
+            height: width
+            visible: affected_extruders.length
+        }
+
         Button
         {
             id: intentSelection
@@ -88,14 +100,8 @@ Item
 
             function generateActiveQualityText()
             {
+                var result = Cura.MachineManager.activeQualityDisplayName
 
-                var result = ""
-                if(Cura.MachineManager.activeIntentCategory != "default")
-                {
-                    result += Cura.MachineManager.activeIntentCategory + " - "
-                }
-
-                result += Cura.MachineManager.activeQualityOrQualityChangesName
                 if (Cura.MachineManager.isActiveQualityExperimental)
                 {
                     result += " (Experimental)"

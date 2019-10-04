@@ -20,13 +20,8 @@ RowLayout
         {
             if (Cura.MachineManager.activeStack)
             {
-                var text = ""
-                if(Cura.MachineManager.activeIntentCategory != "default")
-                {
-                    text += Cura.MachineManager.activeIntentCategory + " - "
-                }
+                var text = Cura.MachineManager.activeQualityDisplayName
 
-                text += Cura.MachineManager.activeQualityOrQualityChangesName
                 if (!Cura.MachineManager.hasNotSupportedQuality)
                 {
                     text += " - " + layerHeight.properties.value + "mm"

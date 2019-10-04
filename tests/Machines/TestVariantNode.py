@@ -13,13 +13,13 @@ material_node_added_test_data = [({"type": "Not a material"}, ["material_1", "ma
                                  ({"type": "material", "base_file": "material_3"}, ["material_1", "material_2"]),  # material_3 is on the "NOPE" list.
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_3"}, ["material_1", "material_2"]),  # Wrong machine
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_1"}, ["material_1", "material_2"]), # No variant
-                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant": "Variant Three"}, ["material_1", "material_2"]), # Wrong variant
-                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant": "Variant One"}, ["material_1", "material_2", "material_4"])
+                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant_name": "Variant Three"}, ["material_1", "material_2"]), # Wrong variant
+                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant_name": "Variant One"}, ["material_1", "material_2", "material_4"])
                                  ]
 
-material_node_update_test_data = [({"type": "material", "base_file": "material_1", "definition": "machine_1", "variant": "Variant One"}, ["material_1"], ["material_2"]),
-                                  ({"type": "material", "base_file": "material_1", "definition": "fdmprinter", "variant": "Variant One"}, [], ["material_2", "material_1"]),  # Too generic
-                                  ({"type": "material", "base_file": "material_1", "definition": "machine_2", "variant": "Variant One"}, [], ["material_2", "material_1"])   # Wrong definition
+material_node_update_test_data = [({"type": "material", "base_file": "material_1", "definition": "machine_1", "variant_name": "Variant One"}, ["material_1"], ["material_2"]),
+                                  ({"type": "material", "base_file": "material_1", "definition": "fdmprinter", "variant_name": "Variant One"}, [], ["material_2", "material_1"]),  # Too generic
+                                  ({"type": "material", "base_file": "material_1", "definition": "machine_2", "variant_name": "Variant One"}, [], ["material_2", "material_1"])   # Wrong definition
                                   ]
 
 metadata_dict = {}

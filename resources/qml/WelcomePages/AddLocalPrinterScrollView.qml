@@ -86,7 +86,11 @@ Item
             {
                 id: machineList
 
-                cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
+                // CURA-6793
+                // Enabling the buffer seems to cause the blank items issue. When buffer is enabled, if the ListView's
+                // individual item has a dynamic change on its visibility, the ListView doesn't redraw itself.
+                // The default value of cacheBuffer is platform-dependent, so we explicitly disable it here.
+                cacheBuffer: 0
 
                 model: UM.DefinitionContainersModel
                 {

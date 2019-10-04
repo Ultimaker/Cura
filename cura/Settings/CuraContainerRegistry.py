@@ -21,6 +21,7 @@ from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
 from UM.Resources import Resources
+from UM.Util import parseBool
 from cura.ReaderWriters.ProfileWriter import ProfileWriter
 
 from . import ExtruderStack
@@ -238,7 +239,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
-                profile_definition = container_tree.machines[machine_definition.getId()].quality_definition
+                has_machine_quality = parseBool(machine_definition.getMetaDataEntry("has_machine_quality", "false"))
+                profile_definition = machine_definition.getMetaDataEntry("quality_definition", machine_definition.getId()) if has_machine_quality else "fdmprinter"
                 expected_machine_definition = container_tree.machines[global_stack.definition.getId()].quality_definition
 
                 # And check if the profile_definition matches either one (showing error if not):
@@ -293,6 +295,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile_or_list.append(profile)
 
                 # Import all profiles
+                profile_ids_added = []  # type: List[str]
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
@@ -313,11 +316,15 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
+                        # Remove any profiles that did got added.
+                        for profile_id in profile_ids_added:
+                            self.removeContainer(profile_id)
+
                         return {"status": "error", "message": catalog.i18nc(
                             "@info:status Don't translate the XML tag <filename>!",
                             "Failed to import profile from <filename>{0}</filename>:",
                             file_name) + " " + result}
-
+                    profile_ids_added.append(profile.getId())
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
             # This message is throw when the profile reader doesn't find any profile in the file
