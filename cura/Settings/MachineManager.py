@@ -123,6 +123,14 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # For updating active quality display name
+        self.activeQualityChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeIntentChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityGroupChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
+
+    activeQualityDisplayNameChanged = pyqtSignal()
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -628,16 +636,6 @@ class MachineManager(QObject):
             if category != "default" and category != intent_category:
                 intent_category = category
         return intent_category
-
-    # Returns the human-readable name of the active intent category. If the intent category is "default", returns an
-    # empty string.
-    @pyqtProperty(str, notify = activeIntentChanged)
-    def activeIntentName(self) -> str:
-        intent_category = self.activeIntentCategory
-        if intent_category == "default":
-            intent_category = ""
-        intent_name = intent_category.capitalize()
-        return intent_name
 
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
@@ -1590,6 +1588,34 @@ class MachineManager(QObject):
         # See if we need to show the Discard or Keep changes screen
         if not no_dialog and self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
+
+    # The display name of currently active quality.
+    # This display name is:
+    #  - For built-in qualities (quality/intent): the quality type name, such as "Fine", "Normal", etc.
+    #  - For custom qualities: <custom_quality_name> - <intent_name> - <quality_type_name>
+    #        Examples:
+    #          - "my_profile - Fine" (only based on a default quality, no intent involved)
+    #          - "my_profile - Engineering - Fine" (based on an intent)
+    @pyqtProperty(str, notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayName(self) -> str:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return ""
+
+        # Not a custom quality
+        display_name = self.activeQualityOrQualityChangesName
+        if global_stack.qualityChanges == empty_quality_changes_container:
+            return display_name
+
+        # A custom quality
+        intent_category = self.activeIntentCategory
+        if intent_category != "default":
+            from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
+            intent_display_name = IntentCategoryModel.name_translation.get(intent_category, catalog.i18nc("@label", "Unknown"))
+            display_name += " - {intent_name}".format(intent_name = intent_display_name)
+
+        display_name += " - {quality_level_name}".format(quality_level_name = global_stack.quality.getName())
+        return display_name
 
     ##  Change the intent category of the current printer.
     #
