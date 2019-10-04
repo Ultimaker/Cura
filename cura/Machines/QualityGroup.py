@@ -27,11 +27,12 @@ from cura.Machines.ContainerNode import ContainerNode
 #   applied to a configuration, so that when a quality level is selected, the
 #   container can directly be applied to each stack instead of looking them up
 #   again.
-class QualityGroup(QObject):
-
-    def __init__(self, name: str, quality_type: str, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
-
+class QualityGroup:
+    ##  Constructs a new group.
+    #   \param name The user-visible name for the group.
+    #   \param quality_type The quality level that each profile in this group
+    #   has.
+    def __init__(self, name: str, quality_type: str) -> None:
         self.name = name
         self.node_for_global = None  # type: Optional[ContainerNode]
         self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]
@@ -39,7 +40,6 @@ class QualityGroup(QObject):
         self.is_available = False
         self.is_experimental = False
 
-    @pyqtSlot(result = str)
     def getName(self) -> str:
         return self.name
 

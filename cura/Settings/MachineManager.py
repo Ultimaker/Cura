@@ -613,9 +613,10 @@ class MachineManager(QObject):
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return False
-        if not self.activeQualityGroup:
+        active_quality_group = self.activeQualityGroup()
+        if active_quality_group is None:
             return False
-        return self.activeQualityGroup.is_available
+        return active_quality_group.is_available
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityExperimental(self) -> bool:
@@ -1646,12 +1647,25 @@ class MachineManager(QObject):
             else:  # No intent had the correct category.
                 extruder.intent = empty_intent_container
 
-    @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
+    ##  Get the currently activated quality group.
+    #
+    #   If no printer is added yet or the printer doesn't have quality profiles,
+    #   this returns ``None``.
+    #   \return The currently active quality group.
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack or global_stack.quality == empty_quality_container:
             return None
         return ContainerTree.getInstance().getCurrentQualityGroups().get(self.activeQualityType)
+
+    ##  Get the name of the active quality group.
+    #   \return The name of the active quality group.
+    @pyqtProperty(str, notify = activeQualityGroupChanged)
+    def activeQualityGroupName(self) -> str:
+        quality_group = self.activeQualityGroup()
+        if quality_group is None:
+            return ""
+        return quality_group.getName()
 
     @pyqtSlot(QObject)
     def setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", no_dialog: bool = False) -> None:
@@ -1668,7 +1682,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._setQualityGroup(self.activeQualityGroup)
+            self._setQualityGroup(self.activeQualityGroup())
             for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
                 stack.userChanges.clear()
 
