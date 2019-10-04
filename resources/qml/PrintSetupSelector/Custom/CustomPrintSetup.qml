@@ -7,7 +7,7 @@ import QtQuick.Controls 1.4 as OldControls
 
 import UM 1.3 as UM
 import Cura 1.6 as Cura
-
+import ".."
 
 Item
 {
@@ -48,6 +48,18 @@ Item
             renderType: Text.NativeRendering
             color: UM.Theme.getColor("text")
             verticalAlignment: Text.AlignVCenter
+        }
+
+        NoIntentIcon
+        {
+            affected_extruders: Cura.MachineManager.extruderPositionsWithNonActiveIntent
+            intent_type: Cura.MachineManager.activeIntentCategory
+            anchors.right: intentSelection.left
+            anchors.rightMargin: UM.Theme.getSize("narrow_margin").width
+            width: Math.round(profileLabel.height * 0.5)
+            anchors.verticalCenter: parent.verticalCenter
+            height: width
+            visible: affected_extruders.length
         }
 
         Button
