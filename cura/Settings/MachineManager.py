@@ -658,7 +658,6 @@ class MachineManager(QObject):
 
         return result
 
-
     ##  Returns whether there is anything unsupported in the current set-up.
     #
     #   The current set-up signifies the global stack and all extruder stacks,
@@ -1675,13 +1674,6 @@ class MachineManager(QObject):
         if global_container_stack.qualityChanges != empty_quality_changes_container:
             return global_container_stack.qualityChanges.getName()
         return global_container_stack.quality.getName()
-
-    @pyqtProperty(str, notify = activeQualityChanged)
-    def activeQualityName(self) -> str:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if global_stack is None:
-            return empty_quality_container.getName()
-        return global_stack.quality.getName()
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
