@@ -152,4 +152,25 @@ def test_preferredMaterialSubmaterial():
         "preferred_material_base_file_aa04": MagicMock(getMetaDataEntry = lambda x: 3)  # This is a submaterial of the preferred material.
     }
 
-    assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_material_base_file_aa04"], "It should match exactly on this one since it's the preferred material."
+    assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_material_base_file_aa04"], "It should match on the submaterial just as well."
+
+##  Tests the preferred material matching on the approximate diameter of the
+#   filament.
+def test_preferredMaterialDiameter():
+    container_registry = MagicMock(
+        findContainersMetadata = MagicMock(return_value = [{"name": "test variant name"}])
+    )
+    machine_node = MagicMock(preferred_material = "preferred")
+
+    # Construct our own variant node with certain materials available.
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.Machines.VariantNode.VariantNode._loadAll", MagicMock()):
+            variant_node = VariantNode("test_variant", machine_node)
+
+    variant_node.materials = {
+        "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
+        "preferred_wrong_diameter": MagicMock(getMetaDataEntry = lambda x: 2),  # Approximate diameter is 2 instead of 3.
+        "preferred_correct_diameter": MagicMock(getMetaDataEntry = lambda x: 3)  # Correct approximate diameter.
+    }
+
+    assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_correct_diameter"], "It should match only on the material with correct diameter."
