@@ -1,3 +1,6 @@
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from unittest.mock import patch, MagicMock
 import pytest
 
@@ -101,7 +104,7 @@ def test_materialAdded_update(container_registry, machine_node, metadata, change
     variant_node = createVariantNode("machine_1", machine_node, container_registry)
     original_material_nodes = copy.copy(variant_node.materials)
 
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
         with patch("cura.Machines.VariantNode.MaterialNode"):  # We're not testing the material node here, so patch it out.
             with patch.dict(metadata_dict, metadata):
                 mocked_container = createMockedInstanceContainer()
@@ -113,3 +116,19 @@ def test_materialAdded_update(container_registry, machine_node, metadata, change
     for key in changed_material_list:
         assert original_material_nodes[key] != variant_node.materials[key]
 
+def test_preferredMaterialExactMatch():
+    container_registry = MagicMock(
+        findContainersMetadata = MagicMock(return_value = [{"name": "test variant name"}])
+    )
+    machine_node = MagicMock(preferred_material = "preferred_material_base_file")
+
+    # Construct our own variant node with certain materials available.
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.Machines.VariantNode.VariantNode._loadAll", MagicMock()):
+            variant_node = VariantNode("test_variant", machine_node)
+    variant_node.materials = {
+        "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
+        "preferred_material_base_file": MagicMock(getMetaDataEntry = lambda x: 3)  # Exact match.
+    }
+
+    assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_material_base_file"], "It should match exactly on this one since it's the preferred material."
