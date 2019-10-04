@@ -65,7 +65,7 @@ class IntentModel(ListModel):
 
         material_nodes = self._get_active_materials()
 
-        layer_heights_added = []
+        layer_heights_added = []  # type: List[float]
 
         for material_node in material_nodes:
             intents = self._get_intents_for_material(material_node, quality_groups)
