@@ -116,6 +116,8 @@ def test_materialAdded_update(container_registry, machine_node, metadata, change
     for key in changed_material_list:
         assert original_material_nodes[key] != variant_node.materials[key]
 
+##  Tests the preferred material when the exact base file is available in the
+#   materials list for this node.
 def test_preferredMaterialExactMatch():
     container_registry = MagicMock(
         findContainersMetadata = MagicMock(return_value = [{"name": "test variant name"}])
@@ -132,3 +134,22 @@ def test_preferredMaterialExactMatch():
     }
 
     assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_material_base_file"], "It should match exactly on this one since it's the preferred material."
+
+##  Tests the preferred material when a submaterial is available in the
+#   materials list for this node.
+def test_preferredMaterialSubmaterial():
+    container_registry = MagicMock(
+        findContainersMetadata = MagicMock(return_value = [{"name": "test variant name"}])
+    )
+    machine_node = MagicMock(preferred_material = "preferred_material_base_file")
+
+    # Construct our own variant node with certain materials available.
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.Machines.VariantNode.VariantNode._loadAll", MagicMock()):
+            variant_node = VariantNode("test_variant", machine_node)
+    variant_node.materials = {
+        "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
+        "preferred_material_base_file_aa04": MagicMock(getMetaDataEntry = lambda x: 3)  # This is a submaterial of the preferred material.
+    }
+
+    assert variant_node.preferredMaterial(approximate_diameter = 3) == variant_node.materials["preferred_material_base_file_aa04"], "It should match exactly on this one since it's the preferred material."
