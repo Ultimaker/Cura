@@ -20,17 +20,7 @@ RowLayout
         {
             if (Cura.MachineManager.activeStack)
             {
-                var text = Cura.MachineManager.activeQualityOrQualityChangesName
-
-                // If this is a custom quality, add intent (if present) and quality it is based on
-                if (Cura.MachineManager.isActiveQualityCustom)
-                {
-                    if (Cura.MachineManager.activeIntentName != "")
-                    {
-                        text += " - " + Cura.MachineManager.activeIntentName
-                    }
-                    text += " - " + Cura.MachineManager.activeQualityGroup.getName()
-                }
+                var text = Cura.MachineManager.activeQualityDisplayName
 
                 if (!Cura.MachineManager.hasNotSupportedQuality)
                 {

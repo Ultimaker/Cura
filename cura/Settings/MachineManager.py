@@ -123,6 +123,14 @@ class MachineManager(QObject):
         self.globalContainerChanged.connect(self.printerConnectedStatusChanged)
         self.outputDevicesChanged.connect(self.printerConnectedStatusChanged)
 
+        # For updating active quality display name
+        self.activeQualityChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeIntentChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityGroupChanged.connect(self.activeQualityDisplayNameChanged)
+        self.activeQualityChangesGroupChanged.connect(self.activeQualityDisplayNameChanged)
+
+    activeQualityDisplayNameChanged = pyqtSignal()
+
     activeQualityGroupChanged = pyqtSignal()
     activeQualityChangesGroupChanged = pyqtSignal()
 
@@ -605,9 +613,10 @@ class MachineManager(QObject):
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return False
-        if not self.activeQualityGroup:
+        active_quality_group = self.activeQualityGroup()
+        if active_quality_group is None:
             return False
-        return self.activeQualityGroup.is_available
+        return active_quality_group.is_available
 
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def isActiveQualityExperimental(self) -> bool:
@@ -628,16 +637,6 @@ class MachineManager(QObject):
             if category != "default" and category != intent_category:
                 intent_category = category
         return intent_category
-
-    # Returns the human-readable name of the active intent category. If the intent category is "default", returns an
-    # empty string.
-    @pyqtProperty(str, notify = activeIntentChanged)
-    def activeIntentName(self) -> str:
-        intent_category = self.activeIntentCategory
-        if intent_category == "default":
-            intent_category = ""
-        intent_name = intent_category.capitalize()
-        return intent_name
 
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
@@ -1591,6 +1590,34 @@ class MachineManager(QObject):
         if not no_dialog and self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
+    # The display name of currently active quality.
+    # This display name is:
+    #  - For built-in qualities (quality/intent): the quality type name, such as "Fine", "Normal", etc.
+    #  - For custom qualities: <custom_quality_name> - <intent_name> - <quality_type_name>
+    #        Examples:
+    #          - "my_profile - Fine" (only based on a default quality, no intent involved)
+    #          - "my_profile - Engineering - Fine" (based on an intent)
+    @pyqtProperty(str, notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayName(self) -> str:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return ""
+
+        # Not a custom quality
+        display_name = self.activeQualityOrQualityChangesName
+        if global_stack.qualityChanges == empty_quality_changes_container:
+            return display_name
+
+        # A custom quality
+        intent_category = self.activeIntentCategory
+        if intent_category != "default":
+            from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
+            intent_display_name = IntentCategoryModel.name_translation.get(intent_category, catalog.i18nc("@label", "Unknown"))
+            display_name += " - {intent_name}".format(intent_name = intent_display_name)
+
+        display_name += " - {quality_level_name}".format(quality_level_name = global_stack.quality.getName())
+        return display_name
+
     ##  Change the intent category of the current printer.
     #
     #   All extruders can change their profiles. If an intent profile is
@@ -1620,12 +1647,25 @@ class MachineManager(QObject):
             else:  # No intent had the correct category.
                 extruder.intent = empty_intent_container
 
-    @pyqtProperty(QObject, fset = setQualityGroup, notify = activeQualityGroupChanged)
+    ##  Get the currently activated quality group.
+    #
+    #   If no printer is added yet or the printer doesn't have quality profiles,
+    #   this returns ``None``.
+    #   \return The currently active quality group.
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack or global_stack.quality == empty_quality_container:
             return None
         return ContainerTree.getInstance().getCurrentQualityGroups().get(self.activeQualityType)
+
+    ##  Get the name of the active quality group.
+    #   \return The name of the active quality group.
+    @pyqtProperty(str, notify = activeQualityGroupChanged)
+    def activeQualityGroupName(self) -> str:
+        quality_group = self.activeQualityGroup()
+        if quality_group is None:
+            return ""
+        return quality_group.getName()
 
     @pyqtSlot(QObject)
     def setQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", no_dialog: bool = False) -> None:
@@ -1642,7 +1682,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
-            self._setQualityGroup(self.activeQualityGroup)
+            self._setQualityGroup(self.activeQualityGroup())
             for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
                 stack.userChanges.clear()
 

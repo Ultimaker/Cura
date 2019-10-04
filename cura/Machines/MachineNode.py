@@ -8,6 +8,7 @@ from UM.Signal import Signal
 from UM.Util import parseBool
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To find all the variants for this machine.
 
+import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construct groups of quality changes profiles that belong together.
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
@@ -74,7 +75,7 @@ class MachineNode(ContainerNode):
                 qualities_per_type_per_extruder[extruder_nr] = self.global_qualities
             else:
                 # Use the actually specialised quality profiles.
-                qualities_per_type_per_extruder[extruder_nr] = {node.getMetaDataEntry("quality_type"): node for node in self.variants[variant_name].materials[material_base].qualities.values()}
+                qualities_per_type_per_extruder[extruder_nr] = {node.quality_type: node for node in self.variants[variant_name].materials[material_base].qualities.values()}
 
         # Create the quality group for each available type.
         quality_groups = {}
@@ -82,15 +83,7 @@ class MachineNode(ContainerNode):
             if not global_quality_node.container:
                 Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
                 continue
-            # CURA-6599
-            # Same as QualityChangesGroup.
-            # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
-            # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
-            # parent to application seems to work.
-            from cura.CuraApplication import CuraApplication
-            quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"),
-                                                        quality_type = quality_type,
-                                                        parent = CuraApplication.getInstance())
+            quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
@@ -170,7 +163,7 @@ class MachineNode(ContainerNode):
 
     ##  (Re)loads all variants under this printer.
     @UM.FlameProfiler.profile
-    def _loadAll(self):
+    def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
             self.variants["empty"] = VariantNode("empty_variant", machine = self)

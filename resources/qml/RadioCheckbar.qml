@@ -19,7 +19,7 @@ Item
     property int barSize: UM.Theme.getSize("slider_groove_radius").height
     property var isCheckedFunction // Function that accepts the modelItem and returns if the item should be active.
 
-    implicitWidth: 200
+    implicitWidth: 200 * screenScaleFactor
     implicitHeight: checkboxSize
 
     property var dataModel: null
@@ -62,7 +62,7 @@ Item
                 Layout.fillHeight: true
                 // The last item of the repeater needs to be shorter, as we don't need another part to fit
                 // the horizontal bar. The others should essentially not be limited.
-                Layout.maximumWidth: index + 1 === repeater.count ? activeComponent.width: 200000000
+                Layout.maximumWidth: index + 1 === repeater.count ? activeComponent.width : 200000000
 
                 property bool isEnabled: model.available
                 // The horizontal bar between the checkable options.

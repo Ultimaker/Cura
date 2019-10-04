@@ -111,14 +111,7 @@ class QualityManager(QObject):
         quality_group_dict = dict()
         for node in nodes_to_check:
             if node and node.quality_type:
-                # CURA-6599
-                # Same as QualityChangesGroup.
-                # For some reason, QML will get null or fail to convert type for MachineManager.activeQualityChangesGroup() to
-                # a QObject. Setting the object ownership to QQmlEngine.CppOwnership doesn't work, but setting the object
-                # parent to application seems to work.
-                from cura.CuraApplication import CuraApplication
-                quality_group = QualityGroup(node.getMetaDataEntry("name", ""), node.quality_type,
-                                             parent = CuraApplication.getInstance())
+                quality_group = QualityGroup(node.getMetaDataEntry("name", ""), node.quality_type)
                 quality_group.setGlobalNode(node)
                 quality_group_dict[node.quality_type] = quality_group
 

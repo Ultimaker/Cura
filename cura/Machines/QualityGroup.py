@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, Optional, List, Set
@@ -11,24 +11,28 @@ from UM.Util import parseBool
 from cura.Machines.ContainerNode import ContainerNode
 
 
+##  A QualityGroup represents a group of quality containers that must be applied
+#   to each ContainerStack when it's used.
 #
-# A QualityGroup represents a group of containers that must be applied to each ContainerStack when it's used.
-# Some concrete examples are Quality and QualityChanges: when we select quality type "normal", this quality type
-# must be applied to all stacks in a machine, although each stack can have different containers. Use an Ultimaker 3
-# as an example, suppose we choose quality type "normal", the actual InstanceContainers on each stack may look
-# as below:
-#                       GlobalStack         ExtruderStack 1         ExtruderStack 2
-# quality container:    um3_global_normal   um3_aa04_pla_normal     um3_aa04_abs_normal
+#   A concrete example: When there are two extruders and the user selects the
+#   quality type "normal", this quality type must be applied to all stacks in a
+#   machine, although each stack can have different containers. So one global
+#   profile gets put on the global stack and one extruder profile gets put on
+#   each extruder stack. This quality group then contains the following
+#   profiles (for instance):
+#                      GlobalStack       ExtruderStack 1     ExtruderStack 2
+#   quality container: um3_global_normal um3_aa04_pla_normal um3_aa04_abs_normal
 #
-# This QualityGroup is mainly used in quality and quality_changes to group the containers that can be applied to
-# a machine, so when a quality/custom quality is selected, the container can be directly applied to each stack instead
-# of looking them up again.
-#
-class QualityGroup(QObject):
-
-    def __init__(self, name: str, quality_type: str, parent: Optional["QObject"] = None) -> None:
-        super().__init__(parent)
-
+#   The purpose of these quality groups is to group the containers that can be
+#   applied to a configuration, so that when a quality level is selected, the
+#   container can directly be applied to each stack instead of looking them up
+#   again.
+class QualityGroup:
+    ##  Constructs a new group.
+    #   \param name The user-visible name for the group.
+    #   \param quality_type The quality level that each profile in this group
+    #   has.
+    def __init__(self, name: str, quality_type: str) -> None:
         self.name = name
         self.node_for_global = None  # type: Optional[ContainerNode]
         self.nodes_for_extruders = {}  # type: Dict[int, ContainerNode]
@@ -36,7 +40,6 @@ class QualityGroup(QObject):
         self.is_available = False
         self.is_experimental = False
 
-    @pyqtSlot(result = str)
     def getName(self) -> str:
         return self.name
 
