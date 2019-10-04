@@ -9,7 +9,7 @@ from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
-
+import UM.FlameProfiler
 if TYPE_CHECKING:
     from typing import Dict
     from cura.Machines.MachineNode import MachineNode
@@ -38,6 +38,7 @@ class VariantNode(ContainerNode):
         self._loadAll()
 
     ##  (Re)loads all materials under this variant.
+    @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
 
@@ -92,6 +93,7 @@ class VariantNode(ContainerNode):
 
     ##  When a material gets added to the set of profiles, we need to update our
     #   tree here.
+    @UM.FlameProfiler.profile
     def _materialAdded(self, container: ContainerInterface) -> None:
         if container.getMetaDataEntry("type") != "material":
             return  # Not interested.
@@ -125,6 +127,7 @@ class VariantNode(ContainerNode):
         self.materials[base_file].materialChanged.connect(self.materialsChanged)
         self.materialsChanged.emit(self.materials[base_file])
 
+    @UM.FlameProfiler.profile
     def _materialRemoved(self, container: ContainerInterface) -> None:
         if container.getMetaDataEntry("type") != "material":
             return  # Only interested in materials.

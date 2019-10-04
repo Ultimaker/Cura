@@ -13,6 +13,7 @@ from cura.Machines.QualityChangesGroup import QualityChangesGroup  # To construc
 from cura.Machines.QualityGroup import QualityGroup  # To construct groups of quality profiles that belong together.
 from cura.Machines.QualityNode import QualityNode
 from cura.Machines.VariantNode import VariantNode
+import UM.FlameProfiler
 
 
 ##  This class represents a machine in the container tree.
@@ -168,6 +169,7 @@ class MachineNode(ContainerNode):
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
     ##  (Re)loads all variants under this printer.
+    @UM.FlameProfiler.profile
     def _loadAll(self):
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:

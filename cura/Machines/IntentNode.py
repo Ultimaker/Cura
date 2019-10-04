@@ -10,6 +10,7 @@ from cura.Machines.ContainerNode import ContainerNode
 if TYPE_CHECKING:
     from cura.Machines.QualityNode import QualityNode
 
+
 ##  This class represents an intent profile in the container tree.
 #
 #   This class has no more subnodes.

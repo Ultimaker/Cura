@@ -9,7 +9,7 @@ from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.QualityNode import QualityNode
-
+import UM.FlameProfiler
 if TYPE_CHECKING:
     from typing import Dict
     from cura.Machines.VariantNode import VariantNode
@@ -55,6 +55,7 @@ class MaterialNode(ContainerNode):
         ))
         return fallback
 
+    @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
         # Find all quality profiles that fit on this material.

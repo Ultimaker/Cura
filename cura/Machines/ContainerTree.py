@@ -11,10 +11,12 @@ from cura.Settings.GlobalStack import GlobalStack  # To listen only to global st
 
 from typing import Dict, List, TYPE_CHECKING
 import time
+import UM.FlameProfiler
 
 if TYPE_CHECKING:
     from cura.Machines.QualityGroup import QualityGroup
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
+
 
 ##  This class contains a look-up tree for which containers are available at
 #   which stages of configuration.
@@ -77,6 +79,7 @@ class ContainerTree:
     # Add a machine node by the id of it's definition.
     # This is automatically called by the _machineAdded function, but it's sometimes needed to add a machine node
     # faster than would have been done when waiting on any signals (for instance; when creating an entirely new machine)
+    @UM.FlameProfiler.profile
     def addMachineNodeByDefinitionId(self, definition_id: str) -> None:
         if definition_id in self.machines:
             return  # Already have this definition ID.

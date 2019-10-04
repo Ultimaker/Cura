@@ -6,11 +6,12 @@ from typing import Union, TYPE_CHECKING
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.IntentNode import IntentNode
-
+import UM.FlameProfiler
 if TYPE_CHECKING:
     from typing import Dict
     from cura.Machines.MaterialNode import MaterialNode
     from cura.Machines.MachineNode import MachineNode
+
 
 ##  Represents a quality profile in the container tree.
 #
@@ -29,6 +30,7 @@ class QualityNode(ContainerNode):
         self._material = my_metadata.get("material")
         self._loadAll()
 
+    @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
         container_registry = ContainerRegistry.getInstance()
 
