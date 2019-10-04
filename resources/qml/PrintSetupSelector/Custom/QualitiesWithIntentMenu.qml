@@ -44,7 +44,7 @@ Popup
         ScrollView
         {
             property real maximumHeight: screenScaleFactor * 400
-
+            contentHeight: dataColumn.height
             height: Math.min(contentHeight, maximumHeight)
             clip: true
 
@@ -52,6 +52,7 @@ Popup
 
             Column
             {
+                id: dataColumn
                 width: parent.width
                 Repeater
                 {
