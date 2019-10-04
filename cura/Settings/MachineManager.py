@@ -650,6 +650,8 @@ class MachineManager(QObject):
         active_intent_category = self.activeIntentCategory
         result = []
         for extruder in global_container_stack.extruderList:
+            if not extruder.isEnabled:
+                continue
             category = extruder.intent.getMetaDataEntry("intent_category", "default")
             if category != active_intent_category:
                 result.append(str(int(extruder.getMetaDataEntry("position")) + 1))
@@ -1054,6 +1056,7 @@ class MachineManager(QObject):
         self.forceUpdateAllSettings()
         # Also trigger the build plate compatibility to update
         self.activeMaterialChanged.emit()
+        self.activeIntentChanged.emit()
 
     def _onMachineNameChanged(self) -> None:
         self.globalContainerChanged.emit()
