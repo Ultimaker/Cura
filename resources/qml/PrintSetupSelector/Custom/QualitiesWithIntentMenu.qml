@@ -41,147 +41,156 @@ Popup
     contentItem: Column
     {
         // This repeater adds the intent labels
-        Repeater
+        ScrollView
         {
-            model: dataModel
-            delegate: Item
-            {
-                // We need to set it like that, otherwise we'd have to set the sub model with model: model.qualities
-                // Which obviously won't work due to naming conflicts.
-                property variant subItemModel: model.qualities
+            property real maximumHeight: screenScaleFactor * 400
 
-                height: childrenRect.height
-                anchors
-                {
-                    left: parent.left
-                    right: parent.right
-                }
+            height: Math.min(contentHeight, maximumHeight)
+            clip: true
 
-                Label
-                {
-                    id: headerLabel
-                    text: model.name
-                    renderType: Text.NativeRendering
-                    height: visible ? contentHeight: 0
-                    enabled: false
-                    visible: qualitiesList.visibleChildren.length > 0
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                }
-
-                Column
-                {
-                    id: qualitiesList
-                    anchors.top: headerLabel.bottom
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-
-                    // We set it by means of a binding, since then we can use the when condition, which we need to
-                    // prevent a binding loop.
-                    Binding
-                    {
-                        target: parent
-                        property: "height"
-                        value: parent.childrenRect.height
-                        when: parent.visibleChildren.length > 0
-                    }
-
-                    // Add the qualities that belong to the intent
-                    Repeater
-                    {
-                        visible: false
-                        model: subItemModel
-                        MenuButton
-                        {
-                            id: button
-
-                            onClicked: Cura.IntentManager.selectIntent(model.intent_category, model.quality_type)
-
-                            width: parent.width
-                            checkable: true
-                            visible: model.available
-                            text: model.name + " - " + model.layer_height + " mm"
-                            checked:
-                            {
-                                if (Cura.MachineManager.hasCustomQuality)
-                                {
-                                    // When user created profile is active, no quality tickbox should be active.
-                                    return false;
-                                }
-                                return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category;
-                            }
-                            ButtonGroup.group: buttonGroup
-                        }
-                    }
-                }
-            }
-        }
-
-        //Another "intent category" for custom profiles.
-        Item
-        {
-            height: childrenRect.height
-            anchors
-            {
-                left: parent.left
-                right: parent.right
-            }
-
-            Label
-            {
-                id: customProfileHeader
-                text: catalog.i18nc("@label:header", "Custom profiles")
-                renderType: Text.NativeRendering
-                height: visible ? contentHeight: 0
-                enabled: false
-                visible: profilesList.visibleChildren.length > 1
-                anchors.left: parent.left
-                anchors.leftMargin: UM.Theme.getSize("default_margin").width
-            }
+            ScrollBar.vertical.policy: height == maximumHeight ? ScrollBar.AlwaysOn: ScrollBar.AlwaysOff
 
             Column
             {
-                id: profilesList
-                anchors
-                {
-                    top: customProfileHeader.bottom
-                    left: parent.left
-                    right: parent.right
-                }
-
-                //We set it by means of a binding, since then we can use the
-                //"when" condition, which we need to prevent a binding loop.
-                Binding
-                {
-                    target: parent
-                    property: "height"
-                    value: parent.childrenRect.height
-                    when: parent.visibleChildren.length > 1
-                }
-
-                //Add all the custom profiles.
+                width: parent.width
                 Repeater
                 {
-                    model: Cura.CustomQualityProfilesDropDownMenuModel
-                    MenuButton
+                    model: dataModel
+                    delegate: Item
                     {
-                        onClicked: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
+                        // We need to set it like that, otherwise we'd have to set the sub model with model: model.qualities
+                        // Which obviously won't work due to naming conflicts.
+                        property variant subItemModel: model.qualities
 
-                        width: parent.width
-                        checkable: true
-                        visible: model.available
-                        text: model.name
-                        checked:
+                        height: childrenRect.height
+                        width: popup.contentWidth
+
+                        Label
                         {
-                            var active_quality_group = Cura.MachineManager.activeQualityChangesGroup
-
-                            if (active_quality_group != null)
-                            {
-                                return active_quality_group.name == model.quality_changes_group.name
-                            }
-                            return false
+                            id: headerLabel
+                            text: model.name
+                            renderType: Text.NativeRendering
+                            height: visible ? contentHeight: 0
+                            enabled: false
+                            visible: qualitiesList.visibleChildren.length > 0
+                            anchors.left: parent.left
+                            anchors.leftMargin: UM.Theme.getSize("default_margin").width
                         }
-                        ButtonGroup.group: buttonGroup
+
+                        Column
+                        {
+                            id: qualitiesList
+                            anchors.top: headerLabel.bottom
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+
+                            // We set it by means of a binding, since then we can use the when condition, which we need to
+                            // prevent a binding loop.
+                            Binding
+                            {
+                                target: parent
+                                property: "height"
+                                value: parent.childrenRect.height
+                                when: parent.visibleChildren.length > 0
+                            }
+
+                            // Add the qualities that belong to the intent
+                            Repeater
+                            {
+                                visible: false
+                                model: subItemModel
+                                MenuButton
+                                {
+                                    id: button
+
+                                    onClicked: Cura.IntentManager.selectIntent(model.intent_category, model.quality_type)
+
+                                    width: parent.width
+                                    checkable: true
+                                    visible: model.available
+                                    text: model.name + " - " + model.layer_height + " mm"
+                                    checked:
+                                    {
+                                        if (Cura.MachineManager.hasCustomQuality)
+                                        {
+                                            // When user created profile is active, no quality tickbox should be active.
+                                            return false;
+                                        }
+                                        return Cura.MachineManager.activeQualityType == model.quality_type && Cura.MachineManager.activeIntentCategory == model.intent_category;
+                                    }
+                                    ButtonGroup.group: buttonGroup
+                                }
+                            }
+                        }
+                    }
+                }
+                //Another "intent category" for custom profiles.
+                Item
+                {
+                    height: childrenRect.height
+                    anchors
+                    {
+                        left: parent.left
+                        right: parent.right
+                    }
+
+                    Label
+                    {
+                        id: customProfileHeader
+                        text: catalog.i18nc("@label:header", "Custom profiles")
+                        renderType: Text.NativeRendering
+                        height: visible ? contentHeight: 0
+                        enabled: false
+                        visible: profilesList.visibleChildren.length > 1
+                        anchors.left: parent.left
+                        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    }
+
+                    Column
+                    {
+                        id: profilesList
+                        anchors
+                        {
+                            top: customProfileHeader.bottom
+                            left: parent.left
+                            right: parent.right
+                        }
+
+                        //We set it by means of a binding, since then we can use the
+                        //"when" condition, which we need to prevent a binding loop.
+                        Binding
+                        {
+                            target: parent
+                            property: "height"
+                            value: parent.childrenRect.height
+                            when: parent.visibleChildren.length > 1
+                        }
+
+                        //Add all the custom profiles.
+                        Repeater
+                        {
+                            model: Cura.CustomQualityProfilesDropDownMenuModel
+                            MenuButton
+                            {
+                                onClicked: Cura.MachineManager.setQualityChangesGroup(model.quality_changes_group)
+
+                                width: parent.width
+                                checkable: true
+                                visible: model.available
+                                text: model.name
+                                checked:
+                                {
+                                    var active_quality_group = Cura.MachineManager.activeQualityChangesGroup
+
+                                    if (active_quality_group != null)
+                                    {
+                                        return active_quality_group.name == model.quality_changes_group.name
+                                    }
+                                    return false
+                                }
+                                ButtonGroup.group: buttonGroup
+                            }
+                        }
                     }
                 }
             }
