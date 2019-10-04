@@ -97,7 +97,7 @@ Item
                     {
                         result += " - " + Cura.MachineManager.activeIntentName
                     }
-                    result += " - " + Cura.MachineManager.activeQualityName
+                    result += " - " + Cura.MachineManager.activeQualityGroup.getName()
                 }
 
                 if (Cura.MachineManager.isActiveQualityExperimental)

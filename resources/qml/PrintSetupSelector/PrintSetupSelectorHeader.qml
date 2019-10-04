@@ -29,7 +29,7 @@ RowLayout
                     {
                         text += " - " + Cura.MachineManager.activeIntentName
                     }
-                    text += " - " + Cura.MachineManager.activeQualityName
+                    text += " - " + Cura.MachineManager.activeQualityGroup.getName()
                 }
 
                 if (!Cura.MachineManager.hasNotSupportedQuality)
