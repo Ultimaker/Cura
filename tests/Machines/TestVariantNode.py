@@ -162,9 +162,21 @@ def test_preferredMaterialDiameter(empty_variant_node):
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material_correct_diameter"], "It should match only on the material with correct diameter."
 
+##  Tests the preferred material matching on a different material if the
+#   diameter is wrong.
 def test_preferredMaterialDiameterNoMatch(empty_variant_node):
     empty_variant_node.materials = collections.OrderedDict()
     empty_variant_node.materials["some_different_material"] = MagicMock(getMetaDataEntry = lambda x: 3)  # This one first so that it gets iterated over first.
     empty_variant_node.materials["preferred_material_wrong_diameter"] = MagicMock(getMetaDataEntry = lambda x: 2)
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["some_different_material"], "It should match on another material with the correct diameter if the preferred one is unavailable."
+
+##  Tests that the material diameter is considered more important to match than
+#   the preferred diameter.
+def test_preferredMaterialDiameterPreference(empty_variant_node):
+    empty_variant_node.materials = collections.OrderedDict()
+    empty_variant_node.materials["some_different_material"] = MagicMock(getMetaDataEntry = lambda x: 2)  # This one first so that it gets iterated over first.
+    empty_variant_node.materials["preferred_material_wrong_diameter"] = MagicMock(getMetaDataEntry = lambda x: 2)  # Matches on ID but not diameter.
+    empty_variant_node.materials["not_preferred_but_correct_diameter"] = MagicMock(getMetaDataEntry = lambda x: 3)  # Matches diameter but not ID.
+
+    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["not_preferred_but_correct_diameter"], "It should match on the correct diameter even if it's not the preferred one."
