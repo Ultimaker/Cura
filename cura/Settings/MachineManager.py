@@ -629,6 +629,16 @@ class MachineManager(QObject):
                 intent_category = category
         return intent_category
 
+    # Returns the human-readable name of the active intent category. If the intent category is "default", returns an
+    # empty string.
+    @pyqtProperty(str, notify = activeIntentChanged)
+    def activeIntentName(self) -> str:
+        intent_category = self.activeIntentCategory
+        if intent_category == "default":
+            intent_category = ""
+        intent_name = intent_category.capitalize()
+        return intent_name
+
     # Provies a list of extruder positions that have a different intent from the active one.
     @pyqtProperty("QStringList", notify=activeIntentChanged)
     def extruderPositionsWithNonActiveIntent(self):
@@ -1663,10 +1673,24 @@ class MachineManager(QObject):
             return global_container_stack.qualityChanges.getName()
         return global_container_stack.quality.getName()
 
+    @pyqtProperty(str, notify = activeQualityChanged)
+    def activeQualityName(self) -> str:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return empty_quality_container.getName()
+        return global_stack.quality.getName()
+
     @pyqtProperty(bool, notify = activeQualityGroupChanged)
     def hasNotSupportedQuality(self) -> bool:
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         return (not global_container_stack is None) and global_container_stack.quality == empty_quality_container and global_container_stack.qualityChanges == empty_quality_changes_container
+
+    @pyqtProperty(bool, notify = activeQualityGroupChanged)
+    def isActiveQualityCustom(self) -> bool:
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
+        if global_stack is None:
+            return False
+        return global_stack.qualityChanges != empty_quality_changes_container
 
     def _updateUponMaterialMetadataChange(self) -> None:
         if self._global_container_stack is None:

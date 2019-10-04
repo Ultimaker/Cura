@@ -21,6 +21,7 @@ from UM.Message import Message
 from UM.Platform import Platform
 from UM.PluginRegistry import PluginRegistry  # For getting the possible profile writers to write with.
 from UM.Resources import Resources
+from UM.Util import parseBool
 from cura.ReaderWriters.ProfileWriter import ProfileWriter
 
 from . import ExtruderStack
@@ -238,7 +239,8 @@ class CuraContainerRegistry(ContainerRegistry):
 
                 # Get the expected machine definition.
                 # i.e.: We expect gcode for a UM2 Extended to be defined as normal UM2 gcode...
-                profile_definition = machine_definition.getMetaDataEntry("quality_definition", machine_definition.getId())
+                has_machine_quality = parseBool(machine_definition.getMetaDataEntry("has_machine_quality", "false"))
+                profile_definition = machine_definition.getMetaDataEntry("quality_definition", machine_definition.getId()) if has_machine_quality else "fdmprinter"
                 expected_machine_definition = container_tree.machines[global_stack.definition.getId()].quality_definition
 
                 # And check if the profile_definition matches either one (showing error if not):
