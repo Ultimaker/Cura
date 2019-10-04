@@ -55,7 +55,6 @@ def test_metadataProperties(container_registry):
     # Check if each of the metadata entries got stored properly.
     assert not node.has_materials
     assert node.has_variants
-    assert node.has_machine_materials
     assert node.has_machine_quality
     assert node.quality_definition == metadata_dict["quality_definition"]
     assert node.exclude_materials == metadata_dict["exclude_materials"]
