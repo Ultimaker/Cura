@@ -73,7 +73,7 @@ class MachineNode(ContainerNode):
                 qualities_per_type_per_extruder[extruder_nr] = self.global_qualities
             else:
                 # Use the actually specialised quality profiles.
-                qualities_per_type_per_extruder[extruder_nr] = {node.getMetaDataEntry("quality_type"): node for node in self.variants[variant_name].materials[material_base].qualities.values()}
+                qualities_per_type_per_extruder[extruder_nr] = {node.quality_type: node for node in self.variants[variant_name].materials[material_base].qualities.values()}
 
         # Create the quality group for each available type.
         quality_groups = {}
