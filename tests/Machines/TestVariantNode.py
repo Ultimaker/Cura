@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import collections  # For OrderedDict to ensure that the first iteration of preferred material is dependable.
 from unittest.mock import patch, MagicMock
 import pytest
 
@@ -160,3 +161,10 @@ def test_preferredMaterialDiameter(empty_variant_node):
     }
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material_correct_diameter"], "It should match only on the material with correct diameter."
+
+def test_preferredMaterialDiameterNoMatch(empty_variant_node):
+    empty_variant_node.materials = collections.OrderedDict()
+    empty_variant_node.materials["some_different_material"] = MagicMock(getMetaDataEntry = lambda x: 3)  # This one first so that it gets iterated over first.
+    empty_variant_node.materials["preferred_material_wrong_diameter"] = MagicMock(getMetaDataEntry = lambda x: 2)
+
+    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["some_different_material"], "It should match on another material with the correct diameter if the preferred one is unavailable."
