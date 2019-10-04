@@ -61,3 +61,55 @@ def test_metadataProperties(container_registry):
     assert node.preferred_variant_name == metadata_dict["preferred_variant_name"]
     assert node.preferred_material == metadata_dict["preferred_material"]
     assert node.preferred_quality_type == metadata_dict["preferred_quality_type"]
+
+##  Test getting quality groups when there are quality profiles available for
+#   the requested configurations on two extruders.
+def test_getQualityGroupsBothExtrudersAvailable():
+    # Create a machine node without constructing the tree beneath it. We don't want to depend on that for this test.
+    empty_container_registry = MagicMock()
+    empty_container_registry.findContainersMetadata = MagicMock(return_value = [metadata_dict])  # Still contain the MachineNode's own metadata for the constructor.
+    empty_container_registry.findInstanceContainersMetadata = MagicMock(return_value = [])
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = empty_container_registry)):
+        with patch("cura.Machines.MachineNode.MachineNode._loadAll", MagicMock()):
+            machine_node = MachineNode("machine_1")
+
+    # Prepare a tree inside the machine node.
+    extruder_0_node = MagicMock(quality_type = "quality_type_1")
+    extruder_1_node = MagicMock(quality_type = "quality_type_1")  # Same quality type, so this is the one that can be returned.
+    machine_node.variants = {
+        "variant_1": MagicMock(
+            materials = {
+                "material_1": MagicMock(
+                    qualities = {
+                        "quality_1": extruder_0_node
+                    }
+                )
+            }
+        ),
+        "variant_2": MagicMock(
+            materials = {
+                "material_2": MagicMock(
+                    qualities = {
+                        "quality_2": extruder_1_node
+                    }
+                )
+            }
+        )
+    }
+    global_node = MagicMock(
+        container = MagicMock(id = "global_quality_container"),  # Needs to exist, otherwise it won't add this quality type.
+        getMetaDataEntry = lambda _, __: "Global Quality Profile Name"
+    )
+    machine_node.global_qualities = {
+        "quality_type_1": global_node
+    }
+
+    # Request the quality groups for the variants in the machine tree.
+    result = machine_node.getQualityGroups(["variant_1", "variant_2"], ["material_1", "material_2"], [True, True])
+
+    assert "quality_type_1" in result, "This quality type was available for both extruders."
+    assert result["quality_type_1"].node_for_global == global_node
+    assert result["quality_type_1"].nodes_for_extruders[0] == extruder_0_node
+    assert result["quality_type_1"].nodes_for_extruders[1] == extruder_1_node
+    assert result["quality_type_1"].name == global_node.getMetaDataEntry("name", "Unnamed Profile")
+    assert result["quality_type_1"].quality_type == "quality_type_1"

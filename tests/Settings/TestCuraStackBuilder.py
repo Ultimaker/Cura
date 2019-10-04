@@ -56,7 +56,7 @@ def test_createMachine(application, container_registry, definition_container, gl
                        quality_container, intent_container, quality_changes_container):
     variant_manager = MagicMock(name = "Variant Manager")
     quality_manager = MagicMock(name = "Quality Manager")
-    global_variant_node = MagicMock( name = "global variant node")
+    global_variant_node = MagicMock(name = "global variant node")
     global_variant_node.container = global_variant
 
     variant_manager.getDefaultVariantNode = MagicMock(return_value = global_variant_node)
@@ -98,7 +98,7 @@ def test_createExtruderStack(application, definition_container, global_variant, 
     application.empty_quality_container = quality_container
     application.empty_intent_container = intent_container
     application.empty_quality_changes_container = quality_changes_container
-    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+    with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
         extruder_stack = CuraStackBuilder.createExtruderStack("Whatever", definition_container, "meh", 0,  global_variant, material_instance_container, quality_container)
         assert extruder_stack.variant == global_variant
         assert extruder_stack.material == material_instance_container
