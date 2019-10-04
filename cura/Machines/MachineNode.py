@@ -82,7 +82,7 @@ class MachineNode(ContainerNode):
             if not global_quality_node.container:
                 Logger.log("w", "Node {0} doesn't have a container.".format(global_quality_node.container_id))
                 continue
-            quality_groups[quality_type] = QualityGroup(name = global_quality_node.container.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
+            quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
             for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
