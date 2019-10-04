@@ -295,6 +295,7 @@ class CuraContainerRegistry(ContainerRegistry):
                         profile_or_list.append(profile)
 
                 # Import all profiles
+                profile_ids_added = []  # type: List[str]
                 for profile_index, profile in enumerate(profile_or_list):
                     if profile_index == 0:
                         # This is assumed to be the global profile
@@ -315,11 +316,15 @@ class CuraContainerRegistry(ContainerRegistry):
 
                     result = self._configureProfile(profile, profile_id, new_name, expected_machine_definition)
                     if result is not None:
+                        # Remove any profiles that did got added.
+                        for profile_id in profile_ids_added:
+                            self.removeContainer(profile_id)
+
                         return {"status": "error", "message": catalog.i18nc(
                             "@info:status Don't translate the XML tag <filename>!",
                             "Failed to import profile from <filename>{0}</filename>:",
                             file_name) + " " + result}
-
+                    profile_ids_added.append(profile.getId())
                 return {"status": "ok", "message": catalog.i18nc("@info:status", "Successfully imported profile {0}", profile_or_list[0].getName())}
 
             # This message is throw when the profile reader doesn't find any profile in the file
