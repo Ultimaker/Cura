@@ -12,12 +12,17 @@ import cura.CuraApplication  # Imported this way to prevent circular imports.
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
+from cura.Settings.IntentManager import IntentManager
+
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from UM.Settings.Interfaces import ContainerInterface
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
     from cura.Settings.ExtruderStack import ExtruderStack
     from cura.Settings.GlobalStack import GlobalStack
+
 
 #
 # This the QML model for the quality management page.
@@ -26,15 +31,21 @@ class QualityManagementModel(ListModel):
     NameRole = Qt.UserRole + 1
     IsReadOnlyRole = Qt.UserRole + 2
     QualityGroupRole = Qt.UserRole + 3
-    QualityChangesGroupRole = Qt.UserRole + 4
+    QualityTypeRole = Qt.UserRole + 4
+    QualityChangesGroupRole = Qt.UserRole + 5
+    IntentCategoryRole = Qt.UserRole + 6
+    SectionNameRole = Qt.UserRole + 7
 
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
         self.addRoleName(self.NameRole, "name")
         self.addRoleName(self.IsReadOnlyRole, "is_read_only")
         self.addRoleName(self.QualityGroupRole, "quality_group")
+        self.addRoleName(self.QualityTypeRole, "quality_type")
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
+        self.addRoleName(self.IntentCategoryRole, "intent_category")
+        self.addRoleName(self.SectionNameRole, "section_name")
 
         application = cura.CuraApplication.CuraApplication.getInstance()
         container_registry = application.getContainerRegistry()
@@ -127,11 +138,13 @@ class QualityManagementModel(ListModel):
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         new_name = container_registry.uniqueName(new_name)
 
+        intent_category = quality_model_item["intent_category"]
         quality_group = quality_model_item["quality_group"]
         quality_changes_group = quality_model_item["quality_changes_group"]
         if quality_changes_group is None:
             # Create global quality changes only.
-            new_quality_changes = self._createQualityChanges(quality_group.quality_type, None, new_name, global_stack, extruder_stack = None)
+            new_quality_changes = self._createQualityChanges(quality_group.quality_type, intent_category, new_name,
+                                                             global_stack, extruder_stack = None)
             container_registry.addContainer(new_quality_changes)
         else:
             for metadata in [quality_changes_group.metadata_for_global] + list(quality_changes_group.metadata_per_extruder.values()):
@@ -233,6 +246,30 @@ class QualityManagementModel(ListModel):
         if container.getMetaDataEntry("type") == "quality_changes":
             self._update()
 
+    @pyqtSlot("QVariantMap", result = str)
+    def getQualityItemDisplayName(self, quality_model_item: Dict[str, Any]) -> str:
+        quality_group = quality_model_item["quality_group"]
+        is_read_only = quality_model_item["is_read_only"]
+        intent_category = quality_model_item["intent_category"]
+
+        quality_level_name = "Not Supported"
+        if quality_group is not None:
+            quality_level_name = quality_group.name
+
+        display_name = quality_level_name
+
+        if intent_category != "default":
+            intent_display_name = catalog.i18nc("@label", intent_category.capitalize())
+            display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
+                                                               the_rest = display_name)
+
+        # A custom quality
+        if not is_read_only:
+            display_name = "{custom_profile_name} - {the_rest}".format(custom_profile_name = quality_model_item["name"],
+                                                                       the_rest = display_name)
+
+        return display_name
+
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
@@ -253,7 +290,7 @@ class QualityManagementModel(ListModel):
             return
 
         item_list = []
-        # Create quality group items
+        # Create quality group items (intent category = "default")
         for quality_group in quality_group_dict.values():
             if not quality_group.is_available:
                 continue
@@ -261,10 +298,32 @@ class QualityManagementModel(ListModel):
             item = {"name": quality_group.name,
                     "is_read_only": True,
                     "quality_group": quality_group,
-                    "quality_changes_group": None}
+                    "quality_type": quality_group.quality_type,
+                    "quality_changes_group": None,
+                    "intent_category": "default",
+                    "section_name": catalog.i18nc("@label", "Default"),
+                    }
             item_list.append(item)
         # Sort by quality names
         item_list = sorted(item_list, key = lambda x: x["name"].upper())
+
+        # Create intent items (non-default)
+        available_intent_list = IntentManager.getInstance().getCurrentAvailableIntents()
+        available_intent_list = [i for i in available_intent_list if i[0] != "default"]
+        result = []
+        for intent_category, quality_type in available_intent_list:
+            result.append({
+                "name": quality_group_dict[quality_type].name,  # Use the quality name as the display name
+                "is_read_only": True,
+                "quality_group": quality_group_dict[quality_type],
+                "quality_type": quality_type,
+                "quality_changes_group": None,
+                "intent_category": intent_category,
+                "section_name": catalog.i18nc("@label", intent_category.capitalize()),
+            })
+        # Sort by quality_type for each intent category
+        result = sorted(result, key = lambda x: (x["intent_category"], x["quality_type"]))
+        item_list += result
 
         # Create quality_changes group items
         quality_changes_item_list = []
@@ -273,7 +332,11 @@ class QualityManagementModel(ListModel):
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
-                    "quality_changes_group": quality_changes_group}
+                    "quality_type": quality_group.quality_type,
+                    "quality_changes_group": quality_changes_group,
+                    "intent_category": quality_changes_group.intent_category,
+                    "section_name": catalog.i18nc("@label", "Custom profiles"),
+                    }
             quality_changes_item_list.append(item)
 
         # Sort quality_changes items by names and append to the item list

@@ -118,10 +118,12 @@ def test_duplicateQualityChanges(quality_mocked_application):
     quality_group.getAllNodes = MagicMock(return_value = mocked_quality)
     quality_changes_group = MagicMock()
     mocked_quality_changes = MagicMock()
-    quality_changes_group.getAllNodes = MagicMock(return_value=[mocked_quality_changes])
+    quality_changes_group.getAllNodes = MagicMock(return_value = [mocked_quality_changes])
     mocked_quality_changes.duplicate = MagicMock(return_value = mocked_quality_changes)
 
     manager._container_registry.addContainer = MagicMock()  # Side effect we want to check.
 
-    manager.duplicateQualityChanges("zomg", {"quality_group": quality_group, "quality_changes_group": quality_changes_group})
+    manager.duplicateQualityChanges("zomg", {"intent_category": "default",
+                                             "quality_group": quality_group,
+                                             "quality_changes_group": quality_changes_group})
     assert manager._container_registry.addContainer.called_once_with(mocked_quality_changes)

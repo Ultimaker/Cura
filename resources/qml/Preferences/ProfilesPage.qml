@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.6 as Cura
 
 
 Item
@@ -43,6 +43,7 @@ Item
     }
 
     property var currentItemName: hasCurrentItem ? base.currentItem.name : ""
+    property var currentItemDisplayName: hasCurrentItem ? base.qualityManagementModel.getQualityItemDisplayName(base.currentItem) : ""
 
     property var isCurrentItemActivated:
     {
@@ -50,7 +51,14 @@ Item
         {
             return false;
         }
-        return base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
+        if (base.currentItem.is_read_only)
+        {
+            return (base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName) && (base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory);
+        }
+        else
+        {
+            return base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName;
+        }
     }
 
     property var canCreateProfile:
@@ -80,7 +88,7 @@ Item
             {
                 if (base.currentItem.is_read_only)
                 {
-                    Cura.MachineManager.setQualityGroup(base.currentItem.quality_group);
+                    Cura.IntentManager.selectIntent(base.currentItem.intent_category, base.currentItem.quality_type);
                 }
                 else
                 {
@@ -434,7 +442,7 @@ Item
                     }
                 }
 
-                section.property: "is_read_only"
+                section.property: "section_name"
                 section.delegate: Rectangle
                 {
                     height: childrenRect.height
@@ -443,7 +451,7 @@ Item
                     {
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                        text: section == "true" ? catalog.i18nc("@label", "Default profiles") : catalog.i18nc("@label", "Custom profiles")
+                        text: section
                         font.bold: true
                     }
                 }
@@ -467,7 +475,19 @@ Item
                         width: Math.floor((parent.width * 0.8))
                         text: model.name
                         elide: Text.ElideRight
-                        font.italic: model.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                        font.italic:
+                        {
+                            if (model.is_read_only)
+                            {
+                                // For built-in qualities, it needs to match both the intent category and the quality name
+                                return model.name == Cura.MachineManager.activeQualityOrQualityChangesName && model.intent_category == Cura.MachineManager.activeIntentCategory
+                            }
+                            else
+                            {
+                                // For custom qualities, it only needs to match the name
+                                return model.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                            }
+                        }
                         color: parent.isCurrentItem ? palette.highlightedText : palette.text
                     }
 
@@ -511,7 +531,7 @@ Item
 
                     Label
                     {
-                        text: base.currentItemName
+                        text: base.currentItemDisplayName
                         font: UM.Theme.getFont("large_bold")
                     }
                 }
@@ -519,7 +539,7 @@ Item
                 Flow
                 {
                     id: currentSettingsActions
-                    visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName
+                    visible: base.hasCurrentItem && base.currentItem.name == Cura.MachineManager.activeQualityOrQualityChangesName && base.currentItem.intent_category == Cura.MachineManager.activeIntentCategory
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: profileName.bottom
@@ -566,7 +586,6 @@ Item
                         width: parent.width
                     }
                 }
-
 
                 TabView
                 {

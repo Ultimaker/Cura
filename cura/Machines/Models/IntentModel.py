@@ -65,30 +65,28 @@ class IntentModel(ListModel):
 
         material_nodes = self._getActiveMaterials()
 
-        layer_heights_added = []  # type: List[float]
-
+        added_quality_type_set = set()  # type: Set[str]
         for material_node in material_nodes:
             intents = self._getIntentsForMaterial(material_node, quality_groups)
             for intent in intents:
-                if intent["layer_height"] not in layer_heights_added:
+                if intent["quality_type"] not in added_quality_type_set:
                     new_items.append(intent)
-                    layer_heights_added.append(intent["layer_height"])
+                    added_quality_type_set.add(intent["quality_type"])
 
         # Now that we added all intents that we found something for, ensure that we set add ticks (and layer_heights)
         # for all groups that we don't have anything for (and set it to not available)
-        for quality_tuple, quality_group in quality_groups.items():
+        for quality_type, quality_group in quality_groups.items():
             # Add the intents that are of the correct category
-            if quality_tuple[0] != self._intent_category:
+            if quality_type not in added_quality_type_set:
                 layer_height = fetchLayerHeight(quality_group)
-                if layer_height not in layer_heights_added:
-                    new_items.append({"name": "Unavailable",
-                                      "quality_type": "",
-                                      "layer_height": layer_height,
-                                      "intent_category": self._intent_category,
-                                      "available": False})
-                    layer_heights_added.append(layer_height)
+                new_items.append({"name": "Unavailable",
+                                  "quality_type": quality_type,
+                                  "layer_height": layer_height,
+                                  "intent_category": self._intent_category,
+                                  "available": False})
+                added_quality_type_set.add(quality_type)
 
-        new_items = sorted(new_items, key=lambda x: x["layer_height"])
+        new_items = sorted(new_items, key = lambda x: x["layer_height"])
         self.setItems(new_items)
 
     ##  Get the active materials for all extruders. No duplicates will be returned
@@ -122,11 +120,11 @@ class IntentModel(ListModel):
                 if intent_node.intent_category != self._intent_category:
                     continue
                 extruder_intents.append({"name": quality_group.name,
-                                  "quality_type": quality_group.quality_type,
-                                  "layer_height": layer_height,
-                                  "available": quality_group.is_available,
-                                  "intent_category": self._intent_category
-                                  })
+                                         "quality_type": quality_group.quality_type,
+                                         "layer_height": layer_height,
+                                         "available": quality_group.is_available,
+                                         "intent_category": self._intent_category
+                                         })
         return extruder_intents
 
     def __repr__(self):
