@@ -26,6 +26,7 @@ import cura.CuraApplication  # Imported like this to prevent circular references
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
+from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
 
 from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice, ConnectionType
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
@@ -1603,19 +1604,19 @@ class MachineManager(QObject):
         if global_stack is None:
             return ""
 
-        # Not a custom quality
-        display_name = self.activeQualityOrQualityChangesName
-        if global_stack.qualityChanges == empty_quality_changes_container:
-            return display_name
+        display_name = global_stack.quality.getName()
 
-        # A custom quality
         intent_category = self.activeIntentCategory
         if intent_category != "default":
-            from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
-            intent_display_name = IntentCategoryModel.name_translation.get(intent_category, catalog.i18nc("@label", "Unknown"))
-            display_name += " - {intent_name}".format(intent_name = intent_display_name)
+            intent_display_name = IntentCategoryModel.name_translation.get(intent_category,
+                                                                           catalog.i18nc("@label", "Unknown"))
+            display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
+                                                                the_rest = display_name)
 
-        display_name += " - {quality_level_name}".format(quality_level_name = global_stack.quality.getName())
+        # Not a custom quality
+        if global_stack.qualityChanges != empty_quality_changes_container:
+            display_name = self.activeQualityOrQualityChangesName + " - " + display_name
+
         return display_name
 
     ##  Change the intent category of the current printer.
