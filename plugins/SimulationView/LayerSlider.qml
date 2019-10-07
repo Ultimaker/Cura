@@ -177,8 +177,8 @@ Item
     }
 
     onHeightChanged : {
-      print("new height:" + height)
-      //rangeHandle.onHandleDragged()
+        // After a height change, the pixel-position of the lower handle is out of sync with the property value
+        setLowerValue(lowerValue)
     }
 
     // Upper handle
@@ -338,7 +338,7 @@ Item
         // set the slider position based on the lower value
         function setValue(value)
         {
-
+            print("lower handle set value: " + value)
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
