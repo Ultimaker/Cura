@@ -1592,18 +1592,20 @@ class MachineManager(QObject):
         if not no_dialog and self.hasUserSettings and self._application.getPreferences().getValue("cura/active_mode") == 1:
             self._application.discardOrKeepProfileChanges()
 
-    # The display name of currently active quality.
+    # The display name map of currently active quality.
+    # The display name has 2 parts, a main part and a suffix part.
     # This display name is:
     #  - For built-in qualities (quality/intent): the quality type name, such as "Fine", "Normal", etc.
     #  - For custom qualities: <custom_quality_name> - <intent_name> - <quality_type_name>
     #        Examples:
     #          - "my_profile - Fine" (only based on a default quality, no intent involved)
     #          - "my_profile - Engineering - Fine" (based on an intent)
-    @pyqtProperty(str, notify = activeQualityDisplayNameChanged)
-    def activeQualityDisplayName(self) -> str:
+    @pyqtProperty("QVariantMap", notify = activeQualityDisplayNameChanged)
+    def activeQualityDisplayNameMap(self) -> Dict[str, str]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
-            return ""
+            return {"main": "",
+                    "suffix": ""}
 
         display_name = global_stack.quality.getName()
 
@@ -1612,13 +1614,18 @@ class MachineManager(QObject):
             intent_display_name = IntentCategoryModel.name_translation.get(intent_category,
                                                                            catalog.i18nc("@label", "Unknown"))
             display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
-                                                                the_rest = display_name)
+                                                               the_rest = display_name)
+
+        main_part = display_name
+        suffix_part = ""
 
         # Not a custom quality
         if global_stack.qualityChanges != empty_quality_changes_container:
-            display_name = self.activeQualityOrQualityChangesName + " - " + display_name
+            main_part = self.activeQualityOrQualityChangesName
+            suffix_part = display_name
 
-        return display_name
+        return {"main": main_part,
+                "suffix": suffix_part}
 
     ##  Change the intent category of the current printer.
     #
