@@ -2,17 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, QTimer
-from typing import TYPE_CHECKING
-
-from UM.Logger import Logger
-from UM.Qt.ListModel import ListModel
-from UM.Settings.SettingFunction import SettingFunction
 
 import cura.CuraApplication  # Imported this way to prevent circular dependencies.
+from UM.Logger import Logger
+from UM.Qt.ListModel import ListModel
 from cura.Machines.ContainerTree import ContainerTree
-
-if TYPE_CHECKING:
-    from cura.Machines.QualityGroup import QualityGroup
+from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 
 
 #
@@ -76,6 +71,12 @@ class QualityProfilesDropDownMenuModel(ListModel):
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
+        if not self._layer_height_unit:
+            unit = global_stack.definition.getProperty("layer_height", "unit")
+            if not unit:
+                unit = ""
+            self._layer_height_unit = unit
+
         # Check for material compatibility
         if not cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
             Logger.log("d", "No active material compatibility, set quality profile model as empty.")
@@ -86,7 +87,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         item_list = []
         for quality_group in quality_group_dict.values():
-            layer_height = self._fetchLayerHeight(quality_group)
+            layer_height = fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,
@@ -102,32 +103,3 @@ class QualityProfilesDropDownMenuModel(ListModel):
         item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         self.setItems(item_list)
-
-    def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
-        global_stack = cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMachine
-        if not self._layer_height_unit:
-            unit = global_stack.definition.getProperty("layer_height", "unit")
-            if not unit:
-                unit = ""
-            self._layer_height_unit = unit
-
-        default_layer_height = global_stack.definition.getProperty("layer_height", "value")
-
-        # Get layer_height from the quality profile for the GlobalStack
-        if quality_group.node_for_global is None:
-            return float(default_layer_height)
-        container = quality_group.node_for_global.container
-
-        layer_height = default_layer_height
-        if container and container.hasProperty("layer_height", "value"):
-            layer_height = container.getProperty("layer_height", "value")
-        else:
-            # Look for layer_height in the GlobalStack from material -> definition
-            container = global_stack.definition
-            if container and container.hasProperty("layer_height", "value"):
-                layer_height = container.getProperty("layer_height", "value")
-
-        if isinstance(layer_height, SettingFunction):
-            layer_height = layer_height(global_stack)
-
-        return float(layer_height)
