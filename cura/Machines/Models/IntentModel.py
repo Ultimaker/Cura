@@ -9,7 +9,7 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MaterialNode import MaterialNode
-from cura.Machines.Models.MachineModelUtils import fetch_layer_height
+from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 from cura.Machines.QualityGroup import QualityGroup
 
 
@@ -63,12 +63,12 @@ class IntentModel(ListModel):
             return
         quality_groups = ContainerTree.getInstance().getCurrentQualityGroups()
 
-        material_nodes = self._get_active_materials()
+        material_nodes = self._getActiveMaterials()
 
         layer_heights_added = []  # type: List[float]
 
         for material_node in material_nodes:
-            intents = self._get_intents_for_material(material_node, quality_groups)
+            intents = self._getIntentsForMaterial(material_node, quality_groups)
             for intent in intents:
                 if intent["layer_height"] not in layer_heights_added:
                     new_items.append(intent)
@@ -79,7 +79,7 @@ class IntentModel(ListModel):
         for quality_tuple, quality_group in quality_groups.items():
             # Add the intents that are of the correct category
             if quality_tuple[0] != self._intent_category:
-                layer_height = fetch_layer_height(quality_group)
+                layer_height = fetchLayerHeight(quality_group)
                 if layer_height not in layer_heights_added:
                     new_items.append({"name": "Unavailable",
                                       "quality_type": "",
@@ -92,7 +92,7 @@ class IntentModel(ListModel):
         self.setItems(new_items)
 
     ##  Get the active materials for all extruders. No duplicates will be returned
-    def _get_active_materials(self) -> Set[MaterialNode]:
+    def _getActiveMaterials(self) -> Set["MaterialNode"]:
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return set()
@@ -109,14 +109,14 @@ class IntentModel(ListModel):
 
         return nodes
 
-    def _get_intents_for_material(self, active_material_node: MaterialNode, quality_groups: Dict[str, QualityGroup]) -> List[Dict[str, Any]]:
+    def _getIntentsForMaterial(self, active_material_node: "MaterialNode", quality_groups: Dict[str, "QualityGroup"]) -> List[Dict[str, Any]]:
         extruder_intents = []  # type: List[Dict[str, Any]]
 
         for quality_id, quality_node in active_material_node.qualities.items():
             if quality_node.quality_type not in quality_groups:  # Don't add the empty quality type (or anything else that would crash, defensively).
                 continue
             quality_group = quality_groups[quality_node.quality_type]
-            layer_height = fetch_layer_height(quality_group)
+            layer_height = fetchLayerHeight(quality_group)
 
             for intent_id, intent_node in quality_node.intents.items():
                 if intent_node.intent_category != self._intent_category:

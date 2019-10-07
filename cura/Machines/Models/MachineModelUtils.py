@@ -1,3 +1,6 @@
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import TYPE_CHECKING
 
 from UM.Settings.SettingFunction import SettingFunction
@@ -7,7 +10,8 @@ if TYPE_CHECKING:
 
 layer_height_unit = ""
 
-def fetch_layer_height(quality_group: "QualityGroup") -> float:
+
+def fetchLayerHeight(quality_group: "QualityGroup") -> float:
     from cura.CuraApplication import CuraApplication
     global_stack = CuraApplication.getInstance().getMachineManager().activeMachine
 

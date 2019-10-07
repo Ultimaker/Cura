@@ -7,7 +7,7 @@ import cura.CuraApplication  # Imported this way to prevent circular dependencie
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.Models.MachineModelUtils import fetch_layer_height
+from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 
 
 #
@@ -87,7 +87,7 @@ class QualityProfilesDropDownMenuModel(ListModel):
 
         item_list = []
         for quality_group in quality_group_dict.values():
-            layer_height = fetch_layer_height(quality_group)
+            layer_height = fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,
