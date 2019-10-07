@@ -64,7 +64,7 @@ NumericTextFieldWithUnit
             // show the correct value.
             if (!textField.activeFocus && !textField.acceptableInput)
             {
-                valueText = axisValue
+                valueText = Qt.binding(function() { return machineXMaxField.axisValue })
             }
         }
     }
@@ -94,6 +94,6 @@ NumericTextFieldWithUnit
         }
 
         // Recreate the binding to show the correct value.
-        valueText = axisValue
+        valueText = Qt.binding(function() { return axisValue })
     }
 }
