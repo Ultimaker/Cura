@@ -176,6 +176,11 @@ Item
         }
     }
 
+    onHeightChanged : {
+      print("new height:" + height)
+      //rangeHandle.onHandleDragged()
+    }
+
     // Upper handle
     Rectangle
     {

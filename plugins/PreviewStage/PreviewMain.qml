@@ -13,6 +13,7 @@ Item
 {
     Loader
     {
+        property var panelTop: actionPanelWidget.y
         id: previewMain
         anchors.fill: parent
 

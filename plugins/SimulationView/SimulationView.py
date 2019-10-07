@@ -48,7 +48,7 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## View used to display g-code paths.
+## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0

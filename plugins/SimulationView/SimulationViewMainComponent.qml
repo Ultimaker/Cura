@@ -14,6 +14,7 @@ Item
     property bool is_simulation_playing: false
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
+    // A slider which lets users trace a single layer (XY movements)
     PathSlider
     {
         id: pathSlider
@@ -170,18 +171,24 @@ Item
         }
     }
 
+    // Scrolls trough Z layers
     LayerSlider
     {
+        property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
+        property double heightMargin: UM.Theme.getSize("default_margin").height
         id: layerSlider
 
         width: UM.Theme.getSize("slider_handle").width
-        height: UM.Theme.getSize("slider_layerview_size").height
+        height: preferredHeight + heightMargin * 2 < panelTop ? preferredHeight : panelTop - heightMargin * 2
 
         anchors
         {
             right: parent.right
             verticalCenter: parent.verticalCenter
+            verticalCenterOffset: -(parent.height - panelTop) / 2 // center between parent top and panelTop
             rightMargin: UM.Theme.getSize("default_margin").width
+            bottomMargin: heightMargin
+            topMargin: heightMargin
         }
 
         // Custom properties
@@ -209,6 +216,7 @@ Item
         // Make sure the slider handlers show the correct value after switching views
         Component.onCompleted:
         {
+            print("paneltop", panelTop, "screenscaleFactor")
             layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
             layerSlider.setUpperValue(UM.SimulationView.currentLayer)
         }
