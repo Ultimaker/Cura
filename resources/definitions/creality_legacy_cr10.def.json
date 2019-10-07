@@ -1,0 +1,33 @@
+{
+    "name": "Creality Legacy CR-10",
+    "version": 2,
+    "inherits": "creality_legacy_base",
+    "metadata": {
+        "visible": true,
+        "author": "Michael Wildermuth, Jeff Kazules",
+        "manufacturer": "Creality3D_Legacy",
+        "preferred_quality_type": "draft",
+        "quality_definition": "creality_legacy_base"
+    	},
+    	
+    "overrides": {
+        "machine_name": { "default_value": "Creality Legacy CR-10" },
+        "machine_width": { "default_value": 300 },
+        "machine_depth": { "default_value": 300 },
+        "machine_height": { "default_value": 400 },
+        "machine_head_polygon": { "default_value": [
+                [-30, 34],
+                [-30, -32],
+                [30, -32],
+                [30, 34]
+            ] },
+        "gantry_height": { "value": 30 },
+        "top_bottom_pattern_0": { "default_value": "concentric" },
+        "infill_pattern": { "value": "'triangles'" },
+        "retraction_enable": { "default_value": true },
+        "machine_end_gcode": { "default_value": "G91\nG1 F1800 E-3\nG1 F3000 Z10\nG90\nG28 X0 Y0 ; home x and y axis\nM106 S0 ; turn off cooling fan\nM104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM84 ; disable motors" },
+        "jerk_print": { "default_value": 20 },
+        "jerk_travel": { "default_value": 20 }
+
+    }
+}
