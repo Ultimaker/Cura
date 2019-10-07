@@ -1620,8 +1620,12 @@ class CuraApplication(QtApplication):
 
     openProjectFile = pyqtSignal(QUrl, arguments = ["project_file"])  # Emitted when a project file is about to open.
 
-    @pyqtSlot(QUrl, bool)
-    def readLocalFile(self, file, skip_project_file_check = False):
+    @pyqtSlot(QUrl, str)
+    @pyqtSlot(QUrl)
+    ## Open a local file
+    # \param project_mode How to handle project files. Either None(default): Follow user preference, "open_as_model" or
+    # "open_as_project". This parameter is only considered if the file is a project file.
+    def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None):
         if not file.isValid():
             return
 
@@ -1632,9 +1636,23 @@ class CuraApplication(QtApplication):
                 self.deleteAll()
                 break
 
-        if not skip_project_file_check and self.checkIsValidProjectFile(file):
+        is_project_file = self.checkIsValidProjectFile(file)
+
+        if project_mode is None:
+            project_mode = self.getPreferences().getValue("cura/choice_on_open_project")
+
+        if is_project_file and project_mode == "open_as_project":
+            # open as project immediately without presenting a dialog
+            workspace_handler = self.getWorkspaceFileHandler()
+            workspace_handler.readLocalFile(file)
+            return
+
+        if is_project_file and project_mode == "always_ask":
+            # present a dialog asking to open as project or import models
             self.callLater(self.openProjectFile.emit, file)
             return
+
+        # Either the file is a model file or we want to load only models from project. Continue to load models.
 
         if self.getPreferences().getValue("cura/select_models_on_load"):
             Selection.clear()
