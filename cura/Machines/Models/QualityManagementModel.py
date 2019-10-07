@@ -13,7 +13,6 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 from cura.Settings.IntentManager import IntentManager
-from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -249,26 +248,26 @@ class QualityManagementModel(ListModel):
 
     @pyqtSlot("QVariantMap", result = str)
     def getQualityItemDisplayName(self, quality_model_item: Dict[str, Any]) -> str:
-        display_name = quality_model_item["name"]
-
         quality_group = quality_model_item["quality_group"]
         is_read_only = quality_model_item["is_read_only"]
         intent_category = quality_model_item["intent_category"]
 
-        # Not a custom quality
-        if is_read_only:
-            return display_name
-
-        # A custom quality
-        if intent_category != "default":
-            from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
-            intent_display_name = catalog.i18nc("@label", intent_category.capitalize())
-            display_name += " - {intent_name}".format(intent_name = intent_display_name)
-
         quality_level_name = "Not Supported"
         if quality_group is not None:
             quality_level_name = quality_group.name
-        display_name += " - {quality_level_name}".format(quality_level_name = quality_level_name)
+
+        display_name = quality_level_name
+
+        if intent_category != "default":
+            intent_display_name = catalog.i18nc("@label", intent_category.capitalize())
+            display_name = "{intent_name} - {the_rest}".format(intent_name = intent_display_name,
+                                                               the_rest = display_name)
+
+        # A custom quality
+        if not is_read_only:
+            display_name = "{custom_profile_name} - {the_rest}".format(custom_profile_name = quality_model_item["name"],
+                                                                       the_rest = display_name)
+
         return display_name
 
     def _update(self):
