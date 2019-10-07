@@ -53,7 +53,7 @@ UM.Dialog
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model")
         }
 
-        CuraApplication.readLocalFile(base.fileUrl, true)
+        CuraApplication.readLocalFile(base.fileUrl, "open_as_model")
         var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
         backgroundItem.hasMesh(decodeURIComponent(meshName))
 
