@@ -6220,7 +6220,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1.0,
-                    "minimum_value": "0.001",
+                    "minimum_value": "0",
                     "minimum_value_warning": "0.05",
                     "maximum_value_warning": "1.0",
                     "settable_per_mesh": true,
