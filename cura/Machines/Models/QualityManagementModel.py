@@ -262,8 +262,7 @@ class QualityManagementModel(ListModel):
         # A custom quality
         if intent_category != "default":
             from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
-            intent_display_name = IntentCategoryModel.name_translation.get(intent_category,
-                                                                           catalog.i18nc("@label", "Unknown"))
+            intent_display_name = catalog.i18nc("@label", intent_category.capitalize())
             display_name += " - {intent_name}".format(intent_name = intent_display_name)
 
         quality_level_name = "Not Supported"
@@ -321,7 +320,7 @@ class QualityManagementModel(ListModel):
                 "quality_type": quality_type,
                 "quality_changes_group": None,
                 "intent_category": intent_category,
-                "section_name": IntentCategoryModel.name_translation.get(intent_category, catalog.i18nc("@label", "Unknown")),
+                "section_name": catalog.i18nc("@label", intent_category.capitalize()),
             })
         # Sort by quality_type for each intent category
         result = sorted(result, key = lambda x: (x["intent_category"], x["quality_type"]))
