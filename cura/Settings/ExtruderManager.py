@@ -42,8 +42,6 @@ class ExtruderManager(QObject):
         # TODO; I have no idea why this is a union of ID's and extruder stacks. This needs to be fixed at some point.
         self._selected_object_extruders = []  # type: List[Union[str, "ExtruderStack"]]
 
-        self._addCurrentMachineExtruders()
-
         Selection.selectionChanged.connect(self.resetSelectedObjectExtruders)
 
     ##  Signal to notify other components when the list of extruders for a machine definition changes.

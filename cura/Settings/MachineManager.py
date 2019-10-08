@@ -140,7 +140,7 @@ class MachineManager(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
     activeIntentChanged = pyqtSignal()
-    activeStackChanged = pyqtSignal()  # Emitted whenever the active stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
+    activeStackChanged = pyqtSignal()  # Emitted whenever the active extruder stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
     extruderChanged = pyqtSignal()
 
     globalValueChanged = pyqtSignal()  # Emitted whenever a value inside global container is changed.
