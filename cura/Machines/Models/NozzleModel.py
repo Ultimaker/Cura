@@ -3,9 +3,9 @@
 
 from PyQt5.QtCore import Qt
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
+import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.ContainerTree import ContainerTree
 
 
@@ -21,16 +21,13 @@ class NozzleModel(ListModel):
         self.addRoleName(self.HotendNameRole, "hotend_name")
         self.addRoleName(self.ContainerNodeRole, "container_node")
 
-        self._application = Application.getInstance()
-        self._machine_manager = self._application.getMachineManager()
-
-        self._machine_manager.globalContainerChanged.connect(self._update)
+        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().globalContainerChanged.connect(self._update)
         self._update()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        global_stack = self._machine_manager.activeMachine
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
             return
