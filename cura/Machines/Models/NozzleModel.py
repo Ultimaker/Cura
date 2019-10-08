@@ -6,10 +6,7 @@ from PyQt5.QtCore import Qt
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Util import parseBool
 from cura.Machines.ContainerTree import ContainerTree
-
-from cura.Machines.VariantType import VariantType
 
 
 class NozzleModel(ListModel):
