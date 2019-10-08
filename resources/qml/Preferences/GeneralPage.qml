@@ -360,7 +360,13 @@ UM.PreferencesPage
                     id: invertZoomCheckbox
                     text: catalog.i18nc("@action:button", "Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
-                    onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
+                    onClicked: {
+                        if(!checked && zoomToMouseCheckbox.checked) //Fix for Github issue Ultimaker/Cura#6490: Make sure the camera origin is in front when unchecking.
+                        {
+                            UM.Controller.setCameraOrigin("home");
+                        }
+                        UM.Preferences.setValue("view/invert_zoom", checked);
+                    }
                 }
             }
 
