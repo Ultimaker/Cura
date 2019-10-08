@@ -24,7 +24,7 @@ import Cura 1.1 as Cura
 //
 NumericTextFieldWithUnit
 {
-    id: machineXMaxField
+    id: printerHeadMinMaxField
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     containerStackId: Cura.MachineManager.activeMachineId
@@ -64,7 +64,7 @@ NumericTextFieldWithUnit
             // show the correct value.
             if (!textField.activeFocus && !textField.acceptableInput)
             {
-                valueText = axisValue
+                valueText = Qt.binding(function() { return printerHeadMinMaxField.axisValue })
             }
         }
     }
@@ -94,6 +94,6 @@ NumericTextFieldWithUnit
         }
 
         // Recreate the binding to show the correct value.
-        valueText = axisValue
+        valueText = Qt.binding(function() { return axisValue })
     }
 }

@@ -20,7 +20,12 @@ RowLayout
         {
             if (Cura.MachineManager.activeStack)
             {
-                var text = Cura.MachineManager.activeQualityDisplayName
+                var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                var text = resultMap["main"]
+                if (resultMap["suffix"])
+                {
+                    text += " - " + resultMap["suffix"]
+                }
 
                 if (!Cura.MachineManager.hasNotSupportedQuality)
                 {

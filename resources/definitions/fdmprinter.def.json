@@ -5832,6 +5832,32 @@
                     "enabled": "not (support_enable or support_tree_enable)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "meshfix_maximum_travel_resolution":
+                {
+                    "label": "Maximum Travel Resolution",
+                    "description": "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 1.0,
+                    "value": "min(meshfix_maximum_resolution * speed_travel / speed_print, 2 * line_width)",
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.05",
+                    "maximum_value_warning": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "meshfix_maximum_deviation":
+                {
+                    "label": "Maximum Deviation",
+                    "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.05,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.01",
+                    "maximum_value_warning": "0.3",
+                    "settable_per_mesh": true
                 }
             }
         },
@@ -6222,7 +6248,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1.0,
-                    "minimum_value": "0.001",
+                    "minimum_value": "0",
                     "minimum_value_warning": "0.05",
                     "maximum_value_warning": "1.0",
                     "settable_per_mesh": true,
@@ -6238,32 +6264,6 @@
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "3",
-                    "settable_per_mesh": true
-                },
-                "meshfix_maximum_travel_resolution":
-                {
-                    "label": "Maximum Travel Resolution",
-                    "description": "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 1.0,
-                    "value": "min(meshfix_maximum_resolution * speed_travel / speed_print, 2 * line_width)",
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.05",
-                    "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "meshfix_maximum_deviation":
-                {
-                    "label": "Maximum Deviation",
-                    "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.05,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.01",
-                    "maximum_value_warning": "0.3",
                     "settable_per_mesh": true
                 },
                 "support_skip_some_zags":

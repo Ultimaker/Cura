@@ -100,18 +100,30 @@ Item
 
             function generateActiveQualityText()
             {
-                var result = Cura.MachineManager.activeQualityDisplayName
+                var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                var resultMain = resultMap["main"]
+                var resultSuffix = resultMap["suffix"]
+                var result = ""
 
                 if (Cura.MachineManager.isActiveQualityExperimental)
                 {
-                    result += " (Experimental)"
+                    resultSuffix += " (Experimental)"
                 }
 
                 if (Cura.MachineManager.isActiveQualitySupported)
                 {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0)
                     {
-                        result += " <font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        result = resultMain
+                        if (resultSuffix)
+                        {
+                            result += " - "
+                        }
+                        result += "<font color=\"" + UM.Theme.getColor("text_detail") + "\">"
+                        if (resultSuffix)
+                        {
+                            result +=  resultSuffix
+                        }
                         result += " - "
                         result += Cura.MachineManager.activeQualityLayerHeight + "mm"
                         result += "</font>"
