@@ -7577,7 +7577,7 @@
                 },
                 "small_feature_speed_factor_0":
                 {
-                    "label": "First Layer Speed",
+                    "label": "Small Feature Initial Layer Speed",
                     "description": "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy.",
                     "unit": "%",
                     "type": "float",
