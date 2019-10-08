@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
@@ -320,12 +320,8 @@ class ExtruderManager(QObject):
 
         self.resetSelectedObjectExtruders()
 
-    ##  Adds the extruders of the currently active machine.
-    def _addCurrentMachineExtruders(self) -> None:
-        global_stack = self._application.getGlobalContainerStack()
-        if not global_stack:
-            return
-
+    ##  Adds the extruders to the selected machine.
+    def addMachineExtruders(self, global_stack: GlobalStack) -> None:
         extruders_changed = False
         container_registry = ContainerRegistry.getInstance()
         global_stack_id = global_stack.getId()
@@ -351,8 +347,6 @@ class ExtruderManager(QObject):
         self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if extruders_changed:
             self.extrudersChanged.emit(global_stack_id)
-            self.setActiveExtruderIndex(0)
-            self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.

@@ -219,7 +219,10 @@ class MachineManager(QObject):
             return 0
         return len(general_definition_containers[0].getAllKeys())
 
+    ##  Triggered when the global container stack is changed in CuraApplication.
     def _onGlobalContainerChanged(self) -> None:
+        import traceback
+        traceback.print_stack()
         if self._global_container_stack:
             try:
                 self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
@@ -298,7 +301,6 @@ class MachineManager(QObject):
         self.blurSettings.emit()  # Ensure no-one has focus.
 
         container_registry = CuraContainerRegistry.getInstance()
-
         containers = container_registry.findContainerStacks(id = stack_id)
         if not containers:
             return
@@ -308,21 +310,25 @@ class MachineManager(QObject):
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
 
-        ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        extruder_manager = ExtruderManager.getInstance()
+        extruder_manager.fixSingleExtrusionMachineExtruderDefinition(global_stack)
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
             return  # We're done here
 
         self._global_container_stack = global_stack
+        extruder_manager.addMachineExtruders(global_stack)
         self._application.setGlobalContainerStack(global_stack)
-        ExtruderManager.getInstance()._globalContainerStackChanged()
-        self._onGlobalContainerChanged()
 
         # Switch to the first enabled extruder
         self.updateDefaultExtruder()
         default_extruder_position = int(self.defaultExtruderPosition)
-        ExtruderManager.getInstance().setActiveExtruderIndex(default_extruder_position)
+        old_active_extruder_index = extruder_manager.activeExtruderIndex
+        extruder_manager.setActiveExtruderIndex(default_extruder_position)
+        if old_active_extruder_index == default_extruder_position:
+            # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
+            extruder_manager.activeExtruderChanged.emit()
 
         self.__emitChangedSignals()
 
