@@ -139,22 +139,6 @@ UM.Dialog
                         }
                     }
                 }
-                Row
-                {
-                    visible: Cura.MachineManager.hasVariantBuildplates
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Build plate")
-                        width: Math.floor(scroll.width / 3) | 0
-                    }
-                    Label
-                    {
-                        text: Cura.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
-                        width: Math.floor(scroll.width / 3) | 0
-                    }
-                }
                 Repeater
                 {
                     width: parent.width
