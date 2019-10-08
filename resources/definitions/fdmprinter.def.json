@@ -4850,7 +4850,7 @@
                     "type": "[int]",
                     "default_value": "[ ]",
                     "limit_to_extruder": "support_interface_extruder_nr",
-                    "enabled": "support_interface_enable and support_interface_pattern != 'concentric'",
+                    "enabled": "(support_enable or support_tree_enable) and support_interface_enable and support_interface_pattern != 'concentric'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
                     "children":
@@ -4863,7 +4863,7 @@
                             "default_value": "[ ]",
                             "value": "support_interface_angles",
                             "limit_to_extruder": "support_roof_extruder_nr",
-                            "enabled": "support_roof_enable and support_roof_pattern != 'concentric'",
+                            "enabled": "(support_enable or support_tree_enable) and support_roof_enable and support_roof_pattern != 'concentric'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
@@ -4875,7 +4875,7 @@
                             "default_value": "[ ]",
                             "value": "support_interface_angles",
                             "limit_to_extruder": "support_bottom_extruder_nr",
-                            "enabled": "support_bottom_enable and support_bottom_pattern != 'concentric'",
+                            "enabled": "(support_enable or support_tree_enable) and support_bottom_enable and support_bottom_pattern != 'concentric'",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
