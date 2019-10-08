@@ -303,7 +303,7 @@ class MachineManager(QObject):
         if not containers:
             return
 
-        global_stack = containers[0]
+        global_stack = cast(GlobalStack, containers[0])
 
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
