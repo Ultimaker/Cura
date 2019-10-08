@@ -17,7 +17,7 @@ TabView
     property QtObject properties
     property var currentMaterialNode: null
 
-    property bool editingEnabled: false;
+    property bool editingEnabled: false
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
     property real firstColumnWidth: (width * 0.50) | 0
     property real secondColumnWidth: (width * 0.40) | 0
