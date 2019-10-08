@@ -1111,21 +1111,6 @@ class MachineManager(QObject):
     def currentRootMaterialId(self) -> Dict[str, str]:
         return self._current_root_material_id
 
-    ##  Return the variant names in the extruder stack(s).
-    ##  For the variant in the global stack, use activeVariantBuildplateName
-    @pyqtProperty("QVariant", notify = activeVariantChanged)
-    def activeVariantNames(self) -> Dict[str, str]:
-        result = {}
-
-        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        for stack in active_stacks:
-            variant_container = stack.variant
-            position = stack.getMetaDataEntry("position")
-            if variant_container and variant_container != empty_variant_container:
-                result[position] = variant_container.getName()
-
-        return result
-
     # Sets all quality and quality_changes containers to empty_quality and empty_quality_changes containers
     # for all stacks in the currently active machine.
     #
