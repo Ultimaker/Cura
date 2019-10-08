@@ -222,10 +222,6 @@ class MachineManager(QObject):
     def _onGlobalContainerChanged(self) -> None:
         if self._global_container_stack:
             try:
-                self._global_container_stack.nameChanged.disconnect(self._onMachineNameChanged)
-            except TypeError:  # pyQtSignal gives a TypeError when disconnecting from something that was already disconnected.
-                pass
-            try:
                 self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
             except TypeError:
                 pass
@@ -249,7 +245,6 @@ class MachineManager(QObject):
         if self._global_container_stack:
             self._application.getPreferences().setValue("cura/active_machine", self._global_container_stack.getId())
 
-            self._global_container_stack.nameChanged.connect(self._onMachineNameChanged)
             self._global_container_stack.containersChanged.connect(self._onContainersChanged)
             self._global_container_stack.propertyChanged.connect(self._onPropertyChanged)
 
@@ -1058,9 +1053,6 @@ class MachineManager(QObject):
         self.activeMaterialChanged.emit()
         self.activeIntentChanged.emit()
 
-    def _onMachineNameChanged(self) -> None:
-        self.globalContainerChanged.emit()
-
     def _onMaterialNameChanged(self) -> None:
         self.activeMaterialChanged.emit()
 
@@ -1390,10 +1382,10 @@ class MachineManager(QObject):
     #   instance with the same network key.
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
-        Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Don't switch if the user tries to change to the same type of printer
         if self._global_container_stack is None or self.activeMachineDefinitionName == machine_name:
             return
+        Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Get the definition id corresponding to this machine name
         machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
         # Try to find a machine with the same network key
