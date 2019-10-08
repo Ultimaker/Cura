@@ -9,7 +9,6 @@
         "file_formats": "text/x-gcode",
 
         "has_materials":         true,
-        "has_machine_materials": true,
         "preferred_material":    "generic_pla",
         "exclude_materials": [
  "chromatik_pla",

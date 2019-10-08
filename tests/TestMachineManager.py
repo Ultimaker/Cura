@@ -1,16 +1,13 @@
 from unittest.mock import MagicMock, patch
-
 import pytest
 
 from cura.Settings.MachineManager import MachineManager
 
-
 @pytest.fixture()
 def global_stack():
-    stack = MagicMock(name="Global Stack")
-    stack.getId = MagicMock(return_value ="GlobalStack")
+    stack = MagicMock(name = "Global Stack")
+    stack.getId = MagicMock(return_value = "GlobalStack")
     return stack
-
 
 @pytest.fixture()
 def machine_manager(application, extruder_manager, container_registry, global_stack) -> MachineManager:
@@ -21,7 +18,7 @@ def machine_manager(application, extruder_manager, container_registry, global_st
 
     return manager
 
-
+@pytest.mark.skip(reason = "Outdated test")
 def test_setActiveMachine(machine_manager):
     registry = MagicMock()
 

@@ -4,6 +4,14 @@ import io
 from UM.VersionUpgrade import VersionUpgrade
 
 _renamed_container_id_map = {
+    "ultimaker2_0.25": "ultimaker2_olsson_0.25",
+    "ultimaker2_0.4": "ultimaker2_olsson_0.4",
+    "ultimaker2_0.6": "ultimaker2_olsson_0.6",
+    "ultimaker2_0.8": "ultimaker2_olsson_0.8",
+    "ultimaker2_extended_0.25": "ultimaker2_extended_olsson_0.25",
+    "ultimaker2_extended_0.4": "ultimaker2_extended_olsson_0.4",
+    "ultimaker2_extended_0.6": "ultimaker2_extended_olsson_0.6",
+    "ultimaker2_extended_0.8": "ultimaker2_extended_olsson_0.8",
     # HMS434 "extra coarse", "super coarse", and "ultra coarse" are removed.
     "hms434_global_Extra_Coarse_Quality": "hms434_global_Normal_Quality",
     "hms434_global_Super_Coarse_Quality": "hms434_global_Normal_Quality",
@@ -49,6 +57,10 @@ class VersionUpgrade43to44(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "10"
 
+        # Intent profiles were added, so the quality changes should match with no intent (so "default")
+        if parser["metadata"].get("type", "") == "quality_changes":
+            parser["metadata"]["intent_category"] = "default"
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
@@ -64,6 +76,29 @@ class VersionUpgrade43to44(VersionUpgrade):
         parser["metadata"]["setting_version"] = "10"
 
         if "containers" in parser:
+            # With the ContainerTree refactor, UM2 with Olsson block got moved to a separate definition.
+            if "6" in parser["containers"]:
+                if parser["containers"]["6"] == "ultimaker2":
+                    if "metadata" in parser and "has_variants" in parser["metadata"] and parser["metadata"]["has_variants"] == "True":  # This is an Olsson block upgraded UM2!
+                        parser["containers"]["6"] = "ultimaker2_olsson"
+                        del parser["metadata"]["has_variants"]
+                elif parser["containers"]["6"] == "ultimaker2_extended":
+                    if "metadata" in parser and "has_variants" in parser["metadata"] and parser["metadata"]["has_variants"] == "True":  # This is an Olsson block upgraded UM2E!
+                        parser["containers"]["6"] = "ultimaker2_extended_olsson"
+                        del parser["metadata"]["has_variants"]
+
+            # We should only have 6 levels when we start.
+            if "7" in parser["containers"]:
+                return ([], [])
+
+            # We added the intent container in Cura 4.4. This means that all other containers move one step down.
+            parser["containers"]["7"] = parser["containers"]["6"]
+            parser["containers"]["6"] = parser["containers"]["5"]
+            parser["containers"]["5"] = parser["containers"]["4"]
+            parser["containers"]["4"] = parser["containers"]["3"]
+            parser["containers"]["3"] = parser["containers"]["2"]
+            parser["containers"]["2"] = "empty_intent"
+
             # Update renamed containers
             for key, value in parser["containers"].items():
                 if value in _renamed_container_id_map:
