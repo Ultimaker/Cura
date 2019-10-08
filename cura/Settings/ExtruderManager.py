@@ -323,35 +323,36 @@ class ExtruderManager(QObject):
     ##  Adds the extruders of the currently active machine.
     def _addCurrentMachineExtruders(self) -> None:
         global_stack = self._application.getGlobalContainerStack()
+        if not global_stack:
+            return
+
         extruders_changed = False
+        container_registry = ContainerRegistry.getInstance()
+        global_stack_id = global_stack.getId()
 
-        if global_stack:
-            container_registry = ContainerRegistry.getInstance()
-            global_stack_id = global_stack.getId()
+        # Gets the extruder trains that we just created as well as any that still existed.
+        extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = global_stack_id)
 
-            # Gets the extruder trains that we just created as well as any that still existed.
-            extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = global_stack_id)
+        # Make sure the extruder trains for the new machine can be placed in the set of sets
+        if global_stack_id not in self._extruder_trains:
+            self._extruder_trains[global_stack_id] = {}
+            extruders_changed = True
 
-            # Make sure the extruder trains for the new machine can be placed in the set of sets
-            if global_stack_id not in self._extruder_trains:
-                self._extruder_trains[global_stack_id] = {}
-                extruders_changed = True
+        # Register the extruder trains by position
+        for extruder_train in extruder_trains:
+            extruder_position = extruder_train.getMetaDataEntry("position")
+            self._extruder_trains[global_stack_id][extruder_position] = extruder_train
 
-            # Register the extruder trains by position
-            for extruder_train in extruder_trains:
-                extruder_position = extruder_train.getMetaDataEntry("position")
-                self._extruder_trains[global_stack_id][extruder_position] = extruder_train
+            # regardless of what the next stack is, we have to set it again, because of signal routing. ???
+            extruder_train.setParent(global_stack)
+            extruder_train.setNextStack(global_stack)
+            extruders_changed = True
 
-                # regardless of what the next stack is, we have to set it again, because of signal routing. ???
-                extruder_train.setParent(global_stack)
-                extruder_train.setNextStack(global_stack)
-                extruders_changed = True
-
-            self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
-            if extruders_changed:
-                self.extrudersChanged.emit(global_stack_id)
-                self.setActiveExtruderIndex(0)
-                self.activeExtruderChanged.emit()
+        self.fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        if extruders_changed:
+            self.extrudersChanged.emit(global_stack_id)
+            self.setActiveExtruderIndex(0)
+            self.activeExtruderChanged.emit()
 
     # After 3.4, all single-extrusion machines have their own extruder definition files instead of reusing
     # "fdmextruder". We need to check a machine here so its extruder definition is correct according to this.
