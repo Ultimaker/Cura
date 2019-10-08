@@ -148,8 +148,18 @@ UM.Dialog
                     {
                         height: childrenRect.height
                         width: parent.width
-                        property string variantName: Cura.MachineManager.activeVariantNames[modelData] !== undefined ? Cura.MachineManager.activeVariantNames[modelData]: ""
-                        property string materialName: Cura.MachineManager.getExtruder(modelData).material.name !== undefined ? Cura.MachineManager.getExtruder(modelData).material.name : ""
+                        property string variantName:
+                        {
+                            var extruder = Cura.MachineManager.activeMachine.extruderList[modelData]
+                            var variant_name = extruder.variant.name
+                            return (variant_name !== undefined) ? variant_name : ""
+                        }
+                        property string materialName:
+                        {
+                            var extruder = Cura.MachineManager.activeMachine.extruderList[modelData]
+                            var material_name = extruder.material.name
+                            return (material_name !== undefined) ? material_name : ""
+                        }
                         Label
                         {
                             text: {
