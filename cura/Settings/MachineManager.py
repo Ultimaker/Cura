@@ -619,7 +619,7 @@ class MachineManager(QObject):
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return False
-        return Util.parseBool(global_container_stack.quality.getMetaDataEntry("is_experimental", False))
+        return self.activeQualityGroup().is_experimental
 
     @pyqtProperty(str, notify = activeIntentChanged)
     def activeIntentCategory(self) -> str:
