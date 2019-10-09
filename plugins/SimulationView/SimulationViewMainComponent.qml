@@ -11,7 +11,7 @@ import Cura 1.0 as Cura
 
 Item
 {
-    property bool is_simulation_playing: false
+    property bool isSimulationPlaying: false
     // By default, the layer slider can extend to the entire height of the parent
     // A parent may bind this property to indicate the bottom of a safe area
     // for the Layer slider
@@ -64,7 +64,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !is_simulation_playing ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
+        iconSource: !isSimulationPlaying ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")
@@ -94,7 +94,7 @@ Item
 
         onClicked:
         {
-            if(is_simulation_playing)
+            if(isSimulationPlaying)
             {
                 pauseSimulation()
             }
@@ -108,7 +108,7 @@ Item
         {
             UM.SimulationView.setSimulationRunning(false)
             simulationTimer.stop()
-            is_simulation_playing = false
+            isSimulationPlaying = false
             layerSlider.manuallyChanged = true
             pathSlider.manuallyChanged = true
         }
@@ -137,7 +137,7 @@ Item
 
             // When the user plays the simulation, if the path slider is at the end of this layer, we start
             // the simulation at the beginning of the current layer.
-            if (!is_simulation_playing)
+            if (!isSimulationPlaying)
             {
                 if (currentPath >= numPaths)
                 {
@@ -172,7 +172,7 @@ Item
             }
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
             // correctly, because part of the logic is in this trigger function.
-            is_simulation_playing = true
+            isSimulationPlaying = true
         }
     }
 
