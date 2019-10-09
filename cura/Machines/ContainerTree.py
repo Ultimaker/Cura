@@ -89,22 +89,6 @@ class ContainerTree:
     def _onStartupFinished(self):
         JobQueue.getInstance().add(self.MachineNodeLoadJob(self))
 
-    ##  For debugging purposes, visualise the entire container tree as it stands
-    #   now.
-    def _visualise_tree(self) -> str:
-        lines = ["% CONTAINER TREE"]  # Start with array and then combine into string, for performance.
-        for machine in self.machines.machines.values():
-            lines.append("  # " + machine.container_id)
-            for variant in machine.variants.values():
-                lines.append("    * " + variant.container_id)
-                for material in variant.materials.values():
-                    lines.append("      + " + material.container_id)
-                    for quality in material.qualities.values():
-                        lines.append("        - " + quality.container_id)
-                        for intent in quality.intents.values():
-                            lines.append("          . " + intent.container_id)
-        return "\n".join(lines)
-
     ##  Dictionary-like object that contains the machines.
     #
     #   This handles the lazy loading of MachineNodes.
@@ -126,7 +110,6 @@ class ContainerTree:
         #   \return A machine node for that definition.
         def __getitem__(self, definition_id: str) -> MachineNode:
             if definition_id not in self.machines:
-                print("-----------------------------------bluuuh", definition_id)
                 start_time = time.time()
                 self.machines[definition_id] = MachineNode(definition_id)
                 self.machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
