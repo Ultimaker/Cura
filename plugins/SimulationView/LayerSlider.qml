@@ -338,7 +338,6 @@ Item
         // set the slider position based on the lower value
         function setValue(value)
         {
-            print("lower handle set value: " + value)
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 

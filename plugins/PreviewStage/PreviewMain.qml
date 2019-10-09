@@ -13,11 +13,18 @@ Item
 {
     Loader
     {
-        property var panelTop: actionPanelWidget.y
         id: previewMain
         anchors.fill: parent
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
+
+        // Indicate that the layer slider should stay above the action panel
+        Binding
+        {
+            target: previewMain.item
+            property: "layerSliderSafeYMax"
+            value: actionPanelWidget.y
+        }
     }
 
     Cura.ActionPanelWidget
