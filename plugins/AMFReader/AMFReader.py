@@ -94,7 +94,7 @@ class AMFReader(MeshReader):
                                 if t.tag == "x":
                                     v[0] = float(t.text) * scale
                                 elif t.tag == "y":
-                                    v[2] = float(t.text) * scale
+                                    v[2] = - float(t.text) * scale
                                 elif t.tag == "z":
                                     v[1] = float(t.text) * scale
                             amf_mesh_vertices.append(v)
