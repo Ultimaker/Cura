@@ -20,29 +20,59 @@ Row
     {
         iconSource: UM.Theme.getIcon("view_3d")
         onClicked: Cura.Actions.view3DCamera.trigger()
+
+        UM.TooltipArea
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@info:tooltip", "3D View")
+        }
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_front")
         onClicked: Cura.Actions.viewFrontCamera.trigger()
+
+        UM.TooltipArea
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@info:tooltip", "Front View")
+        }
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_top")
         onClicked: Cura.Actions.viewTopCamera.trigger()
+
+        UM.TooltipArea
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@info:tooltip", "Top View")
+        }
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_left")
         onClicked: Cura.Actions.viewLeftSideCamera.trigger()
+
+        UM.TooltipArea
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@info:tooltip", "Left View")
+        }
     }
 
     ViewOrientationButton
     {
         iconSource: UM.Theme.getIcon("view_right")
         onClicked: Cura.Actions.viewRightSideCamera.trigger()
+
+        UM.TooltipArea
+        {
+            anchors.fill: parent
+            text: catalog.i18nc("@info:tooltip", "Right View")
+        }
     }
 }
