@@ -3,7 +3,6 @@
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
-from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.MachineNode import MachineNode
@@ -11,7 +10,6 @@ from cura.Settings.GlobalStack import GlobalStack  # To listen only to global st
 
 from typing import Dict, List, TYPE_CHECKING
 import time
-import UM.FlameProfiler
 
 if TYPE_CHECKING:
     from cura.Machines.QualityGroup import QualityGroup
@@ -38,12 +36,8 @@ class ContainerTree:
         return cls.__instance
 
     def __init__(self) -> None:
-        self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
+        self.machines = self.MachineNodeMap()  # Mapping from definition ID to machine nodes with lazy loading.
         self.materialsChanged = Signal()  # Emitted when any of the material nodes in the tree got changed.
-
-        container_registry = ContainerRegistry.getInstance()
-        container_registry.containerAdded.connect(self._machineAdded)
-        self._loadAll()
 
     ##  Get the quality groups available for the currently activated printer.
     #
@@ -76,19 +70,6 @@ class ContainerTree:
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
-    # Add a machine node by the id of it's definition.
-    # This is automatically called by the _machineAdded function, but it's sometimes needed to add a machine node
-    # faster than would have been done when waiting on any signals (for instance; when creating an entirely new machine)
-    @UM.FlameProfiler.profile
-    def addMachineNodeByDefinitionId(self, definition_id: str) -> None:
-        if definition_id in self.machines:
-            return  # Already have this definition ID.
-
-        start_time = time.time()
-        self.machines[definition_id] = MachineNode(definition_id)
-        self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
-        Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
-
     ##  Builds the initial container tree.
     def _loadAll(self):
         Logger.log("i", "Building container tree.")
@@ -97,26 +78,15 @@ class ContainerTree:
         for stack in all_stacks:
             if not isinstance(stack, GlobalStack):
                 continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
-            definition_id = stack.definition.getId()
-            if definition_id not in self.machines:
-                definition_start_time = time.time()
-                self.machines[definition_id] = MachineNode(definition_id)
-                self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
-                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - definition_start_time))
+            _ = self.machines[stack.definition.getId()]  # TODO: Load this lazily.
 
         Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
-
-    ##  When a printer gets added, we need to build up the tree for that container.
-    def _machineAdded(self, container_stack: ContainerInterface) -> None:
-        if not isinstance(container_stack, GlobalStack):
-            return  # Not our concern.
-        self.addMachineNodeByDefinitionId(container_stack.definition.getId())
 
     ##  For debugging purposes, visualise the entire container tree as it stands
     #   now.
     def _visualise_tree(self) -> str:
         lines = ["% CONTAINER TREE"]  # Start with array and then combine into string, for performance.
-        for machine in self.machines.values():
+        for machine in self.machines.machines.values():
             lines.append("  # " + machine.container_id)
             for variant in machine.variants.values():
                 lines.append("    * " + variant.container_id)
@@ -127,3 +97,30 @@ class ContainerTree:
                         for intent in quality.intents.values():
                             lines.append("          . " + intent.container_id)
         return "\n".join(lines)
+
+    ##  Dictionary-like object that contains the machines.
+    #
+    #   This handles the lazy loading of MachineNodes.
+    class MachineNodeMap:
+        def __init__(self):
+            self.machines = {}
+
+        ##  Returns whether a printer with a certain definition ID exists. This
+        #   is regardless of whether or not the printer is loaded yet.
+        #   \param definition_id The definition to look for.
+        #   \return Whether or not a printer definition exists with that name.
+        def __contains__(self, definition_id: str) -> bool:
+            return len(ContainerRegistry.getInstance().findInstanceContainersMetadata(id = definition_id)) == 0
+
+        ##  Returns a machine node for the specified definition ID.
+        #
+        #   If the machine node wasn't loaded yet, this will load it lazily.
+        #   \param definition_id The definition to look for.
+        #   \return A machine node for that definition.
+        def __getitem__(self, definition_id: str) -> MachineNode:
+            if definition_id not in self.machines:
+                start_time = time.time()
+                self.machines[definition_id] = MachineNode(definition_id)
+                self.machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
+                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+            return self.machines[definition_id]
