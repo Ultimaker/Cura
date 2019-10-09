@@ -85,9 +85,9 @@ class MachineNode(ContainerNode):
                 continue
             quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
-            for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
+            for extruder_position, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
-                    quality_groups[quality_type].nodes_for_extruders[extruder] = qualities_per_type[quality_type]
+                    quality_groups[quality_type].setExtruderNode(extruder_position, qualities_per_type[quality_type])
 
         available_quality_types = set(quality_groups.keys())
         for extruder_nr, qualities_per_type in enumerate(qualities_per_type_per_extruder):
