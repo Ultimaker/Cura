@@ -1,6 +1,8 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Job import Job  # For our background task of loading MachineNodes lazily.
+from UM.JobQueue import JobQueue  # For our background task of loading MachineNodes lazily.
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
 from UM.Signal import Signal
@@ -38,6 +40,7 @@ class ContainerTree:
     def __init__(self) -> None:
         self.machines = self.MachineNodeMap()  # Mapping from definition ID to machine nodes with lazy loading.
         self.materialsChanged = Signal()  # Emitted when any of the material nodes in the tree got changed.
+        cura.CuraApplication.CuraApplication.getInstance().initializationFinished.connect(self._onStartupFinished)  # Start the background task to load more machine nodes after start-up is completed.
 
     ##  Get the quality groups available for the currently activated printer.
     #
@@ -82,6 +85,10 @@ class ContainerTree:
 
         Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
 
+    ##  Ran after completely starting up the application.
+    def _onStartupFinished(self):
+        JobQueue.getInstance().add(self.MachineNodeLoadJob(self))
+
     ##  For debugging purposes, visualise the entire container tree as it stands
     #   now.
     def _visualise_tree(self) -> str:
@@ -119,8 +126,39 @@ class ContainerTree:
         #   \return A machine node for that definition.
         def __getitem__(self, definition_id: str) -> MachineNode:
             if definition_id not in self.machines:
+                print("-----------------------------------bluuuh", definition_id)
                 start_time = time.time()
                 self.machines[definition_id] = MachineNode(definition_id)
                 self.machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
                 Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
             return self.machines[definition_id]
+
+        ##  Returns whether we've already cached this definition's node.
+        #   \param definition_id The definition that we may have cached.
+        #   \return ``True`` if it's cached.
+        def is_loaded(self, definition_id: str) -> bool:
+            return definition_id in self.machines
+
+    ##  Pre-loads all currently added printers as a background task so that
+    #   switching printers in the interface is faster.
+    class MachineNodeLoadJob(Job):
+        ##  Creates a new background task.
+        #   \param tree_root The container tree instance. This cannot be
+        #   obtained through the singleton static function since the instance
+        #   may not yet be constructed completely.
+        def __init__(self, tree_root: "ContainerTree"):
+            self.tree_root = tree_root
+            super().__init__()
+
+        ##  Starts the background task.
+        #
+        #   The ``JobQueue`` will schedule this on a different thread.
+        def run(self) -> None:
+            currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
+            for stack in currently_added:
+                time.sleep(0.5)
+                if not isinstance(stack, GlobalStack):
+                    continue
+                definition_id = stack.definition.getId()
+                if not self.tree_root.machines.is_loaded(definition_id):
+                    _ = self.tree_root.machines[definition_id]
