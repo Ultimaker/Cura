@@ -87,7 +87,6 @@ class XmlMaterialProfile(InstanceContainer):
                 container.metaDataChanged.emit(container)
             for k, v in new_setting_values_dict.items():
                 self.setProperty(k, "value", v)
-            return
 
     ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
     #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
