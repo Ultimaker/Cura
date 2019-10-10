@@ -619,7 +619,10 @@ class MachineManager(QObject):
         global_container_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_container_stack:
             return False
-        return self.activeQualityGroup().is_experimental
+        active_quality_group = self.activeQualityGroup()
+        if active_quality_group is None:
+            return False
+        return active_quality_group.is_experimental
 
     @pyqtProperty(str, notify = activeIntentChanged)
     def activeIntentCategory(self) -> str:
@@ -1431,6 +1434,8 @@ class MachineManager(QObject):
                 else:
                     machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
                     variant_node = machine_node.variants.get(extruder_configuration.hotendID)
+                    if variant_node is None:
+                        continue
                     self._setVariantNode(position, variant_node)
 
                     # Find the material profile that the printer has stored.
