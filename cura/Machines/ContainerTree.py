@@ -91,7 +91,7 @@ class ContainerTree:
         #   \param definition_id The definition to look for.
         #   \return Whether or not a printer definition exists with that name.
         def __contains__(self, definition_id: str) -> bool:
-            return len(ContainerRegistry.getInstance().findInstanceContainersMetadata(id = definition_id)) == 0
+            return len(ContainerRegistry.getInstance().findContainersMetadata(id = definition_id)) == 0
 
         ##  Returns a machine node for the specified definition ID.
         #
