@@ -25,6 +25,7 @@ Row
         {
             anchors.fill: parent
             text: catalog.i18nc("@info:tooltip", "3D View")
+            acceptedButtons: Qt.NoButton
         }
     }
 
@@ -37,6 +38,7 @@ Row
         {
             anchors.fill: parent
             text: catalog.i18nc("@info:tooltip", "Front View")
+            acceptedButtons: Qt.NoButton
         }
     }
 
@@ -49,6 +51,7 @@ Row
         {
             anchors.fill: parent
             text: catalog.i18nc("@info:tooltip", "Top View")
+            acceptedButtons: Qt.NoButton
         }
     }
 
@@ -61,6 +64,7 @@ Row
         {
             anchors.fill: parent
             text: catalog.i18nc("@info:tooltip", "Left View")
+            acceptedButtons: Qt.NoButton
         }
     }
 
@@ -73,6 +77,7 @@ Row
         {
             anchors.fill: parent
             text: catalog.i18nc("@info:tooltip", "Right View")
+            acceptedButtons: Qt.NoButton
         }
     }
 }
