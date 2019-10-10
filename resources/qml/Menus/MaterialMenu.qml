@@ -13,8 +13,8 @@ Menu
     title: catalog.i18nc("@label:category menu label", "Material")
 
     property int extruderIndex: 0
-    property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
-    property string activeMaterialId: Cura.MachineManager.activeMachine.extruderList[extruderIndex].material.id
+    property var currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
+    property string activeMaterialId: Cura.MachineManager.activeMachine.extruderList[extruderIndex] ? Cura.MachineManager.activeMachine.extruderList[extruderIndex].material.id : ""
     property bool updateModels: true
     Cura.FavoriteMaterialsModel
     {
