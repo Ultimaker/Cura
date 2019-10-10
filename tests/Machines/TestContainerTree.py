@@ -37,7 +37,7 @@ def application():
 
 
 def test_containerTreeInit(container_registry):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
         container_tree = ContainerTree()
 
     assert "machine_1" in container_tree.machines
@@ -45,7 +45,7 @@ def test_containerTreeInit(container_registry):
 
 
 def test_newMachineAdded(container_registry):
-    mocked_definition_container = MagicMock(spec=DefinitionContainer)
+    mocked_definition_container = MagicMock(spec = DefinitionContainer)
     mocked_definition_container.getId = MagicMock(return_value = "machine_3")
 
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
