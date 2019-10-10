@@ -10,7 +10,7 @@ import cura.CuraApplication  # Imported like this to prevent circular dependenci
 from cura.Machines.MachineNode import MachineNode
 from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
 
-from typing import Dict, List, TYPE_CHECKING
+from typing import Dict, List, Optional, TYPE_CHECKING
 import time
 
 if TYPE_CHECKING:
@@ -103,6 +103,21 @@ class ContainerTree:
                 self.machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
                 Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
             return self.machines[definition_id]
+
+        ##  Gets a machine node for the specified definition ID, with default.
+        #
+        #   The default is returned if there is no definition with the specified
+        #   ID. If the machine node wasn't loaded yet, this will load it lazily.
+        #   \param definition_id The definition to look for.
+        #   \param default The machine node to return if there is no machine
+        #   with that definition (can be ``None`` optionally or if not
+        #   provided).
+        #   \return A machine node for that definition, or the default if there
+        #   is no definition with the provided definition_id.
+        def get(self, definition_id: str, default: Optional[MachineNode] = None) -> Optional[MachineNode]:
+            if definition_id not in self:
+                return default
+            return self[definition_id]
 
         ##  Returns whether we've already cached this definition's node.
         #   \param definition_id The definition that we may have cached.
