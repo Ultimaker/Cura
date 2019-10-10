@@ -16,6 +16,7 @@ import time
 if TYPE_CHECKING:
     from cura.Machines.QualityGroup import QualityGroup
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
+    from UM.Settings.ContainerStack import ContainerStack
 
 
 ##  This class contains a look-up tree for which containers are available at
@@ -75,7 +76,8 @@ class ContainerTree:
 
     ##  Ran after completely starting up the application.
     def _onStartupFinished(self):
-        JobQueue.getInstance().add(self.MachineNodeLoadJob(self))
+        currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
+        JobQueue.getInstance().add(self.MachineNodeLoadJob(self, currently_added))
 
     ##  Dictionary-like object that contains the machines.
     #
@@ -132,16 +134,19 @@ class ContainerTree:
         #   \param tree_root The container tree instance. This cannot be
         #   obtained through the singleton static function since the instance
         #   may not yet be constructed completely.
-        def __init__(self, tree_root: "ContainerTree"):
+        #   \param container_stacks All of the stacks to pre-load the container
+        #   trees for. This needs to be provided from here because the stacks
+        #   need to be constructed on the main thread because they are QObject.
+        def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]):
             self.tree_root = tree_root
+            self.container_stacks = container_stacks
             super().__init__()
 
         ##  Starts the background task.
         #
         #   The ``JobQueue`` will schedule this on a different thread.
         def run(self) -> None:
-            currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
-            for stack in currently_added:
+            for stack in self.container_stacks:
                 time.sleep(0.5)
                 if not isinstance(stack, GlobalStack):
                     continue
