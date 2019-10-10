@@ -1434,6 +1434,8 @@ class MachineManager(QObject):
                 else:
                     machine_node = ContainerTree.getInstance().machines.get(self._global_container_stack.definition.getId())
                     variant_node = machine_node.variants.get(extruder_configuration.hotendID)
+                    if variant_node is None:
+                        continue
                     self._setVariantNode(position, variant_node)
 
                     # Find the material profile that the printer has stored.
