@@ -221,8 +221,6 @@ class MachineManager(QObject):
 
     ##  Triggered when the global container stack is changed in CuraApplication.
     def _onGlobalContainerChanged(self) -> None:
-        import traceback
-        traceback.print_stack()
         if self._global_container_stack:
             try:
                 self._global_container_stack.containersChanged.disconnect(self._onContainersChanged)
