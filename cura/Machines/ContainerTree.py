@@ -73,18 +73,6 @@ class ContainerTree:
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
-    ##  Builds the initial container tree.
-    def _loadAll(self):
-        Logger.log("i", "Building container tree.")
-        start_time = time.time()
-        all_stacks = ContainerRegistry.getInstance().findContainerStacks()
-        for stack in all_stacks:
-            if not isinstance(stack, GlobalStack):
-                continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
-            _ = self.machines[stack.definition.getId()]  # TODO: Load this lazily.
-
-        Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
-
     ##  Ran after completely starting up the application.
     def _onStartupFinished(self):
         JobQueue.getInstance().add(self.MachineNodeLoadJob(self))
