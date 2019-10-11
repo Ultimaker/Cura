@@ -32,7 +32,7 @@ Menu
                 return extruder.variant.name == model.hotend_name
             }
             exclusiveGroup: group
-
+            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
             onTriggered: {
                 Cura.MachineManager.setVariant(menu.extruderIndex, model.container_node);
             }
