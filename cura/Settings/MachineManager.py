@@ -182,9 +182,11 @@ class MachineManager(QObject):
 
         # Create the configuration model with the current data in Cura
         self._current_printer_configuration.printerType = self._global_container_stack.definition.getName()
-        self._current_printer_configuration.extruderConfigurations = []
-        for extruder in self._global_container_stack.extruderList:
-            extruder_configuration = ExtruderConfigurationModel()
+
+        if len(self._current_printer_configuration.extruderConfigurations) != len(self._global_container_stack.extruderList):
+            self._current_printer_configuration.extruderConfigurations = [ExtruderConfigurationModel() for extruder in self._global_container_stack.extruderList]
+
+        for extruder, extruder_configuration in zip(self._global_container_stack.extruderList, self._current_printer_configuration.extruderConfigurations):
             # For compare just the GUID is needed at this moment
             mat_type = extruder.material.getMetaDataEntry("material") if extruder.material != empty_material_container else None
             mat_guid = extruder.material.getMetaDataEntry("GUID") if extruder.material != empty_material_container else None
@@ -196,7 +198,6 @@ class MachineManager(QObject):
             extruder_configuration.position = int(extruder.getMetaDataEntry("position"))
             extruder_configuration.material = material_model
             extruder_configuration.hotendID = extruder.variant.getName() if extruder.variant != empty_variant_container else None
-            self._current_printer_configuration.extruderConfigurations.append(extruder_configuration)
 
         # An empty build plate configuration from the network printer is presented as an empty string, so use "" for an
         # empty build plate.
