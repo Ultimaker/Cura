@@ -154,7 +154,6 @@ class MachineManager(QObject):
     printerConnectedStatusChanged = pyqtSignal() # Emitted every time the active machine change or the outputdevices change
 
     rootMaterialChanged = pyqtSignal()
-    discoveredPrintersChanged = pyqtSignal()
 
     def setInitialActiveMachine(self) -> None:
         active_machine_id = self._application.getPreferences().getValue("cura/active_machine")
