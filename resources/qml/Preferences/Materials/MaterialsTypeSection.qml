@@ -21,6 +21,7 @@ Item
     property var colorsModel: materialType != null ? materialType.colors: null
     height: childrenRect.height
     width: parent.width
+    anchors.left: parent.left
     Rectangle
     {
         id: material_type_header_background
