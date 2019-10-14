@@ -128,6 +128,20 @@ class MaterialManagementModel(QObject):
                 new_container.getMetaData().update(new_metadata)
             new_containers.append(new_container)
 
+        # CURA-6863: Nodes in ContainerTree will be updated upon ContainerAdded signals, one at a time. It will use the
+        # best fit material container at the time it sees one. For example, if you duplicate and get generic_pva #2,
+        # if the node update function sees the containers in the following order:
+        #
+        #   - generic_pva #2
+        #   - generic_pva #2_um3_aa04
+        #
+        # It will first use "generic_pva #2" because that's the best fit it has ever seen, and later "generic_pva #2_um3_aa04"
+        # once it sees that. Because things run in the Qt event loop, they don't happen at the same time. This means if
+        # between those two events, the ContainerTree will have nodes that contain invalid data.
+        #
+        # This sort fixes the problem by emitting the most specific containers first.
+        new_containers = sorted(new_containers, key = lambda x: x.getId(), reverse = True)
+
         for container_to_add in new_containers:
             container_to_add.setDirty(True)
             container_registry.addContainer(container_to_add)
