@@ -91,7 +91,6 @@ Item
                     text: qualityName()
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
-                    anchors.verticalCenter: intentSelection.verticalCenter
                     Layout.margins: 0
                     Layout.maximumWidth: parent.width * 0.7
                     height: contentHeight
@@ -110,7 +109,6 @@ Item
                     text: activeQualityDetailText()
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text_detail")
-                    anchors.verticalCenter: intentSelection.verticalCenter
                     Layout.margins: 0
                     Layout.fillWidth: true
 
@@ -136,11 +134,7 @@ Item
                             {
                                 if (resultSuffix)
                                 {
-                                    result += " - "
-                                }
-                                if (resultSuffix)
-                                {
-                                    result +=  resultSuffix
+                                    result += " - " + resultSuffix
                                 }
                                 result += " - "
                                 result += Cura.MachineManager.activeQualityLayerHeight + "mm"
@@ -150,10 +144,6 @@ Item
                         return result
                     }
                 }
-
-
-
-
             }
 
             background: Rectangle
