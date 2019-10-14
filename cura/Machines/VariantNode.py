@@ -121,7 +121,7 @@ class VariantNode(ContainerNode):
             if new_definition != self.machine.container_id or material_variant != self.variant_name:
                 return  # Doesn't match this set-up.
             original_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = self.materials[base_file].container_id)[0]
-            if "variant_name" in original_metadata or material_variant is not None:
+            if "variant_name" in original_metadata or material_variant is None:
                 return  # Original was already specific or just as unspecific as the new one.
 
         if "empty_material" in self.materials:
