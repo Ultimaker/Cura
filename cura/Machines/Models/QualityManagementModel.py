@@ -13,6 +13,7 @@ from cura.Settings.ContainerManager import ContainerManager
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 from cura.Settings.IntentManager import IntentManager
+from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -295,6 +296,8 @@ class QualityManagementModel(ListModel):
             if not quality_group.is_available:
                 continue
 
+            layer_height = fetchLayerHeight(quality_group)
+
             item = {"name": quality_group.name,
                     "is_read_only": True,
                     "quality_group": quality_group,
@@ -302,10 +305,11 @@ class QualityManagementModel(ListModel):
                     "quality_changes_group": None,
                     "intent_category": "default",
                     "section_name": catalog.i18nc("@label", "Default"),
+                    "layer_height": layer_height,  # layer_height is only used for sorting
                     }
             item_list.append(item)
-        # Sort by quality names
-        item_list = sorted(item_list, key = lambda x: x["name"].upper())
+        # Sort by layer_height for built-in qualities
+        item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         # Create intent items (non-default)
         available_intent_list = IntentManager.getInstance().getCurrentAvailableIntents()

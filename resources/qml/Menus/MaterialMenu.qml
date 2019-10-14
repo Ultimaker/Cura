@@ -50,6 +50,7 @@ Menu
         {
             text: model.brand + " " + model.name
             checkable: true
+            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
             checked: model.root_material_id === menu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             exclusiveGroup: favoriteGroup  // One favorite and one item from the others can be active at the same time.
@@ -72,6 +73,7 @@ Menu
             {
                 text: model.name
                 checkable: true
+                enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
                 checked: model.root_material_id === menu.currentRootMaterialId
                 exclusiveGroup: group
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
@@ -110,6 +112,7 @@ Menu
                         {
                             text: model.name
                             checkable: true
+                            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
                             checked: model.id === menu.activeMaterialId
                             exclusiveGroup: group
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)

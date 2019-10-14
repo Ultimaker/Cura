@@ -209,10 +209,10 @@
             "enabled": false
         },
         "prime_tower_position_x": {
-            "default_value": 185
+            "value": "185"
         },
         "prime_tower_position_y": {
-            "default_value": 160
+            "value": "160"
         },
         "machine_disallowed_areas": {
             "default_value": [

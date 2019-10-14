@@ -1,7 +1,7 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 
 import UM 1.2 as UM
@@ -28,10 +28,11 @@ Menu
             text: model.hotend_name
             checkable: true
             checked: {
-                return Cura.MachineManager.activeVariantNames[extruderIndex] == model.hotend_name
+                var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
+                return extruder.variant.name == model.hotend_name
             }
             exclusiveGroup: group
-
+            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
             onTriggered: {
                 Cura.MachineManager.setVariant(menu.extruderIndex, model.container_node);
             }
