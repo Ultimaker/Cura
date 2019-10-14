@@ -4,6 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Controls 1.4 as OldControls
+import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
 import Cura 1.6 as Cura
@@ -66,7 +67,6 @@ Item
         {
             id: intentSelection
             onClicked: menu.opened ? menu.close() : menu.open()
-            text: generateActiveQualityText()
 
             anchors.right: parent.right
             width: UM.Theme.getSize("print_setup_big_item").width
@@ -75,18 +75,85 @@ Item
 
             baselineOffset: null // If we don't do this, there is a binding loop. WHich is a bit weird, since we override the contentItem anyway...
 
-            contentItem: Label
+
+            contentItem: RowLayout
             {
-                id: textLabel
-                text: intentSelection.text
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
+                spacing: 0
                 anchors.left: parent.left
+                anchors.right: customisedSettings.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-                anchors.verticalCenter: intentSelection.verticalCenter
-                height: contentHeight
-                verticalAlignment: Text.AlignVCenter
-                renderType: Text.NativeRendering
+
+
+
+                Label
+                {
+                    id: textLabel
+                    text: qualityName()
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    anchors.verticalCenter: intentSelection.verticalCenter
+                    Layout.margins: 0
+                    Layout.maximumWidth: parent.width * 0.7
+                    height: contentHeight
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                    elide: Text.ElideRight
+
+                    function qualityName() {
+                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                        return resultMap["main"]
+                    }
+                }
+
+                Label
+                {
+                    text: activeQualityDetailText()
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text_detail")
+                    anchors.verticalCenter: intentSelection.verticalCenter
+                    Layout.margins: 0
+                    Layout.fillWidth: true
+
+                    height: contentHeight
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                    elide: Text.ElideRight
+
+                    function activeQualityDetailText()
+                    {
+                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                        var resultSuffix = resultMap["suffix"]
+                        var result = ""
+
+                        if (Cura.MachineManager.isActiveQualityExperimental)
+                        {
+                            resultSuffix += " (Experimental)"
+                        }
+
+                        if (Cura.MachineManager.isActiveQualitySupported)
+                        {
+                            if (Cura.MachineManager.activeQualityLayerHeight > 0)
+                            {
+                                if (resultSuffix)
+                                {
+                                    result += " - "
+                                }
+                                if (resultSuffix)
+                                {
+                                    result +=  resultSuffix
+                                }
+                                result += " - "
+                                result += Cura.MachineManager.activeQualityLayerHeight + "mm"
+                            }
+                        }
+
+                        return result
+                    }
+                }
+
+
+
+
             }
 
             background: Rectangle
@@ -96,41 +163,6 @@ Item
                 border.width: UM.Theme.getSize("default_lining").width
                 radius: UM.Theme.getSize("default_radius").width
                 color: UM.Theme.getColor("main_background")
-            }
-
-            function generateActiveQualityText()
-            {
-                var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                var resultMain = resultMap["main"]
-                var resultSuffix = resultMap["suffix"]
-                var result = ""
-
-                if (Cura.MachineManager.isActiveQualityExperimental)
-                {
-                    resultSuffix += " (Experimental)"
-                }
-
-                if (Cura.MachineManager.isActiveQualitySupported)
-                {
-                    if (Cura.MachineManager.activeQualityLayerHeight > 0)
-                    {
-                        result = resultMain
-                        if (resultSuffix)
-                        {
-                            result += " - "
-                        }
-                        result += "<font color=\"" + UM.Theme.getColor("text_detail") + "\">"
-                        if (resultSuffix)
-                        {
-                            result +=  resultSuffix
-                        }
-                        result += " - "
-                        result += Cura.MachineManager.activeQualityLayerHeight + "mm"
-                        result += "</font>"
-                    }
-                }
-
-                return result
             }
 
             UM.SimpleButton
