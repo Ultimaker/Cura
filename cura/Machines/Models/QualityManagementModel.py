@@ -54,6 +54,10 @@ class QualityManagementModel(ListModel):
         self._extruder_manager = application.getExtruderManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
+        self._machine_manager.activeQualityGroupChanged.connect(self._update)
+        self._machine_manager.activeStackChanged.connect(self._update)
+        self._machine_manager.extruderChanged.connect(self._update)
+
         container_registry.containerAdded.connect(self._qualityChangesListChanged)
         container_registry.containerRemoved.connect(self._qualityChangesListChanged)
         container_registry.containerMetaDataChanged.connect(self._qualityChangesListChanged)

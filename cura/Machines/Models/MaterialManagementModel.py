@@ -156,6 +156,8 @@ class MaterialManagementModel(QObject):
         new_containers = sorted(new_containers, key = lambda x: x.getId(), reverse = True)
 
         # Optimization. Serving the same purpose as the postponeSignals() in removeMaterial()
+        # postpone the signals emitted when duplicating materials. This is easier on the event loop; changes the
+        # behavior to be like a transaction. Prevents concurrency issues.
         with postponeSignals(container_registry.containerAdded, compress=CompressTechnique.CompressPerParameterValue):
             for container_to_add in new_containers:
                 container_to_add.setDirty(True)
