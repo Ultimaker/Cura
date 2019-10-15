@@ -75,15 +75,12 @@ Item
 
             baselineOffset: null // If we don't do this, there is a binding loop. WHich is a bit weird, since we override the contentItem anyway...
 
-
             contentItem: RowLayout
             {
                 spacing: 0
                 anchors.left: parent.left
                 anchors.right: customisedSettings.left
                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-
 
                 Label
                 {
@@ -180,7 +177,6 @@ Item
             UM.RecolorImage
             {
                 id: downArrow
-
 
                 source: UM.Theme.getIcon("arrow_bottom")
                 width: UM.Theme.getSize("standard_arrow").width

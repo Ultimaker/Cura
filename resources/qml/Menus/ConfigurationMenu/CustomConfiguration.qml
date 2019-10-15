@@ -221,6 +221,7 @@ Item
 
                 OldControls.CheckBox
                 {
+                    id: enabledCheckbox
                     checked: Cura.MachineManager.activeStack != null ? Cura.MachineManager.activeStack.isEnabled : false
                     enabled: !checked || Cura.MachineManager.numberExtrudersEnabled > 1 //Disable if it's the last enabled extruder.
                     height: parent.height
@@ -265,6 +266,7 @@ Item
 
                     text: Cura.MachineManager.activeStack !== null ? Cura.MachineManager.activeStack.material.name : ""
                     tooltip: text
+                    enabled: enabledCheckbox.checked
 
                     width: selectors.controlWidth
                     height: parent.height
@@ -324,7 +326,8 @@ Item
                     height: parent.height
                     width: selectors.controlWidth
                     style: UM.Theme.styles.print_setup_header_button
-                    activeFocusOnPress: true;
+                    activeFocusOnPress: true
+                    enabled: enabledCheckbox.checked
 
                     menu: Cura.NozzleMenu { extruderIndex: Cura.ExtruderManager.activeExtruderIndex }
                 }
