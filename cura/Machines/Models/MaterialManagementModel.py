@@ -8,6 +8,7 @@ import uuid  # To generate new GUIDs for new materials.
 
 from UM.i18n import i18nCatalog
 from UM.Logger import Logger
+from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular imports.
 from cura.Machines.ContainerTree import ContainerTree
@@ -73,8 +74,20 @@ class MaterialManagementModel(QObject):
     def removeMaterial(self, material_node: "MaterialNode") -> None:
         container_registry = CuraContainerRegistry.getInstance()
         materials_this_base_file = container_registry.findContainersMetadata(base_file = material_node.base_file)
-        for material_metadata in materials_this_base_file:
-            container_registry.removeContainer(material_metadata["id"])
+
+        # The material containers belonging to the same material file are supposed to work together. This postponeSignals()
+        # does two things:
+        #   - optimizing the signal emitting.
+        #   - making sure that the signals will only be emitted after all the material containers have been removed.
+        with postponeSignals(container_registry.containerRemoved, compress = CompressTechnique.CompressPerParameterValue):
+            # CURA-6886: Some containers may not have been loaded. If remove one material container, its material file
+            # will be removed. If later we remove a sub-material container which hasn't been loaded previously, it will
+            # crash because removeContainer() requires to load the container first, but the material file was already
+            # gone.
+            for material_metadata in materials_this_base_file:
+                container_registry.findInstanceContainers(id = material_metadata["id"])
+            for material_metadata in materials_this_base_file:
+                container_registry.removeContainer(material_metadata["id"])
 
     ##  Creates a duplicate of a material with the same GUID and base_file
     #   metadata.
@@ -128,15 +141,17 @@ class MaterialManagementModel(QObject):
                 new_container.getMetaData().update(new_metadata)
             new_containers.append(new_container)
 
-        for container_to_add in new_containers:
-            container_to_add.setDirty(True)
-            container_registry.addContainer(container_to_add)
+        # Optimization. Serving the same purpose as the postponeSignals() in removeMaterial()
+        with postponeSignals(container_registry.containerAdded, compress=CompressTechnique.CompressPerParameterValue):
+            for container_to_add in new_containers:
+                container_to_add.setDirty(True)
+                container_registry.addContainer(container_to_add)
 
-        # If the duplicated material was favorite then the new material should also be added to the favorites.
-        favorites_set = set(application.getPreferences().getValue("cura/favorite_materials").split(";"))
-        if base_file in favorites_set:
-            favorites_set.add(new_base_id)
-            application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites_set))
+            # If the duplicated material was favorite then the new material should also be added to the favorites.
+            favorites_set = set(application.getPreferences().getValue("cura/favorite_materials").split(";"))
+            if base_file in favorites_set:
+                favorites_set.add(new_base_id)
+                application.getPreferences().setValue("cura/favorite_materials", ";".join(favorites_set))
 
         return new_base_id
 
