@@ -43,6 +43,9 @@ class QualityProfilesDropDownMenuModel(ListModel):
         machine_manager.activeStackChanged.connect(self._onChange)
         machine_manager.extruderChanged.connect(self._onChange)
 
+        extruder_manager = application.getExtruderManager()
+        extruder_manager.extrudersChanged.connect(self._onChange)
+
         self._layer_height_unit = ""  # This is cached
 
         self._update_timer = QTimer()  # type: QTimer
