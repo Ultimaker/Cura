@@ -110,6 +110,11 @@ Item
                     resultSuffix += " (Experimental)"
                 }
 
+                if (Cura.MachineManager.isActiveQualityCustom)
+                {
+                    result = resultMain
+                }
+
                 if (Cura.MachineManager.isActiveQualitySupported)
                 {
                     if (Cura.MachineManager.activeQualityLayerHeight > 0)

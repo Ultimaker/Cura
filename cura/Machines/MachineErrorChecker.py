@@ -58,7 +58,6 @@ class MachineErrorChecker(QObject):
 
         # Whenever the machine settings get changed, we schedule an error check.
         self._machine_manager.globalContainerChanged.connect(self.startErrorCheck)
-        self._machine_manager.globalValueChanged.connect(self.startErrorCheck)
 
         self._onMachineChanged()
 

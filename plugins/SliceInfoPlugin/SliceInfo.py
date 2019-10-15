@@ -174,6 +174,7 @@ class SliceInfo(QObject, Extension):
                 extruder_dict["extruder_settings"] = extruder_settings
                 data["extruders"].append(extruder_dict)
 
+            data["intent_category"] = global_stack.getIntentCategory()
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
 
             data["user_modified_setting_keys"] = self._getUserModifiedSettingKeys()

@@ -531,8 +531,12 @@ Item
 
                     Label
                     {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
                         text: base.currentItemDisplayName
                         font: UM.Theme.getFont("large_bold")
+                        elide: Text.ElideRight
+                        renderType: Text.NativeRendering
                     }
                 }
 

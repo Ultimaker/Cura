@@ -84,7 +84,7 @@ class VariantNode(ContainerNode):
                 return material_node
         # First fallback: Choose any material with matching diameter.
         for material_node in self.materials.values():
-            if approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+            if material_node.getMetaDataEntry("approximate_diameter") and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                 return material_node
         fallback = next(iter(self.materials.values()))  # Should only happen with empty material node.
         Logger.log("w", "Could not find preferred material {preferred_material} with diameter {diameter} for variant {variant_id}, falling back to {fallback}.".format(
@@ -101,6 +101,14 @@ class VariantNode(ContainerNode):
     def _materialAdded(self, container: ContainerInterface) -> None:
         if container.getMetaDataEntry("type") != "material":
             return  # Not interested.
+        if not ContainerRegistry.getInstance().findContainersMetadata(id = container.getId()):
+            # CURA-6889
+            # containerAdded and removed signals may be triggered in the next event cycle. If a container gets added
+            # and removed in the same event cycle, in the next cycle, the connections should just ignore the signals.
+            # The check here makes sure that the container in the signal still exists.
+            Logger.log("d", "Got container added signal for container [%s] but it no longer exists, do nothing.",
+                       container.getId())
+            return
         if not self.machine.has_materials:
             return  # We won't add any materials.
         material_definition = container.getMetaDataEntry("definition")

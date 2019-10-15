@@ -85,9 +85,9 @@ class MachineNode(ContainerNode):
                 continue
             quality_groups[quality_type] = QualityGroup(name = global_quality_node.getMetaDataEntry("name", "Unnamed profile"), quality_type = quality_type)
             quality_groups[quality_type].node_for_global = global_quality_node
-            for extruder, qualities_per_type in enumerate(qualities_per_type_per_extruder):
+            for extruder_position, qualities_per_type in enumerate(qualities_per_type_per_extruder):
                 if quality_type in qualities_per_type:
-                    quality_groups[quality_type].nodes_for_extruders[extruder] = qualities_per_type[quality_type]
+                    quality_groups[quality_type].setExtruderNode(extruder_position, qualities_per_type[quality_type])
 
         available_quality_types = set(quality_groups.keys())
         for extruder_nr, qualities_per_type in enumerate(qualities_per_type_per_extruder):
@@ -134,6 +134,9 @@ class MachineNode(ContainerNode):
                 groups_by_name[name] = QualityChangesGroup(name, quality_type = quality_changes["quality_type"],
                                                            intent_category = quality_changes.get("intent_category", "default"),
                                                            parent = CuraApplication.getInstance())
+                # CURA-6882
+                # Custom qualities are always available, even if they are based on the "not supported" profile.
+                groups_by_name[name].is_available = True
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
 
@@ -141,14 +144,6 @@ class MachineNode(ContainerNode):
                 groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes
             else:  # Global profile.
                 groups_by_name[name].metadata_for_global = quality_changes
-
-        quality_groups = self.getQualityGroups(variant_names, material_bases, extruder_enabled)
-        for quality_changes_group in groups_by_name.values():
-            if quality_changes_group.quality_type not in quality_groups:
-                quality_changes_group.is_available = False
-            else:
-                # Quality changes group is available iff the quality group it depends on is available. Irrespective of whether the intent category is available.
-                quality_changes_group.is_available = quality_groups[quality_changes_group.quality_type].is_available
 
         return list(groups_by_name.values())
 
