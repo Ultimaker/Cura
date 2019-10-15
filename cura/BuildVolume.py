@@ -126,10 +126,6 @@ class BuildVolume(SceneNode):
         # Therefore this works.
         self._machine_manager.activeQualityChanged.connect(self._onStackChanged)
 
-        # This should also ways work, and it is semantically more correct,
-        # but it does not update the disallowed areas after material change
-        self._machine_manager.activeStackChanged.connect(self._onStackChanged)
-
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
 

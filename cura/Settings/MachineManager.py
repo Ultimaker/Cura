@@ -139,8 +139,8 @@ class MachineManager(QObject):
     activeVariantChanged = pyqtSignal()
     activeQualityChanged = pyqtSignal()
     activeIntentChanged = pyqtSignal()
-    activeStackChanged = pyqtSignal()  # Emitted whenever the active extruder stack is changed (ie: when changing between extruders, changing a profile, but not when changing a value)
-    extruderChanged = pyqtSignal()
+    activeStackChanged = pyqtSignal()  # Emitted whenever the active extruder stack is changed (ie: when switching the active extruder tab or changing between printers)
+    extruderChanged = pyqtSignal()  # Emitted whenever an extruder is activated or deactivated or the default extruder changes.
 
     activeStackValueChanged = pyqtSignal()  # Emitted whenever a value inside the active stack is changed.
     activeStackValidationChanged = pyqtSignal()  # Emitted whenever a validation inside active container is changed
@@ -269,11 +269,7 @@ class MachineManager(QObject):
 
     def _onActiveExtruderStackChanged(self) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
-        if self._active_container_stack is not None:
-            self._active_container_stack.pyqtContainersChanged.disconnect(self.activeStackChanged)  # Unplug from the old one.
         self._active_container_stack = ExtruderManager.getInstance().getActiveExtruderStack()
-        if self._active_container_stack is not None:
-            self._active_container_stack.pyqtContainersChanged.connect(self.activeStackChanged)  # Plug into the new one.
 
     def __emitChangedSignals(self) -> None:
         self.activeQualityChanged.emit()

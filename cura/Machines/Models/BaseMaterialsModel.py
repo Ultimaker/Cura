@@ -42,7 +42,7 @@ class BaseMaterialsModel(ListModel):
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
         self._updateExtruderStack()
 
-        # Update this model when switching machines, when adding materials or changing their metadata.
+        # Update this model when switching machines or tabs, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._update)
         ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
         self._application.getMaterialManagementModel().favoritesChanged.connect(self._update)

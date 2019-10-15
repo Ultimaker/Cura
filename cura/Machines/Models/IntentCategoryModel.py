@@ -48,7 +48,10 @@ class IntentCategoryModel(ListModel):
 
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
-        cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeStackChanged.connect(self.update)
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.activeMaterialChanged.connect(self.update)
+        machine_manager.activeVariantChanged.connect(self.update)
+        machine_manager.extruderChanged.connect(self.update)
 
         self.update()
 
