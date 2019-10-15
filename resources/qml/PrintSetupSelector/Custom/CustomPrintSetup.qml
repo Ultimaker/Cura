@@ -88,20 +88,15 @@ Item
                 Label
                 {
                     id: textLabel
-                    text: qualityName()
+                    text: Cura.MachineManager.activeQualityDisplayNameMap["main"]
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     Layout.margins: 0
-                    Layout.maximumWidth: parent.width * 0.7
+                    Layout.maximumWidth: Math.floor(parent.width * 0.7)  // Always leave >= 30% for the rest of the row.
                     height: contentHeight
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
                     elide: Text.ElideRight
-
-                    function qualityName() {
-                        var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
-                        return resultMap["main"]
-                    }
                 }
 
                 Label
