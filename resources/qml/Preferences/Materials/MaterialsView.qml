@@ -111,6 +111,8 @@ TabView
                     {
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                        // CURA-6868 Make sure to update the extruder to user a diameter-compatible material.
+                        Cura.MachineManager.updateMaterialWithVariant()
                         base.resetSelectedMaterial()
                     }
 

@@ -1322,7 +1322,8 @@ class MachineManager(QObject):
     #   changed.
     #   \param position The extruder stack to update. If provided with None, all
     #   extruder stacks will be updated.
-    def updateMaterialWithVariant(self, position: Optional[str]) -> None:
+    @pyqtSlot()
+    def updateMaterialWithVariant(self, position: Optional[str] = None) -> None:
         if self._global_container_stack is None:
             return
         if position is None:
@@ -1353,10 +1354,9 @@ class MachineManager(QObject):
                 self._setMaterial(position_item, new_material)
             else:
                 # The current material is not available, find the preferred one.
-                if position is not None:
-                    approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
-                    material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
-                    self._setMaterial(position_item, material_node)
+                approximate_material_diameter = int(self._global_container_stack.extruderList[int(position_item)].getApproximateMaterialDiameter())
+                material_node = nozzle_node.preferredMaterial(approximate_material_diameter)
+                self._setMaterial(position_item, material_node)
 
     ##  Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
     #   instance with the same network key.
