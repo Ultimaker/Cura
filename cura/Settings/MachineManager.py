@@ -1514,7 +1514,8 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         machine_definition_id = self._global_container_stack.definition.id
-        variant_node = self._variant_manager.getVariantNode(machine_definition_id, variant_name)
+        machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
+        variant_node = machine_node.variants.get(variant_name)
         self.setVariant(position, variant_node)
 
     @pyqtSlot(str, "QVariant")
