@@ -68,7 +68,7 @@ class QualityGroup:
         if not node.container:
             Logger.log("w", "Node {0} doesn't have a container.".format(node.container_id))
             return
-        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
+        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental
 
     def setExtruderNode(self, position: int, node: "ContainerNode") -> None:
@@ -78,5 +78,5 @@ class QualityGroup:
         if not node.container:
             Logger.log("w", "Node {0} doesn't have a container.".format(node.container_id))
             return
-        is_experimental = parseBool(node.container.getMetaDataEntry("is_experimental", False))
+        is_experimental = parseBool(node.getMetaDataEntry("is_experimental", False))
         self.is_experimental |= is_experimental

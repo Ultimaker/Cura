@@ -126,8 +126,8 @@ class BaseMaterialsModel(ListModel):
         if material_base_file in self._available_materials:
             self._update()
 
-    ## This is an abstract method that needs to be implemented by the specific
-    #  models themselves.
+    ##  This is an abstract method that needs to be implemented by the specific
+    #   models themselves.
     def _update(self):
         self._favorite_ids = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
 
@@ -141,7 +141,7 @@ class BaseMaterialsModel(ListModel):
         nozzle_name = extruder_stack.variant.getName()
         materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
         approximate_material_diameter = extruder_stack.getApproximateMaterialDiameter()
-        self._available_materials = {key: material for key, material in materials.items() if float(material.container.getMetaDataEntry("approximate_diameter", -1)) == approximate_material_diameter}
+        self._available_materials = {key: material for key, material in materials.items() if float(material.getMetaDataEntry("approximate_diameter", -1)) == approximate_material_diameter}
 
     ## This method is used by all material models in the beginning of the
     #  _update() method in order to prevent errors. It's the same in all models
