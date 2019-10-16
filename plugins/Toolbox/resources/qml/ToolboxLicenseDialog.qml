@@ -30,7 +30,7 @@ UM.Dialog
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            text: licenseDialog.pluginName + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+            text: licenseDialog.pluginName + ": " + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
             wrapMode: Text.Wrap
             renderType: Text.NativeRendering
         }
