@@ -162,6 +162,8 @@ class PauseAtHeight(Script):
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0
         current_z = 0
+        current_height = 0
+        current_layer = 0
         current_extrusion_f = 0
         got_first_g_cmd_on_layer_0 = False
         current_t = 0 #Tracks the current extruder for tracking the target temperature.
@@ -263,8 +265,8 @@ class PauseAtHeight(Script):
                         # the nozzle)
                         x, y = self.getNextXY(layer)
                         prev_lines = prev_layer.split("\n")
-                        for line in prev_lines:
-                            new_e = self.getValue(line, 'E', current_e)
+                        for lin in prev_lines:
+                            new_e = self.getValue(lin, "E", current_e)
                             if new_e != current_e:
                                 current_e = new_e
                                 break

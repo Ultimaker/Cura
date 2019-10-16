@@ -29,10 +29,14 @@ Menu
             checkable: true
             checked: {
                 var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
-                return extruder.variant.name == model.hotend_name
+                return (extruder === undefined) ? false : (extruder.variant.name == model.hotend_name)
             }
             exclusiveGroup: group
-            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
+            enabled:
+            {
+                var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
+                return (extruder === undefined) ? false : extruder.isEnabled
+            }
             onTriggered: {
                 Cura.MachineManager.setVariant(menu.extruderIndex, model.container_node);
             }

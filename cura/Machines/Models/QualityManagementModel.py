@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Any, cast, Dict, Optional, TYPE_CHECKING
-from PyQt5.QtCore import pyqtSlot, QObject, Qt
+from PyQt5.QtCore import pyqtSlot, QObject, Qt, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
@@ -51,14 +51,27 @@ class QualityManagementModel(ListModel):
         application = cura.CuraApplication.CuraApplication.getInstance()
         container_registry = application.getContainerRegistry()
         self._machine_manager = application.getMachineManager()
-        self._extruder_manager = application.getExtruderManager()
+        self._machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        self._machine_manager.activeStackChanged.connect(self._onChange)
+        self._machine_manager.extruderChanged.connect(self._onChange)
+        self._machine_manager.globalContainerChanged.connect(self._onChange)
 
-        self._machine_manager.globalContainerChanged.connect(self._update)
+        self._extruder_manager = application.getExtruderManager()
+        self._extruder_manager.extrudersChanged.connect(self._onChange)
+
         container_registry.containerAdded.connect(self._qualityChangesListChanged)
         container_registry.containerRemoved.connect(self._qualityChangesListChanged)
         container_registry.containerMetaDataChanged.connect(self._qualityChangesListChanged)
 
-        self._update()
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
+        self._onChange()
+
+    def _onChange(self) -> None:
+        self._update_timer.start()
 
     ##  Deletes a custom profile. It will be gone forever.
     #   \param quality_changes_group The quality changes group representing the

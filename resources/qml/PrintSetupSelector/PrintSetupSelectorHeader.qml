@@ -37,6 +37,7 @@ RowLayout
             return ""
         }
         font: UM.Theme.getFont("medium")
+        elide: Text.ElideMiddle
 
         UM.SettingPropertyProvider
         {

@@ -46,12 +46,17 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.WeightRole, "weight")
         self.addRoleName(self.QualitiesRole, "qualities")
 
+        application = cura.CuraApplication.CuraApplication.getInstance()
+
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
         machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
         machine_manager.activeMaterialChanged.connect(self.update)
         machine_manager.activeVariantChanged.connect(self.update)
         machine_manager.extruderChanged.connect(self.update)
+
+        extruder_manager = application.getExtruderManager()
+        extruder_manager.extrudersChanged.connect(self.update)
 
         self.update()
 

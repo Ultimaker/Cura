@@ -104,10 +104,11 @@ def test_variantNodeInit_excludedMaterial(container_registry, machine_node):
 def test_materialAdded(container_registry, machine_node, metadata, material_result_list):
     variant_node = createVariantNode("machine_1", machine_node, container_registry)
     machine_node.exclude_materials = ["material_3"]
-    with patch("cura.Machines.VariantNode.MaterialNode"):  # We're not testing the material node here, so patch it out.
-        with patch.dict(metadata_dict, metadata):
-            mocked_container = createMockedInstanceContainer()
-            variant_node._materialAdded(mocked_container)
+    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
+        with patch("cura.Machines.VariantNode.MaterialNode"):  # We're not testing the material node here, so patch it out.
+            with patch.dict(metadata_dict, metadata):
+                mocked_container = createMockedInstanceContainer()
+                variant_node._materialAdded(mocked_container)
 
     assert len(material_result_list) == len(variant_node.materials)
     for name in material_result_list:
