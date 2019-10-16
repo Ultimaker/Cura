@@ -6217,6 +6217,7 @@
                     "label": "Infill Travel Optimization",
                     "description": "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased.",
                     "type": "bool",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "default_value": false,
                     "settable_per_mesh": true
                 },
