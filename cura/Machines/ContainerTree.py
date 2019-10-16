@@ -84,7 +84,7 @@ class ContainerTree:
     #   This handles the lazy loading of MachineNodes.
     class MachineNodeMap:
         def __init__(self):
-            self.machines = {}
+            self._machines = {}
 
         ##  Returns whether a printer with a certain definition ID exists. This
         #   is regardless of whether or not the printer is loaded yet.
@@ -99,12 +99,12 @@ class ContainerTree:
         #   \param definition_id The definition to look for.
         #   \return A machine node for that definition.
         def __getitem__(self, definition_id: str) -> MachineNode:
-            if definition_id not in self.machines:
+            if definition_id not in self._machines:
                 start_time = time.time()
-                self.machines[definition_id] = MachineNode(definition_id)
-                self.machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
+                self._machines[definition_id] = MachineNode(definition_id)
+                self._machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
                 Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
-            return self.machines[definition_id]
+            return self._machines[definition_id]
 
         ##  Gets a machine node for the specified definition ID, with default.
         #
@@ -125,7 +125,7 @@ class ContainerTree:
         #   \param definition_id The definition that we may have cached.
         #   \return ``True`` if it's cached.
         def is_loaded(self, definition_id: str) -> bool:
-            return definition_id in self.machines
+            return definition_id in self._machines
 
     ##  Pre-loads all currently added printers as a background task so that
     #   switching printers in the interface is faster.
