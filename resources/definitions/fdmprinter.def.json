@@ -5762,6 +5762,7 @@
                     "description": "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear.",
                     "type": "bool",
                     "default_value": true,
+                    "value": "magic_mesh_surface_mode != 'surface'",
                     "settable_per_mesh": true
                 },
                 "meshfix_union_all_remove_holes":
