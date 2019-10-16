@@ -73,9 +73,6 @@ from cura.Scene import ZOffsetDecorator
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
-import cura.Machines.MaterialManager #Imported like this to prevent circular imports.
-import cura.Machines.QualityManager #Imported like this to prevent circular imports.
-from cura.Machines.VariantManager import VariantManager
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -923,20 +920,6 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
-
-    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
-    def getVariantManager(self, *args) -> VariantManager:
-        return VariantManager.getInstance()
-
-    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
-    @pyqtSlot(result = QObject)
-    def getMaterialManager(self, *args) -> cura.Machines.MaterialManager.MaterialManager:
-        return cura.Machines.MaterialManager.MaterialManager.getInstance()
-
-    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
-    @pyqtSlot(result = QObject)
-    def getQualityManager(self, *args) -> cura.Machines.QualityManager.QualityManager:
-        return cura.Machines.QualityManager.QualityManager.getInstance()
 
     def getIntentManager(self, *args) -> IntentManager:
         return IntentManager.getInstance()
