@@ -173,7 +173,6 @@ Item
 
                     onEntered:
                     {
-                        print(model.description)
                         base.showTooltip(
                             intentCategoryLabel,
                             Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),

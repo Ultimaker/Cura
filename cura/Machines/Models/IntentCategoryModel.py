@@ -37,7 +37,7 @@ class IntentCategoryModel(ListModel):
     }
     _translations["engineering"] = {
         "name": catalog.i18nc("@label", "Engineering"),
-        "description": catalog.i18nc("@text", "An profile which is suitable for engineering work")
+        "description": catalog.i18nc("@text", "A profile which is suitable for engineering work")
 
     }
     _translations["smooth"] = {
