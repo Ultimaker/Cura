@@ -5833,6 +5833,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "meshfix_maximum_resolution":
+                {
+                    "label": "Maximum Resolution",
+                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.5,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.01",
+                    "maximum_value_warning": "3",
+                    "settable_per_mesh": true
+                },
                 "meshfix_maximum_travel_resolution":
                 {
                     "label": "Maximum Travel Resolution",
@@ -6254,18 +6266,6 @@
                     "maximum_value_warning": "1.0",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
-                },
-                "meshfix_maximum_resolution":
-                {
-                    "label": "Maximum Resolution",
-                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.5,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.01",
-                    "maximum_value_warning": "3",
-                    "settable_per_mesh": true
                 },
                 "support_skip_some_zags":
                 {
