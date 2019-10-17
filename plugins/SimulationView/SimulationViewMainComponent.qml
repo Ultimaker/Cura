@@ -11,11 +11,14 @@ import Cura 1.0 as Cura
 
 Item
 {
+    // An Item whose bounds are guaranteed to be safe for overlays to be placed.
+    // Defaults to parent, ie. the entire available area
+    // eg. the layer slider will not be placed in this area.
+    property var safeArea: parent
+
+
     property bool isSimulationPlaying: false
-    // By default, the layer slider can extend to the entire height of the parent
-    // A parent may bind this property to indicate the bottom of a safe area
-    // for the Layer slider
-    property var layerSliderSafeYMax: parent.height
+    readonly property var layerSliderSafeYMax: safeArea.y + safeArea.height
 
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
@@ -221,6 +224,7 @@ Item
         // Make sure the slider handlers show the correct value after switching views
         Component.onCompleted:
         {
+            print("safeArea: " + safeArea, "layerSliderSafeYMax", layerSliderSafeYMax)
             layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
             layerSlider.setUpperValue(UM.SimulationView.currentLayer)
         }

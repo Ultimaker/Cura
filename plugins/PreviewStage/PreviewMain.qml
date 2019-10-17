@@ -11,6 +11,17 @@ import Cura 1.0 as Cura
 
 Item
 {
+
+    // Subtract the actionPanel from the safe area. This way the view won't draw interface elements under/over it
+    Item {
+        id: safeArea
+        visible: false
+        anchors.left: parent.left
+        anchors.right: actionPanelWidget.left
+        anchors.top: parent.top
+        anchors.bottom: actionPanelWidget.top
+    }
+
     Loader
     {
         id: previewMain
@@ -18,12 +29,11 @@ Item
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
 
-        // Indicate that the layer slider should stay above the action panel
         Binding
         {
             target: previewMain.item
-            property: "layerSliderSafeYMax"
-            value: actionPanelWidget.y
+            property: "safeArea"
+            value:safeArea
         }
     }
 
