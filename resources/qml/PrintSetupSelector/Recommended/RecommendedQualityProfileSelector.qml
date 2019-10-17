@@ -163,6 +163,25 @@ Item
 
                     isCheckedFunction: checkedFunction
                 }
+
+                MouseArea // tooltip hover area
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    enabled: model.description !== undefined
+                    acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                    onEntered:
+                    {
+                        print(model.description)
+                        base.showTooltip(
+                            intentCategoryLabel,
+                            Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),
+                            model.description
+                        )
+                    }
+                    onExited: base.hideTooltip()
+                }
             }
 
         }
