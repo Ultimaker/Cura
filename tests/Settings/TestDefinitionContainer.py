@@ -70,7 +70,7 @@ def test_validateOverridingDefaultValue(file_name):
     parent_settings = getInheritedSettings(doc["inherits"])
     for key, val in doc["overrides"].items():
         if "value" in parent_settings[key]:
-            assert "default_value" not in val, "Unnecessary default_value in {file_name}".format(file_name = file_name)  # If there is a value in the parent settings, then the default_value is not effective.
+            assert "default_value" not in val, "Unnecessary default_value for {key} in {file_name}".format(key = key, file_name = file_name)  # If there is a value in the parent settings, then the default_value is not effective.
 
 def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", definition_id + ".def.json")
