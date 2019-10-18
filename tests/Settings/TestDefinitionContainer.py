@@ -104,7 +104,7 @@ def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, An
             result[key] = val
             continue
 
-        if hasattr(result[key], "__getitem__") and hasattr(val, "__getitem__"):  # Duck typing of dicts. Also works with JSON documents for sure.
+        if isinstance(result[key], dict) and isinstance(val, dict):
             result[key] = merge_dicts(result[key], val)
         else:
             result[key] = val
