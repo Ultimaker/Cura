@@ -94,6 +94,8 @@ UM.PreferencesPage
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+        UM.Preferences.resetPreference("general/restore_window_geometry")
+        restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
@@ -461,6 +463,21 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should Cura open at the location it was closed?")
+
+                CheckBox
+                {
+                    id: restoreWindowPositionCheckbox
+                    text: catalog.i18nc("@option:check", "Restore window position on start")
+                    checked: boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
+                    onCheckedChanged: UM.Preferences.setValue("general/restore_window_geometry", checked)
                 }
             }
 
