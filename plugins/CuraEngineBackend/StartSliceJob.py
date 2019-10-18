@@ -107,7 +107,8 @@ class StartSliceJob(Job):
             return False
 
         # if there are no per-object settings we don't need to check the other settings here
-        if stack.getTop() is None or not stack.getTop().getAllKeys():
+        stack_top = stack.getTop()
+        if stack_top is None or not stack_top.getAllKeys():
             return False
 
         for key in stack.getAllKeys():
