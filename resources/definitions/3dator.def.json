@@ -17,15 +17,10 @@
 
     "overrides": {
         "machine_name": { "default_value": "3Dator" },
-        "speed_travel": { "default_value": 120 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "infill_sparse_density": { "default_value": 20 },
-        "speed_wall_x": { "default_value": 45 },
-        "speed_wall_0": { "default_value": 40 },
-        "speed_topbottom": { "default_value": 35 },
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 50 },
-        "speed_infill": { "default_value": 60 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
         "machine_height": { "default_value": 260 },
@@ -33,8 +28,6 @@
         "machine_depth": { "default_value": 170 },
         "machine_width": { "default_value": 180 },
         "retraction_speed": {"default_value":100},
-        "cool_fan_speed_min": {"default_value": 20},
-        "cool_fan_speed_max": {"default_value": 70},
         "adhesion_type": { "default_value": "none" },
         "machine_head_with_fans_polygon": {
             "default_value": [
