@@ -106,6 +106,10 @@ class StartSliceJob(Job):
         if stack is None:
             return False
 
+        # if there are no per-object settings we don't need to check the other settings here
+        if stack.getTop() is None or not stack.getTop().getAllKeys():
+            return False
+
         for key in stack.getAllKeys():
             validation_state = stack.getProperty(key, "validationState")
             if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
