@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import Qt
 import collections
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Dict
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
@@ -31,7 +31,7 @@ class IntentCategoryModel(ListModel):
 
     # Translations to user-visible string. Ordered by weight.
     # TODO: Create a solution for this name and weight to be used dynamically.
-    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]"
+    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
     _translations["default"] = {
         "name": catalog.i18nc("@label", "Default")
     }
