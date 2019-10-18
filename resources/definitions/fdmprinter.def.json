@@ -1190,6 +1190,18 @@
                                     "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "initial_bottom_layers":
+                                {
+                                    "label": "Initial Bottom Layers",
+                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2",
+                                    "default_value": 6,
+                                    "type": "int",
+                                    "value": "bottom_layers",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         }
