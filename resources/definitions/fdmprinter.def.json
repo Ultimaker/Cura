@@ -1194,7 +1194,7 @@
                                 "initial_bottom_layers":
                                 {
                                     "label": "Initial Bottom Layers",
-                                    "description": "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "description": "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number.",
                                     "minimum_value": "0",
                                     "minimum_value_warning": "2",
                                     "default_value": 6,
