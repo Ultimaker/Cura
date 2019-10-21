@@ -3,7 +3,7 @@
 
 from PyQt5.QtCore import Qt
 import collections
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional, Dict
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
@@ -25,15 +25,25 @@ class IntentCategoryModel(ListModel):
     IntentCategoryRole = Qt.UserRole + 2
     WeightRole = Qt.UserRole + 3
     QualitiesRole = Qt.UserRole + 4
-
-    #Translations to user-visible string. Ordered by weight.
-    #TODO: Create a solution for this name and weight to be used dynamically.
-    name_translation = collections.OrderedDict() #type: "collections.OrderedDict[str,str]"
-    name_translation["default"] = catalog.i18nc("@label", "Default")
-    name_translation["engineering"] = catalog.i18nc("@label", "Engineering")
-    name_translation["smooth"] = catalog.i18nc("@label", "Smooth")
+    DescriptionRole = Qt.UserRole + 5
 
     modelUpdated = pyqtSignal()
+
+    # Translations to user-visible string. Ordered by weight.
+    # TODO: Create a solution for this name and weight to be used dynamically.
+    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
+    _translations["default"] = {
+        "name": catalog.i18nc("@label", "Default")
+    }
+    _translations["engineering"] = {
+        "name": catalog.i18nc("@label", "Engineering"),
+        "description": catalog.i18nc("@text", "Suitable for engineering work")
+
+    }
+    _translations["smooth"] = {
+        "name": catalog.i18nc("@label", "Smooth"),
+        "description": catalog.i18nc("@text", "Optimized for a smooth surfaces")
+    }
 
     ##  Creates a new model for a certain intent category.
     #   \param The category to list the intent profiles for.
@@ -45,6 +55,7 @@ class IntentCategoryModel(ListModel):
         self.addRoleName(self.IntentCategoryRole, "intent_category")
         self.addRoleName(self.WeightRole, "weight")
         self.addRoleName(self.QualitiesRole, "qualities")
+        self.addRoleName(self.DescriptionRole, "description")
 
         application = cura.CuraApplication.CuraApplication.getInstance()
 
@@ -75,10 +86,18 @@ class IntentCategoryModel(ListModel):
             qualities = IntentModel()
             qualities.setIntentCategory(category)
             result.append({
-                "name": self.name_translation.get(category, catalog.i18nc("@label", "Unknown")),
+                "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
+                "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
-                "weight": list(self.name_translation.keys()).index(category),
+                "weight": list(self._translations.keys()).index(category),
                 "qualities": qualities
             })
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
+
+    ##  Get a display value for a category. See IntenCategoryModel._translations
+    ##  for categories and keys
+    @staticmethod
+    def translation(category: str, key: str, default: Optional[str] = None):
+        display_strings = IntentCategoryModel._translations.get(category, {})
+        return display_strings.get(key, default)
