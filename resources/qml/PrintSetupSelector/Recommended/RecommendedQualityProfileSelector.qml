@@ -55,7 +55,7 @@ Item
             }
             UM.SimpleButton
             {
-                id: customisedSettings
+                id: resetToDefaultQualityButton
 
                 visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
                 height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
