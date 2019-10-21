@@ -345,11 +345,13 @@ class QualityManagementModel(ListModel):
         # Create quality_changes group items
         quality_changes_item_list = []
         for quality_changes_group in quality_changes_group_list:
+            # CURA-6913 Note that custom qualities can be based on "not supported", so the quality group can be None.
             quality_group = quality_group_dict.get(quality_changes_group.quality_type)
+            quality_type = quality_changes_group.quality_type
             item = {"name": quality_changes_group.name,
                     "is_read_only": False,
                     "quality_group": quality_group,
-                    "quality_type": quality_group.quality_type,
+                    "quality_type": quality_type,
                     "quality_changes_group": quality_changes_group,
                     "intent_category": quality_changes_group.intent_category,
                     "section_name": catalog.i18nc("@label", "Custom profiles"),

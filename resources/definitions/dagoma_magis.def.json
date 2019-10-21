@@ -55,9 +55,6 @@
         "speed_print": {
             "default_value": 40
         },
-        "speed_travel": {
-            "default_value": 120
-        },
         "retraction_amount": {
             "default_value": 3.8
         },
