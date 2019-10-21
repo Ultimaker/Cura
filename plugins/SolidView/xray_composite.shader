@@ -30,6 +30,7 @@ fragment =
     uniform vec4 u_outline_color;
     uniform vec4 u_error_color;
     uniform vec4 u_background_color;
+    uniform float u_xray_error_strength;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -38,6 +39,13 @@ fragment =
     varying vec2 v_uvs;
 
     float kernel[9];
+
+    float hash12(vec2 p)
+    {
+        vec2 pp = p * 1234.3;
+        vec2 p2 = fract(pp) + fract(dot(pp, pp.yx + vec2(12.0,51.0)));
+        return fract(fract(p2.x * p2.y) * 123.312);
+    }
 
     void main()
     {
@@ -53,7 +61,14 @@ fragment =
         float intersection_count = (texture2D(u_layer2, v_uvs).r * 255.0) / 5.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            result = u_error_color;
+            if (hash12(v_uvs) > 0.5)
+            {
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_error_color;
+            }
+            else
+            {
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * (vec4(1.0) - u_error_color);
+            }
         }
 
         vec4 sum = vec4(0.0);
@@ -102,6 +117,7 @@ fragment41core =
     uniform vec4 u_outline_color;
     uniform vec4 u_error_color;
     uniform vec4 u_background_color;
+    uniform float u_xray_error_strength;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -111,6 +127,13 @@ fragment41core =
     out vec4 frag_color;
 
     float kernel[9];
+
+    float hash12(vec2 p)
+    {
+        vec2 pp = p * 1234.3;
+        vec2 p2 = fract(pp) + fract(dot(pp, pp.yx + vec2(12.0,51.0)));
+        return fract(fract(p2.x * p2.y) * 123.312);
+    }
 
     void main()
     {
@@ -126,7 +149,14 @@ fragment41core =
         float intersection_count = (texture(u_layer2, v_uvs).r * 255.0) / 5.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            result = u_error_color;
+            if (hash12(v_uvs) > 0.5)
+            {
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_error_color;
+            }
+            else
+            {
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * (vec4(1.0) - u_error_color);
+            }
         }
 
         vec4 sum = vec4(0.0);
@@ -157,6 +187,7 @@ u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
 u_error_color = [1.0, 0.0, 0.0, 1.0]
+u_xray_error_strength = 0.4
 
 [bindings]
 
