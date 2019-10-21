@@ -224,7 +224,6 @@ Item
         // Make sure the slider handlers show the correct value after switching views
         Component.onCompleted:
         {
-            print("safeArea: " + safeArea, "layerSliderSafeYMax", layerSliderSafeYMax)
             layerSlider.setLowerValue(UM.SimulationView.minimumLayer)
             layerSlider.setUpperValue(UM.SimulationView.currentLayer)
         }
