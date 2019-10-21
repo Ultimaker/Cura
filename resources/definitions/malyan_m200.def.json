@@ -30,8 +30,6 @@
         "speed_wall_x": { "value": "speed_print" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_layer_0": { "value": "round(speed_print / 2.0, 2)" },
-        "speed_travel": { "default_value": 50 },
-        "speed_travel_layer_0": { "default_value": 40 },
         "speed_infill": { "value": "speed_print" },
         "speed_topbottom": {"value": "speed_print / 2"},
 

@@ -447,7 +447,6 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-
             preferences.show();
             preferences.setPage(4);
             // Create a new profile after a very short delay so the preference page has time to initiate

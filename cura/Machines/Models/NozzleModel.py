@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt
@@ -6,9 +6,7 @@ from PyQt5.QtCore import Qt
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Util import parseBool
-
-from cura.Machines.VariantType import VariantType
+from cura.Machines.ContainerTree import ContainerTree
 
 
 class NozzleModel(ListModel):
@@ -25,7 +23,6 @@ class NozzleModel(ListModel):
 
         self._application = Application.getInstance()
         self._machine_manager = self._application.getMachineManager()
-        self._variant_manager = self._application.getVariantManager()
 
         self._machine_manager.globalContainerChanged.connect(self._update)
         self._update()
@@ -37,19 +34,14 @@ class NozzleModel(ListModel):
         if global_stack is None:
             self.setItems([])
             return
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
 
-        has_variants = parseBool(global_stack.getMetaDataEntry("has_variants", False))
-        if not has_variants:
-            self.setItems([])
-            return
-
-        variant_node_dict = self._variant_manager.getVariantNodes(global_stack, VariantType.NOZZLE)
-        if not variant_node_dict:
+        if not machine_node.has_variants:
             self.setItems([])
             return
 
         item_list = []
-        for hotend_name, container_node in sorted(variant_node_dict.items(), key = lambda i: i[0].upper()):
+        for hotend_name, container_node in sorted(machine_node.variants.items(), key = lambda i: i[0].upper()):
             item = {"id": hotend_name,
                     "hotend_name": hotend_name,
                     "container_node": container_node

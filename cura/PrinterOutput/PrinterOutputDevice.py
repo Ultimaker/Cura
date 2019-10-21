@@ -225,7 +225,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
-        new_configurations = sorted(all_configurations, key = lambda config: config.printerType)
+        new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations
             self.uniqueConfigurationsChanged.emit()
@@ -233,7 +233,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
     # Returns the unique configurations of the printers within this output device
     @pyqtProperty("QStringList", notify = uniqueConfigurationsChanged)
     def uniquePrinterTypes(self) -> List[str]:
-        return list(sorted(set([configuration.printerType for configuration in self._unique_configurations])))
+        return list(sorted(set([configuration.printerType or "" for configuration in self._unique_configurations])))
 
     def _onPrintersChanged(self) -> None:
         for printer in self._printers:

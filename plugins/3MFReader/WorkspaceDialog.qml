@@ -1,10 +1,10 @@
 // Copyright (c) 2016 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 
 import UM 1.1 as UM
 
@@ -24,7 +24,7 @@ UM.Dialog
     onClosing: manager.notifyClosed()
     onVisibleChanged:
     {
-        if(visible)
+        if (visible)
         {
             machineResolveComboBox.currentIndex = 0
             qualityChangesResolveComboBox.currentIndex = 0
@@ -55,8 +55,8 @@ UM.Dialog
             // See http://stackoverflow.com/questions/7659442/listelement-fields-as-properties
             Component.onCompleted:
             {
-                append({"key": "override", "label": catalog.i18nc("@action:ComboBox option", "Update existing")});
-                append({"key": "new", "label": catalog.i18nc("@action:ComboBox option", "Create new")});
+                append({"key": "override", "label": catalog.i18nc("@action:ComboBox Update/override existing profile", "Update existing")});
+                append({"key": "new", "label": catalog.i18nc("@action:ComboBox Save settings in a new profile", "Create new")});
             }
         }
 
@@ -219,6 +219,21 @@ UM.Dialog
                 Label
                 {
                     text: manager.qualityName
+                    width: (parent.width / 3) | 0
+                }
+            }
+            Row
+            {
+                width: parent.width
+                height: childrenRect.height
+                Label
+                {
+                    text: catalog.i18nc("@action:label", "Intent")
+                    width: (parent.width / 3) | 0
+                }
+                Label
+                {
+                    text: manager.intentName
                     width: (parent.width / 3) | 0
                 }
             }

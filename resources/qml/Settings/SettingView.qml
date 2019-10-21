@@ -65,7 +65,7 @@ Item
             anchors.right: clearFilterButton.left
             anchors.rightMargin: Math.round(UM.Theme.getSize("thick_margin").width)
 
-            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "search settings")
+            placeholderText: "<img align='middle'  src='"+ UM.Theme.getIcon("search") +"'>" +  "<div vertical-align=bottom>" + catalog.i18nc("@label:textbox", "Search settings")
 
             style: TextFieldStyle
             {

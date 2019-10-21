@@ -1,16 +1,13 @@
 from unittest.mock import MagicMock, patch
-
 import pytest
 
 from cura.Settings.MachineManager import MachineManager
 
-
 @pytest.fixture()
 def global_stack():
-    stack = MagicMock(name="Global Stack")
-    stack.getId = MagicMock(return_value ="GlobalStack")
+    stack = MagicMock(name = "Global Stack")
+    stack.getId = MagicMock(return_value = "GlobalStack")
     return stack
-
 
 @pytest.fixture()
 def machine_manager(application, extruder_manager, container_registry, global_stack) -> MachineManager:
@@ -21,7 +18,7 @@ def machine_manager(application, extruder_manager, container_registry, global_st
 
     return manager
 
-
+@pytest.mark.skip(reason = "Outdated test")
 def test_setActiveMachine(machine_manager):
     registry = MagicMock()
 
@@ -100,18 +97,6 @@ def test_allActiveMaterialIds(machine_manager, extruder_manager):
     extruder_2.material = createMockedInstanceContainer("material_2")
     extruder_manager.getActiveExtruderStacks = MagicMock(return_value = [extruder_1, extruder_2])
     assert machine_manager.allActiveMaterialIds == {"extruder_1": "material_1", "extruder_2": "material_2"}
-
-
-def test_activeVariantNames(machine_manager, extruder_manager):
-    extruder_1 = createMockedExtruder("extruder_1")
-    extruder_2 = createMockedExtruder("extruder_2")
-    extruder_1.getMetaDataEntry = MagicMock(return_value = "0")
-    extruder_2.getMetaDataEntry = MagicMock(return_value= "2")
-    extruder_1.variant = createMockedInstanceContainer("variant_1", "variant_name_1")
-    extruder_2.variant = createMockedInstanceContainer("variant_2", "variant_name_2")
-    extruder_manager.getActiveExtruderStacks = MagicMock(return_value=[extruder_1, extruder_2])
-
-    assert machine_manager.activeVariantNames == {"0": "variant_name_1", "2": "variant_name_2"}
 
 
 def test_globalVariantName(machine_manager, application):

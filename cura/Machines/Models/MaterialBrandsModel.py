@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -29,8 +29,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
     def _update(self):
         if not self._canUpdate():
             return
-        # Get updated list of favorites
-        self._favorite_ids = self._material_manager.getFavorites()
+        super()._update()
 
         brand_item_list = []
         brand_group_dict = {}
@@ -38,24 +37,25 @@ class MaterialBrandsModel(BaseMaterialsModel):
         # Part 1: Generate the entire tree of brands -> material types -> spcific materials
         for root_material_id, container_node in self._available_materials.items():
             # Do not include the materials from a to-be-removed package
-            if bool(container_node.getMetaDataEntry("removed", False)):
+            if bool(container_node.container.getMetaDataEntry("removed", False)):
                 continue
 
             # Add brands we haven't seen yet to the dict, skipping generics
-            brand = container_node.getMetaDataEntry("brand", "")
+            brand = container_node.container.getMetaDataEntry("brand", "")
             if brand.lower() == "generic":
                 continue
             if brand not in brand_group_dict:
                 brand_group_dict[brand] = {}
 
             # Add material types we haven't seen yet to the dict
-            material_type = container_node.getMetaDataEntry("material", "")
+            material_type = container_node.container.getMetaDataEntry("material", "")
             if material_type not in brand_group_dict[brand]:
                 brand_group_dict[brand][material_type] = []
 
             # Now handle the individual materials
             item = self._createMaterialItem(root_material_id, container_node)
-            brand_group_dict[brand][material_type].append(item)
+            if item:
+                brand_group_dict[brand][material_type].append(item)
 
         # Part 2: Organize the tree into models
         #

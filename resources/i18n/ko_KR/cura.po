@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-09-10 16:55+0200\n"
-"PO-Revision-Date: 2019-07-29 16:09+0200\n"
+"PO-Revision-Date: 2019-09-23 14:16+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -118,12 +118,12 @@ msgstr "USB 인쇄가 진행 중입니다. Cura를 닫으면 인쇄도 중단됩
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"
 msgid "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."
-msgstr ""
+msgstr "프린트가 아직 진행 중입니다. Cura는 이전 프린트가 완료될 때까지는 USB를 통해 다른 프린트를 시작할 수 없습니다."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"
 msgid "Print in Progress"
-msgstr ""
+msgstr "프린트 진행 중"
 
 #: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
 msgctxt "X3g Writer Plugin Description"
@@ -294,28 +294,28 @@ msgstr "네트워크를 통해 연결됨"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:15
 msgctxt "@info:status"
 msgid "Please wait until the current job has been sent."
-msgstr ""
+msgstr "현재 작업이 전송될 때까지 기다려주십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadBlockedMessage.py:16
 msgctxt "@info:title"
 msgid "Print error"
-msgstr ""
+msgstr "프린트 오류"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
 msgctxt "@info:status"
 msgid "You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to configure it as a group host."
-msgstr ""
+msgstr "연결 시도 중인 {0}이(가) 그룹의 호스트가 아닙니다. 웹 페이지에서 그룹 호스트로 설정할 수 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
 msgctxt "@info:title"
 msgid "Not a group host"
-msgstr ""
+msgstr "그룹 호스트 아님"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:35
 msgctxt "@action"
 msgid "Configure group"
-msgstr ""
+msgstr "그룹 설정"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:27
 msgctxt "@info:status"
@@ -325,7 +325,7 @@ msgstr "Ultimaker 계정을 사용하여 어디에서든 인쇄 작업을 전송
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:33
 msgctxt "@info:status Ultimaker Cloud should not be translated."
 msgid "Connect to Ultimaker Cloud"
-msgstr ""
+msgstr "Ultimaker Cloud에 연결"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:36
 msgctxt "@action"
@@ -340,7 +340,7 @@ msgstr "인쇄 작업 전송"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadProgressMessage.py:15
 msgctxt "@info:status"
 msgid "Uploading print job to printer."
-msgstr ""
+msgstr "프린트 작업을 프린터로 업로드하고 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadSuccessMessage.py:15
 msgctxt "@info:status"
@@ -355,23 +355,23 @@ msgstr "데이터 전송 됨"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid "You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the printer to the latest firmware."
-msgstr ""
+msgstr "Ultimaker Connect를 실행하지 않는 프린터에 연결하려 합니다. 프린터를 최신 펌웨어로 업데이트해 주십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
 msgid "Update your printer"
-msgstr ""
+msgstr "프린터 업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:24
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
-msgstr ""
+msgstr "Cura가 {0} 그룹의 호스트 프린터에 설치되지 않은 재료 프로파일을 감지했습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
 msgctxt "@info:title"
 msgid "Sending materials to printer"
-msgstr ""
+msgstr "재료를 프린터로 전송 중"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadErrorMessage.py:15
 msgctxt "@info:text"
@@ -381,7 +381,7 @@ msgstr "데이터를 프린터로 업로드할 수 없음."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/PrintJobUploadErrorMessage.py:16
 msgctxt "@info:title"
 msgid "Network error"
-msgstr ""
+msgstr "네트워크 오류"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Utils.py:27
 msgctxt "@info:status"
@@ -503,32 +503,32 @@ msgstr "GIF 이미지"
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox"
 msgid "Open Compressed Triangle Mesh"
-msgstr ""
+msgstr "Open Compressed Triangle Mesh"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:19
 msgctxt "@item:inlistbox"
 msgid "COLLADA Digital Asset Exchange"
-msgstr ""
+msgstr "COLLADA Digital Asset Exchange"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:23
 msgctxt "@item:inlistbox"
 msgid "glTF Binary"
-msgstr ""
+msgstr "glTF Binary"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:27
 msgctxt "@item:inlistbox"
 msgid "glTF Embedded JSON"
-msgstr ""
+msgstr "glTF Embedded JSON"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:36
 msgctxt "@item:inlistbox"
 msgid "Stanford Triangle Format"
-msgstr ""
+msgstr "Stanford Triangle Format"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:40
 msgctxt "@item:inlistbox"
 msgid "Compressed COLLADA Digital Asset Exchange"
-msgstr ""
+msgstr "Compressed COLLADA Digital Asset Exchange"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:331
 msgctxt "@info:status"
@@ -845,7 +845,7 @@ msgstr "프로파일 <filename>{0}</filename>에는 정확하지 않은 데이�
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr ""
+msgstr "<filename>{0}</filename>에서 프로파일을 가져오지 못했습니다:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:320
 #, python-brace-format
@@ -1351,7 +1351,7 @@ msgstr "히트 베드"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:151
 msgctxt "@label"
 msgid "Heated build volume"
-msgstr ""
+msgstr "히팅 빌드 사이즈"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:163
 msgctxt "@label"
@@ -1670,27 +1670,27 @@ msgstr "호환성"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:124
 msgctxt "@label:table_header"
 msgid "Machine"
-msgstr ""
+msgstr "기기"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:131
 msgctxt "@label:table_header"
 msgid "Print Core"
-msgstr ""
+msgstr "프린트 코어"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:137
 msgctxt "@label:table_header"
 msgid "Build Plate"
-msgstr ""
+msgstr "빌드 플레이트"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:143
 msgctxt "@label:table_header"
 msgid "Support"
-msgstr ""
+msgstr "서포트"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:149
 msgctxt "@label:table_header"
 msgid "Quality"
-msgstr ""
+msgstr "품질"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:170
 msgctxt "@action:label"
@@ -1810,7 +1810,7 @@ msgstr "펌웨어 누락으로 인해 펌웨어 업데이트에 실패했습니�
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:155
 msgctxt "@label link to Connect and Cloud interfaces"
 msgid "Manage printer"
-msgstr ""
+msgstr "프린터 관리"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrinterCard.qml:192
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobCard.qml:183
@@ -2007,7 +2007,7 @@ msgstr "프린터 주소"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
-msgstr ""
+msgstr "네트워크에 있는 프린터의 IP 주소를 입력하십시오."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:364
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:138
@@ -3129,7 +3129,7 @@ msgstr "확대가 마우스 방향으로 이동해야 합니까?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
-msgstr ""
+msgstr "정투영법 시점에서는 마우스 방향으로 확대가 지원되지 않습니다."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
 msgctxt "@action:button"
@@ -3192,7 +3192,7 @@ msgstr "원근"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
 msgid "Orthographic"
-msgstr ""
+msgstr "정투영"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
 msgctxt "@label"
@@ -5073,12 +5073,12 @@ msgstr "이동식 드라이브 출력 장치 플러그인"
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
 msgid "Manages network connections to Ultimaker networked printers."
-msgstr ""
+msgstr "Ultimaker 네트워크 연결 프린터에 대한 네트워크 연결을 관리합니다."
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "name"
 msgid "Ultimaker Network Connection"
-msgstr ""
+msgstr "Ultimaker 네트워크 연결"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5313,12 +5313,12 @@ msgstr "2.2에서 2.4로 버전 업그레이드"
 #: VersionUpgrade/VersionUpgrade42to43/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.2 to Cura 4.3."
-msgstr ""
+msgstr "Cura 4.2에서 Cura 4.3으로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade42to43/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.2 to 4.3"
-msgstr ""
+msgstr "4.2에서 4.3로 버전 업그레이드"
 
 #: ImageReader/plugin.json
 msgctxt "description"
@@ -5333,12 +5333,12 @@ msgstr "이미지 리더"
 #: TrimeshReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading model files."
-msgstr ""
+msgstr "모델 파일 읽기 기능을 제공합니다."
 
 #: TrimeshReader/plugin.json
 msgctxt "name"
 msgid "Trimesh Reader"
-msgstr ""
+msgstr "Trimesh 리더"
 
 #: CuraEngineBackend/plugin.json
 msgctxt "description"

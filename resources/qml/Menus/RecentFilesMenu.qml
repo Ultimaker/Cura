@@ -29,42 +29,8 @@ Menu
             }
             onTriggered:
             {
-                var toShowDialog = false;
-                var toOpenAsProject = false;
-                var toOpenAsModel = false;
+                CuraApplication.readLocalFile(modelData);
 
-                if (CuraApplication.checkIsValidProjectFile(modelData)) {
-                    // check preference
-                    var choice = UM.Preferences.getValue("cura/choice_on_open_project");
-
-                    if (choice == "open_as_project")
-                    {
-                        toOpenAsProject = true;
-                    }else if (choice == "open_as_model"){
-                        toOpenAsModel = true;
-                    }else{
-                        toShowDialog = true;
-                    }
-                }
-                else {
-                    toOpenAsModel = true;
-                }
-
-                if (toShowDialog) {
-                    askOpenAsProjectOrModelsDialog.fileUrl = modelData;
-                    askOpenAsProjectOrModelsDialog.show();
-                    return;
-                }
-
-                // open file in the prefered way
-                if (toOpenAsProject)
-                {
-                    UM.WorkspaceFileHandler.readLocalFile(modelData);
-                }
-                else if (toOpenAsModel)
-                {
-                    CuraApplication.readLocalFile(modelData, true);
-                }
                 var meshName = backgroundItem.getMeshName(modelData.toString())
                 backgroundItem.hasMesh(decodeURIComponent(meshName))
             }

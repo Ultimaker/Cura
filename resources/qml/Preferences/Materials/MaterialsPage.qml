@@ -7,7 +7,7 @@ import QtQuick.Layouts 1.3
 import QtQuick.Dialogs 1.2
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 Item
 {
@@ -16,6 +16,8 @@ Item
     // Keep PreferencesDialog happy
     property var resetEnabled: false
     property var currentItem: null
+
+    property var materialManagementModel: CuraApplication.getMaterialManagementModel()
 
     property var hasCurrentItem: base.currentItem != null
     property var isCurrentItemActivated:
@@ -57,11 +59,14 @@ Item
     onCurrentItemChanged:
     {
         forceActiveFocus()
-        materialDetailsPanel.currentItem = currentItem
-        // CURA-6679 If the current item is gone after the model update, reset the current item to the active material.
-        if (currentItem == null)
+        if(materialDetailsPanel.currentItem != currentItem)
         {
-            resetExpandedActiveMaterial()
+            materialDetailsPanel.currentItem = currentItem
+            // CURA-6679 If the current item is gone after the model update, reset the current item to the active material.
+            if (currentItem == null)
+            {
+                resetExpandedActiveMaterial()
+            }
         }
     }
 
@@ -119,7 +124,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = CuraApplication.getMaterialManager().createMaterial();
+                base.newRootMaterialIdToSwitchTo = base.materialManagementModel.createMaterial();
                 base.toActivateNewMaterial = true;
             }
         }
@@ -134,7 +139,7 @@ Item
             onClicked:
             {
                 forceActiveFocus();
-                base.newRootMaterialIdToSwitchTo = CuraApplication.getMaterialManager().duplicateMaterial(base.currentItem.container_node);
+                base.newRootMaterialIdToSwitchTo = base.materialManagementModel.duplicateMaterial(base.currentItem.container_node);
                 base.toActivateNewMaterial = true;
             }
         }
@@ -145,7 +150,8 @@ Item
             id: removeMenuButton
             text: catalog.i18nc("@action:button", "Remove")
             iconName: "list-remove"
-            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && CuraApplication.getMaterialManager().canMaterialBeRemoved(base.currentItem.container_node)
+            enabled: base.hasCurrentItem && !base.currentItem.is_read_only && !base.isCurrentItemActivated && base.materialManagementModel.canMaterialBeRemoved(base.currentItem.container_node)
+
             onClicked:
             {
                 forceActiveFocus();
@@ -294,7 +300,7 @@ Item
         {
             // Set the active material as the fallback. It will be selected when the current material is deleted
             base.newRootMaterialIdToSwitchTo = base.active_root_material_id
-            CuraApplication.getMaterialManager().removeMaterial(base.currentItem.container_node);
+            base.materialManagementModel.removeMaterial(base.currentItem.container_node);
         }
     }
 

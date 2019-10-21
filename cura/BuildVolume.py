@@ -202,7 +202,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = areas
 
     def render(self, renderer):
-        if not self.getMeshData():
+        if not self.getMeshData() or not self.isVisible():
             return True
 
         if not self._shader:
