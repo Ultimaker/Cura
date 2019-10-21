@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Enables ability to generate printable geometry from 2D image files.",
-    "api": "6.0",
+    "api": "7.0",
     "i18n-catalog": "cura"
 }

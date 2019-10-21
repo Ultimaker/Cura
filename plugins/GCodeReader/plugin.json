@@ -3,6 +3,6 @@
     "author": "Victor Larchenko, Ultimaker",
     "version": "1.0.1",
     "description": "Allows loading and displaying G-code files.",
-    "api": "6.0",
+    "api": "7.0",
     "i18n-catalog": "cura"
 }
