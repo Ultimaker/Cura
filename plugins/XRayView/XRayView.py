@@ -8,6 +8,7 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
+from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Event import Event
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -19,7 +20,8 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraView import CuraView
 from cura.Scene.ConvexHullNode import ConvexHullNode
 
-from . import XRayPass
+from cura import XRayPass
+
 
 ## View used to display a see-through version of objects with errors highlighted.
 class XRayView(CuraView):
@@ -38,7 +40,7 @@ class XRayView(CuraView):
         renderer = self.getRenderer()
 
         if not self._xray_shader:
-            self._xray_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
+            self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
             self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         for node in BreadthFirstIterator(scene.getRoot()):
