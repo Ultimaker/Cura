@@ -37,12 +37,12 @@ class IntentCategoryModel(ListModel):
     }
     _translations["engineering"] = {
         "name": catalog.i18nc("@label", "Engineering"),
-        "description": catalog.i18nc("@text", "A profile which is suitable for engineering work")
+        "description": catalog.i18nc("@text", "Suitable for engineering work")
 
     }
     _translations["smooth"] = {
         "name": catalog.i18nc("@label", "Smooth"),
-        "description": catalog.i18nc("@text", "Ohhh yeah. So tender. So smooth. So Perfect.")
+        "description": catalog.i18nc("@text", "Optimized for a smooth surfaces")
     }
 
     ##  Creates a new model for a certain intent category.
