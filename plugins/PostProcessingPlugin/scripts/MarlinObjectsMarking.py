@@ -34,13 +34,13 @@ class MarlinObjectsMarking(Script):
 
                 if commandLine.startswith(";TYPE:SKIRT") or \
                    commandLine.startswith(";MESH:NONMESH"):
-                    layerCommandLines.insert(command_idx + 1, self.putValue("", M=86, S=-1))
+                    layerCommandLines.insert(command_idx + 1, self.putValue("", M=486, S=-1))
                     continue
 
                 if commandLine.startswith(";MESH:"):
                     obj_name = commandLine.split(":")[1]
                     obj_index = obj_dict.setdefault(obj_name, len(obj_dict.keys()))
-                    layerCommandLines.insert(command_idx + 1, self.putValue("", M=86, S=obj_index))
+                    layerCommandLines.insert(command_idx + 1, self.putValue("", M=486, S=obj_index))
 
             data[lay_idx] = "\n".join(layerCommandLines)
         return data
