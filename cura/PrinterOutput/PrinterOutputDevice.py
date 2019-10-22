@@ -10,7 +10,6 @@ from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
-from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 
@@ -202,10 +201,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     @pyqtProperty(bool, notify = acceptsCommandsChanged)
     def acceptsCommands(self) -> bool:
         return self._accepts_commands
-
-    @deprecated("Please use the protected function instead", "3.2")
-    def setAcceptsCommands(self, accepts_commands: bool) -> None:
-        self._setAcceptsCommands(accepts_commands)
 
     ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def _setAcceptsCommands(self, accepts_commands: bool) -> None:
