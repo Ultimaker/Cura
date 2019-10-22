@@ -1,5 +1,4 @@
 {
-    "id": "skriware_2_extruder_1",
     "version": 2,
     "name": "Right Extruder",
     "inherits": "fdmextruder",
