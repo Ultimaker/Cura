@@ -20,6 +20,7 @@ from UM.Platform import Platform
 from UM.Util import parseBool
 
 import cura.CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -107,6 +108,19 @@ class GlobalStack(CuraContainerStack):
                     # We got invalid data, probably a None.
                     pass
         return result
+
+    # Returns a boolean indicating if this machine has a remote connection. A machine is considered as remotely
+    # connected if its connection types contain one of the following values:
+    #   - ConnectionType.NetworkConnection
+    #   - ConnectionType.CloudConnection
+    @pyqtProperty(bool, notify = configuredConnectionTypesChanged)
+    def hasRemoteConnection(self) -> bool:
+        has_remote_connection = False
+
+        for connection_type in self.configuredConnectionTypes:
+            has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                         ConnectionType.CloudConnection.value]
+        return has_remote_connection
 
     ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:

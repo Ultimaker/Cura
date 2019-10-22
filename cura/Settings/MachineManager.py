@@ -464,18 +464,6 @@ class MachineManager(QObject):
         return bool(self._printer_output_devices)
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.2")
-    def activeMachineHasRemoteConnection(self) -> bool:
-        if self._global_container_stack:
-            has_remote_connection = False
-
-            for connection_type in self._global_container_stack.configuredConnectionTypes:
-                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
-                                                             ConnectionType.CloudConnection.value]
-            return has_remote_connection
-        return False
-
-    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
         return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
 
