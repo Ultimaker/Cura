@@ -58,7 +58,7 @@ fragment =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = (texture2D(u_layer2, v_uvs).r * 255.0) / 5.0;
+        float intersection_count = texture2D(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
             if (hash12(v_uvs) > 0.5)
@@ -146,7 +146,7 @@ fragment41core =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = (texture(u_layer2, v_uvs).r * 255.0) / 5.0;
+        float intersection_count = texture(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
             if (hash12(v_uvs) > 0.5)

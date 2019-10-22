@@ -120,7 +120,6 @@ class SolidView(View):
 
         if not self._xray_shader:
             self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
-            self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         if not self._xray_composite_shader:
             self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SolidView"), "xray_composite.shader"))
