@@ -6441,16 +6441,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "skin_alternate_rotation":
-                {
-                    "label": "Alternate Skin Rotation",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "cross_infill_pocket_size":
                 {
                     "label": "Cross 3D Pocket Size",

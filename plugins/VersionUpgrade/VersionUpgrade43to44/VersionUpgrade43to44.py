@@ -2,6 +2,7 @@ import configparser
 from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
+from UM.Util import parseBool  # To parse whether the Alternate Skin Rotations function is activated.
 
 _renamed_container_id_map = {
     "ultimaker2_0.25": "ultimaker2_olsson_0.25",
@@ -60,6 +61,11 @@ class VersionUpgrade43to44(VersionUpgrade):
         # Intent profiles were added, so the quality changes should match with no intent (so "default")
         if parser["metadata"].get("type", "") == "quality_changes":
             parser["metadata"]["intent_category"] = "default"
+
+        if "values" in parser:
+            # Alternate skin rotation should be translated to top/bottom line directions.
+            if "skin_alternate_rotation" in parser["values"] and parseBool(parser["values"]["skin_alternate_rotation"]):
+                parser["skin_angles"] = "[45, 135, 0, 90]"
 
         result = io.StringIO()
         parser.write(result)
