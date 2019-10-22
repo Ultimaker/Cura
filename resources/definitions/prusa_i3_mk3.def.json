@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Original Prusa i3 MK3S/MK3",
+    "name": "Prusa i3 Mk3/Mk3s",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -10,14 +10,14 @@
         "icon": "icon_ultimaker2",
         "platform": "Original_Prusa_i3_MK3S_MK3_platform.stl",
         "has_materials": true,
-		 "machine_extruder_trains":
+        "machine_extruder_trains":
         {
-            "0": "Original_Prusa_i3_MK3S_MK3_extruder_0"
+            "0": "prusa_i3_mk3_extruder_0"
         }
     },
 
     "overrides": {
-		"machine_name": { "default_value": "Original Prusa i3 MK3S/MK3" },
+        "machine_name": { "default_value": "Prusa i3 Mk3/Mk3s" },
         "machine_heated_bed": { "default_value": true },
         "machine_width": { "default_value": 250 },
         "machine_height": { "default_value": 210 },

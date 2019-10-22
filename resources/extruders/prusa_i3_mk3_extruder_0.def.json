@@ -1,10 +1,9 @@
 {
-    "id": "Original_Prusa_i3_MK3S_MK3_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Original_Prusa_i3_MK3S_MK3",
+        "machine": "prusa_i3_mk3",
         "position": "0"
     },
 
