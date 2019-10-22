@@ -287,15 +287,15 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    @pyqtProperty(int, constant=True)
-    def hasMaterials(self):
+    @pyqtProperty(bool, constant = True)
+    def hasMaterials(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    @pyqtProperty(int, constant=True)
-    def hasVariants(self):
+    @pyqtProperty(bool, constant = True)
+    def hasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    @pyqtProperty(int, constant=True)
+    @pyqtProperty(bool, constant = True)
     def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
