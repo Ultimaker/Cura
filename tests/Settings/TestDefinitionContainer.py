@@ -58,7 +58,7 @@ def assertIsDefinitionValid(definition_container, path, file_name):
 #   definition that defines a "value", the "default_value" is ineffective. This
 #   test fails on those things.
 @pytest.mark.parametrize("file_name", machine_filepaths)
-def test_validateOverridingDefaultValue(file_name):
+def test_validateOverridingDefaultValue(file_name: str):
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", file_name)
     with open(definition_path, encoding = "utf-8") as f:
         doc = json.load(f)
@@ -125,3 +125,15 @@ def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, An
         else:
             result[key] = val
     return result
+
+##  Verifies that definition contains don't have an ID field.
+#
+#   ID fields are legacy. They should not be used any more. This is legacy that
+#   people don't seem to be able to get used to.
+@pytest.mark.parametrize("file_name", machine_filepaths)
+def test_noId(file_name):
+    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", file_name)
+    with open(definition_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+
+    assert "id" not in doc, "Definitions should not have an ID field."
