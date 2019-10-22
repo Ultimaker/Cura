@@ -77,7 +77,7 @@ class ContainerTree:
     ##  Ran after completely starting up the application.
     def _onStartupFinished(self):
         currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
-        JobQueue.getInstance().add(self.MachineNodeLoadJob(self, currently_added))
+        JobQueue.getInstance().add(self._MachineNodeLoadJob(self, currently_added))
 
     ##  Dictionary-like object that contains the machines.
     #
@@ -129,7 +129,7 @@ class ContainerTree:
 
     ##  Pre-loads all currently added printers as a background task so that
     #   switching printers in the interface is faster.
-    class MachineNodeLoadJob(Job):
+    class _MachineNodeLoadJob(Job):
         ##  Creates a new background task.
         #   \param tree_root The container tree instance. This cannot be
         #   obtained through the singleton static function since the instance
