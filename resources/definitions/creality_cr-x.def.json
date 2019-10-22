@@ -1,5 +1,4 @@
 {
-    "id": "CR-X",
     "version": 2,
     "name": "Creality CR-X",
     "inherits": "fdmprinter",

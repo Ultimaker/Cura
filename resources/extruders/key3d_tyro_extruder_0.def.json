@@ -1,5 +1,4 @@
 {
-    "id": "key3d_tyro_extruder_0",
     "version": 2,
     "name": "0.4mm Nozzle",
     "inherits": "fdmextruder",

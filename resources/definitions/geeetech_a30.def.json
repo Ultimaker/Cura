@@ -1,5 +1,4 @@
 {
-    "id": "geeetech_a30",
     "version": 2,
     "name": "Geeetech A30",
     "inherits": "fdmprinter",

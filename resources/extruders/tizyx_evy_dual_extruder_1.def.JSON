@@ -1,5 +1,4 @@
 {
-    "id": "tizyx_evy_dual_extruder_1",
     "version": 2,
     "name": "Direct Drive",
     "inherits": "fdmextruder",

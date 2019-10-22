@@ -1,5 +1,4 @@
 {
-    "id": "wanhao_d6_plus_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

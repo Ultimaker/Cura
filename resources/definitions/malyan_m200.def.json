@@ -1,5 +1,4 @@
 {
-    "id": "malyan_m200",
     "version": 2,
     "name": "Malyan M200",
     "inherits": "fdmprinter",

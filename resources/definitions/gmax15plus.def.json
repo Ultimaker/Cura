@@ -1,5 +1,4 @@
 {
-    "id": "gmax15plus",
     "version": 2,
     "name": "gMax 1.5 Plus",
     "inherits": "fdmprinter",
