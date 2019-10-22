@@ -91,17 +91,6 @@ class ExtruderManager(QObject):
     def activeExtruderIndex(self) -> int:
         return self._active_extruder_index
 
-    ##  Gets the extruder name of an extruder of the currently active machine.
-    #
-    #   \param index The index of the extruder whose name to get.
-    @pyqtSlot(int, result = str)
-    @deprecated("Use Cura.MachineManager.activeMachine.extruders[index].name instead", "4.3")
-    def getExtruderName(self, index: int) -> str:
-        try:
-            return self.getActiveExtruderStacks()[index].getName()
-        except IndexError:
-            return ""
-
     ## Emitted whenever the selectedObjectExtruders property changes.
     selectedObjectExtrudersChanged = pyqtSignal()
 
