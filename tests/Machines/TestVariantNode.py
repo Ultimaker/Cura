@@ -16,7 +16,7 @@ instance_container_metadata_dict = {"fdmprinter": {"no_variant": [{"base_file": 
 material_node_added_test_data = [({"type": "Not a material"}, ["material_1", "material_2"]), # Wrong type
                                  ({"type": "material", "base_file": "material_3"}, ["material_1", "material_2"]),  # material_3 is on the "NOPE" list.
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_3"}, ["material_1", "material_2"]),  # Wrong machine
-                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1"}, ["material_1", "material_2"]), # No variant
+                                 ({"type": "material", "base_file": "material_4", "definition": "machine_1"}, ["material_1", "material_2", "material_4"]), # No variant
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant_name": "Variant Three"}, ["material_1", "material_2"]), # Wrong variant
                                  ({"type": "material", "base_file": "material_4", "definition": "machine_1", "variant_name": "Variant One"}, ["material_1", "material_2", "material_4"])
                                  ]
