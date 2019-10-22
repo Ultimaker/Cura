@@ -125,7 +125,8 @@ class SolidView(View):
             self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SolidView"), "xray_composite.shader"))
             theme = Application.getInstance().getTheme()
             self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-            self._xray_composite_shader.setUniformValue("u_error_color", Color(*theme.getColor("xray_error").getRgb()))
+            self._xray_composite_shader.setUniformValue("u_xray_error_dark", Color(*theme.getColor("xray_error_dark").getRgb()))
+            self._xray_composite_shader.setUniformValue("u_xray_error_light", Color(*theme.getColor("xray_error_light").getRgb()))
             self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
         if not self.getRenderer().getRenderPass("xray"):

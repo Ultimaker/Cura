@@ -28,7 +28,8 @@ fragment =
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_error_color;
+    uniform vec4 u_xray_error_dark;
+    uniform vec4 u_xray_error_light;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
 
@@ -62,13 +63,14 @@ fragment =
         if(mod(intersection_count, 2.0) >= 1.0)
         {
             float lightness = (result.r + result.g + result.b) / 3.0;
-            if (hash12(v_uvs) < lightness)
+            //if ( (mod((v_uvs.x / u_offset[8].x - v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) == (mod((v_uvs.x / u_offset[8].x + v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) ) // diamond pattern
+            if (lightness > 0.5)
             {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_error_color;
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_dark;
             }
             else
             {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * (vec4(1.0) - u_error_color);
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_light;
             }
         }
 
@@ -116,7 +118,8 @@ fragment41core =
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_error_color;
+    uniform vec4 u_xray_error_dark;
+    uniform vec4 u_xray_error_light;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
 
@@ -151,13 +154,14 @@ fragment41core =
         if(mod(intersection_count, 2.0) >= 1.0)
         {
             float lightness = (result.r + result.g + result.b) / 3.0;
-            if (hash12(v_uvs) < lightness)
+            //if ( (mod((v_uvs.x / u_offset[8].x - v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) == (mod((v_uvs.x / u_offset[8].x + v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) ) // diamond pattern
+            if (lightness > 0.5)
             {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_error_color;
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_dark;
             }
             else
             {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * (vec4(1.0) - u_error_color);
+                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_light;
             }
         }
 
@@ -188,7 +192,9 @@ u_layer2 = 2
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
-u_error_color = [1.0, 0.0, 0.0, 1.0]
+u_error_color = [0.0, 0.0, 0.0, 1.0]
+u_xray_error_dark = [1.0, 0.0, 0.0, 1.0]
+u_xray_error_light = [1.0, 1.0, 0.0, 1.0]
 u_xray_error_strength = 0.4
 
 [bindings]
