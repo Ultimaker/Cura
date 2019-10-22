@@ -65,7 +65,7 @@ class VersionUpgrade43to44(VersionUpgrade):
         if "values" in parser:
             # Alternate skin rotation should be translated to top/bottom line directions.
             if "skin_alternate_rotation" in parser["values"] and parseBool(parser["values"]["skin_alternate_rotation"]):
-                parser["skin_angles"] = "[45, 135, 0, 90]"
+                parser["values"]["skin_angles"] = "[45, 135, 0, 90]"
 
         result = io.StringIO()
         parser.write(result)
