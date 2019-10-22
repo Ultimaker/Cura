@@ -72,6 +72,11 @@ def test_validateOverridingDefaultValue(file_name):
         if "value" in parent_settings[key]:
             assert "default_value" not in val, "Unnecessary default_value for {key} in {file_name}".format(key = key, file_name = file_name)  # If there is a value in the parent settings, then the default_value is not effective.
 
+##  Get all settings and their properties from a definition we're inheriting
+#   from.
+#   \param definition_id The definition we're inheriting from.
+#   \return A dictionary of settings by key. Each setting is a dictionary of
+#   properties.
 def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
     definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", definition_id + ".def.json")
     with open(definition_path, encoding = "utf-8") as f:
@@ -87,7 +92,13 @@ def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
 
     return result
 
-def flattenSettings(settings) -> Dict[str, Any]:
+##  Put all settings in the main dictionary rather than in children dicts.
+#   \param settings Nested settings. The keys are the setting IDs. The values
+#   are dictionaries of properties per setting, including the "children"
+#   property.
+#   \return A dictionary of settings by key. Each setting is a dictionary of
+#   properties.
+def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
     result = {}
     for entry, contents in settings.items():
         if "children" in contents:
@@ -96,6 +107,11 @@ def flattenSettings(settings) -> Dict[str, Any]:
         result[entry] = contents
     return result
 
+##  Make one dictionary override the other. Nested dictionaries override each
+#   other in the same way.
+#   \param base A dictionary of settings that will get overridden by the other.
+#   \param overrides A dictionary of settings that will override the other.
+#   \return Combined setting data.
 def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, Any]:
     result = {}
     result.update(base)
