@@ -393,7 +393,7 @@ Item
                 left: parent.left
             }
             visible: text != ""
-            text: catalog.i18nc("@label %1 is printer name", "Printer: %1").arg(Cura.MachineManager.activeMachineName)
+            text: catalog.i18nc("@label %1 is printer name", "Printer: %1").arg(Cura.MachineManager.activeMachine.name)
             width: profileScrollView.width
             elide: Text.ElideRight
         }

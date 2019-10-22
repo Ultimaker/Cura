@@ -84,7 +84,7 @@ UM.ManagementPage
         Flow
         {
             id: machineActions
-            visible: currentItem && currentItem.id == Cura.MachineManager.activeMachineId
+            visible: currentItem && currentItem.id == Cura.MachineManager.activeMachine.id
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: machineName.bottom
