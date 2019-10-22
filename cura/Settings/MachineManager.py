@@ -1078,13 +1078,6 @@ class MachineManager(QObject):
             container = extruder.userChanges
             container.removeInstance(setting_name)
 
-    @pyqtProperty("QVariantList", notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
-    def currentExtruderPositions(self) -> List[str]:
-        if self._global_container_stack is None:
-            return []
-        return sorted(list(self._global_container_stack.extruders.keys()))
-
     ##  Update _current_root_material_id when the current root material was changed.
     def _onRootMaterialChanged(self) -> None:
         self._current_root_material_id = {}
