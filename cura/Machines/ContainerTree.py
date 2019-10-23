@@ -39,7 +39,7 @@ class ContainerTree:
         return cls.__instance
 
     def __init__(self) -> None:
-        self.machines = self.MachineNodeMap()  # Mapping from definition ID to machine nodes with lazy loading.
+        self.machines = self._MachineNodeMap()  # Mapping from definition ID to machine nodes with lazy loading.
         self.materialsChanged = Signal()  # Emitted when any of the material nodes in the tree got changed.
         cura.CuraApplication.CuraApplication.getInstance().initializationFinished.connect(self._onStartupFinished)  # Start the background task to load more machine nodes after start-up is completed.
 
@@ -82,7 +82,7 @@ class ContainerTree:
     ##  Dictionary-like object that contains the machines.
     #
     #   This handles the lazy loading of MachineNodes.
-    class MachineNodeMap:
+    class _MachineNodeMap:
         def __init__(self) -> None:
             self._machines = {}  # type: Dict[str, MachineNode]
 
