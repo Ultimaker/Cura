@@ -1,23 +1,22 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import json  # To check files for unnecessarily overridden properties.
+import os
+import os.path
 import pytest #This module contains automated tests.
+from typing import Any, Dict
+import uuid
 
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
 from UM.Settings.DefinitionContainer import DefinitionContainer #To check against the class of DefinitionContainer.
 
-
-
-import os
-import os.path
-import uuid
-
 from UM.Resources import Resources
 Resources.addSearchPath(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources")))
 
 
-machine_filepaths = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions"))
+machine_filepaths = sorted(os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions")))
 all_meshes = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "meshes"))
 all_images = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "images"))
 
@@ -52,3 +51,89 @@ def assertIsDefinitionValid(definition_container, path, file_name):
 
         if "platform_texture" in metadata[0]:
             assert metadata[0]["platform_texture"] in all_images
+
+##  Tests whether setting values are not being hidden by parent containers.
+#
+#   When a definition container defines a "default_value" but inherits from a
+#   definition that defines a "value", the "default_value" is ineffective. This
+#   test fails on those things.
+@pytest.mark.parametrize("file_name", machine_filepaths)
+def test_validateOverridingDefaultValue(file_name: str):
+    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", file_name)
+    with open(definition_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+
+    if "inherits" not in doc:
+        return  # We only want to check for documents where the inheritance overrides the children. If there's no inheritance, this can't happen so it's fine.
+    if "overrides" not in doc:
+        return  # No settings are being overridden. No need to check anything.
+    parent_settings = getInheritedSettings(doc["inherits"])
+    for key, val in doc["overrides"].items():
+        if "value" in parent_settings[key]:
+            assert "default_value" not in val, "Unnecessary default_value for {key} in {file_name}".format(key = key, file_name = file_name)  # If there is a value in the parent settings, then the default_value is not effective.
+
+##  Get all settings and their properties from a definition we're inheriting
+#   from.
+#   \param definition_id The definition we're inheriting from.
+#   \return A dictionary of settings by key. Each setting is a dictionary of
+#   properties.
+def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
+    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", definition_id + ".def.json")
+    with open(definition_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+    result = {}
+
+    if "inherits" in doc:  # Recursive inheritance.
+        result.update(getInheritedSettings(doc["inherits"]))
+    if "settings" in doc:
+        result.update(flattenSettings(doc["settings"]))
+    if "overrides" in doc:
+        result = merge_dicts(result, doc["overrides"])
+
+    return result
+
+##  Put all settings in the main dictionary rather than in children dicts.
+#   \param settings Nested settings. The keys are the setting IDs. The values
+#   are dictionaries of properties per setting, including the "children"
+#   property.
+#   \return A dictionary of settings by key. Each setting is a dictionary of
+#   properties.
+def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
+    result = {}
+    for entry, contents in settings.items():
+        if "children" in contents:
+            result.update(flattenSettings(contents["children"]))
+            del contents["children"]
+        result[entry] = contents
+    return result
+
+##  Make one dictionary override the other. Nested dictionaries override each
+#   other in the same way.
+#   \param base A dictionary of settings that will get overridden by the other.
+#   \param overrides A dictionary of settings that will override the other.
+#   \return Combined setting data.
+def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, Any]:
+    result = {}
+    result.update(base)
+    for key, val in overrides.items():
+        if key not in result:
+            result[key] = val
+            continue
+
+        if isinstance(result[key], dict) and isinstance(val, dict):
+            result[key] = merge_dicts(result[key], val)
+        else:
+            result[key] = val
+    return result
+
+##  Verifies that definition contains don't have an ID field.
+#
+#   ID fields are legacy. They should not be used any more. This is legacy that
+#   people don't seem to be able to get used to.
+@pytest.mark.parametrize("file_name", machine_filepaths)
+def test_noId(file_name):
+    definition_path = os.path.join(os.path.dirname(__file__), "..", "..", "resources", "definitions", file_name)
+    with open(definition_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+
+    assert "id" not in doc, "Definitions should not have an ID field."

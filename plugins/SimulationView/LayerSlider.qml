@@ -176,6 +176,11 @@ Item
         }
     }
 
+    onHeightChanged : {
+        // After a height change, the pixel-position of the lower handle is out of sync with the property value
+        setLowerValue(lowerValue)
+    }
+
     // Upper handle
     Rectangle
     {
@@ -333,7 +338,6 @@ Item
         // set the slider position based on the lower value
         function setValue(value)
         {
-
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 

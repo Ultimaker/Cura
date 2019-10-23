@@ -7,7 +7,7 @@ class GenericMaterialsModel(BaseMaterialsModel):
 
     def __init__(self, parent = None):
         super().__init__(parent)
-        self._update()
+        self._onChanged()
 
     def _update(self):
         if not self._canUpdate():

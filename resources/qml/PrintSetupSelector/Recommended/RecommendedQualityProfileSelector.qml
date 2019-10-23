@@ -55,7 +55,7 @@ Item
             }
             UM.SimpleButton
             {
-                id: customisedSettings
+                id: resetToDefaultQualityButton
 
                 visible: Cura.SimpleModeSettingsManager.isProfileCustomized || Cura.MachineManager.hasCustomQuality
                 height: visible ? UM.Theme.getSize("print_setup_icon").height : 0
@@ -162,6 +162,24 @@ Item
                     }
 
                     isCheckedFunction: checkedFunction
+                }
+
+                MouseArea // tooltip hover area
+                {
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    enabled: model.description !== undefined
+                    acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                    onEntered:
+                    {
+                        base.showTooltip(
+                            intentCategoryLabel,
+                            Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),
+                            model.description
+                        )
+                    }
+                    onExited: base.hideTooltip()
                 }
             }
 

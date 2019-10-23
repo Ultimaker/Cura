@@ -1190,6 +1190,18 @@
                                     "value": "999999 if infill_sparse_density == 100 else math.ceil(round(bottom_thickness / resolveOrValue('layer_height'), 4))",
                                     "limit_to_extruder": "top_bottom_extruder_nr",
                                     "settable_per_mesh": true
+                                },
+                                "initial_bottom_layers":
+                                {
+                                    "label": "Initial Bottom Layers",
+                                    "description": "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number.",
+                                    "minimum_value": "0",
+                                    "minimum_value_warning": "2",
+                                    "default_value": 6,
+                                    "type": "int",
+                                    "value": "bottom_layers",
+                                    "limit_to_extruder": "top_bottom_extruder_nr",
+                                    "settable_per_mesh": true
                                 }
                             }
                         }
@@ -4071,7 +4083,7 @@
                     "description": "The extruder train to use for printing the support. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "defaultExtruderPosition()",
+                    "value": "int(defaultExtruderPosition())",
                     "enabled": "(support_enable or support_tree_enable) and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -5038,7 +5050,7 @@
                     "description": "The extruder train to use for printing the skirt/brim/raft. This is used in multi-extrusion.",
                     "type": "extruder",
                     "default_value": "0",
-                    "value": "defaultExtruderPosition()",
+                    "value": "int(defaultExtruderPosition())",
                     "enabled": "extruders_enabled_count > 1 and (resolveOrValue('adhesion_type') != 'none' or resolveOrValue('prime_tower_brim_enable'))",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
@@ -5833,6 +5845,18 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
+                "meshfix_maximum_resolution":
+                {
+                    "label": "Maximum Resolution",
+                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
+                    "type": "float",
+                    "unit": "mm",
+                    "default_value": 0.5,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "0.01",
+                    "maximum_value_warning": "3",
+                    "settable_per_mesh": true
+                },
                 "meshfix_maximum_travel_resolution":
                 {
                     "label": "Maximum Travel Resolution",
@@ -6217,6 +6241,7 @@
                     "label": "Infill Travel Optimization",
                     "description": "When enabled, the order in which the infill lines are printed is optimized to reduce the distance travelled. The reduction in travel time achieved very much depends on the model being sliced, infill pattern, density, etc. Note that, for some models that have many small areas of infill, the time to slice the model may be greatly increased.",
                     "type": "bool",
+                    "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "default_value": false,
                     "settable_per_mesh": true
                 },
@@ -6253,18 +6278,6 @@
                     "maximum_value_warning": "1.0",
                     "settable_per_mesh": true,
                     "settable_per_extruder": false
-                },
-                "meshfix_maximum_resolution":
-                {
-                    "label": "Maximum Resolution",
-                    "description": "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway.",
-                    "type": "float",
-                    "unit": "mm",
-                    "default_value": 0.5,
-                    "minimum_value": "0.001",
-                    "minimum_value_warning": "0.01",
-                    "maximum_value_warning": "3",
-                    "settable_per_mesh": true
                 },
                 "support_skip_some_zags":
                 {
@@ -6428,16 +6441,6 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "skin_alternate_rotation":
-                {
-                    "label": "Alternate Skin Rotation",
-                    "description": "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions.",
-                    "type": "bool",
-                    "default_value": false,
-                    "enabled": "(top_layers > 0 or bottom_layers > 0) and top_bottom_pattern != 'concentric'",
-                    "limit_to_extruder": "top_bottom_extruder_nr",
-                    "settable_per_mesh": true
-                },
                 "cross_infill_pocket_size":
                 {
                     "label": "Cross 3D Pocket Size",
@@ -6594,7 +6597,7 @@
                     "minimum_value_warning": "machine_nozzle_size * 3",
                     "maximum_value_warning": "100.0",
                     "type": "float",
-                    "enabled": "support_conical_enabled and support_enable",
+                    "enabled": "support_conical_enabled and support_enable and support_conical_angle > 0",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
                 },

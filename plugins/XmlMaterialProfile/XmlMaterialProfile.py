@@ -76,7 +76,9 @@ class XmlMaterialProfile(InstanceContainer):
                     new_setting_values_dict[self.__material_properties_setting_map[k]] = v
 
         if not apply_to_all:  # Historical: If you only want to modify THIS container. We only used that to prevent recursion but with the below code that's no longer necessary.
-            container_query = registry.findContainers(id = self.getId())
+            # CURA-6920: This is an optimization, but it also fixes the problem that you can only set metadata for a
+            # material container that can be found in the container registry.
+            container_query = [self]
         else:
             container_query = registry.findContainers(base_file = self.getMetaDataEntry("base_file"))
 

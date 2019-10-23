@@ -88,9 +88,6 @@
         },
         "machine_acceleration": {
             "default_value": 3000
-        },
-        "machine_nozzle_temp_enabled": {
-            "default_value": false
         }
     }
 }

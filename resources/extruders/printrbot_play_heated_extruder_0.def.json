@@ -1,5 +1,4 @@
 {
-    "id": "printrbot_play_heated_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

@@ -24,26 +24,14 @@
         "machine_height": { "default_value": 220 },
         "machine_heated_bed": { "default_value": false },
         "machine_center_is_zero": { "default_value": false },
-        "material_print_temperature": { "default_value": 210 },
-        "material_bed_temperature": { "default_value": 0 },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },
-        "wall_line_count": { "default_value": 3 },
         "wall_thickness": { "default_value": 1.2 },
         "top_bottom_thickness": { "default_value": 1.2 },
         "infill_sparse_density": { "default_value": 20 },
-        "infill_overlap": { "default_value": 15 },
         "speed_print": { "default_value": 60 },
-        "speed_travel": { "default_value": 160 },
-        "speed_layer_0": { "default_value": 30 },
-        "speed_wall_x": { "default_value": 35 },
-        "speed_wall_0": { "default_value": 30 },
-        "speed_infill": { "default_value": 80 },
-        "speed_topbottom": { "default_value": 35 },
-        "skirt_brim_speed": { "default_value": 35 },
         "skirt_line_count": { "default_value": 4 },
         "skirt_brim_minimal_length": { "default_value": 30 },
-        "skirt_gap": { "default_value": 6 },
-        "cool_fan_full_at_height": { "default_value": 0.4 }
+        "skirt_gap": { "default_value": 6 }
     }
 }

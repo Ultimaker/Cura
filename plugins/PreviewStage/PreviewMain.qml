@@ -11,12 +11,30 @@ import Cura 1.0 as Cura
 
 Item
 {
+
+    // Subtract the actionPanel from the safe area. This way the view won't draw interface elements under/over it
+    Item {
+        id: safeArea
+        visible: false
+        anchors.left: parent.left
+        anchors.right: actionPanelWidget.left
+        anchors.top: parent.top
+        anchors.bottom: actionPanelWidget.top
+    }
+
     Loader
     {
         id: previewMain
         anchors.fill: parent
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
+
+        Binding
+        {
+            target: previewMain.item
+            property: "safeArea"
+            value:safeArea
+        }
     }
 
     Cura.ActionPanelWidget

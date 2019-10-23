@@ -122,8 +122,8 @@ class VariantNode(ContainerNode):
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.machine.container_id:
                 return
-            material_variant = container.getMetaDataEntry("variant_name", empty_variant_container.getName())
-            if material_variant != self.variant_name:
+            material_variant = container.getMetaDataEntry("variant_name")
+            if material_variant is not None and material_variant != self.variant_name:
                 return
         else:  # We already have this base profile. Replace the base profile if the new one is more specific.
             new_definition = container.getMetaDataEntry("definition")
