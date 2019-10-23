@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "description": "Manages network connections to Ultimaker networked printers.",
     "version": "2.0.0",
-    "api": "6.0",
+    "api": "7.0",
     "i18n-catalog": "cura"
 }

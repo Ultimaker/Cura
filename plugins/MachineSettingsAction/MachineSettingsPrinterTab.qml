@@ -25,7 +25,7 @@ Item
     property int controlWidth: (columnWidth / 3) | 0
     property var labelFont: UM.Theme.getFont("default")
 
-    property string machineStackId: Cura.MachineManager.activeMachineId
+    property string machineStackId: Cura.MachineManager.activeMachine.id
 
     property var forceUpdateFunction: manager.forceUpdate
 

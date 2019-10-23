@@ -33,7 +33,7 @@ Item
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
     // There is no resolve property if there is only one stack.
-    property var resolve: Cura.MachineManager.activeStackId !== Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
+    property var resolve: Cura.MachineManager.activeStackId !== Cura.MachineManager.activeMachine.id ? propertyProvider.properties.resolve : "None"
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
     // A list of stack levels that will trigger to show the revert button
