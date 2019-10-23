@@ -448,27 +448,6 @@ class MachineManager(QObject):
         return bool(self._stacks_have_errors)
 
     @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.definition.name instead", "4.1")
-    def activeMachineDefinitionName(self) -> str:
-        if self._global_container_stack:
-            return self._global_container_stack.definition.getName()
-        return ""
-
-    @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.name instead", "4.1")
-    def activeMachineName(self) -> str:
-        if self._global_container_stack:
-            return self._global_container_stack.getMetaDataEntry("group_name", self._global_container_stack.getName())
-        return ""
-
-    @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.id instead", "4.1")
-    def activeMachineId(self) -> str:
-        if self._global_container_stack:
-            return self._global_container_stack.getId()
-        return ""
-
-    @pyqtProperty(str, notify = globalContainerChanged)
     def activeMachineFirmwareVersion(self) -> str:
         if not self._printer_output_devices:
             return ""
@@ -483,25 +462,6 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def printerConnected(self) -> bool:
         return bool(self._printer_output_devices)
-
-    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.2")
-    def activeMachineHasRemoteConnection(self) -> bool:
-        if self._global_container_stack:
-            has_remote_connection = False
-
-            for connection_type in self._global_container_stack.configuredConnectionTypes:
-                has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
-                                                             ConnectionType.CloudConnection.value]
-            return has_remote_connection
-        return False
-
-    @pyqtProperty("QVariantList", notify=globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.configuredConnectionTypes instead", "4.1")
-    def activeMachineConfiguredConnectionTypes(self):
-        if self._global_container_stack:
-            return self._global_container_stack.configuredConnectionTypes
-        return []
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
@@ -553,24 +513,6 @@ class MachineManager(QObject):
             if material:
                 return material.getId()
         return ""
-
-    ##  Gets a dict with the active materials ids set in all extruder stacks and the global stack
-    #   (when there is one extruder, the material is set in the global stack)
-    #
-    #   \return The material ids in all stacks
-    @pyqtProperty("QVariantMap", notify = activeMaterialChanged)
-    @deprecated("use Cura.MachineManager.activeStack.extruders instead.", "4.3")
-    def allActiveMaterialIds(self) -> Dict[str, str]:
-        result = {}
-
-        active_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        for stack in active_stacks:
-            material_container = stack.material
-            if not material_container:
-                continue
-            result[stack.getId()] = material_container.getId()
-
-        return result
 
     ##  Gets the layer height of the currently active quality profile.
     #
@@ -693,44 +635,6 @@ class MachineManager(QObject):
                     # Check if the value has to be replaced
                     extruder_stack.userChanges.setProperty(key, "value", new_value)
 
-    @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.MachineManager.activeStack.variant.name instead", "4.1")
-    def activeVariantName(self) -> str:
-        if self._active_container_stack:
-            variant = self._active_container_stack.variant
-            if variant:
-                return variant.getName()
-
-        return ""
-
-    @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.MachineManager.activeStack.variant.id instead", "4.1")
-    def activeVariantId(self) -> str:
-        if self._active_container_stack:
-            variant = self._active_container_stack.variant
-            if variant:
-                return variant.getId()
-
-        return ""
-
-    @pyqtProperty(str, notify = activeVariantChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.variant.name instead", "4.1")
-    def activeVariantBuildplateName(self) -> str:
-        if self._global_container_stack:
-            variant = self._global_container_stack.variant
-            if variant:
-                return variant.getName()
-
-        return ""
-
-    @pyqtProperty(str, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.definition.id instead", "4.1")
-    def activeDefinitionId(self) -> str:
-        if self._global_container_stack:
-            return self._global_container_stack.definition.id
-
-        return ""
-
     ##  Get the Definition ID to use to select quality profiles for the currently active machine
     #   \returns DefinitionID (string) if found, empty string otherwise
     @pyqtProperty(str, notify = globalContainerChanged)
@@ -788,27 +692,6 @@ class MachineManager(QObject):
                 # This reuses the method and remove all printers recursively
                 self.removeMachine(hidden_containers[0].getId())
 
-    @pyqtProperty(bool, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.hasMaterials instead", "4.2")
-    def hasMaterials(self) -> bool:
-        if self._global_container_stack:
-            return self._global_container_stack.hasMaterials
-        return False
-
-    @pyqtProperty(bool, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.hasVariants instead", "4.2")
-    def hasVariants(self) -> bool:
-        if self._global_container_stack:
-            return self._global_container_stack.hasVariants
-        return False
-
-    @pyqtProperty(bool, notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.hasVariantBuildplates instead", "4.2")
-    def hasVariantBuildplates(self) -> bool:
-        if self._global_container_stack:
-            return self._global_container_stack.hasVariantBuildplates
-        return False
-
     ##  The selected buildplate is compatible if it is compatible with all the materials in all the extruders
     @pyqtProperty(bool, notify = activeMaterialChanged)
     def variantBuildplateCompatible(self) -> bool:
@@ -823,7 +706,8 @@ class MachineManager(QObject):
             if material_container == empty_material_container:
                 continue
             if material_container.getMetaDataEntry("buildplate_compatible"):
-                buildplate_compatible = buildplate_compatible and material_container.getMetaDataEntry("buildplate_compatible")[self.activeVariantBuildplateName]
+                active_buildplate_name = self.activeMachine.variant.name
+                buildplate_compatible = buildplate_compatible and material_container.getMetaDataEntry("buildplate_compatible")[active_buildplate_name]
 
         return buildplate_compatible
 
@@ -946,7 +830,7 @@ class MachineManager(QObject):
             if settable_per_extruder:
                 limit_to_extruder = int(self._global_container_stack.getProperty(setting_key, "limit_to_extruder"))
                 extruder_position = max(0, limit_to_extruder)
-                extruder_stack = self.getExtruder(extruder_position)
+                extruder_stack = self._global_container_stack.extruderList[extruder_position]
                 if extruder_stack:
                     extruder_stack.userChanges.setProperty(setting_key, "value", global_user_container.getProperty(setting_key, "value"))
                 else:
@@ -956,20 +840,6 @@ class MachineManager(QObject):
         # Signal that the global stack has changed
         self._application.globalContainerStackChanged.emit()
         self.forceUpdateAllSettings()
-
-    @pyqtSlot(int, result = QObject)
-    def getExtruder(self, position: int) -> Optional[ExtruderStack]:
-        return self._getExtruder(position)
-
-    # This is a workaround for the deprecated decorator and the pyqtSlot not playing well together.
-    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
-    def _getExtruder(self, position) -> Optional[ExtruderStack]:
-        if self._global_container_stack:
-            try:
-                return self._global_container_stack.extruderList[int(position)]
-            except IndexError:
-                return None
-        return None
 
     def updateDefaultExtruder(self) -> None:
         if self._global_container_stack is None:
@@ -1021,10 +891,10 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
-        extruder = self.getExtruder(position)
-        if not extruder or self._global_container_stack is None:
+        if self._global_container_stack is None:
             Logger.log("w", "Could not find extruder on position %s", position)
             return
+        extruder = self._global_container_stack.extruderList[position]
 
         extruder.setEnabled(enabled)
         self.updateDefaultExtruder()
@@ -1077,13 +947,6 @@ class MachineManager(QObject):
         for extruder in self._global_container_stack.extruderList:
             container = extruder.userChanges
             container.removeInstance(setting_name)
-
-    @pyqtProperty("QVariantList", notify = globalContainerChanged)
-    @deprecated("use Cura.MachineManager.activeMachine.extruders instead", "4.2")
-    def currentExtruderPositions(self) -> List[str]:
-        if self._global_container_stack is None:
-            return []
-        return sorted(list(self._global_container_stack.extruders.keys()))
 
     ##  Update _current_root_material_id when the current root material was changed.
     def _onRootMaterialChanged(self) -> None:
@@ -1363,7 +1226,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
         # Don't switch if the user tries to change to the same type of printer
-        if self._global_container_stack is None or self.activeMachineDefinitionName == machine_name:
+        if self._global_container_stack is None or self._global_container_stack.definition.name == machine_name:
             return
         Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Get the definition id corresponding to this machine name

@@ -143,27 +143,27 @@ UM.Dialog
                 {
                     width: parent.width
                     height: childrenRect.height
-                    model: Cura.MachineManager.currentExtruderPositions
+                    model: Cura.MachineManager.activeMachine.extruderList
                     delegate: Column
                     {
                         height: childrenRect.height
                         width: parent.width
                         property string variantName:
                         {
-                            var extruder = Cura.MachineManager.activeMachine.extruderList[modelData]
+                            var extruder = modelData
                             var variant_name = extruder.variant.name
                             return (variant_name !== undefined) ? variant_name : ""
                         }
                         property string materialName:
                         {
-                            var extruder = Cura.MachineManager.activeMachine.extruderList[modelData]
+                            var extruder = modelData
                             var material_name = extruder.material.name
                             return (material_name !== undefined) ? material_name : ""
                         }
                         Label
                         {
                             text: {
-                                var extruder = Number(modelData)
+                                var extruder = Number(modelData.position)
                                 var extruder_id = ""
                                 if(!isNaN(extruder))
                                 {
@@ -171,7 +171,7 @@ UM.Dialog
                                 }
                                 else
                                 {
-                                    extruder_id = modelData
+                                    extruder_id = modelData.position
                                 }
 
                                 return catalog.i18nc("@action:label", "Extruder %1").arg(extruder_id)
