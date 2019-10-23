@@ -29,11 +29,10 @@ Item
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
 
-        Binding
-        {
-            target: previewMain.item
-            property: "safeArea"
-            value:safeArea
+        onLoaded: {
+            if (previewMain.item.safeArea !== undefined){
+               previewMain.item.safeArea = Qt.binding(function() { return safeArea });
+            }
         }
     }
 
