@@ -147,12 +147,12 @@ class ContainerTree:
         #   The ``JobQueue`` will schedule this on a different thread.
         def run(self) -> None:
             for stack in self.container_stacks:  # Load all currently-added containers.
+                if not isinstance(stack, GlobalStack):
+                    continue
                 # Allow a thread switch after every container.
                 # Experimentally, sleep(0) didn't allow switching. sleep(0.1) or sleep(0.2) neither.
                 # We're in no hurry though. Half a second is fine.
                 time.sleep(0.5)
-                if not isinstance(stack, GlobalStack):
-                    continue
                 definition_id = stack.definition.getId()
                 if not self.tree_root.machines.is_loaded(definition_id):
                     _ = self.tree_root.machines[definition_id]
