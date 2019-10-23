@@ -177,5 +177,7 @@ class MachineNode(ContainerNode):
         global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.quality_definition, global_quality = "True")  # First try specific to this printer.
         if len(global_qualities) == 0:  # This printer doesn't override the global qualities.
             global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter", global_quality = "True")  # Otherwise pick the global global qualities.
+            if len(global_qualities) == 0:  # There are no global qualities either?! Something went very wrong, but we'll not crash and properly fill the tree.
+                global_qualities = [cura.CuraApplication.CuraApplication.getInstance().empty_quality_container.getMetaData()]
         for global_quality in global_qualities:
             self.global_qualities[global_quality["quality_type"]] = QualityNode(global_quality["id"], parent = self)

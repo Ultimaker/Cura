@@ -61,11 +61,9 @@ class IntentCategoryModel(ListModel):
 
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
-
-        machine_manager = application.getMachineManager()
-        machine_manager.globalContainerChanged.connect(self.update)
-        machine_manager.activeQualityGroupChanged.connect(self.update)
-        machine_manager.activeStackChanged.connect(self.update)
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.activeMaterialChanged.connect(self.update)
+        machine_manager.activeVariantChanged.connect(self.update)
         machine_manager.extruderChanged.connect(self.update)
 
         extruder_manager = application.getExtruderManager()

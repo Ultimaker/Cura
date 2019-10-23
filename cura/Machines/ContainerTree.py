@@ -1,21 +1,22 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+from UM.Job import Job  # For our background task of loading MachineNodes lazily.
+from UM.JobQueue import JobQueue  # For our background task of loading MachineNodes lazily.
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry  # To listen to containers being added.
-from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 import cura.CuraApplication  # Imported like this to prevent circular dependencies.
 from cura.Machines.MachineNode import MachineNode
 from cura.Settings.GlobalStack import GlobalStack  # To listen only to global stacks being added.
 
-from typing import Dict, List, TYPE_CHECKING
+from typing import Dict, List, Optional, TYPE_CHECKING
 import time
-import UM.FlameProfiler
 
 if TYPE_CHECKING:
     from cura.Machines.QualityGroup import QualityGroup
     from cura.Machines.QualityChangesGroup import QualityChangesGroup
+    from UM.Settings.ContainerStack import ContainerStack
 
 
 ##  This class contains a look-up tree for which containers are available at
@@ -38,12 +39,9 @@ class ContainerTree:
         return cls.__instance
 
     def __init__(self) -> None:
-        self.machines = {}  # type: Dict[str, MachineNode] # Mapping from definition ID to machine nodes.
+        self.machines = self._MachineNodeMap()  # Mapping from definition ID to machine nodes with lazy loading.
         self.materialsChanged = Signal()  # Emitted when any of the material nodes in the tree got changed.
-
-        container_registry = ContainerRegistry.getInstance()
-        container_registry.containerAdded.connect(self._machineAdded)
-        self._loadAll()
+        cura.CuraApplication.CuraApplication.getInstance().initializationFinished.connect(self._onStartupFinished)  # Start the background task to load more machine nodes after start-up is completed.
 
     ##  Get the quality groups available for the currently activated printer.
     #
@@ -76,54 +74,85 @@ class ContainerTree:
         extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
-    # Add a machine node by the id of it's definition.
-    # This is automatically called by the _machineAdded function, but it's sometimes needed to add a machine node
-    # faster than would have been done when waiting on any signals (for instance; when creating an entirely new machine)
-    @UM.FlameProfiler.profile
-    def addMachineNodeByDefinitionId(self, definition_id: str) -> None:
-        if definition_id in self.machines:
-            return  # Already have this definition ID.
+    ##  Ran after completely starting up the application.
+    def _onStartupFinished(self):
+        currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
+        JobQueue.getInstance().add(self._MachineNodeLoadJob(self, currently_added))
 
-        start_time = time.time()
-        self.machines[definition_id] = MachineNode(definition_id)
-        self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
-        Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+    ##  Dictionary-like object that contains the machines.
+    #
+    #   This handles the lazy loading of MachineNodes.
+    class _MachineNodeMap:
+        def __init__(self) -> None:
+            self._machines = {}  # type: Dict[str, MachineNode]
 
-    ##  Builds the initial container tree.
-    def _loadAll(self):
-        Logger.log("i", "Building container tree.")
-        start_time = time.time()
-        all_stacks = ContainerRegistry.getInstance().findContainerStacks()
-        for stack in all_stacks:
-            if not isinstance(stack, GlobalStack):
-                continue  # Only want to load global stacks. We don't need to create a tree for extruder definitions.
-            definition_id = stack.definition.getId()
-            if definition_id not in self.machines:
-                definition_start_time = time.time()
-                self.machines[definition_id] = MachineNode(definition_id)
-                self.machines[definition_id].materialsChanged.connect(self.materialsChanged)
-                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - definition_start_time))
+        ##  Returns whether a printer with a certain definition ID exists. This
+        #   is regardless of whether or not the printer is loaded yet.
+        #   \param definition_id The definition to look for.
+        #   \return Whether or not a printer definition exists with that name.
+        def __contains__(self, definition_id: str) -> bool:
+            return len(ContainerRegistry.getInstance().findContainersMetadata(id = definition_id)) > 0
 
-        Logger.log("d", "Building the container tree took %s seconds",  time.time() - start_time)
+        ##  Returns a machine node for the specified definition ID.
+        #
+        #   If the machine node wasn't loaded yet, this will load it lazily.
+        #   \param definition_id The definition to look for.
+        #   \return A machine node for that definition.
+        def __getitem__(self, definition_id: str) -> MachineNode:
+            if definition_id not in self._machines:
+                start_time = time.time()
+                self._machines[definition_id] = MachineNode(definition_id)
+                self._machines[definition_id].materialsChanged.connect(ContainerTree.getInstance().materialsChanged)
+                Logger.log("d", "Adding container tree for {definition_id} took {duration} seconds.".format(definition_id = definition_id, duration = time.time() - start_time))
+            return self._machines[definition_id]
 
-    ##  When a printer gets added, we need to build up the tree for that container.
-    def _machineAdded(self, container_stack: ContainerInterface) -> None:
-        if not isinstance(container_stack, GlobalStack):
-            return  # Not our concern.
-        self.addMachineNodeByDefinitionId(container_stack.definition.getId())
+        ##  Gets a machine node for the specified definition ID, with default.
+        #
+        #   The default is returned if there is no definition with the specified
+        #   ID. If the machine node wasn't loaded yet, this will load it lazily.
+        #   \param definition_id The definition to look for.
+        #   \param default The machine node to return if there is no machine
+        #   with that definition (can be ``None`` optionally or if not
+        #   provided).
+        #   \return A machine node for that definition, or the default if there
+        #   is no definition with the provided definition_id.
+        def get(self, definition_id: str, default: Optional[MachineNode] = None) -> Optional[MachineNode]:
+            if definition_id not in self:
+                return default
+            return self[definition_id]
 
-    ##  For debugging purposes, visualise the entire container tree as it stands
-    #   now.
-    def _visualise_tree(self) -> str:
-        lines = ["% CONTAINER TREE"]  # Start with array and then combine into string, for performance.
-        for machine in self.machines.values():
-            lines.append("  # " + machine.container_id)
-            for variant in machine.variants.values():
-                lines.append("    * " + variant.container_id)
-                for material in variant.materials.values():
-                    lines.append("      + " + material.container_id)
-                    for quality in material.qualities.values():
-                        lines.append("        - " + quality.container_id)
-                        for intent in quality.intents.values():
-                            lines.append("          . " + intent.container_id)
-        return "\n".join(lines)
+        ##  Returns whether we've already cached this definition's node.
+        #   \param definition_id The definition that we may have cached.
+        #   \return ``True`` if it's cached.
+        def is_loaded(self, definition_id: str) -> bool:
+            return definition_id in self._machines
+
+    ##  Pre-loads all currently added printers as a background task so that
+    #   switching printers in the interface is faster.
+    class _MachineNodeLoadJob(Job):
+        ##  Creates a new background task.
+        #   \param tree_root The container tree instance. This cannot be
+        #   obtained through the singleton static function since the instance
+        #   may not yet be constructed completely.
+        #   \param container_stacks All of the stacks to pre-load the container
+        #   trees for. This needs to be provided from here because the stacks
+        #   need to be constructed on the main thread because they are QObject.
+        def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]):
+            self.tree_root = tree_root
+            self.container_stacks = container_stacks
+            super().__init__()
+
+        ##  Starts the background task.
+        #
+        #   The ``JobQueue`` will schedule this on a different thread.
+        def run(self) -> None:
+            for stack in self.container_stacks:  # Load all currently-added containers.
+                if not isinstance(stack, GlobalStack):
+                    continue
+                # Allow a thread switch after every container.
+                # Experimentally, sleep(0) didn't allow switching. sleep(0.1) or sleep(0.2) neither.
+                # We're in no hurry though. Half a second is fine.
+                time.sleep(0.5)
+                definition_id = stack.definition.getId()
+                if not self.tree_root.machines.is_loaded(definition_id):
+                    _ = self.tree_root.machines[definition_id]

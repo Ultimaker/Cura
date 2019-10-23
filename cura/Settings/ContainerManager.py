@@ -85,7 +85,7 @@ class ContainerManager(QObject):
         if container_node.container is None:
             Logger.log("w", "Container node {0} doesn't have a container.".format(container_node.container_id))
             return False
-        root_material_id = container_node.container.getMetaDataEntry("base_file", "")
+        root_material_id = container_node.getMetaDataEntry("base_file", "")
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         if container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
@@ -350,8 +350,7 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant")
     def unlinkMaterial(self, material_node: "MaterialNode") -> None:
         # Get the material group
-        if material_node.container is None:
-            Logger.log("w", "Material node {0} doesn't have a container.".format(material_node.container_id))
+        if material_node.container is None:  # Failed to lazy-load this container.
             return
         root_material_query = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findInstanceContainers(id = material_node.getMetaDataEntry("base_file", ""))
         if not root_material_query:
