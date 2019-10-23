@@ -84,7 +84,7 @@ class ContainerTree:
     #   This handles the lazy loading of MachineNodes.
     class MachineNodeMap:
         def __init__(self) -> None:
-            self._machines = {}
+            self._machines = {}  # type: Dict[str, MachineNode]
 
         ##  Returns whether a printer with a certain definition ID exists. This
         #   is regardless of whether or not the printer is loaded yet.
