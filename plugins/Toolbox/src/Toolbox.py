@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -19,6 +19,7 @@ from UM.Version import Version
 from cura import ApplicationMetadata
 from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
@@ -359,15 +360,22 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def resetMaterialsQualitiesAndUninstall(self) -> None:
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
-        quality_manager = application.getQualityManager()
         machine_manager = application.getMachineManager()
+        container_tree = ContainerTree.getInstance()
 
         for global_stack, extruder_nr, container_id in self._package_used_materials:
-            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            extruder = global_stack.extruderList[int(extruder_nr)]
+            approximate_diameter = extruder.getApproximateMaterialDiameter()
+            variant_node = container_tree.machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
+            default_material_node = variant_node.preferredMaterial(approximate_diameter)
             machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
         for global_stack, extruder_nr, container_id in self._package_used_qualities:
-            default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+            variant_names = [extruder.variant.getName() for extruder in global_stack.extruderList]
+            material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruderList]
+            extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
+            definition_id = global_stack.definition.getId()
+            machine_node = container_tree.machines[definition_id]
+            default_quality_group = machine_node.getQualityGroups(variant_names, material_bases, extruder_enabled)[machine_node.preferred_quality_type]
             machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
 
         if self._package_id_to_uninstall is not None:
@@ -655,8 +663,12 @@ class Toolbox(QObject, Extension):
                 
                 # Check if the download was sucessfull
                 if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-                    Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
-                    return
+                    try:
+                        Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
+                    except json.decoder.JSONDecodeError:
+                        Logger.logException("w", "Failed to download package and failed to parse a response from it")
+                    finally:
+                        return
                 # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name

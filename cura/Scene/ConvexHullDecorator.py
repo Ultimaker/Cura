@@ -66,17 +66,34 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         node.boundingBoxChanged.connect(self._onChanged)
 
+        per_object_stack = node.callDecoration("getStack")
+        if per_object_stack:
+            per_object_stack.propertyChanged.connect(self._onSettingValueChanged)
+
         self._onChanged()
 
     ## Force that a new (empty) object is created upon copy.
     def __deepcopy__(self, memo):
         return ConvexHullDecorator()
 
-    ##  Get the unmodified 2D projected convex hull of the node (if any)
-    def getConvexHull(self) -> Optional[Polygon]:
+    ## The polygon representing the 2D adhesion area.
+    # If no adhesion is used, the regular convex hull is returned
+    def getAdhesionArea(self) -> Optional[Polygon]:
         if self._node is None:
             return None
 
+        hull = self._compute2DConvexHull()
+        if hull is None:
+            return None
+
+        return self._add2DAdhesionMargin(hull)
+
+    ##  Get the unmodified 2D projected convex hull with 2D adhesion area of the node (if any)
+    def getConvexHull(self) -> Optional[Polygon]:
+        if self._node is None:
+            return None
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
         hull = self._compute2DConvexHull()
 
         if self._global_stack and self._node is not None and hull is not None:
@@ -106,7 +123,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def getConvexHullHead(self) -> Optional[Polygon]:
         if self._node is None:
             return None
-
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
         if self._global_stack:
             if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
                 head_with_fans = self._compute2DConvexHeadMin()
@@ -121,6 +139,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         if self._node is None:
+            return None
+        
+        if self._node.callDecoration("isNonPrintingMesh"):
             return None
 
         if self._global_stack:
@@ -257,9 +278,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self) -> Polygon:
-        if self._global_stack:
-            return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
-        return Polygon()
+        if not self._global_stack:
+            return Polygon()
+
+        polygon = Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
+        offset_x = self._getSettingProperty("machine_nozzle_offset_x", "value")
+        offset_y = self._getSettingProperty("machine_nozzle_offset_y", "value")
+        return polygon.translate(-offset_x, -offset_y)
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
@@ -398,4 +423,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}

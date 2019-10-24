@@ -372,18 +372,18 @@
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
 
-        "layerview_ghost": [32, 32, 32, 96],
+        "layerview_ghost": [31, 31, 31, 95],
         "layerview_none": [255, 255, 255, 255],
         "layerview_inset_0": [255, 0, 0, 255],
         "layerview_inset_x": [0, 255, 0, 255],
         "layerview_skin": [255, 255, 0, 255],
         "layerview_support": [0, 255, 255, 255],
         "layerview_skirt": [0, 255, 255, 255],
-        "layerview_infill": [255, 192, 0, 255],
+        "layerview_infill": [255, 127, 0, 255],
         "layerview_support_infill": [0, 255, 255, 255],
         "layerview_move_combing": [0, 0, 255, 255],
-        "layerview_move_retraction": [128, 128, 255, 255],
-        "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_move_retraction": [128, 127, 255, 255],
+        "layerview_support_interface": [63, 127, 255, 255],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
@@ -544,7 +544,7 @@
         "slider_groove": [0.5, 0.5],
         "slider_groove_radius": [0.15, 0.15],
         "slider_handle": [1.5, 1.5],
-        "slider_layerview_size": [1.0, 26.0],
+        "slider_layerview_size": [1.0, 34.0],
 
         "layerview_menu_size": [16.0, 4.0],
         "layerview_legend_size": [1.0, 1.0],
@@ -618,6 +618,9 @@
         "monitor_shadow_offset": [0.15, 0.15],
         "monitor_empty_state_offset": [5.6, 5.6],
         "monitor_empty_state_size": [35.0, 25.0],
-        "monitor_external_link_icon": [1.16, 1.16]
+        "monitor_external_link_icon": [1.16, 1.16],
+        "monitor_column": [18.0, 1.0],
+        "monitor_progress_bar": [16.5, 1.0],
+        "monitor_margin": [1.5, 1.5]
     }
 }

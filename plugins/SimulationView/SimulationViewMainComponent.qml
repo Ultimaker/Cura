@@ -11,9 +11,18 @@ import Cura 1.0 as Cura
 
 Item
 {
-    property bool is_simulation_playing: false
+    // An Item whose bounds are guaranteed to be safe for overlays to be placed.
+    // Defaults to parent, ie. the entire available area
+    // eg. the layer slider will not be placed in this area.
+    property var safeArea: parent
+
+
+    property bool isSimulationPlaying: false
+    readonly property var layerSliderSafeYMax: safeArea.y + safeArea.height
+
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
+    // A slider which lets users trace a single layer (XY movements)
     PathSlider
     {
         id: pathSlider
@@ -58,7 +67,7 @@ Item
     UM.SimpleButton
     {
         id: playButton
-        iconSource: !is_simulation_playing ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
+        iconSource: !isSimulationPlaying ? "./resources/simulation_resume.svg": "./resources/simulation_pause.svg"
         width: UM.Theme.getSize("small_button").width
         height: UM.Theme.getSize("small_button").height
         hoverColor: UM.Theme.getColor("slider_handle_active")
@@ -88,7 +97,7 @@ Item
 
         onClicked:
         {
-            if(is_simulation_playing)
+            if(isSimulationPlaying)
             {
                 pauseSimulation()
             }
@@ -102,7 +111,7 @@ Item
         {
             UM.SimulationView.setSimulationRunning(false)
             simulationTimer.stop()
-            is_simulation_playing = false
+            isSimulationPlaying = false
             layerSlider.manuallyChanged = true
             pathSlider.manuallyChanged = true
         }
@@ -131,7 +140,7 @@ Item
 
             // When the user plays the simulation, if the path slider is at the end of this layer, we start
             // the simulation at the beginning of the current layer.
-            if (!is_simulation_playing)
+            if (!isSimulationPlaying)
             {
                 if (currentPath >= numPaths)
                 {
@@ -166,22 +175,28 @@ Item
             }
             // The status must be set here instead of in the resumeSimulation function otherwise it won't work
             // correctly, because part of the logic is in this trigger function.
-            is_simulation_playing = true
+            isSimulationPlaying = true
         }
     }
 
+    // Scrolls trough Z layers
     LayerSlider
     {
+        property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
+        property double heightMargin: UM.Theme.getSize("default_margin").height
         id: layerSlider
 
         width: UM.Theme.getSize("slider_handle").width
-        height: UM.Theme.getSize("slider_layerview_size").height
+        height: preferredHeight + heightMargin * 2 < layerSliderSafeYMax ? preferredHeight : layerSliderSafeYMax - heightMargin * 2
 
         anchors
         {
             right: parent.right
             verticalCenter: parent.verticalCenter
+            verticalCenterOffset: -(parent.height - layerSliderSafeYMax) / 2 // center between parent top and layerSliderSafeYMax
             rightMargin: UM.Theme.getSize("default_margin").width
+            bottomMargin: heightMargin
+            topMargin: heightMargin
         }
 
         // Custom properties

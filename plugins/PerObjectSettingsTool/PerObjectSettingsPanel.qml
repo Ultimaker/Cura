@@ -4,21 +4,67 @@
 import QtQuick 2.2
 import QtQuick.Controls 1.2
 import QtQuick.Controls.Styles 1.2
-import QtQuick.Window 2.2
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 import ".."
 
-Item {
-    id: base;
 
-    UM.I18nCatalog { id: catalog; name: "cura"; }
-
-    width: childrenRect.width;
-    height: childrenRect.height;
-    property var all_categories_except_support: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
+Item
+{
+    id: base
+    width: childrenRect.width
+    height: childrenRect.height
+    property var allCategoriesExceptSupport: [ "machine_settings", "resolution", "shell", "infill", "material", "speed",
                                     "travel", "cooling", "platform_adhesion", "dual", "meshfix", "blackmagic", "experimental"]
+
+    readonly property string normalMeshType: ""
+    readonly property string supportMeshType: "support_mesh"
+    readonly property string cuttingMeshType: "cutting_mesh"
+    readonly property string infillMeshType: "infill_mesh"
+    readonly property string antiOverhangMeshType: "anti_overhang_mesh"
+
+    property var currentMeshType: UM.ActiveTool.properties.getValue("MeshType")
+
+    // Update the view every time the currentMeshType changes
+    onCurrentMeshTypeChanged:
+    {
+        var type = currentMeshType
+
+        // set checked state of mesh type buttons
+        normalButton.checked = type === normalMeshType
+        supportMeshButton.checked = type === supportMeshType
+        overhangMeshButton.checked = type === infillMeshType || type === cuttingMeshType
+        antiOverhangMeshButton.checked = type === antiOverhangMeshType
+
+        // update active type label
+        for (var button in meshTypeButtons.children)
+        {
+            if (meshTypeButtons.children[button].checked){
+                meshTypeLabel.text = catalog.i18nc("@label", "Mesh Type") + ": " + meshTypeButtons.children[button].text
+                break
+            }
+        }
+    }
+
+    function setOverhangsMeshType()
+    {
+        if (infillOnlyCheckbox.checked)
+        {
+            setMeshType(infillMeshType)
+        }
+        else
+        {
+            setMeshType(cuttingMeshType)
+        }
+    }
+
+    function setMeshType(type)
+    {
+        UM.ActiveTool.setProperty("MeshType", type)
+    }
+
+    UM.I18nCatalog { id: catalog; name: "uranium"}
 
     Column
     {
@@ -28,123 +74,97 @@ Item {
 
         spacing: UM.Theme.getSize("default_margin").height
 
-        Row
+        Row // Mesh type buttons
         {
+            id: meshTypeButtons
             spacing: UM.Theme.getSize("default_margin").width
 
-            Label
+            Button
             {
-                text: catalog.i18nc("@label","Mesh Type")
-                font: UM.Theme.getFont("default")
-                color: UM.Theme.getColor("text")
-                height: UM.Theme.getSize("setting").height
-                verticalAlignment: Text.AlignVCenter
+                id: normalButton
+                text: catalog.i18nc("@label", "Normal model")
+                iconSource: UM.Theme.getIcon("pos_normal");
+                property bool needBorder: true
+                checkable: true
+                onClicked: setMeshType(normalMeshType);
+                style: UM.Theme.styles.tool_button;
+                z: 4
             }
 
-            UM.SettingPropertyProvider
+            Button
             {
-                id: meshTypePropertyProvider
-                containerStack: Cura.MachineManager.activeMachine
-                watchedProperties: [ "enabled" ]
+                id: supportMeshButton
+                text: catalog.i18nc("@label", "Print as support")
+                iconSource: UM.Theme.getIcon("pos_print_as_support");
+                property bool needBorder: true
+                checkable:true
+                onClicked: setMeshType(supportMeshType)
+                style: UM.Theme.styles.tool_button;
+                z: 3
             }
 
-            ComboBox
+            Button
             {
-                id: meshTypeSelection
-                style: UM.Theme.styles.combobox
-                onActivated: {
-                    UM.ActiveTool.setProperty("MeshType", model.get(index).type)
-                }
-                model: ListModel
-                {
-                    id: meshTypeModel
-                    Component.onCompleted: meshTypeSelection.populateModel()
-                }
-
-                function populateModel()
-                {
-                    meshTypeModel.append({
-                        type:  "",
-                        text: catalog.i18nc("@label", "Normal model")
-                    });
-                    meshTypePropertyProvider.key = "support_mesh";
-                    if(meshTypePropertyProvider.properties.enabled == "True")
-                    {
-                        meshTypeModel.append({
-                            type:  "support_mesh",
-                            text: catalog.i18nc("@label", "Print as support")
-                        });
-                    }
-                    meshTypePropertyProvider.key = "anti_overhang_mesh";
-                    if(meshTypePropertyProvider.properties.enabled == "True")
-                    {
-                        meshTypeModel.append({
-                            type:  "anti_overhang_mesh",
-                            text: catalog.i18nc("@label", "Don't support overlap with other models")
-                        });
-                    }
-                    meshTypePropertyProvider.key = "cutting_mesh";
-                    if(meshTypePropertyProvider.properties.enabled == "True")
-                    {
-                        meshTypeModel.append({
-                            type:  "cutting_mesh",
-                            text: catalog.i18nc("@label", "Modify settings for overlap with other models")
-                        });
-                    }
-                    meshTypePropertyProvider.key = "infill_mesh";
-                    if(meshTypePropertyProvider.properties.enabled == "True")
-                    {
-                        meshTypeModel.append({
-                            type:  "infill_mesh",
-                            text: catalog.i18nc("@label", "Modify settings for infill of other models")
-                        });
-                    }
-
-                    meshTypeSelection.updateCurrentIndex();
-                }
-
-                function updateCurrentIndex()
-                {
-                    var mesh_type = UM.ActiveTool.properties.getValue("MeshType");
-                    meshTypeSelection.currentIndex = -1;
-                    for(var index=0; index < meshTypeSelection.model.count; index++)
-                    {
-                        if(meshTypeSelection.model.get(index).type == mesh_type)
-                        {
-                            meshTypeSelection.currentIndex = index;
-                            return;
-                        }
-                    }
-                    meshTypeSelection.currentIndex = 0;
-                }
+                id: overhangMeshButton
+                text: catalog.i18nc("@label", "Modify settings for overlaps")
+                iconSource: UM.Theme.getIcon("pos_modify_overlaps");
+                property bool needBorder: true
+                checkable:true
+                onClicked: setMeshType(infillMeshType)
+                style: UM.Theme.styles.tool_button;
+                z: 2
             }
 
-            Connections
+            Button
             {
-                target: Cura.MachineManager
-                onGlobalContainerChanged:
-                {
-                    meshTypeSelection.model.clear();
-                    meshTypeSelection.populateModel();
-                }
-            }
-
-            Connections
-            {
-                target: UM.Selection
-                onSelectionChanged: meshTypeSelection.updateCurrentIndex()
+                id: antiOverhangMeshButton
+                text:  catalog.i18nc("@label", "Don't support overlaps")
+                iconSource: UM.Theme.getIcon("pos_modify_dont_support_overlap");
+                property bool needBorder: true
+                checkable: true
+                onClicked: setMeshType(antiOverhangMeshType)
+                style: UM.Theme.styles.tool_button;
+                z: 1
             }
 
         }
 
-        Column
+         Label
+        {
+            id: meshTypeLabel
+            font: UM.Theme.getFont("default")
+            color: UM.Theme.getColor("text")
+            height: UM.Theme.getSize("setting").height
+            verticalAlignment: Text.AlignVCenter
+        }
+
+        CheckBox
+        {
+            id: infillOnlyCheckbox
+
+            text: catalog.i18nc("@action:checkbox", "Infill only");
+
+            style: UM.Theme.styles.checkbox;
+
+            visible: currentMeshType === infillMeshType || currentMeshType === cuttingMeshType
+            onClicked: setOverhangsMeshType()
+
+            Binding
+            {
+                target: infillOnlyCheckbox
+                property: "checked"
+                value: currentMeshType === infillMeshType
+            }
+        }
+
+        Column // Settings Dialog
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
             id: currentSettings
             property int maximumHeight: 200 * screenScaleFactor
             height: Math.min(contents.count * (UM.Theme.getSize("section").height + UM.Theme.getSize("default_lining").height), maximumHeight)
-            visible: meshTypeSelection.model.get(meshTypeSelection.currentIndex).type != "anti_overhang_mesh"
+            visible: currentMeshType != "anti_overhang_mesh"
 
             ScrollView
             {
@@ -159,26 +179,26 @@ Item {
 
                     model: UM.SettingDefinitionsModel
                     {
-                        id: addedSettingsModel;
+                        id: addedSettingsModel
                         containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
                         expanded: [ "*" ]
                         filter:
                         {
                             if (printSequencePropertyProvider.properties.value == "one_at_a_time")
                             {
-                                return {"settable_per_meshgroup": true};
+                                return {"settable_per_meshgroup": true}
                             }
-                            return {"settable_per_mesh": true};
+                            return {"settable_per_mesh": true}
                         }
                         exclude:
                         {
-                            var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
+                            var excluded_settings = [ "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ]
 
-                            if(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                            if (currentMeshType == "support_mesh")
                             {
-                                excluded_settings = excluded_settings.concat(base.all_categories_except_support);
+                                excluded_settings = excluded_settings.concat(base.allCategoriesExceptSupport)
                             }
-                            return excluded_settings;
+                            return excluded_settings
                         }
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
@@ -188,8 +208,9 @@ Item {
 
                         // For some reason the model object is updated after removing him from the memory and
                         // it happens only on Windows. For this reason, set the destroyed value manually.
-                        Component.onDestruction: {
-                            setDestroyed(true);
+                        Component.onDestruction:
+                        {
+                            setDestroyed(true)
                         }
                     }
 
@@ -213,7 +234,8 @@ Item {
                             //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
                             asynchronous: model.type != "enum" && model.type != "extruder"
 
-                            onLoaded: {
+                            onLoaded:
+                            {
                                 settingLoader.item.showRevertButton = false
                                 settingLoader.item.showInheritButton = false
                                 settingLoader.item.showLinkedSettingIcon = false
@@ -299,7 +321,7 @@ Item {
                             target: inheritStackProvider
                             onPropertiesChanged:
                             {
-                                provider.forcePropertiesChanged();
+                                provider.forcePropertiesChanged()
                             }
                         }
 
@@ -312,22 +334,22 @@ Item {
                                 // so here we connect to the signal and update the those values.
                                 if (typeof UM.ActiveTool.properties.getValue("SelectedObjectId") !== "undefined")
                                 {
-                                    const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId");
+                                    const selectedObjectId = UM.ActiveTool.properties.getValue("SelectedObjectId")
                                     if (addedSettingsModel.visibilityHandler.selectedObjectId != selectedObjectId)
                                     {
-                                        addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId;
+                                        addedSettingsModel.visibilityHandler.selectedObjectId = selectedObjectId
                                     }
                                 }
                                 if (typeof UM.ActiveTool.properties.getValue("ContainerID") !== "undefined")
                                 {
-                                    const containerId = UM.ActiveTool.properties.getValue("ContainerID");
+                                    const containerId = UM.ActiveTool.properties.getValue("ContainerID")
                                     if (provider.containerStackId != containerId)
                                     {
-                                        provider.containerStackId = containerId;
+                                        provider.containerStackId = containerId
                                     }
                                     if (inheritStackProvider.containerStackId != containerId)
                                     {
-                                        inheritStackProvider.containerStackId = containerId;
+                                        inheritStackProvider.containerStackId = containerId
                                     }
                                 }
                             }
@@ -337,7 +359,7 @@ Item {
             }
         }
 
-        Button
+        Cura.SecondaryButton
         {
             id: customiseSettingsButton;
             height: UM.Theme.getSize("setting_control").height;
@@ -345,33 +367,12 @@ Item {
 
             text: catalog.i18nc("@action:button", "Select settings");
 
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    width: control.width;
-                    height: control.height;
-                    border.width: UM.Theme.getSize("default_lining").width;
-                    border.color: control.pressed ? UM.Theme.getColor("action_button_active_border") :
-                                  control.hovered ? UM.Theme.getColor("action_button_hovered_border") : UM.Theme.getColor("action_button_border")
-                    color: control.pressed ? UM.Theme.getColor("action_button_active") :
-                           control.hovered ? UM.Theme.getColor("action_button_hovered") : UM.Theme.getColor("action_button")
-                }
-                label: Label
-                {
-                    text: control.text;
-                    color: UM.Theme.getColor("setting_control_text");
-                    font: UM.Theme.getFont("default")
-                    anchors.centerIn: parent
-                }
-            }
-
             onClicked:
             {
                 settingPickDialog.visible = true;
-                if (meshTypeSelection.model.get(meshTypeSelection.currentIndex).type == "support_mesh")
+                if (currentMeshType == "support_mesh")
                 {
-                    settingPickDialog.additional_excluded_settings = base.all_categories_except_support;
+                    settingPickDialog.additional_excluded_settings = base.allCategoriesExceptSupport;
                 }
                 else
                 {
@@ -379,138 +380,12 @@ Item {
                 }
             }
         }
+
     }
 
-
-    UM.Dialog {
+    SettingPickDialog
+    {
         id: settingPickDialog
-
-        title: catalog.i18nc("@title:window", "Select Settings to Customize for this model")
-        width: screenScaleFactor * 360
-
-        property var additional_excluded_settings
-
-        onVisibilityChanged:
-        {
-            // force updating the model to sync it with addedSettingsModel
-            if(visible)
-            {
-                // Set skip setting, it will prevent from resetting selected mesh_type
-                contents.model.visibilityHandler.addSkipResetSetting(meshTypeSelection.model.get(meshTypeSelection.currentIndex).type)
-                listview.model.forceUpdate()
-
-                updateFilter()
-            }
-        }
-
-        function updateFilter()
-        {
-            var new_filter = {};
-            new_filter["settable_per_mesh"] = true;
-            // Don't filter on "settable_per_meshgroup" any more when `printSequencePropertyProvider.properties.value`
-            //   is set to "one_at_a_time", because the current backend architecture isn't ready for that.
-
-            if(filterInput.text != "")
-            {
-                new_filter["i18n_label"] = "*" + filterInput.text;
-            }
-
-            listview.model.filter = new_filter;
-        }
-
-        TextField {
-            id: filterInput
-
-            anchors {
-                top: parent.top
-                left: parent.left
-                right: toggleShowAll.left
-                rightMargin: UM.Theme.getSize("default_margin").width
-            }
-
-            placeholderText: catalog.i18nc("@label:textbox", "Filter...");
-
-            onTextChanged: settingPickDialog.updateFilter()
-        }
-
-        CheckBox
-        {
-            id: toggleShowAll
-
-            anchors {
-                top: parent.top
-                right: parent.right
-            }
-
-            text: catalog.i18nc("@label:checkbox", "Show all")
-            checked: listview.model.showAll
-            onClicked:
-            {
-                listview.model.showAll = checked;
-            }
-        }
-
-        ScrollView
-        {
-            id: scrollView
-
-            anchors
-            {
-                top: filterInput.bottom;
-                left: parent.left;
-                right: parent.right;
-                bottom: parent.bottom;
-            }
-            ListView
-            {
-                id:listview
-                model: UM.SettingDefinitionsModel
-                {
-                    id: definitionsModel;
-                    containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
-                    visibilityHandler: UM.SettingPreferenceVisibilityHandler {}
-                    expanded: [ "*" ]
-                    exclude:
-                    {
-                        var excluded_settings = [ "machine_settings", "command_line_settings", "support_mesh", "anti_overhang_mesh", "cutting_mesh", "infill_mesh" ];
-                        excluded_settings = excluded_settings.concat(settingPickDialog.additional_excluded_settings);
-                        return excluded_settings;
-                    }
-                }
-                delegate:Loader
-                {
-                    id: loader
-
-                    width: parent.width
-                    height: model.type != undefined ? UM.Theme.getSize("section").height : 0;
-
-                    property var definition: model
-                    property var settingDefinitionsModel: definitionsModel
-
-                    asynchronous: true
-                    source:
-                    {
-                        switch(model.type)
-                        {
-                            case "category":
-                                return "PerObjectCategory.qml"
-                            default:
-                                return "PerObjectItem.qml"
-                        }
-                    }
-                }
-                Component.onCompleted: settingPickDialog.updateFilter()
-            }
-        }
-
-        rightButtons: [
-            Button {
-                text: catalog.i18nc("@action:button", "Close");
-                onClicked: {
-                    settingPickDialog.visible = false;
-                }
-            }
-        ]
     }
 
     UM.SettingPropertyProvider
@@ -533,25 +408,25 @@ Item {
         storeIndex: 0
     }
 
-    SystemPalette { id: palette; }
+    SystemPalette { id: palette }
 
     Component
     {
-        id: settingTextField;
+        id: settingTextField
 
         Cura.SettingTextField { }
     }
 
     Component
     {
-        id: settingComboBox;
+        id: settingComboBox
 
         Cura.SettingComboBox { }
     }
 
     Component
     {
-        id: settingExtruder;
+        id: settingExtruder
 
         Cura.SettingExtruder { }
     }
@@ -565,22 +440,23 @@ Item {
 
     Component
     {
-        id: settingCheckBox;
+        id: settingCheckBox
 
         Cura.SettingCheckBox { }
     }
 
     Component
     {
-        id: settingCategory;
+        id: settingCategory
 
         Cura.SettingCategory { }
     }
 
     Component
     {
-        id: settingUnknown;
+        id: settingUnknown
 
         Cura.SettingUnknown { }
     }
+
 }

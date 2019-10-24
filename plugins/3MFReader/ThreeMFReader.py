@@ -19,12 +19,12 @@ from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 from cura.CuraApplication import CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
 
 
 try:
@@ -131,7 +131,7 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                definition_id = ContainerTree.getInstance().machines[global_container_stack.definition.getId()].quality_definition
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()

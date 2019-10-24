@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Type A Machines Series 1 2014",
+    "name": "Series 1 2014",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -37,7 +37,6 @@
         "machine_center_is_zero": { "default_value": false },
 
         "speed_print": { "default_value": 60 },
-        "speed_travel": { "default_value": 200 },
 
         "retraction_amount": { "default_value": 0.4 },
         "retraction_speed": { "default_value": 35},

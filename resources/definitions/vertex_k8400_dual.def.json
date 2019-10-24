@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "manufacturer": "Velleman",
+        "manufacturer": "Velleman N.V.",
         "file_formats": "text/x-gcode",
         "platform": "Vertex_build_panel.stl",
         "platform_offset": [0, -3, 0],
@@ -17,12 +17,6 @@
         "machine_name": { "default_value": "Vertex K8400 Dual" },
         "machine_heated_bed": {
             "default_value": true
-        },
-        "material_bed_temperature": {
-            "default_value": 0
-        },
-        "material_bed_temperature_layer_0": {
-            "default_value": 0
         },
         "machine_width": {
             "default_value": 223.7

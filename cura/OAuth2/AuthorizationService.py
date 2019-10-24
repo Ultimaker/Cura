@@ -2,15 +2,19 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
-import webbrowser
 from datetime import datetime, timedelta
+import os
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
+
 import requests.exceptions
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Platform import Platform
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
@@ -163,7 +167,7 @@ class AuthorizationService:
         })
 
         # Open the authorization page in a new browser window.
-        webbrowser.open_new("{}?{}".format(self._auth_url, query_string))
+        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
@@ -195,8 +199,6 @@ class AuthorizationService:
                         self._unable_to_get_data_message.hide()
 
                     self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
-                    self._unable_to_get_data_message.addAction("retry", i18n_catalog.i18nc("@action:button", "Retry"), "[no_icon]", "[no_description]")
-                    self._unable_to_get_data_message.actionTriggered.connect(self._onMessageActionTriggered)
                     self._unable_to_get_data_message.show()
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
@@ -218,6 +220,3 @@ class AuthorizationService:
 
         self.accessTokenChanged.emit()
 
-    def _onMessageActionTriggered(self, _, action):
-        if action == "retry":
-            self.loadAuthDataFromPreferences()

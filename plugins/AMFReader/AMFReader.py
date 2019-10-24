@@ -1,4 +1,4 @@
-# Copyright (c) 2019 fieldOfView
+# Copyright (c) 2019 fieldOfView, Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # This AMF parser is based on the AMF parser in legacy cura:
@@ -39,9 +39,9 @@ class AMFReader(MeshReader):
 
         MimeTypeDatabase.addMimeType(
             MimeType(
-                name="application/x-amf",
-                comment="AMF",
-                suffixes=["amf"]
+                name = "application/x-amf",
+                comment = "AMF",
+                suffixes = ["amf"]
             )
         )
 
@@ -94,7 +94,7 @@ class AMFReader(MeshReader):
                                 if t.tag == "x":
                                     v[0] = float(t.text) * scale
                                 elif t.tag == "y":
-                                    v[2] = float(t.text) * scale
+                                    v[2] = -float(t.text) * scale
                                 elif t.tag == "z":
                                     v[1] = float(t.text) * scale
                             amf_mesh_vertices.append(v)
@@ -114,7 +114,7 @@ class AMFReader(MeshReader):
                                 f[2] = int(t.text)
                         indices.append(f)
 
-                    mesh = trimesh.base.Trimesh(vertices=numpy.array(amf_mesh_vertices, dtype=numpy.float32), faces=numpy.array(indices, dtype=numpy.int32))
+                    mesh = trimesh.base.Trimesh(vertices = numpy.array(amf_mesh_vertices, dtype = numpy.float32), faces = numpy.array(indices, dtype = numpy.int32))
                     mesh.merge_vertices()
                     mesh.remove_unreferenced_vertices()
                     mesh.fix_normals()
@@ -123,7 +123,7 @@ class AMFReader(MeshReader):
                     new_node = CuraSceneNode()
                     new_node.setSelectable(True)
                     new_node.setMeshData(mesh_data)
-                    new_node.setName(base_name if len(nodes)==0 else "%s %d" % (base_name, len(nodes)))
+                    new_node.setName(base_name if len(nodes) == 0 else "%s %d" % (base_name, len(nodes)))
                     new_node.addDecorator(BuildPlateDecorator(CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate))
                     new_node.addDecorator(SliceableObjectDecorator())
 
@@ -165,9 +165,9 @@ class AMFReader(MeshReader):
             indices.append(face)
             face_count += 1
 
-        vertices = numpy.asarray(vertices, dtype=numpy.float32)
-        indices = numpy.asarray(indices, dtype=numpy.int32)
+        vertices = numpy.asarray(vertices, dtype = numpy.float32)
+        indices = numpy.asarray(indices, dtype = numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
-        mesh_data = MeshData(vertices=vertices, indices=indices, normals=normals)
+        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals)
         return mesh_data

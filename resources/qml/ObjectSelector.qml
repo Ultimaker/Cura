@@ -13,6 +13,13 @@ Item
     width: UM.Theme.getSize("objects_menu_size").width
     property bool opened: UM.Preferences.getValue("cura/show_list_of_objects")
 
+    // Eat up all the mouse events (we don't want the scene to react or have the scene context menu showing up)
+    MouseArea
+    {
+        anchors.fill: parent
+        acceptedButtons: Qt.AllButtons
+    }
+
     Button
     {
         id: openCloseButton
@@ -71,7 +78,7 @@ Item
         id: contents
         width: parent.width
         visible: objectSelector.opened
-        height: visible ? scroll.height : 0
+        height: visible ? listView.height : 0
         color: UM.Theme.getColor("main_background")
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")
@@ -80,40 +87,39 @@ Item
 
         anchors.bottom: parent.bottom
 
-        ScrollView
+        ListView
         {
-            id: scroll
-            width: parent.width
+            id: listView
             clip: true
-            padding: UM.Theme.getSize("default_lining").width
-
-            contentItem: ListView
+            anchors
             {
-                id: listView
+                left: parent.left
+                right: parent.right
+                margins: UM.Theme.getSize("default_lining").width
+            }
 
-                // Can't use parent.width since the parent is the flickable component and not the ScrollView
-                width: scroll.width - scroll.leftPadding - scroll.rightPadding
-                property real maximumHeight: UM.Theme.getSize("objects_menu_size").height
+            ScrollBar.vertical: ScrollBar
+            {
+                hoverEnabled: true
+            }
 
-                // We use an extra property here, since we only want to to be informed about the content size changes.
-                onContentHeightChanged:
+            property real maximumHeight: UM.Theme.getSize("objects_menu_size").height
+
+            height: Math.min(contentHeight, maximumHeight)
+
+            model: Cura.ObjectsModel {}
+
+            delegate: ObjectItemButton
+            {
+                id: modelButton
+                Binding
                 {
-                    scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
+                    target: modelButton
+                    property: "checked"
+                    value: model.selected
                 }
-
-                Component.onCompleted:
-                {
-                    scroll.height = Math.min(contentHeight, maximumHeight) + scroll.topPadding + scroll.bottomPadding
-                }
-                model: Cura.ObjectsModel {}
-
-                delegate: ObjectItemButton
-                {
-                    text: model.name
-                    width: listView.width
-
-                    checked: model.selected
-                }
+                text: model.name
+                width: listView.width
             }
         }
     }

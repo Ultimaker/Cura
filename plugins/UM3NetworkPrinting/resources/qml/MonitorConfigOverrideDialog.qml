@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -32,18 +32,23 @@ UM.Dialog
             }
             visible:
             {
+                // Don't show the button if we're missing a printer or print job
                 if (!printer || !printer.activePrintJob)
                 {
-                    return true
+                    return false
                 }
 
-                var canOverride = false
+                // Check each required change...
                 for (var i = 0; i < printer.activePrintJob.configurationChanges.length; i++)
                 {
                     var change = printer.activePrintJob.configurationChanges[i]
-                    canOverride = canOverride || change.typeOfChange === "material_change";
+                    // If that type of change is in the list of blocking changes, hide the button
+                    if (!change.canOverride)
+                    {
+                        return false
+                    }
                 }
-                return canOverride
+                return true
             }
         },
         Button

@@ -43,6 +43,7 @@ class WorkspaceDialog(QObject):
         self._quality_name = ""
         self._num_settings_overridden_by_quality_changes = 0
         self._quality_type = ""
+        self._intent_name = ""
         self._machine_name = ""
         self._machine_type = ""
         self._variant_type = ""
@@ -60,6 +61,7 @@ class WorkspaceDialog(QObject):
     hasVisibleSettingsFieldChanged = pyqtSignal()
     numSettingsOverridenByQualityChangesChanged = pyqtSignal()
     qualityTypeChanged = pyqtSignal()
+    intentNameChanged = pyqtSignal()
     machineNameChanged = pyqtSignal()
     materialLabelsChanged = pyqtSignal()
     objectsOnPlateChanged = pyqtSignal()
@@ -165,6 +167,15 @@ class WorkspaceDialog(QObject):
         if self._quality_name != quality_name:
             self._quality_name = quality_name
             self.qualityNameChanged.emit()
+
+    @pyqtProperty(str, notify = intentNameChanged)
+    def intentName(self) -> str:
+        return self._intent_name
+
+    def setIntentName(self, intent_name: str) -> None:
+        if self._intent_name != intent_name:
+            self._intent_name = intent_name
+            self.intentNameChanged.emit()
 
     @pyqtProperty(str, notify=activeModeChanged)
     def activeMode(self):
