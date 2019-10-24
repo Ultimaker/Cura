@@ -517,7 +517,8 @@ class CuraApplication(QtApplication):
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
-        # set the setting version for Preferences
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up preferences..."))
+        # Set the setting version for Preferences
         preferences = self.getPreferences()
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
