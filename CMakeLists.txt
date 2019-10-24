@@ -49,7 +49,7 @@ endif()
 
 
 if(NOT ${URANIUM_DIR} STREQUAL "")
-    set(CMAKE_MODULE_PATH "${URANIUM_DIR}/cmake")
+    set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${URANIUM_DIR}/cmake")
 endif()
 if(NOT ${URANIUM_SCRIPTS_DIR} STREQUAL "")
     list(APPEND CMAKE_MODULE_PATH ${URANIUM_DIR}/cmake)
@@ -63,8 +63,8 @@ endif()
 
 install(DIRECTORY resources
         DESTINATION ${CMAKE_INSTALL_DATADIR}/cura)
-install(DIRECTORY plugins
-        DESTINATION lib${LIB_SUFFIX}/cura)
+
+include(CuraPluginInstall)
 
 if(NOT APPLE AND NOT WIN32)
     install(FILES cura_app.py
