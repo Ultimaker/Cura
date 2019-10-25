@@ -1,7 +1,7 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 import collections
 from typing import TYPE_CHECKING, Optional, Dict
 
@@ -69,6 +69,11 @@ class IntentCategoryModel(ListModel):
         extruder_manager = application.getExtruderManager()
         extruder_manager.extrudersChanged.connect(self.update)
 
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(500)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
         self.update()
 
     ##  Updates the list of intents if an intent profile was added or removed.
@@ -76,8 +81,11 @@ class IntentCategoryModel(ListModel):
         if container.getMetaDataEntry("type") == "intent":
             self.update()
 
+    def update(self):
+        self._update_timer.start()
+
     ##  Updates the list of intents.
-    def update(self) -> None:
+    def _update(self) -> None:
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
