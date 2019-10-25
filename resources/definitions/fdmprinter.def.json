@@ -6658,30 +6658,26 @@
                 },
                 "flow_rate_max_extrusion_offset":
                 {
-                    "label": "Flow rate compensation max extrusion offset",
-                    "description": "The maximum distance in mm to compensate.",
+                    "label": "Flow Rate Compensation Max Extrusion Offset",
+                    "description": "The maximum distance in mm to move the filament to compensate for changes in flow rate.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value_warning": "10",
                     "default_value": 0,
-                    "value": "0",
-                    "enabled": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
                 "flow_rate_extrusion_offset_factor":
                 {
-                    "label": "Flow rate compensation factor",
-                    "description": "The multiplication factor for the flow rate -> distance translation.",
+                    "label": "Flow Rate Compensation Factor",
+                    "description": "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion.",
                     "unit": "%",
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value_warning": "100",
                     "default_value": 100,
-                    "value": "100",
-                    "enabled": true,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
