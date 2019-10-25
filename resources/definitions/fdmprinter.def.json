@@ -1790,13 +1790,13 @@
                 "infill_scaling_z":
                 {
                     "label": "Infill Vertical Scaling",
-                    "description": "Scales the vertical infill pattern. Values larger than 100% stretch the pattern, values less than 100% compress the pattern.",
+                    "description": "Scales the vertical infill pattern. Values larger than 100% stretch the pattern, values less than 100% compress the pattern. Note that some infill patterns do not work well with scaling values that differ greatly from 100%.",
                     "unit": "%",
                     "minimum_value": "1",
                     "maximum_value": "1000000",
                     "default_value": 100,
                     "type": "float",
-                    "enabled": "infill_sparse_density > 0 and infill_pattern.startswith('gyroid')",
+                    "enabled": "infill_sparse_density > 0 and (infill_pattern.startswith('gyroid') or infill_pattern in ('cubic', 'cubicsubdiv', 'quarter_cubic', 'tetrahedral', 'cross_3d'))",
                     "settable_per_mesh": true
                 },
                 "infill_randomize_start_location":
