@@ -220,7 +220,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
-        if None in all_configurations:  # Shouldn't happen, but it do. I don't see how it could ever happen. Skip adding that configuration. List could end up empty!
+        if None in all_configurations:  # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration. List could end up empty!
             Logger.log("e", "Found a broken configuration in the synced list!")
             all_configurations.remove(None)
         new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
