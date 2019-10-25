@@ -151,10 +151,11 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Shows a dialog allowing the user to select which printer in a group to send a job to.
     def _showPrinterSelectionDialog(self) -> None:
         if not self._printer_select_dialog:
-            path = os.path.join(CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting"),
-                                "resources", "qml", "PrintWindow.qml")
+            plugin_path = CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or ""
+            path = os.path.join(plugin_path, "resources", "qml", "PrintWindow.qml")
             self._printer_select_dialog = CuraApplication.getInstance().createQmlComponent(path, {"OutputDevice": self})
-        self._printer_select_dialog.show()
+        if self._printer_select_dialog is not None:
+            self._printer_select_dialog.show()
 
     ## Upload the print job to the group.
     def _startPrintJobUpload(self, unique_name: str = None) -> None:
