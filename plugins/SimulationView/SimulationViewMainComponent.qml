@@ -18,7 +18,10 @@ Item
 
 
     property bool isSimulationPlaying: false
+    readonly property var layerSliderSafeYMin: safeArea.y
     readonly property var layerSliderSafeYMax: safeArea.y + safeArea.height
+    readonly property var pathSliderSafeXMin: safeArea.x + playButton.width //todo playbutton margin or group button + slider in an item?
+    readonly property var pathSliderSafeXMax: safeArea.x + safeArea.width
 
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
@@ -26,13 +29,21 @@ Item
     PathSlider
     {
         id: pathSlider
+        
+        readonly property var preferredWidth: UM.Theme.getSize("slider_layerview_size").height // not a typo, should be as long as layerview slider
+        readonly property var margin: UM.Theme.getSize("default_margin").width
+        readonly property var pathSliderSafeWidth: pathSliderSafeXMax - pathSliderSafeXMin
+
         height: UM.Theme.getSize("slider_handle").width
-        width: UM.Theme.getSize("slider_layerview_size").height
+        width: preferredWidth + margin * 2 < pathSliderSafeWidth ? preferredWidth : pathSliderSafeWidth - margin * 2
+ 
 
         anchors.bottom: parent.bottom
-        anchors.bottomMargin: UM.Theme.getSize("default_margin").height
+        anchors.bottomMargin: margin
 
         anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenterOffset: -(parent.width - pathSliderSafeXMax - pathSliderSafeXMin) / 2 // center between parent top and layerSliderSafeYMax
+
 
         visible: !UM.SimulationView.compatibilityMode
 
@@ -184,16 +195,19 @@ Item
     {
         property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
         property double heightMargin: UM.Theme.getSize("default_margin").height
+        property double layerSliderSafeHeight: layerSliderSafeYMax - layerSliderSafeYMin
+        //todo incorporate margins in safeHeight?
+
         id: layerSlider
 
         width: UM.Theme.getSize("slider_handle").width
-        height: preferredHeight + heightMargin * 2 < layerSliderSafeYMax ? preferredHeight : layerSliderSafeYMax - heightMargin * 2
+        height: preferredHeight + heightMargin * 2 < layerSliderSafeHeight ? preferredHeight : layerSliderSafeHeight - heightMargin * 2
 
         anchors
         {
             right: parent.right
             verticalCenter: parent.verticalCenter
-            verticalCenterOffset: -(parent.height - layerSliderSafeYMax) / 2 // center between parent top and layerSliderSafeYMax
+            verticalCenterOffset: -(parent.height - layerSliderSafeYMax - layerSliderSafeYMin) / 2 // center between parent top and layerSliderSafeYMax
             rightMargin: UM.Theme.getSize("default_margin").width
             bottomMargin: heightMargin
             topMargin: heightMargin

@@ -12,14 +12,26 @@ import Cura 1.0 as Cura
 Item
 {
 
+    // An Item whose bounds are guaranteed to be safe for overlays to be placed.
+    // Defaults to parent, ie. the entire available area
+    property var safeArea: parent
+
     // Subtract the actionPanel from the safe area. This way the view won't draw interface elements under/over it
-    Item {
-        id: safeArea
-        visible: false
-        anchors.left: parent.left
-        anchors.right: actionPanelWidget.left
-        anchors.top: parent.top
-        anchors.bottom: actionPanelWidget.top
+    Rectangle
+    {
+        id: childSafeArea
+        x: safeArea.x - parent.x
+        y: safeArea.y - parent.y
+        width: actionPanelWidget.x - x
+        height: actionPanelWidget.y - y
+        visible: true // true for debug only
+        color:"#800000FF"
+
+        Component.onCompleted: {
+            print("parent", parent.x, parent.y)
+            print("parent safe", safeArea.x, safeArea.y)
+            print("previewmain safe", childSafeArea.x, childSafeArea.y, childSafeArea.width, childSafeArea.height)
+        }
     }
 
     Loader
@@ -29,9 +41,10 @@ Item
 
         source: UM.Controller.activeView != null && UM.Controller.activeView.mainComponent != null ? UM.Controller.activeView.mainComponent : ""
 
-        onLoaded: {
+        onLoaded:
+        {
             if (previewMain.item.safeArea !== undefined){
-               previewMain.item.safeArea = Qt.binding(function() { return safeArea });
+               previewMain.item.safeArea = Qt.binding(function() { return childSafeArea });
             }
         }
     }

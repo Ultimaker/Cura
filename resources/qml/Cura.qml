@@ -301,6 +301,17 @@ UM.MainWindow
                 }
             }
 
+            // A hint for the loaded content view. Overlay items / controls can safely be placed in this area
+            Rectangle {
+                id: mainSafeArea
+                anchors.left: viewOrientationControls.right
+                anchors.right: main.right
+                anchors.top: main.top
+                anchors.bottom: main.bottom
+                visible: true // set to true for debugging only
+                color:"#8000FF00"
+            }
+
             Loader
             {
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.
@@ -316,6 +327,12 @@ UM.MainWindow
                 }
 
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+
+                onLoaded: {
+                    if (main.item.safeArea !== undefined){
+                       main.item.safeArea = Qt.binding(function() { return mainSafeArea });
+                    }
+                }
             }
 
             Loader
