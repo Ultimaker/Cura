@@ -291,7 +291,8 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setActiveMachine(self, stack_id: str) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
-
+        self._application.processEvents()
+        
         container_registry = CuraContainerRegistry.getInstance()
         containers = container_registry.findContainerStacks(id = stack_id)
         if not containers:
@@ -301,9 +302,11 @@ class MachineManager(QObject):
 
         # Make sure that the default machine actions for this machine have been added
         self._application.getMachineActionManager().addDefaultMachineActions(global_stack)
+        self._application.processEvents()
 
         extruder_manager = ExtruderManager.getInstance()
         extruder_manager.fixSingleExtrusionMachineExtruderDefinition(global_stack)
+        self._application.processEvents()
         if not global_stack.isValid():
             # Mark global stack as invalid
             ConfigurationErrorMessage.getInstance().addFaultyContainers(global_stack.getId())
@@ -313,8 +316,12 @@ class MachineManager(QObject):
         extruder_manager.addMachineExtruders(global_stack)
         self._application.setGlobalContainerStack(global_stack)
 
+        self._application.processEvents()
+
         # Switch to the first enabled extruder
         self.updateDefaultExtruder()
+
+        self._application.processEvents()
         default_extruder_position = int(self.defaultExtruderPosition)
         old_active_extruder_index = extruder_manager.activeExtruderIndex
         extruder_manager.setActiveExtruderIndex(default_extruder_position)
