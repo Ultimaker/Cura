@@ -245,7 +245,7 @@ Item
             }
 
             property int indexWithFocus: -1
-
+            property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
             delegate: Loader
             {
                 id: delegate
@@ -270,8 +270,6 @@ Item
                 property var propertyProvider: provider
                 property var globalPropertyProvider: inheritStackProvider
                 property bool externalResetHandler: false
-
-                property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
 
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
@@ -324,7 +322,7 @@ Item
                         if (!model.settable_per_extruder)
                         {
                             //Not settable per extruder or there only is global, so we must pick global.
-                            return delegate.activeMachineId
+                            return contents.activeMachineId
                         }
                         if (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
@@ -337,7 +335,7 @@ Item
                             return Cura.ExtruderManager.activeExtruderStackId;
                         }
                         //No extruder tab is selected. Pick the global stack. Shouldn't happen any more since we removed the global tab.
-                        return delegate.activeMachineId
+                        return contents.activeMachineId
                     }
                 }
 
@@ -346,7 +344,7 @@ Item
                 UM.SettingPropertyProvider
                 {
                     id: inheritStackProvider
-                    containerStackId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id: ""
+                    containerStackId: contents.activeMachineId
                     key: model.key
                     watchedProperties: [ "limit_to_extruder" ]
                 }
@@ -355,7 +353,7 @@ Item
                 {
                     id: provider
 
-                    containerStackId: delegate.activeMachineId
+                    containerStackId: contents.activeMachineId
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
