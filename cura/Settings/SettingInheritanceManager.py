@@ -89,7 +89,7 @@ class SettingInheritanceManager(QObject):
 
     @pyqtSlot()
     def forceUpdate(self) -> None:
-        self._update()
+        self._update_timer.start()
 
     def _onActiveExtruderChanged(self) -> None:
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
