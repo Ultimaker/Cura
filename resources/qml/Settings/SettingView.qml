@@ -419,8 +419,6 @@ Item
                 }
             }
 
-            UM.I18nCatalog { id: catalog; name: "cura"; }
-
             NumberAnimation {
                 id: animateContentY
                 target: contents
