@@ -169,7 +169,7 @@ Item
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStack !== Cura.MachineManager.activeMachine && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
