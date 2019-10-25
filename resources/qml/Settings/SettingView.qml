@@ -228,7 +228,7 @@ Item
             model: UM.SettingDefinitionsModel
             {
                 id: definitionsModel
-                containerId: Cura.MachineManager.activeMachine != null ? Cura.MachineManager.activeMachine.definition.id: ""
+                containerId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.definition.id: ""
                 visibilityHandler: UM.SettingPreferenceVisibilityHandler { }
                 exclude: ["machine_settings", "command_line_settings", "infill_mesh", "infill_mesh_order", "cutting_mesh", "support_mesh", "anti_overhang_mesh"] // TODO: infill_mesh settigns are excluded hardcoded, but should be based on the fact that settable_globally, settable_per_meshgroup and settable_per_extruder are false.
                 expanded: CuraApplication.expandedCategories
@@ -244,40 +244,40 @@ Item
                 onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
             }
 
-            property var indexWithFocus: -1
+            property int indexWithFocus: -1
 
             delegate: Loader
             {
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled == "True" ? UM.Theme.getSize("section").height : - contents.spacing
+                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height : - contents.spacing
                 Behavior on height { NumberAnimation { duration: 100 } }
-                opacity: provider.properties.enabled == "True" ? 1 : 0
+                opacity: provider.properties.enabled === "True" ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
                 enabled:
                 {
                     if (!Cura.ExtruderManager.activeExtruderStackId && machineExtruderCount.properties.value > 1)
                     {
                         // disable all controls on the global tab, except categories
-                        return model.type == "category"
+                        return model.type === "category"
                     }
-                    return provider.properties.enabled == "True"
+                    return provider.properties.enabled === "True"
                 }
 
                 property var definition: model
                 property var settingDefinitionsModel: definitionsModel
                 property var propertyProvider: provider
                 property var globalPropertyProvider: inheritStackProvider
-                property var externalResetHandler: false
+                property bool externalResetHandler: false
 
                 property string activeMachineId: Cura.MachineManager.activeMachine !== null ? Cura.MachineManager.activeMachine.id : ""
 
                 //Qt5.4.2 and earlier has a bug where this causes a crash: https://bugreports.qt.io/browse/QTBUG-35989
                 //In addition, while it works for 5.5 and higher, the ordering of the actual combo box drop down changes,
                 //causing nasty issues when selecting different options. So disable asynchronous loading of enum type completely.
-                asynchronous: model.type != "enum" && model.type != "extruder" && model.type != "optional_extruder"
-                active: model.type != undefined
+                asynchronous: model.type !== "enum" && model.type !== "extruder" && model.type !== "optional_extruder"
+                active: model.type !== undefined
 
                 source:
                 {
@@ -313,7 +313,7 @@ Item
                 {
                     target: provider
                     property: "containerStackId"
-                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0);
+                    when: model.settable_per_extruder || (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0);
                     value:
                     {
                         // Associate this binding with Cura.MachineManager.activeMachine.id in the beginning so this
@@ -326,7 +326,7 @@ Item
                             //Not settable per extruder or there only is global, so we must pick global.
                             return delegate.activeMachineId
                         }
-                        if (inheritStackProvider.properties.limit_to_extruder != null && inheritStackProvider.properties.limit_to_extruder >= 0)
+                        if (inheritStackProvider.properties.limit_to_extruder !== null && inheritStackProvider.properties.limit_to_extruder >= 0)
                         {
                             //We have limit_to_extruder, so pick that stack.
                             return Cura.ExtruderManager.extruderIds[String(inheritStackProvider.properties.limit_to_extruder)];
@@ -359,7 +359,7 @@ Item
                     key: model.key ? model.key : ""
                     watchedProperties: [ "value", "enabled", "state", "validationState", "settable_per_extruder", "resolve" ]
                     storeIndex: 0
-                    removeUnusedValue: model.resolve == undefined
+                    removeUnusedValue: model.resolve === undefined
                 }
 
                 Connections
@@ -465,7 +465,7 @@ Item
                     //: Settings context menu action
                     text: catalog.i18nc("@action:menu", "Copy value to all extruders")
                     visible: machineExtruderCount.properties.value > 1
-                    enabled: contextMenu.provider != undefined && contextMenu.provider.properties.settable_per_extruder != "False"
+                    enabled: contextMenu.provider !== undefined && contextMenu.provider.properties.settable_per_extruder !== "False"
                     onTriggered: Cura.MachineManager.copyValueToExtruders(contextMenu.key)
                 }
 
@@ -474,7 +474,7 @@ Item
                     //: Settings context menu action
                     text: catalog.i18nc("@action:menu", "Copy all changed values to all extruders")
                     visible: machineExtruderCount.properties.value > 1
-                    enabled: contextMenu.provider != undefined
+                    enabled: contextMenu.provider !== undefined
                     onTriggered: Cura.MachineManager.copyAllValuesToExtruders()
                 }
 
