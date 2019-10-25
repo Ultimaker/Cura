@@ -129,11 +129,11 @@ class ImageReader(MeshReader):
             Job.yieldThread()
 
         if use_transparency_model:
-            p = 1.0 / math.log(transmittance_1mm / 100.0, 2) # base doesn't matter here. use base 2 for fast computation
+            p = 1.0 / math.log(transmittance_1mm / 100.0) # log-base doesn't matter here. Precompute this value for faster computation of each pixel.
             min_luminance = (transmittance_1mm / 100.0) ** (peak_height - base_height)
             for (y, x) in numpy.ndindex(height_data.shape):
                 mapped_luminance = min_luminance + (1.0 - min_luminance) * height_data[y, x]
-                height_data[y, x] = base_height + p * math.log(mapped_luminance, 2) # use same base as a couple lines above this
+                height_data[y, x] = base_height + p * math.log(mapped_luminance) # use same base as a couple lines above this
         else:
             height_data *= scale_vector.y
             height_data += base_height
