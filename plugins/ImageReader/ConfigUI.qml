@@ -169,6 +169,7 @@ UM.Dialog
             Layout.fillWidth:true
             height: childrenRect.height
             text: catalog.i18nc("@info:tooltip","The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image.")
+            visible: color_model.currentText == catalog.i18nc("@item:inlistbox","Translucency")
             Row {
                 width: parent.width
 
