@@ -56,7 +56,8 @@ Item
     signal showTooltip(string text)
     signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
-    property string tooltipText:
+
+    function createTooltipText()
     {
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
         var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
@@ -127,7 +128,7 @@ Item
 
             onTriggered:
             {
-                base.showTooltip(base.tooltipText)
+                base.showTooltip(base.createTooltipText())
             }
         }
 
@@ -191,7 +192,7 @@ Item
                     }
                     base.showTooltip(tooltipText)
                 }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
 
             UM.SimpleButton
@@ -228,7 +229,7 @@ Item
                     hoverTimer.stop()
                     base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
                 }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
 
             UM.SimpleButton
@@ -322,7 +323,7 @@ Item
                 iconSource: UM.Theme.getIcon("formula")
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
         }
 
