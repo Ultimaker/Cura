@@ -6750,7 +6750,7 @@
                             "maximum_value": "math.sqrt(machine_max_feedrate_x ** 2 + machine_max_feedrate_y ** 2)",
                             "maximum_value_warning": "50",
                             "enabled": "wireframe_enabled",
-                            "value": "wireframe_printspeed",
+                            "value": "wireframe_printspeed_flat",
                             "settable_per_mesh": false,
                             "settable_per_extruder": false,
                             "settable_per_meshgroup": false
@@ -6917,7 +6917,7 @@
                     "default_value": 0.6,
                     "minimum_value": "0",
                     "maximum_value_warning": "2.0",
-                    "enabled": "wireframe_enabled",
+                    "enabled": "wireframe_enabled and wireframe_strategy == 'knot'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -6931,7 +6931,7 @@
                     "default_value": 0.5,
                     "minimum_value": "0",
                     "maximum_value_warning": "wireframe_height",
-                    "enabled": "wireframe_enabled",
+                    "enabled": "wireframe_enabled and wireframe_strategy == 'compensate'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -6945,7 +6945,7 @@
                     "default_value": 0.6,
                     "minimum_value": "0",
                     "maximum_value_warning": "wireframe_height",
-                    "enabled": "wireframe_enabled",
+                    "enabled": "wireframe_enabled and wireframe_strategy == 'compensate'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
