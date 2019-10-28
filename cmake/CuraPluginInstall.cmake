@@ -60,8 +60,9 @@ foreach(_plugin_json_path ${_plugin_json_list})
     string(TOLOWER "${_plugin_dir_name}" _plugin_dir_name_lowercase)
 
     # Check if this plugin needs to be skipped for installation
-    set(_add_plugin ON)
-    set(_is_no_install_plugin OFF)
+    set(_add_plugin ON)  # Indicates if this plugin should be added to the build or not.
+    set(_is_no_install_plugin OFF)  # If this plugin will not be added, this indicates if it's because the plugin is
+                                    # specified in the NO_INSTALL_PLUGINS list.
     if(_no_install_plugin_list)
         if("${_plugin_dir_name_lowercase}" IN_LIST _no_install_plugin_list)
             set(_add_plugin OFF)
