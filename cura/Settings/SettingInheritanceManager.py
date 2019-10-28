@@ -88,7 +88,7 @@ class SettingInheritanceManager(QObject):
             self.settingsWithIntheritanceChanged.emit()
 
     @pyqtSlot()
-    def forceUpdate(self) -> None:
+    def scheduleUpdate(self) -> None:
         self._update_timer.start()
 
     def _onActiveExtruderChanged(self) -> None:

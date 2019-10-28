@@ -241,7 +241,7 @@ Item
                         CuraApplication.setExpandedCategories(expanded)
                     }
                 }
-                onVisibilityChanged: Cura.SettingInheritanceManager.forceUpdate()
+                onVisibilityChanged: Cura.SettingInheritanceManager.scheduleUpdate()
             }
 
             property int indexWithFocus: -1
