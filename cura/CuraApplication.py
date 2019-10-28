@@ -224,7 +224,7 @@ class CuraApplication(QtApplication):
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
-        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+        self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
         self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
@@ -878,6 +878,10 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = QObject)
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
+        if self._first_start_machine_actions_model is None:
+            self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+            if self.started:
+                self._first_start_machine_actions_model.initialize()
         return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)
