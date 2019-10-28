@@ -880,6 +880,8 @@ class CuraApplication(QtApplication):
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
         if self._first_start_machine_actions_model is None:
             self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+            if self.started:
+                self._first_start_machine_actions_model.initialize()
         return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)

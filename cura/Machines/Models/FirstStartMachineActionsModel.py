@@ -33,11 +33,11 @@ class FirstStartMachineActionsModel(ListModel):
         self._current_action_index = 0
 
         self._application = application
-        self._application.initializationFinished.connect(self._initialize)
+        self._application.initializationFinished.connect(self.initialize)
 
         self._previous_global_stack = None
 
-    def _initialize(self) -> None:
+    def initialize(self) -> None:
         self._application.getMachineManager().globalContainerChanged.connect(self._update)
         self._update()
 
