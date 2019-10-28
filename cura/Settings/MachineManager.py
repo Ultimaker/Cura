@@ -872,7 +872,10 @@ class MachineManager(QObject):
     def numberExtrudersEnabled(self) -> int:
         if self._global_container_stack is None:
             return 1
-        return self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value")
+        extruders_enabled_count = self._global_container_stack.definitionChanges.getProperty("extruders_enabled_count", "value")
+        if extruders_enabled_count is None:
+            extruders_enabled_count = len(self._global_container_stack.extruderList)
+        return extruders_enabled_count
 
     @pyqtProperty(str, notify = extruderChanged)
     def defaultExtruderPosition(self) -> str:
