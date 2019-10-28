@@ -308,7 +308,7 @@ UM.MainWindow
                 anchors.right: main.right
                 anchors.top: main.top
                 anchors.bottom: main.bottom
-                visible: true // set to true for debugging only
+                visible: false // set to true for debugging only
                 color:"#8000FF00"
             }
 

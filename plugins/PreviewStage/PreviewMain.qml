@@ -24,7 +24,7 @@ Item
         y: safeArea.y - parent.y
         width: actionPanelWidget.x - x
         height: actionPanelWidget.y - y
-        visible: true // true for debug only
+        visible: false // true for debug only
         color:"#800000FF"
 
         Component.onCompleted: {
