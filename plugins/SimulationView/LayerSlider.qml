@@ -161,11 +161,10 @@ Item
         SimulationSliderLabel
         {
             id: rangleHandleLabel
-
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            y: parent.height / 2
+            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, y -100)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties
