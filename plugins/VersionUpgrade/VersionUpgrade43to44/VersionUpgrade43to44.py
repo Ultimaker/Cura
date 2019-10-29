@@ -24,6 +24,10 @@ _renamed_container_id_map = {
     "hms434_1.5tpnozzle": "hms434_0.4tpnozzle",
 }
 
+_removed_settings = {
+    "retraction_hop_enabled"  # Not actually removed, but since it was not working previously but now it is, we're removing it from the profiles to keep the behaviour the same.
+}
+
 
 class VersionUpgrade43to44(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
@@ -66,6 +70,11 @@ class VersionUpgrade43to44(VersionUpgrade):
             # Alternate skin rotation should be translated to top/bottom line directions.
             if "skin_alternate_rotation" in parser["values"] and parseBool(parser["values"]["skin_alternate_rotation"]):
                 parser["values"]["skin_angles"] = "[45, 135, 0, 90]"
+
+            # Remove removed settings.
+            for removed_setting in _removed_settings:
+                if removed_setting in parser["values"]:
+                    del parser["values"][removed_setting]
 
         result = io.StringIO()
         parser.write(result)
