@@ -275,10 +275,12 @@ Item
         {
             id: upperHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - parent.width - width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
+            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            //x: parent.x
+            anchors.bottom: parent.top
+            anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, parent.top)
             visible: sliderRoot.activeHandle == parent
 
             // custom properties
