@@ -96,7 +96,6 @@
             "retraction_combing_max_distance": { "default_value": 5 },
             "retraction_count_max": { "default_value": 15 },
             "retraction_hop": { "value": "2" },
-            "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
             "retraction_hop_only_when_collides": { "value": "True" },
             "retraction_min_travel": { "value": "3*line_width" },
             "retraction_prime_speed": { "value": "retraction_speed-10" },

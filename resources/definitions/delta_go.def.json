@@ -27,7 +27,6 @@
         "machine_depth":                      { "default_value": 115 },
         "machine_width":                      { "default_value": 115 },
         "raft_airgap":                        { "default_value": 0.15 },
-        "retraction_hop_enabled":             { "value": "True" },
         "retraction_amount":                  { "default_value": 4.1 },
         "retraction_speed":                   { "default_value": 500 },
         "retraction_hop":                     { "value": "0.2" },

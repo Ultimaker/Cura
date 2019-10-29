@@ -137,7 +137,6 @@
         "jerk_print":              {"value": 10},
         "jerk_travel":             {"value": 10},
 
-        "retraction_hop_enabled": {"value": false},
         "retraction_hop":         {"value": 1},
         "retraction_combing":     {"value": "'off'"},
 

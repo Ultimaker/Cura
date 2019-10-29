@@ -34,9 +34,6 @@
         "infill_sparse_density": {
             "value": 100
         },
-        "retraction_hop_enabled": {
-            "value": true
-        },
         "adhesion_type": {
             "default_value": "skirt"
         },

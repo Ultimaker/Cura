@@ -29,7 +29,6 @@
         "layer_height": { "default_value": 0.1 },
         "relative_extrusion": { "value": "False" },
         "retraction_combing": { "default_value": "off" },
-        "retraction_hop_enabled": { "default_value": true },
         "retraction_hop_only_when_collides": { "default_value": false },
         "retraction_speed": { "default_value": 100 },
         "retraction_amount": { "default_value": 4.5 },

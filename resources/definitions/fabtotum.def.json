@@ -47,7 +47,6 @@
         "machine_max_jerk_xy": { "default_value": 25.0 },
         "machine_max_jerk_z": { "default_value": 0.4 },
         "machine_max_jerk_e": { "default_value": 1.0 },
-        "retraction_hop_enabled": { "default_value": false },
         "material_final_print_temperature": { "value": "material_print_temperature - 5" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
         "travel_avoid_distance": { "value": 1 },

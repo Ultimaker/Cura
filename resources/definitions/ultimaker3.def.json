@@ -136,7 +136,6 @@
         "retraction_count_max": { "value": "10" },
         "retraction_extrusion_window": { "value": "1" },
         "retraction_hop": { "value": "2" },
-        "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
         "retraction_hop_only_when_collides": { "value": "True" },
         "retraction_min_travel": { "value": "5" },
         "retraction_prime_speed": { "value": "15" },

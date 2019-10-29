@@ -105,9 +105,6 @@
     "travel_retract_before_outer_wall": {
         "value": false
     },
-    "retraction_hop_enabled": {
-        "value": true
-    },
     "retraction_hop": {
         "value": 0.1
     },

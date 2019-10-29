@@ -30,7 +30,6 @@
         "relative_extrusion": { "value": "False" },
         "retraction_amount": { "default_value": 3.2 },
         "retraction_combing": { "default_value": "off" },
-        "retraction_hop_enabled": { "default_value": true },
         "retraction_hop_only_when_collides": { "default_value": false },
         "retraction_speed": { "default_value": 45 },
         "machine_start_gcode": {

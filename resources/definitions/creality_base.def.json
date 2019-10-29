@@ -212,8 +212,7 @@
             "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
             "maximum_value": 200
         },
-        
-        "retraction_hop_enabled": { "value": "False" },
+
         "retraction_hop": { "value": 0.2 },
         "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
         "retraction_combing_max_distance": { "value": 30 },
