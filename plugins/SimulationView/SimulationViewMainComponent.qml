@@ -183,7 +183,7 @@ Item
     LayerSlider
     {
         property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
-        property double heightMargin: UM.Theme.getSize("default_margin").height
+        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accomodate layer number tooltips
         id: layerSlider
 
         width: UM.Theme.getSize("slider_handle").width
