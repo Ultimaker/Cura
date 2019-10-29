@@ -3891,7 +3891,7 @@
                     "description": "After the machine switched from one extruder to the other, the build plate is lowered to create clearance between the nozzle and the print. This prevents the nozzle from leaving oozed material on the outside of a print.",
                     "type": "bool",
                     "default_value": true,
-                    "enabled": "retraction_hop_enabled and extruders_enabled_count > 1",
+                    "enabled": "extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -3905,7 +3905,7 @@
                     "value": "retraction_hop",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "10",
-                    "enabled": "retraction_enable and retraction_hop_after_extruder_switch and extruders_enabled_count > 1",
+                    "enabled": "retraction_hop_after_extruder_switch and extruders_enabled_count > 1",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
