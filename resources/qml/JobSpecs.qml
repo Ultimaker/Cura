@@ -83,10 +83,22 @@ Item
             text: PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
 
+            property string textBeforeEdit: ""
+
+            onActiveFocusChanged:
+            {
+                if (activeFocus)
+                {
+                    textBeforeEdit = text
+                }
+            }
+
             onEditingFinished:
             {
-                var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
-                PrintInformation.setJobName(new_name, true)
+                if (text != textBeforeEdit) {
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
+                    PrintInformation.setJobName(new_name, true)
+                }
                 printJobTextfield.focus = false
             }
 
