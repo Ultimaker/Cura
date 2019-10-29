@@ -158,21 +158,6 @@ Item
             onPressed: sliderRoot.setActiveHandle(rangeHandle)
         }
 
-        SimulationSliderLabel
-        {
-            id: rangleHandleLabel
-            y: parent.height / 2
-            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
-            anchors.horizontalCenter: parent.horizontalCenter
-            target: Qt.point(parent.width / 2, y -100)
-            visible: sliderRoot.activeHandle == parent
-
-            // custom properties
-            maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.upperValue
-            busy: UM.SimulationView.busy
-            setValue: rangeHandle.setValueManually // connect callback functions
-        }
     }
 
     onHeightChanged : {
@@ -279,7 +264,7 @@ Item
             anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             target: Qt.point(parent.width / 2, parent.top)
-            visible: sliderRoot.activeHandle == parent
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
@@ -389,7 +374,7 @@ Item
             anchors.topMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
             target: Qt.point(parent.width / 2, parent.bottom)
-            visible: sliderRoot.activeHandle == parent
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
