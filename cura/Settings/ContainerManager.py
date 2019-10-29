@@ -247,7 +247,7 @@ class ContainerManager(QObject):
 
         try:
             with open(file_url, "rt", encoding = "utf-8") as f:
-                container.deserialize(f.read())
+                container.deserialize(f.read(), file_url)
         except PermissionError:
             return {"status": "error", "message": "Permission denied when trying to read the file."}
         except ContainerFormatError:
