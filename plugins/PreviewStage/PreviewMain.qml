@@ -17,21 +17,14 @@ Item
     property var safeArea: parent
 
     // Subtract the actionPanel from the safe area. This way the view won't draw interface elements under/over it
-    Rectangle
+    Item
     {
         id: childSafeArea
         x: safeArea.x - parent.x
         y: safeArea.y - parent.y
         width: actionPanelWidget.x - x
         height: actionPanelWidget.y - y
-        visible: false // true for debug only
-        color:"#800000FF"
-
-        Component.onCompleted: {
-            print("parent", parent.x, parent.y)
-            print("parent safe", safeArea.x, safeArea.y)
-            print("previewmain safe", childSafeArea.x, childSafeArea.y, childSafeArea.width, childSafeArea.height)
-        }
+        visible: false
     }
 
     Loader

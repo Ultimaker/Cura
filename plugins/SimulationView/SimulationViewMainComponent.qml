@@ -18,10 +18,10 @@ Item
 
 
     property bool isSimulationPlaying: false
-    readonly property var layerSliderSafeYMin: safeArea.y
-    readonly property var layerSliderSafeYMax: safeArea.y + safeArea.height
-    readonly property var pathSliderSafeXMin: safeArea.x + playButton.width //todo playbutton margin or group button + slider in an item?
-    readonly property var pathSliderSafeXMax: safeArea.x + safeArea.width
+    readonly property real layerSliderSafeYMin: safeArea.y
+    readonly property real layerSliderSafeYMax: safeArea.y + safeArea.height
+    readonly property real pathSliderSafeXMin: safeArea.x + playButton.width
+    readonly property real pathSliderSafeXMax: safeArea.x + safeArea.width
 
     visible: UM.SimulationView.layerActivity && CuraApplication.platformActivity
 
@@ -30,9 +30,9 @@ Item
     {
         id: pathSlider
         
-        readonly property var preferredWidth: UM.Theme.getSize("slider_layerview_size").height // not a typo, should be as long as layerview slider
-        readonly property var margin: UM.Theme.getSize("default_margin").width
-        readonly property var pathSliderSafeWidth: pathSliderSafeXMax - pathSliderSafeXMin
+        readonly property real preferredWidth: UM.Theme.getSize("slider_layerview_size").height // not a typo, should be as long as layerview slider
+        readonly property real margin: UM.Theme.getSize("default_margin").width
+        readonly property real pathSliderSafeWidth: pathSliderSafeXMax - pathSliderSafeXMin
 
         height: UM.Theme.getSize("slider_handle").width
         width: preferredWidth + margin * 2 < pathSliderSafeWidth ? preferredWidth : pathSliderSafeWidth - margin * 2

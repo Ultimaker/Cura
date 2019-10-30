@@ -302,14 +302,13 @@ UM.MainWindow
             }
 
             // A hint for the loaded content view. Overlay items / controls can safely be placed in this area
-            Rectangle {
+            Item {
                 id: mainSafeArea
                 anchors.left: viewOrientationControls.right
                 anchors.right: main.right
                 anchors.top: main.top
                 anchors.bottom: main.bottom
-                visible: false // set to true for debugging only
-                color:"#8000FF00"
+                visible: false
             }
 
             Loader
