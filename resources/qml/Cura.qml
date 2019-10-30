@@ -308,7 +308,6 @@ UM.MainWindow
                 anchors.right: main.right
                 anchors.top: main.top
                 anchors.bottom: main.bottom
-                visible: false
             }
 
             Loader

@@ -24,7 +24,6 @@ Item
         y: safeArea.y - parent.y
         width: actionPanelWidget.x - x
         height: actionPanelWidget.y - y
-        visible: false
     }
 
     Loader
