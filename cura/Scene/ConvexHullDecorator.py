@@ -88,7 +88,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         return self._add2DAdhesionMargin(hull)
 
-    ##  Get the unmodified 2D projected convex hull with 2D adhesion area of the node (if any)
+    ##  Get the unmodified 2D projected convex hull of the node (if any)
+    #   In case of all-at-once, this includes adhesion and head+fans clearance
     def getConvexHull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
