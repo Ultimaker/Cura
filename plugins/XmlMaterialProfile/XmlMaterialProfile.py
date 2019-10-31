@@ -15,9 +15,8 @@ import UM.Dictionary
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
-from UM.Trust import Trust
 
-from cura.CuraApplication import ApplicationMetadata, CuraApplication
+from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 
@@ -471,17 +470,6 @@ class XmlMaterialProfile(InstanceContainer):
 
     ##  Overridden from InstanceContainer
     def deserialize(self, serialized, file_name = None):
-
-        # NOTE: In an enterprise environment, IT might not trust every material package the user installs.
-        #       In that case, check if this package is trusted first, and return prematurely if not.
-        if file_name is not None and ApplicationMetadata.CuraIsEnterpriseVersion:
-            from UM.Application import Application
-            install_prefix = os.path.abspath(Application.getInstallPrefix())
-            common_path = os.path.commonpath([install_prefix, file_name])
-            if common_path is None or not common_path.startswith(install_prefix):
-                if not Trust.getInstance().signedFileCheck(file_name):
-                    raise Exception("Trust-check failed for material file {0}.".format(file_name))
-
         containers_to_add = []
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
