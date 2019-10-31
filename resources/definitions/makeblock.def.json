@@ -59,10 +59,10 @@
             "default_value": 1
         },
         "machine_start_gcode": {
-            "default_value": "G28 ;Home\nM43 E1\nG92 E0\nG1 F600 E20\nG92 E0\nG1 F300  E-20\nG1 F3000 X32 Y55\nG38.2 F480 Z-20\nG92 Z0\nG1 F300 Z5\nG1 F2000 X20 Y20\nG1 F300 Z0\nG1 F2000 X20 Y15\nG1 F2000 X20 Y20\nG1 F300 X20 Y15\nG1 F300 Z0\n;G29\nG1 F2000 X30 Y60\nG38.2 F200 Z-20\nG92 Z0\nG1 F300 Z0.45\nG1 F3000 X25 Y25\nG92 X0 Y0 Z0\nG1 Z20\nG1 F300 E2\nG92 E0\n;Prime the extruder"
+            "default_value": "; Mcreate Start Gcode \nG28 ; Home all axes \nG92 E0 ; Reset Extruder\nG1 X0 Y0 Z15 F3000.0 ; Move to start position \nG1 E10 F400 ;load filament \nG1 E2 F400 ;retarct filament \nG92 E0 ; Reset Extruder \nG1 X0 Y130 Z15 F3000.0 \nG12 ; clean nozzle \nG1 X0 Y0 Z0.3 F3000.0 ; Move to start position \nG1 E9.0 F400 ;loadsome filament \nG92 E0 ; Reset Extruder \n; End of start GCode"
         },
         "machine_end_gcode": {
-            "default_value": "M104 S0\nM140 S0\nM107\n;Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+            "default_value": "; Mcreate end Gcode \nG4 ; Wait command in buffer have finished \nG92 E0 \nG1 E-2 F300; retract filament \nG28 X Z; home x z axis \nG1 F3000 Y220;Move Heat Bed to the front for easy print removal \nM104 S0; Turn off the nozzle heat \nM140 S0; Turn off the bed heat \nM107 ; Turn off the Fan \nM84 ; Disable stepper motors \n; End of GCode"
         }
     }
 }
