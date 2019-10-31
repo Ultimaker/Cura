@@ -95,14 +95,16 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
-        hull = self._compute2DConvexHull()
 
-        if self._global_stack and self._node is not None and hull is not None:
-            # Parent can be None if node is just loaded.
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
-                hull = self._add2DAdhesionMargin(hull)
-        return hull
+        # Parent can be None if node is just loaded.
+        if self._global_stack \
+                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+                and not self.hasGroupAsParent(self._node):
+            hull = self.getConvexHullHeadFull()
+            hull = self._add2DAdhesionMargin(hull)
+            return hull
+
+        return self._compute2DConvexHull()
 
     ##  Get the convex hull of the node with the full head size
     def getConvexHullHeadFull(self) -> Optional[Polygon]:
