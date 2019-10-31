@@ -21,7 +21,7 @@
         "machine_end_gcode": {
             "default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn extruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n"
         },
-        "machine_head_polygon": { "default_value": [[ 18, 0], [ 18, 65], [ 32, 65], [ 32, 0]] },
+        "machine_head_with_fans_polygon": { "default_value": [[ 18, 0], [ 18, 65], [ 32, 65], [ 32, 0]] },
         "cool_min_layer_time": { "default_value": 10 },
         "prime_tower_size": { "default_value": 7.745966692414834 },
         "skirt_gap": { "default_value": 5.0 },

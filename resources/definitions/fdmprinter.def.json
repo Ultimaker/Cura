@@ -411,7 +411,7 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
-                "machine_head_polygon":
+                "machine_head_with_fans_polygon":
                 {
                     "label": "Machine Head Polygon",
                     "description": "A 2D silhouette of the print head (fan caps excluded).",
