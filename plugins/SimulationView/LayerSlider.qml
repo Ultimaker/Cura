@@ -155,7 +155,11 @@ Item
             }
 
             onPositionChanged: parent.onHandleDragged()
-            onPressed: sliderRoot.setActiveHandle(rangeHandle)
+            onPressed:
+            {
+                sliderRoot.setActiveHandle(rangeHandle)
+                sliderRoot.forceActiveFocus()
+            }
         }
 
     }
