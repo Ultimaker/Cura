@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Makeblock",
+    "name": "Makeblock mCreate",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Makeblock",
@@ -10,12 +10,12 @@
         "has_machine_quality": true,
         "preferred_quality_type": "normal",
         "machine_extruder_trains": {
-            "0": "makeblock_extruder_0"
+            "0": "makeblock_mcreate_extruder_0"
         }
     },
     "overrides": {
         "machine_name": {
-            "default_value": "makeblock"
+            "default_value": "Makeblock mCreate"
         },
         "machine_width": {
             "default_value": 225
