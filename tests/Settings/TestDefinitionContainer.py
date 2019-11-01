@@ -138,3 +138,35 @@ def test_noId(file_path: str):
         doc = json.load(f)
 
     assert "id" not in doc, "Definitions should not have an ID field."
+
+##  Verifies that extruders say that they work on the same extruder_nr as what
+#   is listed in their machine definition.
+@pytest.mark.parametrize("file_path", extruder_filepaths)
+def test_extruderMatch(file_path: str):
+    extruder_id = os.path.basename(file_path).split(".")[0]
+    with open(file_path, encoding = "utf-8") as f:
+        doc = json.load(f)
+
+    if "metadata" not in doc:
+        return  # May not be desirable either, but it's probably unfinished then.
+    if "machine" not in doc["metadata"] or "position" not in doc["metadata"]:
+        return  # FDMextruder doesn't have this since it's not linked to a particular printer.
+    machine = doc["metadata"]["machine"]
+    position = doc["metadata"]["position"]
+
+    # Find the machine definition.
+    for machine_filepath in machine_filepaths:
+        machine_id = os.path.basename(machine_filepath).split(".")[0]
+        if machine_id == machine:
+            break
+    else:
+        assert False, "The machine ID {machine} is not found.".format(machine = machine)
+    with open(machine_filepath, encoding = "utf-8") as f:
+        machine_doc = json.load(f)
+
+    # Make sure that the two match up.
+    assert "metadata" in machine_doc, "Machine definition missing metadata entry."
+    assert "machine_extruder_trains" in machine_doc["metadata"], "Machine must define extruder trains."
+    extruder_trains = machine_doc["metadata"]["machine_extruder_trains"]
+    assert position in extruder_trains, "There must be a reference to the extruder in the machine definition."
+    assert extruder_trains[position] == extruder_id, "The extruder referenced in the machine definition must match up."
