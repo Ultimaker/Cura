@@ -158,7 +158,7 @@ UM.Dialog
                 ComboBox {
                     id: color_model
                     objectName: "ColorModel"
-                    model: [ catalog.i18nc("@item:inlistbox","Translucency"), catalog.i18nc("@item:inlistbox","Linear") ]
+                    model: [ catalog.i18nc("@item:inlistbox","Linear"), catalog.i18nc("@item:inlistbox","Translucency") ]
                     width: 180 * screenScaleFactor
                     onCurrentIndexChanged: { manager.onColorModelChanged(currentIndex) }
                 }
