@@ -22,7 +22,7 @@
         "machine_extruder_end_pos_x": { "default_value": 180 },
         "machine_extruder_end_pos_y": { "default_value": 180 },
         "machine_nozzle_head_distance": { "default_value": 4.2 },
-        "extruder_prime_pos_x": { "default_value": 180 },
+        "extruder_prime_pos_x": { "value": "machine_width + 3" },
         "extruder_prime_pos_y": { "default_value": 6 },
         "extruder_prime_pos_z": { "default_value": 2 }
     }

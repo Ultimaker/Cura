@@ -63,41 +63,41 @@ Item
             verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
-        font: UM.Theme.getFont("default") // 12pt, regular
+        font: UM.Theme.getFont("default")
         text:
         {
             if (!printJob)
             {
-                return ""
+                return "";
             }
             switch (printJob.state)
             {
                 case "wait_cleanup":
                     if (printJob.timeTotal > printJob.timeElapsed)
                     {
-                        return catalog.i18nc("@label:status", "Aborted")
+                        return catalog.i18nc("@label:status", "Aborted");
                     }
-                    return catalog.i18nc("@label:status", "Finished")
+                    return catalog.i18nc("@label:status", "Finished");
                 case "finished":
-                    return catalog.i18nc("@label:status", "Finished")
+                    return catalog.i18nc("@label:status", "Finished");
                 case "sent_to_printer":
-                    return catalog.i18nc("@label:status", "Preparing...")
+                    return catalog.i18nc("@label:status", "Preparing...");
                 case "pre_print":
-                    return catalog.i18nc("@label:status", "Preparing...")
+                    return catalog.i18nc("@label:status", "Preparing...");
                 case "aborting": // NOTE: Doesn't exist but maybe should someday
-                    return catalog.i18nc("@label:status", "Aborting...")
+                    return catalog.i18nc("@label:status", "Aborting...");
                 case "aborted": // NOTE: Unused, see above
-                    return catalog.i18nc("@label:status", "Aborted")
+                    return catalog.i18nc("@label:status", "Aborted");
                 case "pausing":
-                    return catalog.i18nc("@label:status", "Pausing...")
+                    return catalog.i18nc("@label:status", "Pausing...");
                 case "paused":
-                    return catalog.i18nc("@label:status", "Paused")
+                    return catalog.i18nc("@label:status", "Paused");
                 case "resuming":
-                    return catalog.i18nc("@label:status", "Resuming...")
+                    return catalog.i18nc("@label:status", "Resuming...");
                 case "queued":
-                    return catalog.i18nc("@label:status", "Action required")
+                    return catalog.i18nc("@label:status", "Action required");
                 default:
-                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted( printJob.timeRemaining )).arg(OutputDevice.getTimeCompleted( printJob.timeRemaining )))
+                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted(printJob.timeRemaining)).arg(OutputDevice.getTimeCompleted(printJob.timeRemaining)));
             }
         }
         width: contentWidth

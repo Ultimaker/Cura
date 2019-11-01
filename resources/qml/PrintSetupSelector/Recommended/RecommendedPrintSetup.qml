@@ -19,12 +19,6 @@ Item
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
     property real padding: UM.Theme.getSize("thick_margin").width
 
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
-    }
-
     Column
     {
         spacing: UM.Theme.getSize("wide_margin").height

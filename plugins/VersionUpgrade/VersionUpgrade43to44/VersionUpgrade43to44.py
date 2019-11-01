@@ -66,6 +66,13 @@ class VersionUpgrade43to44(VersionUpgrade):
             # Alternate skin rotation should be translated to top/bottom line directions.
             if "skin_alternate_rotation" in parser["values"] and parseBool(parser["values"]["skin_alternate_rotation"]):
                 parser["values"]["skin_angles"] = "[45, 135, 0, 90]"
+            # Unit of adaptive layers topography size changed.
+            if "adaptive_layer_height_threshold" in parser["values"]:
+                val = parser["values"]["adaptive_layer_height_threshold"]
+                if val.startswith("="):
+                    val = val[1:]
+                val = "=({val}) / 1000".format(val = val)  # Convert microns to millimetres. Works even if the profile contained a formula.
+                parser["values"]["adaptive_layer_height_threshold"] = val
 
         result = io.StringIO()
         parser.write(result)

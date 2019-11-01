@@ -11,23 +11,24 @@ Information about how to find the log file can be found at https://github.com/Ul
 Thank you for using Cura!
 -->
 
-**Application Version**
-<!-- The version of the application this issue occurs with -->
+**Application version**
+(The version of the application this issue occurs with.)
 
 **Platform**
-<!-- Information about the operating system the issue occurs on -->
+(Information about the operating system the issue occurs on. Include at least the operating system. In the case of visual glitches/issues, also include information about your graphics drivers and GPU.)
 
 **Printer**
-<!-- Which printer was selected in Cura. Please attach project file as .curaproject.3mf.zip -->
+(Which printer was selected in Cura? If possible, please attach project file as .curaproject.3mf.zip.)
 
-**Steps to Reproduce**
-<!-- Add the steps needed that lead up to the issue -->
+**Reproduction steps**
+1. Something you did.
+2. Something you did next.
 
-**Actual Results**
-<!-- What happens after the above steps have been followed -->
+**Actual results**
+(What happens after the above steps have been followed.)
 
 **Expected results**
-<!-- What should happen after the above steps have been followed -->
+(What should happen after the above steps have been followed.)
 
-**Additional Information**
-<!-- Extra information relevant to the issue, like screenshots -->
+**Additional information**
+(Extra information relevant to the issue, like screenshots. Don't forget to attach the log files with this issue report.)

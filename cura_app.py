@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse
@@ -131,7 +131,10 @@ def exceptHook(hook_type, value, traceback):
 # Set exception hook to use the crash dialog handler
 sys.excepthook = exceptHook
 # Enable dumping traceback for all threads
-faulthandler.enable(all_threads = True)
+if sys.stderr:
+    faulthandler.enable(file = sys.stderr, all_threads = True)
+else:
+    faulthandler.enable(file = sys.stdout, all_threads = True)
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus

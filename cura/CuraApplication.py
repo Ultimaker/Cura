@@ -224,7 +224,7 @@ class CuraApplication(QtApplication):
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
-        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+        self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
         self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
@@ -517,7 +517,8 @@ class CuraApplication(QtApplication):
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
-        # set the setting version for Preferences
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up preferences..."))
+        # Set the setting version for Preferences
         preferences = self.getPreferences()
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
@@ -879,6 +880,10 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = QObject)
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
+        if self._first_start_machine_actions_model is None:
+            self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+            if self.started:
+                self._first_start_machine_actions_model.initialize()
         return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)

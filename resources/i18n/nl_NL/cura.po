@@ -2795,7 +2795,7 @@ msgstr "Selecteer eventuele upgrades die op deze Ultimaker Original zijn uitgevo
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelectionMachineAction.qml:41
 msgctxt "@label"
 msgid "Heated Build Plate (official kit or self-built)"
-msgstr "Verwarmd Platform (officiële kit of eigenbouw)"
+msgstr "Verwarmd Platform (officiële kit of zelf gebouwd)"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:119
 msgctxt "@label:MonitorStatus"
