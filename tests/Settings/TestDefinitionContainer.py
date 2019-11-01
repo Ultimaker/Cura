@@ -170,3 +170,8 @@ def test_extruderMatch(file_path: str):
     extruder_trains = machine_doc["metadata"]["machine_extruder_trains"]
     assert position in extruder_trains, "There must be a reference to the extruder in the machine definition."
     assert extruder_trains[position] == extruder_id, "The extruder referenced in the machine definition must match up."
+
+    # Also test if the extruder_nr setting is properly overridden.
+    if "overrides" not in doc or "extruder_nr" not in doc["overrides"] or "default_value" not in doc["overrides"]["extruder_nr"]:
+        assert position == "0"  # Default to 0 is allowed.
+    assert doc["overrides"]["extruder_nr"]["default_value"] == int(position)
