@@ -277,6 +277,10 @@ Item
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false
                     }
+                    if(globalPropertyProvider.properties.limit_to_extruder === undefined)
+                    {
+                        return false
+                    }
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0
                 }
 
