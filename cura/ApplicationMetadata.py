@@ -43,9 +43,9 @@ except ImportError:
     CuraDebugMode = DEFAULT_CURA_DEBUG_MODE
 
 try:
-    from cura.CuraVersion import CuraIsEnterpriseVersion  # type: ignore
+    from cura.CuraVersion import CuraIsSecuredVersion  # type: ignore
 except ImportError:
-    CuraIsEnterpriseVersion = True  # (DEFAULT_CURA_BUILD_TYPE != "")
+    CuraIsSecuredVersion = (CuraBuildType.lower() in ["essentials", "enterprise", "assured", "secure", "secured"])
 
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
 # example Cura 3.2 with SDK version 6.1 will not work. So the SDK version is hard-coded here and left out of the
