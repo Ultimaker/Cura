@@ -137,38 +137,17 @@ def test_materialAdded_update(container_registry, machine_node, metadata, change
 def test_preferredMaterialExactMatch(empty_variant_node):
     empty_variant_node.materials = {
         "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
-        "preferred_material_base_file": MagicMock(getMetaDataEntry = lambda x: 3)  # Exact match.
+        "preferred_material": MagicMock(getMetaDataEntry = lambda x: 3)  # Exact match.
     }
 
-    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material_base_file"], "It should match exactly on this one since it's the preferred material."
-
-##  Tests the preferred material when a submaterial is available in the
-#   materials list for this node.
-def test_preferredMaterialSubmaterial(empty_variant_node):
-    empty_variant_node.materials = {
-        "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
-        "preferred_material_base_file_aa04": MagicMock(getMetaDataEntry = lambda x: 3)  # This is a submaterial of the preferred material.
-    }
-
-    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material_base_file_aa04"], "It should match on the submaterial just as well."
-
-##  Tests the preferred material matching on the approximate diameter of the
-#   filament.
-def test_preferredMaterialDiameter(empty_variant_node):
-    empty_variant_node.materials = {
-        "some_different_material": MagicMock(getMetaDataEntry = lambda x: 3),
-        "preferred_material_wrong_diameter": MagicMock(getMetaDataEntry = lambda x: 2),  # Approximate diameter is 2 instead of 3.
-        "preferred_material_correct_diameter": MagicMock(getMetaDataEntry = lambda x: 3)  # Correct approximate diameter.
-    }
-
-    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material_correct_diameter"], "It should match only on the material with correct diameter."
+    assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["preferred_material"], "It should match exactly on this one since it's the preferred material."
 
 ##  Tests the preferred material matching on a different material if the
 #   diameter is wrong.
 def test_preferredMaterialDiameterNoMatch(empty_variant_node):
     empty_variant_node.materials = collections.OrderedDict()
     empty_variant_node.materials["some_different_material"] = MagicMock(getMetaDataEntry = lambda x: 3)  # This one first so that it gets iterated over first.
-    empty_variant_node.materials["preferred_material_wrong_diameter"] = MagicMock(getMetaDataEntry = lambda x: 2)
+    empty_variant_node.materials["preferred_material"] = MagicMock(getMetaDataEntry = lambda x: 2)  # Wrong diameter.
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["some_different_material"], "It should match on another material with the correct diameter if the preferred one is unavailable."
 
@@ -177,7 +156,7 @@ def test_preferredMaterialDiameterNoMatch(empty_variant_node):
 def test_preferredMaterialDiameterPreference(empty_variant_node):
     empty_variant_node.materials = collections.OrderedDict()
     empty_variant_node.materials["some_different_material"] = MagicMock(getMetaDataEntry = lambda x: 2)  # This one first so that it gets iterated over first.
-    empty_variant_node.materials["preferred_material_wrong_diameter"] = MagicMock(getMetaDataEntry = lambda x: 2)  # Matches on ID but not diameter.
+    empty_variant_node.materials["preferred_material"] = MagicMock(getMetaDataEntry = lambda x: 2)  # Matches on ID but not diameter.
     empty_variant_node.materials["not_preferred_but_correct_diameter"] = MagicMock(getMetaDataEntry = lambda x: 3)  # Matches diameter but not ID.
 
     assert empty_variant_node.preferredMaterial(approximate_diameter = 3) == empty_variant_node.materials["not_preferred_but_correct_diameter"], "It should match on the correct diameter even if it's not the preferred one."

@@ -7074,11 +7074,12 @@
                 },
                 "adaptive_layer_height_threshold":
                 {
-                    "label": "Adaptive Layers Threshold",
-                    "description": "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer.",
+                    "label": "Adaptive Layers Topography Size",
+                    "description": "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
-                    "default_value": 200.0,
+                    "default_value": 0.2,
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
