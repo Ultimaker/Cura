@@ -7441,7 +7441,7 @@
                         },
                         "wipe_retraction_prime_speed":
                         {
-                            "label": "Retraction Prime Speed",
+                            "label": "Wipe Retraction Prime Speed",
                             "description": "The speed at which the filament is primed during a wipe retraction move.",
                             "unit": "mm/s",
                             "type": "float",
