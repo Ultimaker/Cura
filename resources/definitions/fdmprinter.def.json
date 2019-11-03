@@ -7559,18 +7559,21 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
-                    "settable_per_mesh": true
-                },
-                "small_feature_max_length":
-                {
-                    "label": "Small Feature Max Length",
-                    "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "default_value": 0,
-                    "value": "small_hole_max_size * math.pi",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "small_feature_max_length":
+                        {
+                            "label": "Small Feature Max Length",
+                            "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "default_value": 0,
+                            "value": "small_hole_max_size * math.pi",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "small_feature_speed_factor":
                 {
