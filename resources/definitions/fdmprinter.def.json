@@ -7476,8 +7476,8 @@
                 },
                 "wipe_hop_enable":
                 {
-                    "label": "Wipe Z Hop When Retracted",
-                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
+                    "label": "Wipe Z Hop",
+                    "description": "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
                     "type": "bool",
                     "default_value": true,
                     "value": "retraction_hop_enabled",
