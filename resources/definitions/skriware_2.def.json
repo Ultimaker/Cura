@@ -88,13 +88,10 @@
       "value": "5.333333333333333"
     },
     "acceleration_ironing": {
-      "default_value": 250
+      "value": "250"
     },
     "material_print_temperature_layer_0": {
       "value": "195"
-    },
-    "machine_extruder_start_pos_x": {
-      "default_value": 0
     },
     "bridge_skin_speed_2": {
       "value": "15"
@@ -104,9 +101,6 @@
     },
     "switch_extruder_retraction_speed": {
       "value": "30"
-    },
-    "machine_extruder_cooling_fan_number": {
-      "default_value": 0
     },
     "jerk_print": {
       "default_value": 5
@@ -185,9 +179,6 @@
     },
     "machine_depth": {
       "default_value": 260
-    },
-    "machine_extruder_start_pos_y": {
-      "default_value": 0
     },
     "retraction_speed": {
       "default_value": 30
@@ -327,9 +318,6 @@
     "support_material_flow": {
       "value": "99"
     },
-    "machine_extruder_start_code": {
-      "default_value": ""
-    },
     "retract_at_layer_change": {
       "default_value": true
     },
@@ -344,9 +332,6 @@
     },
     "raft_surface_acceleration": {
       "value": "250"
-    },
-    "machine_nozzle_offset_y": {
-      "default_value": 0
     },
     "roofing_layer_count": {
       "value": "1"
@@ -392,9 +377,6 @@
     },
     "raft_base_line_spacing": {
       "value": "0.8"
-    },
-    "machine_extruder_end_pos_y": {
-      "default_value": 0
     },
     "acceleration_prime_tower": {
       "value": "250"
@@ -510,9 +492,6 @@
     "raft_airgap": {
       "default_value": 0.2
     },
-    "machine_extruder_end_pos_x": {
-      "default_value": 0
-    },
     "acceleration_skirt_brim": {
       "value": "250"
     },
@@ -525,9 +504,6 @@
     "roofing_material_flow": {
       "value": "99"
     },
-    "extruder_nr": {
-      "default_value": 0
-    },
     "support_use_towers": {
       "default_value": false
     },
@@ -536,9 +512,6 @@
     },
     "material_flow": {
       "default_value": 99
-    },
-    "machine_extruder_end_code": {
-      "default_value": ""
     },
     "speed_travel_layer_0": {
       "value": "75.0"
@@ -567,9 +540,6 @@
     "acceleration_support_infill": {
       "value": "250"
     },
-    "machine_extruder_start_pos_abs": {
-      "default_value": false
-    },
     "retraction_prime_speed": {
       "value": "30"
     },
@@ -581,9 +551,6 @@
     },
     "xy_offset": {
       "default_value": -0.16
-    },
-    "machine_nozzle_offset_x": {
-      "default_value": 0
     },
     "prime_tower_size": {
       "default_value": 1
@@ -626,9 +593,6 @@
     },
     "raft_interface_thickness": {
       "value": "0.2"
-    },
-    "machine_extruder_end_pos_abs": {
-      "default_value": false
     }
   }
 }
