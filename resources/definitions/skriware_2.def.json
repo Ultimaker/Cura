@@ -256,7 +256,7 @@
       "default_value": true
     },
     "top_bottom_pattern_0": {
-      "value": "zigzag"
+      "value": "'zigzag'"
     },
     "top_skin_expand_distance": {
       "value": "1.2000000000000002"
