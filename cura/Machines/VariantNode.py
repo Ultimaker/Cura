@@ -88,6 +88,7 @@ class VariantNode(ContainerNode):
         # First fallback: Choose any material with matching diameter.
         for material_node in self.materials.values():
             if material_node.getMetaDataEntry("approximate_diameter") and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+                Logger.log("w", "Could not find preferred material %s, falling back to whatever works", self.machine.preferred_material)
                 return material_node
         fallback = next(iter(self.materials.values()))  # Should only happen with empty material node.
         Logger.log("w", "Could not find preferred material {preferred_material} with diameter {diameter} for variant {variant_id}, falling back to {fallback}.".format(
