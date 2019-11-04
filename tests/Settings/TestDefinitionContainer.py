@@ -70,9 +70,12 @@ def test_validateOverridingDefaultValue(file_path: str):
     if "overrides" not in doc:
         return  # No settings are being overridden. No need to check anything.
     parent_settings = getInheritedSettings(doc["inherits"])
+    faulty_keys = set()
     for key, val in doc["overrides"].items():
         if key in parent_settings and "value" in parent_settings[key]:
-            assert "default_value" not in val, "Unnecessary default_value for {key} in {file_name}".format(key = key, file_name = file_path)  # If there is a value in the parent settings, then the default_value is not effective.
+            if "default_value" in val:
+                faulty_keys.add(key)
+    assert not faulty_keys, "Unnecessary default_values for {faulty_keys} in {file_name}".format(faulty_keys = sorted(faulty_keys), file_name = file_path)  # If there is a value in the parent settings, then the default_value is not effective.
 
 ##  Get all settings and their properties from a definition we're inheriting
 #   from.
