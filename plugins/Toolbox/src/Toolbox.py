@@ -191,8 +191,9 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
-        # Request the latest and greatest!
-        self._fetchPackageData()
+        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check"):
+            # Request the latest and greatest!
+            self._fetchPackageData()
 
     def _fetchPackageData(self):
         # Create the network manager:
