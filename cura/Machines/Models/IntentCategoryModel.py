@@ -41,7 +41,7 @@ class IntentCategoryModel(ListModel):
     }
     _translations["engineering"] = {
         "name": catalog.i18nc("@label", "Engineering"),
-        "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of improved accuracy and for tighter tolerances.")
+        "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances.")
     }
     _translations["quick"] = {
         "name": catalog.i18nc("@label", "Draft"),
