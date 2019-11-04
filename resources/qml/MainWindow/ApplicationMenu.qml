@@ -129,6 +129,7 @@ Item
         {
             CuraApplication.deleteAll();
             Cura.Actions.resetProfile.trigger();
+            UM.Controller.setActiveStage("PrepareStage")
         }
     }
 
