@@ -125,13 +125,15 @@ class Toolbox(QObject, Extension):
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
 
-    def _loginStateChanged(self):
+    ##  Go back to the start state (welcome screen or loading if no login required)
+    def _restart(self):
         self._updateRequestHeader()
-        if self._application.getCuraAPI().account.isLoggedIn:
+        # For an Essentials build, login is mandatory
+        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.CuraBuildType == "essentials":
+            self.setViewPage("welcome")
+        else:
             self.setViewPage("loading")
             self._fetchPackageData()
-        else:
-            self.setViewPage("welcome")
 
     def _updateRequestHeader(self):
         self._request_headers = [
@@ -198,7 +200,7 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._loginStateChanged)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
 
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check"):
             # Request the latest and greatest!
@@ -233,11 +235,7 @@ class Toolbox(QObject, Extension):
             Logger.log("e", "Unexpected error trying to create the 'Marketplace' dialog.")
             return
 
-        if self._application.getCuraAPI().account.isLoggedIn:
-            self.setViewPage("loading")
-            self._fetchPackageData()
-        else:
-            self.setViewPage("welcome")
+        self._restart()
 
         self._dialog.show()
 
