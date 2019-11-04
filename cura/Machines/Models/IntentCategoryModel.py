@@ -37,15 +37,15 @@ class IntentCategoryModel(ListModel):
     }
     _translations["visual"] = {
         "name": catalog.i18nc("@label", "Visual"),
-        "description": catalog.i18nc("@text", "Optimized for appearance")
+        "description": catalog.i18nc("@text", "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality.")
     }
     _translations["engineering"] = {
         "name": catalog.i18nc("@label", "Engineering"),
-        "description": catalog.i18nc("@text", "Optimized for higher accuracy")
+        "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of improved accuracy and for tighter tolerances.")
     }
     _translations["quick"] = {
         "name": catalog.i18nc("@label", "Draft"),
-        "description": catalog.i18nc("@text", "Optimized for fast results")
+        "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
     }
 
 
