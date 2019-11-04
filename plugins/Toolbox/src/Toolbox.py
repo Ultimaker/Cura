@@ -86,7 +86,7 @@ class Toolbox(QObject, Extension):
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        self._view_page = "loading"  # type: str
+        self._view_page = "welcome"  # type: str
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
@@ -105,7 +105,6 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._updateRequestHeader)
         self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
@@ -125,6 +124,14 @@ class Toolbox(QObject, Extension):
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
+
+    def _loginStateChanged(self):
+        self._updateRequestHeader()
+        if self._application.getCuraAPI().account.isLoggedIn:
+            self.setViewPage("loading")
+            self._fetchPackageData()
+        else:
+            self.setViewPage("welcome")
 
     def _updateRequestHeader(self):
         self._request_headers = [
@@ -191,6 +198,8 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._loginStateChanged)
+
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check"):
             # Request the latest and greatest!
             self._fetchPackageData()
@@ -213,9 +222,9 @@ class Toolbox(QObject, Extension):
         # Gather installed packages:
         self._updateInstalledModels()
 
+    # Displays the toolbox
     @pyqtSlot()
-    def browsePackages(self) -> None:
-        self._fetchPackageData()
+    def launch(self) -> None:
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -223,6 +232,12 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             Logger.log("e", "Unexpected error trying to create the 'Marketplace' dialog.")
             return
+
+        if self._application.getCuraAPI().account.isLoggedIn:
+            self.setViewPage("loading")
+            self._fetchPackageData()
+        else:
+            self.setViewPage("welcome")
 
         self._dialog.show()
 

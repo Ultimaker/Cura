@@ -160,7 +160,7 @@ Item
         target: Cura.Actions.browsePackages
         onTriggered:
         {
-            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
+            curaExtensions.callExtensionMethod("Toolbox", "launch")
         }
     }
 }
