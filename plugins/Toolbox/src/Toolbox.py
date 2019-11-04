@@ -189,9 +189,11 @@ class Toolbox(QObject, Extension):
             sdk_version = self._sdk_version
         )
 
+        # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
         installed_package_ids_with_versions = [":".join(items) for items in
                                                self._package_manager.getAllInstalledPackageIdsAndVersions()]
-        installed_packages_query = ",".join(installed_package_ids_with_versions)
+        installed_packages_query = "&installed_packages=".join(installed_package_ids_with_versions)
+
         self._request_urls = {
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
