@@ -342,7 +342,7 @@ class Toolbox(QObject, Extension):
             self._package_used_qualities = package_used_qualities
             # Ask change to default material / profile
             if self._confirm_reset_dialog is None:
-                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+                self._confirm_reset_dialog = self._createDialog("dialogs/ToolboxConfirmUninstallResetDialog.qml")
             self.uninstallVariablesChanged.emit()
             if self._confirm_reset_dialog is None:
                 Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
