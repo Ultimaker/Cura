@@ -129,7 +129,7 @@ class Toolbox(QObject, Extension):
     def _restart(self):
         self._updateRequestHeader()
         # For an Essentials build, login is mandatory
-        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.CuraBuildType == "essentials":
+        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
             self.setViewPage("welcome")
         else:
             self.setViewPage("loading")
