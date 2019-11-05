@@ -20,9 +20,9 @@ UM.PointingRectangle {
     property int startFrom: 1
 
     target: Qt.point(parent.width, y + height / 2)
-    arrowSize: UM.Theme.getSize("default_arrow").width
+    arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
     height: parent.height
-    width: valueLabel.width + UM.Theme.getSize("default_margin").width
+    width: valueLabel.width
     visible: false
 
     color: UM.Theme.getColor("tool_panel_background")
@@ -48,9 +48,9 @@ UM.PointingRectangle {
             horizontalCenter: parent.horizontalCenter
         }
 
-        width: ((maximumValue + 1).toString().length + 1) * 10 * screenScaleFactor
+        width: ((maximumValue + 1).toString().length + 1) * 8 * screenScaleFactor
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
-        horizontalAlignment: TextInput.AlignRight
+        horizontalAlignment: TextInput.AlignHCenter
 
         // key bindings, work when label is currenctly focused (active handle in LayerSlider)
         Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
@@ -58,7 +58,7 @@ UM.PointingRectangle {
 
         style: TextFieldStyle {
             textColor: UM.Theme.getColor("setting_control_text")
-            font: UM.Theme.getFont("default")
+            font: UM.Theme.getFont("small")
             background: Item { }
         }
 
