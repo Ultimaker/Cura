@@ -13,7 +13,6 @@
         "supports_usb_connection": false,
         "supports_network_connection": false,
         "has_materials": true,
-        "preferred_material": "leapfrog",
         "has_machine_quality": true,
         "has_variants": true,
         "preferred_variant_name": "Brass 0.4",
