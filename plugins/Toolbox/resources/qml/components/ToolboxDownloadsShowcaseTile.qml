@@ -23,7 +23,7 @@ Rectangle
         height: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
         fillMode: Image.PreserveAspectFit
-        source: model.icon_url || "../images/logobot.svg"
+        source: model.icon_url || "../../images/logobot.svg"
         mipmap: true
         anchors
         {
@@ -62,7 +62,7 @@ Rectangle
         }
         visible: installedPackages != 0
         color: (installedPackages >= packageCount) ? UM.Theme.getColor("primary") : UM.Theme.getColor("border")
-        source: "../images/installed_check.svg"
+        source: "../../images/installed_check.svg"
     }
 
     SmallRatingWidget

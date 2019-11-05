@@ -8,6 +8,10 @@ import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import UM 1.1 as UM
 
+import "./pages"
+import "./dialogs"
+import "./components"
+
 Window
 {
     id: base
