@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.3\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-09-10 16:55+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-05 13:13+0100\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Russian <info@lionbridge.com>, Ruslan Popov <ruslan.popov@gmail.com>, Russian <info@bothof.nl>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 2.2.3\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:28
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:30
 msgctxt "@action"
 msgid "Machine Settings"
 msgstr "Параметры принтера"
@@ -40,13 +40,13 @@ msgctxt "@item:inlistbox"
 msgid "G-code File"
 msgstr "Файл G-code"
 
-#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:67
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:66
 msgctxt "@error:not supported"
 msgid "GCodeWriter does not support non-text mode."
 msgstr "Средство записи G-кода (GCodeWriter) не поддерживает нетекстовый режим."
 
-#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:73
-#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:89
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:72
+#: /home/ruben/Projects/Cura/plugins/GCodeWriter/GCodeWriter.py:88
 msgctxt "@warning:status"
 msgid "Please prepare G-code before exporting."
 msgstr "Подготовьте G-код перед экспортом."
@@ -56,7 +56,7 @@ msgctxt "@info:title"
 msgid "3D Model Assistant"
 msgstr "Помощник по 3D-моделям"
 
-#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:90
+#: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.py:92
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
@@ -74,16 +74,6 @@ msgstr ""
 msgctxt "@action"
 msgid "Update Firmware"
 msgstr "Обновить прошивку"
-
-#: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:23
-msgctxt "@item:inmenu"
-msgid "Flatten active settings"
-msgstr "Сбросить текущие параметры к стандартным значениям"
-
-#: /home/ruben/Projects/Cura/plugins/ProfileFlattener/ProfileFlattener.py:35
-msgctxt "@info:status"
-msgid "Profile has been flattened & activated."
-msgstr "Профиль был нормализован и активирован."
 
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -124,21 +114,6 @@ msgstr "Печать еще выполняется. Cura не может нач�
 msgctxt "@message"
 msgid "Print in Progress"
 msgstr "Идет печать"
-
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:16
-msgctxt "X3g Writer Plugin Description"
-msgid "Writes X3g to files"
-msgstr "Записывает X3g в файлы"
-
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/build/GPX-prefix/src/GPX/slicerplugins/cura15.06/X3gWriter/__init__.py:21
-msgctxt "X3g Writer File Description"
-msgid "X3g File"
-msgstr "Файл X3g"
-
-#: /home/ruben/Projects/Cura/plugins/X3GWriter/__init__.py:15
-msgctxt "X3G Writer File Description"
-msgid "X3G File"
-msgstr "Файл X3G"
 
 #: /home/ruben/Projects/Cura/plugins/GCodeGzWriter/__init__.py:17
 #: /home/ruben/Projects/Cura/plugins/GCodeGzReader/__init__.py:17
@@ -211,9 +186,9 @@ msgid "Could not save to removable drive {0}: {1}"
 msgstr "Невозможно сохранить на внешний носитель {0}: {1}"
 
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:137
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:137
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1634
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:139
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:146
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1668
 msgctxt "@info:title"
 msgid "Error"
 msgstr "Ошибка"
@@ -243,8 +218,8 @@ msgstr "Извлекает внешний носитель {0}"
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:151
 #: /home/ruben/Projects/Cura/plugins/RemovableDriveOutputDevice/RemovableDriveOutputDevice.py:163
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:201
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1624
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1724
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1658
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1758
 msgctxt "@info:title"
 msgid "Warning"
 msgstr "Внимание"
@@ -276,17 +251,17 @@ msgctxt "@action"
 msgid "Connect via Network"
 msgstr "Подключиться через сеть"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:52
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:57
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print over network"
 msgstr "Печать через сеть"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:53
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:58
 msgctxt "@properties:tooltip"
 msgid "Print over network"
 msgstr "Печать через сеть"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:54
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Network/LocalClusterOutputDevice.py:59
 msgctxt "@info:status"
 msgid "Connected over the network"
 msgstr "Подключен по сети"
@@ -300,6 +275,21 @@ msgstr "Дождитесь окончания отправки текущего 
 msgctxt "@info:title"
 msgid "Print error"
 msgstr "Ошибка печати"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
+msgctxt "@info:title"
+msgid "New cloud printers found"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
+msgctxt "@info:message"
+msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -501,9 +491,9 @@ msgid "GIF Image"
 msgstr "GIF изображение"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:15
-msgctxt "@item:inlistbox"
+msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
-msgstr "Open Compressed Triangle Mesh"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:19
 msgctxt "@item:inlistbox"
@@ -594,12 +584,12 @@ msgctxt "@info:tooltip"
 msgid "Configure Per Model Settings"
 msgstr "Правка параметров модели"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:175
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:186
 msgctxt "@title:tab"
 msgid "Recommended"
 msgstr "Рекомендованная"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:177
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.py:188
 msgctxt "@title:tab"
 msgid "Custom"
 msgstr "Своя"
@@ -610,19 +600,19 @@ msgctxt "@item:inlistbox"
 msgid "3MF File"
 msgstr "Файл 3MF"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:194
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:774
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:198
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:651
 msgctxt "@label"
 msgid "Nozzle"
 msgstr "Сопло"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:479
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:496
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot import the machine. Models will be imported instead."
 msgstr "Файл проекта <filename>{0}</filename> содержит неизвестный тип принтера <message>{1}</message>. Не удалось импортировать принтер. Вместо этого будут импортированы модели."
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:482
+#: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:499
 msgctxt "@info:title"
 msgid "Open Project File"
 msgstr "Открыть файл проекта"
@@ -702,16 +692,6 @@ msgctxt "@item:inlistbox"
 msgid "Cura Profile"
 msgstr "Профиль Cura"
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:12
-msgctxt "@item:inmenu"
-msgid "Profile Assistant"
-msgstr "Помощник по профилю"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/__init__.py:18
-msgctxt "@item:inlistbox"
-msgid "Profile Assistant"
-msgstr "Помощник по профилю"
-
 #: /home/ruben/Projects/Cura/plugins/3MFWriter/__init__.py:26
 msgctxt "@item:inlistbox"
 msgid "3MF file"
@@ -732,7 +712,6 @@ msgctxt "@item:inmenu"
 msgid "Preview"
 msgstr "Предварительный просмотр"
 
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelection.py:19
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UMOUpgradeSelection.py:18
 msgctxt "@action"
 msgid "Select upgrades"
@@ -748,134 +727,148 @@ msgctxt "@info:title"
 msgid "Login failed"
 msgstr "Вход не выполнен"
 
-#: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:33
+#: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:36
 msgctxt "@info:not supported profile"
 msgid "Not supported"
 msgstr "Не поддерживается"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:203
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:123
+#: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:55
+msgctxt "@info:No intent profile selected"
+msgid "Default"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:196
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:125
 msgctxt "@title:window"
 msgid "File Already Exists"
 msgstr "Файл уже существует"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:204
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:124
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:197
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:126
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
 msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
 msgstr "Файл <filename>{0}</filename> уже существует. Вы уверены, что желаете перезаписать его?"
 
-#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:427
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:430
+#: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:433
 msgctxt "@info:status"
 msgid "Invalid file URL:"
 msgstr "Неправильный URL-адрес файла:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:924
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:780
 msgctxt "@info:message Followed by a list of settings."
 msgid "Settings have been changed to match the current availability of extruders:"
 msgstr "Настройки изменены в соответствии с текущей доступностью экструдеров:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:926
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:782
 msgctxt "@info:title"
 msgid "Settings updated"
 msgstr "Настройки обновлены"
 
-#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1483
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1334
 msgctxt "@info:title"
 msgid "Extruder(s) Disabled"
 msgstr "Экструдер (-ы) отключен (-ы)"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:135
+#: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:1457
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:99
+#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:86
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:182
+#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:223
+msgctxt "@label"
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:137
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "Невозможно экспортировать профиль в <filename>{0}</filename>: <message>{1}</message>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:142
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:144
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
 msgstr "Невозможно экспортировать профиль в <filename>{0}</filename>: Плагин записи уведомил об ошибке."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:147
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:149
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Exported profile to <filename>{0}</filename>"
 msgstr "Экспортирование профиля в <filename>{0}</filename>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:150
 msgctxt "@info:title"
 msgid "Export succeeded"
 msgstr "Экспорт успешно завершен"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:175
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:177
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>: {1}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:179
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:181
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
 msgstr "Невозможно импортировать профиль из <filename>{0}</filename>, пока не добавлен принтер."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:195
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:198
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr "Отсутствует собственный профиль для импорта в файл <filename>{0}</filename>"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:199
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:202
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:223
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:233
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:226
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:236
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
 msgstr "Данный профиль <filename>{0}</filename> содержит неверные данные, поэтому его невозможно импортировать."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:325
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
 msgstr "Не удалось импортировать профиль из <filename>{0}</filename>:"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:320
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:328
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Successfully imported profile {0}"
 msgstr "Успешно импортирован профиль {0}"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:323
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:331
 #, python-brace-format
 msgctxt "@info:status"
 msgid "File {0} does not contain any valid profile."
 msgstr "В файле {0} нет подходящих профилей."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:326
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:334
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Profile {0} has an unknown file type or is corrupted."
 msgstr "Профиль {0} имеет неизвестный тип файла или повреждён."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:361
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:369
 msgctxt "@label"
 msgid "Custom profile"
 msgstr "Собственный профиль"
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:377
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:385
 msgctxt "@info:status"
 msgid "Profile is missing a quality type."
 msgstr "У профайла отсутствует тип качества."
 
-#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:392
+#: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:399
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Could not find a quality type {0} for the current configuration."
@@ -941,14 +934,13 @@ msgctxt "@tooltip"
 msgid "Other"
 msgstr "Другое"
 
-#: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:306
+#: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:302
 #, python-brace-format
 msgctxt "@label"
 msgid "Pre-sliced file {0}"
 msgstr "Предообратка файла {0}"
 
 #: /home/ruben/Projects/Cura/cura/UI/WelcomePagesModel.py:56
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:62
 msgctxt "@action:button"
 msgid "Next"
 msgstr "Следующий"
@@ -962,9 +954,9 @@ msgstr "Группа #{group_nr}"
 #: /home/ruben/Projects/Cura/cura/UI/WhatsNewPagesModel.py:17
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:185
 #: /home/ruben/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:482
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:508
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:133
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:124
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:168
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:169
 msgctxt "@action:button"
 msgid "Close"
 msgstr "Закрыть"
@@ -979,40 +971,85 @@ msgstr "Добавить"
 #: /home/ruben/Projects/Cura/cura/UI/AddPrinterPagesModel.py:18
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxProgressButton.qml:19
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:81
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:355
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:20
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:352
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:42
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:58
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:149
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:188
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:391
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:406
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:87
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:283
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:294
 msgctxt "@action:button"
 msgid "Cancel"
 msgstr "Отмена"
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:36
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:320
+msgctxt "@label"
+msgid "Default"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:39
+msgctxt "@label"
+msgid "Visual"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:40
+msgctxt "@text"
+msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:43
+msgctxt "@label"
+msgid "Engineering"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:44
+msgctxt "@text"
+msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:47
+msgctxt "@label"
+msgid "Draft"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:48
+msgctxt "@text"
+msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
+msgstr ""
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:208
 msgctxt "@menuitem"
 msgid "Not overridden"
 msgstr "Не переопределен"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:109
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:357
+msgctxt "@label"
+msgid "Custom profiles"
+msgstr "Собственные профили"
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:391
 #, python-brace-format
 msgctxt "@item:inlistbox"
 msgid "All Supported Types ({0})"
 msgstr "Все поддерживаемые типы ({0})"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:110
+#: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:392
 msgctxt "@item:inlistbox"
 msgid "All Files (*)"
 msgstr "Все файлы (*)"
 
-#: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:86
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:182
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailPage.qml:223
+#: /home/ruben/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:213
 msgctxt "@label"
-msgid "Unknown"
-msgstr "Неизвестно"
+msgid "Custom Material"
+msgstr "Собственный материал"
+
+#: /home/ruben/Projects/Cura/cura/Machines/Models/MaterialManagementModel.py:214
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:205
+msgctxt "@label"
+msgid "Custom"
+msgstr "Своё"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:116
 msgctxt "@label"
@@ -1023,17 +1060,6 @@ msgstr "Перечисленные ниже принтеры невозможн�
 msgctxt "@label"
 msgid "Available networked printers"
 msgstr "Доступные сетевые принтеры"
-
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:689
-msgctxt "@label"
-msgid "Custom Material"
-msgstr "Собственный материал"
-
-#: /home/ruben/Projects/Cura/cura/Machines/MaterialManager.py:690
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:203
-msgctxt "@label"
-msgid "Custom"
-msgstr "Своё"
 
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:90
 msgctxt "@info:status"
@@ -1069,11 +1095,6 @@ msgstr "Не удалось прочитать ответ."
 msgctxt "@info"
 msgid "Unable to reach the Ultimaker account server."
 msgstr "Нет связи с сервером учетных записей Ultimaker."
-
-#: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationService.py:202
-msgctxt "@action:button"
-msgid "Retry"
-msgstr "Повторить"
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:70
 msgctxt "@message"
@@ -1259,62 +1280,67 @@ msgctxt "@action:button"
 msgid "Send report"
 msgstr "Отправить отчёт"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:505
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:513
 msgctxt "@info:progress"
 msgid "Loading machines..."
 msgstr "Загрузка принтеров..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:820
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:520
+msgctxt "@info:progress"
+msgid "Setting up preferences..."
+msgstr ""
+
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:824
 msgctxt "@info:progress"
 msgid "Setting up scene..."
 msgstr "Настройка сцены..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:855
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:859
 msgctxt "@info:progress"
 msgid "Loading interface..."
 msgstr "Загрузка интерфейса..."
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1134
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1150
 #, python-format
 msgctxt "@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f мм"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1623
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1657
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Only one G-code file can be loaded at a time. Skipped importing {0}"
 msgstr "Только один G-code файла может быть загружен в момент времени. Пропускаю импортирование {0}"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1633
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1667
 #, python-brace-format
 msgctxt "@info:status"
 msgid "Can't open any other file if G-code is loading. Skipped importing {0}"
 msgstr "Невозможно открыть любой другой файл, если G-code файл уже загружен. Пропускаю импортирование {0}"
 
-#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1723
+#: /home/ruben/Projects/Cura/cura/CuraApplication.py:1757
 msgctxt "@info:status"
 msgid "The selected model was too small to load."
 msgstr "Выбранная модель слишком мала для загрузки."
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:58
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:56
 msgctxt "@title:label"
 msgid "Printer Settings"
 msgstr "Параметры принтера"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:72
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:70
 msgctxt "@label"
 msgid "X (Width)"
 msgstr "X (Ширина)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:76
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:90
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:104
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:206
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:225
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:244
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:74
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:88
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:102
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:203
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:223
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:243
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:265
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:284
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:285
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:79
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:93
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsExtruderTab.qml:109
@@ -1323,57 +1349,57 @@ msgctxt "@label"
 msgid "mm"
 msgstr "мм"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:86
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:84
 msgctxt "@label"
 msgid "Y (Depth)"
 msgstr "Y (Глубина)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:100
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:98
 msgctxt "@label"
 msgid "Z (Height)"
 msgstr "Z (Высота)"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:114
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:112
 msgctxt "@label"
 msgid "Build plate shape"
 msgstr "Форма стола"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:127
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:125
 msgctxt "@label"
 msgid "Origin at center"
 msgstr "Начало координат в центре"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:139
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:137
 msgctxt "@label"
 msgid "Heated bed"
 msgstr "Нагреваемый стол"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:151
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:149
 msgctxt "@label"
 msgid "Heated build volume"
 msgstr "Подогреваемый объем печати"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:163
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:161
 msgctxt "@label"
 msgid "G-code flavor"
 msgstr "Вариант G-кода"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:188
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:185
 msgctxt "@title:label"
 msgid "Printhead Settings"
 msgstr "Параметры головы"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:202
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:199
 msgctxt "@label"
 msgid "X min"
 msgstr "X минимум"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:221
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:219
 msgctxt "@label"
 msgid "Y min"
 msgstr "Y минимум"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:240
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:239
 msgctxt "@label"
 msgid "X max"
 msgstr "X максимум"
@@ -1383,22 +1409,22 @@ msgctxt "@label"
 msgid "Y max"
 msgstr "Y максимум"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:280
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:281
 msgctxt "@label"
 msgid "Gantry Height"
 msgstr "Высота портала"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:294
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:295
 msgctxt "@label"
 msgid "Number of Extruders"
 msgstr "Количество экструдеров"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:353
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:355
 msgctxt "@title:label"
 msgid "Start G-code"
 msgstr "Стартовый G-код"
 
-#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:367
+#: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:366
 msgctxt "@title:label"
 msgid "End G-code"
 msgstr "Завершающий G-код"
@@ -1477,7 +1503,7 @@ msgstr "Плагины"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxInstalledPage.qml:77
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxHeader.qml:44
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:80
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:89
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:417
 msgctxt "@title:tab"
 msgid "Materials"
@@ -1671,11 +1697,6 @@ msgstr "Совместимость"
 msgctxt "@label:table_header"
 msgid "Machine"
 msgstr "Принтер"
-
-#: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:131
-msgctxt "@label:table_header"
-msgid "Print Core"
-msgstr "Экструдер"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxCompatibilityChart.qml:137
 msgctxt "@label:table_header"
@@ -1932,9 +1953,9 @@ msgid "Edit"
 msgstr "Правка"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:88
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:146
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:155
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:55
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:121
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:138
 msgctxt "@action:button"
 msgid "Remove"
 msgstr "Удалить"
@@ -1955,61 +1976,61 @@ msgctxt "@label"
 msgid "Type"
 msgstr "Тип"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:228
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:225
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:274
 msgctxt "@label"
 msgid "Firmware version"
 msgstr "Версия прошивки"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:242
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:239
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:290
 msgctxt "@label"
 msgid "Address"
 msgstr "Адрес"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:266
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:263
 msgctxt "@label"
 msgid "This printer is not set up to host a group of printers."
 msgstr "Данный принтер не настроен для управления группой принтеров."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:270
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:267
 msgctxt "@label"
 msgid "This printer is the host for a group of %1 printers."
 msgstr "Данный принтер управляет группой из %1 принтера (-ов)."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:281
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:278
 msgctxt "@label"
 msgid "The printer at this address has not yet responded."
 msgstr "Принтер по этому адресу ещё не отвечал."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:286
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:283
 msgctxt "@action:button"
 msgid "Connect"
 msgstr "Подключить"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:299
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:296
 msgctxt "@title:window"
 msgid "Invalid IP address"
 msgstr "Недействительный IP-адрес"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:300
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:297
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:146
 msgctxt "@text"
 msgid "Please enter a valid IP address."
 msgstr "Введите действительный IP-адрес."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:311
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:308
 msgctxt "@title:window"
 msgid "Printer Address"
 msgstr "Адрес принтера"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:334
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:331
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:102
 msgctxt "@label"
 msgid "Enter the IP address of your printer on the network."
 msgstr "Введите IP-адрес принтера в сети."
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:364
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:361
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:138
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:181
 msgctxt "@action:button"
@@ -2064,17 +2085,17 @@ msgctxt "@label:status"
 msgid "Finishes %1 at %2"
 msgstr "Завершение %1 в %2"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:44
-msgctxt "@action:button"
-msgid "Print"
-msgstr "Печать"
-
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:47
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:11
 msgctxt "@title:window"
 msgid "Print over network"
 msgstr "Печать через сеть"
 
-#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:79
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:52
+msgctxt "@action:button"
+msgid "Print"
+msgstr "Печать"
+
+#: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/PrintWindow.qml:80
 msgctxt "@label"
 msgid "Printer selection"
 msgstr "Выбор принтера"
@@ -2426,56 +2447,56 @@ msgctxt "@action:label"
 msgid "Smoothing"
 msgstr "Сглаживание"
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:37
-msgctxt "@label"
-msgid "Mesh Type"
-msgstr "Тип объекта"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:68
-msgctxt "@label"
-msgid "Normal model"
-msgstr "Нормальная модель"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:75
-msgctxt "@label"
-msgid "Print as support"
-msgstr "Печать в качестве поддержки"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:83
-msgctxt "@label"
-msgid "Don't support overlap with other models"
-msgstr "Не поддерживать перекрытие с другими моделями"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:91
-msgctxt "@label"
-msgid "Modify settings for overlap with other models"
-msgstr "Изменять настройки для перекрытия с другими моделями"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:99
-msgctxt "@label"
-msgid "Modify settings for infill of other models"
-msgstr "Изменять настройки для заполнения других моделей"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:346
-msgctxt "@action:button"
-msgid "Select settings"
-msgstr "Выберите параметры"
-
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:388
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:13
 msgctxt "@title:window"
 msgid "Select Settings to Customize for this model"
 msgstr "Выберите параметр для изменения этой модели"
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:431
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:56
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/SettingVisibilityPage.qml:94
 msgctxt "@label:textbox"
 msgid "Filter..."
 msgstr "Фильтр..."
 
-#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:445
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:70
 msgctxt "@label:checkbox"
 msgid "Show all"
 msgstr "Показать всё"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:44
+msgctxt "@label"
+msgid "Mesh Type"
+msgstr "Тип объекта"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:85
+msgctxt "@label"
+msgid "Normal model"
+msgstr "Нормальная модель"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:97
+msgctxt "@label"
+msgid "Print as support"
+msgstr "Печать в качестве поддержки"
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
+msgctxt "@label"
+msgid "Modify settings for overlaps"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
+msgctxt "@label"
+msgid "Don't support overlaps"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
+msgctxt "@action:checkbox"
+msgid "Infill only"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
+msgctxt "@action:button"
+msgid "Select settings"
+msgstr "Выберите параметры"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:14
 msgctxt "@title:window"
@@ -2483,15 +2504,14 @@ msgid "Open Project"
 msgstr "Открытие проекта"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
-msgctxt "@action:ComboBox option"
+msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Обновить существующий"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:116
-msgctxt "@action:ComboBox option"
+msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Создать новый"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -2516,6 +2536,11 @@ msgctxt "@action:ComboBox option"
 msgid "Update"
 msgstr "Обновить"
 
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:116
+msgctxt "@action:ComboBox option"
+msgid "Create new"
+msgstr "Создать новый"
+
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:143
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:106
 msgctxt "@action:label"
@@ -2529,7 +2554,7 @@ msgid "Printer Group"
 msgstr "Группа принтеров"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:180
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:226
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:220
 msgctxt "@action:label"
 msgid "Profile settings"
 msgstr "Параметры профиля"
@@ -2540,21 +2565,27 @@ msgid "How should the conflict in the profile be resolved?"
 msgstr "Как следует решать конфликт в профиле?"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:216
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:308
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:323
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:121
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:250
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:244
 msgctxt "@action:label"
 msgid "Name"
 msgstr "Название"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:231
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:234
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:261
+msgctxt "@action:label"
+msgid "Intent"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:246
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:228
 msgctxt "@action:label"
 msgid "Not in profile"
 msgstr "Вне профиля"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:236
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:239
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:251
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:233
 msgctxt "@action:label"
 msgid "%1 override"
 msgid_plural "%1 overrides"
@@ -2562,12 +2593,12 @@ msgstr[0] "%1 перекрыт"
 msgstr[1] "%1 перекрыто"
 msgstr[2] "%1 перекрыто"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:247
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:262
 msgctxt "@action:label"
 msgid "Derivative from"
 msgstr "Производное от"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:252
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:267
 msgctxt "@action:label"
 msgid "%1, %2 override"
 msgid_plural "%1, %2 overrides"
@@ -2575,42 +2606,42 @@ msgstr[0] "%1, %2 перекрыто"
 msgstr[1] "%1, %2 перекрыто"
 msgstr[2] "%1, %2 перекрыто"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:268
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:283
 msgctxt "@action:label"
 msgid "Material settings"
 msgstr "Параметры материала"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:284
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:299
 msgctxt "@info:tooltip"
 msgid "How should the conflict in the material be resolved?"
 msgstr "Как следует решать конфликт в материале?"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:327
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:342
 msgctxt "@action:label"
 msgid "Setting visibility"
 msgstr "Видимость параметров"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:336
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:351
 msgctxt "@action:label"
 msgid "Mode"
 msgstr "Режим"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:352
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:367
 msgctxt "@action:label"
 msgid "Visible settings:"
 msgstr "Видимые параметры:"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:357
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:372
 msgctxt "@action:label"
 msgid "%1 out of %2"
 msgstr "%1 из %2"
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:383
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:398
 msgctxt "@action:warning"
 msgid "Loading a project will clear all models on the build plate."
 msgstr "Загрузка проекта приведет к удалению всех моделей на рабочем столе."
 
-#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:401
+#: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:416
 msgctxt "@action:button"
 msgid "Open"
 msgstr "Открыть"
@@ -2717,54 +2748,6 @@ msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
 msgstr "Автоматически создавать резервную копию в день запуска Cura."
 
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorMainSettingsSelector.qml:75
-msgctxt "@label"
-msgid "Not supported"
-msgstr "Не поддерживается"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:35
-msgctxt "@action:button"
-msgid "Previous"
-msgstr "Предыдущий"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorTabControls.qml:60
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:174
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:159
-msgctxt "@action:button"
-msgid "Export"
-msgstr "Экспорт"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageCategoryView.qml:209
-msgctxt "@label"
-msgid "Tip"
-msgstr "Кончик"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorMaterialMenu.qml:20
-#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:66
-msgctxt "@label:category menu label"
-msgid "Generic"
-msgstr "Универсальные"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPage.qml:160
-msgctxt "@label"
-msgid "Print experiment"
-msgstr "Пробная печать"
-
-#: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorPageValidation.qml:25
-msgctxt "@label"
-msgid "Checklist"
-msgstr "Контрольный список"
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:30
-msgctxt "@label"
-msgid "Please select any upgrades made to this Ultimaker 2."
-msgstr "Пожалуйста, укажите любые изменения, внесённые в Ultimaker 2."
-
-#: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/UM2UpgradeSelectionMachineAction.qml:44
-msgctxt "@label"
-msgid "Olsson Block"
-msgstr "Блок Олссона"
-
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:30
 msgctxt "@title"
 msgid "Build Plate Leveling"
@@ -2850,170 +2833,176 @@ msgctxt "@label"
 msgid "Are you sure you want to abort the print?"
 msgstr "Вы уверены, что желаете прервать печать?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:71
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
 msgid "Information"
 msgstr "Информация"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:100
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:101
 msgctxt "@title:window"
 msgid "Confirm Diameter Change"
 msgstr "Подтвердить изменение диаметра"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:101
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:102
 msgctxt "@label (%1 is a number)"
 msgid "The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you wish to continue?"
 msgstr "Установлен новый диаметр пластиковой нити %1 мм. Это значение несовместимо с текущим экструдером. Продолжить?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:125
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:128
 msgctxt "@label"
 msgid "Display Name"
 msgstr "Отображаемое имя"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:135
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:138
 msgctxt "@label"
 msgid "Brand"
 msgstr "Брэнд"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:145
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:148
 msgctxt "@label"
 msgid "Material Type"
 msgstr "Тип материала"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:155
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:158
 msgctxt "@label"
 msgid "Color"
 msgstr "Цвет"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:205
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:208
 msgctxt "@label"
 msgid "Properties"
 msgstr "Свойства"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:207
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:210
 msgctxt "@label"
 msgid "Density"
 msgstr "Плотность"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:222
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:225
 msgctxt "@label"
 msgid "Diameter"
 msgstr "Диаметр"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:256
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:259
 msgctxt "@label"
 msgid "Filament Cost"
 msgstr "Стоимость материала"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:273
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:276
 msgctxt "@label"
 msgid "Filament weight"
 msgstr "Вес материала"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:291
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:294
 msgctxt "@label"
 msgid "Filament length"
 msgstr "Длина материала"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:300
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:303
 msgctxt "@label"
 msgid "Cost per Meter"
 msgstr "Стоимость метра"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:314
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:317
 msgctxt "@label"
 msgid "This material is linked to %1 and shares some of its properties."
 msgstr "Данный материал привязан к %1 и имеет ряд его свойств."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:321
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:324
 msgctxt "@label"
 msgid "Unlink Material"
 msgstr "Отвязать материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:332
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:335
 msgctxt "@label"
 msgid "Description"
 msgstr "Описание"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:345
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:348
 msgctxt "@label"
 msgid "Adhesion Information"
 msgstr "Информация об адгезии"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:371
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:374
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:19
 msgctxt "@label"
 msgid "Print settings"
 msgstr "Параметры печати"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:99
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:108
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:40
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:73
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:84
 msgctxt "@action:button"
 msgid "Activate"
 msgstr "Активировать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:117
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:126
 msgctxt "@action:button"
 msgid "Create"
 msgstr "Создать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:131
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:140
 msgctxt "@action:button"
 msgid "Duplicate"
 msgstr "Дублировать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:160
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:148
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:170
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:167
 msgctxt "@action:button"
 msgid "Import"
 msgstr "Импорт"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:223
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:184
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:179
+msgctxt "@action:button"
+msgid "Export"
+msgstr "Экспорт"
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:233
 msgctxt "@action:label"
 msgid "Printer"
 msgstr "Принтер"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:287
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:253
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:297
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:274
 msgctxt "@title:window"
 msgid "Confirm Remove"
 msgstr "Подтвердите удаление"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:290
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:254
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:300
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:275
 msgctxt "@label (%1 is object name)"
 msgid "Are you sure you wish to remove %1? This cannot be undone!"
 msgstr "Вы уверены, что желаете удалить %1? Это нельзя будет отменить!"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:304
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:312
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:314
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:322
 msgctxt "@title:window"
 msgid "Import Material"
 msgstr "Импортировать материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:313
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:323
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Не могу импортировать материал <filename>%1</filename>: <message>%2</message>"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:317
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:327
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully imported material <filename>%1</filename>"
 msgstr "Успешно импортированный материал <filename>%1</filename>"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:335
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:343
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:345
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:353
 msgctxt "@title:window"
 msgid "Export Material"
 msgstr "Экспортировать материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:347
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:357
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
 msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Не могу экспортировать материал <filename>%1</filename>: <message>%2</message>"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:353
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:363
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Successfully exported material to <filename>%1</filename>"
 msgstr "Материал успешно экспортирован в <filename>%1</filename>"
@@ -3028,27 +3017,27 @@ msgctxt "@label:textbox"
 msgid "Check all"
 msgstr "Выбрать все"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:48
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:61
 msgctxt "@info:status"
 msgid "Calculated"
 msgstr "Вычислено"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:61
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:75
 msgctxt "@title:column"
 msgid "Setting"
 msgstr "Параметр"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:68
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:82
 msgctxt "@title:column"
 msgid "Profile"
 msgstr "Профиль"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:75
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:89
 msgctxt "@title:column"
 msgid "Current"
 msgstr "Текущий"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:83
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfileTab.qml:97
 msgctxt "@title:column"
 msgid "Unit"
 msgstr "Единица"
@@ -3059,306 +3048,300 @@ msgctxt "@title:tab"
 msgid "General"
 msgstr "Общее"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:130
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:132
 msgctxt "@label"
 msgid "Interface"
 msgstr "Интерфейс"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:141
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:143
 msgctxt "@label"
 msgid "Language:"
 msgstr "Язык:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:208
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:210
 msgctxt "@label"
 msgid "Currency:"
 msgstr "Валюта:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:221
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:223
 msgctxt "@label"
 msgid "Theme:"
 msgstr "Тема:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:277
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:279
 msgctxt "@label"
 msgid "You will need to restart the application for these changes to have effect."
 msgstr "Для применения данных изменений вам потребуется перезапустить приложение."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:296
 msgctxt "@info:tooltip"
 msgid "Slice automatically when changing settings."
 msgstr "Нарезать автоматически при изменении настроек."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:302
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:304
 msgctxt "@option:check"
 msgid "Slice automatically"
 msgstr "Нарезать автоматически"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:316
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:318
 msgctxt "@label"
 msgid "Viewport behavior"
 msgstr "Поведение окна"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:324
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:326
 msgctxt "@info:tooltip"
 msgid "Highlight unsupported areas of the model in red. Without support these areas will not print properly."
 msgstr "Подсвечивать красным области модели, требующие поддержек. Без поддержек эти области не будут напечатаны правильно."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:335
 msgctxt "@option:check"
 msgid "Display overhang"
 msgstr "Отобразить нависания"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:343
 msgctxt "@info:tooltip"
 msgid "Moves the camera so the model is in the center of the view when a model is selected"
 msgstr "Перемещать камеру так, чтобы выбранная модель помещалась в центр экрана"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:346
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:348
 msgctxt "@action:button"
 msgid "Center camera when item is selected"
 msgstr "Центрировать камеру на выбранном объекте"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:356
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:358
 msgctxt "@info:tooltip"
 msgid "Should the default zoom behavior of cura be inverted?"
 msgstr "Следует ли инвертировать стандартный способ увеличения в Cura?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:361
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:363
 msgctxt "@action:button"
 msgid "Invert the direction of camera zoom."
 msgstr "Инвертировать направление увеличения камеры."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:379
 msgctxt "@info:tooltip"
 msgid "Should zooming move in the direction of the mouse?"
 msgstr "Увеличивать по мере движения мышкой?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:379
 msgctxt "@info:tooltip"
 msgid "Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "В ортогональной проекции изменение масштаба мышью не поддерживается."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:384
 msgctxt "@action:button"
 msgid "Zoom toward mouse direction"
 msgstr "Увеличивать по движению мышки"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:402
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:410
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Следует ли размещать модели на столе так, чтобы они больше не пересекались?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:407
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:415
 msgctxt "@option:check"
 msgid "Ensure models are kept apart"
 msgstr "Удостовериться, что модели размещены рядом"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:416
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:424
 msgctxt "@info:tooltip"
 msgid "Should models on the platform be moved down to touch the build plate?"
 msgstr "Следует ли опустить модели на стол?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:421
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:429
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
 msgstr "Автоматически опускать модели на стол"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:433
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:441
 msgctxt "@info:tooltip"
 msgid "Show caution message in g-code reader."
 msgstr "Показывать предупреждающее сообщение в средстве считывания G-кода."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:442
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:450
 msgctxt "@option:check"
 msgid "Caution message in g-code reader"
 msgstr "Предупреждающее сообщение в средстве считывания G-кода"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:450
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:458
 msgctxt "@info:tooltip"
 msgid "Should layer be forced into compatibility mode?"
 msgstr "Должен ли слой быть переведён в режим совместимости?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:455
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:463
 msgctxt "@option:check"
 msgid "Force layer view compatibility mode (restart required)"
 msgstr "Просматривать слои в режиме совместимости (требуется перезапуск)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:465
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:473
+msgctxt "@info:tooltip"
+msgid "Should Cura open at the location it was closed?"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:478
+msgctxt "@option:check"
+msgid "Restore window position on start"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:488
 msgctxt "@info:tooltip"
 msgid "What type of camera rendering should be used?"
 msgstr "Рендеринг камеры какого типа следует использовать?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:472
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
-msgid "Camera rendering: "
-msgstr "Рендеринг камеры: "
+msgid "Camera rendering:"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:483
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
 msgstr "Перспективная"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:484
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:507
 msgid "Orthographic"
 msgstr "Ортографическая"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:515
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:538
 msgctxt "@label"
 msgid "Opening and saving files"
 msgstr "Открытие и сохранение файлов"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:522
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:545
 msgctxt "@info:tooltip"
 msgid "Should models be scaled to the build volume if they are too large?"
 msgstr "Масштабировать ли модели для размещения внутри печатаемого объёма, если они не влезают в него?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:527
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:550
 msgctxt "@option:check"
 msgid "Scale large models"
 msgstr "Масштабировать большие модели"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:560
 msgctxt "@info:tooltip"
 msgid "An model may appear extremely small if its unit is for example in meters rather than millimeters. Should these models be scaled up?"
 msgstr "Модель может показаться очень маленькой, если её размерность задана в метрах, а не миллиметрах. Следует ли масштабировать такие модели?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:542
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:565
 msgctxt "@option:check"
 msgid "Scale extremely small models"
 msgstr "Масштабировать очень маленькие модели"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:552
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:575
 msgctxt "@info:tooltip"
 msgid "Should models be selected after they are loaded?"
 msgstr "Выбрать модели после их загрузки?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:557
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:580
 msgctxt "@option:check"
 msgid "Select models when loaded"
 msgstr "Выбрать модели при загрузке"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:567
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:590
 msgctxt "@info:tooltip"
 msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "Надо ли автоматически добавлять префикс, основанный на имени принтера, к названию задачи на печать?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:572
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:595
 msgctxt "@option:check"
 msgid "Add machine prefix to job name"
 msgstr "Добавить префикс принтера к имени задачи"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:582
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:605
 msgctxt "@info:tooltip"
 msgid "Should a summary be shown when saving a project file?"
 msgstr "Показывать сводку при сохранении файла проекта?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:586
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:609
 msgctxt "@option:check"
 msgid "Show summary dialog when saving project"
 msgstr "Показывать сводку при сохранении проекта"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:596
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:619
 msgctxt "@info:tooltip"
 msgid "Default behavior when opening a project file"
 msgstr "Стандартное поведение при открытии файла проекта"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:604
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:627
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
 msgstr "Стандартное поведение при открытии файла проекта: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:618
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:641
 msgctxt "@option:openProject"
 msgid "Always ask me this"
 msgstr "Всегда спрашивать меня"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:619
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:642
 msgctxt "@option:openProject"
 msgid "Always open as a project"
 msgstr "Всегда открывать как проект"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:620
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:643
 msgctxt "@option:openProject"
 msgid "Always import models"
 msgstr "Всегда импортировать модели"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:656
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:679
 msgctxt "@info:tooltip"
 msgid "When you have made changes to a profile and switched to a different one, a dialog will be shown asking whether you want to keep your modifications or not, or you can choose a default behaviour and never show that dialog again."
 msgstr "При внесении изменений в профиль и переключении на другой, будет показан диалог, запрашивающий ваше решение о сохранении ваших изменений, или вы можете указать стандартное поведение и не показывать такой диалог."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:665
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:688
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:52
 msgctxt "@label"
 msgid "Profiles"
 msgstr "Профили"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:693
 msgctxt "@window:text"
 msgid "Default behavior for changed setting values when switching to a different profile: "
 msgstr "Поведение по умолчанию для измененных значений настройки при переключении на другой профиль: "
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:684
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:707
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:157
 msgctxt "@option:discardOrKeep"
 msgid "Always ask me this"
 msgstr "Всегда спрашивать меня"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:685
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:708
 msgctxt "@option:discardOrKeep"
 msgid "Always discard changed settings"
 msgstr "Всегда сбрасывать измененные настройки"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:686
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:709
 msgctxt "@option:discardOrKeep"
 msgid "Always transfer changed settings to new profile"
 msgstr "Всегда передавать измененные настройки новому профилю"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:720
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:743
 msgctxt "@label"
 msgid "Privacy"
 msgstr "Приватность"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:727
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:750
 msgctxt "@info:tooltip"
 msgid "Should Cura check for updates when the program is started?"
 msgstr "Должна ли Cura проверять обновления программы при старте?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:732
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:755
 msgctxt "@option:check"
 msgid "Check for updates on start"
 msgstr "Проверять обновления при старте"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:742
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:765
 msgctxt "@info:tooltip"
 msgid "Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other personally identifiable information is sent or stored."
 msgstr "Можно ли отправлять анонимную информацию о вашей печати в Ultimaker? Следует отметить, что ни модели, ни IP-адреса и никакая другая персональная информация не будет отправлена или сохранена."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:747
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:770
 msgctxt "@option:check"
 msgid "Send (anonymous) print information"
 msgstr "Отправлять (анонимно) информацию о печати"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:756
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:779
 msgctxt "@action:button"
 msgid "More information"
 msgstr "Дополнительная информация"
-
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:774
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:27
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ProfileMenu.qml:23
-msgctxt "@label"
-msgid "Experimental"
-msgstr "Экспериментальное"
-
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:781
-msgctxt "@info:tooltip"
-msgid "Use multi build plate functionality"
-msgstr "Использовать функционал нескольких рабочих столов"
-
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:786
-msgctxt "@option:check"
-msgid "Use multi build plate functionality (restart required)"
-msgstr "Использовать функционал нескольких рабочих столов (требуется перезапуск)"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:16
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:415
@@ -3367,93 +3350,84 @@ msgid "Printers"
 msgstr "Принтеры"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/MachinesPage.qml:63
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:134
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:152
 msgctxt "@action:button"
 msgid "Rename"
 msgstr "Переименовать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:36
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:34
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:419
 msgctxt "@title:tab"
 msgid "Profiles"
 msgstr "Профили"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:89
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:104
 msgctxt "@label"
 msgid "Create"
 msgstr "Создать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:105
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:121
 msgctxt "@label"
 msgid "Duplicate"
 msgstr "Дублировать"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:181
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:202
 msgctxt "@title:window"
 msgid "Create Profile"
 msgstr "Создать профиль"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:183
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:204
 msgctxt "@info"
 msgid "Please provide a name for this profile."
 msgstr "Укажите имя для данного профиля."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:239
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:260
 msgctxt "@title:window"
 msgid "Duplicate Profile"
 msgstr "Скопировать профиль"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:270
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:291
 msgctxt "@title:window"
 msgid "Rename Profile"
 msgstr "Переименовать профиль"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:283
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:304
 msgctxt "@title:window"
 msgid "Import Profile"
 msgstr "Импорт профиля"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:309
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:333
 msgctxt "@title:window"
 msgid "Export Profile"
 msgstr "Экспорт профиля"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:364
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:396
 msgctxt "@label %1 is printer name"
 msgid "Printer: %1"
 msgstr "Принтер: %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:420
-msgctxt "@label"
-msgid "Default profiles"
-msgstr "Профили по умолчанию"
-
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:420
-msgctxt "@label"
-msgid "Custom profiles"
-msgstr "Собственные профили"
-
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:500
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:554
 msgctxt "@action:button"
 msgid "Update profile with current settings/overrides"
 msgstr "Обновить профиль текущими параметрами"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:507
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:561
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:257
 msgctxt "@action:button"
 msgid "Discard current changes"
 msgstr "Сбросить текущие параметры"
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:524
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:580
 msgctxt "@action:label"
 msgid "This profile uses the defaults specified by the printer, so it has no settings/overrides in the list below."
 msgstr "Данный профиль использует настройки принтера по умолчанию, поэтому список ниже пуст."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:531
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:588
 msgctxt "@action:label"
 msgid "Your current settings match the selected profile."
 msgstr "Ваши текущие параметры совпадают с выбранным профилем."
 
-#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:550
+#: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:606
 msgctxt "@title:tab"
 msgid "Global Settings"
 msgstr "Общие параметры"
@@ -3518,35 +3492,35 @@ msgstr "Без имени"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
-msgid "search settings"
-msgstr "параметры поиска"
+msgid "Search settings"
+msgstr ""
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:466
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
 msgid "Copy value to all extruders"
 msgstr "Скопировать значение для всех экструдеров"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:475
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:471
 msgctxt "@action:menu"
 msgid "Copy all changed values to all extruders"
 msgstr "Копировать все измененные значения для всех экструдеров"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:512
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:508
 msgctxt "@action:menu"
 msgid "Hide this setting"
 msgstr "Спрятать этот параметр"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:525
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:521
 msgctxt "@action:menu"
 msgid "Don't show this setting"
 msgstr "Не показывать этот параметр"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:529
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:525
 msgctxt "@action:menu"
 msgid "Keep this setting visible"
 msgstr "Оставить этот параметр видимым"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:548
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:544
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:434
 msgctxt "@action:menu"
 msgid "Configure setting visibility..."
@@ -3578,17 +3552,17 @@ msgctxt "@label Header for list of settings."
 msgid "Affected By"
 msgstr "Зависит от"
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:186
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:187
 msgctxt "@label"
 msgid "This setting is always shared between all extruders. Changing it here will change the value for all extruders."
 msgstr "Данная настройка всегда используется совместно всеми экструдерами. Изменение данного значения приведет к изменению значения для всех экструдеров."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:190
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
 msgstr "Значение получается из параметров каждого экструдера "
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:228
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
 msgid ""
 "This setting has a value that is different from the profile.\n"
@@ -3599,7 +3573,7 @@ msgstr ""
 "\n"
 "Щёлкните для восстановления значения из профиля."
 
-#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:322
+#: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:329
 msgctxt "@label"
 msgid ""
 "This setting is normally calculated, but it currently has an absolute value set.\n"
@@ -3609,6 +3583,14 @@ msgstr ""
 "Обычно это значение вычисляется, но в настоящий момент было установлено явно.\n"
 "\n"
 "Щёлкните для восстановления вычисленного значения."
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/NoIntentIcon.qml:31
+msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
+msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
+msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
@@ -3650,25 +3632,10 @@ msgctxt "@label"
 msgid "Enable printing a brim or raft. This will add a flat area around or under your object which is easy to cut off afterwards."
 msgstr "Разрешает печать каймы или подложки. Это добавляет плоскую область вокруг или под вашим объектом, которую легко удалить после печати."
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:175
-msgctxt "@label"
-msgid "Layer Height"
-msgstr "Высота слоя"
-
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:206
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:81
 msgctxt "@tooltip"
 msgid "You have modified some profile settings. If you want to change these go to custom mode."
 msgstr "В некоторые настройки профиля были внесены изменения. Если их необходимо изменить, перейдите в пользовательский режим."
-
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:355
-msgctxt "@tooltip"
-msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
-msgstr "Этот профиль качества недоступен для вашей текущей конфигурации материала и сопла. Измените эти параметры для задействования данного профиля качества."
-
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:449
-msgctxt "@tooltip"
-msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
-msgstr "В настоящее время активен пользовательский профиль. Чтобы включить ползунок качества, на вкладке «Пользовательские» выберите профиль качества по умолчанию"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:13
 msgctxt "@label:Should be short"
@@ -3680,12 +3647,17 @@ msgctxt "@label:Should be short"
 msgid "Off"
 msgstr "Выкл"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/GlobalProfileSelector.qml:27
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:33
+msgctxt "@label"
+msgid "Experimental"
+msgstr "Экспериментальное"
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/CustomPrintSetup.qml:47
 msgctxt "@label"
 msgid "Profile"
 msgstr "Профиль"
 
-#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/GlobalProfileSelector.qml:94
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/CustomPrintSetup.qml:172
 msgctxt "@tooltip"
 msgid ""
 "Some setting/override values are different from the values stored in the profile.\n"
@@ -3695,6 +3667,11 @@ msgstr ""
 "Значения некоторых параметров отличаются от значений профиля.\n"
 "\n"
 "Нажмите для открытия менеджера профилей."
+
+#: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
+msgctxt "@label:header"
+msgid "Custom profiles"
+msgstr ""
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -3823,10 +3800,15 @@ msgctxt "@label:category menu label"
 msgid "Material"
 msgstr "Материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:42
+#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:46
 msgctxt "@label:category menu label"
 msgid "Favorites"
 msgstr "Избранные"
+
+#: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:71
+msgctxt "@label:category menu label"
+msgid "Generic"
+msgstr "Универсальные"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/PrinterMenu.qml:25
 msgctxt "@label:category menu label"
@@ -3862,16 +3844,6 @@ msgstr "Включить экструдер"
 msgctxt "@action:inmenu"
 msgid "Disable Extruder"
 msgstr "Отключить экструдер"
-
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:63
-msgctxt "@title:menu"
-msgid "&Build plate"
-msgstr "Рабочий стол"
-
-#: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:66
-msgctxt "@title:settings"
-msgid "&Profile"
-msgstr "Профиль"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:19
 msgctxt "@action:inmenu menubar:view"
@@ -3954,12 +3926,12 @@ msgctxt "@header"
 msgid "Configurations"
 msgstr "Конфигурации"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:110
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:112
 msgctxt "@label"
 msgid "Select configuration"
 msgstr "Выберите конфигурации"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:221
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationMenu.qml:223
 msgctxt "@label"
 msgid "Configurations"
 msgstr "Конфигурации"
@@ -3989,12 +3961,12 @@ msgctxt "@label"
 msgid "Enabled"
 msgstr "Включено"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:250
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:251
 msgctxt "@label"
 msgid "Material"
 msgstr "Материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:375
+#: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:378
 msgctxt "@label"
 msgid "Use glue for better adhesion with this material combination."
 msgstr "Использовать клей для лучшего прилипания с этой комбинацией материалов."
@@ -4414,44 +4386,44 @@ msgctxt "@title:tab"
 msgid "Settings"
 msgstr "Параметры"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:538
 msgctxt "@title:window"
 msgid "Closing Cura"
 msgstr "Закрытие Cura"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:540
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:552
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:539
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:551
 msgctxt "@label"
 msgid "Are you sure you want to exit Cura?"
 msgstr "Вы уверены, что хотите выйти из Cura?"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:590
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:589
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
 msgctxt "@title:window"
 msgid "Open file(s)"
 msgstr "Открыть файл(ы)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:696
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:695
 msgctxt "@window:title"
 msgid "Install Package"
 msgstr "Установить пакет"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:704
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:703
 msgctxt "@title:window"
 msgid "Open File(s)"
 msgstr "Открыть файл(ы)"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:707
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:706
 msgctxt "@text:window"
 msgid "We have found one or more G-Code files within the files you have selected. You can only open one G-Code file at a time. If you want to open a G-Code file, please just select only one."
 msgstr "Среди выбранных файлов мы нашли несколько файлов с G-кодом. Вы можете открыть только один файл за раз. Измените свой выбор, пожалуйста."
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:810
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:809
 msgctxt "@title:window"
 msgid "Add Printer"
 msgstr "Добавление принтера"
 
-#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:818
+#: /home/ruben/Projects/Cura/resources/qml/Cura.qml:817
 msgctxt "@title:window"
 msgid "What's New"
 msgstr "Что нового"
@@ -4523,17 +4495,17 @@ msgctxt "@title:window"
 msgid "About Cura"
 msgstr "О Cura"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:56
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
 msgid "version: %1"
 msgstr "версия: %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:71
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:72
 msgctxt "@label"
 msgid "End-to-end solution for fused filament 3D printing."
 msgstr "Полное решение для 3D печати методом наплавления материала."
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:84
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:85
 msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
@@ -4542,122 +4514,122 @@ msgstr ""
 "Cura разработана компанией Ultimaker B.V. совместно с сообществом.\n"
 "Cura использует следующие проекты с открытым исходным кодом:"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:134
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:135
 msgctxt "@label"
 msgid "Graphical user interface"
 msgstr "Графический интерфейс пользователя"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:135
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:136
 msgctxt "@label"
 msgid "Application framework"
 msgstr "Фреймворк приложения"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:136
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:137
 msgctxt "@label"
 msgid "G-code generator"
 msgstr "Генератор G-кода"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:137
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:138
 msgctxt "@label"
 msgid "Interprocess communication library"
 msgstr "Библиотека межпроцессного взаимодействия"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:139
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:140
 msgctxt "@label"
 msgid "Programming language"
 msgstr "Язык программирования"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:140
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:141
 msgctxt "@label"
 msgid "GUI framework"
 msgstr "Фреймворк GUI"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:141
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:142
 msgctxt "@label"
 msgid "GUI framework bindings"
 msgstr "Фреймворк GUI, интерфейс"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:142
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:143
 msgctxt "@label"
 msgid "C/C++ Binding library"
 msgstr "C/C++ библиотека интерфейса"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:143
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:144
 msgctxt "@label"
 msgid "Data interchange format"
 msgstr "Формат обмена данными"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:144
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:145
 msgctxt "@label"
 msgid "Support library for scientific computing"
 msgstr "Вспомогательная библиотека для научных вычислений"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:145
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:146
 msgctxt "@label"
 msgid "Support library for faster math"
 msgstr "Вспомогательная библиотека для быстрых расчётов"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:146
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:147
 msgctxt "@label"
 msgid "Support library for handling STL files"
 msgstr "Вспомогательная библиотека для работы с STL файлами"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:147
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:148
 msgctxt "@label"
 msgid "Support library for handling planar objects"
 msgstr "Вспомогательная библиотека для работы с плоскими объектами"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:148
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:149
 msgctxt "@label"
 msgid "Support library for handling triangular meshes"
 msgstr "Вспомогательная библиотека для работы с треугольными сетками"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:149
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:150
 msgctxt "@label"
 msgid "Support library for analysis of complex networks"
 msgstr "Вспомогательная библиотека для анализа сложных сетей"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:150
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:151
 msgctxt "@label"
 msgid "Support library for handling 3MF files"
 msgstr "Вспомогательная библиотека для работы с 3MF файлами"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:151
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:152
 msgctxt "@label"
 msgid "Support library for file metadata and streaming"
 msgstr "Вспомогательная библиотека для метаданных файла и потоковой передачи"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:152
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:153
 msgctxt "@label"
 msgid "Serial communication library"
 msgstr "Библиотека последовательного интерфейса"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:153
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:154
 msgctxt "@label"
 msgid "ZeroConf discovery library"
 msgstr "Библиотека ZeroConf"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:154
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
 msgctxt "@label"
 msgid "Polygon clipping library"
 msgstr "Библиотека обрезки полигонов"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:155
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:156
 msgctxt "@Label"
 msgid "Python HTTP library"
 msgstr "Библиотека Python HTTP"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:157
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:158
 msgctxt "@label"
 msgid "Font"
 msgstr "Шрифт"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:158
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
 msgctxt "@label"
 msgid "SVG icons"
 msgstr "Иконки SVG"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:159
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:160
 msgctxt "@label"
 msgid "Linux cross-distribution application deployment"
 msgstr "Развертывание приложений для различных дистрибутивов Linux"
@@ -4677,32 +4649,27 @@ msgctxt "@title:window"
 msgid "Save Project"
 msgstr "Сохранить проект"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:149
-msgctxt "@action:label"
-msgid "Build plate"
-msgstr "Рабочий стол"
-
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:183
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:177
 msgctxt "@action:label"
 msgid "Extruder %1"
 msgstr "Экструдер %1"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:198
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:192
 msgctxt "@action:label"
 msgid "%1 & material"
 msgstr "%1 и материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:200
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:194
 msgctxt "@action:label"
 msgid "Material"
 msgstr "Материал"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:272
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:283
 msgctxt "@action:label"
 msgid "Don't show project summary on save again"
 msgstr "Больше не показывать сводку по проекту"
 
-#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:291
+#: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:302
 msgctxt "@action:button"
 msgid "Save"
 msgstr "Сохранить"
@@ -4878,12 +4845,12 @@ msgctxt "@label"
 msgid "Troubleshooting"
 msgstr "Поиск и устранение неисправностей"
 
-#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:207
+#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:211
 msgctxt "@label"
 msgid "Printer name"
 msgstr "Имя принтера"
 
-#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:220
+#: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddLocalPrinterScrollView.qml:224
 msgctxt "@text"
 msgid "Please give your printer a name"
 msgstr "Присвойте имя принтеру"
@@ -4941,6 +4908,31 @@ msgstr ""
 msgctxt "@button"
 msgid "Get started"
 msgstr "Приступить"
+
+#: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:27
+msgctxt "@info:tooltip"
+msgid "3D View"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:40
+msgctxt "@info:tooltip"
+msgid "Front View"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:53
+msgctxt "@info:tooltip"
+msgid "Top View"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:66
+msgctxt "@info:tooltip"
+msgid "Left View"
+msgstr ""
+
+#: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:79
+msgctxt "@info:tooltip"
+msgid "Right View"
+msgstr ""
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
@@ -5002,16 +4994,6 @@ msgctxt "name"
 msgid "Model Checker"
 msgstr "Средство проверки моделей"
 
-#: cura-god-mode-plugin/src/GodMode/plugin.json
-msgctxt "description"
-msgid "Dump the contents of all settings to a HTML file."
-msgstr "Запись содержимого всех настроек в виде HTML файла."
-
-#: cura-god-mode-plugin/src/GodMode/plugin.json
-msgctxt "name"
-msgid "God Mode"
-msgstr "Режим бога"
-
 #: FirmwareUpdater/plugin.json
 msgctxt "description"
 msgid "Provides a machine actions for updating firmware."
@@ -5021,16 +5003,6 @@ msgstr "Обеспечение действий принтера для обно
 msgctxt "name"
 msgid "Firmware Updater"
 msgstr "Средство обновления прошивки"
-
-#: ProfileFlattener/plugin.json
-msgctxt "description"
-msgid "Create a flattened quality changes profile."
-msgstr "Создание нормализованного профиля с изменениями качества."
-
-#: ProfileFlattener/plugin.json
-msgctxt "name"
-msgid "Profile Flattener"
-msgstr "Нормализатор профиля"
 
 #: AMFReader/plugin.json
 msgctxt "description"
@@ -5232,6 +5204,16 @@ msgctxt "name"
 msgid "Version Upgrade 3.3 to 3.4"
 msgstr "Обновление версии 3.3 до 3.4"
 
+#: VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "description"
+msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr ""
+
+#: VersionUpgrade/VersionUpgrade43to44/plugin.json
+msgctxt "name"
+msgid "Version Upgrade 4.3 to 4.4"
+msgstr ""
+
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 2.5 to Cura 2.6."
@@ -5432,16 +5414,6 @@ msgctxt "name"
 msgid "Cura Profile Writer"
 msgstr "Запись профиля Cura"
 
-#: CuraPrintProfileCreator/plugin.json
-msgctxt "description"
-msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
-msgstr "Позволяет производителям материалов создавать новые профили материалов и качества с помощью дружественного интерфейса."
-
-#: CuraPrintProfileCreator/plugin.json
-msgctxt "name"
-msgid "Print Profile Assistant"
-msgstr "Помощник по профилю печати"
-
 #: 3MFWriter/plugin.json
 msgctxt "description"
 msgid "Provides support for writing 3MF files."
@@ -5481,6 +5453,158 @@ msgstr "Предоставляет поддержку для импорта пр
 msgctxt "name"
 msgid "Cura Profile Reader"
 msgstr "Чтение профиля Cura"
+
+#~ msgctxt "@item:inmenu"
+#~ msgid "Flatten active settings"
+#~ msgstr "Сбросить текущие параметры к стандартным значениям"
+
+#~ msgctxt "@info:status"
+#~ msgid "Profile has been flattened & activated."
+#~ msgstr "Профиль был нормализован и активирован."
+
+#~ msgctxt "X3g Writer Plugin Description"
+#~ msgid "Writes X3g to files"
+#~ msgstr "Записывает X3g в файлы"
+
+#~ msgctxt "X3g Writer File Description"
+#~ msgid "X3g File"
+#~ msgstr "Файл X3g"
+
+#~ msgctxt "X3G Writer File Description"
+#~ msgid "X3G File"
+#~ msgstr "Файл X3G"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Open Compressed Triangle Mesh"
+#~ msgstr "Open Compressed Triangle Mesh"
+
+#~ msgctxt "@item:inmenu"
+#~ msgid "Profile Assistant"
+#~ msgstr "Помощник по профилю"
+
+#~ msgctxt "@item:inlistbox"
+#~ msgid "Profile Assistant"
+#~ msgstr "Помощник по профилю"
+
+#~ msgctxt "@action:button"
+#~ msgid "Retry"
+#~ msgstr "Повторить"
+
+#~ msgctxt "@label:table_header"
+#~ msgid "Print Core"
+#~ msgstr "Экструдер"
+
+#~ msgctxt "@label"
+#~ msgid "Don't support overlap with other models"
+#~ msgstr "Не поддерживать перекрытие с другими моделями"
+
+#~ msgctxt "@label"
+#~ msgid "Modify settings for overlap with other models"
+#~ msgstr "Изменять настройки для перекрытия с другими моделями"
+
+#~ msgctxt "@label"
+#~ msgid "Modify settings for infill of other models"
+#~ msgstr "Изменять настройки для заполнения других моделей"
+
+#~ msgctxt "@action:ComboBox option"
+#~ msgid "Update existing"
+#~ msgstr "Обновить существующий"
+
+#~ msgctxt "@label"
+#~ msgid "Not supported"
+#~ msgstr "Не поддерживается"
+
+#~ msgctxt "@action:button"
+#~ msgid "Previous"
+#~ msgstr "Предыдущий"
+
+#~ msgctxt "@label"
+#~ msgid "Tip"
+#~ msgstr "Кончик"
+
+#~ msgctxt "@label"
+#~ msgid "Print experiment"
+#~ msgstr "Пробная печать"
+
+#~ msgctxt "@label"
+#~ msgid "Checklist"
+#~ msgstr "Контрольный список"
+
+#~ msgctxt "@label"
+#~ msgid "Please select any upgrades made to this Ultimaker 2."
+#~ msgstr "Пожалуйста, укажите любые изменения, внесённые в Ultimaker 2."
+
+#~ msgctxt "@label"
+#~ msgid "Olsson Block"
+#~ msgstr "Блок Олссона"
+
+#~ msgctxt "@window:text"
+#~ msgid "Camera rendering: "
+#~ msgstr "Рендеринг камеры: "
+
+#~ msgctxt "@info:tooltip"
+#~ msgid "Use multi build plate functionality"
+#~ msgstr "Использовать функционал нескольких рабочих столов"
+
+#~ msgctxt "@option:check"
+#~ msgid "Use multi build plate functionality (restart required)"
+#~ msgstr "Использовать функционал нескольких рабочих столов (требуется перезапуск)"
+
+#~ msgctxt "@label"
+#~ msgid "Default profiles"
+#~ msgstr "Профили по умолчанию"
+
+#~ msgctxt "@label:textbox"
+#~ msgid "search settings"
+#~ msgstr "параметры поиска"
+
+#~ msgctxt "@label"
+#~ msgid "Layer Height"
+#~ msgstr "Высота слоя"
+
+#~ msgctxt "@tooltip"
+#~ msgid "This quality profile is not available for your current material and nozzle configuration. Please change these to enable this quality profile."
+#~ msgstr "Этот профиль качества недоступен для вашей текущей конфигурации материала и сопла. Измените эти параметры для задействования данного профиля качества."
+
+#~ msgctxt "@tooltip"
+#~ msgid "A custom profile is currently active. To enable the quality slider, choose a default quality profile in Custom tab"
+#~ msgstr "В настоящее время активен пользовательский профиль. Чтобы включить ползунок качества, на вкладке «Пользовательские» выберите профиль качества по умолчанию"
+
+#~ msgctxt "@title:menu"
+#~ msgid "&Build plate"
+#~ msgstr "Рабочий стол"
+
+#~ msgctxt "@title:settings"
+#~ msgid "&Profile"
+#~ msgstr "Профиль"
+
+#~ msgctxt "@action:label"
+#~ msgid "Build plate"
+#~ msgstr "Рабочий стол"
+
+#~ msgctxt "description"
+#~ msgid "Dump the contents of all settings to a HTML file."
+#~ msgstr "Запись содержимого всех настроек в виде HTML файла."
+
+#~ msgctxt "name"
+#~ msgid "God Mode"
+#~ msgstr "Режим бога"
+
+#~ msgctxt "description"
+#~ msgid "Create a flattened quality changes profile."
+#~ msgstr "Создание нормализованного профиля с изменениями качества."
+
+#~ msgctxt "name"
+#~ msgid "Profile Flattener"
+#~ msgstr "Нормализатор профиля"
+
+#~ msgctxt "description"
+#~ msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
+#~ msgstr "Позволяет производителям материалов создавать новые профили материалов и качества с помощью дружественного интерфейса."
+
+#~ msgctxt "name"
+#~ msgid "Print Profile Assistant"
+#~ msgstr "Помощник по профилю печати"
 
 #~ msgctxt "@info:status"
 #~ msgid "Connected over the network."
