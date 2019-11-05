@@ -340,7 +340,8 @@ class QualityManagementModel(ListModel):
                 "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
             })
         # Sort by quality_type for each intent category
-        result = sorted(result, key = lambda x: (x["intent_category"], x["quality_type"]))
+
+        result = sorted(result, key = lambda x: (list(intent_translations).index(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items
