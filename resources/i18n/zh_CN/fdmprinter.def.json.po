@@ -2,12 +2,12 @@
 # Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
 # Ruben Dulek <r.dulek@ultimaker.com>, 2019.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.3\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-09-10 16:55+0000\n"
+"POT-Creation-Date: 2019-11-05 13:13+0000\n"
 "PO-Revision-Date: 2019-09-23 14:18+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
@@ -1030,6 +1030,16 @@ msgstr "底部层数"
 msgctxt "bottom_layers description"
 msgid "The number of bottom layers. When calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数。"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -3982,8 +3992,8 @@ msgstr "最小支撑接触面面积"
 
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
-msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr "支撑接触面多边形的最小面积。将不会生成面积小于此值的多边形。"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -3992,8 +4002,8 @@ msgstr "最小支撑顶板面积"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
-msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr "支撑顶板的最小面积。将不会生成面积小于此值的多边形。"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4002,8 +4012,8 @@ msgstr "最小支撑底板面积"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
-msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr "支撑底板的最小面积。将不会生成面积小于此值的多边形。"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -4790,6 +4800,36 @@ msgid "Remove empty layers beneath the first printed layer if they are present. 
 msgstr "移除第一个打印层下方的空白层（如果存在）。如果“切片公差”设置被设为“独占”或“中间”，禁用此设置可能导致空白第一层。"
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr "最大分辨率"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgstr "走线部分在切片后的最小尺寸。如果提高此值，网格的分辨率将降低。这可让打印机保持处理 g-code 所需的速度，并将通过移除无法处理的网格细节提高切片速度。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr "空走的最大分辨率"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr "切片后的旅行线路段的最小尺寸。如果你增加了这个，旅行的移动就会变得不那么平滑了。这可能使打印机能够跟上它处理g代码的速度，但是它可能导致模型的避免变得不那么准确。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr "最大偏移量"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
+msgstr "降低“最大分辨率”设置的分辨率时允许的最大偏移量。如果增加该值，打印作业的准确性将降低，但 g-code 将减小。“最大偏移量”是“最大分辨率”的限制，因此如果两者冲突，则“最大偏移量”将始终保持有效。"
+
+#: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
 msgstr "特殊模式"
@@ -5165,36 +5205,6 @@ msgid "Polygons in sliced layers that have a circumference smaller than this amo
 msgstr "切片层中周长小于此数值的多边形将被滤除。以切片时间为代价，较低的值可实现较高分辨率的网格。它主要用于高分辨率 SLA 打印机和包含大量细节的极小 3D 模型。"
 
 #: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution label"
-msgid "Maximum Resolution"
-msgstr "最大分辨率"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution description"
-msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr "走线部分在切片后的最小尺寸。如果提高此值，网格的分辨率将降低。这可让打印机保持处理 g-code 所需的速度，并将通过移除无法处理的网格细节提高切片速度。"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution label"
-msgid "Maximum Travel Resolution"
-msgstr "空走的最大分辨率"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution description"
-msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr "切片后的旅行线路段的最小尺寸。如果你增加了这个，旅行的移动就会变得不那么平滑了。这可能使打印机能够跟上它处理g代码的速度，但是它可能导致模型的避免变得不那么准确。"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation label"
-msgid "Maximum Deviation"
-msgstr "最大偏移量"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation description"
-msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
-msgstr "降低“最大分辨率”设置的分辨率时允许的最大偏移量。如果增加该值，打印作业的准确性将降低，但 g-code 将减小。“最大偏移量”是“最大分辨率”的限制，因此如果两者冲突，则“最大偏移量”将始终保持有效。"
-
-#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr "将支撑结构分拆成块状"
@@ -5333,16 +5343,6 @@ msgstr "滑行速度"
 msgctxt "coasting_speed description"
 msgid "The speed by which to move during coasting, relative to the speed of the extrusion path. A value slightly under 100% is advised, since during the coasting move the pressure in the bowden tube drops."
 msgstr "滑行期间的移动速度，相对于挤出路径的速度。 建议采用略低于 100% 的值，因为在滑行移动期间鲍登管中的压力会下降。"
-
-#: fdmprinter.def.json
-msgctxt "skin_alternate_rotation label"
-msgid "Alternate Skin Rotation"
-msgstr "交替皮肤旋转"
-
-#: fdmprinter.def.json
-msgctxt "skin_alternate_rotation description"
-msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
-msgstr "交替打印顶部/底部层的方向。 通常它们只进行对角线打印。 此设置添加仅限 X 和仅限 Y 的方向。"
 
 #: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
@@ -5516,23 +5516,23 @@ msgstr "在每个走线部分引入的随机点之间的平均距离。 注意�
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
-msgid "Flow rate compensation max extrusion offset"
-msgstr "流量补偿最大挤出偏移值"
+msgid "Flow Rate Compensation Max Extrusion Offset"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
-msgid "The maximum distance in mm to compensate."
-msgstr "以毫米为单位的最大补偿距离。"
+msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
-msgid "Flow rate compensation factor"
-msgstr "流量补偿因子"
+msgid "Flow Rate Compensation Factor"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
-msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr "流量的倍增因子-> 距离转换。"
+msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5825,13 +5825,13 @@ msgstr "下一层与前一层的高度差。"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
-msgid "Adaptive Layers Threshold"
-msgstr "自适应图层阈值"
+msgid "Adaptive Layers Topography Size"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
-msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr "决定是否使用较小图层的阈值。该数字相当于一层中最大坡度的切线。"
+msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5840,8 +5840,8 @@ msgstr "悬垂壁角度"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6220,18 +6220,18 @@ msgstr "微小特征速度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
-msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr "微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
+msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
-msgid "First Layer Speed"
-msgstr "第一层速度"
+msgid "Small Feature Initial Layer Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
-msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
-msgstr "第一层的微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
+msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6292,6 +6292,66 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "minimum_interface_area description"
+#~ msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "支撑接触面多边形的最小面积。将不会生成面积小于此值的多边形。"
+
+#~ msgctxt "minimum_roof_area description"
+#~ msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "支撑顶板的最小面积。将不会生成面积小于此值的多边形。"
+
+#~ msgctxt "minimum_bottom_area description"
+#~ msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "支撑底板的最小面积。将不会生成面积小于此值的多边形。"
+
+#~ msgctxt "skin_alternate_rotation label"
+#~ msgid "Alternate Skin Rotation"
+#~ msgstr "交替皮肤旋转"
+
+#~ msgctxt "skin_alternate_rotation description"
+#~ msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
+#~ msgstr "交替打印顶部/底部层的方向。 通常它们只进行对角线打印。 此设置添加仅限 X 和仅限 Y 的方向。"
+
+#~ msgctxt "flow_rate_max_extrusion_offset label"
+#~ msgid "Flow rate compensation max extrusion offset"
+#~ msgstr "流量补偿最大挤出偏移值"
+
+#~ msgctxt "flow_rate_max_extrusion_offset description"
+#~ msgid "The maximum distance in mm to compensate."
+#~ msgstr "以毫米为单位的最大补偿距离。"
+
+#~ msgctxt "flow_rate_extrusion_offset_factor label"
+#~ msgid "Flow rate compensation factor"
+#~ msgstr "流量补偿因子"
+
+#~ msgctxt "flow_rate_extrusion_offset_factor description"
+#~ msgid "The multiplication factor for the flow rate -> distance translation."
+#~ msgstr "流量的倍增因子-> 距离转换。"
+
+#~ msgctxt "adaptive_layer_height_threshold label"
+#~ msgid "Adaptive Layers Threshold"
+#~ msgstr "自适应图层阈值"
+
+#~ msgctxt "adaptive_layer_height_threshold description"
+#~ msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
+#~ msgstr "决定是否使用较小图层的阈值。该数字相当于一层中最大坡度的切线。"
+
+#~ msgctxt "wall_overhang_angle description"
+#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
+#~ msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。"
+
+#~ msgctxt "small_feature_speed_factor description"
+#~ msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+#~ msgstr "微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
+
+#~ msgctxt "small_feature_speed_factor_0 label"
+#~ msgid "First Layer Speed"
+#~ msgstr "第一层速度"
+
+#~ msgctxt "small_feature_speed_factor_0 description"
+#~ msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+#~ msgstr "第一层的微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
 
 #~ msgctxt "ironing_enabled description"
 #~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
