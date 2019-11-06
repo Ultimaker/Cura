@@ -3,10 +3,11 @@
 
 import json  # To check files for unnecessarily overridden properties.
 import os
-import os.path
 import pytest #This module contains automated tests.
 from typing import Any, Dict
 import uuid
+
+from unittest.mock import patch, MagicMock
 
 import UM.Settings.ContainerRegistry #To create empty instance containers.
 import UM.Settings.ContainerStack #To set the container registry the container stacks use.
@@ -24,6 +25,10 @@ definition_filepaths = machine_filepaths + extruder_filepaths
 all_meshes = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "meshes"))
 all_images = os.listdir(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "images"))
 
+# Loading definition files needs a functioning ContainerRegistry
+cr = UM.Settings.ContainerRegistry.ContainerRegistry(None)
+
+
 @pytest.fixture
 def definition_container():
     uid = str(uuid.uuid4())
@@ -39,7 +44,13 @@ def test_validateMachineDefinitionContainer(file_path, definition_container):
     if file_name == "fdmprinter.def.json" or file_name == "fdmextruder.def.json":
         return  # Stop checking, these are root files.
 
-    assertIsDefinitionValid(definition_container, file_path)
+    from UM.VersionUpgradeManager import FilesDataUpdateResult
+
+    mocked_vum = MagicMock()
+    mocked_vum.updateFilesData = lambda ct, v, fdl, fnl: FilesDataUpdateResult(ct, v, fdl, fnl)
+    with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value = mocked_vum)):
+        assertIsDefinitionValid(definition_container, file_path)
+
 
 def assertIsDefinitionValid(definition_container, file_path):
     with open(file_path, encoding = "utf-8") as data:
