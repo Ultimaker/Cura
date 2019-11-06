@@ -1,5 +1,4 @@
 {
-    "id": "leapfrog_bolt_pro_extruder_left",
     "version": 2,
     "name": "Left extruder",
     "inherits": "fdmextruder",
@@ -7,7 +6,6 @@
         "machine": "leapfrog_bolt_pro",
         "position": "1"
     },
-
     "overrides": {
         "extruder_nr": {
             "default_value": 1,
@@ -18,6 +16,6 @@
         "machine_nozzle_head_distance": { "default_value": 22 },
         "machine_nozzle_offset_x": { "default_value": 0 },
         "machine_nozzle_offset_y": { "default_value": 0.0 },
-        "machine_extruder_start_code": { "default_value": "G1 Y-32 F12000\nG1 X6 F1000\nG1 X-32 F4000\nG1 X6"}
+        "machine_extruder_start_code": { "default_value": "G1 Y-32 F12000\nG1 X6 F1000\nG1 X-32 F4000\nG1 X6" }
     }
 }
