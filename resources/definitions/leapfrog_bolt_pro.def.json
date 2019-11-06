@@ -1,4 +1,4 @@
- {
+{
     "version": 2,
     "name": "Leapfrog Bolt Pro",
     "inherits": "fdmprinter",
@@ -72,7 +72,6 @@
             "zyyx_pro_flex",
             "zyyx_pro_pla"
         ],
-        
         "machine_extruder_trains":
         {
             "0": "leapfrog_bolt_pro_extruder_right",
@@ -107,10 +106,9 @@
         "machine_start_gcode": {"default_value": "G90\nG28 X0 Y0 Z0\nG1 Z5 F1000\nG92 E0\nG1 Y-32 F12000\nG1 E15 F1000\nG1 E45 F150\nG4 S5"},
         "machine_end_gcode": {"default_value": "G92 E0\nG1 E-3 F300\nM104 S0 T0\nM104 S0 T1\nM140 S0\nG28 X0 Y0\nM84"},
         "prime_tower_enable": { "resolve": "extruders_enabled_count > 1"},
-        "prime_tower_circular": {"default_value": false},
-        "prime_tower_position_x": {"value": "169"},
-        "prime_tower_position_y": {"value": "25"},
-        "speed_travel": { "value": "200"},
+        "prime_tower_position_x": {"value": "169" },
+        "prime_tower_position_y": {"value": "25" },
+        "speed_travel": { "value": "200" },
         "build_volume_temperature": {"enabled": false},
         "material_standby_temperature": {"enabled": false }
     }
