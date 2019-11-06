@@ -29,14 +29,14 @@ Item
     PathSlider
     {
         id: pathSlider
-        
+
         readonly property real preferredWidth: UM.Theme.getSize("slider_layerview_size").height // not a typo, should be as long as layerview slider
         readonly property real margin: UM.Theme.getSize("default_margin").width
         readonly property real pathSliderSafeWidth: pathSliderSafeXMax - pathSliderSafeXMin
 
         height: UM.Theme.getSize("slider_handle").width
         width: preferredWidth + margin * 2 < pathSliderSafeWidth ? preferredWidth : pathSliderSafeWidth - margin * 2
- 
+
 
         anchors.bottom: parent.bottom
         anchors.bottomMargin: margin
@@ -194,9 +194,8 @@ Item
     LayerSlider
     {
         property var preferredHeight: UM.Theme.getSize("slider_layerview_size").height
-        property double heightMargin: UM.Theme.getSize("default_margin").height
+        property double heightMargin: UM.Theme.getSize("default_margin").height * 3 // extra margin to accomodate layer number tooltips
         property double layerSliderSafeHeight: layerSliderSafeYMax - layerSliderSafeYMin
-        //todo incorporate margins in safeHeight?
 
         id: layerSlider
 

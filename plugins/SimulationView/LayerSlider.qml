@@ -155,25 +155,13 @@ Item
             }
 
             onPositionChanged: parent.onHandleDragged()
-            onPressed: sliderRoot.setActiveHandle(rangeHandle)
+            onPressed:
+            {
+                sliderRoot.setActiveHandle(rangeHandle)
+                sliderRoot.forceActiveFocus()
+            }
         }
 
-        SimulationSliderLabel
-        {
-            id: rangleHandleLabel
-
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
-
-            // custom properties
-            maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.upperValue
-            busy: UM.SimulationView.busy
-            setValue: rangeHandle.setValueManually // connect callback functions
-        }
     }
 
     onHeightChanged : {
@@ -275,11 +263,12 @@ Item
         {
             id: upperHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - parent.width - width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
+            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            anchors.bottom: parent.top
+            anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, parent.top)
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
@@ -384,11 +373,12 @@ Item
         {
             id: lowerHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - parent.width - width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width + width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
+            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            anchors.top: parent.bottom
+            anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, parent.bottom)
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue

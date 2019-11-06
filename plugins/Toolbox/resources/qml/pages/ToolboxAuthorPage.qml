@@ -6,6 +6,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.1 as UM
 
+import "../components"
+
 Item
 {
     id: page
@@ -31,7 +33,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: details.icon_url || "../images/logobot.svg"
+            source: details.icon_url || "../../images/logobot.svg"
             mipmap: true
             anchors
             {

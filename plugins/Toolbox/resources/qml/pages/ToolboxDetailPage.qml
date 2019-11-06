@@ -8,6 +8,8 @@ import UM 1.1 as UM
 
 import Cura 1.1 as Cura
 
+import "../components"
+
 Item
 {
     id: page
@@ -44,7 +46,7 @@ Item
             {
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                source: details === null ? "" : (details.icon_url || "../images/logobot.svg")
+                source: details === null ? "" : (details.icon_url || "../../images/logobot.svg")
                 mipmap: true
             }
         }

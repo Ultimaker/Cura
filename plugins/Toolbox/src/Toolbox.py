@@ -86,7 +86,7 @@ class Toolbox(QObject, Extension):
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        self._view_page = "loading"  # type: str
+        self._view_page = "welcome"  # type: str
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
@@ -105,7 +105,6 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._updateRequestHeader)
         self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
@@ -125,6 +124,16 @@ class Toolbox(QObject, Extension):
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
+
+    ##  Go back to the start state (welcome screen or loading if no login required)
+    def _restart(self):
+        self._updateRequestHeader()
+        # For an Essentials build, login is mandatory
+        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
+            self.setViewPage("welcome")
+        else:
+            self.setViewPage("loading")
+            self._fetchPackageData()
 
     def _updateRequestHeader(self):
         self._request_headers = [
@@ -191,8 +200,11 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
         }
 
-        # Request the latest and greatest!
-        self._fetchPackageData()
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
+
+        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check"):
+            # Request the latest and greatest!
+            self._fetchPackageData()
 
     def _fetchPackageData(self):
         # Create the network manager:
@@ -212,9 +224,9 @@ class Toolbox(QObject, Extension):
         # Gather installed packages:
         self._updateInstalledModels()
 
+    # Displays the toolbox
     @pyqtSlot()
-    def browsePackages(self) -> None:
-        self._fetchPackageData()
+    def launch(self) -> None:
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -222,6 +234,8 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             Logger.log("e", "Unexpected error trying to create the 'Marketplace' dialog.")
             return
+
+        self._restart()
 
         self._dialog.show()
 
@@ -328,7 +342,7 @@ class Toolbox(QObject, Extension):
             self._package_used_qualities = package_used_qualities
             # Ask change to default material / profile
             if self._confirm_reset_dialog is None:
-                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+                self._confirm_reset_dialog = self._createDialog("dialogs/ToolboxConfirmUninstallResetDialog.qml")
             self.uninstallVariablesChanged.emit()
             if self._confirm_reset_dialog is None:
                 Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
