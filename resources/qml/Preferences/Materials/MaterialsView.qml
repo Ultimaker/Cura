@@ -46,7 +46,7 @@ TabView
         {
             return ""
         }
-        return linkedMaterials[0];
+        return linkedMaterials;
     }
 
     function getApproximateDiameter(diameter)

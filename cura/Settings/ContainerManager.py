@@ -341,9 +341,9 @@ class ContainerManager(QObject):
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
         same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(GUID = material_node.guid)
         if exclude_self:
-            return [metadata["name"] for metadata in same_guid if metadata["base_file"] != material_node.base_file]
+            return list({meta["name"] for meta in same_guid if meta["base_file"] != material_node.base_file})
         else:
-            return [metadata["name"] for metadata in same_guid]
+            return list({meta["name"] for meta in same_guid})
 
     ##  Unlink a material from all other materials by creating a new GUID
     #   \param material_id \type{str} the id of the material to create a new GUID for.
