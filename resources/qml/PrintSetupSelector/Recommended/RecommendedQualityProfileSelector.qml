@@ -160,14 +160,20 @@ Item
                     enabled: model.description !== undefined
                     acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
-                    onEntered:
+                    Timer
                     {
-                        base.showTooltip(
+                        id: intentTooltipTimer
+                        interval: 500
+                        running: false
+                        repeat: false
+                        onTriggered: base.showTooltip(
                             intentCategoryLabel,
                             Qt.point(-(intentCategoryLabel.x - qualityRow.x) - UM.Theme.getSize("thick_margin").width, 0),
                             model.description
                         )
                     }
+
+                    onEntered: intentTooltipTimer.start()
                     onExited: base.hideTooltip()
                 }
 
