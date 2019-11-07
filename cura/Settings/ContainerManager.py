@@ -339,7 +339,7 @@ class ContainerManager(QObject):
     #   \return A list of names of materials with the same GUID.
     @pyqtSlot("QVariant", bool, result = "QStringList")
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
-        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(guid = material_node.guid)
+        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(GUID = material_node.guid)
         if exclude_self:
             return [metadata["name"] for metadata in same_guid if metadata["base_file"] != material_node.base_file]
         else:
