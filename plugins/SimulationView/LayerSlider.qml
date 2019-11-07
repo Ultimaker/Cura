@@ -165,8 +165,9 @@ Item
     }
 
     onHeightChanged : {
-        // After a height change, the pixel-position of the lower handle is out of sync with the property value
+        // After a height change, the pixel-position of the handles is out of sync with the property value
         setLowerValue(lowerValue)
+        setUpperValue(upperValue)
     }
 
     // Upper handle
