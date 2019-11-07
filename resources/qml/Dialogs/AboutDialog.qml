@@ -41,6 +41,7 @@ UM.Dialog
             source: UM.Theme.getImage("logo")
             sourceSize.width: width
             sourceSize.height: height
+            fillMode: Image.PreserveAspectFit
 
             anchors.top: parent.top
             anchors.topMargin: parent.topPadding
