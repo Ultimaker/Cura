@@ -1892,3 +1892,7 @@ class CuraApplication(QtApplication):
             op.push()
             from UM.Scene.Selection import Selection
             Selection.clear()
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "CuraApplication":
+        return cast(CuraApplication, super().getInstance(**kwargs))
