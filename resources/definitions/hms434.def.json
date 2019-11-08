@@ -10,7 +10,6 @@
 
         "has_materials":         true,
         "has_machine_materials": true,
-        "preferred_material":    "generic_pla",
         "exclude_materials": [
  "chromatik_pla",
  "dsm_arnitel2045_175", "dsm_novamid1070_175",
@@ -18,8 +17,8 @@
  "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu",
  "fiberlogy_hd_pla",
  "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red",
- "generic_abs_175", "generic_cpe_175", "generic_hips_175", "generic_nylon_175", "generic_pc_175", "generic_petg_175",  "generic_pva_175", "generic_tpu_175",
- "imade3d_petg_175", "imade3d_pla_175",
+ "generic_abs_175", "generic_cpe_175", "generic_hips_175", "generic_nylon_175", "generic_pc_175", "generic_petg_175",  "generic_pla_175",  "generic_pva_175", "generic_tpu_175",
+ "imade3d_generic_petg_175", "imade3d_generic_pla_175",
  "innofill_innoflex60_175",
  "octofiber_pla",
  "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla",
@@ -55,7 +54,7 @@
     },
 
     "overrides": {
-        "machine_extruder_count":     {"default_value": 2 },
+        "machine_extruder_count":     {"default_value": 1 },
         "material_diameter":          {"default_value": 1.75 },
         "machine_heated_bed":         {"default_value": true },
         "machine_heated_build_volume":{"default_value": true },
@@ -69,7 +68,7 @@
         "material_bed_temp_wait":     {"default_value": false },
         "machine_max_feedrate_z":     {"default_value": 10 },
         "machine_acceleration":       {"default_value": 1000 },
-        "machine_start_gcode":        {"default_value": "\n;Neither Hybrid AM Systems nor any of Hybrid AM Systems representatives has any liabilities or gives any warranties on this .gcode file, or on any or all objects made with this .gcode file.\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\n\nG1 X-44 Y-100 F9000;go to wipe point\nG1 Z0 F900\nG1 Z0.2 F900\nM117 HMS434 Printing ...\n\n" },
+        "machine_start_gcode":        {"default_value": "\n;Neither Hybrid AM Systems nor any of Hybrid AM Systems representatives has any liabilities or gives any warranties on this .gcode file, or on any or all objects made with this .gcode file.\n\nM140 S{material_bed_temperature}\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\n\nG1 Z10 F900\nG1 X0 Y100 Z0 F12000\nG1 Z0.2 F900\n\nM190 S{material_bed_temperature}\nM117 HMS434 Printing ...\n\n" },
         "machine_end_gcode":          {"default_value": "" },
 
         "retraction_extra_prime_amount":      {"minimum_value_warning": "-2.0" },
@@ -108,11 +107,11 @@
         "infill_wipe_dist":      {"value": 0.0},
         "infill_before_walls":   {"value": false},
 
-        "material_print_temperature_layer_0": {"value": "material_print_temperature + 5"},
+        "material_print_temperature_layer_0": {"value": "material_print_temperature"},
         "material_initial_print_temperature": {"value": "material_print_temperature",
                                                "maximum_value_warning": "material_print_temperature + 15"},
         "material_final_print_temperature":   {"value": "material_print_temperature"},
-        "material_bed_temperature_layer_0":   {"value": "material_bed_temperature + 1"},
+        "material_bed_temperature_layer_0":   {"value": "material_bed_temperature"},
         "material_flow":                      {"value": "100"},
         "retraction_enable":                  {"value": true },
         "retract_at_layer_change":            {"value": true },
@@ -126,11 +125,11 @@
 
         "speed_print":             {"value": "50"},
         "speed_infill":            {"value": "speed_print"},
-        "speed_wall":              {"value": "(speed_print/5*3) if speed_print < 51 else speed_print"},
+        "speed_wall":              {"value": "(speed_print/5*3) if speed_print > 41 else speed_print"},
         "speed_wall_x":            {"value": "speed_wall"},
-        "speed_layer_0":           {"value": "(speed_print/5*4) if speed_print < 51 else speed_print"},
+        "speed_layer_0":           {"value": "(speed_print/5*4) if speed_print > 41 else speed_print"},
         "speed_topbottom":         {"value": "speed_layer_0"},
-        "speed_travel":            {"value": "150"},
+        "speed_travel":            {"value": "100"},
         "speed_travel_layer_0":    {"value": "speed_travel"},
         "speed_support_interface": {"value": "speed_topbottom"},
         "speed_z_hop":             {"value": 10},
@@ -140,7 +139,7 @@
         "jerk_print":              {"value": 10},
         "jerk_travel":             {"value": 10},
 
-        "retraction_hop_enabled": {"value": false},
+        "retraction_hop_enabled": {"value": true},
         "retraction_hop":         {"value": 1},
         "retraction_combing":     {"value": "'off'"},
 
@@ -158,7 +157,7 @@
         "support_interface_height":  {"value": 0.5},
         "support_interface_pattern": {"value": "'lines'"},
 
-        "adhesion_type":             {"value": "'none'"},
+        "adhesion_type":             {"value": "'skirt'"},
         "skirt_gap":                 {"value": 1},
         "skirt_brim_minimal_length": {"value": 50},
 

@@ -17,10 +17,10 @@
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": "\n;changing to tool1\nM109 T0 S{material_print_temperature}\nG1 X-18 Y-50 F9000\nG1 X150 Y10 F9000\n\n"
+          "default_value": "\n;changing to tool1\nM109 T0 S{material_print_temperature}\nG12 P1\n\n"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nG1 X150 Y10 F9000\nG1 X-20 Y-50 F9000\nG1 Y-100 F3000\n; ending tool1\n\n"
+           "default_value": "\nG1 X0 Y100 F12000\nG12 P1\n; ending tool1\n\n"
         }
     }
 }
