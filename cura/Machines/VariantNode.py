@@ -1,13 +1,12 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 
-from cura.Settings.cura_empty_instance_containers import empty_variant_container
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
 

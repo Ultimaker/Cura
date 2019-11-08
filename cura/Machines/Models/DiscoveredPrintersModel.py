@@ -11,7 +11,6 @@ from UM.Util import parseBool
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
     from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
     from cura.CuraApplication import CuraApplication
     from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice

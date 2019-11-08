@@ -5,7 +5,6 @@ import configparser # An input for some functions we're testing.
 import os.path # To find the integration test .ini files.
 import pytest # To register tests with.
 import unittest.mock # To mock the application, plug-in and container registry out.
-import os.path
 import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 

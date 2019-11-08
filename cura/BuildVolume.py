@@ -26,7 +26,6 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import math
-import copy
 
 from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
