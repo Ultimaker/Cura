@@ -1,6 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from UM.Application import Application
 from UM.Math.Polygon import Polygon
@@ -10,6 +10,9 @@ from UM.Resources import Resources
 from UM.Math.Color import Color
 from UM.Mesh.MeshBuilder import MeshBuilder  # To create a mesh to display the convex hull with.
 from UM.View.GL.OpenGL import OpenGL
+
+if TYPE_CHECKING:
+    from UM.Mesh.MeshData import MeshData
 
 
 class ConvexHullNode(SceneNode):
@@ -43,7 +46,7 @@ class ConvexHullNode(SceneNode):
 
         # The node this mesh is "watching"
         self._node = node
-        self._convex_hull_head_mesh = None
+        self._convex_hull_head_mesh = None  # type: Optional[MeshData]
 
         self._node.decoratorsChanged.connect(self._onNodeDecoratorsChanged)
         self._onNodeDecoratorsChanged(self._node)
