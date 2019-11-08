@@ -4,12 +4,12 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 
 ##  Make a SceneNode build plate aware CuraSceneNode objects all have this decorator.
 class BuildPlateDecorator(SceneNodeDecorator):
-    def __init__(self, build_plate_number = -1):
+    def __init__(self, build_plate_number: int = -1) -> None:
         super().__init__()
         self._build_plate_number = None
         self.setBuildPlateNumber(build_plate_number)
 
-    def setBuildPlateNumber(self, nr):
+    def setBuildPlateNumber(self, nr: int) -> None:
         # Make sure that groups are set correctly
         # setBuildPlateForSelection in CuraActions makes sure that no single childs are set.
         self._build_plate_number = nr
