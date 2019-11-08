@@ -53,7 +53,7 @@
             "default_value": "Marlin"
         },
         "gantry_height": {
-            "default_value": 0
+            "default_value": 15.0
         },
         "machine_extruder_count": {
             "default_value": 1
