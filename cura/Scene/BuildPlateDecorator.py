@@ -6,7 +6,7 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 class BuildPlateDecorator(SceneNodeDecorator):
     def __init__(self, build_plate_number: int = -1) -> None:
         super().__init__()
-        self._build_plate_number = None
+        self._build_plate_number = build_plate_number
         self.setBuildPlateNumber(build_plate_number)
 
     def setBuildPlateNumber(self, nr: int) -> None:
@@ -19,7 +19,7 @@ class BuildPlateDecorator(SceneNodeDecorator):
             for child in self._node.getChildren():
                 child.callDecoration("setBuildPlateNumber", nr)
 
-    def getBuildPlateNumber(self):
+    def getBuildPlateNumber(self) -> int:
         return self._build_plate_number
 
     def __deepcopy__(self, memo):
