@@ -493,7 +493,7 @@ class SimulationView(CuraView):
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
             renderer = self.getRenderer()
-            if renderer is not None:
+            if renderer is None:
                 return False
 
             renderer.addRenderPass(layer_pass)
