@@ -46,6 +46,7 @@ UM.PointingRectangle {
         anchors {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
+            alignWhenCentered: false
         }
 
         width: ((maximumValue + 1).toString().length + 1) * 8 * screenScaleFactor
@@ -57,8 +58,9 @@ UM.PointingRectangle {
         Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         style: TextFieldStyle {
-            textColor: UM.Theme.getColor("setting_control_text")
-            font: UM.Theme.getFont("small")
+            textColor: UM.Theme.getColor("text")
+            font: UM.Theme.getFont("default")
+            renderType: Text.NativeRendering
             background: Item { }
         }
 
