@@ -174,7 +174,11 @@ Item
                     }
 
                     onEntered: intentTooltipTimer.start()
-                    onExited: base.hideTooltip()
+                    onExited:
+                    {
+                        base.hideTooltip()
+                        intentTooltipTimer.stop()
+                    }
                 }
 
                 NoIntentIcon // This icon has hover priority over intentDescriptionHoverArea, so draw it above it.
