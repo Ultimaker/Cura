@@ -20,7 +20,7 @@
           "default_value": "\n;changing to tool1\nM109 T0 S{material_print_temperature}\nG12 P1\n\n"
         },
         "machine_extruder_end_code": {
-           "default_value": "\nG1 X0 Y100 F12000\nG12 P1\n; ending tool1\n\n"
+           "default_value": "\nG1 X-30 Y100 F12000\nM109 R{material_standby_temperature}\nG12 P1\n; ending tool1\n\n"
         }
     }
 }
