@@ -533,7 +533,7 @@ class SimulationView(CuraView):
                 self._nozzle_node.setParent(None)
 
             renderer = self.getRenderer()
-            if renderer is not None:
+            if renderer is None:
                 return False
 
             if self._layer_pass is not None:
