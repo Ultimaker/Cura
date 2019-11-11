@@ -2,6 +2,7 @@ import collections
 from typing import Dict, Optional
 
 from UM.i18n import i18nCatalog
+from typing import Dict, Optional
 catalog = i18nCatalog("cura")
 
 
