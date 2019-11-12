@@ -41,7 +41,7 @@ UM.PointingRectangle {
 
     TextMetrics {
         id:     maxValueMetrics
-        font:   UM.Theme.getFont("default")
+        font:   valueLabel.font
         text:   maximumValue + 1 // layers are 0 based, add 1 for display value
 
     }
