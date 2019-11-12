@@ -26,9 +26,7 @@
                 [32, 34]
             ]
         },
-         "machine_start_gcode":
-        {
-            "default_value": "
+         "machine_start_gcode": { "default_value": "
             ; Ender 3 Custom Start G-code
             G92 E0 ; Reset Extruder
             G28 ; Home all axes
