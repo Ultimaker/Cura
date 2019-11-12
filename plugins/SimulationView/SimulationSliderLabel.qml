@@ -55,6 +55,7 @@ UM.PointingRectangle {
             alignWhenCentered: false
         }
 
+        width: maxValueMetrics.width + UM.Theme.getSize("default_margin").width
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignHCenter
 
@@ -66,8 +67,7 @@ UM.PointingRectangle {
             textColor: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
-            // valueLabel width
-            background: Item { implicitWidth: maxValueMetrics.width + UM.Theme.getSize("default_margin").width }
+            background: Item {  }
         }
 
         onEditingFinished: {
