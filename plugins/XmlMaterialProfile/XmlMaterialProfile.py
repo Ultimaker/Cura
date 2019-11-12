@@ -721,7 +721,7 @@ class XmlMaterialProfile(InstanceContainer):
 
                         if is_new_material:
                             if ContainerRegistry.getInstance().isReadOnly(self.getId()):
-                                ContainerRegistry.getInstance().setReadOnlyExplicitly(new_hotend_material.getId())
+                                ContainerRegistry.getInstance().setExplicitReadOnly(new_hotend_material.getId())
                             containers_to_add.append(new_hotend_material)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
