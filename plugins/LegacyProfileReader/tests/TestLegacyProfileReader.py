@@ -15,6 +15,7 @@ import UM.Settings.InstanceContainer # To intercept the serialised data from the
 
 import LegacyProfileReader as LegacyProfileReaderModule # To get the directory of the module.
 
+
 @pytest.fixture
 def legacy_profile_reader():
     try:
@@ -161,7 +162,7 @@ def test_read(legacy_profile_reader, file_name):
     plugin_registry.getPluginPath = unittest.mock.MagicMock(return_value = os.path.dirname(LegacyProfileReaderModule.__file__))
 
     # Mock out the resulting InstanceContainer so that we can intercept the data before it's passed through the version upgrader.
-    def deserialize(self, data): # Intercepts the serialised data that we'd perform the version upgrade from when deserializing.
+    def deserialize(self, data, filename): # Intercepts the serialised data that we'd perform the version upgrade from when deserializing.
         global intercepted_data
         intercepted_data = data
 

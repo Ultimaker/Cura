@@ -720,6 +720,8 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self) -> None:
+        self._plugin_registry.setCheckIfTrusted(ApplicationMetadata.IsEnterpriseVersion)
+
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
 

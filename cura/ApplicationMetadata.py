@@ -49,7 +49,6 @@ try:
 except ImportError:
     CuraDebugMode = DEFAULT_CURA_DEBUG_MODE
 
-
 # CURA-6569
 # Various convenience flags indicating what kind of Cura build it is.
 __ENTERPRISE_VERSION_TYPE = "enterprise"
