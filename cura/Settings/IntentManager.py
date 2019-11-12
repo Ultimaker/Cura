@@ -36,8 +36,12 @@ class IntentManager(QObject):
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
-        material_node = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials[material_base_file]
         intent_metadatas = []
+        materials = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
+        if material_base_file not in materials:
+            return intent_metadatas
+
+        material_node = materials[material_base_file]
         for quality_node in material_node.qualities.values():
             for intent_node in quality_node.intents.values():
                 intent_metadatas.append(intent_node.getMetadata())
