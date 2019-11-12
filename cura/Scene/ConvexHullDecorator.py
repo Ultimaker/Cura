@@ -175,10 +175,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 self._convex_hull_node = None
             return
 
-        convex_hull = self.getConvexHull()
+        if self._global_stack \
+                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+                and not self.hasGroupAsParent(self._node):
+            # In one-at-a-time mode, every printed object gets it's own adhesion
+            printing_area = self.getAdhesionArea()
+        else:
+            printing_area = self.getConvexHull()
+
         if self._convex_hull_node:
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, self._raft_thickness, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, printing_area, self._raft_thickness, root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key: str, property_name: str) -> None:
