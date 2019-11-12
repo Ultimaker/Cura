@@ -264,7 +264,7 @@ Item
         {
             id: upperHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            height: sliderRoot.handleSize
             anchors.bottom: parent.top
             anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
@@ -374,7 +374,7 @@ Item
         {
             id: lowerHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("small_margin").height
+            height: sliderRoot.handleSize
             anchors.top: parent.bottom
             anchors.topMargin: UM.Theme.getSize("narrow_margin").height
             anchors.horizontalCenter: parent.horizontalCenter
