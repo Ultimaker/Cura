@@ -1,7 +1,6 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
-import QtQuick 2.2
+import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -40,6 +39,13 @@ UM.PointingRectangle {
         anchors.fill: parent
     }
 
+    TextMetrics {
+        id:     maxValueMetrics
+        font:   UM.Theme.getFont("default")
+        text:   maximumValue + 1 // layers are 0 based, add 1 for display value
+
+    }
+
     TextField {
         id: valueLabel
 
@@ -49,7 +55,6 @@ UM.PointingRectangle {
             alignWhenCentered: false
         }
 
-        width: ((maximumValue + 1).toString().length + 1) * UM.Theme.getFont("default").pixelSize
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
         horizontalAlignment: TextInput.AlignHCenter
 
@@ -61,7 +66,8 @@ UM.PointingRectangle {
             textColor: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             renderType: Text.NativeRendering
-            background: Item { }
+            // valueLabel width
+            background: Item { implicitWidth: maxValueMetrics.width + UM.Theme.getSize("default_margin").width }
         }
 
         onEditingFinished: {
