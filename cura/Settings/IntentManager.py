@@ -2,9 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
-from typing import Any, Dict, List, Set, Tuple, TYPE_CHECKING
-import cura.CuraApplication
+from typing import Any, Dict, List, Optional, Set, Tuple, TYPE_CHECKING
+
 from UM.Logger import Logger
+from UM.Settings.InstanceContainer import InstanceContainer
+
+import cura.CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_intent_container
 
@@ -35,7 +38,7 @@ class IntentManager(QObject):
     #   \return A list of metadata dictionaries matching the search criteria, or
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
-        intent_metadatas = []
+        intent_metadatas = []  # type: List[Dict[str, Any]]
         materials = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
         if material_base_file not in materials:
             return intent_metadatas
