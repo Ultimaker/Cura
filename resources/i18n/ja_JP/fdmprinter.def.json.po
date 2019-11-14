@@ -1076,12 +1076,12 @@ msgstr "最底面のレイヤー数。下の厚さで計算すると、この値
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers label"
 msgid "Initial Bottom Layers"
-msgstr ""
+msgstr "初期底面レイヤー"
 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
+msgstr "ビルドプレートから上にある初期底面レイヤーの数。下の厚さで計算すると、この値は整数に変換されます。"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -4107,7 +4107,7 @@ msgstr "最小サポートインターフェイス領域"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "サポートインターフェイスポリゴンの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4117,7 +4117,7 @@ msgstr "最小サポートルーフ領域"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "サポートのルーフの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4127,7 +4127,7 @@ msgstr "最小サポートフロア領域"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "サポートのフロアの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -5660,22 +5660,22 @@ msgstr "各線分に導入されたランダム点間の平均距離。ポリゴ
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
-msgstr ""
+msgstr "流量補正時の最大抽出オフセット"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr ""
+msgstr "流量の変化を補正するためにフィラメントを移動する最大距離（mm）。"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr ""
+msgstr "流量補正要因"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr ""
+msgstr "流量の変化を補正するためにフィラメントを移動する距離。フィラメントが1秒の押出で移動する距離の割合として指定します。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5967,12 +5967,12 @@ msgstr "次のレイヤーの高さを前のレイヤーの高さと比べた差
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Topography Size"
-msgstr ""
+msgstr "適応レイヤーのトポグラフィーサイズ"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr ""
+msgstr "隣接する2つのレイヤー間の目標水平距離。この設定を小さくすると、レイヤーのエッジが近づくように薄いレイヤーが使用されます。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5982,7 +5982,7 @@ msgstr "張り出し壁アングル"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr ""
+msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用してプリントされます。値が90の場合は、オーバーハング壁として処理されません。サポートによってサポートされているオーバーハングも、オーバーハングとして処理されません。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6362,17 +6362,17 @@ msgstr "Small Feature Speed"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr ""
+msgstr "小型形体の初期レイヤー速度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

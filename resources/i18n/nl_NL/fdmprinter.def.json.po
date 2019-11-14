@@ -1033,12 +1033,13 @@ msgstr "Het aantal bodemlagen. Wanneer deze waarde wordt berekend aan de hand va
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers label"
 msgid "Initial Bottom Layers"
-msgstr ""
+msgstr "Eerste onderste lagen"
 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
+msgstr "Het aantal initiële onderste lagen, vanaf de bouwplaat naar boven. Wanneer deze waarde wordt berekend aan de hand van de dikte van de bodem, wordt deze"
+" afgerond naar een geheel getal."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -3992,7 +3993,7 @@ msgstr "Minimumgebied verbindingsstructuur"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Minimumgebied voor verbindingspolygonen. Polygonen met een gebied dat kleiner is dan deze waarde worden geprint als normale ondersteuning."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4002,7 +4003,7 @@ msgstr "Minimumgebied supportdak"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Minimumgebied voor de supportdaken. Polygonen met een gebied dat kleiner is dan deze waarde worden geprint als normale ondersteuning."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4012,7 +4013,7 @@ msgstr "Minimumgebied supportvloer"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Minimumgebied voor de supportvloeren. Polygonen met een gebied dat kleiner is dan deze waarde worden geprint als normale ondersteuning."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -5516,22 +5517,23 @@ msgstr "De gemiddelde afstand tussen de willekeurig geplaatste punten op elk lij
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
-msgstr ""
+msgstr "Maximale extrusieoffset voor doorvoercompensatie"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr ""
+msgstr "De maximale afstand in mm om het filament te verplaatsen om veranderingen in de stroomsnelheid te compenseren."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr ""
+msgstr "Doorvoercompensatiefactor"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr ""
+msgstr "Hoe ver het filament moet worden verplaatst om veranderingen in de stroomsnelheid te compenseren, als een percentage van hoe ver het filament in één seconde"
+" extrusie zou bewegen."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5825,12 +5827,13 @@ msgstr "Het hoogteverschil tussen de hoogte van de volgende laag ten opzichte va
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Topography Size"
-msgstr ""
+msgstr "Topografieformaat aanpasbare lagen"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr ""
+msgstr "Horizontale doelafstand tussen twee aangrenzende lagen. Als u deze instelling verkleint, worden dunnere lagen gebruikt om de randen van de lagen dichter"
+" bij elkaar te brengen."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5840,7 +5843,8 @@ msgstr "Hoek Overhangende Wand"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr ""
+msgstr "Wanden die overhangen in een hoek groter dan deze waarde, worden geprint met instellingen voor overhangende wanden. Wanneer de waarde 90 is, wordt een"
+" wand niet als een overhangende wand gezien. Een overhang die wordt ondersteund door ondersteuning wordt ook niet als overhang gezien."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6220,17 +6224,17 @@ msgstr "Klein kenmerksnelheid"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr ""
+msgstr "Kleine kenmerken eerste laagsnelheid"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

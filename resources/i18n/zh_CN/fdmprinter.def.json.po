@@ -1034,12 +1034,12 @@ msgstr "底层的数量。 在按底层厚度计算时，该值舍入为整数�
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers label"
 msgid "Initial Bottom Layers"
-msgstr ""
+msgstr "初始底层数"
 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
+msgstr "从构建板向上算起的初始底层数。在按底层厚度计算时，该值四舍五入为整数。"
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -3993,7 +3993,7 @@ msgstr "最小支撑接触面面积"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "支撑接触面多边形的最小面积。面积小于此值的多边形将打印为一般支撑。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4003,7 +4003,7 @@ msgstr "最小支撑顶板面积"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "支撑顶板的最小面积。面积小于此值的多边形将打印为一般支撑。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4013,7 +4013,7 @@ msgstr "最小支撑底板面积"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "支撑底板的最小面积。面积小于此值的多边形将打印为一般支撑。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -5517,22 +5517,22 @@ msgstr "在每个走线部分引入的随机点之间的平均距离。 注意�
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
-msgstr ""
+msgstr "流量补偿最大挤出偏移值"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr ""
+msgstr "移动线材以补偿流量变化的最大距离（以毫米为单位）。"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr ""
+msgstr "流量补偿因子"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr ""
+msgstr "为补偿流量变化而将线材移动的距离，在挤出一秒钟的情况下占线材移动距离的百分比。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5826,12 +5826,12 @@ msgstr "下一层与前一层的高度差。"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Topography Size"
-msgstr ""
+msgstr "自适应图层地形尺寸"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr ""
+msgstr "两个相邻图层之间的目标水平距离。减小此设置的值会使要使用的图层变薄，从而使图层的边缘距离更近。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5841,7 +5841,7 @@ msgstr "悬垂壁角度"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr ""
+msgstr "悬垂超过此角度的壁将使用悬垂壁设置打印。该值为 90 时，不会将任何壁视为悬垂。受到支撑支持的悬垂也不会被视为悬垂。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6221,17 +6221,17 @@ msgstr "微小特征速度"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr ""
+msgstr "微小特征初始层速度"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

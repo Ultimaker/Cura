@@ -1033,12 +1033,12 @@ msgstr "Alt katman sayısı. Bu değer, alt kalınlığıyla hesaplandığında 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers label"
 msgid "Initial Bottom Layers"
-msgstr ""
+msgstr "İlk Alt Katmanlar"
 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
+msgstr "Yapı plakasından itibaren ilk alt katman sayısı Bu değer, alt kalınlığıyla hesaplandığında tam sayıya yuvarlanır."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -3992,7 +3992,7 @@ msgstr "Minimum Destek Arayüzü Bölgesi"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Destek arayüzü çokgenlerinin minimum alan boyutu. Alanı bu değerden küçük olan poligonlar normal destekle basılacaktır."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4002,7 +4002,7 @@ msgstr "Minimum Destek Çatısı Bölgesi"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Destek çatılarının minimum alan boyutu. Alanı bu değerden küçük olan poligonlar normal destekle basılacaktır."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4012,7 +4012,7 @@ msgstr "Minimum Destek Zemini Bölgesi"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Destek tabanlarının minimum alan boyutu. Alanı bu değerden küçük olan poligonlar normal destekle basılacaktır."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -5516,22 +5516,23 @@ msgstr "Her bir hat dilimine tanıtılan rastgele noktalar arasındaki ortalama 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
-msgstr ""
+msgstr "Akış hızı dengelemesi maksimum ekstrüzyon kayması"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr ""
+msgstr "Akış hızındaki değişiklikleri telafi etmek için filamentin hareket ettirileceği mm cinsinden maksimum mesafe."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr ""
+msgstr "Akış hızı dengeleme çarpanı"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr ""
+msgstr "Akış hızındaki değişiklikleri telafi edebilmek için filamentin bir saniyelik ekstrüzyonda hareket ettirileceği mesafenin yüzdesi olarak filamentin ne kadar"
+" uzağa hareket ettirileceği."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5825,12 +5826,13 @@ msgstr "Bir önceki ve bir sonraki katman yüksekliği arasındaki yükseklik fa
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Topography Size"
-msgstr ""
+msgstr "Uyarlanabilir Katman Topografisi Boyutu"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr ""
+msgstr "İki bitişik katman arasındaki hedef yatay mesafe. Bu ayarın azaltılması, katmanların kenarlarını birbirine yakınlaştırmak için daha ince katmanlar kullanılmasına"
+" neden olur."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5840,7 +5842,8 @@ msgstr "Çıkıntılı Duvar Açısı"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr ""
+msgstr "Bu açıdan daha yüksek çıkıntıya sahip duvarlar çıkıntılı duvar ayarları kullanılarak basılacaktır. Değer 90 ise hiçbir duvarda çıkıntı olmadığı varsayılacaktır."
+" Destek ile desteklenen çıkıntılar da çıkıntı olarak değerlendirilmeyecektir."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6220,17 +6223,17 @@ msgstr "Küçük Özellik Hızı"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr ""
+msgstr "Küçük Özellik İlk Katman Hızı"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
