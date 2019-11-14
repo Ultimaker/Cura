@@ -387,6 +387,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_extruders_share_heater":
+                {
+                    "label": "Extruders Share Heater",
+                    "description": "Whether the extruders share a single heater rather than each extruder having its own heater.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_disallowed_areas":
                 {
                     "label": "Disallowed Areas",
@@ -2172,7 +2182,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_nozzle_temp_enabled",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2187,7 +2197,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_nozzle_temp_enabled",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
