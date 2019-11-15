@@ -15,7 +15,7 @@
             "has_variants": true,
             "preferred_variant_name": "Standard 0.6",
             "preferred_material": "emotiontech_pla",
-            "preferred_quality_type": "e",
+            "preferred_quality_type": "c",
             "variants_name": "Print Head",
             "machine_extruder_trains": 
                 { 
