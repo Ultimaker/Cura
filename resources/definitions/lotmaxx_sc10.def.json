@@ -9,7 +9,7 @@
         "machine_height": { "default_value": 280 },
         "machine_head_polygon": { "default_value": [
                 [-32,11],
-                [-32,-32], 
+                [-32,-32],
                 [28,-32],
                 [28,11]
             ]
@@ -138,7 +138,7 @@
 
         "platform": "lotmaxx_sc_10_20_platform.stl",
         "machine_extruder_trains": {
-            "0": "creality_base_extruder_0"
+            "0": "lotmaxx_sc10_extruder_0"
         },
         "has_materials": true,
         "preferred_quality_type": "normal"
