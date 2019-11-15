@@ -1,9 +1,9 @@
 # Cura PostProcessingPlugin
-# Author:   Daniuel Spannbauer
-# Date:     November 3, 2019
+# Author:   Spanni
+# Date:     November 15, 2019
 
 # Description:  This plugin generates and inserts code including a image of the
-#               slices part.
+#               sliced part.
 
 
 from ..Script import Script
@@ -58,22 +58,19 @@ class ChituMods(Script):
 
     def execute(self, in_data):
         # we get a list, each list item is the command set for a complete layer
-        self.out_data = in_data
+        out_data = in_data
         if self.getSettingValueByKey("insert_preview_image"):
-            self.img_data=[]
-            self._createSnapshot()
-            self.img_data.append('\n'.join(self.generate_image_code(self._snapshot))) # create one long string and add it as item to a list
-            self.img_data[0] += ('\n') # add an additional newline, looks better
-            self.img_data.extend(in_data)
-            self.out_data=self.img_data      
-        else:
-            self.out_data=in_data
+            img_data=[]
+            img_data.append('\n'.join(self.generate_image_code(self._createSnapshot()))) # create one long string and add it as item to a list
+            img_data[0] += ('\n') # add an additional newline, looks better
+            img_data.extend(in_data)
+            out_data=img_data      
 
         if self.getSettingValueByKey("insert_time_info"):
             Logger.log("d", "Modifying time info for chitu ...")
-            time_data=self.insert_time_infos(self.out_data)
-            self.out_data=time_data
-        return self.out_data
+            time_data=self.insert_time_infos(out_data)
+            out_data=time_data
+        return out_data
     
     
 
@@ -94,18 +91,17 @@ class ChituMods(Script):
                 return_data.append('\n'.join(lines))
             else:
                 return_data.append(gcode)
-
         return return_data        
         
 
     def _createSnapshot(self, *args):
         Logger.log("d", "Creating tronxy thumbnail image ...")
         try:
-            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+            snapshot = Snapshot.snapshot(width = 300, height = 300)
         except Exception:
             Logger.logException("w", "Failed to create snapshot image")
-            self._snapshot = None  
-
+            snapshot = None  
+        return snapshot
    
 
     def generate_image_code(self, image,startX=0, startY=0, endX=300, endY=300):
