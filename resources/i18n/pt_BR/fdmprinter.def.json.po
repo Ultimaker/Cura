@@ -3993,7 +3993,7 @@ msgstr "Área Mínima de Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr "Mínimo tamanho de área para os polígonos da interface de suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
+msgstr "Área mínima para os polígonos da interface de suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4003,7 +4003,7 @@ msgstr "Área Mínima de Teto de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr "Mínimo tamanho de área para os tetos do suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
+msgstr "Área mínima para os tetos do suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4013,7 +4013,7 @@ msgstr "Área Mínima de Base de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr "Mínimo tamanho de área para as bases do suport. Polígonos que têm área menor que este valor serão impressos como suporte normal."
+msgstr "Área mínima para as bases do suport. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
