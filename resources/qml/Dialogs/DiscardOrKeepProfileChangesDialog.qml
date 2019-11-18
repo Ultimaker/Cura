@@ -100,7 +100,6 @@ UM.Dialog
                 {
                     text: styleData.value
                     font: UM.Theme.getFont("system")
-                    color: UM.Theme.getColor("setting_control_disabled_text")
                 }
             }
 
