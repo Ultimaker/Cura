@@ -1,3 +1,85 @@
+[4.4.0]
+*Intent profiles. 
+What’s the intent of your print? A rapid prototype? A visual prototype? An end-use part with specific holes sizes? Intent profiles accelerate the CAD-CAM workflow by preconfiguring all the right settings in Ultimaker Cura for each of these use cases. Simply select a profile that matches the intent of your design, slice, and you’re ready to print immediately, without the need to adjust the typical settings. For now, there are three Intent profiles: 
+*‘Draft’ 
+Intended for initial prototypes and concept validation, and will print your design in the shortest time possible. 
+*‘Engineering’
+Intended for high-dimensional accuracy, to print functional prototypes and mechanical end-use parts. 
+*‘Visual’
+Intended for visual prototypes and prints that need excellent aesthetic quality. 
+For now, these profiles work for the Ultimaker S5 and Ultimaker S3 with Ultimaker PLA, Tough PLA, and ABS materials, and include PVA and Breakaway combinations. More profiles will follow over time. 
+
+*Per-model settings. 
+Per-model settings are a set of very powerful features for users who need to tweak specific settings in specific parts of the model. In previous releases these were buried in the interface somewhat, so this release has made them more discoverable with clear icons in the toolbar, so everyone can discover them. The per-model settings can now be accessed both when working from the recommended and the custom print settings mode. 
+
+*Specify network printer. 
+When connected to an Ultimaker Connect group of multiple printers, Ultimaker Cura once again shows a pop-up to select a designated printer for your printjob. This functionality had been disabled in the last version to ensure reliability when printing remotely. 
+
+*Performance improvements. 
+Various tweaks under the hood for a snappier, more responsive interface. This improvement is most noticeable when switching extruders, print profiles, hovering over tooltips and when scrolling through the print settings list. 
+
+*SDK version increment. 
+The changes made in version 4.4 (mainly for intents but also other things) are so thorough that we needed to do a major increment of the SDK version. Contributors – please update your packages! 
+
+*Pause at height message. 
+A setting has been added to the pause at height script that displays a custom message on screen. This can be used to give instructions to operators to perform an action during the pause, e.g. ‘Place 626 bearings in slots now’. 
+
+*Restore window preference. 
+https://github.com/fieldOfView has contributed a new preference around restoring the previous window position/size to the last used position/size on start up. This would be a workaround for those setups where starting Ultimaker Cura on a secondary screen will prevent it from working. 
+
+*Group Linux instances. 
+https://github.com/MatthewCroughan has contributed a fix so that multiple instances of Ultimaker Cura get grouped in one application group in Gnome (the Linux front-end). It adds a bit of metadata to the .desktop file so that the windows can be grouped. 
+
+* Known bugs 
+Cura not starting on Windows 10. Some users started reporting that Ultimaker Cura 4.3 and higher did not start properly, fur unknown reasons. We have implemented some code to get a better understanding of the issue, but we have not been able to fix it just yet.  
+As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker Cura 4.4”. Right click Cura.exe and select ‘properties’. Click the ‘compatibility’ tab and select “Run This Program in Compatibility Mode For: Windows 8”. If this does not fix your issue, please contact your service provider. 
+
+* Minor improvements 
+ - Reweighting stages.   
+ - Small plug-in system improvements
+ - Add RetractContinue post-processing script 
+ - Add DisplayRemainingTimeOnLCD post-processing script
+ - Thickness of the very bottom layer 
+
+* Updated third party printers 
+ - Strateo3D. https://github.com/KOUBeMT has updated the machine profile for Strateo3D. 
+ - Key3D Tyro. https://github.com/DragonJe has created a definition, extruder, and profiles for the Key3D Tyro. 
+ - Prusa i3 MK3/MK3S printer. https://github.com/samirabaza has contributed the latest definition for Prusa i3 MK3/MK3s made by Prusa Research with a minor modification to fit in Prusa folder under "add printer". 
+ - Hellbot printer. https://github.com/F-Fischer has contributed a machine profile for the Hellbot printer.
+ - HMS434 update
+ - Add CR-10 MAX and Ender-5 plus
+ - Modify Cubicon device profile 
+ - Add Cubicon printer definitions
+
+* Bug fixes
+ - Re-calculating retraction-safe area with every wall
+ - Fix Normals after Mirror Operation
+ - Crash when loading PJ with creality
+ - Per-object setting stacks checked for errors even if they are empty
+ - getAngleLeft gives wrong results when lines are colinear  
+ - Lots of qml warnings regarding MaterialsTypeSelection.qml
+ - PR: Avoid unwanted travel with ironing
+ - PR: Remove all travel moves < 5um
+ - AMF files are mirrored
+ - Changes to Material diameter do not get applied
+ - Long string of text on profile names goes through borders
+ - CURA 4.3 - Crash when connecting networked Ultimaker S5 
+ - Layer slider falls behind action panel, on low resolution displays only.
+ - Deleting profiles will not update the size of the drop-down menu
+ - Create / Update / Discard options are enabled when they should be greyed out
+ - Scroll bar for profile dropdown
+ - Can't change printhead X/Y Min/Max
+ - Syncing to a printer that has both nozzles disabled causes Cura to crash
+ - Project file open behavior preference is ignored when opening from command line.
+ - Create CFFF printer and change nozzle diameter will cause a crash
+ - Pause At Height resumes with wrong speed
+ - One-at-a-time ordering wrong
+ - Fix license extraction from CuraPackage
+ - Invalid firmware for UM2 update continues forever
+ - Infill inset too much with connected lines and thicker infill
+ - Reworked line polygon crossings
+ - Build Interface If Support Is Present
+
 [4.3.0]
 *Ultimaker S3. 
 This release includes a new profile for our latest S-line of 3D printers: the Ultimaker S3. Eagle-eyed beta testers may have noticed this extra printer profile in the beta release, too. Well done to those who spotted it. Learn more about the Ultimaker S3 by reading the blog on Ultimaker.com. 
@@ -72,7 +154,7 @@ Improved code quality resulting in improved stability.
 - Settings not updating in GUI with inheritance. Fixed settings not updating GUI with inheritance. 
 - Prevent 'generic'-part in name of specific materials. Introduced checks for ‘generic’ material types to help material categorization. 
 - Hide temperature settings. The "Default Print Temperature" setting is currently editable, but editing this setting can cause problems with temperatures later especially when you have it in your custom profile. We decided to hide this setting so users can no longer edit it in the later releases to avoid confusion. The "Default Build Plate Temperature" has also been hidden because it causes a similar issue. 
-- Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
+- Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
 - Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg. 
 - Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle. 
 - “Print via Cloud” is no longer possible without an Internet connection
@@ -188,7 +270,7 @@ Gcode now contains comments to indicate when a prime tower is printed, like so: 
 Previously, the maximum deviation was hard-coded in CuraEngine to be half of the maximum resolution. A new setting has been added that sets the maximum allowed deviation from the original polygon when reducing model resolution. If line segments are shorter than the maximum resolution, they are removed, unless this introduces a deviation greater than the maximum deviation.
 
 *Gyroid support.
-Smartavionics has contributed a new option for a gyroid support pattern, similar to his gyroid infill contribution. A gyroid pattern is relatively efficient with material, so gyroid patterns permeable to water can dissolve faster. It’s also easier to pull gyroid structures off your model with pliers compared to some other support patterns. https://github.com/smartavionics
+Smartavionics has contributed a new option for a gyroid support pattern, similar to his gyroid infill contribution. A gyroid pattern is relatively efficient with material, so gyroid patterns permeable to water can dissolve faster. It’s also easier to pull gyroid structures off your model with pliers compared to some other support patterns. https://github.com/smartavionics
 
 *Purchase materials.
 The Marketplace now includes a direct link to a site where users can buy specific materials to work with the corresponding print profile. The link is specified by the print profile supplier through the contributor portal.
