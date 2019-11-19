@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Cura 4.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-11-05 13:13+0000\n"
-"PO-Revision-Date: 2019-09-22 21:19-0300\n"
-"Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
-"Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
+"PO-Revision-Date: 2019-11-16 07:10-0300\n"
+"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
+"Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1034,12 +1034,12 @@ msgstr "O número de camadas inferiores. Quando calculado da espessura inferior,
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers label"
 msgid "Initial Bottom Layers"
-msgstr ""
+msgstr "Camadas Inferiores Iniciais"
 
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr ""
+msgstr "O número de camadas inferiores iniciais da plataforma de impressão pra cima. Quanto calculado a partir da espessura inferior, esse valor é arrendado para um número inteiro."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -3993,7 +3993,7 @@ msgstr "Área Mínima de Interface de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
 msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Área mínima para os polígonos da interface de suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -4003,7 +4003,7 @@ msgstr "Área Mínima de Teto de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
 msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Área mínima para os tetos do suporte. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -4013,7 +4013,7 @@ msgstr "Área Mínima de Base de Suporte"
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
 msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
-msgstr ""
+msgstr "Área mínima para as bases do suport. Polígonos que têm área menor que este valor serão impressos como suporte normal."
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -5517,22 +5517,22 @@ msgstr "A distância média entre os pontos aleatórios introduzidos em cada seg
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
 msgid "Flow Rate Compensation Max Extrusion Offset"
-msgstr ""
+msgstr "Máximo Deslocamento de Extrusão de Compensação de Taxa de Fluxo"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
 msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
-msgstr ""
+msgstr "A distância máxima em mm para mover o filamento para compensar mudanças na taxa de fluxo."
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
 msgid "Flow Rate Compensation Factor"
-msgstr ""
+msgstr "Fator de Compensação da Taxa de Fluxo"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr ""
+msgstr "Em quanto mover o filamento para compensar mudanças na taxa de fluxo, como uma porcentagem da distância que o filamento seria movido em um segundo de extrusão."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5826,12 +5826,12 @@ msgstr "A diferença em tamanho da próxima camada comparada à anterior."
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
 msgid "Adaptive Layers Topography Size"
-msgstr ""
+msgstr "Tamanho da Topografia de Camadas Adaptativas"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr ""
+msgstr "Trata da distância horizontal entre duas camadas adjacentes. Reduzir este ajuste faz com que camadas mais finas sejam usadas para reunir as bordas das camadas mais perto uma da outra."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5841,7 +5841,7 @@ msgstr "Ângulo de Parede Pendente"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr ""
+msgstr "Paredes que pendem por mais do que esse ângulo serão impressas usando ajustes de paredes pendentes. Quando este valor for 90, nenhuma parede será tratada como pendente. Seções pendentes que têm suportes também não serão tratadas como pendentes."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6221,17 +6221,17 @@ msgstr "Velocidade de Aspecto Pequeno"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Aspectos pequenos serão impressos nessa porcentagem da velocidade normal. Impressão mais lenta pode ajudar com aderência e precisão."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
 msgid "Small Feature Initial Layer Speed"
-msgstr ""
+msgstr "Velocidade de Camada Inicial de Aspecto Pequeno"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr ""
+msgstr "Aspectos pequenos na primeira camada serão impressos nesta porcentagem de sua velocidade de impressão normal. Impressão mais lenta pode ajudar com aderência e precisão."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

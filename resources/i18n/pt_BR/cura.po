@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: Cura 4.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-11-05 13:13+0100\n"
-"PO-Revision-Date: 2019-09-17 06:50-0300\n"
-"Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
-"Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
+"PO-Revision-Date: 2019-11-15 16:30-0300\n"
+"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
+"Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -279,17 +279,17 @@ msgstr "Erro de impressão"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr ""
+msgstr "Novas impressoras de nuvem encontradas"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr ""
+msgstr "Novas impressoras foram encontradas conectadas à sua conta; você as pode ver na sua lista de impressoras descobertas."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr ""
+msgstr "Não mostrar essa mensagem novamente"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -493,7 +493,7 @@ msgstr "Imagem GIF"
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
-msgstr ""
+msgstr "Open Compressed Triangle Mesh"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:19
 msgctxt "@item:inlistbox"
@@ -735,7 +735,7 @@ msgstr "Não Suportado"
 #: /home/ruben/Projects/Cura/cura/Settings/cura_empty_instance_containers.py:55
 msgctxt "@info:No intent profile selected"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:196
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:125
@@ -987,37 +987,37 @@ msgstr "Cancelar"
 #: /home/ruben/Projects/Cura/cura/Machines/Models/QualityManagementModel.py:320
 msgctxt "@label"
 msgid "Default"
-msgstr ""
+msgstr "Default"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:39
 msgctxt "@label"
 msgid "Visual"
-msgstr ""
+msgstr "Visual"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:40
 msgctxt "@text"
 msgid "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality."
-msgstr ""
+msgstr "O perfil visual é projetado para imprimir protótipos e modelos virtuais com o objetivo de alta qualidade visual e de superfície."
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:43
 msgctxt "@label"
 msgid "Engineering"
-msgstr ""
+msgstr "Engenharia"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:44
 msgctxt "@text"
 msgid "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances."
-msgstr ""
+msgstr "O perfil de engenharia é projetado para imprimir protótipos funcionais e partes de uso final com o objetivo de melhor precisão e tolerâncias mais estritas."
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:47
 msgctxt "@label"
 msgid "Draft"
-msgstr ""
+msgstr "Rascunho"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:48
 msgctxt "@text"
 msgid "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction."
-msgstr ""
+msgstr "O perfil de rascunho é projetado para imprimir protótipos iniciais e validações de conceito com o objetivo de redução significativa de tempo de impressão."
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/ExtrudersModel.py:208
 msgctxt "@menuitem"
@@ -1288,7 +1288,7 @@ msgstr "Carregando máquinas..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:520
 msgctxt "@info:progress"
 msgid "Setting up preferences..."
-msgstr ""
+msgstr "Ajustando preferências..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:824
 msgctxt "@info:progress"
@@ -2480,17 +2480,17 @@ msgstr "Imprimir como suporte"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr ""
+msgstr "Modificar ajustes para sobreposições"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr ""
+msgstr "Não suportar sobreposições"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr ""
+msgstr "Preenchimento apenas"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2505,12 +2505,12 @@ msgstr "Abrir Projeto"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr ""
+msgstr "Atualizar existentes"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr ""
+msgstr "Criar novos"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -2575,7 +2575,7 @@ msgstr "Nome"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:261
 msgctxt "@action:label"
 msgid "Intent"
-msgstr ""
+msgstr "Objetivo"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:246
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:228
@@ -3173,12 +3173,12 @@ msgstr "Forçar modo de compatibilidade da visão de camadas (requer reinício)"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:473
 msgctxt "@info:tooltip"
 msgid "Should Cura open at the location it was closed?"
-msgstr ""
+msgstr "O Cura deve abrir no lugar onde foi fechado?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:478
 msgctxt "@option:check"
 msgid "Restore window position on start"
-msgstr ""
+msgstr "Restaurar posição da janela no início"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:488
 msgctxt "@info:tooltip"
@@ -3188,7 +3188,7 @@ msgstr "Que tipo de renderização de câmera deve ser usada?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr ""
+msgstr "Renderização de câmera:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3490,7 +3490,7 @@ msgstr "Sem Título"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr ""
+msgstr "Ajustes de busca"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3585,8 +3585,8 @@ msgstr ""
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Não há perfil %1 para a configuração no extrusor %2. O objetivo default será usado no lugar dele"
+msgstr[1] "Não há perfis %1 para a configurações nos extrusores %2. O objetivo default será usado no lugar deles"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorContents.qml:144
 msgctxt "@button"
@@ -3667,7 +3667,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr ""
+msgstr "Perfis personalizados"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -4902,27 +4902,27 @@ msgstr "Começar"
 #: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:27
 msgctxt "@info:tooltip"
 msgid "3D View"
-msgstr ""
+msgstr "Visão 3D"
 
 #: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:40
 msgctxt "@info:tooltip"
 msgid "Front View"
-msgstr ""
+msgstr "Viso de Frente"
 
 #: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:53
 msgctxt "@info:tooltip"
 msgid "Top View"
-msgstr ""
+msgstr "Visão de Cima"
 
 #: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:66
 msgctxt "@info:tooltip"
 msgid "Left View"
-msgstr ""
+msgstr "Visão à Esquerda"
 
 #: /home/ruben/Projects/Cura/resources/qml/ViewOrientationControls.qml:79
 msgctxt "@info:tooltip"
 msgid "Right View"
-msgstr ""
+msgstr "Visão à Direita"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
@@ -5197,12 +5197,12 @@ msgstr "Atualização de Versão de 3.3 para 3.4"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr ""
+msgstr "Atualiza configurações do Cura 4.3 para o Cura 4.4."
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr ""
+msgstr "Atualização de Versão de 4.3 para 4.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
