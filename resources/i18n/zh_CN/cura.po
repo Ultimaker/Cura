@@ -279,17 +279,17 @@ msgstr "打印错误"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr "New cloud printers found"
+msgstr "发现新的云打印机"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr "发现有新打印机连接到您的帐户。您可以在已发现的打印机列表中查找新连接的打印机。"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr "Do not show this message again"
+msgstr "不再显示此消息"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -493,7 +493,7 @@ msgstr "GIF 图像"
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:15
 msgctxt "@item:inlistbox 'Open' is part of the name of this file format."
 msgid "Open Compressed Triangle Mesh"
-msgstr "Open Compressed Triangle Mesh"
+msgstr "打开压缩三角网格"
 
 #: /home/ruben/Projects/Cura/plugins/TrimeshReader/__init__.py:19
 msgctxt "@item:inlistbox"
@@ -2479,17 +2479,17 @@ msgstr "打印为支撑"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "Modify settings for overlaps"
+msgstr "修改重叠设置"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr "Don't support overlaps"
+msgstr "不支持重叠"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr "Infill only"
+msgstr "仅填充"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2504,12 +2504,12 @@ msgstr "打开项目"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Update existing"
+msgstr "更新已有配置"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Create new"
+msgstr "新建"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -3185,7 +3185,7 @@ msgstr "应使用哪种类型的摄像头进行渲染？"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Camera rendering:"
+msgstr "摄像头渲染："
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3487,7 +3487,7 @@ msgstr "未命名"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "搜索设置"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3663,7 +3663,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr "Custom profiles"
+msgstr "自定义配置文件"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -5187,12 +5187,12 @@ msgstr "版本升级3.3到3.4"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "将配置从 Cura 4.3 升级至 Cura 4.4。"
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Version Upgrade 4.3 to 4.4"
+msgstr "版本自 4.3 升级至 4.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"

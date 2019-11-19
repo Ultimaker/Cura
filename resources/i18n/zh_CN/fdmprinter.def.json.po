@@ -6221,7 +6221,7 @@ msgstr "微小特征速度"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
@@ -6231,7 +6231,7 @@ msgstr "微小特征初始层速度"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "第一层的微小特征将按正常打印速度的百分比进行打印。缓慢打印有助于粘合和提高准确性。"
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

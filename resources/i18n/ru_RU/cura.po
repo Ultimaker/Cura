@@ -279,17 +279,17 @@ msgstr "Ошибка печати"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr "New cloud printers found"
+msgstr "Обнаружены новые облачные принтеры"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr "Обнаружены новые принтеры, подключенные к вашей учетной записи; вы можете найти их в списке обнаруженных принтеров."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr "Do not show this message again"
+msgstr "Больше не показывать это сообщение"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -2481,17 +2481,17 @@ msgstr "Печать в качестве поддержки"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "Modify settings for overlaps"
+msgstr "Изменить настройки для перекрытий"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr "Don't support overlaps"
+msgstr "Не поддерживать перекрытия"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr "Infill only"
+msgstr "Только заполнение"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2506,12 +2506,12 @@ msgstr "Открытие проекта"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Update existing"
+msgstr "Обновить существующий"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Create new"
+msgstr "Создать новый"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -3191,7 +3191,7 @@ msgstr "Рендеринг камеры какого типа следует и�
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Camera rendering:"
+msgstr "Рендеринг камеры:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3493,7 +3493,7 @@ msgstr "Без имени"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "Параметры поиска"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3671,7 +3671,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr "Custom profiles"
+msgstr "Собственные профили"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -5207,12 +5207,12 @@ msgstr "Обновление версии 3.3 до 3.4"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Обновляет конфигурации Cura 4.3 до Cura 4.4."
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Version Upgrade 4.3 to 4.4"
+msgstr "Обновление версии 4.3 до 4.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -5476,7 +5476,7 @@ msgstr "Чтение профиля Cura"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "Open Compressed Triangle Mesh"
-#~ msgstr "Open Compressed Triangle Mesh"
+#~ msgstr ""
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Profile Assistant"

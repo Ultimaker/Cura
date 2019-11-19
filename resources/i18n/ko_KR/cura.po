@@ -279,17 +279,17 @@ msgstr "프린트 오류"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr "New cloud printers found"
+msgstr "새 프린터를 찾을 수 없음"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr "새 프린터가 계정에 연결되어 있습니다. 발견한 프린터를 목록에서 찾을 수 있습니다."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr "Do not show this message again"
+msgstr "다시 메시지 표시 안 함"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -2477,17 +2477,17 @@ msgstr "서포터로 프린팅"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "Modify settings for overlaps"
+msgstr "오버랩 설정 수정"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr "Don't support overlaps"
+msgstr "오버랩 지원 안함"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr "Infill only"
+msgstr "내부채움 전용"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2502,12 +2502,12 @@ msgstr "프로젝트 열기"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Update existing"
+msgstr "기존 업데이트"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Create new"
+msgstr "새로 만들기"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -3183,7 +3183,7 @@ msgstr "어떤 유형의 카메라 렌더링을 사용해야 합니까?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Camera rendering:"
+msgstr "카메라 렌더링:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3485,7 +3485,7 @@ msgstr "제목 없음"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "검색 설정"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3661,7 +3661,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr "Custom profiles"
+msgstr "사용자 정의 프로파일"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -5183,12 +5183,12 @@ msgstr "버전 업그레이드 3.3에서 3.4"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Cura 4.3에서 Cura 4.4로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Version Upgrade 4.3 to 4.4"
+msgstr "4.3에서 4.4로 버전 업그레이드"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -5452,7 +5452,7 @@ msgstr "Cura 프로파일 리더"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "Open Compressed Triangle Mesh"
-#~ msgstr "Open Compressed Triangle Mesh"
+#~ msgstr ""
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Profile Assistant"

@@ -285,17 +285,17 @@ msgstr "Erro de impressão"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr "New cloud printers found"
+msgstr "Encontradas novas impressoras na cloud"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr "Foram encontradas novas impressoras associadas à sua conta. Pode encontrá-las na sua lista de impressoras detetadas."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr "Do not show this message again"
+msgstr "Não mostrar esta mensagem novamente"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -2503,17 +2503,17 @@ msgstr "Imprimir como suporte"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "Modify settings for overlaps"
+msgstr "Modificar definições para sobreposições"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr "Don't support overlaps"
+msgstr "Não suportar sobreposições"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr "Infill only"
+msgstr "Apenas enchimento"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2528,12 +2528,12 @@ msgstr "Abrir Projeto"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Update existing"
+msgstr "Atualizar existente"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Create new"
+msgstr "Criar nova"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -3215,7 +3215,7 @@ msgstr "Que tipo de composição de câmara deve ser utilizado?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Camera rendering:"
+msgstr "Composição de câmara:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3519,7 +3519,7 @@ msgstr "Sem título"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "Procurar definições"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3712,7 +3712,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr "Custom profiles"
+msgstr "Perfis personalizados"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -5254,12 +5254,12 @@ msgstr "Atualização da versão 3.3 para 3.4"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Configurações de atualizações do Cura 4.3 para o Cura 4.4."
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Version Upgrade 4.3 to 4.4"
+msgstr "Atualização da versão 4.3 para 4.4"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -5528,7 +5528,7 @@ msgstr "Leitor de Perfis Cura"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "Open Compressed Triangle Mesh"
-#~ msgstr "Open Compressed Triangle Mesh"
+#~ msgstr ""
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Profile Assistant"

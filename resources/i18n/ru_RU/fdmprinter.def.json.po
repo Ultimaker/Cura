@@ -6224,7 +6224,8 @@ msgstr "Скорость для малых элементов"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "Малые элементы будут напечатаны со скоростью, составляющей этот процент от их нормальной скорости печати. Более медленная печать может улучшить адгезию"
+" и точность."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
@@ -6234,7 +6235,8 @@ msgstr "Скорость первого слоя для небольших об�
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "Малые элементы на первом слое будут напечатаны со скоростью, составляющей этот процент от их нормальной скорости печати. Более медленная печать может улучшить"
+" адгезию и точность."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"

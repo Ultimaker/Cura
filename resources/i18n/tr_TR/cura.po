@@ -279,17 +279,17 @@ msgstr "Baskı hatası"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:21
 msgctxt "@info:title"
 msgid "New cloud printers found"
-msgstr "New cloud printers found"
+msgstr "Yeni bulut yazıcılar bulundu"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:22
 msgctxt "@info:message"
 msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
-msgstr "New printers have been found connected to your account, you can find them in your list of discovered printers."
+msgstr "Hesabınıza bağlı yeni yazıcılar bulundu. Keşfedilen yazıcılar listenizde bunları görüntüleyebilirsiniz."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudPrinterDetectedMessage.py:27
 msgctxt "@info:option_text"
 msgid "Do not show this message again"
-msgstr "Do not show this message again"
+msgstr "Bu mesajı bir daha gösterme"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:27
 #, python-brace-format
@@ -2480,17 +2480,17 @@ msgstr "Destek olarak yazdır"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:109
 msgctxt "@label"
 msgid "Modify settings for overlaps"
-msgstr "Modify settings for overlaps"
+msgstr "Çakışma ayarlarını değiştir"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:121
 msgctxt "@label"
 msgid "Don't support overlaps"
-msgstr "Don't support overlaps"
+msgstr "Çakışmaları destekleme"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:145
 msgctxt "@action:checkbox"
 msgid "Infill only"
-msgstr "Infill only"
+msgstr "Yalnızca dolgu"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:368
 msgctxt "@action:button"
@@ -2505,12 +2505,12 @@ msgstr "Proje Aç"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:58
 msgctxt "@action:ComboBox Update/override existing profile"
 msgid "Update existing"
-msgstr "Update existing"
+msgstr "Var olanları güncelleştir"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:59
 msgctxt "@action:ComboBox Save settings in a new profile"
 msgid "Create new"
-msgstr "Create new"
+msgstr "Yeni oluştur"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:70
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/WorkspaceSummaryDialog.qml:73
@@ -3188,7 +3188,7 @@ msgstr "Ne tür bir kamera oluşturma işlemi kullanılmalıdır?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:495
 msgctxt "@window:text"
 msgid "Camera rendering:"
-msgstr "Camera rendering:"
+msgstr "Kamera oluşturma:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:506
 msgid "Perspective"
@@ -3490,7 +3490,7 @@ msgstr "Başlıksız"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:68
 msgctxt "@label:textbox"
 msgid "Search settings"
-msgstr "Search settings"
+msgstr "Arama ayarları"
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingView.qml:462
 msgctxt "@action:menu"
@@ -3667,7 +3667,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/QualitiesWithIntentMenu.qml:160
 msgctxt "@label:header"
 msgid "Custom profiles"
-msgstr "Custom profiles"
+msgstr "Özel profiller"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelector.qml:21
 msgctxt "@label shown when we load a Gcode file"
@@ -5197,12 +5197,12 @@ msgstr "3.3'dan 3.4'e Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.3 to Cura 4.4."
-msgstr "Upgrades configurations from Cura 4.3 to Cura 4.4."
+msgstr "Yapılandırmaları Cura 4.3'ten Cura 4.4'e yükseltir."
 
 #: VersionUpgrade/VersionUpgrade43to44/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.3 to 4.4"
-msgstr "Version Upgrade 4.3 to 4.4"
+msgstr "4.3'ten 4.4'e Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade25to26/plugin.json
 msgctxt "description"
@@ -5466,7 +5466,7 @@ msgstr "Cura Profil Okuyucu"
 
 #~ msgctxt "@item:inlistbox"
 #~ msgid "Open Compressed Triangle Mesh"
-#~ msgstr "Open Compressed Triangle Mesh"
+#~ msgstr ""
 
 #~ msgctxt "@item:inmenu"
 #~ msgid "Profile Assistant"
