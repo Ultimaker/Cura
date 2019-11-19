@@ -31,14 +31,19 @@ if TYPE_CHECKING:
 #                                     initargs=({"process_layer": self.process_layer},))
 #        result = pool.apply_async(multiprocessing_call, ("process_layer", (layer_steps,))))
 #        return result.get()
+
+## An inititializer for multiprocessing pools.
+# \param functions_by_name A dict of callable functions called by name by multiprocessing_call(). The name is used
+#                          to call the function.
 def multiprocessing_init(functions_by_name):
-    """ An inititializer for multiprocessing pools. The passed in keyword arguments are callable using the
-        multiprocessing_call function below """
     global _multiprocessing_functions
     _multiprocessing_functions = functions_by_name
 
+## Calls the named function with the passed in arguments.
+# \param function_name The function to call, as set up by multiprocessing_init().
+# \param args The arguments to pass into the function when calling it.
+# \return The return value of the function call.
 def multiprocessing_call(function_name, args):
-    """ Calls the named function with the passed in arguments and returns the result """
     return _multiprocessing_functions[function_name](*args)
 
 ## Base class for scripts. All scripts should inherit the script class.

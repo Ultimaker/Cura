@@ -86,24 +86,10 @@ class GCodeStepParser():
     def setInRelativeMovement(self, value: bool) -> None:
         self.in_relative_movement = value
 
-class GCodeStepSlot:
-    """
-    GCodeStep was originally used both during input parsing and during processing and output writing. In order to
-    work with multiprocessing pools, the step objects need to be manually pickled (classes in plugins aren't
-    directly pickleable). Rather than reconstruct GCodeSteps again, this class is used during processing. The hope
-    is that, by decoupling the two, future improvements will be easier.
-    """
-    __slots__ = ['step', 'step_x', 'step_y', 'step_z', 'step_e', 'step_f', 'in_relative_movement', 'comment']
-    def __init__(self, step, step_x, step_y, step_z, step_e, step_f, in_relative_movement, comment):
-        self.step = step
-        self.step_x = step_x
-        self.step_y = step_y
-        self.step_z = step_z
-        self.step_e = step_e
-        self.step_f = step_f
-        self.in_relative_movement = in_relative_movement
-        self.comment = comment
-
+## In order to work with multiprocessing pools, the step objects need to be manually pickled (classes in plugins aren't
+# directly pickleable). Rather than reconstruct GCodeStepParser again, this namedtuple is used to keep overhead low.
+GCodeStepSlot = collections.namedtuple('GCodeStepSlot',
+                                       'step step_x step_y step_z step_e step_f in_relative_movement comment')
 
 # Execution part of the stretch plugin
 class Stretcher():
