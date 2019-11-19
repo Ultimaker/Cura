@@ -39,7 +39,6 @@
         "machine_center_is_zero": { "default_value": false },
 
         "speed_print": { "default_value": 60 },
-        "speed_travel": { "default_value": 200 },
 
         "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 50},

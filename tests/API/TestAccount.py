@@ -1,9 +1,8 @@
-from unittest.mock import MagicMock, patch, PropertyMock
+from unittest.mock import MagicMock
 
 import pytest
 
-from cura.API import CuraAPI, Account
-from cura.OAuth2.AuthorizationService import AuthorizationService
+from cura.API import Account
 from cura.OAuth2.Models import UserProfile
 
 

@@ -212,10 +212,7 @@ Cura.MachineAction
                         text:
                         {
                             if (base.selectedDevice) {
-                                // It would be great to use a more readable machine type here,
-                                // but the new discoveredPrintersModel is not used yet in the UM networking actions.
-                                // TODO: remove actions or replace 'connect via network' button with new flow?
-                                return base.selectedDevice.printerType
+                                return base.selectedDevice.printerTypeName
                             }
                             return ""
                         }
@@ -294,8 +291,8 @@ Cura.MachineAction
     MessageDialog
     {
         id: invalidIPAddressMessageDialog
-        x: (parent.x + (parent.width) / 2) | 0
-        y: (parent.y + (parent.height) / 2) | 0
+        x: parent ? (parent.x + (parent.width) / 2) : 0
+        y: parent ? (parent.y + (parent.height) / 2) : 0
         title: catalog.i18nc("@title:window", "Invalid IP address")
         text: catalog.i18nc("@text", "Please enter a valid IP address.")
         icon: StandardIcon.Warning
@@ -331,7 +328,7 @@ Cura.MachineAction
 
             Label
             {
-                text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
                 width: parent.width
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering

@@ -36,9 +36,15 @@ class ZeroConfClient:
     def start(self) -> None:
         self._service_changed_request_queue = Queue()
         self._service_changed_request_event = Event()
-        self._service_changed_request_thread = Thread(target=self._handleOnServiceChangedRequests, daemon=True)
+        try:
+            self._zero_conf = Zeroconf()
+        # CURA-6855 catch WinErrors
+        except OSError:
+            Logger.logException("e", "Failed to create zeroconf instance.")
+            return
+
+        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True, name = "ZeroConfServiceChangedThread")
         self._service_changed_request_thread.start()
-        self._zero_conf = Zeroconf()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, self.ZERO_CONF_NAME, [self._queueService])
 
     # Cleanup ZeroConf resources.

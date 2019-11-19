@@ -1,5 +1,4 @@
 {
-    "id": "stereotech_ste320_1st",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

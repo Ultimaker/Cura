@@ -12,7 +12,6 @@ SettingItem
 {
     id: base
     property var focusItem: control
-
     contents: Cura.ComboBox
     {
         id: control

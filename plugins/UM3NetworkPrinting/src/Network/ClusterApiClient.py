@@ -13,6 +13,7 @@ from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
+from ..Models.Http.ClusterMaterial import ClusterMaterial
 
 
 ## The generic type variable used to document the methods below.
@@ -44,6 +45,13 @@ class ClusterApiClient:
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
 
+    ## Get the installed materials on the printer.
+    #  \param on_finished: The callback in case the response is successful.
+    def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
+        url = "{}/materials".format(self.CLUSTER_API_PREFIX)
+        reply = self._manager.get(self._createEmptyRequest(url))
+        self._addCallback(reply, on_finished, ClusterMaterial)
+
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
@@ -62,7 +70,7 @@ class ClusterApiClient:
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
-    
+
     ## Override print job configuration and force it to be printed.
     def forcePrintJob(self, print_job_uuid: str) -> None:
         url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
@@ -127,7 +135,7 @@ class ClusterApiClient:
                 result = model_class(**response)  # type: ClusterApiClientModel
                 on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
                 on_finished_item(result)
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.

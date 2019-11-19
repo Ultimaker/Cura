@@ -42,7 +42,7 @@ UM.Dialog
     {
         for (var i in fileUrls)
         {
-            CuraApplication.readLocalFile(fileUrls[i], true);
+            CuraApplication.readLocalFile(fileUrls[i], "open_as_model");
         }
 
         var meshName = backgroundItem.getMeshName(fileUrls[0].toString());

@@ -64,6 +64,7 @@ class PreviewPass(RenderPass):
                 self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
                 self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
                 self._shader.setUniformValue("u_shininess", 20.0)
+                self._shader.setUniformValue("u_faceId", -1)  # Don't render any selected faces in the preview.
 
         if not self._non_printing_shader:
             if self._non_printing_shader:
