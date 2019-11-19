@@ -37,8 +37,8 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
 * Minor improvements 
  - Reweighting stages.   
  - Small plug-in system improvements
- - Add RetractContinue post-processing script 
- - Add DisplayRemainingTimeOnLCD post-processing script
+ - Add RetractContinue post-processing script by https://github.com/thopiekar
+ - Add DisplayRemainingTimeOnLCD post-processing script by https://github.com/iLyngklip
  - Thickness of the very bottom layer 
 
 * Updated third party printers 
@@ -46,25 +46,25 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
  - Key3D Tyro. https://github.com/DragonJe has created a definition, extruder, and profiles for the Key3D Tyro. 
  - Prusa i3 MK3/MK3S printer. https://github.com/samirabaza has contributed the latest definition for Prusa i3 MK3/MK3s made by Prusa Research with a minor modification to fit in Prusa folder under "add printer". 
  - Hellbot printer. https://github.com/F-Fischer has contributed a machine profile for the Hellbot printer.
- - HMS434 update
- - Add CR-10 MAX and Ender-5 plus
- - Modify Cubicon device profile 
- - Add Cubicon printer definitions
+ - HMS434 update by https://github.com/maukcc
+ - Add CR-10 MAX and Ender-5 plus by https://github.com/trouch
+ - Modify Cubicon device profile by https://github.com/HUNIBEST-HyVISION
+ - Add Cubicon printer definitions by https://github.com/HUNIBEST-HyVISION
 
 * Bug fixes
- - Re-calculating retraction-safe area with every wall
+ - Re-calculating retraction-safe area with every wall by https://github.com/smartavionics
  - Fix Normals after Mirror Operation
  - Crash when loading PJ with creality
- - Per-object setting stacks checked for errors even if they are empty
+ - Per-object setting stacks checked for errors even if they are empty by https://github.com/smartavionics
  - getAngleLeft gives wrong results when lines are colinear  
  - Lots of qml warnings regarding MaterialsTypeSelection.qml
- - PR: Avoid unwanted travel with ironing
- - PR: Remove all travel moves < 5um
+ - PR: Avoid unwanted travel with ironing by https://github.com/smartavionics
+ - PR: Remove all travel moves < 5um by https://github.com/smartavionics
  - AMF files are mirrored
  - Changes to Material diameter do not get applied
  - Long string of text on profile names goes through borders
  - CURA 4.3 - Crash when connecting networked Ultimaker S5 
- - Layer slider falls behind action panel, on low resolution displays only.
+ - Layer slider falls behind action panel, on low resolution displays only by https://github.com/AMI3
  - Deleting profiles will not update the size of the drop-down menu
  - Create / Update / Discard options are enabled when they should be greyed out
  - Scroll bar for profile dropdown
@@ -76,9 +76,9 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
  - One-at-a-time ordering wrong
  - Fix license extraction from CuraPackage
  - Invalid firmware for UM2 update continues forever
- - Infill inset too much with connected lines and thicker infill
- - Reworked line polygon crossings
- - Build Interface If Support Is Present
+ - Infill inset too much with connected lines and thicker infill by https://github.com/smartavionics
+ - Reworked line polygon crossings by https://github.com/smartavionics
+ 
 
 [4.3.0]
 *Ultimaker S3. 
