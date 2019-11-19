@@ -1,9 +1,10 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt, QTimer
 import collections
+from PyQt5.QtCore import Qt, QTimer
 from typing import TYPE_CHECKING, Optional, Dict
+from cura.Machines.Models.IntentTranslations import intent_translations
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
@@ -52,7 +53,6 @@ class IntentCategoryModel(ListModel):
                 "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
             }
         return cls._translations
-
 
     ##  Creates a new model for a certain intent category.
     #   \param The category to list the intent profiles for.
@@ -110,7 +110,7 @@ class IntentCategoryModel(ListModel):
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
 
-    ##  Get a display value for a category. See IntenCategoryModel._translations
+    ##  Get a display value for a category.
     ##  for categories and keys
     @staticmethod
     def translation(category: str, key: str, default: Optional[str] = None):

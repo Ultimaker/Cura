@@ -6,6 +6,7 @@ from typing import Dict, Set
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
+from UM.Logger import Logger
 
 import cura.CuraApplication  # Imported like this to prevent a circular reference.
 from cura.Machines.ContainerTree import ContainerTree
@@ -153,7 +154,12 @@ class BaseMaterialsModel(ListModel):
         if not extruder_stack:
             return
         nozzle_name = extruder_stack.variant.getName()
-        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        if nozzle_name not in machine_node.variants:
+            Logger.log("w", "Unable to find variant %s in container tree", nozzle_name)
+            self._available_materials = {}
+            return
+        materials = machine_node.variants[nozzle_name].materials
         approximate_material_diameter = extruder_stack.getApproximateMaterialDiameter()
         self._available_materials = {key: material for key, material in materials.items() if float(material.getMetaDataEntry("approximate_diameter", -1)) == approximate_material_diameter}
 
