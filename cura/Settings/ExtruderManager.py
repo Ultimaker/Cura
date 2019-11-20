@@ -12,7 +12,6 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Settings.ContainerRegistry import ContainerRegistry  # Finding containers by ID.
-from UM.Decorators import deprecated
 
 from typing import Any, cast, Dict, List, Optional, TYPE_CHECKING, Union
 
@@ -369,7 +368,7 @@ class ExtruderManager(QObject):
                 printer = global_stack.getId(), expected = expected_extruder_definition_0_id, got = extruder_stack_0.definition.getId()))
             try:
                 extruder_definition = container_registry.findDefinitionContainers(id = expected_extruder_definition_0_id)[0]
-            except IndexError as e:
+            except IndexError:
                 # It still needs to break, but we want to know what extruder ID made it break.
                 msg = "Unable to find extruder definition with the id [%s]" % expected_extruder_definition_0_id
                 Logger.logException("e", msg)

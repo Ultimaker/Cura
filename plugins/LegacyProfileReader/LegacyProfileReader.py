@@ -157,7 +157,7 @@ class LegacyProfileReader(ProfileReader):
         data = stream.getvalue()
 
         profile = InstanceContainer(profile_id)
-        profile.deserialize(data) # Also performs the version upgrade.
+        profile.deserialize(data, file_name) # Also performs the version upgrade.
         profile.setDirty(True)
 
         #We need to return one extruder stack and one global stack.

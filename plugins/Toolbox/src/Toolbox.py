@@ -48,7 +48,7 @@ class Toolbox(QObject, Extension):
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
         self._network_manager = None  # type: Optional[QNetworkAccessManager]
-        self._request_headers = [] # type: List[Tuple[bytes, bytes]]
+        self._request_headers = []  # type: List[Tuple[bytes, bytes]]
         self._updateRequestHeader()
 
         self._request_urls = {}  # type: Dict[str, QUrl]
@@ -59,13 +59,15 @@ class Toolbox(QObject, Extension):
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
             "authors":             [],
-            "packages":            []
+            "packages":            [],
+            "updates":             [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
+            "updates":             PackagesModel(self),
         }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
@@ -86,7 +88,7 @@ class Toolbox(QObject, Extension):
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        self._view_page = "loading"  # type: str
+        self._view_page = "welcome"  # type: str
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
@@ -105,7 +107,6 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._updateRequestHeader)
         self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
@@ -125,6 +126,16 @@ class Toolbox(QObject, Extension):
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
+
+    ##  Go back to the start state (welcome screen or loading if no login required)
+    def _restart(self):
+        self._updateRequestHeader()
+        # For an Essentials build, login is mandatory
+        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
+            self.setViewPage("welcome")
+        else:
+            self.setViewPage("loading")
+            self._fetchPackageData()
 
     def _updateRequestHeader(self):
         self._request_headers = [
@@ -186,18 +197,27 @@ class Toolbox(QObject, Extension):
             cloud_api_version = self._cloud_api_version,
             sdk_version = self._sdk_version
         )
+
+        # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
+        installed_package_ids_with_versions = [":".join(items) for items in
+                                               self._package_manager.getAllInstalledPackageIdsAndVersions()]
+        installed_packages_query = "&installed_packages=".join(installed_package_ids_with_versions)
+
         self._request_urls = {
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
-            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url))
+            "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
+            "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
+                base_url = self._api_url, query = installed_packages_query))
         }
 
-        # Request the latest and greatest!
-        self._fetchPackageData()
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
 
-    def _fetchPackageData(self):
-        # Create the network manager:
-        # This was formerly its own function but really had no reason to be as
-        # it was never called more than once ever.
+        # On boot we check which packages have updates.
+        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
+            # Request the latest and greatest!
+            self._fetchPackageUpdates()
+
+    def _prepareNetworkManager(self):
         if self._network_manager is not None:
             self._network_manager.finished.disconnect(self._onRequestFinished)
             self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccessibleChanged)
@@ -205,16 +225,21 @@ class Toolbox(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccessibleChanged)
 
+    def _fetchPackageUpdates(self):
+        self._prepareNetworkManager()
+        self._makeRequestByType("updates")
+
+    def _fetchPackageData(self):
+        self._prepareNetworkManager()
         # Make remote requests:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
-
         # Gather installed packages:
         self._updateInstalledModels()
 
+    # Displays the toolbox
     @pyqtSlot()
-    def browsePackages(self) -> None:
-        self._fetchPackageData()
+    def launch(self) -> None:
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -222,6 +247,8 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             Logger.log("e", "Unexpected error trying to create the 'Marketplace' dialog.")
             return
+
+        self._restart()
 
         self._dialog.show()
 
@@ -234,7 +261,7 @@ class Toolbox(QObject, Extension):
         if not plugin_path:
             return None
         path = os.path.join(plugin_path, "resources", "qml", qml_name)
-        
+
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
         if not dialog:
             raise Exception("Failed to create Marketplace dialog")
@@ -328,7 +355,7 @@ class Toolbox(QObject, Extension):
             self._package_used_qualities = package_used_qualities
             # Ask change to default material / profile
             if self._confirm_reset_dialog is None:
-                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+                self._confirm_reset_dialog = self._createDialog("dialogs/ToolboxConfirmUninstallResetDialog.qml")
             self.uninstallVariablesChanged.emit()
             if self._confirm_reset_dialog is None:
                 Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
@@ -618,7 +645,7 @@ class Toolbox(QObject, Extension):
                             if not self._models[response_type]:
                                 Logger.log("e", "Could not find the %s model.", response_type)
                                 break
-                            
+
                             self._server_response_data[response_type] = json_data["data"]
                             self._models[response_type].setMetadata(self._server_response_data[response_type])
 
@@ -630,6 +657,10 @@ class Toolbox(QObject, Extension):
                             elif response_type == "authors":
                                 self._models[response_type].setFilter({"package_types": "material"})
                                 self._models[response_type].setFilter({"tags": "generic"})
+                            elif response_type == "updates":
+                                # Tell the package manager that there's a new set of updates available.
+                                packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
+                                self._package_manager.setPackagesWithUpdate(packages)
 
                             self.metadataChanged.emit()
 
@@ -660,7 +691,7 @@ class Toolbox(QObject, Extension):
                 self.setIsDownloading(False)
                 self._download_reply = cast(QNetworkReply, self._download_reply)
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-                
+
                 # Check if the download was sucessfull
                 if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
                     try:

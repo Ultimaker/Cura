@@ -14,7 +14,7 @@ import Cura 1.0 as Cura
 
 UM.Dialog
 {
-    // This dialog asks the user whether he/she wants to open a project file as a project or import models.
+    // This dialog asks the user to confirm he/she wants to uninstall materials/pprofiles which are currently in use
     id: base
 
     title: catalog.i18nc("@title:window", "Confirm uninstall") + toolbox.pluginToUninstall

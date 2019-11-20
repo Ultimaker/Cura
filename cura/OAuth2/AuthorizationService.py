@@ -3,7 +3,6 @@
 
 import json
 from datetime import datetime, timedelta
-import os
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 
@@ -14,7 +13,6 @@ from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Platform import Platform
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer

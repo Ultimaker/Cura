@@ -48,9 +48,13 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
         drives = {}
 
         bitmask = ctypes.windll.kernel32.GetLogicalDrives()
-        # Check possible drive letters, from A to Z
+        # Check possible drive letters, from C to Z
         # Note: using ascii_uppercase because we do not want this to change with locale!
-        for letter in string.ascii_uppercase:
+        # Skip A and B, since those drives are typically reserved for floppy disks.
+        # Those drives can theoretically be reassigned but it's safer to not check them for removable drives.
+        # Windows will also behave weirdly even with some of its internal functions if you do this (e.g. search indexing doesn't search it).
+        # Users that have removable drives in A or B will just have to save to file and select the drive there.
+        for letter in string.ascii_uppercase[2:]:
             drive = "{0}:/".format(letter)
 
             # Do we really want to skip A and B?

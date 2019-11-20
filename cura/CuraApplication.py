@@ -720,6 +720,8 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self) -> None:
+        self._plugin_registry.setCheckIfTrusted(ApplicationMetadata.IsEnterpriseVersion)
+
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
 
@@ -1368,16 +1370,19 @@ class CuraApplication(QtApplication):
 
         for node in nodes:
             mesh_data = node.getMeshData()
-            if mesh_data and mesh_data.getFileName():
-                job = ReadMeshJob(mesh_data.getFileName())
-                job._node = node  # type: ignore
-                job.finished.connect(self._reloadMeshFinished)
-                if has_merged_nodes:
-                    job.finished.connect(self.updateOriginOfMergedMeshes)
 
-                job.start()
-            else:
-                Logger.log("w", "Unable to reload data because we don't have a filename.")
+            if mesh_data:
+                file_name = mesh_data.getFileName()
+                if file_name:
+                    job = ReadMeshJob(file_name)
+                    job._node = node  # type: ignore
+                    job.finished.connect(self._reloadMeshFinished)
+                    if has_merged_nodes:
+                        job.finished.connect(self.updateOriginOfMergedMeshes)
+
+                    job.start()
+                else:
+                    Logger.log("w", "Unable to reload data because we don't have a filename.")
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1796,7 +1801,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception as e:
+        except Exception:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
@@ -1892,3 +1897,7 @@ class CuraApplication(QtApplication):
             op.push()
             from UM.Scene.Selection import Selection
             Selection.clear()
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "CuraApplication":
+        return cast(CuraApplication, super().getInstance(**kwargs))
