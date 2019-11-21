@@ -39,7 +39,11 @@ class IntentManager(QObject):
     #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
         intent_metadatas = []  # type: List[Dict[str, Any]]
-        materials = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
+        try:
+            materials = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
+        except KeyError:
+            Logger.log("w", "Unable to find the machine %s or the variant %s", definition_id, nozzle_name)
+            materials = {}
         if material_base_file not in materials:
             return intent_metadatas
 
