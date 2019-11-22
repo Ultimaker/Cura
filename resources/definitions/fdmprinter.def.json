@@ -2355,6 +2355,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_break_preparation_temperature":
+                {
+                    "label": "Break Preparation Temperature",
+                    "description": "The temperature used to purge material, should be roughly equal to the highest possible printing temperature.",
+                    "type": "float",
+                    "unit": "°C",
+                    "default_value": 50,
+                    "value": "material_print_temperature",
+                    "enabled": false,
+                    "minimum_value": "-273.15",
+                    "maximum_value_warning": "300",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_break_retracted_position":
                 {
                     "label": "Break Retracted Position",

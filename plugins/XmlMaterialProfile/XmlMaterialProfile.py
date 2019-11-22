@@ -1102,6 +1102,7 @@ class XmlMaterialProfile(InstanceContainer):
         "anti ooze retract speed": "material_anti_ooze_retraction_speed",
         "break preparation position": "material_break_preparation_retracted_position",
         "break preparation speed": "material_break_preparation_speed",
+        "break preparation temperature": "material_break_preparation_temperature",
         "break position": "material_break_retracted_position",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
