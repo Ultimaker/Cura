@@ -13,6 +13,9 @@ import ssl
 import urllib.request
 import urllib.error
 
+from sentry_sdk.hub import Hub
+from sentry_sdk.utils import capture_internal_exceptions, event_from_exception
+
 import certifi
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
@@ -365,15 +368,14 @@ class CrashHandler:
             print("Sending crash report info to [%s]...\n" % self.crash_url)
 
         try:
-            f = urllib.request.urlopen(self.crash_url, **kwoptions)
-            Logger.log("i", "Sent crash report info.")
-            if not self.has_started:
-                print("Sent crash report info.\n")
-            f.close()
-        except urllib.error.HTTPError as e:
-            Logger.logException("e", "An HTTP error occurred while trying to send crash report")
-            if not self.has_started:
-                print("An HTTP error occurred while trying to send crash report: %s" % e)
+            hub = Hub.current
+            client = hub.client
+            event, hint = event_from_exception((self.exception_type, self.value, self.traceback),
+                                               client_options=client.options,
+                                               mechanism={"type": "excepthook", "handled": False},
+                                               )
+            hub.capture_event(event, hint=hint)
+            hub.flush()
         except Exception as e:  # We don't want any exception to cause problems
             Logger.logException("e", "An exception occurred while trying to send crash report")
             if not self.has_started:
