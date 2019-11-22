@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
@@ -9,15 +9,11 @@ import os
 import os.path
 import time
 import json
-import ssl
-import urllib.request
-import urllib.error
+from typing import cast
 
 from sentry_sdk.hub import Hub
-from sentry_sdk.utils import capture_internal_exceptions, event_from_exception
+from sentry_sdk.utils import event_from_exception
 from sentry_sdk import configure_scope
-
-import certifi
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
@@ -28,6 +24,7 @@ from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
 from UM.Resources import Resources
+from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
 
@@ -48,9 +45,8 @@ skip_exception_types = [
     GeneratorExit
 ]
 
-class CrashHandler:
-    crash_url = "https://stats.ultimaker.com/api/cura"
 
+class CrashHandler:
     def __init__(self, exception_type, value, tb, has_started = True):
         self.exception_type = exception_type
         self.value = value
@@ -58,15 +54,11 @@ class CrashHandler:
         self.has_started = has_started
         self.dialog = None # Don't create a QDialog before there is a QApplication
 
-        # While we create the GUI, the information will be stored for sending afterwards
-        self.data = dict()
-        self.data["time_stamp"] = time.time()
-
         Logger.log("c", "An uncaught error has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
-
+        self.data = {}
         # If Cura has fully started, we only show fatal errors.
         # If Cura has not fully started yet, we always show the early crash dialog. Otherwise, Cura will just crash
         # without any information.
@@ -204,6 +196,7 @@ class CrashHandler:
             scope.set_tag("pyqt_version", PYQT_VERSION_STR)
             scope.set_tag("os", platform.system())
             scope.set_tag("os_version", platform.version())
+            scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
 
         return group
 
@@ -220,10 +213,31 @@ class CrashHandler:
         info += "</ul>"
 
         self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
+
+        active_machine_definition_id = "unknown"
+        active_machine_manufacterer = "unknown"
+
+        try:
+            from cura.CuraApplication import CuraApplication
+            application = cast(CuraApplication, Application.getInstance())
+            machine_manager = application.getMachineManager()
+            global_stack = machine_manager.activeMachine
+            if global_stack is None:
+                active_machine_definition_id = "empty"
+                active_machine_manufacterer = "empty"
+            else:
+                active_machine_definition_id = global_stack.definition.getId()
+                active_machine_manufacterer = global_stack.definition.getMetaDataEntry("manufacturer", "unknown")
+        except:
+            pass
+
         with configure_scope() as scope:
             scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
             scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
             scope.set_tag("gpu_type", opengl_instance.getGPUType())
+            scope.set_tag("active_machine", active_machine_definition_id)
+            scope.set_tag("active_machine_manufacterer", active_machine_manufacterer)
+
         return info
 
     def _exceptionInfoWidget(self):
