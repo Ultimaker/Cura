@@ -15,6 +15,7 @@ import urllib.error
 
 from sentry_sdk.hub import Hub
 from sentry_sdk.utils import capture_internal_exceptions, event_from_exception
+from sentry_sdk import configure_scope
 
 import certifi
 
@@ -198,6 +199,12 @@ class CrashHandler:
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
 
+        with configure_scope() as scope:
+            scope.set_tag("qt_version", QT_VERSION_STR)
+            scope.set_tag("pyqt_version", PYQT_VERSION_STR)
+            scope.set_tag("os", platform.system())
+            scope.set_tag("os_version", platform.version())
+
         return group
 
     def _getOpenGLInfo(self):
@@ -213,7 +220,10 @@ class CrashHandler:
         info += "</ul>"
 
         self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
-
+        with configure_scope() as scope:
+            scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
+            scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
+            scope.set_tag("gpu_type", opengl_instance.getGPUType())
         return info
 
     def _exceptionInfoWidget(self):
@@ -295,6 +305,10 @@ class CrashHandler:
                                       "module_name": module_name, "version": module_version, "is_plugin": isPlugin}
         self.data["exception"] = exception_dict
 
+        with configure_scope() as scope:
+            scope.set_tag("is_plugin", isPlugin)
+            scope.set_tag("module", module_name)
+
         return group
 
     def _logInfoWidget(self):
@@ -352,28 +366,9 @@ class CrashHandler:
         # Before sending data, the user comments are stored
         self.data["user_info"] = self.user_description_text_area.toPlainText()
 
-        # Convert data to bytes
-        binary_data = json.dumps(self.data).encode("utf-8")
-
-        # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
-        context = ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
-        context.load_verify_locations(cafile = certifi.where())
-        # Submit data
-        kwoptions = {"data": binary_data,
-                     "timeout": 5,
-                     "context": context}
-
-        Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
-        if not self.has_started:
-            print("Sending crash report info to [%s]...\n" % self.crash_url)
-
         try:
             hub = Hub.current
-            client = hub.client
-            event, hint = event_from_exception((self.exception_type, self.value, self.traceback),
-                                               client_options=client.options,
-                                               mechanism={"type": "excepthook", "handled": False},
-                                               )
+            event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
             hub.capture_event(event, hint=hint)
             hub.flush()
         except Exception as e:  # We don't want any exception to cause problems
