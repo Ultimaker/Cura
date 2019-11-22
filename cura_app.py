@@ -23,7 +23,10 @@ parser.add_argument("--debug",
                     )
 
 known_args = vars(parser.parse_known_args()[0])
-sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564", release = "cura%s" % ApplicationMetadata.CuraVersion, default_integrations=False )
+sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                release = "cura%s" % ApplicationMetadata.CuraVersion,
+                default_integrations = False,
+                max_breadcrumbs = 200)
 
 if not known_args["debug"]:
     def get_cura_dir_path():

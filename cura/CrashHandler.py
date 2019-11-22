@@ -65,6 +65,9 @@ class CrashHandler:
         if has_started and exception_type in skip_exception_types:
             return
 
+        with configure_scope() as scope:
+            scope.set_tag("during_startup", not has_started)
+
         if not has_started:
             self._send_report_checkbox = None
             self.early_crash_dialog = self._createEarlyCrashDialog()
