@@ -407,6 +407,23 @@
             }
         }
     },
+    "SentryLogger": {
+        "package_info": {
+            "package_id": "SentryLogger",
+            "package_type": "plugin",
+            "display_name": "Sentry Logger",
+            "description": "Logs certain events so that they can be used by the crash reporter",
+            "package_version": "1.0.0",
+            "sdk_version": "7.0.0",
+            "website": "https://ultimaker.com",
+            "author": {
+                "author_id": "UltimakerPackages",
+                "display_name": "Ultimaker B.V.",
+                "email": "plugins@ultimaker.com",
+                "website": "https://ultimaker.com"
+            }
+        }
+    },
     "SimulationView": {
         "package_info": {
             "package_id": "SimulationView",
