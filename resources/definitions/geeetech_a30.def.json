@@ -1,5 +1,4 @@
 {
-    "id": "geeetech_a30",
     "version": 2,
     "name": "Geeetech A30",
     "inherits": "fdmprinter",
@@ -42,9 +41,6 @@
         "material_diameter": {
             "default_value": 1.75
         },
-        "material_bed_temperature": {
-            "default_value": 60
-        },
         "machine_nozzle_size": {
             "default_value": 0.4
         },
@@ -58,12 +54,6 @@
             "default_value": 2
         },
         "retraction_speed": {
-            "default_value": 25
-        },
-        "retraction_retract_speed": {
-            "default_value": 25
-        },
-        "retraction_prime_speed": {
             "default_value": 25
         },
         "adhesion_type": {
@@ -86,7 +76,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_max_feedrate_x": {
             "default_value": 300

@@ -1,5 +1,4 @@
 {
-    "id": "nwa3d_a5_extruder_0",
     "version": 2,
     "name": "Regular 0.4mm Nozzle",
     "inherits": "fdmextruder",

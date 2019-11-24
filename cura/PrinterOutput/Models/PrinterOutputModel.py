@@ -35,6 +35,7 @@ class PrinterOutputModel(QObject):
         self._target_bed_temperature = 0 # type: float
         self._name = ""
         self._key = ""  # Unique identifier
+        self._unique_name = ""  # Unique name (used in Connect)
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
@@ -188,6 +189,15 @@ class PrinterOutputModel(QObject):
     def updateName(self, name: str) -> None:
         if self._name != name:
             self._name = name
+            self.nameChanged.emit()
+
+    @pyqtProperty(str, notify = nameChanged)
+    def uniqueName(self) -> str:
+        return self._unique_name
+
+    def updateUniqueName(self, unique_name: str) -> None:
+        if self._unique_name != unique_name:
+            self._unique_name = unique_name
             self.nameChanged.emit()
 
     ##  Update the bed temperature. This only changes it locally.

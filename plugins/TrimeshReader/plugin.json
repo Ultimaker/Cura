@@ -1,0 +1,7 @@
+{
+    "name": "Trimesh Reader",
+    "author": "Ultimaker B.V.",
+    "version": "1.0.0",
+    "description": "Provides support for reading model files.",
+    "api": "7.0.0"
+}

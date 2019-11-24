@@ -4,6 +4,8 @@
 from ..Script import Script
 
 from UM.Application import Application #To get the current printer's settings.
+from UM.Logger import Logger
+
 from typing import List, Tuple
 
 class PauseAtHeight(Script):
@@ -106,10 +108,17 @@ class PauseAtHeight(Script):
                 "standby_temperature":
                 {
                     "label": "Standby Temperature",
-                    "description": "Change the temperature during the pause",
+                    "description": "Change the temperature during the pause.",
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0
+                },
+                "display_text":
+                {
+                    "label": "Display Text",
+                    "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
+                    "type": "str",
+                    "default_value": ""
                 }
             }
         }"""
@@ -144,6 +153,7 @@ class PauseAtHeight(Script):
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
+        display_text = self.getSettingValueByKey("display_text")
 
         is_griffin = False
 
@@ -152,6 +162,9 @@ class PauseAtHeight(Script):
         # use offset to calculate the current height: <current_height> = <current_z> - <layer_0_z>
         layer_0_z = 0
         current_z = 0
+        current_height = 0
+        current_layer = 0
+        current_extrusion_f = 0
         got_first_g_cmd_on_layer_0 = False
         current_t = 0 #Tracks the current extruder for tracking the target temperature.
         target_temperature = {} #Tracks the current target temperature for each extruder.
@@ -185,6 +198,10 @@ class PauseAtHeight(Script):
                 if not layers_started:
                     continue
 
+                # Look for the feed rate of an extrusion instruction
+                if self.getValue(line, "F") is not None and self.getValue(line, "E") is not None:
+                    current_extrusion_f = self.getValue(line, "F")
+
                 # If a Z instruction is in the line, read the current Z
                 if self.getValue(line, "Z") is not None:
                     current_z = self.getValue(line, "Z")
@@ -202,7 +219,7 @@ class PauseAtHeight(Script):
 
                     current_height = current_z - layer_0_z
                     if current_height < pause_height:
-                        break  # Try the next layer.
+                        continue  # Scan the enitre layer, z-changes are not always on the same/first line.
 
                 # Pause at layer
                 else:
@@ -248,8 +265,8 @@ class PauseAtHeight(Script):
                         # the nozzle)
                         x, y = self.getNextXY(layer)
                         prev_lines = prev_layer.split("\n")
-                        for line in prev_lines:
-                            new_e = self.getValue(line, 'E', current_e)
+                        for lin in prev_lines:
+                            new_e = self.getValue(lin, "E", current_e)
                             if new_e != current_e:
                                 current_e = new_e
                                 break
@@ -265,7 +282,7 @@ class PauseAtHeight(Script):
 
                 if not is_griffin:
                     # Retraction
-                    prepend_gcode += self.putValue(M = 83) + "\n"
+                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -275,25 +292,28 @@ class PauseAtHeight(Script):
                             prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head away
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
 
                     # This line should be ok
                     prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
 
                     if current_z < 15:
-                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + "\n"
+                        prepend_gcode += self.putValue(G = 1, Z = 15, F = 300) + " ; too close to bed--move to at least 15mm\n"
 
                     if control_temperatures:
                         # Set extruder standby temperature
-                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + "; standby temperature\n"
+                        prepend_gcode += self.putValue(M = 104, S = standby_temperature) + " ; standby temperature\n"
+
+                if display_text:
+                    prepend_gcode += "M117 " + display_text + "\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M = 0) + ";Do the actual pause\n"
+                prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
 
                 if not is_griffin:
                     if control_temperatures:
                         # Set extruder resume temperature
-                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + "; resume temperature\n"
+                        prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
 
                     # Push the filament back,
                     if retraction_amount != 0:
@@ -309,8 +329,10 @@ class PauseAtHeight(Script):
                         prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = retraction_speed * 60) + "\n"
 
                     # Move the head back
-                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    if current_z < 15:
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
                     prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    prepend_gcode += self.putValue(G = 1, Z = current_z, F = 300) + " ; move back down to resume height\n"
                     if retraction_amount != 0:
                         if firmware_retract: #Can't set the distance directly to what the user wants. We have to choose ourselves.
                             retraction_count = 1 if control_temperatures else 3 #Retract more if we don't control the temperature.
@@ -318,8 +340,13 @@ class PauseAtHeight(Script):
                                 prepend_gcode += self.putValue(G = 11) + "\n"
                         else:
                             prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = retraction_speed * 60) + "\n"
-                    prepend_gcode += self.putValue(G = 1, F = 9000) + "\n"
-                    prepend_gcode += self.putValue(M = 82) + "\n"
+
+                    if current_extrusion_f != 0:
+                        prepend_gcode += self.putValue(G = 1, F = current_extrusion_f) + " ; restore extrusion feedrate\n"
+                    else:
+                        Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
+
+                    prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
                     # reset extrude value to pre pause value
                     prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"

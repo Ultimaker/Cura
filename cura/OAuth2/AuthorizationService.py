@@ -3,7 +3,6 @@
 
 import json
 from datetime import datetime, timedelta
-import os
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 
@@ -14,7 +13,6 @@ from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.Platform import Platform
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
@@ -199,8 +197,6 @@ class AuthorizationService:
                         self._unable_to_get_data_message.hide()
 
                     self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
-                    self._unable_to_get_data_message.addAction("retry", i18n_catalog.i18nc("@action:button", "Retry"), "[no_icon]", "[no_description]")
-                    self._unable_to_get_data_message.actionTriggered.connect(self._onMessageActionTriggered)
                     self._unable_to_get_data_message.show()
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
@@ -222,6 +218,3 @@ class AuthorizationService:
 
         self.accessTokenChanged.emit()
 
-    def _onMessageActionTriggered(self, _, action):
-        if action == "retry":
-            self.loadAuthDataFromPreferences()

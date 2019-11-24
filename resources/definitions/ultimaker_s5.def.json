@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_s5",
     "version": 2,
     "name": "Ultimaker S5",
     "inherits": "ultimaker",
@@ -35,7 +34,10 @@
             "id": 9051,
             "check_urls": ["https://software.ultimaker.com/releases/firmware/9051/stable/um-update.swu.version"],
             "update_url": "https://ultimaker.com/firmware"
-        }
+        },
+        "bom_numbers": [
+            9051, 214475
+        ]
     },
 
     "overrides": {
@@ -67,8 +69,6 @@
         "extruder_prime_pos_abs": { "default_value": true },
         "machine_start_gcode": { "default_value": "" },
         "machine_end_gcode": { "default_value": "" },
-        "prime_tower_position_x": { "default_value": 345 },
-        "prime_tower_position_y": { "default_value": 222.5 },
         "prime_blob_enable": { "enabled": true, "default_value": false },
 
         "speed_travel":

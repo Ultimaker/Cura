@@ -1,5 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Dict, Optional, Callable, List
 
 from UM import i18nCatalog
@@ -8,6 +9,7 @@ from UM.Signal import Signal
 from UM.Version import Version
 
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 
 from .ZeroConfClient import ZeroConfClient
@@ -66,7 +68,7 @@ class LocalClusterOutputDeviceManager:
 
     ## Add a networked printer manually by address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
-        api_client = ClusterApiClient(address, lambda error: print(error))
+        api_client = ClusterApiClient(address, lambda error: Logger.log("e", str(error)))
         api_client.getSystem(lambda status: self._onCheckManualDeviceResponse(address, status, callback))
 
     ## Remove a manually added networked printer.
@@ -95,6 +97,14 @@ class LocalClusterOutputDeviceManager:
         if not active_machine:
             return
         self._connectToOutputDevice(device, active_machine)
+        self._connectToActiveMachine()
+
+        # Pre-select the correct machine type of the group host.
+        # We first need to find the correct definition because the machine manager only takes name as input, not ID.
+        definitions = CuraApplication.getInstance().getContainerRegistry().findContainers(id = device.printerType)
+        if not definitions:
+            return
+        CuraApplication.getInstance().getMachineManager().switchPrinterType(definitions[0].getName())
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
@@ -110,7 +120,7 @@ class LocalClusterOutputDeviceManager:
                 self._connectToOutputDevice(device, active_machine)
             elif device.key in output_device_manager.getOutputDeviceIds():
                 # Remove device if it is not meant for the active machine.
-                CuraApplication.getInstance().getOutputDeviceManager().removeOutputDevice(device.key)
+                output_device_manager.removeOutputDevice(device.key)
 
     ## Callback for when a manual device check request was responded to.
     def _onCheckManualDeviceResponse(self, address: str, status: PrinterSystemStatus,
@@ -135,10 +145,13 @@ class LocalClusterOutputDeviceManager:
         ultimaker_machines = container_registry.findContainersMetadata(type="machine", manufacturer="Ultimaker B.V.")
         found_machine_type_identifiers = {}  # type: Dict[str, str]
         for machine in ultimaker_machines:
-            machine_bom_number = machine.get("firmware_update_info", {}).get("id", None)
             machine_type = machine.get("id", None)
-            if machine_bom_number and machine_type:
-                found_machine_type_identifiers[str(machine_bom_number)] = machine_type
+            machine_bom_numbers = machine.get("bom_numbers", [])
+            if machine_type and machine_bom_numbers:
+                for bom_number in machine_bom_numbers:
+                    # This produces a n:1 mapping of bom numbers to machine types
+                    # allowing the S5R1 and S5R2 hardware to use a single S5 definition.
+                    found_machine_type_identifiers[str(bom_number)] = machine_type
         return found_machine_type_identifiers
 
     ## Add a new device.
@@ -191,13 +204,17 @@ class LocalClusterOutputDeviceManager:
         if device is None:
             return
 
-        # The newly added machine is automatically activated.
-        CuraApplication.getInstance().getMachineManager().addMachine(device.printerType, device.name)
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
+        # Create a new machine and activate it.
+        # We do not use use MachineManager.addMachine here because we need to set the network key before activating it.
+        # If we do not do this the auto-pairing with the cloud-equivalent device will not work.
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        if not new_machine:
+            Logger.log("e", "Failed creating a new machine")
             return
-        self._connectToOutputDevice(device, active_machine)
-        CloudFlowMessage(device.ipAddress).show()  # Nudge the user to start using Ultimaker Cloud.
+        new_machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
+        CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+        self._connectToOutputDevice(device, new_machine)
+        self._showCloudFlowMessage(device)
 
     ## Add an address to the stored preferences.
     def _storeManualAddress(self, address: str) -> None:
@@ -236,7 +253,22 @@ class LocalClusterOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_NETWORK_KEY, device.key)
         machine.setMetaDataEntry("group_name", device.name)
-
-        device.connect()
         machine.addConfiguredConnectionType(device.connectionType.value)
-        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
+
+        if not device.isConnected():
+            device.connect()
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)
+
+    ## Nudge the user to start using Ultimaker Cloud.
+    @staticmethod
+    def _showCloudFlowMessage(device: LocalClusterOutputDevice) -> None:
+        if CuraApplication.getInstance().getMachineManager().activeMachineIsUsingCloudConnection:
+            # This printer is already cloud connected, so we do not bother the user anymore.
+            return
+        if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
+            # Do not show the message if the user is not signed in.
+            return
+        CloudFlowMessage(device.ipAddress).show()

@@ -6,6 +6,7 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger
+from UM.Settings import ContainerRegistry
 from cura.CuraApplication import CuraApplication
 
 from ..Models.Http.ClusterMaterial import ClusterMaterial
@@ -67,10 +68,10 @@ class SendMaterialJob(Job):
     #   \param materials_to_send A set with id's of materials that must be sent.
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
         container_registry = CuraApplication.getInstance().getContainerRegistry()
-        material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_dict = material_manager.getAllMaterialGroups()
+        all_materials = container_registry.findInstanceContainersMetadata(type = "material")
+        all_base_files = {material["base_file"] for material in all_materials if "base_file" in material}  # Filters out uniques by making it a set. Don't include files without base file (i.e. empty material).
 
-        for root_material_id in material_group_dict:
+        for root_material_id in all_base_files:
             if root_material_id not in materials_to_send:
                 # If the material does not have to be sent we skip it.
                 continue
@@ -104,7 +105,6 @@ class SendMaterialJob(Job):
                 parts.append(self.device.createFormPart("name=\"signature_file\"; filename=\"{file_name}\""
                                                         .format(file_name = signature_file_name), f.read()))
 
-        Logger.log("d", "Syncing material %s with cluster.", material_id)
         # FIXME: move form posting to API client
         self.device.postFormWithParts(target = "/cluster-api/v1/materials/", parts = parts,
                                       on_finished = self._sendingFinished)
@@ -117,7 +117,6 @@ class SendMaterialJob(Job):
         body = reply.readAll().data().decode('utf8')
         if "not added" in body:
             # For some reason the cluster returns a 200 sometimes even when syncing failed.
-            Logger.log("w", "Error while syncing material: %s", body)
             return
         # Inform the user that materials have been synced. This message only shows itself when not already visible.
         # Because of the guards above it is not shown when syncing failed (which is not always an actual problem).
@@ -129,20 +128,18 @@ class SendMaterialJob(Job):
     @staticmethod
     def _getLocalMaterials() -> Dict[str, LocalMaterial]:
         result = {}  # type: Dict[str, LocalMaterial]
-        material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_dict = material_manager.getAllMaterialGroups()
+        all_materials = CuraApplication.getInstance().getContainerRegistry().findInstanceContainersMetadata(type = "material")
+        all_base_files = [material for material in all_materials if material["id"] == material.get("base_file")]  # Don't send materials without base_file: The empty material doesn't need to be sent.
 
         # Find the latest version of all material containers in the registry.
-        for root_material_id, material_group in material_group_dict.items():
-            material_metadata = material_group.root_material_node.getMetadata()
-
+        for material_metadata in all_base_files:
             try:
                 # material version must be an int
                 material_metadata["version"] = int(material_metadata["version"])
 
                 # Create a new local material
                 local_material = LocalMaterial(**material_metadata)
-                local_material.id = root_material_id
+                local_material.id = material_metadata["id"]
 
                 if local_material.GUID not in result or \
                         local_material.GUID not in result or \

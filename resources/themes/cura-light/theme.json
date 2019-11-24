@@ -441,6 +441,9 @@
 
     "sizes": {
         "window_minimum_size": [80, 48],
+        "large_popup_dialog": [48, 40],
+        "popup_dialog": [40, 36],
+        "small_popup_dialog": [36, 12],
 
         "main_window_header": [0.0, 4.0],
         "main_window_header_button": [8, 2.35],
@@ -483,7 +486,7 @@
         "default_lining": [0.08, 0.08],
 
         "default_arrow": [0.8, 0.8],
-        "logo": [8, 1.75],
+        "logo": [16, 3.5],
 
         "wide_margin": [2.0, 2.0],
         "thick_margin": [1.71, 1.43],
@@ -619,6 +622,8 @@
         "monitor_empty_state_offset": [5.6, 5.6],
         "monitor_empty_state_size": [35.0, 25.0],
         "monitor_external_link_icon": [1.16, 1.16],
-        "monitor_column": [18.0, 1.0]
+        "monitor_column": [18.0, 1.0],
+        "monitor_progress_bar": [16.5, 1.0],
+        "monitor_margin": [1.5, 1.5]
     }
 }

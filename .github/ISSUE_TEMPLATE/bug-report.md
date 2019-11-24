@@ -22,22 +22,23 @@ Thank you for using Cura!
 -->
 
 **Application version**
-<!-- The version of the application this issue occurs with -->
+(The version of the application this issue occurs with.)
 
 **Platform**
-<!-- Information about the operating system the issue occurs on. Include at least the operating system. In the case of visual glitches/issues, also include information about your graphics drivers and GPU. -->
+(Information about the operating system the issue occurs on. Include at least the operating system. In the case of visual glitches/issues, also include information about your graphics drivers and GPU.)
 
 **Printer**
-<!-- Which printer was selected in Cura? If possible, please attach project file as .curaproject.3mf.zip -->
+(Which printer was selected in Cura? If possible, please attach project file as .curaproject.3mf.zip.)
 
 **Reproduction steps**
-<!-- How did you encounter the bug? -->
+1. Something you did.
+2. Something you did next.
 
 **Actual results**
-<!-- What happens after the above steps have been followed -->
+(What happens after the above steps have been followed.)
 
 **Expected results**
-<!-- What should happen after the above steps have been followed -->
+(What should happen after the above steps have been followed.)
 
 **Additional information**
-<!-- Extra information relevant to the issue, like screenshots. Don't forget to attach the log files with this issue report. -->
+(Extra information relevant to the issue, like screenshots. Don't forget to attach the log files with this issue report.)

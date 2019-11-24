@@ -50,7 +50,7 @@ class UserChangesModel(ListModel):
             return
 
         stacks = [global_stack]
-        stacks.extend(global_stack.extruders.values())
+        stacks.extend(global_stack.extruderList)
 
         # Check if the definition container has a translation file and ensure it's loaded.
         definition = global_stack.getBottom()

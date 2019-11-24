@@ -1,5 +1,4 @@
 {
-    "id": "ubuild-3d_mr_bot_280",
     "version": 2,
     "name": "uBuild-3D Mr Bot 280",
     "inherits": "fdmprinter",
@@ -24,12 +23,9 @@
         "machine_height": { "default_value": 275 },
         "machine_depth": { "default_value": 275 },
         "machine_center_is_zero": { "default_value": false },
-        "material_bed_temperature": { "default_value": 70 },
         "layer_height_0": { "default_value": 0.1 },
         "retraction_amount": { "default_value": 2 },
         "retraction_speed": { "default_value": 50 },
-        "retraction_retract_speed": { "default_value": 50 },
-        "retraction_prime_speed": { "default_value": 30 },
         "adhesion_type": { "default_value": "skirt" },
         "machine_nozzle_heat_up_speed": { "default_value": 2 },
         "machine_nozzle_cool_down_speed": { "default_value": 2 },

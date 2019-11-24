@@ -87,7 +87,7 @@ class SingleInstance:
                 if command == "clear-all":
                     self._application.callLater(lambda: self._application.deleteAll())
 
-                # Command: Load a model file
+                # Command: Load a model or project file
                 elif command == "open":
                     self._application.callLater(lambda f = payload["filePath"]: self._application._openFile(f))
 

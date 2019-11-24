@@ -35,8 +35,6 @@
         "material_standby_temperature": { "value": "material_print_temperature" },
 
         "switch_extruder_retraction_speeds": {"default_value": 15 },
-        "switch_extruder_retraction_speed": {"default_value": 15 },
-        "switch_extruder_prime_speed": {"default_value": 15 },
         "switch_extruder_retraction_amount": {"value": 1 },
 
         "speed_travel": { "value": "100" },
@@ -50,8 +48,8 @@
         "speed_wall_0": { "value": "math.ceil(speed_wall * 20 / 25)" },
         "speed_wall_x": { "value": "speed_wall" },
 
-        "prime_tower_position_x": { "default_value": 175 },
-        "prime_tower_position_y": { "default_value": 178 },
+        "prime_tower_position_x": { "value": "175" },
+        "prime_tower_position_y": { "value": "178" },
         "prime_tower_wipe_enabled": { "default_value": false },
         "prime_tower_min_volume": { "default_value": 50 },
 
@@ -85,8 +83,6 @@
 
         "retraction_amount": { "default_value": 3 },
         "retraction_speed": { "default_value": 15 },
-        "retraction_retract_speed": { "default_value": 15 },
-        "retraction_prime_speed": { "default_value": 15 },
         "travel_retract_before_outer_wall": { "default_value": true },
         "skin_overlap": { "value": "15" },
         "adhesion_type": { "default_value": "skirt" },
