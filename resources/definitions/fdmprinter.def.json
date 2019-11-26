@@ -7165,6 +7165,17 @@
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
+                "bridge_sparse_infill_max_density":
+                {
+                    "label": "Bridge Sparse Infill Max Density",
+                    "description": "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
                 "bridge_wall_coast":
                 {
                     "label": "Bridge Wall Coasting",
