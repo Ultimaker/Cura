@@ -23,7 +23,7 @@ class DisplayRemainingTimeOnLCD(Script):
 
     def getSettingDataString(self):
         return """{
-            "name":"Disaplay Remaining Time on LCD",
+            "name":"Display Remaining Time on LCD",
             "key":"DisplayRemainingTimeOnLCD",
             "metadata": {},
             "version": 2,
