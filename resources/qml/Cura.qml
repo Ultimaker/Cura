@@ -21,7 +21,8 @@ UM.MainWindow
     id: base
 
     // Cura application window title
-    title: catalog.i18nc("@title:window", "Ultimaker Cura")
+    title: PrintInformation.jobName + " - " + catalog.i18nc("@title:window", "Ultimaker Cura")
+
     backgroundColor: UM.Theme.getColor("viewport_background")
 
     UM.I18nCatalog
