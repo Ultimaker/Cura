@@ -68,7 +68,7 @@
         "material_print_temp_wait":   {"default_value": false },
         "material_bed_temp_wait":     {"default_value": false },
         "machine_max_feedrate_z":     {"default_value": 10 },
-        "machine_acceleration":       {"default_value": 1000 },
+        "machine_acceleration":       {"default_value": 300 },
         "machine_start_gcode":        {"default_value": "\n;Neither Hybrid AM Systems nor any of Hybrid AM Systems representatives has any liabilities or gives any warranties on this .gcode file, or on any or all objects made with this .gcode file.\n\nM140 S{material_bed_temperature}\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\n\nG1 Z10 F900\nG1 X-30 Y100 F12000\n\nM190 S{material_bed_temperature}\nM117 HMS434 Printing ...\n\n" },
         "machine_end_gcode":          {"default_value": "" },
 
@@ -101,7 +101,7 @@
         "skin_outline_count":        {"value": "0"},
         "ironing_enabled":           {"value": true },
         "ironing_line_spacing":      {"value": "line_width / 4 * 3"},
-        "ironing_flow":              {"value": "0.05"},
+        "ironing_flow":              {"value": "0"},
         "ironing_inset":             {"value": "ironing_line_spacing"},
         "speed_ironing":             {"value": "150"},
  
@@ -174,14 +174,16 @@
         "prime_tower_position_y":     {"value": 70 },
         "prime_blob_enable":          {"default_value": false },
 
-        "minimum_polygon_circumference":    {"value": 0.01 },
         "meshfix_maximum_resolution":       {"value": 0.01 },
         "meshfix_maximum_travel_resolution":{"value": 0.1 },
         "meshfix_maximum_deviation":        {"value": 0.01 },
+
+        "minimum_polygon_circumference":    {"value": 0.05 },
         "coasting_enable":                  {"value": true},
         "coasting_volume":                  {"value": 0.1},
         "coasting_min_volume":              {"value": 0.17},
         "coasting_speed":                   {"value": 90},
+        "wall_overhang_angle":              {"value": 60},
         "bridge_settings_enabled":          {"value": true},
         "bridge_wall_min_length":           {"value": 3},
         "bridge_skin_support_threshold":    {"value": 90},
