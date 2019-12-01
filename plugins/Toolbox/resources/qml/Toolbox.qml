@@ -20,8 +20,8 @@ Window
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
-    width: Math.floor(720 * screenScaleFactor)
-    height: Math.floor(640 * screenScaleFactor)
+    width: UM.Theme.getSize("large_popup_dialog").width
+    height:  UM.Theme.getSize("large_popup_dialog").height
     minimumWidth: width
     maximumWidth: minimumWidth
     minimumHeight: height

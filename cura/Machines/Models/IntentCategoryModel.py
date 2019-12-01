@@ -1,6 +1,7 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
+import collections
 from PyQt5.QtCore import Qt, QTimer
 from typing import TYPE_CHECKING, Optional, Dict
 from cura.Machines.Models.IntentTranslations import intent_translations
@@ -28,6 +29,30 @@ class IntentCategoryModel(ListModel):
     DescriptionRole = Qt.UserRole + 5
 
     modelUpdated = pyqtSignal()
+
+    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
+
+    # Translations to user-visible string. Ordered by weight.
+    # TODO: Create a solution for this name and weight to be used dynamically.
+    @classmethod
+    def _get_translations(cls):
+        if len(cls._translations) == 0:
+            cls._translations["default"] = {
+                "name": catalog.i18nc("@label", "Default")
+            }
+            cls._translations["visual"] = {
+                "name": catalog.i18nc("@label", "Visual"),
+                "description": catalog.i18nc("@text", "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality.")
+            }
+            cls._translations["engineering"] = {
+                "name": catalog.i18nc("@label", "Engineering"),
+                "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances.")
+            }
+            cls._translations["quick"] = {
+                "name": catalog.i18nc("@label", "Draft"),
+                "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
+            }
+        return cls._translations
 
     ##  Creates a new model for a certain intent category.
     #   \param The category to list the intent profiles for.
@@ -79,7 +104,7 @@ class IntentCategoryModel(ListModel):
                 "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
-                "weight": list(intent_translations).index(category),
+                "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
                 "qualities": qualities
             })
         result.sort(key = lambda k: k["weight"])
@@ -89,5 +114,5 @@ class IntentCategoryModel(ListModel):
     ##  for categories and keys
     @staticmethod
     def translation(category: str, key: str, default: Optional[str] = None):
-        display_strings = intent_translations.get(category, {})
+        display_strings = IntentCategoryModel._get_translations().get(category, {})
         return display_strings.get(key, default)
