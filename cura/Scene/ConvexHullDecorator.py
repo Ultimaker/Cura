@@ -97,21 +97,23 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         # Parent can be None if node is just loaded.
-        if self._global_stack \
-                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
-                and not self.hasGroupAsParent(self._node):
+        if self._is_singular_one_at_a_time_node():
             hull = self.getConvexHullHeadFull()
             hull = self._add2DAdhesionMargin(hull)
             return hull
 
         return self._compute2DConvexHull()
 
-    ##  Get the convex hull of the node with the full head size
+    ##  For one at the time this is the convex hull of the node with the full head size
+    #   In case of printing all at once this is None.
     def getConvexHullHeadFull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
 
-        return self._compute2DConvexHeadFull()
+        if self._is_singular_one_at_a_time_node():
+            return self._compute2DConvexHeadFull()
+
+        return None
 
     @staticmethod
     def hasGroupAsParent(node: "SceneNode") -> bool:
@@ -121,20 +123,19 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return bool(parent.callDecoration("isGroup"))
 
     ##  Get convex hull of the object + head size
-    #   In case of printing all at once this is the same as the convex hull.
+    #   In case of printing all at once this is None.
     #   For one at the time this is area with intersection of mirrored head
     def getConvexHullHead(self) -> Optional[Polygon]:
         if self._node is None:
             return None
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
-        if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                head_with_fans = self._compute2DConvexHeadMin()
-                if head_with_fans is None:
-                    return None
-                head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
-                return head_with_fans_with_adhesion_margin
+        if self._is_singular_one_at_a_time_node():
+            head_with_fans = self._compute2DConvexHeadMin()
+            if head_with_fans is None:
+                return None
+            head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
+            return head_with_fans_with_adhesion_margin
         return None
 
     ##  Get convex hull of the node
@@ -147,10 +148,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
 
-        if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                # Printing one at a time and it's not an object in a group
-                return self._compute2DConvexHull()
+        if self._is_singular_one_at_a_time_node():
+            # Printing one at a time and it's not an object in a group
+            return self._compute2DConvexHull()
         return None
 
     ##  The same as recomputeConvexHull, but using a timer if it was set.
@@ -175,9 +175,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 self._convex_hull_node = None
             return
 
-        if self._global_stack \
-                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
-                and not self.hasGroupAsParent(self._node):
+        if self._is_singular_one_at_a_time_node():
             # In one-at-a-time mode, every printed object gets it's own adhesion
             printing_area = self.getAdhesionArea()
         else:
@@ -425,6 +423,14 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if root is node:
             return True
         return self.__isDescendant(root, node.getParent())
+
+    ## True if print_sequence is one_at_a_time and _node is not part of a group
+    def _is_singular_one_at_a_time_node(self) -> bool:
+        if self._node is None:
+            return False
+        return self._global_stack \
+                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+                and not self.hasGroupAsParent(self._node)
 
     _affected_settings = [
         "adhesion_type", "raft_margin", "print_sequence",
