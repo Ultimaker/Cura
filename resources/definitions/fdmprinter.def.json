@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 10,
+        "setting_version": 11,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -383,6 +383,16 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "machine_gcode_flavor == 'RepRap (Volumetric)' or machine_gcode_flavor == 'UltiGCode' or machine_gcode_flavor == 'BFB'",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
+                "machine_extruders_share_heater":
+                {
+                    "label": "Extruders Share Heater",
+                    "description": "Whether the extruders share a single heater rather than each extruder having its own heater.",
+                    "type": "bool",
+                    "default_value": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -2144,7 +2154,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_nozzle_temp_enabled",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2159,7 +2169,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
-                    "enabled": "machine_nozzle_temp_enabled",
+                    "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -7046,11 +7056,12 @@
                 },
                 "adaptive_layer_height_threshold":
                 {
-                    "label": "Adaptive Layers Threshold",
-                    "description": "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer.",
+                    "label": "Adaptive Layers Topography Size",
+                    "description": "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together.",
                     "type": "float",
                     "enabled": "adaptive_layer_height_enabled",
-                    "default_value": 200.0,
+                    "default_value": 0.2,
+                    "unit": "mm",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -7346,6 +7357,7 @@
                     "description": "Retract the filament when the nozzle is moving over a non-printed area.",
                     "type": "bool",
                     "default_value": true,
+                    "value": "retraction_enable",
                     "enabled": "clean_between_layers",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -7358,6 +7370,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
+                    "value": "retraction_amount",
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
@@ -7372,6 +7385,7 @@
                     "unit": "mm³",
                     "type": "float",
                     "default_value": 0,
+                    "value": "retraction_extra_prime_amount",
                     "minimum_value_warning": "-0.0001",
                     "maximum_value_warning": "10.0",
                     "enabled": "wipe_retraction_enable and clean_between_layers",
@@ -7385,6 +7399,7 @@
                     "unit": "mm/s",
                     "type": "float",
                     "default_value": 5,
+                    "value": "retraction_speed",
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "maximum_value": "machine_max_feedrate_e",
@@ -7406,13 +7421,13 @@
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
-                            "value": "retraction_speed",
+                            "value": "wipe_retraction_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         },
                         "wipe_retraction_prime_speed":
                         {
-                            "label": "Retraction Prime Speed",
+                            "label": "Wipe Retraction Prime Speed",
                             "description": "The speed at which the filament is primed during a wipe retraction move.",
                             "unit": "mm/s",
                             "type": "float",
@@ -7422,7 +7437,7 @@
                             "minimum_value_warning": "1",
                             "maximum_value_warning": "70",
                             "enabled": "wipe_retraction_enable and clean_between_layers",
-                            "value": "retraction_speed",
+                            "value": "wipe_retraction_speed",
                             "settable_per_mesh": false,
                             "settable_per_extruder": true
                         }
@@ -7443,10 +7458,11 @@
                 },
                 "wipe_hop_enable":
                 {
-                    "label": "Wipe Z Hop When Retracted",
-                    "description": "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
+                    "label": "Wipe Z Hop",
+                    "description": "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate.",
                     "type": "bool",
                     "default_value": true,
+                    "value": "retraction_hop_enabled",
                     "enabled": "clean_between_layers",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -7459,6 +7475,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 1,
+                    "value": "retraction_hop",
                     "enabled": "wipe_hop_enable and clean_between_layers",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -7470,7 +7487,8 @@
                     "description": "Speed to move the z-axis during the hop.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 100,
+                    "default_value": 10,
+                    "value": "speed_z_hop",
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "wipe_hop_enable and clean_between_layers",
@@ -7523,18 +7541,21 @@
                     "type": "float",
                     "minimum_value": "0",
                     "default_value": 0,
-                    "settable_per_mesh": true
-                },
-                "small_feature_max_length":
-                {
-                    "label": "Small Feature Max Length",
-                    "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "default_value": 0,
-                    "value": "small_hole_max_size * math.pi",
-                    "settable_per_mesh": true
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "small_feature_max_length":
+                        {
+                            "label": "Small Feature Max Length",
+                            "description": "Feature outlines that are shorter than this length will be printed using Small Feature Speed.",
+                            "unit": "mm",
+                            "type": "float",
+                            "minimum_value": "0",
+                            "default_value": 0,
+                            "value": "small_hole_max_size * math.pi",
+                            "settable_per_mesh": true
+                        }
+                    }
                 },
                 "small_feature_speed_factor":
                 {

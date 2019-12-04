@@ -10,7 +10,7 @@ definition = creality_cr10s
 
 [metadata]
 type = definition_changes
-setting_version = 10
+setting_version = 11
 
 [values]
 %s
