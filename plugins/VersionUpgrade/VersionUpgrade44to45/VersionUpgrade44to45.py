@@ -10,7 +10,7 @@ from UM.VersionUpgrade import VersionUpgrade
 
 class VersionUpgrade44to45(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes=())
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version"))  # Explicitly give an exception when this fails. That means that the file format is not recognised.
         setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
