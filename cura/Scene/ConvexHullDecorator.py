@@ -99,6 +99,8 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Parent can be None if node is just loaded.
         if self._is_singular_one_at_a_time_node():
             hull = self.getConvexHullHeadFull()
+            if hull is None:
+                return None
             hull = self._add2DAdhesionMargin(hull)
             return hull
 
@@ -144,7 +146,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         if self._node is None:
             return None
-        
+
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
 
@@ -433,9 +435,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def _is_singular_one_at_a_time_node(self) -> bool:
         if self._node is None:
             return False
-        return self._global_stack \
-                and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
-                and not self.hasGroupAsParent(self._node)
+        return self._global_stack is not None \
+            and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+            and not self.hasGroupAsParent(self._node)
 
     _affected_settings = [
         "adhesion_type", "raft_margin", "print_sequence",
