@@ -89,7 +89,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return self._add2DAdhesionMargin(hull)
 
     ##  Get the unmodified 2D projected convex hull of the node (if any)
-    #   In case of all-at-once, this includes adhesion and head+fans clearance
+    #   In case of one-at-a-time, this includes adhesion and head+fans clearance
     def getConvexHull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
@@ -139,7 +139,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return None
 
     ##  Get convex hull of the node
-    #   In case of printing all at once this is the same as the convex hull.
+    #   In case of printing all at once this None??
     #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         if self._node is None:
@@ -152,6 +152,17 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Printing one at a time and it's not an object in a group
             return self._compute2DConvexHull()
         return None
+
+    ## Get the buildplate polygon where will be printed
+    #   In case of printing all at once this is the same as convex hull (no individual adhesion)
+    #   For one at the time this includes the adhesion area
+    def getPrintingArea(self) -> Optional[Polygon]:
+        if self._is_singular_one_at_a_time_node():
+            # In one-at-a-time mode, every printed object gets it's own adhesion
+            printing_area = self.getAdhesionArea()
+        else:
+            printing_area = self.getConvexHull()
+        return printing_area
 
     ##  The same as recomputeConvexHull, but using a timer if it was set.
     def recomputeConvexHullDelayed(self) -> None:
@@ -175,15 +186,9 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 self._convex_hull_node = None
             return
 
-        if self._is_singular_one_at_a_time_node():
-            # In one-at-a-time mode, every printed object gets it's own adhesion
-            printing_area = self.getAdhesionArea()
-        else:
-            printing_area = self.getConvexHull()
-
         if self._convex_hull_node:
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, printing_area, self._raft_thickness, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key: str, property_name: str) -> None:
