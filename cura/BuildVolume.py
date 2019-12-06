@@ -1102,7 +1102,7 @@ class BuildVolume(SceneNode):
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-            return 0
+            return 0.1
 
         bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)
         support_expansion = self._calculateSupportExpansion(self._global_container_stack)
