@@ -32,10 +32,8 @@ In the case of visual glitches/issues, also include information about your graph
 2. Something you did next.
 
 **Screenshot(s)**
-Adding screenshot(s) is a very good idea to identify what exactly the problem is. We get lots of bug reports and a 
-screenshot is also a great help to tell them apart without downloading and opening a project file. Feel
-free to add text either inside or below the screenshots. Before (earlier, working version of Cura) / After 
-(Problematic version of Cura) screenshots might work well, too. 
+Adding screenshot(s) is a very good idea to identify what exactly the problem is. We get lots of bug reports and a screenshot is also a great help to tell them apart without downloading and opening a project file. 
+Feel free to add text either inside or below the screenshots. Before (earlier, working version of Cura) / After (Problematic version of Cura) screenshots might work well, too. 
 
 **Actual results**
 (What happens after the above steps have been followed.)
@@ -45,15 +43,12 @@ free to add text either inside or below the screenshots. Before (earlier, workin
 
 **Project file**
 Provide a project which clearly shows the bug.
-Rather than providing a model file, provide a project (.3mf or .curaproject) file. This will include all the settings 
-you used, which is crucial to reproducing your problem.
+Rather than providing a model file, provide a project (.3mf or .curaproject) file. This will include all the settings you used, which is crucial to reproducing your problem.
 To upload a project, try changing the extension to e.g. bug_example.3mf.zip so that GitHub accepts uploading the file.
-If the file is too big, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work 
-well too. Please make sure the file is publicly available ie. "shared with everyone"
+If the file is too big, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too. Please make sure the file is publicly available ie. "shared with everyone"
 
 **Log file**
-It is important to provide a log file. It might provide us info about why a certain material was selected, or is not 
-compatible, for example.
+It is important to provide a log file. It might provide us info about why a certain material was selected, or is not compatible, for example.
 Information about how to find the log file can be found at https://github.com/Ultimaker/Cura#logging-issues 
 
 **Additional information**
