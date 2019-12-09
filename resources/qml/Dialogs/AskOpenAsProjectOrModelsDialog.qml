@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450 * screenScaleFactor
-    height: 150 * screenScaleFactor
+    width: UM.Theme.getSize("small_popup_dialog").width
+    height: UM.Theme.getSize("small_popup_dialog").height
 
     maximumHeight: height
     maximumWidth: width

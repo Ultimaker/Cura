@@ -7,6 +7,7 @@ from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
 import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Logger import Logger
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MaterialNode import MaterialNode
 from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
@@ -101,6 +102,9 @@ class IntentModel(ListModel):
 
         for extruder in global_stack.extruderList:
             active_variant_name = extruder.variant.getMetaDataEntry("name")
+            if active_variant_name not in machine_node.variants:
+                Logger.log("w", "Could not find the variant %s", active_variant_name)
+                continue
             active_variant_node = machine_node.variants[active_variant_name]
             active_material_node = active_variant_node.materials[extruder.material.getMetaDataEntry("base_file")]
             nodes.add(active_material_node)
