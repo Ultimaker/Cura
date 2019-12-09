@@ -14,6 +14,7 @@ Item
     property color activeColor: UM.Theme.getColor("primary")
     property color inactiveColor: UM.Theme.getColor("slider_groove")
     property color defaultItemColor: UM.Theme.getColor("small_button_active")
+    property color defaultItemFillColor: UM.Theme.getColor("main_background")
     property int checkboxSize: Math.round(UM.Theme.getSize("radio_button").height * 0.75)
     property int inactiveMarkerSize: 2 * barSize
     property int barSize: UM.Theme.getSize("slider_groove_radius").height
@@ -135,6 +136,7 @@ Item
                 radius: Math.round(width / 2)
 
                 border.color: defaultItemColor
+                color: defaultItemFillColor
 
                 Rectangle
                 {
