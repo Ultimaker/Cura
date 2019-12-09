@@ -21,19 +21,17 @@ Thank you for using Cura!
 (The version of the application this issue occurs with.)
 
 **Platform**
-(Information about the operating system the issue occurs on. Include at least the operating system.
-In the case of visual glitches/issues, also include information about your graphics drivers and GPU.)
+(Information about the operating system the issue occurs on. Include at least the operating system and maybe GPU.)
 
 **Printer**
-(Which printer was selected in Cura?
+(Which printer was selected in Cura?)
 
 **Reproduction steps**
-1. Something you did.
-2. Something you did next.
+1. (Something you did.)
+2. (Something you did next.)
 
 **Screenshot(s)**
-Adding screenshot(s) is a very good idea to identify what exactly the problem is. We get lots of bug reports and a screenshot is also a great help to tell them apart without downloading and opening a project file. 
-Feel free to add text either inside or below the screenshots. Before (earlier, working version of Cura) / After (Problematic version of Cura) screenshots might work well, too. 
+(Image showing the problem, perhaps before/after images.) 
 
 **Actual results**
 (What happens after the above steps have been followed.)
@@ -42,14 +40,10 @@ Feel free to add text either inside or below the screenshots. Before (earlier, w
 (What should happen after the above steps have been followed.)
 
 **Project file**
-Provide a project which clearly shows the bug.
-Rather than providing a model file, provide a project (.3mf or .curaproject) file. This will include all the settings you used, which is crucial to reproducing your problem.
-To upload a project, try changing the extension to e.g. bug_example.3mf.zip so that GitHub accepts uploading the file.
-If the file is too big, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too. Please make sure the file is publicly available ie. "shared with everyone"
+(For slicing bugs, provide a project which clearly shows the bug, by going to File->Save. For big files you may need to use WeTransfer or similar file sharing sites.)
 
 **Log file**
-It is important to provide a log file. It might provide us info about why a certain material was selected, or is not compatible, for example.
-Information about how to find the log file can be found at https://github.com/Ultimaker/Cura#logging-issues 
+(See https://github.com/Ultimaker/Cura#logging-issues to find the log file to upload, or copy a relevant snippet from it.)
 
 **Additional information**
-(Extra information relevant to the issue)
+(Extra information relevant to the issue.)
