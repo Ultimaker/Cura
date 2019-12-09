@@ -60,7 +60,7 @@
 
         "small_button": [39, 44, 48, 0],
         "small_button_hover": [39, 44, 48, 255],
-        "small_button_active": [67, 72, 75, 255],
+        "small_button_active": [255, 255, 255, 255],
         "small_button_active_hover": [67, 72, 75, 255],
         "small_button_text": [255, 255, 255, 197],
         "small_button_text_hover": [255, 255, 255, 255],
