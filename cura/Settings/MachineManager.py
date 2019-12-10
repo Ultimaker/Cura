@@ -1241,6 +1241,7 @@ class MachineManager(QObject):
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
+                Logger.log("e", "Failed to create new machine when switching configuration.")
                 return
             
             for metadata_key in self._global_container_stack.getMetaData():
