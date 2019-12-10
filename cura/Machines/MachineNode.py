@@ -140,7 +140,7 @@ class MachineNode(ContainerNode):
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
 
-            if quality_changes.get("position") is not None:  # An extruder profile.
+            if quality_changes.get("position") is not None and quality_changes.get("position") != "None":  # An extruder profile.
                 groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes
             else:  # Global profile.
                 groups_by_name[name].metadata_for_global = quality_changes

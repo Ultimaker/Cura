@@ -2337,6 +2337,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_break_preparation_temperature":
+                {
+                    "label": "Break Preparation Temperature",
+                    "description": "The temperature used to purge material, should be roughly equal to the highest possible printing temperature.",
+                    "type": "float",
+                    "unit": "°C",
+                    "default_value": 50,
+                    "value": "material_print_temperature",
+                    "enabled": false,
+                    "minimum_value": "-273.15",
+                    "maximum_value_warning": "300",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "material_break_retracted_position":
                 {
                     "label": "Break Retracted Position",
@@ -2695,7 +2709,6 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -7120,6 +7133,17 @@
                     "type": "float",
                     "minimum_value": "0",
                     "maximum_value": "100",
+                    "enabled": "bridge_settings_enabled",
+                    "settable_per_mesh": true
+                },
+                "bridge_sparse_infill_max_density":
+                {
+                    "label": "Bridge Sparse Infill Max Density",
+                    "description": "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin.",
+                    "unit": "%",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
                     "enabled": "bridge_settings_enabled",
                     "settable_per_mesh": true
                 },
