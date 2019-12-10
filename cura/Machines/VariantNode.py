@@ -168,15 +168,21 @@ class VariantNode(ContainerNode):
         # Search for any submaterials from that base file that are still left.
         materials_same_base_file = ContainerRegistry.getInstance().findContainersMetadata(base_file = base_file)
         if materials_same_base_file:
-            most_specific_submaterial = materials_same_base_file[0]
+            most_specific_submaterial = None
             for submaterial in materials_same_base_file:
                 if submaterial["definition"] == self.machine.container_id:
-                    if most_specific_submaterial["definition"] == "fdmprinter":
+                    if submaterial.get("variant_name", "empty") == self.variant_name:
                         most_specific_submaterial = submaterial
-                    if most_specific_submaterial.get("variant_name", "empty") == "empty" and submaterial.get("variant_name", "empty") == self.variant_name:
+                        break  # most specific match possible
+                    if submaterial.get("variant_name", "empty") == "empty":
                         most_specific_submaterial = submaterial
-            self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant = self)
-            self.materialsChanged.emit(self.materials[base_file])
+
+            if most_specific_submaterial is None:
+                Logger.log("w", "Material %s removed, but no suitable replacement found", base_file)
+            else:
+                Logger.log("i", "Material %s (%s) overridden by %s", base_file, self.variant_name, most_specific_submaterial.get("id"))
+                self.materials[base_file] = MaterialNode(most_specific_submaterial["id"], variant = self)
+                self.materialsChanged.emit(self.materials[base_file])
 
         if not self.materials:  # The last available material just got deleted and there is nothing with the same base file to replace it.
             self.materials["empty_material"] = MaterialNode("empty_material", variant = self)
