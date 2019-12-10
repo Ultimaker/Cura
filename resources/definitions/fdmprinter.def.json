@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 10,
+        "setting_version": 11,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -416,34 +416,6 @@
                     "type": "polygons",
                     "default_value":
                     [
-                    ],
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "machine_head_polygon":
-                {
-                    "label": "Machine Head Polygon",
-                    "description": "A 2D silhouette of the print head (fan caps excluded).",
-                    "type": "polygon",
-                    "default_value":
-                    [
-                        [
-                            -1,
-                            1
-                        ],
-                        [
-                            -1,
-                            -1
-                        ],
-                        [
-                            1,
-                            -1
-                        ],
-                        [
-                            1,
-                            1
-                        ]
                     ],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
