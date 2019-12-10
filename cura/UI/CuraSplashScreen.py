@@ -18,7 +18,7 @@ class CuraSplashScreen(QSplashScreen):
 
         if ApplicationMetadata.IsEnterpriseVersion:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_enterprise.png"))
-            self._version_y_offset = 32
+            self._version_y_offset = 26
         else:
             splash_image = QPixmap(Resources.getPath(Resources.Images, "cura.png"))
 
@@ -64,7 +64,7 @@ class CuraSplashScreen(QSplashScreen):
         font = QFont()  # Using system-default font here
         font.setPixelSize(18)
         painter.setFont(font)
-        painter.drawText(60, 66 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(60, 70 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
