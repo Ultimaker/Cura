@@ -97,7 +97,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
 
         # Parent can be None if node is just loaded.
-        if self._is_singular_one_at_a_time_node():
+        if self._isSingularOneAtATimeNode():
             hull = self.getConvexHullHeadFull()
             if hull is None:
                 return None
@@ -112,7 +112,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
 
-        if self._is_singular_one_at_a_time_node():
+        if self._isSingularOneAtATimeNode():
             return self._compute2DConvexHeadFull()
 
         return None
@@ -132,7 +132,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return None
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
-        if self._is_singular_one_at_a_time_node():
+        if self._isSingularOneAtATimeNode():
             head_with_fans = self._compute2DConvexHeadMin()
             if head_with_fans is None:
                 return None
@@ -150,7 +150,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node.callDecoration("isNonPrintingMesh"):
             return None
 
-        if self._is_singular_one_at_a_time_node():
+        if self._isSingularOneAtATimeNode():
             # Printing one at a time and it's not an object in a group
             return self._compute2DConvexHull()
         return None
@@ -159,7 +159,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
     #   In case of printing all at once this is the same as convex hull (no individual adhesion)
     #   For one at the time this includes the adhesion area
     def getPrintingArea(self) -> Optional[Polygon]:
-        if self._is_singular_one_at_a_time_node():
+        if self._isSingularOneAtATimeNode():
             # In one-at-a-time mode, every printed object gets it's own adhesion
             printing_area = self.getAdhesionArea()
         else:
@@ -432,7 +432,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return self.__isDescendant(root, node.getParent())
 
     ## True if print_sequence is one_at_a_time and _node is not part of a group
-    def _is_singular_one_at_a_time_node(self) -> bool:
+    def _isSingularOneAtATimeNode(self) -> bool:
         if self._node is None:
             return False
         return self._global_stack is not None \
