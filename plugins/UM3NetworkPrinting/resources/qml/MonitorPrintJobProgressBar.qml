@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -20,49 +20,38 @@ Item
     property var printJob: null
 
     width: childrenRect.width
-    height: 18 * screenScaleFactor // TODO: Theme!
+    height: UM.Theme.getSize("monitor_text_line").height
 
-    ProgressBar
+    UM.ProgressBar
     {
         id: progressBar
         anchors
         {
             verticalCenter: parent.verticalCenter
+            left: parent.left
         }
         value: printJob ? printJob.progress : 0
-        style: ProgressBarStyle
-        {
-            background: Rectangle
-            {
-                color: UM.Theme.getColor("monitor_progress_bar_empty")
-                implicitHeight: visible ? 12 * screenScaleFactor : 0 // TODO: Theme!
-                implicitWidth: 180 * screenScaleFactor // TODO: Theme!
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-            progress: Rectangle
-            {
-                id: progressItem;
-                color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_progress_bar_fill") : UM.Theme.getColor("monitor_progress_bar_deactive")
-                radius: 2 * screenScaleFactor // TODO: Theme!
-            }
-        }
+        width: UM.Theme.getSize("monitor_progress_bar").width
     }
+
     Label
     {
         id: percentLabel
         anchors
         {
             left: progressBar.right
-            leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("monitor_margin").width
+            verticalCenter: parent.verticalCenter
         }
         text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
         color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
 
         // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: UM.Theme.getSize("monitor_text_line").height
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
     Label
     {
@@ -70,50 +59,52 @@ Item
         anchors
         {
             left: percentLabel.right
-            leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("monitor_margin").width
+            verticalCenter: parent.verticalCenter
         }
         color: UM.Theme.getColor("monitor_text_primary")
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default")
         text:
         {
             if (!printJob)
             {
-                return ""
+                return "";
             }
             switch (printJob.state)
             {
                 case "wait_cleanup":
                     if (printJob.timeTotal > printJob.timeElapsed)
                     {
-                        return catalog.i18nc("@label:status", "Aborted")
+                        return catalog.i18nc("@label:status", "Aborted");
                     }
-                    return catalog.i18nc("@label:status", "Finished")
+                    return catalog.i18nc("@label:status", "Finished");
                 case "finished":
-                    return catalog.i18nc("@label:status", "Finished")
+                    return catalog.i18nc("@label:status", "Finished");
                 case "sent_to_printer":
-                    return catalog.i18nc("@label:status", "Preparing...")
+                    return catalog.i18nc("@label:status", "Preparing...");
                 case "pre_print":
-                    return catalog.i18nc("@label:status", "Preparing...")
+                    return catalog.i18nc("@label:status", "Preparing...");
                 case "aborting": // NOTE: Doesn't exist but maybe should someday
-                    return catalog.i18nc("@label:status", "Aborting...")
+                    return catalog.i18nc("@label:status", "Aborting...");
                 case "aborted": // NOTE: Unused, see above
-                    return catalog.i18nc("@label:status", "Aborted")
+                    return catalog.i18nc("@label:status", "Aborted");
                 case "pausing":
-                    return catalog.i18nc("@label:status", "Pausing...")
+                    return catalog.i18nc("@label:status", "Pausing...");
                 case "paused":
-                    return catalog.i18nc("@label:status", "Paused")
+                    return catalog.i18nc("@label:status", "Paused");
                 case "resuming":
-                    return catalog.i18nc("@label:status", "Resuming...")
+                    return catalog.i18nc("@label:status", "Resuming...");
                 case "queued":
-                    return catalog.i18nc("@label:status", "Action required")
+                    return catalog.i18nc("@label:status", "Action required");
                 default:
-                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted( printJob.timeRemaining )).arg(OutputDevice.getTimeCompleted( printJob.timeRemaining )))
+                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted(printJob.timeRemaining)).arg(OutputDevice.getTimeCompleted(printJob.timeRemaining)));
             }
         }
         width: contentWidth
 
         // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: UM.Theme.getSize("monitor_text_line").height
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
 }

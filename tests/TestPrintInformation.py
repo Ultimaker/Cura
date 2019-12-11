@@ -1,7 +1,7 @@
 import functools
 
 from UM.Qt.Duration import Duration
-from cura import PrintInformation
+from cura.UI import PrintInformation
 from cura.Settings.MachineManager import MachineManager
 
 from unittest.mock import MagicMock, patch
@@ -70,8 +70,15 @@ def test_duration():
     feature_print_times = print_information.getFeaturePrintTimes()
     assert int(feature_print_times["Travel"]) == int(Duration(None))
 
+    # Ensure that all print times are zero-ed
+    print_information.setToZeroPrintInformation()
+    assert int(feature_print_times["Travel"]) == 0
+
     # Fake a print duration message
-    print_information._onPrintDurationMessage(0, {"Travel": 20}, [10])
+    print_information._onPrintDurationMessage(0, {"travel": 20}, [10])
+
+    # We only set a single time, so the total time must be of the same value.
+    assert int(print_information.currentPrintTime) == 20
 
     feature_print_times = print_information.getFeaturePrintTimes()
     assert int(feature_print_times["Travel"]) == 20

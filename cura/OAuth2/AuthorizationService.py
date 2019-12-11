@@ -2,19 +2,25 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
-import webbrowser
 from datetime import datetime, timedelta
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
+
 import requests.exceptions
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.Signal import Signal
 
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
 from cura.OAuth2.Models import AuthenticationResponse
+
+from UM.i18n import i18nCatalog
+i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
@@ -30,6 +36,8 @@ class AuthorizationService:
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
 
+    accessTokenChanged = Signal()
+
     def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
         self._auth_helpers = AuthorizationHelpers(settings)
@@ -38,6 +46,14 @@ class AuthorizationService:
         self._user_profile = None  # type: Optional["UserProfile"]
         self._preferences = preferences
         self._server = LocalAuthorizationServer(self._auth_helpers, self._onAuthStateChanged, daemon=True)
+
+        self._unable_to_get_data_message = None  # type: Optional[Message]
+
+        self.onAuthStateChanged.connect(self._authChanged)
+
+    def _authChanged(self, logged_in):
+        if logged_in and self._unable_to_get_data_message is not None:
+            self._unable_to_get_data_message.hide()
 
     def initialize(self, preferences: Optional["Preferences"] = None) -> None:
         if preferences is not None:
@@ -56,6 +72,7 @@ class AuthorizationService:
                 self._user_profile = self._parseJWT()
             except requests.exceptions.ConnectionError:
                 # Unable to get connection, can't login.
+                Logger.logException("w", "Unable to validate user data with the remote server.")
                 return None
 
         if not self._user_profile and self._auth_data:
@@ -71,6 +88,7 @@ class AuthorizationService:
     def _parseJWT(self) -> Optional["UserProfile"]:
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
+            Logger.log("d", "There was no auth data or access token")
             return None
         user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
         if user_data:
@@ -78,12 +96,16 @@ class AuthorizationService:
             return user_data
         # The JWT was expired or invalid and we should request a new one.
         if self._auth_data.refresh_token is None:
+            Logger.log("w", "There was no refresh token in the auth data.")
             return None
         self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
         if not self._auth_data or self._auth_data.access_token is None:
+            Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
-
+        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
+        # from the server already.
+        self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     ##  Get the access token as provided by the repsonse data.
@@ -96,7 +118,7 @@ class AuthorizationService:
         # We have a fallback on a date far in the past for currently stored auth data in cura.cfg.
         received_at = datetime.strptime(self._auth_data.received_at, TOKEN_TIMESTAMP_FORMAT) \
             if self._auth_data.received_at else datetime(2000, 1, 1)
-        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0))
+        expiry_date = received_at + timedelta(seconds = float(self._auth_data.expires_in or 0) - 60)
         if datetime.now() > expiry_date:
             self.refreshAccessToken()
 
@@ -107,8 +129,13 @@ class AuthorizationService:
         if self._auth_data is None or self._auth_data.refresh_token is None:
             Logger.log("w", "Unable to refresh access token, since there is no refresh token.")
             return
-        self._storeAuthData(self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token))
-        self.onAuthStateChanged.emit(logged_in = True)
+        response = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
+        if response.success:
+            self._storeAuthData(response)
+            self.onAuthStateChanged.emit(logged_in = True)
+        else:
+            Logger.log("w", "Failed to get a new access token from the server.")
+            self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:
@@ -138,7 +165,7 @@ class AuthorizationService:
         })
 
         # Open the authorization page in a new browser window.
-        webbrowser.open_new("{}?{}".format(self._auth_url, query_string))
+        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
@@ -161,12 +188,22 @@ class AuthorizationService:
             preferences_data = json.loads(self._preferences.getValue(self._settings.AUTH_DATA_PREFERENCE_KEY))
             if preferences_data:
                 self._auth_data = AuthenticationResponse(**preferences_data)
-                self.onAuthStateChanged.emit(logged_in = True)
+                # Also check if we can actually get the user profile information.
+                user_profile = self.getUserProfile()
+                if user_profile is not None:
+                    self.onAuthStateChanged.emit(logged_in = True)
+                else:
+                    if self._unable_to_get_data_message is not None:
+                        self._unable_to_get_data_message.hide()
+
+                    self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
+                    self._unable_to_get_data_message.show()
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
 
     ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        Logger.log("d", "Attempting to store the auth data")
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
@@ -178,3 +215,6 @@ class AuthorizationService:
         else:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
+
+        self.accessTokenChanged.emit()
+

@@ -27,6 +27,7 @@ Tab
     {
         anchors.fill: parent
         anchors.margins: UM.Theme.getSize("default_margin").width
+        id: profileSettingsView
 
         Component
         {
@@ -37,14 +38,28 @@ Tab
                 property var setting: qualitySettings.getItem(styleData.row)
                 height: childrenRect.height
                 width: (parent != null) ? parent.width : 0
-                text: (styleData.value.substr(0,1) == "=") ? styleData.value : ""
+                text:
+                {
+                    if (styleData.value === undefined)
+                    {
+                        return ""
+                    }
+                    return (styleData.value.substr(0,1) == "=") ? styleData.value : ""
+                }
 
                 Label
                 {
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
                     anchors.right: parent.right
-                    text: (styleData.value.substr(0,1) == "=") ? catalog.i18nc("@info:status", "Calculated") : styleData.value
+                    text:
+                    {
+                        if (styleData.value === undefined)
+                        {
+                            return ""
+                        }
+                        return (styleData.value.substr(0,1) == "=") ? catalog.i18nc("@info:status", "Calculated") : styleData.value
+                    }
                     font.strikeout: styleData.column == 1 && setting.user_value != "" && base.isQualityItemCurrentlyActivated
                     font.italic: setting.profile_value_source == "quality_changes" || (setting.user_value != "" && base.isQualityItemCurrentlyActivated)
                     opacity: font.strikeout ? 0.5 : 1

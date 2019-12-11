@@ -101,6 +101,7 @@ Item
             MenuItem { action: Cura.Actions.documentation }
             MenuItem { action: Cura.Actions.reportBug }
             MenuSeparator { }
+            MenuItem { action: Cura.Actions.whatsNew }
             MenuItem { action: Cura.Actions.about }
         }
     }
@@ -128,6 +129,7 @@ Item
         {
             CuraApplication.deleteAll();
             Cura.Actions.resetProfile.trigger();
+            UM.Controller.setActiveStage("PrepareStage")
         }
     }
 
@@ -158,7 +160,7 @@ Item
         target: Cura.Actions.browsePackages
         onTriggered:
         {
-            curaExtensions.callExtensionMethod("Toolbox", "browsePackages")
+            curaExtensions.callExtensionMethod("Toolbox", "launch")
         }
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Uranium is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -102,6 +102,7 @@ Item
                 }
             }
         }
+        base.currentItem = null
         return false
     }
 
@@ -113,7 +114,7 @@ Item
             if (base.toActivateNewMaterial)
             {
                 var position = Cura.ExtruderManager.activeExtruderIndex
-                Cura.MachineManager.setMaterial(position, base.currentItem.container_node)
+                Cura.MachineManager.setMaterialById(position, base.newRootMaterialIdToSwitchTo)
             }
             base.newRootMaterialIdToSwitchTo = ""
             base.toActivateNewMaterial = false

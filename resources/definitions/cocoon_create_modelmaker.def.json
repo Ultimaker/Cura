@@ -39,16 +39,13 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 10
+            "value": "10"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "material_diameter": {
             "default_value": 1.75
-        },
-        "material_print_temperature": {
-            "default_value": 220
         },
         "layer_height": {
             "default_value": 0.10
@@ -64,21 +61,6 @@
         },
         "speed_print": {
             "default_value": 40
-        },
-        "speed_infill": {
-            "default_value": 40
-        },
-        "speed_wall": {
-            "default_value": 35
-        },
-        "speed_topbottom": {
-            "default_value": 35
-        },
-        "speed_travel": {
-            "default_value": 70
-        },
-        "speed_layer_0": {
-            "default_value": 20
         },
         "support_enable": {
             "default_value": true

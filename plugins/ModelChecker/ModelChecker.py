@@ -3,12 +3,13 @@
 
 import os
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal, pyqtProperty, QTimer
 
 from UM.Application import Application
 from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Message import Message
+from UM.Scene.Camera import Camera
 from UM.i18n import i18nCatalog
 from UM.PluginRegistry import PluginRegistry
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -29,13 +30,22 @@ class ModelChecker(QObject, Extension):
             lifetime = 0,
             title = catalog.i18nc("@info:title", "3D Model Assistant"))
 
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(200)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self.onChanged)
+
         Application.getInstance().initializationFinished.connect(self._pluginsInitialized)
         Application.getInstance().getController().getScene().sceneChanged.connect(self._onChanged)
         Application.getInstance().globalContainerStackChanged.connect(self._onChanged)
 
-    ##  Pass-through to allow UM.Signal to connect with a pyqtSignal.
     def _onChanged(self, *args, **kwargs):
-        self.onChanged.emit()
+        # Ignore camera updates.
+        if len(args) == 0:
+            self._change_timer.start()
+            return
+        if not isinstance(args[0], Camera):
+            self._change_timer.start()
 
     ##  Called when plug-ins are initialized.
     #
@@ -66,7 +76,9 @@ class ModelChecker(QObject, Extension):
 
             # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
             # has not done yet.
-            if str(node_extruder_position) not in global_container_stack.extruders:
+            try:
+                extruder = global_container_stack.extruderList[int(node_extruder_position)]
+            except IndexError:
                 Application.getInstance().callLater(lambda: self.onChanged.emit())
                 return False
 
@@ -121,9 +133,9 @@ class ModelChecker(QObject, Extension):
 
         material_shrinkage = {}
         # Get all shrinkage values of materials used
-        for extruder_position, extruder in global_container_stack.extruders.items():
+        for extruder_position, extruder in enumerate(global_container_stack.extruderList):
             shrinkage = extruder.material.getProperty("material_shrinkage_percentage", "value")
             if shrinkage is None:
                 shrinkage = 0
-            material_shrinkage[extruder_position] = shrinkage
+            material_shrinkage[str(extruder_position)] = shrinkage
         return material_shrinkage

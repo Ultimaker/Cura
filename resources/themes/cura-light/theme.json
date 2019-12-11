@@ -29,6 +29,11 @@
             "weight": 63,
             "family": "Noto Sans"
         },
+        "huge": {
+            "size": 1.8,
+            "weight": 50,
+            "family": "Noto Sans"
+        },
         "medium": {
             "size": 1.16,
             "weight": 40,
@@ -187,9 +192,15 @@
 
         "action_panel_secondary": [27, 95, 202, 255],
 
+        "first_run_shadow": [50, 50, 50, 255],
+
         "toolbar_background": [255, 255, 255, 255],
 
+        "notification_icon": [255, 0, 0, 255],
+
         "printer_type_label_background": [228, 228, 242, 255],
+
+        "window_disabled_background": [0, 0, 0, 255],
 
         "text": [25, 25, 25, 255],
         "text_detail": [174, 174, 174, 128],
@@ -361,18 +372,18 @@
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
 
-        "layerview_ghost": [32, 32, 32, 96],
+        "layerview_ghost": [31, 31, 31, 95],
         "layerview_none": [255, 255, 255, 255],
         "layerview_inset_0": [255, 0, 0, 255],
         "layerview_inset_x": [0, 255, 0, 255],
         "layerview_skin": [255, 255, 0, 255],
         "layerview_support": [0, 255, 255, 255],
         "layerview_skirt": [0, 255, 255, 255],
-        "layerview_infill": [255, 192, 0, 255],
+        "layerview_infill": [255, 127, 0, 255],
         "layerview_support_infill": [0, 255, 255, 255],
         "layerview_move_combing": [0, 0, 255, 255],
-        "layerview_move_retraction": [128, 128, 255, 255],
-        "layerview_support_interface": [64, 192, 255, 255],
+        "layerview_move_retraction": [128, 127, 255, 255],
+        "layerview_support_interface": [63, 127, 255, 255],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
@@ -382,9 +393,7 @@
         "printer_config_matched": [50, 130, 255, 255],
         "printer_config_mismatch": [127, 127, 127, 255],
 
-        "toolbox_header_button_text_active": [0, 0, 0, 255],
         "toolbox_header_button_text_inactive": [0, 0, 0, 255],
-        "toolbox_header_button_text_hovered": [0, 0, 0, 255],
 
         "favorites_header_bar": [245, 245, 245, 255],
         "favorites_header_hover": [245, 245, 245, 255],
@@ -398,6 +407,7 @@
         "monitor_text_link": [50, 130, 255, 255],
         "monitor_icon_primary": [10, 8, 80, 255],
         "monitor_icon_accent": [255, 255, 255, 255],
+        "monitor_icon_disabled": [238, 238, 238, 255],
 
         "monitor_secondary_button_hover": [228, 228, 228, 255],
         "monitor_secondary_button": [240, 240, 240, 255],
@@ -423,14 +433,17 @@
         "monitor_skeleton_loading": [238, 238, 238, 255],
         "monitor_placeholder_image": [230, 230, 230, 255],
         "monitor_image_overlay": [0, 0, 0, 255],
-        "monitor_shadow": [220, 220, 220, 255],
+        "monitor_shadow": [200, 200, 200, 255],
 
         "monitor_carousel_dot": [216, 216, 216, 255],
         "monitor_carousel_dot_current": [119, 119, 119, 255]
     },
 
     "sizes": {
-        "window_minimum_size": [100, 60],
+        "window_minimum_size": [80, 48],
+        "large_popup_dialog": [48, 40],
+        "popup_dialog": [40, 36],
+        "small_popup_dialog": [36, 12],
 
         "main_window_header": [0.0, 4.0],
         "main_window_header_button": [8, 2.35],
@@ -473,7 +486,7 @@
         "default_lining": [0.08, 0.08],
 
         "default_arrow": [0.8, 0.8],
-        "logo": [8, 1.75],
+        "logo": [16, 3.5],
 
         "wide_margin": [2.0, 2.0],
         "thick_margin": [1.71, 1.43],
@@ -508,6 +521,8 @@
         "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
 
+        "radio_button": [1.3, 1.3],
+
         "small_button": [2, 2],
         "small_button_icon": [1.5, 1.5],
 
@@ -532,7 +547,7 @@
         "slider_groove": [0.5, 0.5],
         "slider_groove_radius": [0.15, 0.15],
         "slider_handle": [1.5, 1.5],
-        "slider_layerview_size": [1.0, 26.0],
+        "slider_layerview_size": [1.0, 34.0],
 
         "layerview_menu_size": [16.0, 4.0],
         "layerview_legend_size": [1.0, 1.0],
@@ -551,6 +566,7 @@
         "save_button_specs_icons": [1.4, 1.4],
 
         "job_specs_button": [2.7, 2.7],
+        "first_run_shadow_radius": [1.2, 1.2],
 
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
@@ -568,7 +584,7 @@
 
         "jobspecs_line": [2.0, 2.0],
 
-        "objects_menu_size": [20, 40],
+        "objects_menu_size": [15, 15],
         "objects_menu_size_collapsed": [20, 17],
         "build_plate_selection_size": [15, 5],
         "objects_menu_button": [0.3, 2.7],
@@ -578,10 +594,8 @@
         "toolbox_thumbnail_large": [12.0, 10.0],
         "toolbox_footer": [1.0, 4.5],
         "toolbox_footer_button": [8.0, 2.5],
-        "toolbox_showcase_spacing": [1.0, 1.0],
-        "toolbox_header_tab": [8.0, 4.0],
+        "toolbox_header_tab": [12.0, 4.0],
         "toolbox_detail_header": [1.0, 14.0],
-        "toolbox_detail_tile": [1.0, 8.0],
         "toolbox_back_column": [6.0, 1.0],
         "toolbox_back_button": [6.0, 2.0],
         "toolbox_installed_tile": [1.0, 8.0],
@@ -589,10 +603,11 @@
         "toolbox_heading_label": [1.0, 3.8],
         "toolbox_header": [1.0, 4.0],
         "toolbox_header_highlight": [0.25, 0.25],
-        "toolbox_progress_bar": [8.0, 0.5],
         "toolbox_chart_row": [1.0, 2.0],
         "toolbox_action_button": [8.0, 2.5],
         "toolbox_loader": [2.0, 2.0],
+
+        "notification_icon": [1.5, 1.5],
 
         "avatar_image": [6.8, 6.8],
 
@@ -606,6 +621,9 @@
         "monitor_shadow_offset": [0.15, 0.15],
         "monitor_empty_state_offset": [5.6, 5.6],
         "monitor_empty_state_size": [35.0, 25.0],
-        "monitor_external_link_icon": [1.16, 1.16]
+        "monitor_external_link_icon": [1.16, 1.16],
+        "monitor_column": [18.0, 1.0],
+        "monitor_progress_bar": [16.5, 1.0],
+        "monitor_margin": [1.5, 1.5]
     }
 }

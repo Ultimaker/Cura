@@ -12,7 +12,7 @@
         "has_materials": true,
         "has_machine_quality": true,
         "quality_definition": "ultimaker_original",
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_dual_1st",
@@ -20,8 +20,8 @@
         },
         "firmware_file": "MarlinUltimaker-{baudrate}-dual.hex",
         "firmware_hbk_file": "MarlinUltimaker-HBK-{baudrate}-dual.hex",
-        "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
-        "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"]
+        "first_start_actions": ["UMOUpgradeSelection", "BedLevel"],
+        "supported_actions": ["UMOUpgradeSelection", "BedLevel"]
     },
 
     "overrides": {
@@ -48,7 +48,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true

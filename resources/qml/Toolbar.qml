@@ -182,6 +182,8 @@ Item
         MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
             anchors.fill: parent
+            acceptedButtons: Qt.NoButton
+            onWheel: wheel.accepted = true
         }
 
         Loader

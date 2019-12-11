@@ -1,0 +1,113 @@
+{
+    "version": 2,
+    "name": "Discov3ry Complete",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Andrew Finkle, CTO",
+        "manufacturer": "Structur3d.io",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "platform": "ultimaker2_platform.obj",
+        "platform_texture": "Ultimaker2Plusbackplate.png",
+        "platform_offset": [0, 0, 0],
+        "has_materials": true,
+        "has_variants": true,
+        "variants_name": "Print core",
+        "preferred_variant_name": "0.84mm (Green)",
+        "preferred_material": "structur3d_dap100silicone",
+        "has_machine_quality": false,
+        "preferred_quality_type": "extra_fast",
+        "first_start_actions": [],
+        "supported_actions": [],
+        "machine_extruder_trains":
+        {
+            "0": "structur3d_discov3ry1_complete_um2plus_extruder_0"
+        },
+        "firmware_file": "MarlinUltimaker2plus.hex"
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Discov3ry Complete (Ultimaker 2+)" },
+        "speed_infill": {
+            "value": "speed_print"
+        },
+        "infill_sparse_density": {
+            "value": 100
+        },
+        "retraction_hop_enabled": {
+            "value": true
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },
+        "skirt_brim_minimal_length": {
+            "value": 1500
+        },
+        "speed_print": {
+            "value": 15
+        },
+        "speed_wall_x": {
+            "value": "speed_wall"
+        },
+        "layer_height_0": {
+            "value": "round(machine_nozzle_size / 1.5, 2)"
+        },
+        "line_width": {
+            "value": "round(machine_nozzle_size * 0.875, 2)"
+        },
+        "speed_support": {
+            "value": "speed_wall_0"
+        },
+        "machine_height": {
+            "default_value": 205
+        },
+        "machine_width": {
+            "default_value": 205
+        },
+        "machine_depth": {
+            "default_value": 205
+        },
+        "machine_show_variants": {
+            "default_value": true
+        },
+        "gantry_height": {
+            "value": "52"
+        },
+        "machine_nozzle_head_distance": {
+            "default_value": 5
+        },
+        "machine_nozzle_expansion_angle": {
+            "default_value": 45
+        },
+        "machine_heat_zone_length": {
+            "default_value": 20
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -44, 14 ],
+                [ -44, -34 ],
+                [ 64, 14 ],
+                [ 64, -34 ]
+            ]
+        },
+        "machine_disallowed_areas": {
+            "default_value": [
+                [[-115,  112.5], [ -78,  112.5], [ -80,  102.5], [-115,  102.5]],
+                [[ 115,  112.5], [ 115,  102.5], [ 105,  102.5], [ 103,  112.5]],
+                [[-115, -112.5], [-115, -104.5], [ -84, -104.5], [ -82, -112.5]],
+                [[ 115, -112.5], [ 108, -112.5], [ 110, -104.5], [ 115, -104.5]]
+            ]
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "\n;Updated Firmware (.hex and Marlin .ino) for \n;Ultimaker 2+ with Discov3ry Extruder available at: \n;https://github.com/Structur3d/UM2.1Discov3ry-Firmware-beta \n;**Learn more at https://www.structur3d.io** \n \nM104 S{material_print_temperature} ;Start heating extruder  \nM140 S{material_bed_temperature} ;Start heating bed \nG21 ;metric values \nG90 ;absolute positioning \nM82 ;set extruder to absolute mode \nM107 ;start with the fan off \nM302 ;allow cold extrusion \nM92 E2589 ;set extruder EEPROM steps/mm for paste \nG28 Z0 ;move Z to bottom endstops \nG28 X0 Y0 ;move X/Y to endstops \nG1 X15 Y0 F4000 ;move X/Y to front of printer \nG1 Z15.0 F9000 ;move the platform to 15mm \nG92 E0 ;zero the extruded length \nG1 F200 E10 ;extrude 10 mm of feed stock \nG92 E0 ;zero the extruded length again \nG1 F9000 \n;Put printing message on LCD screen \nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0 ;extruder heater off \nM140 S0 ;heated bed heater off (if you have it) \nM92 E282 ;reset extruder EEPROM steps/mm for plastic filament \nG91 ;relative positioning \nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure \nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more \nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way \nM84 ;steppers off\nG90 ;absolute positioning"
+        }
+
+    }
+}

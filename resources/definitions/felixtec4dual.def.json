@@ -39,19 +39,18 @@
         "machine_center_is_zero": { "default_value": false },
 
         "speed_print": { "default_value": 60 },
-        "speed_travel": { "default_value": 200 },
 
         "retraction_amount": { "default_value": 1 },
         "retraction_speed": { "default_value": 50},
-        "material_flow": { "default_value": 87 },
+        "material_flow": { "default_value": 95 },
         "adhesion_type": { "default_value": "skirt" },
         "skirt_brim_minimal_length": { "default_value": 130},
 
-         "machine_start_gcode": {
-            "default_value": "; FELIXprinters | www.FELIXprinters.com | Zeemanlaan 15 3401 MV IJsselstein The Netherlands\n; FELIX Tec 4 | Start Code Dual Extruders v1.0\n; Modified by kerog777@gmail.com\n;================================ \n;Initializing\nM80   ; Turn on the power supply\nM107     ; Turn off fans\nM117 Heating up\nM104 T0 S120\nM104 T1 S120\nM140 S{print_bed_temperature}   ; Heatup Bed and continue\nG28             ; Home all\nM109 T0 S{print_temperature}   ; Heatup hot-end and continue\nM117 Purging\nT0    ; Select extruder 1\nG92 E0    ; Reset extruder\nG1 X10.0 Y1.1 Z5.0 F15240   ; Move to start-line position\nG1 Z0.3 F15240    ; Move z up\nG1 X127.0 Y1.1 Z0.3 F1500.0 E15    ; Purge 1st line\nG92 E0    ; Reset extruder\n\n;================================ ; Initializing done\nM117 FELIXprinting"
+        "machine_start_gcode": {
+            "default_value": "; FELIXprinters | www.FELIXprinters.com | Zeemanlaan 15 3401 MV IJsselstein The Netherlands\n; FELIX Tec 4 | Start Code Dual Extruders v1.0\n; Modified by kerog777@gmail.com\n;================================ \n;Initializing\nM80   ; Turn on the power supply\nM107     ; Turn off fans\nM117 Heating up\nM190 S{material_bed_temperature}   ; Heatup Bed\nM104 T0 S120\nM104 T1 S120\nG28             ; Home all\nM109 T0 S{material_print_temperature_layer_0}   ; Heatup hot-end\nM117 Purging\nT0    ; Select extruder 1\nG92 E0    ; Reset extruder\nG1 X10.0 Y1.1 Z5.0 F15240   ; Move to start-line position\nG1 Z0.3 F15240    ; Move z up\nG1 X127.0 Y1.1 Z0.3 F1500.0 E15    ; Purge 1st line\nG92 E0    ; Reset extruder\n\n;================================ ; Initializing done\nM117 FELIXprinting"
         },
         "machine_end_gcode": {
-            "default_value": "; FELIXprinters End Code Tec Series v1.0\n; Modified by kerog777@gmail.com\n; ================================= \n; Move extruder to park position\nG91       ; Make coordinates relative\nG1 Z2 F1000       ; Move z 2mm up\nG90       ; Use absolute coordinates again\n  G1 X0 Y0 F15240   ; Move bed and printhead to ergonomic position\n\n; ================================= ; Turn off heaters\nM140 S0    ; Turn off bed heater\nT0    ; Select left extruder\nM104 T0 S0    ; Turn off heater and continue\n G92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT1    ; Select right extruder\nM104 T1 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT0    ; Select left extruder\n\n; ================================= ; Turn the rest off\nM107        ; Turn off fan\nM84    ; Disable steppers\nM117 Finished Printing!"
+            "default_value": "; FELIXprinters End Code Tec Series v1.0\n; Modified by kerog777@gmail.com\n; ================================= \n; Move extruder to park position\nG91       ; Make coordinates relative\nG1 Z2 F1000       ; Move z 2mm up\nG90       ; Use absolute coordinates again\nG1 X0 Y0 F15240   ; Move bed and printhead to ergonomic position\n\n; ================================= ; Turn off heaters\nM140 S0    ; Turn off bed heater\nT0    ; Select left extruder\nM104 T0 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT1    ; Select right extruder\nM104 T1 S0    ; Turn off heater and continue\nG92 E0    ; Reset extruder position\nG1 E-6    ; Retract filament 8mm\nG92 E0    ; Reset extruder position\nT0    ; Select left extruder\n\n; ================================= ; Turn the rest off\nM107        ; Turn off fan\nM84    ; Disable steppers\nM117 Finished Printing!"
         }
     }
 }

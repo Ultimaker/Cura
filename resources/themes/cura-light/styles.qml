@@ -103,33 +103,29 @@ QtObject
             // This property will be back-propagated when the width of the label is calculated
             property var buttonWidth: 0
 
-            background: Item
+            background: Rectangle
             {
+                id: backgroundRectangle
                 implicitHeight: control.height
                 implicitWidth: buttonWidth
-                Rectangle
-                {
-                    id: buttonFace
-                    implicitHeight: parent.height
-                    implicitWidth: parent.width
-                    radius: UM.Theme.getSize("action_button_radius").width
+                radius: UM.Theme.getSize("action_button_radius").width
 
-                    color:
+                color:
+                {
+                    if (control.checked)
                     {
-                        if (control.checked)
+                        return UM.Theme.getColor("main_window_header_button_background_active")
+                    }
+                    else
+                    {
+                        if (control.hovered)
                         {
-                            return UM.Theme.getColor("main_window_header_button_background_active")
+                            return UM.Theme.getColor("main_window_header_button_background_hovered")
                         }
-                        else
-                        {
-                            if (control.hovered)
-                            {
-                                return UM.Theme.getColor("main_window_header_button_background_hovered")
-                            }
-                            return UM.Theme.getColor("main_window_header_button_background_inactive")
-                        }
+                        return UM.Theme.getColor("main_window_header_button_background_inactive")
                     }
                 }
+
             }
 
             label: Item
@@ -168,6 +164,8 @@ QtObject
                     buttonWidth = width
                 }
             }
+
+
         }
     }
 
@@ -243,7 +241,7 @@ QtObject
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? Theme.getSize("default_lining").width : 0
-                    border.color: Theme.getColor("lining")
+                    border.color: control.checked ? Theme.getColor("icon") : Theme.getColor("lining")
                 }
             }
 
@@ -393,73 +391,6 @@ QtObject
                     sourceSize.height: width + 5 * screenScaleFactor
 
                     color: Theme.getColor("setting_control_button");
-                }
-            }
-        }
-    }
-
-    // Combobox with items with colored rectangles
-    property Component combobox_color: Component
-    {
-
-        ComboBoxStyle
-        {
-
-            background: Rectangle
-            {
-                color: !enabled ? UM.Theme.getColor("setting_control_disabled") : control._hovered ? UM.Theme.getColor("setting_control_highlight") : UM.Theme.getColor("setting_control")
-                border.width: UM.Theme.getSize("default_lining").width
-                border.color: !enabled ? UM.Theme.getColor("setting_control_disabled_border") : control._hovered ? UM.Theme.getColor("setting_control_border_highlight") : UM.Theme.getColor("setting_control_border")
-                radius: UM.Theme.getSize("setting_control_radius").width
-            }
-
-            label: Item
-            {
-                Label
-                {
-                    anchors.left: parent.left
-                    anchors.leftMargin: UM.Theme.getSize("default_lining").width
-                    anchors.right: swatch.left
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    text: control.currentText
-                    font: UM.Theme.getFont("default")
-                    color: !enabled ? UM.Theme.getColor("setting_control_disabled_text") : UM.Theme.getColor("setting_control_text")
-
-                    elide: Text.ElideRight
-                    verticalAlignment: Text.AlignVCenter
-                }
-
-                UM.RecolorImage
-                {
-                    id: swatch
-                    height: Math.round(control.height / 2)
-                    width: height
-                    anchors.right: downArrow.left
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.rightMargin: UM.Theme.getSize("default_margin").width
-
-                    sourceSize.width: width
-                    sourceSize.height: height
-                    source: UM.Theme.getIcon("extruder_button")
-                    color: (control.color_override !== "") ? control.color_override : control.color
-                }
-
-                UM.RecolorImage
-                {
-                    id: downArrow
-                    anchors.right: parent.right
-                    anchors.rightMargin: UM.Theme.getSize("default_lining").width * 2
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    source: UM.Theme.getIcon("arrow_bottom")
-                    width: UM.Theme.getSize("standard_arrow").width
-                    height: UM.Theme.getSize("standard_arrow").height
-                    sourceSize.width: width + 5 * screenScaleFactor
-                    sourceSize.height: width + 5 * screenScaleFactor
-
-                    color: UM.Theme.getColor("setting_control_button")
                 }
             }
         }

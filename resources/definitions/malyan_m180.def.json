@@ -1,5 +1,4 @@
 {
-    "id": "malyan_m180",
     "version": 2,
     "name": "Malyan M180",
     "inherits": "fdmprinter",
@@ -53,7 +52,7 @@
             "default_value": 92
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

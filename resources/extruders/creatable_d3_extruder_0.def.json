@@ -1,10 +1,9 @@
 {
-    "id": "creatable_d3_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Creatable_D3",
+        "machine": "creatable_d3",
         "position": "0"
     },
 

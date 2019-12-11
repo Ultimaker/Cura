@@ -11,7 +11,6 @@ Menu
 {
     title: catalog.i18nc("@title:menu menubar:toplevel", "&View")
     id: base
-    enabled: !PrintInformation.preSliced
 
     property var multiBuildPlateModel: CuraApplication.getMultiBuildPlateModel()
 
@@ -23,6 +22,51 @@ Menu
         MenuItem { action: Cura.Actions.viewTopCamera; }
         MenuItem { action: Cura.Actions.viewLeftSideCamera; }
         MenuItem { action: Cura.Actions.viewRightSideCamera; }
+    }
+
+    Menu
+    {
+        id: cameraViewMenu
+        property string cameraMode: UM.Preferences.getValue("general/camera_perspective_mode")
+        Connections
+        {
+            target: UM.Preferences
+            onPreferenceChanged:
+            {
+                if (preference !== "general/camera_perspective_mode")
+                {
+                    return
+                }
+                cameraViewMenu.cameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
+            }
+        }
+
+        title: catalog.i18nc("@action:inmenu menubar:view","Camera view")
+        MenuItem
+        {
+            text: catalog.i18nc("@action:inmenu menubar:view", "Perspective")
+            checkable: true
+            checked: cameraViewMenu.cameraMode == "perspective"
+            onTriggered:
+            {
+                UM.Preferences.setValue("general/camera_perspective_mode", "perspective")
+                checked = cameraViewMenu.cameraMode == "perspective"
+            }
+            exclusiveGroup: group
+        }
+        MenuItem
+        {
+            text: catalog.i18nc("@action:inmenu menubar:view", "Orthographic")
+            checkable: true
+            checked: cameraViewMenu.cameraMode == "orthographic"
+            onTriggered:
+            {
+                UM.Preferences.setValue("general/camera_perspective_mode", "orthographic")
+                checked = cameraViewMenu.cameraMode == "orthographic"
+            }
+            exclusiveGroup: group
+        }
+        ExclusiveGroup { id: group }
     }
 
     MenuSeparator

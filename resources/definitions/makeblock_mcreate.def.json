@@ -1,0 +1,68 @@
+{
+    "version": 2,
+    "name": "Makeblock mCreate",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Makeblock",
+        "manufacturer": "Makeblock",
+        "visible": true,
+        "file_formats": "application/gzip;text/x-gcode",
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",
+        "machine_extruder_trains": {
+            "0": "makeblock_mcreate_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "Makeblock mCreate"
+        },
+        "machine_width": {
+            "default_value": 225
+        },
+        "machine_depth": {
+            "default_value": 225
+        },
+        "machine_height": {
+            "default_value": 300
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_head_with_fans_polygon": {
+            "default_value": [
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0
+                ]
+            ]
+        },
+        "machine_gcode_flavor": {
+            "default_value": "Marlin"
+        },
+        "gantry_height": {
+            "value": 15.0
+        },
+        "machine_extruder_count": {
+            "default_value": 1
+        },
+        "machine_start_gcode": {
+            "default_value": "; Mcreate Start Gcode \nG28 ; Home all axes \nG92 E0 ; Reset Extruder\nG1 X0 Y0 Z15 F3000.0 ; Move to start position \nG1 E10 F400 ;load filament \nG1 E2 F400 ;retarct filament \nG92 E0 ; Reset Extruder \nG1 X0 Y130 Z15 F3000.0 \nG12 ; clean nozzle \nG1 X0 Y0 Z0.3 F3000.0 ; Move to start position \nG1 E9.0 F400 ;loadsome filament \nG92 E0 ; Reset Extruder \n; End of start GCode"
+        },
+        "machine_end_gcode": {
+            "default_value": "; Mcreate end Gcode \nG4 ; Wait command in buffer have finished \nG92 E0 \nG1 E-2 F300; retract filament \nG28 X Z; home x z axis \nG1 F3000 Y220;Move Heat Bed to the front for easy print removal \nM104 S0; Turn off the nozzle heat \nM140 S0; Turn off the bed heat \nM107 ; Turn off the Fan \nM84 ; Disable stepper motors \n; End of GCode"
+        }
+    }
+}

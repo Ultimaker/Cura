@@ -5,6 +5,8 @@ import configparser # An input for some functions we're testing.
 import os.path # To find the integration test .ini files.
 import pytest # To register tests with.
 import unittest.mock # To mock the application, plug-in and container registry out.
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
 import UM.Application # To mock the application out.
 import UM.PluginRegistry # To mock the plug-in registry out.
@@ -12,11 +14,14 @@ import UM.Settings.ContainerRegistry # To mock the container registry out.
 import UM.Settings.InstanceContainer # To intercept the serialised data from the read() function.
 
 import LegacyProfileReader as LegacyProfileReaderModule # To get the directory of the module.
-from LegacyProfileReader import LegacyProfileReader # The module we're testing.
+
 
 @pytest.fixture
 def legacy_profile_reader():
-    return LegacyProfileReader()
+    try:
+        return LegacyProfileReaderModule.LegacyProfileReader()
+    except TypeError:
+        return LegacyProfileReaderModule.LegacyProfileReader.LegacyProfileReader()
 
 test_prepareDefaultsData = [
     {
@@ -157,7 +162,7 @@ def test_read(legacy_profile_reader, file_name):
     plugin_registry.getPluginPath = unittest.mock.MagicMock(return_value = os.path.dirname(LegacyProfileReaderModule.__file__))
 
     # Mock out the resulting InstanceContainer so that we can intercept the data before it's passed through the version upgrader.
-    def deserialize(self, data): # Intercepts the serialised data that we'd perform the version upgrade from when deserializing.
+    def deserialize(self, data, filename): # Intercepts the serialised data that we'd perform the version upgrade from when deserializing.
         global intercepted_data
         intercepted_data = data
 

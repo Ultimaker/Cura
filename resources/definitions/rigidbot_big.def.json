@@ -29,7 +29,7 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 0
+            "value": "0"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -49,36 +49,14 @@
         "top_bottom_thickness": {
             "default_value": 0.3
         },
-        "material_print_temperature": {
-            "default_value": 195
-        },
-        "material_bed_temperature": {
-            "default_value": 60
-        },
         "speed_print": {
             "default_value": 60
         },
-        "speed_infill": {
-            "default_value": 100
-        },
-        "speed_topbottom": {
-            "default_value": 15
-        },
-        "speed_travel": {
-            "default_value": 150
-        },
         "speed_layer_0": {
-            "default_value": 15,
             "minimum_value": "0.1"
-        },
-        "infill_overlap": {
-            "default_value": 10
         },
         "cool_fan_enabled": {
             "default_value": false
-        },
-        "cool_fan_speed": {
-            "default_value": 0
         },
         "skirt_line_count": {
             "default_value": 3

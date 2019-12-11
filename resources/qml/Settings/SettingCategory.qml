@@ -237,7 +237,5 @@ Button
         onEntered: base.showTooltip(catalog.i18nc("@label","Some hidden settings use values different from their normal calculated value.\n\nClick to make these settings visible."))
 
         onExited: base.hideTooltip()
-
-        UM.I18nCatalog { id: catalog; name: "cura" }
     }
 }

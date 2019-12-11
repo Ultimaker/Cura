@@ -1,4 +1,4 @@
-#Copyright (c) 2018 Ultimaker B.V.
+#Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import cast
@@ -7,13 +7,13 @@ from Charon.VirtualFile import VirtualFile #To open UFP files.
 from Charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
 from io import StringIO #For converting g-code to bytes.
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
+from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
@@ -28,7 +28,7 @@ class UFPWriter(MeshWriter):
         MimeTypeDatabase.addMimeType(
             MimeType(
                 name = "application/x-ufp",
-                comment = "Cura UFP File",
+                comment = "Ultimaker Format Package",
                 suffixes = ["ufp"]
             )
         )
@@ -38,7 +38,11 @@ class UFPWriter(MeshWriter):
     def _createSnapshot(self, *args):
         # must be called from the main thread because of OpenGL
         Logger.log("d", "Creating thumbnail image...")
-        self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        try:
+            self._snapshot = Snapshot.snapshot(width = 300, height = 300)
+        except Exception:
+            Logger.logException("w", "Failed to create snapshot image")
+            self._snapshot = None  # Failing to create thumbnail should not fail creation of UFP
 
     # This needs to be called on the main thread (Qt thread) because the serialization of material containers can
     # trigger loading other containers. Because those loaded containers are QtObjects, they must be created on the
@@ -79,9 +83,9 @@ class UFPWriter(MeshWriter):
             Logger.log("d", "Thumbnail not created, cannot save it")
 
         # Store the material.
-        application = Application.getInstance()
+        application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
-        material_manager = application.getMaterialManager()
+        container_registry = application.getContainerRegistry()
         global_stack = machine_manager.activeMachine
 
         material_extension = "xml.fdm_material"
@@ -107,12 +111,12 @@ class UFPWriter(MeshWriter):
                 continue
 
             material_root_id = material.getMetaDataEntry("base_file")
-            material_group = material_manager.getMaterialGroup(material_root_id)
-            if material_group is None:
-                Logger.log("e", "Cannot find material container with root id [%s]", material_root_id)
+            material_root_query = container_registry.findContainers(id = material_root_id)
+            if not material_root_query:
+                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id = material_root_id))
                 return False
+            material_container = material_root_query[0]
 
-            material_container = material_group.root_material_node.getContainer()
             try:
                 serialized_material = material_container.serialize()
             except NotImplementedError:

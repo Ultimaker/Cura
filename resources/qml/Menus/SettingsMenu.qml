@@ -14,20 +14,21 @@ Menu
 
     PrinterMenu { title: catalog.i18nc("@title:menu menubar:settings", "&Printer") }
 
+    property var activeMachine: Cura.MachineManager.activeMachine
     Instantiator
     {
-        model: Cura.MachineManager.activeMachine.extruderList
-
+        id: extruderInstantiator
+        model: activeMachine == null ? null : activeMachine.extruderList
         Menu
         {
             title: modelData.name
-
-            NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
-            MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
+            property var extruder: Cura.MachineManager.activeMachine.extruderList[model.index]
+            NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.activeMachine.hasVariants; extruderIndex: index }
+            MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.activeMachine.hasMaterials; extruderIndex: index }
 
             MenuSeparator
             {
-                visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+                visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
             }
 
             MenuItem
@@ -40,14 +41,14 @@ Menu
             {
                 text: catalog.i18nc("@action:inmenu", "Enable Extruder")
                 onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, true)
-                visible: !Cura.MachineManager.getExtruder(model.index).isEnabled
+                visible: extruder === null ? false : !extruder.isEnabled
             }
 
             MenuItem
             {
                 text: catalog.i18nc("@action:inmenu", "Disable Extruder")
-                onTriggered: Cura.MachineManager.setExtruderEnabled(model.index, false)
-                visible: Cura.MachineManager.getExtruder(model.index).isEnabled
+                onTriggered: Cura.MachineManager.setExtruderEnabled(index, false)
+                visible: extruder === null ? false : extruder.isEnabled
                 enabled: Cura.MachineManager.numberExtrudersEnabled > 1
             }
 
@@ -55,14 +56,6 @@ Menu
         onObjectAdded: base.insertItem(index, object)
         onObjectRemoved: base.removeItem(object)
     }
-
-    // TODO Only show in dev mode. Remove check when feature ready
-    BuildplateMenu
-    {
-        title: catalog.i18nc("@title:menu", "&Build plate")
-        visible: CuraSDKVersion == "dev" && Cura.MachineManager.hasVariantBuildplates
-    }
-    ProfileMenu { title: catalog.i18nc("@title:settings", "&Profile") }
 
     MenuSeparator { }
 
