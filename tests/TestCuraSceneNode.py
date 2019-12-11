@@ -13,6 +13,9 @@ class MockedConvexHullDecorator(SceneNodeDecorator):
     def getConvexHull(self):
         return Polygon([[5, 5], [-5, 5], [-5, -5], [5, -5]])
 
+    def getPrintingArea(self):
+        return Polygon([[5, 5], [-5, 5], [-5, -5], [5, -5]])
+
 
 class InvalidConvexHullDecorator(SceneNodeDecorator):
     def __init__(self):

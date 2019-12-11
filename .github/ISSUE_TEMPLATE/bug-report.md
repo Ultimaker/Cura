@@ -14,10 +14,6 @@ Before filing, PLEASE check if the issue already exists (either open or closed) 
 
 Also, please note the application version in the title of the issue. For example: "[3.2.1] Cannot connect to 3rd-party printer". Please do NOT write things like "Request:" or "[BUG]" in the title; this is what labels are for.
 
-It is also helpful to attach a project (.3mf or .curaproject) file and Cura log file so we can debug issues quicker. Information about how to find the log file can be found at https://github.com/Ultimaker/Cura#logging-issues 
-
-To upload a project, try changing the extension to e.g. .curaproject.3mf.zip so that GitHub accepts uploading the file. Otherwise, we recommend http://wetransfer.com, but other file hosts like Google Drive or Dropbox work well too.
-
 Thank you for using Cura!
 -->
 
@@ -25,14 +21,17 @@ Thank you for using Cura!
 (The version of the application this issue occurs with.)
 
 **Platform**
-(Information about the operating system the issue occurs on. Include at least the operating system. In the case of visual glitches/issues, also include information about your graphics drivers and GPU.)
+(Information about the operating system the issue occurs on. Include at least the operating system and maybe GPU.)
 
 **Printer**
-(Which printer was selected in Cura? If possible, please attach project file as .curaproject.3mf.zip.)
+(Which printer was selected in Cura?)
 
 **Reproduction steps**
-1. Something you did.
-2. Something you did next.
+1. (Something you did.)
+2. (Something you did next.)
+
+**Screenshot(s)**
+(Image showing the problem, perhaps before/after images.) 
 
 **Actual results**
 (What happens after the above steps have been followed.)
@@ -40,5 +39,11 @@ Thank you for using Cura!
 **Expected results**
 (What should happen after the above steps have been followed.)
 
+**Project file**
+(For slicing bugs, provide a project which clearly shows the bug, by going to File->Save. For big files you may need to use WeTransfer or similar file sharing sites.)
+
+**Log file**
+(See https://github.com/Ultimaker/Cura#logging-issues to find the log file to upload, or copy a relevant snippet from it.)
+
 **Additional information**
-(Extra information relevant to the issue, like screenshots. Don't forget to attach the log files with this issue report.)
+(Extra information relevant to the issue.)

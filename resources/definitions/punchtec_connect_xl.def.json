@@ -16,7 +16,7 @@
     },
 
     "overrides": {
-        "machine_head_polygon": { "default_value": [[ 0, 0], [ 0, 0], [ 0, 0], [ 0, 0]] },
+        "machine_head_with_fans_polygon": { "default_value": [[ 0, 0], [ 0, 0], [ 0, 0], [ 0, 0]] },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 40 },

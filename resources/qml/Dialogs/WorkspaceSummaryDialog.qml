@@ -177,6 +177,7 @@ UM.Dialog
                                 return catalog.i18nc("@action:label", "Extruder %1").arg(extruder_id)
                             }
                             font.bold: true
+                            enabled: modelData.isEnabled
                         }
                         Row
                         {
@@ -194,6 +195,7 @@ UM.Dialog
                                     return catalog.i18nc("@action:label", "Material")
                                 }
                                 width: Math.floor(scroll.width / 3) | 0
+                                enabled: modelData.isEnabled
                             }
                             Label
                             {
@@ -205,7 +207,7 @@ UM.Dialog
                                     }
                                     return materialName
                                 }
-
+                                enabled: modelData.isEnabled
                                 width: Math.floor(scroll.width / 3) | 0
                             }
                         }

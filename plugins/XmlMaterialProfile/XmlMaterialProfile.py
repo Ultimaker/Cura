@@ -720,6 +720,8 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material._dirty = False
 
                         if is_new_material:
+                            if ContainerRegistry.getInstance().isReadOnly(self.getId()):
+                                ContainerRegistry.getInstance().setExplicitReadOnly(new_hotend_material.getId())
                             containers_to_add.append(new_hotend_material)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
@@ -1102,6 +1104,7 @@ class XmlMaterialProfile(InstanceContainer):
         "anti ooze retract speed": "material_anti_ooze_retraction_speed",
         "break preparation position": "material_break_preparation_retracted_position",
         "break preparation speed": "material_break_preparation_speed",
+        "break preparation temperature": "material_break_preparation_temperature",
         "break position": "material_break_retracted_position",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
