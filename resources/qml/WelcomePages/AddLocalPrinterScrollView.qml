@@ -91,7 +91,8 @@ Item
                 // individual item has a dynamic change on its visibility, the ListView doesn't redraw itself.
                 // The default value of cacheBuffer is platform-dependent, so we explicitly disable it here.
                 cacheBuffer: 0
-
+                boundsBehavior: Flickable.StopAtBounds
+                flickDeceleration: 20000  // To prevent the flicking behavior.
                 model: UM.DefinitionContainersModel
                 {
                     id: machineDefinitionsModel

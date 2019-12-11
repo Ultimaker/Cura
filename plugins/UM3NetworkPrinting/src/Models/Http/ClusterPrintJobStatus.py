@@ -2,8 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
-from PyQt5.QtCore import QUrl
-
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 
 from .ClusterBuildPlate import ClusterBuildPlate

@@ -6,7 +6,7 @@ import io #To write config files to strings as if they were files.
 from typing import Dict, List, Optional, Tuple
 
 import UM.VersionUpgrade
-from UM.Logger import Logger
+
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -19,6 +19,7 @@ def importFrom(serialised: str, filename: str) -> Optional["Profile"]:
         return Profile(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
+
 
 ##  A representation of a profile used as intermediary form for conversion from
 #   one format to the other.

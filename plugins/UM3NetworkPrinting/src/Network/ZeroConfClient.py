@@ -43,7 +43,7 @@ class ZeroConfClient:
             Logger.logException("e", "Failed to create zeroconf instance.")
             return
 
-        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True)
+        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True, name = "ZeroConfServiceChangedThread")
         self._service_changed_request_thread.start()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, self.ZERO_CONF_NAME, [self._queueService])
 
