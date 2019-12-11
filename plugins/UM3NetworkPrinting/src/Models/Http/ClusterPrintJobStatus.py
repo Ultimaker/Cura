@@ -2,8 +2,6 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
-from PyQt5.QtCore import QUrl
-
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 
 from .ClusterBuildPlate import ClusterBuildPlate
@@ -101,6 +99,7 @@ class ClusterPrintJobStatus(BaseModel):
         extruders = [extruder.createConfigurationModel() for extruder in self.configuration or ()]
         configuration = PrinterConfigurationModel()
         configuration.setExtruderConfigurations(extruders)
+        configuration.setPrinterType(self.machine_variant)
         return configuration
 
     ## Updates an UM3 print job output model based on this cloud cluster print job.

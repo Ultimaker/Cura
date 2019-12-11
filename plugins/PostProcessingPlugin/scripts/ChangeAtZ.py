@@ -367,6 +367,8 @@ class ChangeAtZ(Script):
             modified_gcode = ""
             lines = active_layer.split("\n")
             for line in lines:
+                if line.strip() == "":
+                    continue
                 if ";Generated with Cura_SteamEngine" in line:
                     TWinstances += 1
                     modified_gcode += ";ChangeAtZ instances: %d\n" % TWinstances

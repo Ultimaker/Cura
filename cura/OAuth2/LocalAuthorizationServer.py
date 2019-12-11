@@ -63,6 +63,10 @@ class LocalAuthorizationServer:
         Logger.log("d", "Stopping local oauth2 web server...")
 
         if self._web_server:
-            self._web_server.server_close()
+            try:
+                self._web_server.server_close()
+            except OSError:
+                # OS error can happen if the socket was already closed. We really don't care about that case.
+                pass
         self._web_server = None
         self._web_server_thread = None

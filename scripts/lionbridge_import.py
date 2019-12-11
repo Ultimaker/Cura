@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import argparse #To get the source directory from command line arguments.
+import io # To fix encoding issues in Windows
 import os #To find files from the source.
 import os.path #To find files from the source and the destination path.
 
@@ -34,12 +35,12 @@ def lionbridge_import(source: str) -> None:
             else:
                 raise Exception("Unknown file: " + source_file + "... Is this Cura or Uranium?")
 
-            with open(os.path.join(directory, file_pot)) as f:
+            with io.open(os.path.join(directory, file_pot), encoding = "utf8") as f:
                 source_str = f.read()
-            with open(destination_file) as f:
+            with io.open(destination_file, encoding = "utf8") as f:
                 destination_str = f.read()
             result = merge(source_str, destination_str)
-            with open(destination_file, "w") as f:
+            with io.open(destination_file, "w", encoding = "utf8") as f:
                 f.write(result)
 
 ##  Gets the destination path to copy the translations for Cura to.

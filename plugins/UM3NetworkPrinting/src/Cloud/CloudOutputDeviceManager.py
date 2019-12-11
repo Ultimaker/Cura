@@ -1,13 +1,15 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Dict, List, Optional
 
+from typing import Dict, List, Optional
 from PyQt5.QtCore import QTimer
 
 from UM import i18nCatalog
+from UM.Logger import Logger  # To log errors talking to the API.
 from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
+from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
 
 from .CloudApiClient import CloudApiClient
@@ -36,13 +38,14 @@ class CloudOutputDeviceManager:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._api = CloudApiClient(self._account, on_error=lambda error: print(error))
+        self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
 
         # Create a timer to update the remote cluster list
         self._update_timer = QTimer()
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
         self._update_timer.setSingleShot(False)
+        self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Ensure we don't start twice.
         self._running = False
@@ -57,7 +60,6 @@ class CloudOutputDeviceManager:
         if not self._update_timer.isActive():
             self._update_timer.start()
         self._getRemoteClusters()
-        self._update_timer.timeout.connect(self._getRemoteClusters)
 
     ## Stops running the cloud output device manager.
     def stop(self):
@@ -67,7 +69,6 @@ class CloudOutputDeviceManager:
         if self._update_timer.isActive():
             self._update_timer.stop()
         self._onGetRemoteClustersFinished([])  # Make sure we remove all cloud output devices.
-        self._update_timer.timeout.disconnect(self._getRemoteClusters)
 
     ## Force refreshing connections.
     def refreshConnections(self) -> None:
@@ -126,9 +127,11 @@ class CloudOutputDeviceManager:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
         if not device:
             return
-        device.disconnect()
         device.close()
         CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.key)
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key in output_device_manager.getOutputDeviceIds():
+            output_device_manager.removeOutputDevice(device.key)
         self.discoveredDevicesChanged.emit()
 
     def _createMachineFromDiscoveredDevice(self, key: str) -> None:
@@ -136,14 +139,15 @@ class CloudOutputDeviceManager:
         if not device:
             return
 
-        # The newly added machine is automatically activated.
-        machine_manager = CuraApplication.getInstance().getMachineManager()
-        machine_manager.addMachine(device.printerType, device.clusterData.friendly_name)
-        active_machine = CuraApplication.getInstance().getGlobalContainerStack()
-        if not active_machine:
+        # Create a new machine and activate it.
+        # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
+        new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
+        if not new_machine:
+            Logger.log("e", "Failed creating a new machine")
             return
-        active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        self._connectToOutputDevice(device, active_machine)
+        new_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+        self._connectToOutputDevice(device, new_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
@@ -160,15 +164,21 @@ class CloudOutputDeviceManager:
                 self._connectToOutputDevice(device, active_machine)
             elif local_network_key and device.matchesNetworkKey(local_network_key):
                 # Connect to it if we can match the local network key that was already present.
-                active_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
                 self._connectToOutputDevice(device, active_machine)
             elif device.key in output_device_manager.getOutputDeviceIds():
                 # Remove device if it is not meant for the active machine.
                 output_device_manager.removeOutputDevice(device.key)
 
     ## Connects to an output device and makes sure it is registered in the output device manager.
-    @staticmethod
-    def _connectToOutputDevice(device: CloudOutputDevice, active_machine: GlobalStack) -> None:
-        device.connect()
-        active_machine.addConfiguredConnectionType(device.connectionType.value)
-        CuraApplication.getInstance().getOutputDeviceManager().addOutputDevice(device)
+    def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
+        machine.setName(device.name)
+        machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        machine.setMetaDataEntry("group_name", device.name)
+        machine.addConfiguredConnectionType(device.connectionType.value)
+
+        if not device.isConnected():
+            device.connect()
+
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+        if device.key not in output_device_manager.getOutputDeviceIds():
+            output_device_manager.addOutputDevice(device)

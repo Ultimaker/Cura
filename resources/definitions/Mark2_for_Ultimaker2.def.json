@@ -1,5 +1,4 @@
 {
-    "id": "Mark2_for_Ultimaker2",
     "version": 2,
     "name": "Mark2 for Ultimaker2",
     "inherits": "ultimaker2_plus",
@@ -11,9 +10,7 @@
         "weight": 0,
         "has_variants": true,
         "has_materials": true,
-        "has_machine_materials": false,
         "has_machine_quality": false,
-        "has_variant_materials": false,
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker.png",
         "platform": "ultimaker2_platform.obj",
@@ -82,9 +79,6 @@
         "line_width": {
             "value": "round(machine_nozzle_size * 0.875, 2)"
         },
-        "speed_layer_0": {
-            "default_value": 20
-        },
         "speed_support": {
             "value": "speed_wall_0"
         },
@@ -110,22 +104,18 @@
             "default_value": 25
         },
         "switch_extruder_retraction_amount": {
-            "default_value": 0,
             "value": "retraction_amount",
             "enabled": false
         },
         "switch_extruder_retraction_speeds": {
-            "default_value": 25,
             "value": "retraction_speed",
             "enabled": false
         },
         "switch_extruder_retraction_speed": {
-            "default_value": 25,
             "value": "retraction_retract_speed",
             "enabled": false
         },
         "switch_extruder_prime_speed": {
-            "default_value": 25,
             "value": "retraction_prime_speed",
             "enabled": false
         },
@@ -145,11 +135,9 @@
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode" : {
-            "default_value": "",
             "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G21 ;metric values\\nG90 ;absolute positioning\\nM82 ;set extruder to absolute mode\\nM107 ;start with the fan off\\nM200 D0 T0 ;reset filament diameter\\nM200 D0 T1\\nG28 Z0; home all\\nG28 X0 Y0\\nG0 Z20 F2400 ;move the platform to 20mm\\nG92 E0\\nM190 S{material_bed_temperature_layer_0}\\nM109 T0 S{material_standby_temperature, 0}\\nM109 T1 S{material_print_temperature_layer_0, 1}\\nM104 T0 S{material_print_temperature_layer_0, 0}\\nT1 ; move to the 2th head\\nG0 Z20 F2400\\nG92 E-7.0 ;prime distance\\nG1 E0 F45 ;purge nozzle\\nG1 E-5.1 F1500 ; retract\\nG1 X90 Z0.01 F5000 ; move away from the prime poop\\nG1 X50 F9000\\nG0 Z20 F2400\\nT0 ; move to the first head\\nM104 T1 S{material_standby_temperature, 1}\\nG0 Z20 F2400\\nM104 T{initial_extruder_nr} S{material_print_temperature_layer_0, initial_extruder_nr}\\nG92 E-7.0\\nG1 E0 F45 ;purge nozzle\\nG1 X60 Z0.01 F5000 ; move away from the prime poop\\nG1 X20 F9000\\nM400 ;finish all moves\\nG92 E0\\n;end of startup sequence\\n\""
         },
         "machine_end_gcode" : {
-            "default_value": "",
             "value": "\"\"  if machine_gcode_flavor == \"UltiGCode\" else \"G90 ;absolute positioning\\nM104 S0 T0 ;extruder heater off\\nM104 S0 T1\\nM140 S0 ;turn off bed\\nT0 ; move to the first head\\nM107 ;fan off\""
         },
         "machine_extruder_count": {
@@ -161,12 +149,10 @@
         },
         "acceleration_print":
         {
-            "default_value": 2000,
             "value": "2000"
         },
         "acceleration_travel":
         {
-            "default_value": 3000,
             "value": "acceleration_print if magic_spiralize else 3000"
         },
         "acceleration_layer_0": { "value": "acceleration_topbottom" },
@@ -186,7 +172,6 @@
         },
         "jerk_travel":
         {
-            "default_value": 20,
             "value": "jerk_print if magic_spiralize else 20"
         },
         "jerk_layer_0": { "value": "jerk_topbottom" },
@@ -212,10 +197,10 @@
             "enabled": false
         },
         "prime_tower_position_x": {
-            "default_value": 185
+            "value": "185"
         },
         "prime_tower_position_y": {
-            "default_value": 160
+            "value": "160"
         },
         "machine_disallowed_areas": {
             "default_value": [

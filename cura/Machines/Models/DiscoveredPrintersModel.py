@@ -11,7 +11,6 @@ from UM.Util import parseBool
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
     from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
     from cura.CuraApplication import CuraApplication
     from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
@@ -75,7 +74,7 @@ class DiscoveredPrinter(QObject):
     def readableMachineType(self) -> str:
         from cura.CuraApplication import CuraApplication
         machine_manager = CuraApplication.getInstance().getMachineManager()
-        # In LocalClusterOutputDevice, when it updates a printer information, it updates the machine type using the field
+        # In NetworkOutputDevice, when it updates a printer information, it updates the machine type using the field
         # "machine_variant", and for some reason, it's not the machine type ID/codename/... but a human-readable string
         # like "Ultimaker 3". The code below handles this case.
         if self._hasHumanReadableMachineTypeName(self._machine_type):

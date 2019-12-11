@@ -1,9 +1,10 @@
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import List
-
-from UM.Mesh.MeshBuilder import MeshBuilder
-
 import numpy
 
+from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshData import MeshData
 from cura.LayerPolygon import LayerPolygon
 
@@ -84,14 +85,14 @@ class Layer:
             for polygon in self._polygons:
                 line_count += polygon.jumpCount
 
-        # Reserve the neccesary space for the data upfront
+        # Reserve the necessary space for the data upfront
         builder.reserveFaceAndVertexCount(2 * line_count, 4 * line_count)
         
         for polygon in self._polygons:
-            # Filter out the types of lines we are not interesed in depending on whether we are drawing the mesh or the jumps.
+            # Filter out the types of lines we are not interested in depending on whether we are drawing the mesh or the jumps.
             index_mask = numpy.logical_not(polygon.jumpMask) if make_mesh else polygon.jumpMask
 
-            # Create an array with rows [p p+1] and only keep those we whant to draw based on make_mesh
+            # Create an array with rows [p p+1] and only keep those we want to draw based on make_mesh
             points = numpy.concatenate((polygon.data[:-1], polygon.data[1:]), 1)[index_mask.ravel()]
             # Line types of the points we want to draw
             line_types = polygon.types[index_mask]

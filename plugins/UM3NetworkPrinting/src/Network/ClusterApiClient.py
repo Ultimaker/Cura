@@ -13,6 +13,7 @@ from ..Models.BaseModel import BaseModel
 from ..Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 from ..Models.Http.ClusterPrinterStatus import ClusterPrinterStatus
 from ..Models.Http.PrinterSystemStatus import PrinterSystemStatus
+from ..Models.Http.ClusterMaterial import ClusterMaterial
 
 
 ## The generic type variable used to document the methods below.
@@ -25,6 +26,9 @@ class ClusterApiClient:
     PRINTER_API_PREFIX = "/api/v1"
     CLUSTER_API_PREFIX = "/cluster-api/v1"
 
+    # In order to avoid garbage collection we keep the callbacks in this list.
+    _anti_gc_callbacks = []  # type: List[Callable[[], None]]
+
     ## Initializes a new cluster API client.
     #  \param address: The network address of the cluster to call.
     #  \param on_error: The callback to be called whenever we receive errors from the server.
@@ -33,8 +37,6 @@ class ClusterApiClient:
         self._manager = QNetworkAccessManager()
         self._address = address
         self._on_error = on_error
-        # In order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Get printer system information.
     #  \param on_finished: The callback in case the response is successful.
@@ -42,6 +44,13 @@ class ClusterApiClient:
         url = "{}/system".format(self.PRINTER_API_PREFIX)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, PrinterSystemStatus)
+
+    ## Get the installed materials on the printer.
+    #  \param on_finished: The callback in case the response is successful.
+    def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
+        url = "{}/materials".format(self.CLUSTER_API_PREFIX)
+        reply = self._manager.get(self._createEmptyRequest(url))
+        self._addCallback(reply, on_finished, ClusterMaterial)
 
     ## Get the printers in the cluster.
     #  \param on_finished: The callback in case the response is successful.
@@ -61,6 +70,11 @@ class ClusterApiClient:
     def movePrintJobToTop(self, print_job_uuid: str) -> None:
         url = "{}/print_jobs/{}/action/move".format(self.CLUSTER_API_PREFIX, print_job_uuid)
         self._manager.post(self._createEmptyRequest(url), json.dumps({"to_position": 0, "list": "queued"}).encode())
+
+    ## Override print job configuration and force it to be printed.
+    def forcePrintJob(self, print_job_uuid: str) -> None:
+        url = "{}/print_jobs/{}".format(self.CLUSTER_API_PREFIX, print_job_uuid)
+        self._manager.put(self._createEmptyRequest(url), json.dumps({"force": True}).encode())
 
     ## Delete a print job from the queue.
     def deletePrintJob(self, print_job_uuid: str) -> None:
@@ -121,7 +135,7 @@ class ClusterApiClient:
                 result = model_class(**response)  # type: ClusterApiClientModel
                 on_finished_item = cast(Callable[[ClusterApiClientModel], Any], on_finished)
                 on_finished_item(result)
-        except JSONDecodeError:
+        except (JSONDecodeError, TypeError, ValueError):
             Logger.log("e", "Could not parse response from network: %s", str(response))
 
     ## Creates a callback function so that it includes the parsing of the response into the correct model.

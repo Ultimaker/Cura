@@ -40,21 +40,20 @@ I18N_CATALOG = i18nCatalog("cura")
 #   Note that this device represents a single remote cluster, not a list of multiple clusters.
 class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
-    # The interval with which the remote clusters are checked
+    # The interval with which the remote cluster is checked.
+    # We can do this relatively often as this API call is quite fast.
     CHECK_CLUSTER_INTERVAL = 10.0  # seconds
+
+    # Override the network response timeout in seconds after which we consider the device offline.
+    # For cloud this needs to be higher because the interval at which we check the status is higher as well.
+    NETWORK_RESPONSE_CONSIDER_OFFLINE = 15.0  # seconds
 
     # The minimum version of firmware that support print job actions over cloud.
     PRINT_JOB_ACTIONS_MIN_VERSION = Version("5.3.0")
 
-    # Signal triggered when the print jobs in the queue were changed.
-    printJobsChanged = pyqtSignal()
-
-    # Signal triggered when the selected printer in the UI should be changed.
-    activePrinterChanged = pyqtSignal()
-
     # Notify can only use signals that are defined by the class that they are in, not inherited ones.
     # Therefore we create a private signal used to trigger the printersChanged signal.
-    _clusterPrintersChanged = pyqtSignal()
+    _cloudClusterPrintersChanged = pyqtSignal()
 
     ## Creates a new cloud output device
     #  \param api_client: The client that will run the API calls
@@ -88,7 +87,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self._setInterfaceElements()
 
         # Trigger the printersChanged signal when the private signal is triggered.
-        self.printersChanged.connect(self._clusterPrintersChanged)
+        self.printersChanged.connect(self._cloudClusterPrintersChanged)
 
         # Keep server string of the last generated time to avoid updating models more than once for the same response
         self._received_printers = None  # type: Optional[List[ClusterPrinterStatus]]
@@ -125,11 +124,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def matchesNetworkKey(self, network_key: str) -> bool:
         # Typically, a network key looks like "ultimakersystem-aabbccdd0011._ultimaker._tcp.local."
         # the host name should then be "ultimakersystem-aabbccdd0011"
-        if network_key.startswith(self.clusterData.host_name):
+        if network_key.startswith(str(self.clusterData.host_name or "")):
             return True
         # However, for manually added printers, the local IP address is used in lieu of a proper
-        # network key, so check for that as well
-        if self.clusterData.host_internal_ip is not None and network_key in self.clusterData.host_internal_ip:
+        # network key, so check for that as well. It is in the format "manual:10.1.10.1".
+        if network_key.endswith(str(self.clusterData.host_internal_ip or "")):
             return True
         return False
 
@@ -143,8 +142,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Called when the network data should be updated.
     def _update(self) -> None:
         super()._update()
-        if self._last_request_time and time() - self._last_request_time < self.CHECK_CLUSTER_INTERVAL:
-            return  # Avoid calling the cloud too often
+        if time() - self._time_of_last_request < self.CHECK_CLUSTER_INTERVAL:
+            return  # avoid calling the cloud too often
+        self._time_of_last_request = time()
         if self._account.isLoggedIn:
             self.setAuthenticationState(AuthState.Authenticated)
             self._last_request_time = time()
@@ -155,9 +155,8 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     ## Method called when HTTP request to status endpoint is finished.
     #  Contains both printers and print jobs statuses in a single response.
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
-        # Update all data from the cluster.
-        self._last_response_time = time()
-        if self._received_printers != status.printers:
+        self._responseReceived()
+        if status.printers != self._received_printers:
             self._received_printers = status.printers
             self._updatePrinters(status.printers)
         if status.print_jobs != self._received_print_jobs:
@@ -231,7 +230,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
         self.writeError.emit()
 
     ##  Whether the printer that this output device represents supports print job actions via the cloud.
-    @pyqtProperty(bool, notify=_clusterPrintersChanged)
+    @pyqtProperty(bool, notify=_cloudClusterPrintersChanged)
     def supportsPrintJobActions(self) -> bool:
         if not self._printers:
             return False
@@ -258,11 +257,11 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     @pyqtSlot(name="openPrintJobControlPanel")
     def openPrintJobControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
 
     @pyqtSlot(name="openPrinterControlPanel")
     def openPrinterControlPanel(self) -> None:
-        QDesktopServices.openUrl(QUrl("https://mycloud.ultimaker.com"))
+        QDesktopServices.openUrl(QUrl(self.clusterCloudUrl))
 
     ## Gets the cluster response from which this device was created.
     @property
@@ -273,3 +272,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @clusterData.setter
     def clusterData(self, value: CloudClusterResponse) -> None:
         self._cluster = value
+
+    ## Gets the URL on which to monitor the cluster via the cloud.
+    @property
+    def clusterCloudUrl(self) -> str:
+        root_url_prefix = "-staging" if self._account.is_staging else ""
+        return "https://mycloud{}.ultimaker.com/app/jobs/{}".format(root_url_prefix, self.clusterData.cluster_id)

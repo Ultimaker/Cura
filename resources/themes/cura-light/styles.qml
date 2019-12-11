@@ -241,7 +241,7 @@ QtObject
                     Behavior on color { ColorAnimation { duration: 50; } }
 
                     border.width: (control.hasOwnProperty("needBorder") && control.needBorder) ? Theme.getSize("default_lining").width : 0
-                    border.color: Theme.getColor("lining")
+                    border.color: control.checked ? Theme.getColor("icon") : Theme.getColor("lining")
                 }
             }
 

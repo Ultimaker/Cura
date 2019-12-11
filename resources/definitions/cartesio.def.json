@@ -10,7 +10,6 @@
 
         "has_machine_quality": true,
         "has_materials": true,
-        "has_machine_materials": true,
         "has_variants": true,
 
         "variants_name": "Tool",
@@ -45,8 +44,8 @@
         "prime_tower_enable": { "default_value": false },
         "prime_tower_min_volume": { "value": "0.7" },
         "prime_tower_size": { "value": 24.0 },
-        "prime_tower_position_x": { "value": 125 },
-        "prime_tower_position_y": { "value": 70 },
+        "prime_tower_position_x": { "value": "125" },
+        "prime_tower_position_y": { "value": "70" },
         "prime_blob_enable": { "default_value": false },
         "machine_max_feedrate_z": { "default_value": 20 },
         "machine_disallowed_areas": { "default_value": [

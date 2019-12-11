@@ -35,6 +35,9 @@ class CloudApiClient:
     CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
 
+    # In order to avoid garbage collection we keep the callbacks in this list.
+    _anti_gc_callbacks = []  # type: List[Callable[[], None]]
+
     ## Initializes a new cloud API client.
     #  \param account: The user's account object
     #  \param on_error: The callback to be called whenever we receive errors from the server.
@@ -44,8 +47,6 @@ class CloudApiClient:
         self._account = account
         self._on_error = on_error
         self._upload = None  # type: Optional[ToolPathUploader]
-        # In order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Gets the account used for the API.
     @property
@@ -55,7 +56,7 @@ class CloudApiClient:
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
-        url = "{}/clusters".format(self.CLUSTER_API_ROOT)
+        url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, CloudClusterResponse)
 

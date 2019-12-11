@@ -10,6 +10,8 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+// A single material row, typically used in a MaterialsBrandSection
+
 Rectangle
 {
     id: materialSlot
@@ -82,11 +84,12 @@ Rectangle
         {
             if (materialSlot.is_favorite)
             {
-                CuraApplication.getMaterialManager().removeFavorite(material.root_material_id)
-                return
+                CuraApplication.getMaterialManagementModel().removeFavorite(material.root_material_id)
             }
-            CuraApplication.getMaterialManager().addFavorite(material.root_material_id)
-            return
+            else
+            {
+                CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
+            }
         }
         style: ButtonStyle
         {

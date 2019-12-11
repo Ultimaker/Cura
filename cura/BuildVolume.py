@@ -26,7 +26,6 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import math
-import copy
 
 from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
@@ -65,6 +64,7 @@ class BuildVolume(SceneNode):
         self._origin_mesh = None  # type: Optional[MeshData]
         self._origin_line_length = 20
         self._origin_line_width = 1.5
+        self._enabled = False
 
         self._grid_mesh = None   # type: Optional[MeshData]
         self._grid_shader = None
@@ -124,10 +124,6 @@ class BuildVolume(SceneNode):
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         self._machine_manager.activeQualityChanged.connect(self._onStackChanged)
-
-        # This should also ways work, and it is semantically more correct,
-        # but it does not update the disallowed areas after material change
-        self._machine_manager.activeStackChanged.connect(self._onStackChanged)
 
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
@@ -201,7 +197,7 @@ class BuildVolume(SceneNode):
         self._disallowed_areas = areas
 
     def render(self, renderer):
-        if not self.getMeshData():
+        if not self.getMeshData() or not self.isVisible():
             return True
 
         if not self._shader:
@@ -268,10 +264,11 @@ class BuildVolume(SceneNode):
                     continue
                 # Mark the node as outside build volume if the set extruder is disabled
                 extruder_position = node.callDecoration("getActiveExtruderPosition")
-                if extruder_position not in self._global_container_stack.extruders:
-                    continue
-                if not self._global_container_stack.extruders[extruder_position].isEnabled:
-                    node.setOutsideBuildArea(True)
+                try:
+                    if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
+                        node.setOutsideBuildArea(True)
+                        continue
+                except IndexError:
                     continue
 
                 node.setOutsideBuildArea(False)
@@ -318,7 +315,7 @@ class BuildVolume(SceneNode):
 
             # Mark the node as outside build volume if the set extruder is disabled
             extruder_position = node.callDecoration("getActiveExtruderPosition")
-            if not self._global_container_stack.extruders[extruder_position].isEnabled:
+            if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
                 node.setOutsideBuildArea(True)
                 return
 
@@ -548,7 +545,7 @@ class BuildVolume(SceneNode):
             return
 
         old_raft_thickness = self._raft_thickness
-        if self._global_container_stack.extruders:
+        if self._global_container_stack.extruderList:
             # This might be called before the extruder stacks have initialised, in which case getting the adhesion_type fails
             self._adhesion_type = self._global_container_stack.getProperty("adhesion_type", "value")
         self._raft_thickness = 0.0
@@ -1097,7 +1094,7 @@ class BuildVolume(SceneNode):
     #   not part of the collision radius, such as bed adhesion (skirt/brim/raft)
     #   and travel avoid distance.
     def getEdgeDisallowedSize(self):
-        if not self._global_container_stack or not self._global_container_stack.extruders:
+        if not self._global_container_stack or not self._global_container_stack.extruderList:
             return 0
 
         container_stack = self._global_container_stack
@@ -1105,7 +1102,7 @@ class BuildVolume(SceneNode):
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-            return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
+            return 0.1
 
         bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)
         support_expansion = self._calculateSupportExpansion(self._global_container_stack)
