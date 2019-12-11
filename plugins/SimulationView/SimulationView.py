@@ -48,7 +48,7 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## View used to display g-code paths.
+## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
@@ -213,6 +213,8 @@ class SimulationView(CuraView):
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+        if renderer is None:
+            return
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
@@ -490,7 +492,11 @@ class SimulationView(CuraView):
 
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
-            self.getRenderer().addRenderPass(layer_pass)
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            renderer.addRenderPass(layer_pass)
 
             # Make sure the NozzleNode is add to the root
             nozzle = self.getNozzleNode()
@@ -509,7 +515,7 @@ class SimulationView(CuraView):
                     self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
-                self._composite_pass = cast(CompositePass, self.getRenderer().getRenderPass("composite"))
+                self._composite_pass = cast(CompositePass, renderer.getRenderPass("composite"))
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()[:]  # make a copy so we can restore to it later
             self._composite_pass.getLayerBindings().append("simulationview")
@@ -525,7 +531,13 @@ class SimulationView(CuraView):
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             if self._nozzle_node:
                 self._nozzle_node.setParent(None)
-            self.getRenderer().removeRenderPass(self._layer_pass)
+
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            if self._layer_pass is not None:
+                renderer.removeRenderPass(self._layer_pass)
             if self._composite_pass:
                 self._composite_pass.setLayerBindings(cast(List[str], self._old_layer_bindings))
                 self._composite_pass.setCompositeShader(cast(ShaderProgram, self._old_composite_shader))

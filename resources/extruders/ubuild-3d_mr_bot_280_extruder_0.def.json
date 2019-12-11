@@ -1,5 +1,4 @@
 {
-    "id": "ubuild-3d_mr_bot_280_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

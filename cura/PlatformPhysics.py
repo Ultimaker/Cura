@@ -17,6 +17,7 @@ from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 
+
 class PlatformPhysics:
     def __init__(self, controller, volume):
         super().__init__()

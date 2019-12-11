@@ -1,8 +1,8 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick 2.10
+import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
 
 import UM 1.2 as UM
@@ -32,7 +32,7 @@ Cura.ExpandablePopup
     }
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    enabled: Cura.MachineManager.hasMaterials || Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
+    enabled: Cura.MachineManager.activeMachine.hasMaterials || Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
     {
@@ -44,7 +44,7 @@ Cura.ExpandablePopup
             orientation: ListView.Horizontal
             anchors.fill: parent
             model: extrudersModel
-            visible: Cura.MachineManager.hasMaterials
+            visible: Cura.MachineManager.activeMachine.hasMaterials
 
             delegate: Item
             {
@@ -86,7 +86,7 @@ Cura.ExpandablePopup
                 {
                     id: variantLabel
 
-                    visible: Cura.MachineManager.hasVariants
+                    visible: Cura.MachineManager.activeMachine.hasVariants
 
                     text: model.variant
                     elide: Text.ElideRight
@@ -99,12 +99,14 @@ Cura.ExpandablePopup
                         left: extruderIcon.right
                         leftMargin: UM.Theme.getSize("default_margin").width
                         top: typeAndBrandNameLabel.bottom
+                        right: parent.right
+                        rightMargin:  UM.Theme.getSize("default_margin").width
                     }
                 }
             }
         }
 
-        //Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
+        // Placeholder text if there is a configuration to select but no materials (so we can't show the materials per extruder).
         Label
         {
             text: catalog.i18nc("@label", "Select configuration")
@@ -113,7 +115,7 @@ Cura.ExpandablePopup
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
 
-            visible: !Cura.MachineManager.hasMaterials && (Cura.MachineManager.hasVariants || Cura.MachineManager.hasVariantBuildplates)
+            visible: !Cura.MachineManager.activeMachine.hasMaterials && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates)
 
             anchors
             {
@@ -138,7 +140,7 @@ Cura.ExpandablePopup
 
         onVisibleChanged:
         {
-            is_connected = Cura.MachineManager.activeMachineHasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
+            is_connected = Cura.MachineManager.activeMachine.hasRemoteConnection && Cura.MachineManager.printerConnected && Cura.MachineManager.printerOutputDevices[0].uniqueConfigurations.length > 0 //Re-evaluate.
 
             // If the printer is not connected or does not have configurations, we switch always to the custom mode. If is connected instead, the auto mode
             // or the previous state is selected

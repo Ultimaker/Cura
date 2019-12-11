@@ -18,8 +18,8 @@ UM.Dialog
     id: base
 
     title: catalog.i18nc("@title:window", "Open project file")
-    width: 450 * screenScaleFactor
-    height: 150 * screenScaleFactor
+    width: UM.Theme.getSize("small_popup_dialog").width
+    height: UM.Theme.getSize("small_popup_dialog").height
 
     maximumHeight: height
     maximumWidth: width
@@ -53,7 +53,7 @@ UM.Dialog
             UM.Preferences.setValue("cura/choice_on_open_project", "open_as_model")
         }
 
-        CuraApplication.readLocalFile(base.fileUrl, true)
+        CuraApplication.readLocalFile(base.fileUrl, "open_as_model")
         var meshName = backgroundItem.getMeshName(base.fileUrl.toString())
         backgroundItem.hasMesh(decodeURIComponent(meshName))
 

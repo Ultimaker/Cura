@@ -1,0 +1,21 @@
+{
+    "version": 2,
+    "name": "Right extruder",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "leapfrog_bolt_pro",
+        "position": "0"
+    },
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 0,
+            "maximum_value": "1"
+        },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_head_distance": { "default_value": 22 },
+        "machine_nozzle_offset_x": { "default_value": 0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_extruder_start_code": { "default_value": "G1 Y-32 F12000\nG1 X296 F1000\nG1 X334 F4000\nG1 X296"}
+    }
+}

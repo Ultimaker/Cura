@@ -15,15 +15,10 @@
     },
 
     "overrides": {
-        "speed_travel": { "default_value": 150 },
         "prime_tower_size": { "default_value": 8.660254037844387 },
         "infill_sparse_density": { "default_value": 10 },
-        "speed_wall_x": { "default_value": 30 },
-        "speed_wall_0": { "default_value": 30 },
-        "speed_topbottom": { "default_value": 30 },
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 30 },
-        "speed_infill": { "default_value": 30 },
         "machine_extruder_count": { "default_value": 1 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": true },

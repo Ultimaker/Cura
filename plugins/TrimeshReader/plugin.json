@@ -3,5 +3,5 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Provides support for reading model files.",
-    "api": "6.0.0"
+    "api": "7.0.0"
 }

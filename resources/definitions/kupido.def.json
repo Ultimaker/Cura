@@ -18,12 +18,12 @@
         "supports_usb_connection": false,
         "machine_extruder_trains":
         {
-            "0": "alya3dp_extruder_0"
+            "0": "kupido_extruder_0"
         }
     },
 
     "overrides": {
-        "machine_name": { "default_value": "ALYA 3DP" },
+        "machine_name": { "default_value": "KUPIDO" },
         "machine_heated_bed":          {   "default_value": true            },
         "machine_width":               {   "default_value": 195             },
         "machine_height":              {   "default_value": 190             },
