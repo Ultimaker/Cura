@@ -219,7 +219,7 @@ class PauseAtHeight(Script):
 
                     current_height = current_z - layer_0_z
                     if current_height < pause_height:
-                        break  # Try the next layer.
+                        continue  # Scan the enitre layer, z-changes are not always on the same/first line.
 
                 # Pause at layer
                 else:
