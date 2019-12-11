@@ -50,9 +50,9 @@ IsEnterpriseVersion = CuraBuildType.lower() == __ENTERPRISE_VERSION_TYPE
 try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
     if CuraAppDisplayName == "":
+        CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
         if IsEnterpriseVersion:
-            CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME + " Enterprise"
-        else:
-            CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
+            CuraAppDisplayName = CuraAppDisplayName + " Enterprise"
+
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
