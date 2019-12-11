@@ -23,13 +23,6 @@ except ImportError:
     CuraAppName = DEFAULT_CURA_APP_NAME
 
 try:
-    from cura.CuraVersion import CuraAppDisplayName  # type: ignore
-    if CuraAppDisplayName == "":
-        CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
-except ImportError:
-    CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
-
-try:
     from cura.CuraVersion import CuraVersion  # type: ignore
     if CuraVersion == "":
         CuraVersion = DEFAULT_CURA_VERSION
@@ -53,3 +46,13 @@ except ImportError:
 # Various convenience flags indicating what kind of Cura build it is.
 __ENTERPRISE_VERSION_TYPE = "enterprise"
 IsEnterpriseVersion = CuraBuildType.lower() == __ENTERPRISE_VERSION_TYPE
+
+try:
+    from cura.CuraVersion import CuraAppDisplayName  # type: ignore
+    if CuraAppDisplayName == "":
+        if IsEnterpriseVersion:
+            CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME + " Enterprise"
+        else:
+            CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
+except ImportError:
+    CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
