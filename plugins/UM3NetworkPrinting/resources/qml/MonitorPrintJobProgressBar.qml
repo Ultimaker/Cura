@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -15,123 +15,96 @@ import UM 1.3 as UM
 Item
 {
     id: base
-    property var printJob: null
-    property var progress:
-    {
-        if (!printJob)
-        {
-            return 0
-        }
-        var result = printJob.timeElapsed / printJob.timeTotal
-        if (result > 1.0)
-        {
-            result = 1.0
-        }
-        return result
-    }
-    property var remainingTime:
-    {
-        if (!printJob) {
-            return 0
-        }
-        /* Sometimes total minus elapsed is less than 0. Use Math.max() to prevent remaining
-            time from ever being less than 0. Negative durations cause strange behavior such
-            as displaying "-1h -1m". */
-        return Math.max(printer.activePrintJob.timeTotal - printer.activePrintJob.timeElapsed, 0)
-    }
-    property var progressText:
-    {
-        if (!printJob)
-        {
-            return "";
-        }
-        switch (printJob.state)
-        {
-            case "wait_cleanup":
-                if (printJob.timeTotal > printJob.timeElapsed)
-                {
-                    return catalog.i18nc("@label:status", "Aborted")
-                }
-                return catalog.i18nc("@label:status", "Finished")
-            case "pre_print":
-            case "sent_to_printer":
-                return catalog.i18nc("@label:status", "Preparing")
-            case "aborted":
-                return catalog.i18nc("@label:status", "Aborted")
-            case "wait_user_action":
-                return catalog.i18nc("@label:status", "Aborted")
-            case "pausing":
-                return catalog.i18nc("@label:status", "Pausing")
-            case "paused":
-                return OutputDevice.formatDuration( remainingTime )
-            case "resuming":
-                return catalog.i18nc("@label:status", "Resuming")
-            case "queued":
-                return catalog.i18nc("@label:status", "Action required")
-            default:
-                return OutputDevice.formatDuration( remainingTime )
-        }
-    }
-    width: childrenRect.width
-    height: 18 * screenScaleFactor // TODO: Theme!
 
-    ProgressBar
+    // The print job which all other information is dervied from
+    property var printJob: null
+
+    width: childrenRect.width
+    height: UM.Theme.getSize("monitor_text_line").height
+
+    UM.ProgressBar
     {
         id: progressBar
         anchors
         {
             verticalCenter: parent.verticalCenter
+            left: parent.left
         }
-        value: progress;
-        style: ProgressBarStyle
-        {
-            background: Rectangle
-            {
-                color: "#e4e4f2" // TODO: Theme!
-                implicitHeight: visible ? 8 * screenScaleFactor : 0 // TODO: Theme!
-                implicitWidth: 180 * screenScaleFactor // TODO: Theme!
-                radius: 4 * screenScaleFactor // TODO: Theme!
-            }
-            progress: Rectangle
-            {
-                id: progressItem;
-                color:
-                {
-                    if (printJob)
-                    {
-                        var state = printJob.state
-                        var inactiveStates = [
-                            "pausing",
-                            "paused",
-                            "resuming",
-                            "wait_cleanup"
-                        ]
-                        if (inactiveStates.indexOf(state) > -1 && remainingTime > 0)
-                        {
-                            return UM.Theme.getColor("monitor_progress_fill_inactive")
-                        }
-                    }
-                    return "#0a0850" // TODO: Theme!
-                }
-                radius: 4 * screenScaleFactor // TODO: Theme!
-            }
-        }
+        value: printJob ? printJob.progress : 0
+        width: UM.Theme.getSize("monitor_progress_bar").width
     }
+
     Label
     {
-        id: progressLabel
+        id: percentLabel
         anchors
         {
             left: progressBar.right
-            leftMargin: 18 * screenScaleFactor // TODO: Theme!
+            leftMargin: UM.Theme.getSize("monitor_margin").width
+            verticalCenter: parent.verticalCenter
         }
-        text: progressText
-        color: "#374355" // TODO: Theme!
+        text: printJob ? Math.round(printJob.progress * 100) + "%" : "0%"
+        color: printJob && printJob.isActive ? UM.Theme.getColor("monitor_text_primary") : UM.Theme.getColor("monitor_text_disabled")
         width: contentWidth
-        font: UM.Theme.getFont("medium") // 14pt, regular
+        font: UM.Theme.getFont("default") // 12pt, regular
 
         // FIXED-LINE-HEIGHT:
-        height: 18 * screenScaleFactor // TODO: Theme!
+        height: UM.Theme.getSize("monitor_text_line").height
         verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
+    }
+    Label
+    {
+        id: statusLabel
+        anchors
+        {
+            left: percentLabel.right
+            leftMargin: UM.Theme.getSize("monitor_margin").width
+            verticalCenter: parent.verticalCenter
+        }
+        color: UM.Theme.getColor("monitor_text_primary")
+        font: UM.Theme.getFont("default")
+        text:
+        {
+            if (!printJob)
+            {
+                return "";
+            }
+            switch (printJob.state)
+            {
+                case "wait_cleanup":
+                    if (printJob.timeTotal > printJob.timeElapsed)
+                    {
+                        return catalog.i18nc("@label:status", "Aborted");
+                    }
+                    return catalog.i18nc("@label:status", "Finished");
+                case "finished":
+                    return catalog.i18nc("@label:status", "Finished");
+                case "sent_to_printer":
+                    return catalog.i18nc("@label:status", "Preparing...");
+                case "pre_print":
+                    return catalog.i18nc("@label:status", "Preparing...");
+                case "aborting": // NOTE: Doesn't exist but maybe should someday
+                    return catalog.i18nc("@label:status", "Aborting...");
+                case "aborted": // NOTE: Unused, see above
+                    return catalog.i18nc("@label:status", "Aborted");
+                case "pausing":
+                    return catalog.i18nc("@label:status", "Pausing...");
+                case "paused":
+                    return catalog.i18nc("@label:status", "Paused");
+                case "resuming":
+                    return catalog.i18nc("@label:status", "Resuming...");
+                case "queued":
+                    return catalog.i18nc("@label:status", "Action required");
+                default:
+                    return catalog.i18nc("@label:status", "Finishes %1 at %2".arg(OutputDevice.getDateCompleted(printJob.timeRemaining)).arg(OutputDevice.getTimeCompleted(printJob.timeRemaining)));
+            }
+        }
+        width: contentWidth
+
+        // FIXED-LINE-HEIGHT:
+        height: UM.Theme.getSize("monitor_text_line").height
+        verticalAlignment: Text.AlignVCenter
+        renderType: Text.NativeRendering
     }
 }

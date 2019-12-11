@@ -33,20 +33,25 @@ class PackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 12, "last_updated")
         self.addRoleName(Qt.UserRole + 13, "is_bundled")
         self.addRoleName(Qt.UserRole + 14, "is_active")
-        self.addRoleName(Qt.UserRole + 15, "is_installed") # Scheduled pkgs are included in the model but should not be marked as actually installed
+        self.addRoleName(Qt.UserRole + 15, "is_installed")  # Scheduled pkgs are included in the model but should not be marked as actually installed
         self.addRoleName(Qt.UserRole + 16, "has_configs")
         self.addRoleName(Qt.UserRole + 17, "supported_configs")
         self.addRoleName(Qt.UserRole + 18, "download_count")
         self.addRoleName(Qt.UserRole + 19, "tags")
         self.addRoleName(Qt.UserRole + 20, "links")
         self.addRoleName(Qt.UserRole + 21, "website")
+        self.addRoleName(Qt.UserRole + 22, "login_required")
+        self.addRoleName(Qt.UserRole + 23, "average_rating")
+        self.addRoleName(Qt.UserRole + 24, "num_ratings")
+        self.addRoleName(Qt.UserRole + 25, "user_rating")
 
         # List of filters for queries. The result is the union of the each list of results.
         self._filter = {}  # type: Dict[str, str]
 
     def setMetadata(self, data):
-        self._metadata = data
-        self._update()
+        if self._metadata != data:
+            self._metadata = data
+            self._update()
 
     def _update(self):
         items = []
@@ -99,11 +104,15 @@ class PackagesModel(ListModel):
                 "tags":                 package["tags"] if "tags" in package else [],
                 "links":                links_dict,
                 "website":              package["website"] if "website" in package else None,
+                "login_required":       "login-required" in package.get("tags", []),
+                "average_rating":       float(package.get("rating", {}).get("average", 0)),
+                "num_ratings":          package.get("rating", {}).get("count", 0),
+                "user_rating":          package.get("rating", {}).get("user_rating", 0)
             })
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "tags":
+            if key == "tags":
                 key_filter = lambda item, v = value: v in item["tags"]
             elif "*" in value:
                 key_filter = lambda candidate, k = key, v = value: self._matchRegExp(candidate, k, v)

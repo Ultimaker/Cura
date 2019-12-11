@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -19,7 +19,7 @@ Item
     property alias buildplate: buildplateConfig.buildplate
 
     // Array of extracted extruder configurations
-    property var configurations: null
+    property var configurations: [null,null]
 
     // Default size, but should be stretched to fill parent
     height: 72 * parent.height
@@ -37,10 +37,10 @@ Item
 
             MonitorExtruderConfiguration
             {
-                color: modelData.activeMaterial ? modelData.activeMaterial.color : "#eeeeee" // TODO: Theme!
-                material: modelData.activeMaterial ? modelData.activeMaterial.name : ""
-                position: modelData.position
-                printCore: modelData.hotendID
+                color: modelData && modelData.activeMaterial ? modelData.activeMaterial.color : UM.Theme.getColor("monitor_skeleton_loading")
+                material: modelData && modelData.activeMaterial ? modelData.activeMaterial.name : ""
+                position: modelData && typeof(modelData.position) === "number" ? modelData.position : -1 // Use negative one to create empty extruder number
+                printCore: modelData ? modelData.hotendID : ""
 
                 // Keep things responsive!
                 width: Math.floor((base.width - (configurations.length - 1) * extruderConfigurationRow.spacing) / configurations.length)
@@ -53,6 +53,6 @@ Item
     {
         id: buildplateConfig
         anchors.bottom: parent.bottom
-        buildplate: "Glass" // 'Glass' as a default
+        buildplate: null
     }
 }

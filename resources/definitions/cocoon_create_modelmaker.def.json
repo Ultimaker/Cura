@@ -1,11 +1,11 @@
 {
-    "name": "Cocoon Create ModelMaker & Wanhao Duplicator i3 Mini",
+    "name": "Cocoon Create ModelMaker",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "Samuel Pinches",
-        "manufacturer": "Cocoon Create / Wanhao",
+        "manufacturer": "Cocoon Create",
         "file_formats": "text/x-gcode",
         "preferred_quality_type": "fine",
         "machine_extruder_trains":
@@ -15,7 +15,7 @@
     },
     "overrides": {
         "machine_name": {
-            "default_value": "Cocoon Create ModelMaker & Wanhao Duplicator i3 Mini"
+            "default_value": "Cocoon Create ModelMaker"
         },
         "machine_start_gcode": {
             "default_value": "; -- START GCODE --\nG21                     ;set units to millimetres\nG90                     ;set to absolute positioning\nM106 S0                 ;set fan speed to zero (turned off)\nG28                     ;home all axis\nG92 E0                  ;zero the extruded length\nG1 Z1 F1000             ;move up slightly\nG1 X60.0 Z0 E9.0 F1000.0;intro line\nG1 X100.0 E21.5 F1000.0 ;continue line\nG92 E0                  ;zero the extruded length again\n; -- end of START GCODE --"
@@ -39,7 +39,7 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 10
+            "value": "10"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -47,11 +47,8 @@
         "material_diameter": {
             "default_value": 1.75
         },
-        "material_print_temperature": {
-            "default_value": 220
-        },
         "layer_height": {
-            "default_value": 0.15
+            "default_value": 0.10
         },
         "layer_height_0": {
             "default_value": 0.2
@@ -64,21 +61,6 @@
         },
         "speed_print": {
             "default_value": 40
-        },
-        "speed_infill": {
-            "default_value": 40
-        },
-        "speed_wall": {
-            "default_value": 35
-        },
-        "speed_topbottom": {
-            "default_value": 35
-        },
-        "speed_travel": {
-            "default_value": 70
-        },
-        "speed_layer_0": {
-            "default_value": 20
         },
         "support_enable": {
             "default_value": true

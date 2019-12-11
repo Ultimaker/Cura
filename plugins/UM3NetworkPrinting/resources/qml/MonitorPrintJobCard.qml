@@ -1,9 +1,9 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 /**
  * A Print Job Card is essentially just a filled-in Expandable Card item. All
@@ -26,6 +26,8 @@ Item
 
     ExpandableCard
     {
+        enabled: printJob != null
+        borderColor: printJob && printJob.configurationChanges.length !== 0 ? UM.Theme.getColor("warning") : UM.Theme.getColor("monitor_card_border")
         headerItem: Row
         {
             height: 48 * screenScaleFactor // TODO: Theme!
@@ -40,32 +42,63 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
             }
 
-            Label
+            Item
             {
-                text: printJob && printJob.name ? printJob.name : ""
-                color: "#374355"
-                elide: Text.ElideRight
-                font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
-
-                // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
+                width: UM.Theme.getSize("monitor_column").width
+                Rectangle
+                {
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
+                    width: Math.round(parent.width / 2)
+                    height: parent.height
+                    visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
+                }
+                Label
+                {
+                    text: printJob && printJob.name ? printJob.name : ""
+                    color: UM.Theme.getColor("monitor_text_primary")
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    visible: printJob
+
+                    // FIXED-LINE-HEIGHT:
+                    width: parent.width
+                    height: parent.height
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
             }
-            
-            Label
-            {
-                text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
-                color: "#374355"
-                elide: Text.ElideRight
-                font: UM.Theme.getFont("medium") // 14pt, regular
-                anchors.verticalCenter: parent.verticalCenter
-                width: 216 * screenScaleFactor // TODO: Theme! (Should match column size)
 
-                // FIXED-LINE-HEIGHT:
+            Item
+            {
+                anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
-                verticalAlignment: Text.AlignVCenter
+                width: UM.Theme.getSize("monitor_column").width
+
+                Rectangle
+                {
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
+                    width: Math.round(parent.width / 3)
+                    height: parent.height
+                    visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
+                }
+
+                Label
+                {
+                    text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
+                    color: UM.Theme.getColor("monitor_text_primary")
+                    elide: Text.ElideRight
+                    font: UM.Theme.getFont("medium") // 14pt, regular
+                    visible: printJob
+
+                    // FIXED-LINE-HEIGHT:
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
+                }
             }
 
             Item
@@ -74,11 +107,20 @@ Item
                 height: 18 * screenScaleFactor // TODO: This should be childrenRect.height but QML throws warnings
                 width: childrenRect.width
 
+                Rectangle
+                {
+                    color: UM.Theme.getColor("monitor_skeleton_loading")
+                    width: 72 * screenScaleFactor // TODO: Theme!
+                    height: parent.height
+                    visible: !printJob
+                    radius: 2 * screenScaleFactor // TODO: Theme!
+                }
+
                 Label
                 {
                     id: printerAssignmentLabel
                     anchors.verticalCenter: parent.verticalCenter
-                    color: "#374355"
+                    color: UM.Theme.getColor("monitor_text_primary")
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
@@ -96,10 +138,12 @@ Item
                         return ""
                     }
                     visible: printJob
+                    width: 120 * screenScaleFactor // TODO: Theme!
 
                     // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
+                    height: parent.height
                     verticalAlignment: Text.AlignVCenter
+                    renderType: Text.NativeRendering
                 }
 
                 Row
@@ -113,15 +157,11 @@ Item
                     }
                     height: childrenRect.height
                     spacing: 6 // TODO: Theme!
+                    visible: printJob
 
-                    Repeater
+                    MonitorPrinterPill
                     {
-                        id: compatiblePills
-                        delegate: MonitorPrinterPill
-                        {
-                            text: modelData
-                        }
-                        model: printJob ? printJob.compatibleMachineFamilies : []
+                        text: printJob.configuration.printerType
                     }
                 }
             }
@@ -140,17 +180,14 @@ Item
             {
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
-                buildplate: "Glass"
-                configurations:
-                [
-                    base.printJob.configuration.extruderConfigurations[0],
-                    base.printJob.configuration.extruderConfigurations[1]
-                ]
+                buildplate: catalog.i18nc("@label", "Glass")
+                configurations: base.printJob.configuration.extruderConfigurations
                 height: 72 * screenScaleFactor // TODO: Theme!
             }
+
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
-                color: "#374355" // TODO: Theme!
+                color: UM.Theme.getColor("monitor_text_primary")
                 elide: Text.ElideRight
                 font: UM.Theme.getFont("medium") // 14pt, regular
                 anchors.top: printerConfiguration.top
@@ -158,22 +195,57 @@ Item
                 // FIXED-LINE-HEIGHT:
                 height: 18 * screenScaleFactor // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
+                renderType: Text.NativeRendering
             }
         }
     }
 
-    PrintJobContextMenu
+    MonitorContextMenuButton
     {
-        id: contextButton
+        id: contextMenuButton
         anchors
         {
-            right: parent.right;
+            right: parent.right
             rightMargin: 8 * screenScaleFactor // TODO: Theme!
             top: parent.top
             topMargin: 8 * screenScaleFactor // TODO: Theme!
         }
-        printJob: base.printJob
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
+        enabled: OutputDevice.supportsPrintJobActions
+        onClicked: enabled ? contextMenu.switchPopupState() : {}
+        visible:
+        {
+            if (!printJob) {
+                return false
+            }
+            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
+            return states.indexOf(printJob.state) !== -1
+        }
     }
+
+    MonitorContextMenu
+    {
+        id: contextMenu
+        printJob: base.printJob ? base.printJob : null
+        target: contextMenuButton
+    }
+
+    // For cloud printing, add this mouse area over the disabled contextButton to indicate that it's not available
+    MouseArea
+    {
+        id: contextMenuDisabledButtonArea
+        anchors.fill: contextMenuButton
+        hoverEnabled: contextMenuButton.visible && !contextMenuButton.enabled
+        onEntered: contextMenuDisabledInfo.open()
+        onExited: contextMenuDisabledInfo.close()
+        enabled: !contextMenuButton.enabled
+    }
+
+     MonitorInfoBlurb
+     {
+         id: contextMenuDisabledInfo
+         text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+         target: contextMenuButton
+     }
 }

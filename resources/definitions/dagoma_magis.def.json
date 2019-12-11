@@ -38,7 +38,7 @@
             ]
         },
         "gantry_height": {
-          "default_value": 0
+          "value": "0"
         },
         "machine_shape": {
             "default_value": "elliptic"
@@ -54,9 +54,6 @@
         },
         "speed_print": {
             "default_value": 40
-        },
-        "speed_travel": {
-            "default_value": 120
         },
         "retraction_amount": {
             "default_value": 3.8

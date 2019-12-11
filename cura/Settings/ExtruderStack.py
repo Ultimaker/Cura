@@ -51,9 +51,13 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
+    @pyqtProperty(int, constant = True)
+    def position(self) -> int:
+        return int(self.getMetaDataEntry("position"))
+
     def setEnabled(self, enabled: bool) -> None:
-        if "enabled" not in self._metadata:
-            self.setMetaDataEntry("enabled", "True")
+        if self.getMetaDataEntry("enabled", True) == enabled: # No change.
+            return # Don't emit a signal then.
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
@@ -135,12 +139,15 @@ class ExtruderStack(CuraContainerStack):
             if limit_to_extruder == -1:
                 limit_to_extruder = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
+
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
-            if str(limit_to_extruder) in self.getNextStack().extruders:
-                result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
+            try:
+                result = self.getNextStack().extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
                     context.popContainer()
                     return result
+            except IndexError:
+                pass
 
         result = super().getProperty(key, property_name, context)
         context.popContainer()

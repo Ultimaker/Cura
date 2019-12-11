@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="108px" height="81px" viewBox="0 0 108 81" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 53.2 (72643) - https://sketchapp.com -->
+    <title>number of slices</title>
+    <desc>Created with Sketch.</desc>
+    <g id="0419-data-collection-update" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="4.-collect-data-updated" transform="translate(-762.000000, -330.000000)">
+            <g id="number-of-slices" transform="translate(762.000000, 330.000000)">
+                <rect id="Rectangle" fill="#CCCCCC" x="8" y="3" width="100" height="78"></rect>
+                <rect id="Rectangle" fill="#E5E5E5" x="0" y="0" width="103" height="78"></rect>
+                <rect id="Rectangle" fill="#104CAA" x="13" y="49" width="3" height="16"></rect>
+                <rect id="Rectangle-Copy-9" fill="#104CAA" x="26" y="39" width="3" height="26"></rect>
+                <rect id="Rectangle-Copy-10" fill="#104CAA" x="39" y="59" width="3" height="6"></rect>
+                <rect id="Rectangle-Copy-11" fill="#104CAA" x="52" y="56" width="3" height="9"></rect>
+                <rect id="Rectangle-Copy-12" fill="#104CAA" x="65" y="49" width="3" height="16"></rect>
+                <rect id="Rectangle-Copy-13" fill="#104CAA" x="78" y="51" width="3" height="14"></rect>
+                <rect id="Rectangle-Copy-15" fill="#104CAA" x="91" y="30" width="3" height="35"></rect>
+                <polyline id="Path-2" stroke="#0063FF" points="14 44.1328507 27.5 30.5 40.5 42.5 53.5 48.5 66.5 35.5 79.4294479 32.5 92.5 20.5"></polyline>
+                <circle id="Oval" stroke="#0063FF" fill="#FFFFFF" cx="14.5" cy="43.5" r="2"></circle>
+                <circle id="Oval-Copy-8" stroke="#0063FF" fill="#FFFFFF" cx="27.5" cy="30.5" r="2"></circle>
+                <circle id="Oval-Copy-9" stroke="#0063FF" fill="#FFFFFF" cx="40.5" cy="42.5" r="2"></circle>
+                <circle id="Oval-Copy-10" stroke="#0063FF" fill="#FFFFFF" cx="53.5" cy="48.5" r="2"></circle>
+                <circle id="Oval-Copy-11" stroke="#0063FF" fill="#FFFFFF" cx="66.5" cy="35.5" r="2"></circle>
+                <circle id="Oval-Copy-12" stroke="#0063FF" fill="#FFFFFF" cx="79.5" cy="32.5" r="2"></circle>
+                <circle id="Oval-Copy-13" stroke="#0063FF" fill="#FFFFFF" cx="92.5" cy="20.5" r="2"></circle>
+                <rect id="Rectangle" fill="#CCCCCC" x="7" y="10" width="1" height="56"></rect>
+                <rect id="Rectangle" fill="#CCCCCC" x="7" y="65" width="92" height="1"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

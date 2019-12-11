@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "Z-Bolt Plus",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Z-Bolt",
+        "manufacturer": "Z-Bolt Co.",
+        "file_formats": "text/x-gcode",
+        "platform": "z-bolt_plus_platform.stl",
+        "machine_extruder_trains":
+        {
+            "0": "z-bolt_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Z-Bolt Plus" },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_width": {
+            "default_value": 300
+        },
+        "machine_height": {
+            "default_value": 335
+        },
+        "machine_depth": {
+            "default_value": 200
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -75, 35 ],
+                [ -75, -18 ],
+                [ 18, 35 ],
+                [ 18, -18 ]
+            ]
+        },
+        "gantry_height": {
+            "value": "55"
+        },
+        "machine_use_extruder_offset_to_offset_coords": {
+            "default_value": true
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG28 X0 Y0 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstops\nG1 Z15.0 F9000 ;move the platform down 15mm\nG92 E0 ;zero the extruded length\nG1 F200 E6 ;extrude 6 mm of feed stock\nG92 E0 ;zero the extruded length again\nG1 F9000\n;Put printing message on LCD screen\nM117 Printing..."
+        },
+        "machine_end_gcode": {
+            "default_value": "'M104 S0 ;extruder heater off' + ('\nM140 S0 ;heated bed heater off' if machine_heated_bed else '') + '\nG91 ;relative positioning\nG1 E-1 F300  ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F9000 ;move Z up a bit and retract filament even more\nG28 X0 Y0 Z0 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning'"
+        }
+    }
+}

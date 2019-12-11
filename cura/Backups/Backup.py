@@ -116,12 +116,13 @@ class Backup:
 
         current_version = self._application.getVersion()
         version_to_restore = self.meta_data.get("cura_release", "master")
-        if current_version != version_to_restore:
-            # Cannot restore version older or newer than current because settings might have changed.
-            # Restoring this will cause a lot of issues so we don't allow this for now.
+
+        if current_version < version_to_restore:
+            # Cannot restore version newer than current because settings might have changed.
+            Logger.log("d", "Tried to restore a Cura backup of version {version_to_restore} with cura version {current_version}".format(version_to_restore = version_to_restore, current_version = current_version))
             self._showMessage(
                 self.catalog.i18nc("@info:backup_failed",
-                                   "Tried to restore a Cura backup that does not match your current version."))
+                                   "Tried to restore a Cura backup that is higher than the current version."))
             return False
 
         version_data_dir = Resources.getDataStoragePath()
@@ -147,5 +148,9 @@ class Backup:
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
-        archive.extractall(target_path)
+        try:
+            archive.extractall(target_path)
+        except PermissionError:
+            Logger.logException("e", "Unable to extract the backup due to permission errors")
+            return False
         return True

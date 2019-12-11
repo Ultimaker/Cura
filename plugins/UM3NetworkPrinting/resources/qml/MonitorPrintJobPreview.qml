@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -16,20 +16,32 @@ Item
     width: size
     height: size
 
-    // Actual content
-    Image
+    Rectangle
     {
-        id: previewImage
         anchors.fill: parent
-        opacity: printJob && printJob.state == "error" ? 0.5 : 1.0
-        source: printJob ? printJob.previewImageUrl : ""
-        visible: printJob
+        color: printJob ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
+        radius: 8 // TODO: Theme!
+        Image
+        {
+            id: previewImage
+            anchors.fill: parent
+            opacity:
+            {
+                if (printJob && (printJob.state == "error" || printJob.configurationChanges.length > 0 || !printJob.isActive))
+                {
+                    return 0.5
+                }
+                return 1.0
+            }
+            source: printJob ? printJob.previewImageUrl : ""
+        }
     }
+
 
     UM.RecolorImage
     {
         id: ultiBotImage
-        
+
         anchors.centerIn: printJobPreview
         color: UM.Theme.getColor("monitor_placeholder_image")
         height: printJobPreview.height
@@ -47,11 +59,37 @@ Item
 
     UM.RecolorImage
     {
-        id: statusImage
+        id: overlayIcon
         anchors.centerIn: printJobPreview
         color: UM.Theme.getColor("monitor_image_overlay")
         height: 0.5 * printJobPreview.height
-        source: printJob && printJob.state == "error" ? "../svg/aborted-icon.svg" : ""
+        source:
+        {
+            if (!printJob)
+            {
+                return ""
+            }
+            if (printJob.configurationChanges.length > 0)
+            {
+                return "../svg/warning-icon.svg"
+            }
+            switch(printJob.state)
+            {
+                case "error":
+                    return "../svg/aborted-icon.svg"
+                case "wait_cleanup":
+                    return printJob.timeTotal > printJob.timeElapsed ? "../svg/aborted-icon.svg" : ""
+                case "pausing":
+                    return "../svg/paused-icon.svg"
+                case "paused":
+                    return "../svg/paused-icon.svg"
+                case "resuming":
+                    return "../svg/paused-icon.svg"
+                default:
+                    return ""
+            }
+            return ""
+        }
         sourceSize
         {
             height: height

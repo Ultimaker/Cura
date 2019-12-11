@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import re
-from typing import Dict
 from PyQt5.QtCore import Qt, pyqtProperty
 from UM.Qt.ListModel import ListModel
+
 
 ##  Model that holds supported configurations (for material/quality packages).
 class ConfigsModel(ListModel):

@@ -4,7 +4,7 @@
 from typing import List
 
 from cura.MachineAction import MachineAction
-from cura.PrinterOutputDevice import PrinterOutputDevice
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 from UM.FlameProfiler import pyqtSlot
 

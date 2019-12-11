@@ -1,8 +1,8 @@
  {
     "name": "Version Upgrade 2.5 to 2.6",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Upgrades configurations from Cura 2.5 to Cura 2.6.",
-    "api": 5,
+    "api": "7.0",
     "i18n-catalog": "cura"
 }

@@ -1,14 +1,14 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QTimer
 
-from UM.Application import Application
+import cura.CuraApplication  # Imported this way to prevent circular dependencies.
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Settings.SettingFunction import SettingFunction
+from cura.Machines.ContainerTree import ContainerTree
+from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
 
-from cura.Machines.QualityManager import QualityGroup
 
 #
 # QML Model for all built-in quality profiles. This model is used for the drop-down quality menu.
@@ -35,41 +35,63 @@ class QualityProfilesDropDownMenuModel(ListModel):
         self.addRoleName(self.QualityChangesGroupRole, "quality_changes_group")
         self.addRoleName(self.IsExperimentalRole, "is_experimental")
 
-        self._application = Application.getInstance()
-        self._machine_manager = self._application.getMachineManager()
-        self._quality_manager = Application.getInstance().getQualityManager()
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        machine_manager = application.getMachineManager()
 
-        self._application.globalContainerStackChanged.connect(self._update)
-        self._machine_manager.activeQualityGroupChanged.connect(self._update)
-        self._machine_manager.extruderChanged.connect(self._update)
-        self._quality_manager.qualitiesUpdated.connect(self._update)
+        application.globalContainerStackChanged.connect(self._onChange)
+        machine_manager.activeQualityGroupChanged.connect(self._onChange)
+        machine_manager.activeMaterialChanged.connect(self._onChange)
+        machine_manager.activeVariantChanged.connect(self._onChange)
+        machine_manager.extruderChanged.connect(self._onChange)
+
+        extruder_manager = application.getExtruderManager()
+        extruder_manager.extrudersChanged.connect(self._onChange)
 
         self._layer_height_unit = ""  # This is cached
 
-        self._update()
+        self._update_timer = QTimer()  # type: QTimer
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
+        self._onChange()
+
+    def _onChange(self) -> None:
+        self._update_timer.start()
 
     def _update(self):
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
-        global_stack = self._machine_manager.activeMachine
+        # CURA-6836
+        # LabelBar is a repeater that creates labels for quality layer heights. Because of an optimization in
+        # UM.ListModel, the model will not remove all items and recreate new ones every time there's an update.
+        # Because LabelBar uses Repeater with Labels anchoring to "undefined" in certain cases, the anchoring will be
+        # kept the same as before.
+        self.setItems([])
+
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             self.setItems([])
             Logger.log("d", "No active GlobalStack, set quality profile model as empty.")
             return
 
+        if not self._layer_height_unit:
+            unit = global_stack.definition.getProperty("layer_height", "unit")
+            if not unit:
+                unit = ""
+            self._layer_height_unit = unit
+
         # Check for material compatibility
-        if not self._machine_manager.activeMaterialsCompatible():
+        if not cura.CuraApplication.CuraApplication.getInstance().getMachineManager().activeMaterialsCompatible():
             Logger.log("d", "No active material compatibility, set quality profile model as empty.")
             self.setItems([])
             return
 
-        quality_group_dict = self._quality_manager.getQualityGroups(global_stack)
+        quality_group_dict = ContainerTree.getInstance().getCurrentQualityGroups()
 
         item_list = []
-        for key in sorted(quality_group_dict):
-            quality_group = quality_group_dict[key]
-
-            layer_height = self._fetchLayerHeight(quality_group)
+        for quality_group in quality_group_dict.values():
+            layer_height = fetchLayerHeight(quality_group)
 
             item = {"name": quality_group.name,
                     "quality_type": quality_group.quality_type,
@@ -85,32 +107,3 @@ class QualityProfilesDropDownMenuModel(ListModel):
         item_list = sorted(item_list, key = lambda x: x["layer_height"])
 
         self.setItems(item_list)
-
-    def _fetchLayerHeight(self, quality_group: "QualityGroup") -> float:
-        global_stack = self._machine_manager.activeMachine
-        if not self._layer_height_unit:
-            unit = global_stack.definition.getProperty("layer_height", "unit")
-            if not unit:
-                unit = ""
-            self._layer_height_unit = unit
-
-        default_layer_height = global_stack.definition.getProperty("layer_height", "value")
-
-        # Get layer_height from the quality profile for the GlobalStack
-        if quality_group.node_for_global is None:
-            return float(default_layer_height)
-        container = quality_group.node_for_global.getContainer()
-
-        layer_height = default_layer_height
-        if container and container.hasProperty("layer_height", "value"):
-            layer_height = container.getProperty("layer_height", "value")
-        else:
-            # Look for layer_height in the GlobalStack from material -> definition
-            container = global_stack.definition
-            if container and container.hasProperty("layer_height", "value"):
-                layer_height = container.getProperty("layer_height", "value")
-
-        if isinstance(layer_height, SettingFunction):
-            layer_height = layer_height(global_stack)
-
-        return float(layer_height)

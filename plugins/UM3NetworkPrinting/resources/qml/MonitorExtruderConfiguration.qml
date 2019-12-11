@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -36,41 +36,67 @@ Item
     MonitorIconExtruder
     {
         id: extruderIcon
-        color: "#eeeeee" // TODO: Theme!
+        color: UM.Theme.getColor("monitor_skeleton_loading")
         position: 0
     }
-    Label
+
+    Rectangle
     {
-        id: materialLabel
+        id: materialLabelWrapper
         anchors
         {
             left: extruderIcon.right
             leftMargin: 12 * screenScaleFactor // TODO: Theme!
         }
-        color: "#191919" // TODO: Theme!
-        elide: Text.ElideRight
-        font: UM.Theme.getFont("very_small") // 12pt, regular
-        text: ""
-
-        // FIXED-LINE-HEIGHT:
+        color: materialLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         height: 18 * screenScaleFactor // TODO: Theme!
-        verticalAlignment: Text.AlignVCenter
+        width: Math.max(materialLabel.contentWidth, 60 * screenScaleFactor) // TODO: Theme!
+        radius: 2 * screenScaleFactor // TODO: Theme!
+
+        Label
+        {
+            id: materialLabel
+
+            color: UM.Theme.getColor("monitor_text_primary")
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default") // 12pt, regular
+            text: ""
+            visible: text !== ""
+
+            // FIXED-LINE-HEIGHT:
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
+        }
     }
-    Label
+
+    Rectangle
     {
-        id: printCoreLabel
+        id: printCoreLabelWrapper
         anchors
         {
-            left: materialLabel.left
+            left: materialLabelWrapper.left
             bottom: parent.bottom
         }
-        color: "#191919" // TODO: Theme!
-        elide: Text.ElideRight
-        font: UM.Theme.getFont("small") // 12pt, bold
-        text: ""
-
-        // FIXED-LINE-HEIGHT:
+        color: printCoreLabel.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
         height: 18 * screenScaleFactor // TODO: Theme!
-        verticalAlignment: Text.AlignVCenter
+        width: Math.max(printCoreLabel.contentWidth, 36 * screenScaleFactor) // TODO: Theme!
+        radius: 2 * screenScaleFactor // TODO: Theme!
+
+        Label
+        {
+            id: printCoreLabel
+
+            color: UM.Theme.getColor("monitor_text_primary")
+            elide: Text.ElideRight
+            font: UM.Theme.getFont("default_bold") // 12pt, bold
+            text: ""
+            visible: text !== ""
+
+            // FIXED-LINE-HEIGHT:
+            height: parent.height
+            verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
+        }
     }
 }

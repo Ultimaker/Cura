@@ -1,4 +1,4 @@
-# Copyright (c) 2017 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -39,10 +39,17 @@ class ArrangeObjectsJob(Job):
 
         arranger = Arrange.create(x = machine_width, y = machine_depth, fixed_nodes = self._fixed_nodes, min_offset = self._min_offset)
 
+        # Build set to exclude children (those get arranged together with the parents).
+        included_as_child = set()
+        for node in self._nodes:
+            included_as_child.update(node.getAllChildren())
+
         # Collect nodes to be placed
         nodes_arr = []  # fill with (size, node, offset_shape_arr, hull_shape_arr)
         for node in self._nodes:
-            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = self._min_offset)
+            if node in included_as_child:
+                continue
+            offset_shape_arr, hull_shape_arr = ShapeArray.fromNode(node, min_offset = self._min_offset, include_children = True)
             if offset_shape_arr is None:
                 Logger.log("w", "Node [%s] could not be converted to an array for arranging...", str(node))
                 continue

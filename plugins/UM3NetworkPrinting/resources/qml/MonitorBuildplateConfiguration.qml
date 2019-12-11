@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -18,7 +18,7 @@ import UM 1.3 as UM
 Item
 {
     // The buildplate name
-    property alias buildplate: buildplateLabel.text
+    property var buildplate: null
 
     // Height is one 18px label/icon
     height: 18 * screenScaleFactor // TODO: Theme!
@@ -27,37 +27,49 @@ Item
     Row
     {
         height: parent.height
-        spacing: 12 * screenScaleFactor // TODO: Theme! (Should be same as extruder spacing)
+        spacing: UM.Theme.getSize("print_setup_slider_handle").width // TODO: Theme! (Should be same as extruder spacing)
 
         // This wrapper ensures that the buildplate icon is located centered
         // below an extruder icon.
         Item
         {
             height: parent.height
-            width: 32 * screenScaleFactor // TODO: Theme! (Should be same as extruder icon width)
+            width: 32 * screenScaleFactor // Ensure the icon is centered under the extruder icon (same width)
+
+            Rectangle
+            {
+                anchors.centerIn: parent
+                height: parent.height
+                width: height
+                color: buildplateIcon.visible > 0 ? "transparent" : UM.Theme.getColor("monitor_skeleton_loading")
+                radius: Math.floor(height / 2)
+            }
 
             UM.RecolorImage
             {
                 id: buildplateIcon
                 anchors.centerIn: parent
-                color: "#0a0850" // TODO: Theme! (Standard purple)
+                color: UM.Theme.getColor("monitor_icon_primary")
                 height: parent.height
                 source: "../svg/icons/buildplate.svg"
                 width: height
+                visible: buildplate
             }
         }
-        
+
         Label
         {
             id: buildplateLabel
-            color: "#191919" // TODO: Theme!
+            color: UM.Theme.getColor("monitor_text_primary")
             elide: Text.ElideRight
-            font: UM.Theme.getFont("very_small") // 12pt, regular
-            text: ""
+            font: UM.Theme.getFont("default") // 12pt, regular
+            text: buildplate ? buildplate : ""
+            visible: text !== ""
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
             verticalAlignment: Text.AlignVCenter
+            renderType: Text.NativeRendering
         }
     }
 }

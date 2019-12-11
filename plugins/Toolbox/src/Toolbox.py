@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 import json
@@ -13,12 +13,13 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
-from UM.Qt.ListModel import ListModel
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
-import cura
+from cura import ApplicationMetadata
+from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
@@ -31,17 +32,14 @@ i18n_catalog = i18nCatalog("cura")
 
 ##  The Toolbox class is responsible of communicating with the server through the API
 class Toolbox(QObject, Extension):
-    DEFAULT_CLOUD_API_ROOT = "https://api.ultimaker.com" #type: str
-    DEFAULT_CLOUD_API_VERSION = 1 #type: int
-
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
         self._application = application  # type: CuraApplication
 
-        self._sdk_version = None  # type: Optional[Union[str, int]]
-        self._cloud_api_version = None  # type: Optional[int]
-        self._cloud_api_root = None  # type: Optional[str]
+        self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
+        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: str
+        self._cloud_api_root = UltimakerCloudAuthentication.CuraCloudAPIRoot  # type: str
         self._api_url = None  # type: Optional[str]
 
         # Network:
@@ -50,47 +48,36 @@ class Toolbox(QObject, Extension):
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
         self._network_manager = None  # type: Optional[QNetworkAccessManager]
-        self._request_header = [
-            b"User-Agent",
-            str.encode(
-                "%s/%s (%s %s)" % (
-                    self._application.getApplicationName(),
-                    self._application.getVersion(),
-                    platform.system(),
-                    platform.machine(),
-                )
-            )
-        ]
+        self._request_headers = []  # type: List[Tuple[bytes, bytes]]
+        self._updateRequestHeader()
+
         self._request_urls = {}  # type: Dict[str, QUrl]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
-        # Data:
-        self._metadata = {
+        # The responses as given by the server parsed to a list.
+        self._server_response_data = {
             "authors":             [],
             "packages":            [],
-            "plugins_showcase":    [],
-            "plugins_available":   [],
-            "plugins_installed":   [],
-            "materials_showcase":  [],
-            "materials_available": [],
-            "materials_installed": [],
-            "materials_generic":   []
+            "updates":             [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
-            "plugins_showcase":    PackagesModel(self),
-            "plugins_available":   PackagesModel(self),
-            "plugins_installed":   PackagesModel(self),
-            "materials_showcase":  AuthorsModel(self),
-            "materials_available": AuthorsModel(self),
-            "materials_installed": PackagesModel(self),
-            "materials_generic":   PackagesModel(self)
-        }  # type: Dict[str, ListModel]
+            "updates":             PackagesModel(self),
+        }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
+
+        self._plugins_showcase_model = PackagesModel(self)
+        self._plugins_available_model = PackagesModel(self)
+        self._plugins_installed_model = PackagesModel(self)
+
+        self._materials_showcase_model = AuthorsModel(self)
+        self._materials_available_model = AuthorsModel(self)
+        self._materials_installed_model = PackagesModel(self)
+        self._materials_generic_model = PackagesModel(self)
 
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
@@ -101,7 +88,7 @@ class Toolbox(QObject, Extension):
 
         # View page defines which type of page layout to use. For example,
         # possible values include "overview", "detail" or "author".
-        self._view_page = "loading"  # type: str
+        self._view_page = "welcome"  # type: str
 
         # Active package refers to which package is currently being downloaded,
         # installed, or otherwise modified.
@@ -120,6 +107,7 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
+        self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
     # --------------------------------------------------------------------------
@@ -139,11 +127,47 @@ class Toolbox(QObject, Extension):
     showLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
 
+    ##  Go back to the start state (welcome screen or loading if no login required)
+    def _restart(self):
+        self._updateRequestHeader()
+        # For an Essentials build, login is mandatory
+        if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
+            self.setViewPage("welcome")
+        else:
+            self.setViewPage("loading")
+            self._fetchPackageData()
+
+    def _updateRequestHeader(self):
+        self._request_headers = [
+            (b"User-Agent",
+            str.encode(
+                "%s/%s (%s %s)" % (
+                    self._application.getApplicationName(),
+                    self._application.getVersion(),
+                    platform.system(),
+                    platform.machine(),
+                )
+            ))
+        ]
+        access_token = self._application.getCuraAPI().account.accessToken
+        if access_token:
+            self._request_headers.append((b"Authorization", "Bearer {}".format(access_token).encode()))
+
     def _resetUninstallVariables(self) -> None:
         self._package_id_to_uninstall = None  # type: Optional[str]
         self._package_name_to_uninstall = ""
         self._package_used_materials = []  # type: List[Tuple[GlobalStack, str, str]]
         self._package_used_qualities = []  # type: List[Tuple[GlobalStack, str, str]]
+
+    @pyqtSlot(str, int)
+    def ratePackage(self, package_id: str, rating: int) -> None:
+        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url=self._api_url, package_id = package_id))
+
+        self._rate_request = QNetworkRequest(url)
+        for header_name, header_value in self._request_headers:
+            cast(QNetworkRequest, self._rate_request).setRawHeader(header_name, header_value)
+        data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
+        self._rate_reply = cast(QNetworkAccessManager, self._network_manager).put(self._rate_request, data.encode())
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -168,59 +192,32 @@ class Toolbox(QObject, Extension):
     def _onAppInitialized(self) -> None:
         self._plugin_registry = self._application.getPluginRegistry()
         self._package_manager = self._application.getPackageManager()
-        self._sdk_version = self._getSDKVersion()
-        self._cloud_api_version = self._getCloudAPIVersion()
-        self._cloud_api_root = self._getCloudAPIRoot()
         self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
             cloud_api_root = self._cloud_api_root,
             cloud_api_version = self._cloud_api_version,
             sdk_version = self._sdk_version
         )
+
+        # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
+        installed_package_ids_with_versions = [":".join(items) for items in
+                                               self._package_manager.getAllInstalledPackageIdsAndVersions()]
+        installed_packages_query = "&installed_packages=".join(installed_package_ids_with_versions)
+
         self._request_urls = {
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
-            "plugins_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "plugins_available": QUrl("{base_url}/packages?package_type=plugin".format(base_url = self._api_url)),
-            "materials_showcase": QUrl("{base_url}/showcase".format(base_url = self._api_url)),
-            "materials_available": QUrl("{base_url}/packages?package_type=material".format(base_url = self._api_url)),
-            "materials_generic": QUrl("{base_url}/packages?package_type=material&tags=generic".format(base_url = self._api_url))
+            "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
+                base_url = self._api_url, query = installed_packages_query))
         }
 
-    # Get the API root for the packages API depending on Cura version settings.
-    def _getCloudAPIRoot(self) -> str:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIRoot"): # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        if not cura.CuraVersion.CuraCloudAPIRoot: # type: ignore
-            return self.DEFAULT_CLOUD_API_ROOT
-        return cura.CuraVersion.CuraCloudAPIRoot # type: ignore
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
 
-    # Get the cloud API version from CuraVersion
-    def _getCloudAPIVersion(self) -> int:
-        if not hasattr(cura, "CuraVersion"):
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not hasattr(cura.CuraVersion, "CuraCloudAPIVersion"): # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        if not cura.CuraVersion.CuraCloudAPIVersion: # type: ignore
-            return self.DEFAULT_CLOUD_API_VERSION
-        return cura.CuraVersion.CuraCloudAPIVersion # type: ignore
+        # On boot we check which packages have updates.
+        if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
+            # Request the latest and greatest!
+            self._fetchPackageUpdates()
 
-    # Get the packages version depending on Cura version settings.
-    def _getSDKVersion(self) -> Union[int, str]:
-        if not hasattr(cura, "CuraVersion"):
-            return self._application.getAPIVersion().getMajor()
-        if not hasattr(cura.CuraVersion, "CuraSDKVersion"):  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        if not cura.CuraVersion.CuraSDKVersion:  # type: ignore
-            return self._application.getAPIVersion().getMajor()
-        return cura.CuraVersion.CuraSDKVersion  # type: ignore
-
-    @pyqtSlot()
-    def browsePackages(self) -> None:
-        # Create the network manager:
-        # This was formerly its own function but really had no reason to be as
-        # it was never called more than once ever.
+    def _prepareNetworkManager(self):
         if self._network_manager is not None:
             self._network_manager.finished.disconnect(self._onRequestFinished)
             self._network_manager.networkAccessibleChanged.disconnect(self._onNetworkAccessibleChanged)
@@ -228,18 +225,21 @@ class Toolbox(QObject, Extension):
         self._network_manager.finished.connect(self._onRequestFinished)
         self._network_manager.networkAccessibleChanged.connect(self._onNetworkAccessibleChanged)
 
+    def _fetchPackageUpdates(self):
+        self._prepareNetworkManager()
+        self._makeRequestByType("updates")
+
+    def _fetchPackageData(self):
+        self._prepareNetworkManager()
         # Make remote requests:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
-        # TODO: Uncomment in the future when the tag-filtered api calls work in the cloud server
-        # self._makeRequestByType("plugins_showcase")
-        # self._makeRequestByType("plugins_available")
-        # self._makeRequestByType("materials_showcase")
-        # self._makeRequestByType("materials_available")
-        # self._makeRequestByType("materials_generic")
-
         # Gather installed packages:
         self._updateInstalledModels()
+
+    # Displays the toolbox
+    @pyqtSlot()
+    def launch(self) -> None:
 
         if not self._dialog:
             self._dialog = self._createDialog("Toolbox.qml")
@@ -247,6 +247,8 @@ class Toolbox(QObject, Extension):
         if not self._dialog:
             Logger.log("e", "Unexpected error trying to create the 'Marketplace' dialog.")
             return
+
+        self._restart()
 
         self._dialog.show()
 
@@ -259,7 +261,7 @@ class Toolbox(QObject, Extension):
         if not plugin_path:
             return None
         path = os.path.join(plugin_path, "resources", "qml", qml_name)
-        
+
         dialog = self._application.createQmlComponent(path, {"toolbox": self})
         if not dialog:
             raise Exception("Failed to create Marketplace dialog")
@@ -267,12 +269,17 @@ class Toolbox(QObject, Extension):
 
     def _convertPluginMetadata(self, plugin_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         try:
+            highest_sdk_version_supported = Version(0)
+            for supported_version in plugin_data["plugin"]["supported_sdk_versions"]:
+                if supported_version > highest_sdk_version_supported:
+                    highest_sdk_version_supported = supported_version
+
             formatted = {
                 "package_id": plugin_data["id"],
                 "package_type": "plugin",
                 "display_name": plugin_data["plugin"]["name"],
                 "package_version": plugin_data["plugin"]["version"],
-                "sdk_version": plugin_data["plugin"]["api"],
+                "sdk_version": highest_sdk_version_supported,
                 "author": {
                     "author_id": plugin_data["plugin"]["author"],
                     "display_name": plugin_data["plugin"]["author"]
@@ -281,7 +288,7 @@ class Toolbox(QObject, Extension):
                 "description": plugin_data["plugin"]["description"]
             }
             return formatted
-        except:
+        except KeyError:
             Logger.log("w", "Unable to convert plugin meta data %s", str(plugin_data))
             return None
 
@@ -299,7 +306,7 @@ class Toolbox(QObject, Extension):
         for plugin_id in old_plugin_ids:
             # Neither the installed packages nor the packages that are scheduled to remove are old plugins
             if plugin_id not in installed_package_ids and plugin_id not in scheduled_to_remove_package_ids:
-                Logger.log("i", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
+                Logger.log("d", "Found a plugin that was installed with the old plugin browser: %s", plugin_id)
 
                 old_metadata = self._plugin_registry.getMetaData(plugin_id)
                 new_metadata = self._convertPluginMetadata(old_metadata)
@@ -319,13 +326,10 @@ class Toolbox(QObject, Extension):
                                     if plugin_id not in all_plugin_package_ids)
             self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
 
-            self._metadata["plugins_installed"] = all_packages["plugin"] + list(self._old_plugin_metadata.values())
-            self._models["plugins_installed"].setMetadata(self._metadata["plugins_installed"])
+            self._plugins_installed_model.setMetadata(all_packages["plugin"] + list(self._old_plugin_metadata.values()))
             self.metadataChanged.emit()
         if "material" in all_packages:
-            self._metadata["materials_installed"] = all_packages["material"]
-            # TODO: ADD MATERIALS HERE ONCE MATERIALS PORTION OF TOOLBOX IS LIVE
-            self._models["materials_installed"].setMetadata(self._metadata["materials_installed"])
+            self._materials_installed_model.setMetadata(all_packages["material"])
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
@@ -351,7 +355,7 @@ class Toolbox(QObject, Extension):
             self._package_used_qualities = package_used_qualities
             # Ask change to default material / profile
             if self._confirm_reset_dialog is None:
-                self._confirm_reset_dialog = self._createDialog("ToolboxConfirmUninstallResetDialog.qml")
+                self._confirm_reset_dialog = self._createDialog("dialogs/ToolboxConfirmUninstallResetDialog.qml")
             self.uninstallVariablesChanged.emit()
             if self._confirm_reset_dialog is None:
                 Logger.log("e", "ToolboxConfirmUninstallResetDialog should have been initialized, but it is not. Not showing dialog and not uninstalling package.")
@@ -383,15 +387,22 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def resetMaterialsQualitiesAndUninstall(self) -> None:
         application = CuraApplication.getInstance()
-        material_manager = application.getMaterialManager()
-        quality_manager = application.getQualityManager()
         machine_manager = application.getMachineManager()
+        container_tree = ContainerTree.getInstance()
 
         for global_stack, extruder_nr, container_id in self._package_used_materials:
-            default_material_node = material_manager.getDefaultMaterial(global_stack, extruder_nr, global_stack.extruders[extruder_nr].variant.getName())
+            extruder = global_stack.extruderList[int(extruder_nr)]
+            approximate_diameter = extruder.getApproximateMaterialDiameter()
+            variant_node = container_tree.machines[global_stack.definition.getId()].variants[extruder.variant.getName()]
+            default_material_node = variant_node.preferredMaterial(approximate_diameter)
             machine_manager.setMaterial(extruder_nr, default_material_node, global_stack = global_stack)
         for global_stack, extruder_nr, container_id in self._package_used_qualities:
-            default_quality_group = quality_manager.getDefaultQualityType(global_stack)
+            variant_names = [extruder.variant.getName() for extruder in global_stack.extruderList]
+            material_bases = [extruder.material.getMetaDataEntry("base_file") for extruder in global_stack.extruderList]
+            extruder_enabled = [extruder.isEnabled for extruder in global_stack.extruderList]
+            definition_id = global_stack.definition.getId()
+            machine_node = container_tree.machines[definition_id]
+            default_quality_group = machine_node.getQualityGroups(variant_names, material_bases, extruder_enabled)[machine_node.preferred_quality_type]
             machine_manager.setQualityGroup(default_quality_group, global_stack = global_stack)
 
         if self._package_id_to_uninstall is not None:
@@ -479,44 +490,11 @@ class Toolbox(QObject, Extension):
     def getRemotePackage(self, package_id: str) -> Optional[Dict]:
         # TODO: make the lookup in a dict, not a loop. canUpdate is called for every item.
         remote_package = None
-        for package in self._metadata["packages"]:
+        for package in self._server_response_data["packages"]:
             if package["package_id"] == package_id:
                 remote_package = package
                 break
         return remote_package
-
-    # Checks
-    # --------------------------------------------------------------------------
-    @pyqtSlot(str, result = bool)
-    def canUpdate(self, package_id: str) -> bool:
-        local_package = self._package_manager.getInstalledPackageInfo(package_id)
-        if local_package is None:
-            Logger.log("i", "Could not find package [%s] as installed in the package manager, fall back to check the old plugins",
-                       package_id)
-            local_package = self.getOldPluginPackageMetadata(package_id)
-            if local_package is None:
-                Logger.log("i", "Could not find package [%s] in the old plugins", package_id)
-                return False
-
-        remote_package = self.getRemotePackage(package_id)
-        if remote_package is None:
-            return False
-
-        local_version = Version(local_package["package_version"])
-        remote_version = Version(remote_package["package_version"])
-        can_upgrade = False
-        if remote_version > local_version:
-            can_upgrade = True
-        # A package with the same version can be built to have different SDK versions. So, for a package with the same
-        # version, we also need to check if the current one has a lower SDK version. If so, this package should also
-        # be upgradable.
-        elif remote_version == local_version:
-            # First read sdk_version_semver. If that doesn't exist, read just sdk_version (old version system).
-            remote_sdk_version = Version(remote_package.get("sdk_version_semver", remote_package.get("sdk_version", 0)))
-            local_sdk_version = Version(local_package.get("sdk_version_semver", local_package.get("sdk_version", 0)))
-            can_upgrade = local_sdk_version < remote_sdk_version
-
-        return can_upgrade
 
     @pyqtSlot(str, result = bool)
     def canDowngrade(self, package_id: str) -> bool:
@@ -545,8 +523,8 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getNumberOfInstalledPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["materials_installed"]:
-            if package["author"]["author_id"] == author_id:
+        for package in self._materials_installed_model.items:
+            if package["author_id"] == author_id:
                 count += 1
         return count
 
@@ -554,7 +532,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, result = int)
     def getTotalNumberOfMaterialPackagesByAuthor(self, author_id: str) -> int:
         count = 0
-        for package in self._metadata["packages"]:
+        for package in self._server_response_data["packages"]:
             if package["package_type"] == "material":
                 if package["author"]["author_id"] == author_id:
                     count += 1
@@ -568,34 +546,31 @@ class Toolbox(QObject, Extension):
 
     # Check for plugins that were installed with the old plugin browser
     def isOldPlugin(self, plugin_id: str) -> bool:
-        if plugin_id in self._old_plugin_ids:
-            return True
-        return False
+        return plugin_id in self._old_plugin_ids
 
     def getOldPluginPackageMetadata(self, plugin_id: str) -> Optional[Dict[str, Any]]:
         return self._old_plugin_metadata.get(plugin_id)
 
-    def loadingComplete(self) -> bool:
+    def isLoadingComplete(self) -> bool:
         populated = 0
-        for list in self._metadata.items():
-            if len(list) > 0:
+        for metadata_list in self._server_response_data.items():
+            if metadata_list:
                 populated += 1
-        if populated == len(self._metadata.items()):
-            return True
-        return False
+        return populated == len(self._server_response_data.items())
 
     # Make API Calls
     # --------------------------------------------------------------------------
-    def _makeRequestByType(self, type: str) -> None:
-        Logger.log("i", "Marketplace: Requesting %s metadata from server.", type)
-        request = QNetworkRequest(self._request_urls[type])
-        request.setRawHeader(*self._request_header)
+    def _makeRequestByType(self, request_type: str) -> None:
+        Logger.log("d", "Requesting %s metadata from server.", request_type)
+        request = QNetworkRequest(self._request_urls[request_type])
+        for header_name, header_value in self._request_headers:
+            request.setRawHeader(header_name, header_value)
         if self._network_manager:
             self._network_manager.get(request)
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
-        Logger.log("i", "Marketplace: Attempting to download & install package from %s.", url)
+        Logger.log("i", "Attempting to download & install package from %s.", url)
         url = QUrl(url)
         self._download_request = QNetworkRequest(url)
         if hasattr(QNetworkRequest, "FollowRedirectsAttribute"):
@@ -604,7 +579,8 @@ class Toolbox(QObject, Extension):
         if hasattr(QNetworkRequest, "RedirectPolicyAttribute"):
             # Patch for Qt 5.9+
             cast(QNetworkRequest, self._download_request).setAttribute(QNetworkRequest.RedirectPolicyAttribute, True)
-        cast(QNetworkRequest, self._download_request).setRawHeader(*self._request_header)
+        for header_name, header_value in self._request_headers:
+            cast(QNetworkRequest, self._download_request).setRawHeader(header_name, header_value)
         self._download_reply = cast(QNetworkAccessManager, self._network_manager).get(self._download_request)
         self.setDownloadProgress(0)
         self.setIsDownloading(True)
@@ -612,16 +588,22 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot()
     def cancelDownload(self) -> None:
-        Logger.log("i", "Marketplace: User cancelled the download of a package.")
+        Logger.log("i", "User cancelled the download of a package.")
         self.resetDownload()
 
     def resetDownload(self) -> None:
         if self._download_reply:
             try:
                 self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
-            except TypeError: #Raised when the method is not connected to the signal yet.
-                pass #Don't need to disconnect.
-            self._download_reply.abort()
+            except (TypeError, RuntimeError):  # Raised when the method is not connected to the signal yet.
+                pass  # Don't need to disconnect.
+            try:
+                self._download_reply.abort()
+            except RuntimeError:
+                # In some cases the garbage collector is a bit to agressive, which causes the dowload_reply
+                # to be deleted (especially if the machine has been put to sleep). As we don't know what exactly causes
+                # this (The issue probably lives in the bowels of (py)Qt somewhere), we can only catch and ignore it.
+                pass
         self._download_reply = None
         self._download_request = None
         self.setDownloadProgress(0)
@@ -646,22 +628,8 @@ class Toolbox(QObject, Extension):
             self.resetDownload()
             return
 
-        # HACK: These request are not handled independently at this moment, but together from the "packages" call
-        do_not_handle = [
-            "materials_available",
-            "materials_showcase",
-            "materials_generic",
-            "plugins_available",
-            "plugins_showcase",
-        ]
-
         if reply.operation() == QNetworkAccessManager.GetOperation:
-            for type, url in self._request_urls.items():
-
-                # HACK: Do nothing because we'll handle these from the "packages" call
-                if type in do_not_handle:
-                    continue
-
+            for response_type, url in self._request_urls.items():
                 if reply.url() == url:
                     if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
                         try:
@@ -674,41 +642,46 @@ class Toolbox(QObject, Extension):
                                 return
 
                             # Create model and apply metadata:
-                            if not self._models[type]:
-                                Logger.log("e", "Could not find the %s model.", type)
+                            if not self._models[response_type]:
+                                Logger.log("e", "Could not find the %s model.", response_type)
                                 break
-                            
-                            self._metadata[type] = json_data["data"]
-                            self._models[type].setMetadata(self._metadata[type])
 
-                            # Do some auto filtering
-                            # TODO: Make multiple API calls in the future to handle this
-                            if type is "packages":
-                                self._models[type].setFilter({"type": "plugin"})
-                                self.buildMaterialsModels()
-                                self.buildPluginsModels()
-                            if type is "authors":
-                                self._models[type].setFilter({"package_types": "material"})
-                            if type is "materials_generic":
-                                self._models[type].setFilter({"tags": "generic"})
+                            self._server_response_data[response_type] = json_data["data"]
+                            self._models[response_type].setMetadata(self._server_response_data[response_type])
+
+                            if response_type == "packages":
+                                self._models[response_type].setFilter({"type": "plugin"})
+                                self.reBuildMaterialsModels()
+                                self.reBuildPluginsModels()
+                                self._notifyPackageManager()
+                            elif response_type == "authors":
+                                self._models[response_type].setFilter({"package_types": "material"})
+                                self._models[response_type].setFilter({"tags": "generic"})
+                            elif response_type == "updates":
+                                # Tell the package manager that there's a new set of updates available.
+                                packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
+                                self._package_manager.setPackagesWithUpdate(packages)
 
                             self.metadataChanged.emit()
 
-                            if self.loadingComplete() is True:
+                            if self.isLoadingComplete():
                                 self.setViewPage("overview")
 
-                            return
                         except json.decoder.JSONDecodeError:
-                            Logger.log("w", "Marketplace: Received invalid JSON for %s.", type)
+                            Logger.log("w", "Received invalid JSON for %s.", response_type)
                             break
                     else:
+                        Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
-                        return
-
-        else:
+        elif reply.operation() == QNetworkAccessManager.PutOperation:
             # Ignore any operation that is not a get operation
             pass
+
+    # This function goes through all known remote versions of a package and notifies the package manager of this change
+    def _notifyPackageManager(self):
+        for package in self._server_response_data["packages"]:
+            self._package_manager.addAvailablePackageVersion(package["package_id"], Version(package["package_version"]))
 
     def _onDownloadProgress(self, bytes_sent: int, bytes_total: int) -> None:
         if bytes_total > 0:
@@ -716,7 +689,17 @@ class Toolbox(QObject, Extension):
             self.setDownloadProgress(new_progress)
             if bytes_sent == bytes_total:
                 self.setIsDownloading(False)
-                cast(QNetworkReply, self._download_reply).downloadProgress.disconnect(self._onDownloadProgress)
+                self._download_reply = cast(QNetworkReply, self._download_reply)
+                self._download_reply.downloadProgress.disconnect(self._onDownloadProgress)
+
+                # Check if the download was sucessfull
+                if self._download_reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+                    try:
+                        Logger.log("w", "Failed to download package. The following error was returned: %s", json.loads(bytes(self._download_reply.readAll()).decode("utf-8")))
+                    except json.decoder.JSONDecodeError:
+                        Logger.logException("w", "Failed to download package and failed to parse a response from it")
+                    finally:
+                        return
                 # Must not delete the temporary file on Windows
                 self._temp_plugin_file = tempfile.NamedTemporaryFile(mode = "w+b", suffix = ".curapackage", delete = False)
                 file_path = self._temp_plugin_file.name
@@ -726,10 +709,10 @@ class Toolbox(QObject, Extension):
                 self._onDownloadComplete(file_path)
 
     def _onDownloadComplete(self, file_path: str) -> None:
-        Logger.log("i", "Marketplace: Download complete.")
+        Logger.log("i", "Download complete.")
         package_info = self._package_manager.getPackageInfo(file_path)
         if not package_info:
-            Logger.log("w", "Marketplace: Package file [%s] was not a valid CuraPackage.", file_path)
+            Logger.log("w", "Package file [%s] was not a valid CuraPackage.", file_path)
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
@@ -738,7 +721,6 @@ class Toolbox(QObject, Extension):
             return
 
         self.install(file_path)
-        return
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -761,8 +743,9 @@ class Toolbox(QObject, Extension):
         return self._is_downloading
 
     def setActivePackage(self, package: Dict[str, Any]) -> None:
-        self._active_package = package
-        self.activePackageChanged.emit()
+        if self._active_package != package:
+            self._active_package = package
+            self.activePackageChanged.emit()
 
     ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
@@ -770,16 +753,18 @@ class Toolbox(QObject, Extension):
         return self._active_package
 
     def setViewCategory(self, category: str = "plugin") -> None:
-        self._view_category = category
-        self.viewChanged.emit()
+        if self._view_category != category:
+            self._view_category = category
+            self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
     def viewCategory(self) -> str:
         return self._view_category
 
     def setViewPage(self, page: str = "overview") -> None:
-        self._view_page = page
-        self.viewChanged.emit()
+        if self._view_page != page:
+            self._view_page = page
+            self.viewChanged.emit()
 
     @pyqtProperty(str, fset = setViewPage, notify = viewChanged)
     def viewPage(self) -> str:
@@ -787,48 +772,48 @@ class Toolbox(QObject, Extension):
 
     # Exposed Models:
     # --------------------------------------------------------------------------
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def authorsModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["authors"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def packagesModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["packages"])
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsShowcaseModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_showcase"])
+        return self._plugins_showcase_model
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsAvailableModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_available"])
+        return self._plugins_available_model
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def pluginsInstalledModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["plugins_installed"])
+        return self._plugins_installed_model
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsShowcaseModel(self) -> AuthorsModel:
-        return cast(AuthorsModel, self._models["materials_showcase"])
+        return self._materials_showcase_model
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsAvailableModel(self) -> AuthorsModel:
-        return cast(AuthorsModel, self._models["materials_available"])
+        return self._materials_available_model
 
-    @pyqtProperty(QObject, notify = metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsInstalledModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["materials_installed"])
+        return self._materials_installed_model
 
-    @pyqtProperty(QObject, notify=metadataChanged)
+    @pyqtProperty(QObject, constant=True)
     def materialsGenericModel(self) -> PackagesModel:
-        return cast(PackagesModel, self._models["materials_generic"])
+        return self._materials_generic_model
 
     # Filter Models:
     # --------------------------------------------------------------------------
     @pyqtSlot(str, str, str)
     def filterModelByProp(self, model_type: str, filter_type: str, parameter: str) -> None:
         if not self._models[model_type]:
-            Logger.log("w", "Marketplace: Couldn't filter %s model because it doesn't exist.", model_type)
+            Logger.log("w", "Couldn't filter %s model because it doesn't exist.", model_type)
             return
         self._models[model_type].setFilter({filter_type: parameter})
         self.filterChanged.emit()
@@ -836,7 +821,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str, "QVariantMap")
     def setFilters(self, model_type: str, filter_dict: dict) -> None:
         if not self._models[model_type]:
-            Logger.log("w", "Marketplace: Couldn't filter %s model because it doesn't exist.", model_type)
+            Logger.log("w", "Couldn't filter %s model because it doesn't exist.", model_type)
             return
         self._models[model_type].setFilter(filter_dict)
         self.filterChanged.emit()
@@ -844,21 +829,21 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def removeFilters(self, model_type: str) -> None:
         if not self._models[model_type]:
-            Logger.log("w", "Marketplace: Couldn't remove filters on %s model because it doesn't exist.", model_type)
+            Logger.log("w", "Couldn't remove filters on %s model because it doesn't exist.", model_type)
             return
         self._models[model_type].setFilter({})
         self.filterChanged.emit()
 
     # HACK(S):
     # --------------------------------------------------------------------------
-    def buildMaterialsModels(self) -> None:
-        self._metadata["materials_showcase"] = []
-        self._metadata["materials_available"] = []
-        self._metadata["materials_generic"] = []
+    def reBuildMaterialsModels(self) -> None:
+        materials_showcase_metadata = []
+        materials_available_metadata = []
+        materials_generic_metadata = []
 
-        processed_authors = [] # type: List[str]
+        processed_authors = []  # type: List[str]
 
-        for item in self._metadata["packages"]:
+        for item in self._server_response_data["packages"]:
             if item["package_type"] == "material":
 
                 author = item["author"]
@@ -867,30 +852,29 @@ class Toolbox(QObject, Extension):
 
                 # Generic materials to be in the same section
                 if "generic" in item["tags"]:
-                    self._metadata["materials_generic"].append(item)
+                    materials_generic_metadata.append(item)
                 else:
                     if "showcase" in item["tags"]:
-                        self._metadata["materials_showcase"].append(author)
+                        materials_showcase_metadata.append(author)
                     else:
-                        self._metadata["materials_available"].append(author)
+                        materials_available_metadata.append(author)
 
                     processed_authors.append(author["author_id"])
 
-        self._models["materials_showcase"].setMetadata(self._metadata["materials_showcase"])
-        self._models["materials_available"].setMetadata(self._metadata["materials_available"])
-        self._models["materials_generic"].setMetadata(self._metadata["materials_generic"])
+        self._materials_showcase_model.setMetadata(materials_showcase_metadata)
+        self._materials_available_model.setMetadata(materials_available_metadata)
+        self._materials_generic_model.setMetadata(materials_generic_metadata)
 
-    def buildPluginsModels(self) -> None:
-        self._metadata["plugins_showcase"] = []
-        self._metadata["plugins_available"] = []
+    def reBuildPluginsModels(self) -> None:
+        plugins_showcase_metadata = []
+        plugins_available_metadata = []
 
-        for item in self._metadata["packages"]:
+        for item in self._server_response_data["packages"]:
             if item["package_type"] == "plugin":
-
                 if "showcase" in item["tags"]:
-                    self._metadata["plugins_showcase"].append(item)
+                    plugins_showcase_metadata.append(item)
                 else:
-                    self._metadata["plugins_available"].append(item)
+                    plugins_available_metadata.append(item)
 
-        self._models["plugins_showcase"].setMetadata(self._metadata["plugins_showcase"])
-        self._models["plugins_available"].setMetadata(self._metadata["plugins_available"])
+        self._plugins_showcase_model.setMetadata(plugins_showcase_metadata)
+        self._plugins_available_model.setMetadata(plugins_available_metadata)

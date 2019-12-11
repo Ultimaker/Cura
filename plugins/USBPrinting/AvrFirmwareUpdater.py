@@ -13,7 +13,7 @@ from time import sleep
 
 MYPY = False
 if MYPY:
-    from cura.PrinterOutputDevice import PrinterOutputDevice
+    from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
 
 
 class AvrFirmwareUpdater(FirmwareUpdater):

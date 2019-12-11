@@ -3,15 +3,17 @@
 
 from PyQt5.QtCore import QObject, QUrl
 from PyQt5.QtGui import QDesktopServices
-from typing import List, TYPE_CHECKING, cast
+from typing import List, Optional, cast
 
 from UM.Event import CallFunctionEvent
 from UM.FlameProfiler import pyqtSlot
+from UM.Math.Quaternion import Quaternion
 from UM.Math.Vector import Vector
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.RemoveSceneNodeOperation import RemoveSceneNodeOperation
+from UM.Operations.RotateOperation import RotateOperation
 from UM.Operations.TranslateOperation import TranslateOperation
 
 import cura.CuraApplication
@@ -23,9 +25,8 @@ from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Operations.SetBuildPlateNumberOperation import SetBuildPlateNumberOperation
 
 from UM.Logger import Logger
+from UM.Scene.SceneNode import SceneNode
 
-if TYPE_CHECKING:
-    from UM.Scene.SceneNode import SceneNode
 
 class CuraActions(QObject):
     def __init__(self, parent: QObject = None) -> None:
@@ -36,12 +37,12 @@ class CuraActions(QObject):
         # Starting a web browser from a signal handler connected to a menu will crash on windows.
         # So instead, defer the call to the next run of the event loop, since that does work.
         # Note that weirdly enough, only signal handlers that open a web browser fail like that.
-        event = CallFunctionEvent(self._openUrl, [QUrl("http://ultimaker.com/en/support/software")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://ultimaker.com/en/resources/manuals/software")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     @pyqtSlot()
     def openBugReportPage(self) -> None:
-        event = CallFunctionEvent(self._openUrl, [QUrl("http://github.com/Ultimaker/Cura/issues")], {})
+        event = CallFunctionEvent(self._openUrl, [QUrl("https://github.com/Ultimaker/Cura/issues")], {})
         cura.CuraApplication.CuraApplication.getInstance().functionEvent(event)
 
     ##  Reset camera position and direction to default

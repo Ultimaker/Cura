@@ -12,6 +12,10 @@ from .CuraContainerStack import CuraContainerStack
 
 
 class PerObjectContainerStack(CuraContainerStack):
+    def isDirty(self):
+        # This stack should never be auto saved, so always return that there is nothing to save. 
+        return False
+
     @override(CuraContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         if context is None:
@@ -34,7 +38,7 @@ class PerObjectContainerStack(CuraContainerStack):
         if limit_to_extruder is not None:
             limit_to_extruder = str(limit_to_extruder)
 
-        # if this stack has the limit_to_extruder "not overriden", use the original limit_to_extruder as the current
+        # if this stack has the limit_to_extruder "not overridden", use the original limit_to_extruder as the current
         # limit_to_extruder, so the values retrieved will be from the perspective of the original limit_to_extruder
         # stack.
         if limit_to_extruder == "-1":
@@ -42,7 +46,7 @@ class PerObjectContainerStack(CuraContainerStack):
                 limit_to_extruder = context.context["original_limit_to_extruder"]
 
         if limit_to_extruder is not None and limit_to_extruder != "-1" and limit_to_extruder in global_stack.extruders:
-            # set the original limit_to_extruder if this is the first stack that has a non-overriden limit_to_extruder
+            # set the original limit_to_extruder if this is the first stack that has a non-overridden limit_to_extruder
             if "original_limit_to_extruder" not in context.context:
                 context.context["original_limit_to_extruder"] = limit_to_extruder
 

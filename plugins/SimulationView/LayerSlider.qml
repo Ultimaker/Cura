@@ -13,23 +13,20 @@ Item
 {
     id: sliderRoot
 
-    // handle properties
-    property real handleSize: 10
+    // Handle properties
+    property real handleSize: UM.Theme.getSize("slider_handle").width
     property real handleRadius: handleSize / 2
     property real minimumRangeHandleSize: handleSize / 2
-    property color upperHandleColor: "black"
-    property color lowerHandleColor: "black"
-    property color rangeHandleColor: "black"
-    property color handleActiveColor: "white"
-    property real handleLabelWidth: width
+    property color upperHandleColor: UM.Theme.getColor("slider_handle")
+    property color lowerHandleColor: UM.Theme.getColor("slider_handle")
+    property color rangeHandleColor: UM.Theme.getColor("slider_groove_fill")
+    property color handleActiveColor: UM.Theme.getColor("slider_handle_active")
     property var activeHandle: upperHandle
 
-    // track properties
-    property real trackThickness: 4 // width of the slider track
-    property real trackRadius: trackThickness / 2
-    property color trackColor: "white"
-    property real trackBorderWidth: 1 // width of the slider track border
-    property color trackBorderColor: "black"
+    // Track properties
+    property real trackThickness: UM.Theme.getSize("slider_groove").width // width of the slider track
+    property real trackRadius: UM.Theme.getSize("slider_groove_radius").width
+    property color trackColor: UM.Theme.getColor("slider_groove")
 
     // value properties
     property real maximumValue: 100
@@ -80,7 +77,7 @@ Item
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
-    // slider track
+    // Slider track
     Rectangle
     {
         id: track
@@ -90,8 +87,6 @@ Item
         radius: sliderRoot.trackRadius
         anchors.centerIn: sliderRoot
         color: sliderRoot.trackColor
-        border.width: sliderRoot.trackBorderWidth
-        border.color: sliderRoot.trackBorderColor
         visible: sliderRoot.layersVisible
     }
 
@@ -106,7 +101,7 @@ Item
         anchors.horizontalCenter: sliderRoot.horizontalCenter
         visible: sliderRoot.layersVisible
 
-        // set the new value when dragging
+        // Set the new value when dragging
         function onHandleDragged()
         {
             sliderRoot.manuallyChanged = true
@@ -140,9 +135,10 @@ Item
 
         Rectangle
         {
-            width: sliderRoot.trackThickness - 2 * sliderRoot.trackBorderWidth
+            width: sliderRoot.trackThickness
             height: parent.height + sliderRoot.handleSize
             anchors.centerIn: parent
+            radius: sliderRoot.trackRadius
             color: sliderRoot.rangeHandleColor
         }
 
@@ -159,25 +155,19 @@ Item
             }
 
             onPositionChanged: parent.onHandleDragged()
-            onPressed: sliderRoot.setActiveHandle(rangeHandle)
+            onPressed:
+            {
+                sliderRoot.setActiveHandle(rangeHandle)
+                sliderRoot.forceActiveFocus()
+            }
         }
 
-        SimulationSliderLabel
-        {
-            id: rangleHandleLabel
+    }
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
-
-            // custom properties
-            maximumValue: sliderRoot.maximumValue
-            value: sliderRoot.upperValue
-            busy: UM.SimulationView.busy
-            setValue: rangeHandle.setValueManually // connect callback functions
-        }
+    onHeightChanged : {
+        // After a height change, the pixel-position of the handles is out of sync with the property value
+        setLowerValue(lowerValue)
+        setUpperValue(upperValue)
     }
 
     // Upper handle
@@ -274,11 +264,12 @@ Item
         {
             id: upperHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
+            height: sliderRoot.handleSize
+            anchors.bottom: parent.top
+            anchors.bottomMargin: UM.Theme.getSize("narrow_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, parent.top)
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue
@@ -337,7 +328,6 @@ Item
         // set the slider position based on the lower value
         function setValue(value)
         {
-
             // Normalize values between range, since using arrow keys will create out-of-the-range values
             value = sliderRoot.normalizeValue(value)
 
@@ -384,11 +374,12 @@ Item
         {
             id: lowerHandleLabel
 
-            height: sliderRoot.handleSize + UM.Theme.getSize("default_margin").height
-            x: parent.x - width - UM.Theme.getSize("default_margin").width
-            anchors.verticalCenter: parent.verticalCenter
-            target: Qt.point(sliderRoot.width, y + height / 2)
-            visible: sliderRoot.activeHandle == parent
+            height: sliderRoot.handleSize
+            anchors.top: parent.bottom
+            anchors.topMargin: UM.Theme.getSize("narrow_margin").height
+            anchors.horizontalCenter: parent.horizontalCenter
+            target: Qt.point(parent.width / 2, parent.bottom)
+            visible: sliderRoot.activeHandle == parent || sliderRoot.activeHandle == rangeHandle
 
             // custom properties
             maximumValue: sliderRoot.maximumValue

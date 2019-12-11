@@ -87,6 +87,19 @@ class CuraContainerStack(ContainerStack):
     def qualityChanges(self) -> InstanceContainer:
         return cast(InstanceContainer, self._containers[_ContainerIndexes.QualityChanges])
 
+    ##  Set the intent container.
+    #
+    #   \param new_intent The new intent container. It is expected to have a "type" metadata entry with the value "intent".
+    def setIntent(self, new_intent: InstanceContainer, postpone_emit: bool = False) -> None:
+        self.replaceContainer(_ContainerIndexes.Intent, new_intent, postpone_emit = postpone_emit)
+
+    ##  Get the quality container.
+    #
+    #   \return The intent container. Should always be a valid container, but can be equal to the empty InstanceContainer.
+    @pyqtProperty(InstanceContainer, fset = setIntent, notify = pyqtContainersChanged)
+    def intent(self) -> InstanceContainer:
+        return cast(InstanceContainer, self._containers[_ContainerIndexes.Intent])
+
     ##  Set the quality container.
     #
     #   \param new_quality The new quality container. It is expected to have a "type" metadata entry with the value "quality".
@@ -330,16 +343,18 @@ class CuraContainerStack(ContainerStack):
 class _ContainerIndexes:
     UserChanges = 0
     QualityChanges = 1
-    Quality = 2
-    Material = 3
-    Variant = 4
-    DefinitionChanges = 5
-    Definition = 6
+    Intent = 2
+    Quality = 3
+    Material = 4
+    Variant = 5
+    DefinitionChanges = 6
+    Definition = 7
 
     # Simple hash map to map from index to "type" metadata entry
     IndexTypeMap = {
         UserChanges: "user",
         QualityChanges: "quality_changes",
+        Intent: "intent",
         Quality: "quality",
         Material: "material",
         Variant: "variant",
