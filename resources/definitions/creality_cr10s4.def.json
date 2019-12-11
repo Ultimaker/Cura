@@ -7,13 +7,6 @@
         "machine_width": { "default_value": 400 },
         "machine_depth": { "default_value": 400 },
         "machine_height": { "default_value": 400 },
-        "machine_head_polygon": { "default_value": [
-                [-26, 34],
-                [-26, -32],
-                [22, -32],
-                [22, 34]
-            ]
-        },
         "machine_head_with_fans_polygon": { "default_value": [
                 [-26, 34],
                 [-26, -32],
