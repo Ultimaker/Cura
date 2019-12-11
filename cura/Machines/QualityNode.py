@@ -1,38 +1,44 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, Dict, cast, Any
+from typing import Union, TYPE_CHECKING
 
-from .ContainerNode import ContainerNode
-from .QualityChangesGroup import QualityChangesGroup
+from UM.Settings.ContainerRegistry import ContainerRegistry
+from cura.Machines.ContainerNode import ContainerNode
+from cura.Machines.IntentNode import IntentNode
+import UM.FlameProfiler
+if TYPE_CHECKING:
+    from typing import Dict
+    from cura.Machines.MaterialNode import MaterialNode
+    from cura.Machines.MachineNode import MachineNode
 
 
+##  Represents a quality profile in the container tree.
 #
-# QualityNode is used for BOTH quality and quality_changes containers.
+#   This may either be a normal quality profile or a global quality profile.
 #
+#   Its subcontainers are intent profiles.
 class QualityNode(ContainerNode):
+    def __init__(self, container_id: str, parent: Union["MaterialNode", "MachineNode"]) -> None:
+        super().__init__(container_id)
+        self.parent = parent
+        self.intents = {}  # type: Dict[str, IntentNode]
 
-    def __init__(self, metadata: Optional[Dict[str, Any]] = None) -> None:
-        super().__init__(metadata = metadata)
-        self.quality_type_map = {}  # type: Dict[str, QualityNode] # quality_type -> QualityNode for InstanceContainer
+        my_metadata = ContainerRegistry.getInstance().findContainersMetadata(id = container_id)[0]
+        self.quality_type = my_metadata["quality_type"]
+        # The material type of the parent doesn't need to be the same as this due to generic fallbacks.
+        self._material = my_metadata.get("material")
+        self._loadAll()
 
-    def getChildNode(self, child_key: str) -> Optional["QualityNode"]:
-        return self.children_map.get(child_key)
+    @UM.FlameProfiler.profile
+    def _loadAll(self) -> None:
+        container_registry = ContainerRegistry.getInstance()
 
-    def addQualityMetadata(self, quality_type: str, metadata: Dict[str, Any]):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode(metadata)
+        # Find all intent profiles that fit the current configuration.
+        from cura.Machines.MachineNode import MachineNode
+        if not isinstance(self.parent, MachineNode):  # Not a global profile.
+            for intent in container_registry.findInstanceContainersMetadata(type = "intent", definition = self.parent.variant.machine.quality_definition, variant = self.parent.variant.variant_name, material = self._material, quality_type = self.quality_type):
+                self.intents[intent["id"]] = IntentNode(intent["id"], quality = self)
 
-    def getQualityNode(self, quality_type: str) -> Optional["QualityNode"]:
-        return self.quality_type_map.get(quality_type)
-
-    def addQualityChangesMetadata(self, quality_type: str, metadata: Dict[str, Any]):
-        if quality_type not in self.quality_type_map:
-            self.quality_type_map[quality_type] = QualityNode()
-        quality_type_node = self.quality_type_map[quality_type]
-
-        name = metadata["name"]
-        if name not in quality_type_node.children_map:
-            quality_type_node.children_map[name] = QualityChangesGroup(name, quality_type)
-        quality_changes_group = quality_type_node.children_map[name]
-        cast(QualityChangesGroup, quality_changes_group).addNode(QualityNode(metadata))
+        self.intents["empty_intent"] = IntentNode("empty_intent", quality = self)
+        # Otherwise, there are no intents for global profiles.

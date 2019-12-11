@@ -3,6 +3,7 @@
 
 import configparser #To parse preference files.
 import io #To serialise the preference files afterwards.
+from typing import Dict, List, Tuple
 
 from UM.VersionUpgrade import VersionUpgrade #We're inheriting from this.
 
@@ -51,22 +52,22 @@ _EXTRUDER_TO_POSITION = {
     "ultimaker_original_dual_2nd": 1,
     "vertex_k8400_dual_1st": 0,
     "vertex_k8400_dual_2nd": 1
-}
+} # type: Dict[str, int]
 
 _RENAMED_QUALITY_PROFILES = {
     "low": "fast",
     "um2_low": "um2_fast"
-}
+} # type: Dict[str, str]
 
 _RENAMED_QUALITY_TYPES = {
     "low": "fast"
-}
+} # type: Dict[str, str]
 
 ##  Upgrades configurations from the state they were in at version 3.2 to the
 #   state they should be in at version 3.3.
 class VersionUpgrade32to33(VersionUpgrade):
-
     temporary_group_name_counter = 1
+
     ##  Gets the version number from a CFG file in Uranium's 3.2 format.
     #
     #   Since the format may change, this is implemented for the 3.2 format only
@@ -78,18 +79,18 @@ class VersionUpgrade32to33(VersionUpgrade):
     #   \raises ValueError The format of the version number in the file is
     #   incorrect.
     #   \raises KeyError The format of the file is incorrect.
-    def getCfgVersion(self, serialised):
+    def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
         format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = 0))
+        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
     ##  Upgrades a preferences file from version 3.2 to 3.3.
     #
     #   \param serialised The serialised form of a preferences file.
     #   \param filename The name of the file to upgrade.
-    def upgradePreferences(self, serialised, filename):
+    def upgradePreferences(self, serialised: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
 
@@ -117,7 +118,7 @@ class VersionUpgrade32to33(VersionUpgrade):
     #
     #   \param serialised The serialised form of a container stack.
     #   \param filename The name of the file to upgrade.
-    def upgradeStack(self, serialized, filename):
+    def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -141,7 +142,7 @@ class VersionUpgrade32to33(VersionUpgrade):
 
     ##  Upgrades non-quality-changes instance containers to have the new version
     #   number.
-    def upgradeInstanceContainer(self, serialized, filename):
+    def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -153,7 +154,7 @@ class VersionUpgrade32to33(VersionUpgrade):
         return [filename], [result.getvalue()]
 
     ##  Upgrades a quality changes container to the new format.
-    def upgradeQualityChanges(self, serialized, filename):
+    def upgradeQualityChanges(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -182,7 +183,7 @@ class VersionUpgrade32to33(VersionUpgrade):
         return [filename], [result.getvalue()]
 
     ##  Upgrades a variant container to the new format.
-    def upgradeVariants(self, serialized, filename):
+    def upgradeVariants(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 

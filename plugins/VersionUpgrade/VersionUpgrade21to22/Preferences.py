@@ -1,8 +1,9 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To read config files.
 import io #To output config files to string.
+from typing import List, Optional, Tuple
 
 import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 
@@ -14,7 +15,7 @@ import UM.VersionUpgrade #To indicate that a file is of the wrong format.
 #   extension.
 #   \return A representation of those preferences, or None if the file format is
 #   incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["Preferences"]:
     try:
         return Preferences(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
@@ -28,7 +29,7 @@ class Preferences:
     #   \param serialised A serialised version 2 preferences file.
     #   \param filename The supposed filename of the preferences file, without
     #   extension.
-    def __init__(self, serialised, filename):
+    def __init__(self, serialised: str, filename: str) -> None:
         self._filename = filename
 
         self._config = configparser.ConfigParser(interpolation = None)
@@ -50,7 +51,7 @@ class Preferences:
     #
     #   \return A tuple containing the new filename and a serialised version of
     #   a preferences file in version 3.
-    def export(self):
+    def export(self) -> Tuple[List[str], List[str]]:
         #Reset the cura/categories_expanded property since it works differently now.
         if self._config.has_section("cura") and self._config.has_option("cura", "categories_expanded"):
             self._config.remove_option("cura", "categories_expanded")
@@ -58,11 +59,11 @@ class Preferences:
         #Translate the setting names in the visible settings.
         if self._config.has_section("machines") and self._config.has_option("machines", "setting_visibility"):
             visible_settings = self._config.get("machines", "setting_visibility")
-            visible_settings = visible_settings.split(",")
+            visible_settings_list = visible_settings.split(",")
             import VersionUpgrade21to22 #Import here to prevent a circular dependency.
-            visible_settings = [VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingName(setting_name)
-                                for setting_name in visible_settings]
-            visible_settings = ",".join(visible_settings)
+            visible_settings_list = [VersionUpgrade21to22.VersionUpgrade21to22.VersionUpgrade21to22.translateSettingName(setting_name)
+                                for setting_name in visible_settings_list]
+            visible_settings = ",".join(visible_settings_list)
             self._config.set("machines", "setting_visibility", value = visible_settings)
 
         #Translate the active_instance key.

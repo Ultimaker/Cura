@@ -1,13 +1,21 @@
 {
-    "name": "Kupido",
     "version": 2,
+    "name": "KUPIDO",
     "inherits": "fdmprinter",
-    "metadata": {
+    "metadata":
+    {
         "visible": true,
-        "author": "Ultimaker",
-        "manufacturer": "Kupido",
+        "author": "ALYA",
+        "manufacturer": "Kati Hal ARGE",
+        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform_offset": [ 0, 0, 0],
+        "exclude_materials": ["chromatik_pla", "dsm_arnitel2045_175", "dsm_novamid1070_175", "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu", "fiberlogy_hd_pla", "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red", "generic_bam", "generic_cpe", "generic_cpe_175", "generic_cpe_plus", "generic_hips", "generic_hips_175", "generic_nylon", "generic_nylon_175", "generic_pc", "generic_pc_175", "generic_petg", "generic_petg_175", "generic_pp", "generic_pva", "generic_pva_175", "generic_tough_pla", "generic_tpu", "generic_tpu_175", "imade3d_petg_green", "imade3d_petg_pink", "imade3d_pla_green", "imade3d_pla_pink", "innofill_innoflex60_175", "octofiber_pla", "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla", "ultimaker_abs_black", "ultimaker_abs_blue", "ultimaker_abs_green", "ultimaker_abs_grey", "ultimaker_abs_orange", "ultimaker_abs_pearl-gold", "ultimaker_abs_red", "ultimaker_abs_silver-metallic", "ultimaker_abs_white", "ultimaker_abs_yellow", "ultimaker_bam", "ultimaker_cpe_black", "ultimaker_cpe_blue", "ultimaker_cpe_dark-grey", "ultimaker_cpe_green", "ultimaker_cpe_light-grey", "ultimaker_cpe_plus_black", "ultimaker_cpe_plus_transparent", "ultimaker_cpe_plus_white", "ultimaker_cpe_red", "ultimaker_cpe_transparent", "ultimaker_cpe_white", "ultimaker_cpe_yellow", "ultimaker_nylon_black", "ultimaker_nylon_transparent", "ultimaker_pc_black", "ultimaker_pc_transparent", "ultimaker_pc_white", "ultimaker_pla_black", "ultimaker_pla_blue", "ultimaker_pla_green", "ultimaker_pla_magenta", "ultimaker_pla_orange", "ultimaker_pla_pearl-white", "ultimaker_pla_red", "ultimaker_pla_silver-metallic", "ultimaker_pla_transparent", "ultimaker_pla_white", "ultimaker_pla_yellow", "ultimaker_pp_transparent", "ultimaker_pva", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "ultimaker_tpu_black", "ultimaker_tpu_blue", "ultimaker_tpu_red", "ultimaker_tpu_white", "verbatim_bvoh_175", "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_TPU", "zyyx_pro_flex", "zyyx_pro_pla","tizyx_pla","tizyx_abs","tizyx_pla_bois" ],
+        "preferred_material": "generic_pla",
+        "has_machine_quality": true,
+        "has_materials": true,
+        "has_variants": false,
+        "supports_usb_connection": false,
         "machine_extruder_trains":
         {
             "0": "kupido_extruder_0"
@@ -15,26 +23,27 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Kupido" },
-        "machine_start_gcode": {
-            "default_value": " ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {infill_sparse_density}\n ;M190 S{material_bed_temperature} ;Uncomment to add your own bed temperature line\n ;M109 S{material_print_temperature} ;Uncomment to add your own temperature line\n G21        ;metric values\n G90        ;absolute positioning\n M82        ;set extruder to absolute mode\n M107       ;start with the fan off\n G28 X0 Y0  ;move X Y to endstops\n G28 Z0     ;move Z to endstops\n G1 Z20.0 F40 ;move the platform down 20mm\n G1 Y0 X170 F{speed_travel}\n G92 E0                  ;zero the extruded length\n G1 F200 E10              ;extrude 3mm of feed stock\n G92 E0                  ;zero the extruded length again\n G4 P7000\n G1 F{speed_travel}\n ;Put printing message on LCD screen\n M117 Printing...\n"
+        "machine_name": { "default_value": "KUPIDO" },
+        "machine_heated_bed":          {   "default_value": true            },
+        "machine_width":               {   "default_value": 195             },
+        "machine_height":              {   "default_value": 190             },
+        "machine_depth":               {   "default_value": 195             },
+        "machine_center_is_zero":      {   "default_value": false           },
+        "gantry_height":               {   "value": "55" },
+        "retraction_amount":           {   "default_value": 1 },
+        "support_enable":              {   "default_value": true},
+        "machine_head_with_fans_polygon": {
+            "default_value": [[75, 18],[18, 18],[18, 35],[75, 35]]
         },
-        "machine_end_gcode": {
-            "default_value": " M104 S0                     ;extruder heater off\n M140 S0                     ;heated bed heater off (if you have it)\n G91                                    ;relative positioning\n G1 E-1 F300                            ;retract the filament a bit before lifting the nozzle, to release some of the pressure\n G1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\n G28 X0 Y0                              ;move X/Y to min endstops, so the head is out of the way\n M84                         ;steppers off\n G90                         ;absolute positioning\n"
+        "adhesion_type": {"options": {"raft": "Raft" ,"none": "None", "brim": "Brim"},  "default_value": "raft"},
+        "machine_gcode_flavor":        {   "default_value": "RepRap (Marlin/Sprinter)"      },
+        "machine_start_gcode":
+        {
+            "default_value": ";Sliced at: {day} {date} {time} \n ;Basic settings: Layer height: {layer_height} Walls: {wall_thickness} Fill: {fill_density} \n ;Print time: {print_time} \n ;Filament used: {filament_amount}m {filament_weight}g \n ;Filament cost: {filament_cost} \n G28 X0 Y0  ;move X Y to endstops \n G28 Z0     ;move Z to endstops \n M190 S{material_bed_temperature} ;bed temp \n M107 ; switch fan off \n M109 S{material_print_temperature} ;extruder temp set \n G1 F3000 \n G1 Z10 \n G92 E0                  ;zero the extruded length \n G1 F200 E1 ;extrude 1mm of feed stock \n G92 E0 ;zero the extruded length again \n  G4 P7000 ; wait 7000ms \n M117 Printing... ;Put printing message on LCD screen"
         },
-        "prime_tower_size": { "default_value": 8.660254037844387 },
-        "retraction_speed": { "default_value": 60 },
-        "material_bed_temperature": { "default_value": 60 },
-        "speed_wall_x": { "default_value": 40 },
-        "skirt_line_count": { "default_value": 2 },
-        "retraction_min_travel": { "default_value": 2 },
-        "speed_wall_0": { "default_value": 30 },
-        "material_print_temperature": { "default_value": 220 },
-        "brim_line_count": { "default_value": 15 },
-        "retraction_amount": { "default_value": 3.6 },
-        "speed_topbottom": { "default_value": 20 },
-        "layer_height": { "default_value": 0.2 },
-        "speed_print": { "default_value": 30 },
-        "speed_infill": { "default_value": 30 }
+        "machine_end_gcode":
+        {
+            "default_value": ";End GCode\nM104 S0 ;extruder heater off \nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-5 X-20 Y-20 F{speed_travel} ;move Z up a bit and retract filament even more\nG28 X0 Y0 ;move X/Y to min endstops, so the head is out of the way\nG28 Z0\nM84 ;steppers off\nG90 ;absolute positioning\n;{profile_string}"
+        }
     }
 }

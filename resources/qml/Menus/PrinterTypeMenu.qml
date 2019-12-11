@@ -22,7 +22,7 @@ Menu
         {
             text: modelData.machine_type
             checkable: true
-            checked: Cura.MachineManager.activeMachineDefinitionName == modelData.machine_type
+            checked: Cura.MachineManager.activeMachine.definition.name == modelData.machine_type
             exclusiveGroup: group
             onTriggered:
             {

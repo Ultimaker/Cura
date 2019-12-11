@@ -16,7 +16,7 @@ def getMetaData():
             "mimetype": "application/x-ultimaker-material-profile"
         },
         "version_upgrade": {
-            ("materials", 1000000): ("materials", 1000004, upgrader.upgradeMaterial),
+            ("materials", 1000000): ("materials", 1000007, upgrader.upgradeMaterial),
         },
         "sources": {
             "materials": {

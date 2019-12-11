@@ -5,6 +5,7 @@ from typing import Any, List, Optional, TYPE_CHECKING
 
 from UM.Settings.PropertyEvaluationContext import PropertyEvaluationContext
 from UM.Settings.SettingFunction import SettingFunction
+from UM.Logger import Logger
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -38,7 +39,18 @@ class CuraFormulaFunctions:
             extruder_position = int(machine_manager.defaultExtruderPosition)
 
         global_stack = machine_manager.activeMachine
-        extruder_stack = global_stack.extruders[str(extruder_position)]
+        try:
+            extruder_stack = global_stack.extruderList[int(extruder_position)]
+        except IndexError:
+            if extruder_position != 0:
+                Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. Returning the result form extruder 0 instead" % (property_key, extruder_position))
+                # This fixes a very specific fringe case; If a profile was created for a custom printer and one of the
+                # extruder settings has been set to non zero and the profile is loaded for a machine that has only a single extruder
+                # it would cause all kinds of issues (and eventually a crash).
+                # See https://github.com/Ultimaker/Cura/issues/5535
+                return self.getValueInExtruder(0, property_key, context)
+            Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. " % (property_key, extruder_position))
+            return None
 
         value = extruder_stack.getRawProperty(property_key, "value", context = context)
         if isinstance(value, SettingFunction):
@@ -92,11 +104,14 @@ class CuraFormulaFunctions:
         machine_manager = self._application.getMachineManager()
 
         global_stack = machine_manager.activeMachine
-        extruder_stack = global_stack.extruders[str(extruder_position)]
+        try:
+            extruder_stack = global_stack.extruderList[extruder_position]
+        except IndexError:
+            Logger.log("w", "Unable to find extruder on in index %s", extruder_position)
+        else:
+            context = self.createContextForDefaultValueEvaluation(extruder_stack)
 
-        context = self.createContextForDefaultValueEvaluation(extruder_stack)
-
-        return self.getValueInExtruder(extruder_position, property_key, context = context)
+            return self.getValueInExtruder(extruder_position, property_key, context = context)
 
     # Gets all default setting values as a list from all extruders of the currently active machine.
     # The default values are those excluding the values in the user_changes container.

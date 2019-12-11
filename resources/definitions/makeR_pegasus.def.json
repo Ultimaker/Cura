@@ -7,7 +7,6 @@
         "author": "makeR",
         "manufacturer": "makeR",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "makeR_pegasus_platform.stl",
         "platform_offset": [-200, -10, 200],
         "machine_extruder_trains":
@@ -33,7 +32,7 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_head_polygon": {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [-75, -18],
                 [-75, 35],
@@ -42,7 +41,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": -25
+            "value": "25"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"

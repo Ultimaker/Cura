@@ -1,46 +1,55 @@
+// Copyright (c) 2019 Ultimaker B.V.
+// Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.3
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.3
-import QtQuick.Controls 2.0 as Controls2
-import QtGraphicalEffects 1.0
-
 import UM 1.3 as UM
 import Cura 1.0 as Cura
 
 Rectangle
 {
-    property var iconSource: null
+    id: base
 
-    width: 36 * screenScaleFactor
+    property var enabled: true
+
+    property var iconSource: null
+    color: enabled ? UM.Theme.getColor("monitor_icon_primary") : UM.Theme.getColor("monitor_icon_disabled")
     height: width
-    radius: 0.5 * width
-    color: clickArea.containsMouse ? UM.Theme.getColor("primary_hover") : UM.Theme.getColor("primary")
+    radius: Math.round(0.5 * width)
+    width: 24 * screenScaleFactor
 
     UM.RecolorImage
     {
         id: icon
-        width: parent.width / 2
+        anchors
+        {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+        color: UM.Theme.getColor("monitor_icon_accent")
         height: width
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        color: UM.Theme.getColor("primary_text")
         source: iconSource
+        width: Math.round(parent.width / 2)
     }
 
     MouseArea
     {
         id: clickArea
-        anchors.fill:parent
-        hoverEnabled: true
+        anchors.fill: parent
+        hoverEnabled: base.enabled
         onClicked:
         {
-            if (OutputDevice.activeCamera !== null)
+            if (base.enabled)
             {
-                OutputDevice.setActiveCamera(null)
-            }
-            else
-            {
-                OutputDevice.setActiveCamera(modelData.camera)
+                if (OutputDevice.activeCameraUrl != "")
+                {
+                    OutputDevice.setActiveCameraUrl("")
+                }
+                else
+                {
+                    OutputDevice.setActiveCameraUrl(modelData.cameraUrl)
+                }
             }
         }
     }

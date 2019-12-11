@@ -1,3 +1,6 @@
+//Copyright (c) 2019 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
+
 import QtQuick 2.2
 import QtQuick.Controls 1.1
 import QtQuick.Controls.Styles 1.1
@@ -12,8 +15,10 @@ Item
     property alias color: background.color
     property var extruderModel
     property var position: index
+    property var connectedPrinter: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
+
     implicitWidth: parent.width
-    implicitHeight: UM.Theme.getSize("sidebar_extruder_box").height
+    implicitHeight: UM.Theme.getSize("print_setup_extruder_box").height
 
     UM.SettingPropertyProvider
     {
@@ -33,7 +38,7 @@ Item
 
         Label //Extruder name.
         {
-            text: Cura.ExtruderManager.getExtruderName(position) != "" ? Cura.ExtruderManager.getExtruderName(position) : catalog.i18nc("@label", "Extruder")
+            text: Cura.MachineManager.activeMachine.extruders[position].name !== "" ? Cura.MachineManager.activeMachine.extruders[position].name : catalog.i18nc("@label", "Extruder")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.left: parent.left
@@ -45,7 +50,7 @@ Item
         {
             id: extruderTargetTemperature
             text: Math.round(extruderModel.targetHotendTemperature) + "°C"
-            font: UM.Theme.getFont("small")
+            font: UM.Theme.getFont("default_bold")
             color: UM.Theme.getColor("text_inactive")
             anchors.right: parent.right
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
@@ -78,7 +83,7 @@ Item
             id: extruderCurrentTemperature
             text: Math.round(extruderModel.hotendTemperature) + "°C"
             color: UM.Theme.getColor("text")
-            font: UM.Theme.getFont("large")
+            font: UM.Theme.getFont("large_bold")
             anchors.right: extruderTargetTemperature.left
             anchors.top: parent.top
             anchors.margins: UM.Theme.getSize("default_margin").width
@@ -324,7 +329,7 @@ Item
                                 return UM.Theme.getColor("action_button_text");
                             }
                         }
-                        font: UM.Theme.getFont("action_button")
+                        font: UM.Theme.getFont("medium")
                         text:
                         {
                             if(extruderModel == null)

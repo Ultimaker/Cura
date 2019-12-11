@@ -60,13 +60,15 @@ class ConvexHullDecorator(SceneNodeDecorator):
         previous_node = self._node
         # Disconnect from previous node signals
         if previous_node is not None and node is not previous_node:
-            previous_node.transformationChanged.disconnect(self._onChanged)
-            previous_node.parentChanged.disconnect(self._onChanged)
+            previous_node.boundingBoxChanged.disconnect(self._onChanged)
 
         super().setNode(node)
-        # Mypy doesn't understand that self._node is no longer optional, so just use the node.
-        node.transformationChanged.connect(self._onChanged)
-        node.parentChanged.connect(self._onChanged)
+
+        node.boundingBoxChanged.connect(self._onChanged)
+
+        per_object_stack = node.callDecoration("getStack")
+        if per_object_stack:
+            per_object_stack.propertyChanged.connect(self._onSettingValueChanged)
 
         self._onChanged()
 
@@ -74,26 +76,46 @@ class ConvexHullDecorator(SceneNodeDecorator):
     def __deepcopy__(self, memo):
         return ConvexHullDecorator()
 
-    ##  Get the unmodified 2D projected convex hull of the node (if any)
-    def getConvexHull(self) -> Optional[Polygon]:
+    ## The polygon representing the 2D adhesion area.
+    # If no adhesion is used, the regular convex hull is returned
+    def getAdhesionArea(self) -> Optional[Polygon]:
         if self._node is None:
             return None
 
         hull = self._compute2DConvexHull()
+        if hull is None:
+            return None
 
-        if self._global_stack and self._node is not None and hull is not None:
-            # Parent can be None if node is just loaded.
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                hull = hull.getMinkowskiHull(Polygon(numpy.array(self._global_stack.getProperty("machine_head_polygon", "value"), numpy.float32)))
-                hull = self._add2DAdhesionMargin(hull)
-        return hull
+        return self._add2DAdhesionMargin(hull)
 
-    ##  Get the convex hull of the node with the full head size
+    ##  Get the unmodified 2D projected convex hull of the node (if any)
+    #   In case of one-at-a-time, this includes adhesion and head+fans clearance
+    def getConvexHull(self) -> Optional[Polygon]:
+        if self._node is None:
+            return None
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
+
+        # Parent can be None if node is just loaded.
+        if self._isSingularOneAtATimeNode():
+            hull = self.getConvexHullHeadFull()
+            if hull is None:
+                return None
+            hull = self._add2DAdhesionMargin(hull)
+            return hull
+
+        return self._compute2DConvexHull()
+
+    ##  For one at the time this is the convex hull of the node with the full head size
+    #   In case of printing all at once this is None.
     def getConvexHullHeadFull(self) -> Optional[Polygon]:
         if self._node is None:
             return None
 
-        return self._compute2DConvexHeadFull()
+        if self._isSingularOneAtATimeNode():
+            return self._compute2DConvexHeadFull()
+
+        return None
 
     @staticmethod
     def hasGroupAsParent(node: "SceneNode") -> bool:
@@ -103,33 +125,46 @@ class ConvexHullDecorator(SceneNodeDecorator):
         return bool(parent.callDecoration("isGroup"))
 
     ##  Get convex hull of the object + head size
-    #   In case of printing all at once this is the same as the convex hull.
+    #   In case of printing all at once this is None.
     #   For one at the time this is area with intersection of mirrored head
     def getConvexHullHead(self) -> Optional[Polygon]:
         if self._node is None:
             return None
-
-        if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                head_with_fans = self._compute2DConvexHeadMin()
-                if head_with_fans is None:
-                    return None
-                head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
-                return head_with_fans_with_adhesion_margin
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
+        if self._isSingularOneAtATimeNode():
+            head_with_fans = self._compute2DConvexHeadMin()
+            if head_with_fans is None:
+                return None
+            head_with_fans_with_adhesion_margin = self._add2DAdhesionMargin(head_with_fans)
+            return head_with_fans_with_adhesion_margin
         return None
 
     ##  Get convex hull of the node
-    #   In case of printing all at once this is the same as the convex hull.
+    #   In case of printing all at once this None??
     #   For one at the time this is the area without the head.
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         if self._node is None:
             return None
 
-        if self._global_stack:
-            if self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" and not self.hasGroupAsParent(self._node):
-                # Printing one at a time and it's not an object in a group
-                return self._compute2DConvexHull()
+        if self._node.callDecoration("isNonPrintingMesh"):
+            return None
+
+        if self._isSingularOneAtATimeNode():
+            # Printing one at a time and it's not an object in a group
+            return self._compute2DConvexHull()
         return None
+
+    ## Get the buildplate polygon where will be printed
+    #   In case of printing all at once this is the same as convex hull (no individual adhesion)
+    #   For one at the time this includes the adhesion area
+    def getPrintingArea(self) -> Optional[Polygon]:
+        if self._isSingularOneAtATimeNode():
+            # In one-at-a-time mode, every printed object gets it's own adhesion
+            printing_area = self.getAdhesionArea()
+        else:
+            printing_area = self.getConvexHull()
+        return printing_area
 
     ##  The same as recomputeConvexHull, but using a timer if it was set.
     def recomputeConvexHullDelayed(self) -> None:
@@ -142,15 +177,20 @@ class ConvexHullDecorator(SceneNodeDecorator):
         controller = Application.getInstance().getController()
         root = controller.getScene().getRoot()
         if self._node is None or controller.isToolOperationActive() or not self.__isDescendant(root, self._node):
+            # If the tool operation is still active, we need to compute the convex hull later after the controller is
+            # no longer active.
+            if controller.isToolOperationActive():
+                self.recomputeConvexHullDelayed()
+                return
+
             if self._convex_hull_node:
                 self._convex_hull_node.setParent(None)
                 self._convex_hull_node = None
             return
 
-        convex_hull = self.getConvexHull()
         if self._convex_hull_node:
             self._convex_hull_node.setParent(None)
-        hull_node = ConvexHullNode.ConvexHullNode(self._node, convex_hull, self._raft_thickness, root)
+        hull_node = ConvexHullNode.ConvexHullNode(self._node, self.getPrintingArea(), self._raft_thickness, root)
         self._convex_hull_node = hull_node
 
     def _onSettingValueChanged(self, key: str, property_name: str) -> None:
@@ -181,7 +221,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
-                    points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    try:
+                        points = numpy.append(points, child_hull.getPoints(), axis = 0)
+                    except ValueError:
+                        pass
 
                 if points.size < 3:
                     return None
@@ -233,7 +276,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
                 # See http://stackoverflow.com/questions/16970982/find-unique-rows-in-numpy-array
                 vertex_byte_view = numpy.ascontiguousarray(vertex_data).view(
                     numpy.dtype((numpy.void, vertex_data.dtype.itemsize * vertex_data.shape[1])))
-                _, idx = numpy.unique(vertex_byte_view, return_index=True)
+                _, idx = numpy.unique(vertex_byte_view, return_index = True)
                 vertex_data = vertex_data[idx]  # Select the unique rows by index.
 
                 hull = Polygon(vertex_data)
@@ -250,9 +293,13 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return offset_hull
 
     def _getHeadAndFans(self) -> Polygon:
-        if self._global_stack:
-            return Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
-        return Polygon()
+        if not self._global_stack:
+            return Polygon()
+
+        polygon = Polygon(numpy.array(self._global_stack.getHeadAndFansCoordinates(), numpy.float32))
+        offset_x = self._getSettingProperty("machine_nozzle_offset_x", "value")
+        offset_y = self._getSettingProperty("machine_nozzle_offset_y", "value")
+        return polygon.translate(-offset_x, -offset_y)
 
     def _compute2DConvexHeadFull(self) -> Optional[Polygon]:
         convex_hull = self._compute2DConvexHull()
@@ -266,7 +313,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         head_and_fans = self._getHeadAndFans().intersectionConvexHulls(mirrored)
 
         # Min head hull is used for the push free
-        convex_hull = self._compute2DConvexHeadFull()
+        convex_hull = self._compute2DConvexHull()
         if convex_hull:
             return convex_hull.getMinkowskiHull(head_and_fans)
         return None
@@ -280,16 +327,21 @@ class ConvexHullDecorator(SceneNodeDecorator):
         # Add extra margin depending on adhesion type
         adhesion_type = self._global_stack.getProperty("adhesion_type", "value")
 
+        max_length_available = 0.5 * min(
+            self._getSettingProperty("machine_width", "value"),
+            self._getSettingProperty("machine_depth", "value")
+        )
+
         if adhesion_type == "raft":
-            extra_margin = max(0, self._getSettingProperty("raft_margin", "value"))
+            extra_margin = min(max_length_available, max(0, self._getSettingProperty("raft_margin", "value")))
         elif adhesion_type == "brim":
-            extra_margin = max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+            extra_margin = min(max_length_available, max(0, self._getSettingProperty("brim_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")))
         elif adhesion_type == "none":
             extra_margin = 0
         elif adhesion_type == "skirt":
-            extra_margin = max(
+            extra_margin = min(max_length_available, max(
                 0, self._getSettingProperty("skirt_gap", "value") +
-                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value"))
+                   self._getSettingProperty("skirt_line_count", "value") * self._getSettingProperty("skirt_brim_line_width", "value")))
         else:
             raise Exception("Unknown bed adhesion type. Did you forget to update the convex hull calculations for your new bed adhesion type?")
 
@@ -379,6 +431,14 @@ class ConvexHullDecorator(SceneNodeDecorator):
             return True
         return self.__isDescendant(root, node.getParent())
 
+    ## True if print_sequence is one_at_a_time and _node is not part of a group
+    def _isSingularOneAtATimeNode(self) -> bool:
+        if self._node is None:
+            return False
+        return self._global_stack is not None \
+            and self._global_stack.getProperty("print_sequence", "value") == "one_at_a_time" \
+            and not self.hasGroupAsParent(self._node)
+
     _affected_settings = [
         "adhesion_type", "raft_margin", "print_sequence",
         "skirt_gap", "skirt_line_count", "skirt_brim_line_width", "skirt_distance", "brim_line_count"]
@@ -386,4 +446,4 @@ class ConvexHullDecorator(SceneNodeDecorator):
     ##  Settings that change the convex hull.
     #
     #   If these settings change, the convex hull should be recalculated.
-    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width"}
+    _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}

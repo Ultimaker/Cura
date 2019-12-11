@@ -9,7 +9,6 @@
         "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "fabtotum_platform.stl",
-        "icon": "fabtotum_platform.png",
         "has_machine_quality": true,
         "has_variants": true,
         "variants_name": "Head",
@@ -29,7 +28,7 @@
         "machine_end_gcode": {
             "default_value": "M104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG91 ;relative positioning\nG1 E-1 F300    ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-3 X+5 Y+5 F5000 ;move Z up a bit and retract filament even more\n;end of the print\nM84 ;steppers off\nG90 ;absolute positioning\nM300 S2 ;FAB bep bep (end print)"
         },
-        "gantry_height": { "default_value": 55 },
+        "gantry_height": { "value": "55" },
         "machine_width": { "default_value": 214 },
         "machine_height": { "default_value": 241.5 },
         "machine_depth": { "default_value": 234 },
@@ -51,8 +50,8 @@
         "retraction_hop_enabled": { "default_value": false },
         "material_final_print_temperature": { "value": "material_print_temperature - 5" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
-        "travel_avoid_distance": { "default_value": 1, "value": 1 },
-        "speed_travel": { "default_value": 200, "value": 200 },
+        "travel_avoid_distance": { "value": 1 },
+        "speed_travel": { "value": 200 },
         "speed_infill": { "value": "round(speed_print * 1.05, 0)" },
         "speed_topbottom": { "value": "round(speed_print * 0.95, 0)" },
         "speed_wall": { "value": "speed_print" },

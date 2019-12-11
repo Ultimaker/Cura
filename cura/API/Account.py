@@ -6,6 +6,7 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 from UM.i18n import i18nCatalog
 from UM.Message import Message
+from cura import UltimakerCloudAuthentication
 
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
@@ -28,6 +29,7 @@ i18n_catalog = i18nCatalog("cura")
 class Account(QObject):
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
+    accessTokenChanged = pyqtSignal()
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -37,15 +39,16 @@ class Account(QObject):
         self._logged_in = False
 
         self._callback_port = 32118
-        self._oauth_root = "https://account.ultimaker.com"
-        self._cloud_api_root = "https://api.ultimaker.com"
+        self._oauth_root = UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
 
         self._oauth_settings = OAuth2Settings(
             OAUTH_SERVER_URL= self._oauth_root,
             CALLBACK_PORT=self._callback_port,
             CALLBACK_URL="http://localhost:{}/callback".format(self._callback_port),
-            CLIENT_ID="um---------------ultimaker_cura_drive_plugin",
-            CLIENT_SCOPES="user.read drive.backups.read drive.backups.write",
+            CLIENT_ID="um----------------------------ultimaker_cura",
+            CLIENT_SCOPES="account.user.read drive.backup.read drive.backup.write packages.download "
+                          "packages.rating.read packages.rating.write connect.cluster.read connect.cluster.write "
+                          "cura.printjob.read cura.printjob.write cura.mesh.read cura.mesh.write",
             AUTH_DATA_PREFERENCE_KEY="general/ultimaker_auth_data",
             AUTH_SUCCESS_REDIRECT="{}/app/auth-success".format(self._oauth_root),
             AUTH_FAILED_REDIRECT="{}/app/auth-error".format(self._oauth_root)
@@ -55,10 +58,18 @@ class Account(QObject):
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
-
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
+        self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
+
+    def _onAccessTokenChanged(self):
+        self.accessTokenChanged.emit()
+
+    ## Returns a boolean indicating whether the given authentication is applied against staging or not.
+    @property
+    def is_staging(self) -> bool:
+        return "staging" in self._oauth_root
 
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
@@ -70,6 +81,9 @@ class Account(QObject):
                 self._error_message.hide()
             self._error_message = Message(error_message, title = i18n_catalog.i18nc("@info:title", "Login failed"))
             self._error_message.show()
+            self._logged_in = False
+            self.loginStateChanged.emit(False)
+            return
 
         if self._logged_in != logged_in:
             self._logged_in = logged_in
@@ -96,7 +110,7 @@ class Account(QObject):
             return None
         return user_profile.profile_image_url
 
-    @pyqtProperty(str, notify=loginStateChanged)
+    @pyqtProperty(str, notify=accessTokenChanged)
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 

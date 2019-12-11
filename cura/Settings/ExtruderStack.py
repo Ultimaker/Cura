@@ -51,9 +51,13 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
+    @pyqtProperty(int, constant = True)
+    def position(self) -> int:
+        return int(self.getMetaDataEntry("position"))
+
     def setEnabled(self, enabled: bool) -> None:
-        if "enabled" not in self._metadata:
-            self.setMetaDataEntry("enabled", "True")
+        if self.getMetaDataEntry("enabled", True) == enabled: # No change.
+            return # Don't emit a signal then.
         self.setMetaDataEntry("enabled", str(enabled))
         self.enabledChanged.emit()
 
@@ -65,16 +69,33 @@ class ExtruderStack(CuraContainerStack):
     def getLoadingPriority(cls) -> int:
         return 3
 
+    compatibleMaterialDiameterChanged = pyqtSignal()
+
     ##  Return the filament diameter that the machine requires.
     #
     #   If the machine has no requirement for the diameter, -1 is returned.
     #   \return The filament diameter for the printer
-    @property
-    def materialDiameter(self) -> float:
+    def getCompatibleMaterialDiameter(self) -> float:
         context = PropertyEvaluationContext(self)
         context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
-        return self.getProperty("material_diameter", "value", context = context)
+        return float(self.getProperty("material_diameter", "value", context = context))
+
+    def setCompatibleMaterialDiameter(self, value: float) -> None:
+        old_approximate_diameter = self.getApproximateMaterialDiameter()
+        if self.getCompatibleMaterialDiameter() != value:
+            self.definitionChanges.setProperty("material_diameter", "value", value)
+            self.compatibleMaterialDiameterChanged.emit()
+
+            # Emit approximate diameter changed signal if needed
+            if old_approximate_diameter != self.getApproximateMaterialDiameter():
+                self.approximateMaterialDiameterChanged.emit()
+
+    compatibleMaterialDiameter = pyqtProperty(float, fset = setCompatibleMaterialDiameter,
+                                              fget = getCompatibleMaterialDiameter,
+                                              notify = compatibleMaterialDiameterChanged)
+
+    approximateMaterialDiameterChanged = pyqtSignal()
 
     ##  Return the approximate filament diameter that the machine requires.
     #
@@ -84,9 +105,11 @@ class ExtruderStack(CuraContainerStack):
     #   If the machine has no requirement for the diameter, -1 is returned.
     #
     #   \return The approximate filament diameter for the printer
-    @pyqtProperty(float)
-    def approximateMaterialDiameter(self) -> float:
-        return round(float(self.materialDiameter))
+    def getApproximateMaterialDiameter(self) -> float:
+        return round(self.getCompatibleMaterialDiameter())
+
+    approximateMaterialDiameter = pyqtProperty(float, fget = getApproximateMaterialDiameter,
+                                               notify = approximateMaterialDiameterChanged)
 
     ##  Overridden from ContainerStack
     #
@@ -116,12 +139,15 @@ class ExtruderStack(CuraContainerStack):
             if limit_to_extruder == -1:
                 limit_to_extruder = int(cura.CuraApplication.CuraApplication.getInstance().getMachineManager().defaultExtruderPosition)
             limit_to_extruder = str(limit_to_extruder)
+
         if (limit_to_extruder is not None and limit_to_extruder != "-1") and self.getMetaDataEntry("position") != str(limit_to_extruder):
-            if str(limit_to_extruder) in self.getNextStack().extruders:
-                result = self.getNextStack().extruders[str(limit_to_extruder)].getProperty(key, property_name, context)
+            try:
+                result = self.getNextStack().extruderList[int(limit_to_extruder)].getProperty(key, property_name, context)
                 if result is not None:
                     context.popContainer()
                     return result
+            except IndexError:
+                pass
 
         result = super().getProperty(key, property_name, context)
         context.popContainer()

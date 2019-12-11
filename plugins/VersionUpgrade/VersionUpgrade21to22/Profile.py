@@ -1,13 +1,12 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser #To read config files.
 import io #To write config files to strings as if they were files.
-from typing import Dict
-from typing import List
+from typing import Dict, List, Optional, Tuple
 
 import UM.VersionUpgrade
-from UM.Logger import Logger
+
 
 ##  Creates a new profile instance by parsing a serialised profile in version 1
 #   of the file format.
@@ -15,11 +14,12 @@ from UM.Logger import Logger
 #   \param serialised The serialised form of a profile in version 1.
 #   \param filename The supposed filename of the profile, without extension.
 #   \return A profile instance, or None if the file format is incorrect.
-def importFrom(serialised, filename):
+def importFrom(serialised: str, filename: str) -> Optional["Profile"]:
     try:
         return Profile(serialised, filename)
     except (configparser.Error, UM.VersionUpgrade.FormatException, UM.VersionUpgrade.InvalidVersionException):
         return None
+
 
 ##  A representation of a profile used as intermediary form for conversion from
 #   one format to the other.
@@ -77,11 +77,11 @@ class Profile:
     #
     #   \return A tuple containing the new filename and a serialised form of
     #   this profile, serialised in version 2 of the file format.
-    def export(self):
+    def export(self) -> Optional[Tuple[List[str], List[str]]]:
         import VersionUpgrade21to22 # Import here to prevent circular dependencies.
 
         if self._name == "Current settings":
-            return None, None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
+            return None #Can't upgrade these, because the new current profile needs to specify the definition ID and the old file only had the machine instance, not the definition.
 
         config = configparser.ConfigParser(interpolation = None)
 

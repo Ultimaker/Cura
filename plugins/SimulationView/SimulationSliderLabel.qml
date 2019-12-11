@@ -1,7 +1,6 @@
 // Copyright (c) 2017 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
-import QtQuick 2.2
+import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 import QtQuick.Controls.Styles 1.1
@@ -20,9 +19,9 @@ UM.PointingRectangle {
     property int startFrom: 1
 
     target: Qt.point(parent.width, y + height / 2)
-    arrowSize: UM.Theme.getSize("default_arrow").width
+    arrowSize: UM.Theme.getSize("button_tooltip_arrow").height
     height: parent.height
-    width: valueLabel.width + UM.Theme.getSize("default_margin").width
+    width: valueLabel.width
     visible: false
 
     color: UM.Theme.getColor("tool_panel_background")
@@ -40,26 +39,35 @@ UM.PointingRectangle {
         anchors.fill: parent
     }
 
+    TextMetrics {
+        id:     maxValueMetrics
+        font:   valueLabel.font
+        text:   maximumValue + 1 // layers are 0 based, add 1 for display value
+
+    }
+
     TextField {
         id: valueLabel
 
         anchors {
             verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
+            alignWhenCentered: false
         }
 
-        width: (maximumValue.toString().length + 1) * 10 * screenScaleFactor
+        width: maxValueMetrics.width + UM.Theme.getSize("default_margin").width
         text: sliderLabelRoot.value + startFrom // the current handle value, add 1 because layers is an array
-        horizontalAlignment: TextInput.AlignRight
+        horizontalAlignment: TextInput.AlignHCenter
 
         // key bindings, work when label is currenctly focused (active handle in LayerSlider)
         Keys.onUpPressed: sliderLabelRoot.setValue(sliderLabelRoot.value + ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
         Keys.onDownPressed: sliderLabelRoot.setValue(sliderLabelRoot.value - ((event.modifiers & Qt.ShiftModifier) ? 10 : 1))
 
         style: TextFieldStyle {
-            textColor: UM.Theme.getColor("setting_control_text")
+            textColor: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
-            background: Item { }
+            renderType: Text.NativeRendering
+            background: Item {  }
         }
 
         onEditingFinished: {

@@ -2,10 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import copy
+from typing import List
 
 from UM.Job import Job
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Message import Message
+from UM.Scene.SceneNode import SceneNode
 from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
@@ -23,9 +25,9 @@ class MultiplyObjectsJob(Job):
         self._count = count
         self._min_offset = min_offset
 
-    def run(self):
+    def run(self) -> None:
         status_message = Message(i18n_catalog.i18nc("@info:status", "Multiplying and placing objects"), lifetime=0,
-                                 dismissable=False, progress=0, title = i18n_catalog.i18nc("@info:title", "Placing Object"))
+                                 dismissable=False, progress=0, title = i18n_catalog.i18nc("@info:title", "Placing Objects"))
         status_message.show()
         scene = Application.getInstance().getController().getScene()
 
@@ -33,13 +35,15 @@ class MultiplyObjectsJob(Job):
         current_progress = 0
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None:
+            return  # We can't do anything in this case.
         machine_width = global_container_stack.getProperty("machine_width", "value")
         machine_depth = global_container_stack.getProperty("machine_depth", "value")
 
         root = scene.getRoot()
         scale = 0.5
         arranger = Arrange.create(x = machine_width, y = machine_depth, scene_root = root, scale = scale, min_offset = self._min_offset)
-        processed_nodes = []
+        processed_nodes = []  # type: List[SceneNode]
         nodes = []
 
         not_fit_count = 0
@@ -67,7 +71,11 @@ class MultiplyObjectsJob(Job):
                 new_node = copy.deepcopy(node)
                 solution_found = False
                 if not node_too_big:
-                    solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
+                    if offset_shape_arr is not None and hull_shape_arr is not None:
+                        solution_found = arranger.findNodePlacement(new_node, offset_shape_arr, hull_shape_arr)
+                    else:
+                        # The node has no shape, so no need to arrange it. The solution is simple: Do nothing. 
+                        solution_found = True
 
                 if node_too_big or not solution_found:
                     found_solution_for_all = False

@@ -1,5 +1,5 @@
-# Copyright (c) 2018 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 # The purpose of this class is to create fixtures or methods that can be shared among all settings tests.
 
@@ -49,6 +49,6 @@ def global_stack(definition_changes_container) -> GlobalStack:
 # There is a restriction here that the definition changes cannot be an empty container. Added in CURA-5281
 @pytest.fixture()
 def extruder_stack(definition_changes_container) -> ExtruderStack:
-    extruder_stack= ExtruderStack("TestExtruderStack")
+    extruder_stack = ExtruderStack("TestExtruderStack")
     extruder_stack._containers[cura.Settings.CuraContainerStack._ContainerIndexes.DefinitionChanges] = definition_changes_container
     return extruder_stack

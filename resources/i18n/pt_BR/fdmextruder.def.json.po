@@ -1,21 +1,22 @@
 # Cura
-# Copyright (C) 2018 Ultimaker
+# Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2018.
+# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 3.5\n"
-"Report-Msgid-Bugs-To: r.dulek@ultimaker.com"
-"POT-Creation-Date: 2018-09-19 17:07+0000\n"
-"PO-Revision-Date: 2018-10-02 05:00-0300\n"
-"Last-Translator: Cláudio Sampaio <patola@makerlinux.com.br>\n"
-"Language-Team: Cláudio Sampaio <patola@makerlinux.com.br>\n"
+"Project-Id-Version: Cura 4.4\n"
+"Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
+"POT-Creation-Date: 2019-11-05 13:13+0000\n"
+"PO-Revision-Date: 2019-11-16 11:22-0300\n"
+"Last-Translator: Cláudio Sampaio <patola@gmail.com>\n"
+"Language-Team: Cláudio Sampaio <patola@gmail.com>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: fdmextruder.def.json
 msgctxt "machine_settings label"
@@ -84,8 +85,8 @@ msgstr "G-Code Inicial do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_code description"
-msgid "Start g-code to execute whenever turning the extruder on."
-msgstr "G-Code Inicial a ser executado sempre que o extrusor for ligado."
+msgid "Start g-code to execute when switching to this extruder."
+msgstr "G-Code inicial a executar quando mudar para este extrusor."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_start_pos_abs label"
@@ -124,8 +125,8 @@ msgstr "G-Code Final do Extrusor"
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_code description"
-msgid "End g-code to execute whenever turning the extruder off."
-msgstr "G-Code a ser executado antes de desligar o extrusor."
+msgid "End g-code to execute when switching away from this extruder."
+msgstr "G-Code final a executar quando mudar deste extrusor para outro."
 
 #: fdmextruder.def.json
 msgctxt "machine_extruder_end_pos_abs label"
@@ -166,6 +167,16 @@ msgstr "Posição Z de Purga do Extrusor"
 msgctxt "extruder_prime_pos_z description"
 msgid "The Z coordinate of the position where the nozzle primes at the start of printing."
 msgstr "A coordenada Z da posição onde o bico faz a purga no início da impressão."
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number label"
+msgid "Extruder Print Cooling Fan"
+msgstr "Ventoinha de Refrigeração da Impressão"
+
+#: fdmextruder.def.json
+msgctxt "machine_extruder_cooling_fan_number description"
+msgid "The number of the print cooling fan associated with this extruder. Only change this from the default value of 0 when you have a different print cooling fan for each extruder."
+msgstr "O número da ventoinha de refrigeração da impressão associada a este extrusor. Somente altere o valor default de 0 quando você tiver uma ventoinha diferente para cada extrusor."
 
 #: fdmextruder.def.json
 msgctxt "platform_adhesion label"
@@ -216,3 +227,11 @@ msgstr "Diâmetro"
 msgctxt "material_diameter description"
 msgid "Adjusts the diameter of the filament used. Match this value with the diameter of the used filament."
 msgstr "Ajusta o diâmetro do filamento usado. Use o valor medido do diâmetro do filamento atual."
+
+#~ msgctxt "machine_extruder_start_code description"
+#~ msgid "Start g-code to execute whenever turning the extruder on."
+#~ msgstr "G-Code Inicial a ser executado sempre que o extrusor for ligado."
+
+#~ msgctxt "machine_extruder_end_code description"
+#~ msgid "End g-code to execute whenever turning the extruder off."
+#~ msgstr "G-Code a ser executado antes de desligar o extrusor."
