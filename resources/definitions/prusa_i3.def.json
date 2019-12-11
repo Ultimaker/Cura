@@ -31,14 +31,6 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-        "machine_head_polygon": {
-            "default_value": [
-                [-75, -18],
-                [-75, 35],
-                [18, 35],
-                [18, -18]
-            ]
-        },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [-75, -18],
