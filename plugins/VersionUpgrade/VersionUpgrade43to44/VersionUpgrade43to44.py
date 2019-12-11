@@ -52,7 +52,7 @@ class VersionUpgrade43to44(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes=())
         parser.read_string(serialized)
 
         # Update version number.

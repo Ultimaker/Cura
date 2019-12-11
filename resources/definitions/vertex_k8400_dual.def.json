@@ -36,14 +36,6 @@
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true
         },
-        "machine_head_polygon": {
-            "default_value": [
-                [-60, -18],
-                [-60, 40],
-                [18, 40],
-                [18, -18]
-            ]
-        },
         "machine_head_with_fans_polygon": {
             "default_value": [
                 [-60, -40],
