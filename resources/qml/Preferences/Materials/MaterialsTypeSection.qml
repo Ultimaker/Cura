@@ -10,20 +10,24 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
-Rectangle
+Item
 {
     id: material_type_section
     property var materialType
-    property var expanded: materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
-    property var colorsModel: materialType.colors
+
+    property string materialBrand: materialType != null ? materialType.brand : ""
+    property string materialName: materialType != null ? materialType.name : ""
+    property var expanded: materialList.expandedTypes.indexOf(materialBrand + "_" + materialName) > -1
+    property var colorsModel: materialType != null ? materialType.colors: null
     height: childrenRect.height
-    width: parent.width
+    width: parent ? parent.width :undefined
+    anchors.left: parent ? parent.left : undefined
     Rectangle
     {
         id: material_type_header_background
         color:
         {
-            if(!expanded && materialType.brand + "_" + materialType.name == materialList.currentType)
+            if(!expanded && materialBrand + "_" + materialName == materialList.currentType)
             {
                 return UM.Theme.getColor("favorites_row_selected")
             }
@@ -51,50 +55,40 @@ Rectangle
         leftPadding: UM.Theme.getSize("default_margin").width
         anchors
         {
-            left: parent.left
+            left: parent ? parent.left : undefined
         }
         Label
         {
-            text: materialType.name
+            text: materialName
             height: UM.Theme.getSize("favorites_row").height
             width: parent.width - parent.leftPadding - UM.Theme.getSize("favorites_button").width
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
         }
-        Button
+        Item // this one causes lots of warnings
         {
-            text: ""
             implicitWidth: UM.Theme.getSize("favorites_button").width
             implicitHeight: UM.Theme.getSize("favorites_button").height
             UM.RecolorImage {
                 anchors
                 {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent ? parent.verticalCenter : undefined
+                    horizontalCenter: parent ? parent.horizontalCenter : undefined
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
-                sourceSize.width: width
-                sourceSize.height: height
                 color: "black"
                 source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    anchors.fill: parent
-                    color: "transparent"
-                }
-            }
+
         }
     }
-    MouseArea
+    MouseArea // causes lots of warnings
     {
         anchors.fill: material_type_header
         onPressed:
         {
-            const identifier = materialType.brand + "_" + materialType.name;
+            const identifier = materialBrand + "_" + materialName;
             const i = materialList.expandedTypes.indexOf(identifier)
             if (i > -1)
             {
@@ -132,7 +126,12 @@ Rectangle
         target: UM.Preferences
         onPreferenceChanged:
         {
-            expanded = materialList.expandedTypes.indexOf(materialType.brand + "_" + materialType.name) > -1
+            if (preference !== "cura/expanded_types" && preference !== "cura/expanded_brands")
+            {
+                return;
+            }
+
+            expanded = materialList.expandedTypes.indexOf(materialBrand + "_" + materialName) > -1
         }
     }
 }

@@ -1,8 +1,8 @@
 {
     "name": "G-code Writer",
     "author": "Ultimaker B.V.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Writes g-code to a file.",
-    "api": 5,
+    "api": "7.0",
     "i18n-catalog": "cura"
 }

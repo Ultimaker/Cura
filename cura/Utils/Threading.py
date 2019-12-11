@@ -1,3 +1,4 @@
+import functools
 import threading
 
 from cura.CuraApplication import CuraApplication
@@ -6,7 +7,7 @@ from cura.CuraApplication import CuraApplication
 #
 # HACK:
 #
-# In project loading, when override the existing machine is selected, the stacks and containers that are correctly
+# In project loading, when override the existing machine is selected, the stacks and containers that are currently
 # active in the system will be overridden at runtime. Because the project loading is done in a different thread than
 # the Qt thread, something else can kick in the middle of the process. One of them is the rendering. It will access
 # the current stacks and container, which have not completely been updated yet, so Cura will crash in this case.
@@ -22,7 +23,13 @@ class InterCallObject:
 
 
 def call_on_qt_thread(func):
+    @functools.wraps(func)
     def _call_on_qt_thread_wrapper(*args, **kwargs):
+        # If the current thread is the main thread, which is the Qt thread, directly call the function.
+        current_thread = threading.current_thread()
+        if isinstance(current_thread, threading._MainThread):
+            return func(*args, **kwargs)
+
         def _handle_call(ico, *args, **kwargs):
             ico.result = func(*args, **kwargs)
             ico.finish_event.set()

@@ -8,13 +8,12 @@
         "manufacturer": "Ultimaker B.V.",
         "weight": 4,
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker.png",
         "platform": "ultimaker_platform.stl",
         "has_materials": true,
         "has_machine_quality": true,
-        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white"],
-        "first_start_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
-        "supported_actions": ["UMOUpgradeSelection", "UMOCheckup", "BedLevel"],
+        "exclude_materials": ["generic_hips", "generic_petg", "generic_bam", "ultimaker_bam", "generic_pva", "ultimaker_pva", "generic_tough_pla", "ultimaker_tough_pla_black", "ultimaker_tough_pla_green", "ultimaker_tough_pla_red", "ultimaker_tough_pla_white", "generic_cffcpe", "generic_cffpa", "generic_gffcpe", "generic_gffpa", "structur3d_dap100silicone" ],
+        "first_start_actions": ["UMOUpgradeSelection", "BedLevel"],
+        "supported_actions": ["UMOUpgradeSelection", "BedLevel"],
         "machine_extruder_trains":
         {
             "0": "ultimaker_original_extruder_0"
@@ -47,7 +46,7 @@
             ]
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_use_extruder_offset_to_offset_coords": {
             "default_value": true

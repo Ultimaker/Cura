@@ -1,13 +1,14 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import UM 1.3 as UM
+import Cura 1.0 as Cura
 
 Item {
-    property var camera: null;
+    property var cameraUrl: "";
 
     Rectangle {
         anchors.fill:parent;
@@ -17,7 +18,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent;
-        onClicked: OutputDevice.setActiveCamera(null);
+        onClicked: OutputDevice.setActiveCameraUrl("");
         z: 0;
     }
 
@@ -33,36 +34,31 @@ Item {
         z: 999;
     }
 
-    Image {
+    Cura.NetworkMJPGImage {
         id: cameraImage
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.verticalCenter: parent.verticalCenter;
-        height: Math.round((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width);
+        height: Math.round((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
         onVisibleChanged: {
             if (visible) {
-                if (camera != null) {
-                    camera.start();
+                if (cameraUrl != "") {
+                    start();
                 }
             } else {
-                if (camera != null) {
-                    camera.stop();
+                if (cameraUrl != "") {
+                    stop();
                 }
             }
         }
-        source: {
-            if (camera != null && camera.latestImage != null) {
-                return camera.latestImage;
-            }
-            return "";
-        }
-        width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth);
+        source: cameraUrl
+        width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
         z: 1
     }
 
     MouseArea {
         anchors.fill: cameraImage;
         onClicked: {
-            OutputDevice.setActiveCamera(null);
+            OutputDevice.setActiveCameraUrl("");
         }
         z: 1;
     }

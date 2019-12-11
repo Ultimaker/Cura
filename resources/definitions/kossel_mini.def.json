@@ -5,9 +5,8 @@
     "metadata": {
         "visible": true,
         "author": "Claudio Sampaio (Patola)",
-        "manufacturer": "Other",
+        "manufacturer": "Johann",
         "file_formats": "text/x-gcode",
-        "icon": "icon_ultimaker2",
         "platform": "kossel_platform.stl",
         "platform_offset": [0, -0.25, 0],
         "machine_extruder_trains":

@@ -1,55 +1,57 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
 import QtQuick 2.2
 import QtQuick.Window 2.2
 import QtQuick.Controls 1.2
 import UM 1.1 as UM
 
 UM.Dialog {
+
     id: base;
-    property var printersModel: {
-        return ListModel{};
-    }
+    title: catalog.i18nc("@title:window", "Print over network");
+    width: minimumWidth;
     height: minimumHeight;
-    leftButtons: [
-        Button {
-            enabled: true;
-            onClicked: {
-                base.visible = false;
-                printerSelectionCombobox.currentIndex = 0;
-                OutputDevice.cancelPrintSelection();
-            }
-            text: catalog.i18nc("@action:button","Cancel");
-        }
-    ]
     maximumHeight: minimumHeight;
     maximumWidth: minimumWidth;
     minimumHeight: 140 * screenScaleFactor;
     minimumWidth: 500 * screenScaleFactor;
     modality: Qt.ApplicationModal;
-    onVisibleChanged: {
-        if (visible) {
-            resetPrintersModel();
-        } else {
-            OutputDevice.cancelPrintSelection();
+
+    Component.onCompleted: {
+        populateComboBox()
+    }
+
+    // populates the combo box with the correct printer values
+    function populateComboBox() {
+        comboBoxPrintersModel.clear();
+        comboBoxPrintersModel.append({ name: "Automatic", key: "" });  // Connect will just do it's thing
+        for (var i in OutputDevice.printers) {
+            comboBoxPrintersModel.append({
+                name: OutputDevice.printers[i].name,
+                key: OutputDevice.printers[i].uniqueName
+            });
         }
     }
+
+    leftButtons: [
+        Button {
+            enabled: true;
+            onClicked: {
+                base.close();
+            }
+            text: catalog.i18nc("@action:button","Cancel");
+        }
+    ]
     rightButtons: [
         Button {
             enabled: true;
             onClicked: {
-                base.visible = false;
-                OutputDevice.selectPrinter(printerSelectionCombobox.model.get(printerSelectionCombobox.currentIndex).key);
-                // reset to defaults
-                printerSelectionCombobox.currentIndex = 0;
+                OutputDevice.selectTargetPrinter(printerComboBox.model.get(printerComboBox.currentIndex).key);
+                base.close();
             }
             text: catalog.i18nc("@action:button","Print");
         }
     ]
-    title: catalog.i18nc("@title:window", "Print over network");
-    visible: true;
-    width: minimumWidth;
 
     Column {
         id: printerSelection;
@@ -61,10 +63,6 @@ UM.Dialog {
             topMargin: UM.Theme.getSize("default_margin").height;
         }
         height: 50 * screenScaleFactor;
-
-        SystemPalette {
-           id: palette;
-        }
 
         UM.I18nCatalog {
             id: catalog;
@@ -81,24 +79,18 @@ UM.Dialog {
             height: 20 * screenScaleFactor;
             text: catalog.i18nc("@label", "Printer selection");
             wrapMode: Text.Wrap;
+            renderType: Text.NativeRendering;
         }
 
         ComboBox {
-            id: printerSelectionCombobox;
+            id: printerComboBox;
             Behavior on height { NumberAnimation { duration: 100 } }
             height: 40 * screenScaleFactor;
-            model: base.printersModel;
+            model: ListModel {
+                id: comboBoxPrintersModel;
+            }
             textRole: "name";
             width: parent.width;
-        }
-    }
-
-    // Utils
-    function resetPrintersModel() {
-        printersModel.clear();
-        printersModel.append({ name: "Automatic", key: ""});
-        for (var index in OutputDevice.printers) {
-            printersModel.append({name: OutputDevice.printers[index].name, key: OutputDevice.printers[index].key});
         }
     }
 }

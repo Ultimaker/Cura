@@ -18,7 +18,7 @@ class FirmwareUpdateCheckerLookup:
         self._machine_id = machine_json.get("id")
         self._machine_name = machine_name.lower()  # Lower in-case upper-case chars are added to the original json.
         self._check_urls = []  # type:List[str]
-        for check_url in machine_json.get("check_urls"):
+        for check_url in machine_json.get("check_urls", []):
             self._check_urls.append(check_url)
         self._redirect_user = machine_json.get("update_url")
 

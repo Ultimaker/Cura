@@ -4,7 +4,6 @@ from typing import Optional, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtProperty
 
-from UM.PluginRegistry import PluginRegistry
 from cura.API.Backups import Backups
 from cura.API.Interface import Interface
 from cura.API.Account import Account
@@ -22,7 +21,6 @@ if TYPE_CHECKING:
 class CuraAPI(QObject):
 
     # For now we use the same API version to be consistent.
-    VERSION = PluginRegistry.APIVersion
     __instance = None  # type: "CuraAPI"
     _application = None  # type: CuraApplication
 

@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Tool 2",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "hms434",
+        "position": "1"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 1,
+            "maximum_value": "8"
+        },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_extruder_start_code": {
+          "default_value": "\n;changing to tool2\nM109 T1 S{material_print_temperature}\nG1 X-18 Y-50 F9000\nG1 X150 Y10 F9000\n\n"
+        },
+        "machine_extruder_end_code": {
+           "default_value": "\nG1 X150 Y10 F9000\nG1 X-20 Y-50 F9000\nG1 Y-100 F3000\n; ending tool2\n\n"
+        }
+    }
+}

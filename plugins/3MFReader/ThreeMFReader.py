@@ -1,7 +1,7 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional
+from typing import List, Optional, Union, TYPE_CHECKING
 import os.path
 import zipfile
 
@@ -9,27 +9,26 @@ import numpy
 
 import Savitar
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Matrix import Matrix
 from UM.Math.Vector import Vector
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Mesh.MeshReader import MeshReader
 from UM.Scene.GroupDecorator import GroupDecorator
+from UM.Scene.SceneNode import SceneNode #For typing.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
+from cura.CuraApplication import CuraApplication
+from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Scene.CuraSceneNode import CuraSceneNode
 from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene.ZOffsetDecorator import ZOffsetDecorator
-from cura.Machines.QualityManager import getMachineDefinitionIDForQualitySearch
-
-MYPY = False
 
 
 try:
-    if not MYPY:
+    if not TYPE_CHECKING:
         import xml.etree.cElementTree as ET
 except ImportError:
     Logger.log("w", "Unable to load cElementTree, switching to slower version")
@@ -55,7 +54,7 @@ class ThreeMFReader(MeshReader):
         self._unit = None
         self._object_count = 0  # Used to name objects as there is no node name yet.
 
-    def _createMatrixFromTransformationString(self, transformation):
+    def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
             return Matrix()
 
@@ -85,13 +84,13 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a Uranium scene node.
-    #   \returns Uranium scene node.
-    def _convertSavitarNodeToUMNode(self, savitar_node):
+    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
+    #   \returns Scene node.
+    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode) -> Optional[SceneNode]:
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
-        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
+        active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
@@ -122,7 +121,7 @@ class ThreeMFReader(MeshReader):
 
         # Add the setting override decorator, so we can add settings to this node.
         if settings:
-            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
 
             # Ensure the correct next container for the SettingOverride decorator is set.
             if global_container_stack:
@@ -132,7 +131,7 @@ class ThreeMFReader(MeshReader):
                     um_node.callDecoration("setActiveExtruder", default_stack.getId())
 
                 # Get the definition & set it
-                definition_id = getMachineDefinitionIDForQualitySearch(global_container_stack.definition)
+                definition_id = ContainerTree.getInstance().machines[global_container_stack.definition.getId()].quality_definition
                 um_node.callDecoration("getStack").getTop().setDefinition(definition_id)
 
             setting_container = um_node.callDecoration("getStack").getTop()
@@ -161,7 +160,7 @@ class ThreeMFReader(MeshReader):
             um_node.addDecorator(sliceable_decorator)
         return um_node
 
-    def _read(self, file_name):
+    def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
         result = []
         self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
@@ -181,12 +180,13 @@ class ThreeMFReader(MeshReader):
                 mesh_data = um_node.getMeshData()
                 if mesh_data is not None:
                     extents = mesh_data.getExtents()
-                    center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
-                    transform_matrix.setByTranslation(center_vector)
+                    if extents is not None:
+                        center_vector = Vector(extents.center.x, extents.center.y, extents.center.z)
+                        transform_matrix.setByTranslation(center_vector)
                 transform_matrix.multiply(um_node.getLocalTransformation())
                 um_node.setTransformation(transform_matrix)
 
-                global_container_stack = Application.getInstance().getGlobalContainerStack()
+                global_container_stack = CuraApplication.getInstance().getGlobalContainerStack()
 
                 # Create a transformation Matrix to convert from 3mf worldspace into ours.
                 # First step: flip the y and z axis.
@@ -215,17 +215,20 @@ class ThreeMFReader(MeshReader):
                 um_node.setTransformation(um_node.getLocalTransformation().preMultiply(transformation_matrix))
 
                 # Check if the model is positioned below the build plate and honor that when loading project files.
-                if um_node.getMeshData() is not None:
-                    minimum_z_value = um_node.getMeshData().getExtents(um_node.getWorldTransformation()).minimum.y  # y is z in transformation coordinates
-                    if minimum_z_value < 0:
-                        um_node.addDecorator(ZOffsetDecorator())
-                        um_node.callDecoration("setZOffset", minimum_z_value)
+                node_meshdata = um_node.getMeshData()
+                if node_meshdata is not None:
+                    aabb = node_meshdata.getExtents(um_node.getWorldTransformation())
+                    if aabb is not None:
+                        minimum_z_value = aabb.minimum.y  # y is z in transformation coordinates
+                        if minimum_z_value < 0:
+                            um_node.addDecorator(ZOffsetDecorator())
+                            um_node.callDecoration("setZOffset", minimum_z_value)
 
                 result.append(um_node)
 
         except Exception:
             Logger.logException("e", "An exception occurred in 3mf reader.")
-            return None
+            return []
 
         return result
 

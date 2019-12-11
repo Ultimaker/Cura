@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "Calvindog717",
-        "manufacturer": "PrintrBot",
+        "manufacturer": "Printrbot",
         "platform": "printrbot_simple_metal_platform.stl",
         "platform_offset": [0, -3.45, 0],
         "file_formats": "text/x-gcode",
@@ -30,7 +30,6 @@
                 [55, -99999]
             ]
         },
-        "gantry_height": { "default_value": 99999 },
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
 
         "machine_start_gcode": {

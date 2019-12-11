@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -10,36 +10,35 @@ Component {
         height: maximumHeight;
         width: maximumWidth;
 
-        Image {
+        Cura.NetworkMJPGImage {
             id: cameraImage;
             anchors {
                 horizontalCenter: parent.horizontalCenter;
                 verticalCenter: parent.verticalCenter;
             }
             Component.onCompleted: {
-                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                    OutputDevice.activePrinter.camera.start();
+                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                    cameraImage.start();
                 }
             }
-            height: Math.floor((sourceSize.height === 0 ? 600 * screenScaleFactor : sourceSize.height) * width / sourceSize.width);
+            height: Math.floor((imageHeight === 0 ? 600 * screenScaleFactor : imageHeight) * width / imageWidth);
             onVisibleChanged: {
                 if (visible) {
-                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                        OutputDevice.activePrinter.camera.start();
+                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                        cameraImage.start();
                     }
                 } else {
-                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null) {
-                        OutputDevice.activePrinter.camera.stop();
+                    if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                        cameraImage.stop();
                     }
                 }
             }
             source: {
-                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.camera != null && OutputDevice.activePrinter.camera.latestImage) {
-                    return OutputDevice.activePrinter.camera.latestImage;
+                if (OutputDevice.activePrinter != null && OutputDevice.activePrinter.cameraUrl != null) {
+                    return OutputDevice.activePrinter.cameraUrl;
                 }
-                return "";
             }
-            width: Math.min(sourceSize.width === 0 ? 800 * screenScaleFactor : sourceSize.width, maximumWidth);
+            width: Math.min(imageWidth === 0 ? 800 * screenScaleFactor : imageWidth, maximumWidth);
             z: 1;
         }
     }

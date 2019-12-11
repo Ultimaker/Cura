@@ -1,26 +1,25 @@
 {
-    "name": "Creality CR-10 S5",
+    "name": "Creality CR-10S5",
     "version": 2,
-    "inherits": "creality_cr10",
-    "metadata": {
-        "visible": true,
-        "author": "Michael Wildermuth",
-        "manufacturer": "Creality3D",
-        "file_formats": "text/x-gcode",
-        "machine_extruder_trains":
-        {
-            "0": "creality_cr10s5_extruder_0"
-        }
-    },
+    "inherits": "creality_base",
     "overrides": {
-        "machine_width": {
-            "default_value": 500
+        "machine_name": { "default_value": "Creality CR-10S5" },
+        "machine_width": { "default_value": 500 },
+        "machine_depth": { "default_value": 500 },
+        "machine_height": { "default_value": 500 },
+        "machine_head_with_fans_polygon": { "default_value": [
+                [-26, 34],
+                [-26, -32],
+                [32, -32],
+                [32, 34]
+            ]
         },
-        "machine_height": {
-            "default_value": 500
-        },
-        "machine_depth": {
-            "default_value": 500
-        }
+
+        "gantry_height": { "value": 25 }
+
+    },
+    "metadata": {
+        "quality_definition": "creality_base",
+        "visible": true
     }
 }

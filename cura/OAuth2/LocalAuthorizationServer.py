@@ -1,5 +1,6 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 import threading
 from typing import Optional, Callable, Any, TYPE_CHECKING
 
@@ -14,12 +15,15 @@ if TYPE_CHECKING:
 
 
 class LocalAuthorizationServer:
-    # The local LocalAuthorizationServer takes care of the oauth2 callbacks.
-    # Once the flow is completed, this server should be closed down again by calling stop()
-    # \param auth_helpers: An instance of the authorization helpers class.
-    # \param auth_state_changed_callback: A callback function to be called when the authorization state changes.
-    # \param daemon: Whether the server thread should be run in daemon mode. Note: Daemon threads are abruptly stopped
-    #                   at shutdown. Their resources (e.g. open files) may never be released.
+    ##  The local LocalAuthorizationServer takes care of the oauth2 callbacks.
+    #   Once the flow is completed, this server should be closed down again by
+    #   calling stop()
+    #   \param auth_helpers An instance of the authorization helpers class.
+    #   \param auth_state_changed_callback A callback function to be called when
+    #   the authorization state changes.
+    #   \param daemon Whether the server thread should be run in daemon mode.
+    #   Note: Daemon threads are abruptly stopped at shutdown. Their resources
+    #   (e.g. open files) may never be released.
     def __init__(self, auth_helpers: "AuthorizationHelpers",
                  auth_state_changed_callback: Callable[["AuthenticationResponse"], Any],
                  daemon: bool) -> None:
@@ -30,8 +34,8 @@ class LocalAuthorizationServer:
         self._auth_state_changed_callback = auth_state_changed_callback
         self._daemon = daemon
 
-    # Starts the local web server to handle the authorization callback.
-    # \param verification_code: The verification code part of the OAuth2 client identification.
+    ##  Starts the local web server to handle the authorization callback.
+    #   \param verification_code The verification code part of the OAuth2 client identification.
     def start(self, verification_code: str) -> None:
         if self._web_server:
             # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
@@ -54,11 +58,15 @@ class LocalAuthorizationServer:
         self._web_server_thread = threading.Thread(None, self._web_server.serve_forever, daemon = self._daemon)
         self._web_server_thread.start()
 
-    # Stops the web server if it was running. It also does some cleanup.
+    ##  Stops the web server if it was running. It also does some cleanup.
     def stop(self) -> None:
         Logger.log("d", "Stopping local oauth2 web server...")
 
         if self._web_server:
-            self._web_server.server_close()
+            try:
+                self._web_server.server_close()
+            except OSError:
+                # OS error can happen if the socket was already closed. We really don't care about that case.
+                pass
         self._web_server = None
         self._web_server_thread = None
