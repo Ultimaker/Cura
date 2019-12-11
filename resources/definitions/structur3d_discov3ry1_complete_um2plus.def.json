@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Discov3ry Complete (Ultimaker 2+)",
+    "name": "Discov3ry Complete",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Andrew Finkle, CTO",
@@ -14,9 +14,7 @@
         "has_variants": true,
         "variants_name": "Print core",
         "preferred_variant_name": "0.84mm (Green)",
-        "has_machine_materials": true,
         "preferred_material": "structur3d_dap100silicone",
-        "has_variant_materials": false,
         "has_machine_quality": false,
         "preferred_quality_type": "extra_fast",
         "first_start_actions": [],
@@ -56,9 +54,6 @@
         },
         "line_width": {
             "value": "round(machine_nozzle_size * 0.875, 2)"
-        },
-        "speed_layer_0": {
-            "default_value": 10
         },
         "speed_support": {
             "value": "speed_wall_0"

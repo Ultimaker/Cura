@@ -51,5 +51,21 @@ Button
         border.color: objectItemButton.checked ? UM.Theme.getColor("primary") : "transparent"
     }
 
+    TextMetrics
+    {
+        id: buttonTextMetrics
+        text: buttonText.text
+        font: buttonText.font
+        elide: buttonText.elide
+        elideWidth: buttonText.width
+    }
+
+    Cura.ToolTip
+    {
+        id: tooltip
+        tooltipText: objectItemButton.text
+        visible: objectItemButton.hovered && buttonTextMetrics.elidedText != buttonText.text
+    }
+
     onClicked: Cura.SceneController.changeSelection(index)
 }

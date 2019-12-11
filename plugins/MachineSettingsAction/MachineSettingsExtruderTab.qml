@@ -68,7 +68,7 @@ Item
             Cura.NumericTextFieldWithUnit  // "Nozzle size"
             {
                 id: extruderNozzleSizeField
-                visible: !Cura.MachineManager.hasVariants
+                visible: !Cura.MachineManager.activeMachine.hasVariants
                 containerStackId: base.extruderStackId
                 settingKey: "machine_nozzle_size"
                 settingStoreIndex: propertyStoreIndex
@@ -107,6 +107,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -121,6 +122,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                allowNegativeValue: true
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 

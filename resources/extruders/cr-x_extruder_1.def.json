@@ -1,10 +1,9 @@
 {
-    "id": "cr-x_extruder_1",
     "version": 2,
     "name": "Right Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "Creality CR-X",
+        "machine": "creality_cr-x",
         "position": "1"
     },
 

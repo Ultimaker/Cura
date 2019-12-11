@@ -23,7 +23,7 @@
         "machine_height": { "default_value": 200 },
         "machine_depth": { "default_value": 200 },
         "machine_center_is_zero": { "default_value": false },
-        "machine_head_polygon":
+        "machine_head_with_fans_polygon":
         {
             "default_value":
             [

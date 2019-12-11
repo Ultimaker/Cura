@@ -99,7 +99,7 @@ class AuthorizationHelpers:
             })
         except requests.exceptions.ConnectionError:
             # Connection was suddenly dropped. Nothing we can do about that.
-            Logger.log("w", "Something failed while attempting to parse the JWT token")
+            Logger.logException("w", "Something failed while attempting to parse the JWT token")
             return None
         if token_request.status_code not in (200, 201):
             Logger.log("w", "Could not retrieve token data from auth server: %s", token_request.text)

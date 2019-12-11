@@ -3,6 +3,6 @@
     "author": "fieldOfView",
     "version": "1.0.1",
     "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc.).",
-    "api": "6.0",
+    "api": "7.0",
     "i18n-catalog": "cura"
 }

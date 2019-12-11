@@ -2,13 +2,14 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant, pyqtSlot, QUrl
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, TYPE_CHECKING
 from UM.Math.Vector import Vector
+from cura.PrinterOutput.Peripheral import Peripheral
 from cura.PrinterOutput.Models.PrinterConfigurationModel import PrinterConfigurationModel
 from cura.PrinterOutput.Models.ExtruderOutputModel import ExtruderOutputModel
+from UM.Logger import Logger
 
-MYPY = False
-if MYPY:
+if TYPE_CHECKING:
     from cura.PrinterOutput.Models.PrintJobOutputModel import PrintJobOutputModel
     from cura.PrinterOutput.PrinterOutputController import PrinterOutputController
 
@@ -34,10 +35,11 @@ class PrinterOutputModel(QObject):
         self._target_bed_temperature = 0 # type: float
         self._name = ""
         self._key = ""  # Unique identifier
+        self._unique_name = ""  # Unique name (used in Connect)
         self._controller = output_controller
         self._controller.canUpdateFirmwareChanged.connect(self._onControllerCanUpdateFirmwareChanged)
         self._extruders = [ExtruderOutputModel(printer = self, position = i) for i in range(number_of_extruders)]
-        self._printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
+        self._active_printer_configuration = PrinterConfigurationModel()  # Indicates the current configuration setup in this printer
         self._head_position = Vector(0, 0, 0)
         self._active_print_job = None  # type: Optional[PrintJobOutputModel]
         self._firmware_version = firmware_version
@@ -45,9 +47,12 @@ class PrinterOutputModel(QObject):
         self._is_preheating = False
         self._printer_type = ""
         self._buildplate = ""
+        self._peripherals = []  # type: List[Peripheral]
 
-        self._printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
-                                                              self._extruders]
+        self._active_printer_configuration.extruderConfigurations = [extruder.extruderConfiguration for extruder in
+                                                                     self._extruders]
+        self._active_printer_configuration.configurationChanged.connect(self.configurationChanged)
+        self._available_printer_configurations = []  # type: List[PrinterConfigurationModel]
 
         self._camera_url = QUrl()  # type: QUrl
 
@@ -80,7 +85,7 @@ class PrinterOutputModel(QObject):
     def updateType(self, printer_type: str) -> None:
         if self._printer_type != printer_type:
             self._printer_type = printer_type
-            self._printer_configuration.printerType = self._printer_type
+            self._active_printer_configuration.printerType = self._printer_type
             self.typeChanged.emit()
             self.configurationChanged.emit()
 
@@ -91,7 +96,7 @@ class PrinterOutputModel(QObject):
     def updateBuildplate(self, buildplate: str) -> None:
         if self._buildplate != buildplate:
             self._buildplate = buildplate
-            self._printer_configuration.buildplateConfiguration = self._buildplate
+            self._active_printer_configuration.buildplateConfiguration = self._buildplate
             self.buildplateChanged.emit()
             self.configurationChanged.emit()
 
@@ -184,6 +189,15 @@ class PrinterOutputModel(QObject):
     def updateName(self, name: str) -> None:
         if self._name != name:
             self._name = name
+            self.nameChanged.emit()
+
+    @pyqtProperty(str, notify = nameChanged)
+    def uniqueName(self) -> str:
+        return self._unique_name
+
+    def updateUniqueName(self, unique_name: str) -> None:
+        if self._unique_name != unique_name:
+            self._unique_name = unique_name
             self.nameChanged.emit()
 
     ##  Update the bed temperature. This only changes it locally.
@@ -289,9 +303,48 @@ class PrinterOutputModel(QObject):
     def _onControllerCanUpdateFirmwareChanged(self) -> None:
         self.canUpdateFirmwareChanged.emit()
 
-    # Returns the configuration (material, variant and buildplate) of the current printer
+    # Returns the active configuration (material, variant and buildplate) of the current printer
     @pyqtProperty(QObject, notify = configurationChanged)
     def printerConfiguration(self) -> Optional[PrinterConfigurationModel]:
-        if self._printer_configuration.isValid():
-            return self._printer_configuration
+        if self._active_printer_configuration.isValid():
+            return self._active_printer_configuration
         return None
+
+    peripheralsChanged = pyqtSignal()
+
+    @pyqtProperty(str, notify = peripheralsChanged)
+    def peripherals(self) -> str:
+        return ", ".join([peripheral.name for peripheral in self._peripherals])
+
+    def addPeripheral(self, peripheral: Peripheral) -> None:
+        self._peripherals.append(peripheral)
+        self.peripheralsChanged.emit()
+
+    def removePeripheral(self, peripheral: Peripheral) -> None:
+        self._peripherals.remove(peripheral)
+        self.peripheralsChanged.emit()
+
+    availableConfigurationsChanged = pyqtSignal()
+
+    # The availableConfigurations are configuration options that a printer can switch to, but doesn't currently have
+    # active (eg; Automatic tool changes, material loaders, etc).
+    @pyqtProperty("QVariantList", notify = availableConfigurationsChanged)
+    def availableConfigurations(self) -> List[PrinterConfigurationModel]:
+        return self._available_printer_configurations
+
+    def addAvailableConfiguration(self, new_configuration: PrinterConfigurationModel) -> None:
+        if new_configuration not in self._available_printer_configurations:
+            self._available_printer_configurations.append(new_configuration)
+            self.availableConfigurationsChanged.emit()
+
+    def removeAvailableConfiguration(self, config_to_remove: PrinterConfigurationModel) -> None:
+        try:
+            self._available_printer_configurations.remove(config_to_remove)
+        except ValueError:
+            Logger.log("w", "Unable to remove configuration that isn't in the list of available configurations")
+        else:
+            self.availableConfigurationsChanged.emit()
+
+    def setAvailableConfigurations(self, new_configurations: List[PrinterConfigurationModel]) -> None:
+        self._available_printer_configurations = new_configurations
+        self.availableConfigurationsChanged.emit()

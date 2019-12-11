@@ -13,7 +13,7 @@
         }
     },
     "overrides": {
-        "machine_name": { 
+        "machine_name": {
             "default_value": "Tevo Tornado"
         },
         "machine_width": {
@@ -25,10 +25,10 @@
         "machine_depth": {
             "default_value": 300
         },
-        "machine_center_is_zero": { 
-            "default_value": false 
+        "machine_center_is_zero": {
+            "default_value": false
         },
-        "machine_head_polygon": {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [-30, 34],
                 [-30, -32],
@@ -73,18 +73,36 @@
             "value": "30"
         },
         "acceleration_enabled": {
-            "default_value": false
+            "default_value": true
         },
-        "machine_acceleration": { 
-            "default_value": 1500 
+        "acceleration_print": {
+            "default_value": 500
+        },
+        "acceleration_travel": {
+            "value": 500
+        },
+        "acceleration_travel_layer_0": {
+            "value": 500
+        },
+        "machine_acceleration": {
+            "default_value": 1500
         },
         "jerk_enabled": {
-            "default_value": false
+            "default_value": true
         },
-        "machine_max_jerk_xy": { 
-            "default_value": 6 
+        "jerk_print": {
+            "default_value": 8
         },
-        "machine_gcode_flavor": { 
+        "jerk_travel": {
+            "value": 8
+        },
+        "jerk_travel_layer_0": {
+            "value": 8
+        },
+        "machine_max_jerk_xy": {
+            "default_value": 6
+        },
+        "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_start_gcode": {

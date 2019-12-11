@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import MagicMock
 
 from PyQt5.QtCore import QUrl
-
+from unittest.mock import patch
 from UM.MimeTypeDatabase import MimeTypeDatabase
 from cura.Settings.ContainerManager import ContainerManager
 import tempfile
@@ -42,20 +42,23 @@ class TestContainerManager(TestCase):
         MimeTypeDatabase.removeMimeType(self._mocked_mime)
 
     def test_getContainerMetaDataEntry(self):
-        assert self._container_manager.getContainerMetaDataEntry("test", "test_data") == "omg"
-        assert self._container_manager.getContainerMetaDataEntry("test", "entry_that_is_not_defined") == ""
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=self._application)):
+            assert self._container_manager.getContainerMetaDataEntry("test", "test_data") == "omg"
+            assert self._container_manager.getContainerMetaDataEntry("test", "entry_that_is_not_defined") == ""
 
     def test_clearUserContainer(self):
-        self._container_manager.clearUserContainers()
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=self._application)):
+            self._container_manager.clearUserContainers()
         assert self._machine_manager.activeMachine.userChanges.clear.call_count == 1
 
     def test_getContainerNameFilters(self):
-        # If nothing is added, we still expect to get the all files filter
-        assert self._container_manager.getContainerNameFilters("") == ['All Files (*)']
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=self._application)):
+            # If nothing is added, we still expect to get the all files filter
+            assert self._container_manager.getContainerNameFilters("") == ['All Files (*)']
 
-        # Pretend that a new type was added.
-        self._container_registry.getContainerTypes = MagicMock(return_value=[("None", None)])
-        assert self._container_manager.getContainerNameFilters("") == ['UnitTest! (*.omg)', 'All Files (*)']
+            # Pretend that a new type was added.
+            self._container_registry.getContainerTypes = MagicMock(return_value=[("None", None)])
+            assert self._container_manager.getContainerNameFilters("") == ['UnitTest! (*.omg)', 'All Files (*)']
 
     def test_exportContainerUnknownFileType(self):
         # The filetype is not known, so this should cause an error!
@@ -69,8 +72,9 @@ class TestContainerManager(TestCase):
         assert self._container_manager.exportContainer("", "whatever", "whatever")["status"] == "error"
 
     def test_exportContainer(self):
-        with tempfile.TemporaryDirectory() as tmpdirname:
-            result = self._container_manager.exportContainer("test", "whatever", os.path.join(tmpdirname, "whatever.omg"))
-            assert(os.path.exists(result["path"]))
-            with open(result["path"], "r", encoding="utf-8") as f:
-                assert f.read() == self._mocked_container_data
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=self._application)):
+            with tempfile.TemporaryDirectory() as tmpdirname:
+                result = self._container_manager.exportContainer("test", "whatever", os.path.join(tmpdirname, "whatever.omg"))
+                assert(os.path.exists(result["path"]))
+                with open(result["path"], "r", encoding="utf-8") as f:
+                    assert f.read() == self._mocked_container_data
