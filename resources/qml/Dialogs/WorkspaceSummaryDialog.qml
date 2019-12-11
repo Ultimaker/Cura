@@ -1,10 +1,10 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.1
-import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import QtQuick.Window 2.1
+import QtQuick 2.10
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.3
+import QtQuick.Window 2.2
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -139,37 +139,31 @@ UM.Dialog
                         }
                     }
                 }
-                Row
-                {
-                    visible: Cura.MachineManager.hasVariantBuildplates
-                    width: parent.width
-                    height: childrenRect.height
-                    Label
-                    {
-                        text: catalog.i18nc("@action:label", "Build plate")
-                        width: Math.floor(scroll.width / 3) | 0
-                    }
-                    Label
-                    {
-                        text: Cura.activeStack != null ? Cura.MachineManager.activeStack.variant.name : ""
-                        width: Math.floor(scroll.width / 3) | 0
-                    }
-                }
                 Repeater
                 {
                     width: parent.width
                     height: childrenRect.height
-                    model: Cura.MachineManager.currentExtruderPositions
+                    model: Cura.MachineManager.activeMachine.extruderList
                     delegate: Column
                     {
                         height: childrenRect.height
                         width: parent.width
-                        property string variantName: Cura.MachineManager.activeVariantNames[modelData] !== undefined ? Cura.MachineManager.activeVariantNames[modelData]: ""
-                        property string materialName: Cura.MachineManager.getExtruder(modelData).material.name !== undefined ? Cura.MachineManager.getExtruder(modelData).material.name : ""
+                        property string variantName:
+                        {
+                            var extruder = modelData
+                            var variant_name = extruder.variant.name
+                            return (variant_name !== undefined) ? variant_name : ""
+                        }
+                        property string materialName:
+                        {
+                            var extruder = modelData
+                            var material_name = extruder.material.name
+                            return (material_name !== undefined) ? material_name : ""
+                        }
                         Label
                         {
                             text: {
-                                var extruder = Number(modelData)
+                                var extruder = Number(modelData.position)
                                 var extruder_id = ""
                                 if(!isNaN(extruder))
                                 {
@@ -177,12 +171,13 @@ UM.Dialog
                                 }
                                 else
                                 {
-                                    extruder_id = modelData
+                                    extruder_id = modelData.position
                                 }
 
                                 return catalog.i18nc("@action:label", "Extruder %1").arg(extruder_id)
                             }
                             font.bold: true
+                            enabled: modelData.isEnabled
                         }
                         Row
                         {
@@ -200,6 +195,7 @@ UM.Dialog
                                     return catalog.i18nc("@action:label", "Material")
                                 }
                                 width: Math.floor(scroll.width / 3) | 0
+                                enabled: modelData.isEnabled
                             }
                             Label
                             {
@@ -211,7 +207,7 @@ UM.Dialog
                                     }
                                     return materialName
                                 }
-
+                                enabled: modelData.isEnabled
                                 width: Math.floor(scroll.width / 3) | 0
                             }
                         }
@@ -253,6 +249,23 @@ UM.Dialog
                         Label
                         {
                             text: Cura.MachineManager.activeQualityOrQualityChangesName
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                    }
+
+                    // Intent
+                    Row
+                    {
+                        width: parent.width
+                        height: childrenRect.height
+                        Label
+                        {
+                            text: catalog.i18nc("@action:label", "Intent")
+                            width: Math.floor(scroll.width / 3) | 0
+                        }
+                        Label
+                        {
+                            text: Cura.MachineManager.activeIntentCategory
                             width: Math.floor(scroll.width / 3) | 0
                         }
                     }

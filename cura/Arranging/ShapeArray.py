@@ -1,5 +1,5 @@
-#Copyright (c) 2019 Ultimaker B.V.
-#Cura is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2019 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
 import copy
@@ -9,6 +9,7 @@ from UM.Math.Polygon import Polygon
 
 if TYPE_CHECKING:
     from UM.Scene.SceneNode import SceneNode
+
 
 ##  Polygon representation as an array for use with Arrange
 class ShapeArray:
@@ -101,7 +102,9 @@ class ShapeArray:
 
         # Create check array for each edge segment, combine into fill array
         for k in range(vertices.shape[0]):
-            fill = numpy.all([fill, cls._check(vertices[k - 1], vertices[k], base_array)], axis=0)
+            check_array = cls._check(vertices[k - 1], vertices[k], base_array)
+            if check_array is not None:
+                fill = numpy.all([fill, check_array], axis=0)
 
         # Set all values inside polygon to one
         base_array[fill] = 1
@@ -117,9 +120,9 @@ class ShapeArray:
     #   \param p2 2-tuple with x, y for point 2
     #   \param base_array boolean array to project the line on
     @classmethod
-    def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> bool:
+    def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> Optional[numpy.array]:
         if p1[0] == p2[0] and p1[1] == p2[1]:
-            return False
+            return None
         idxs = numpy.indices(base_array.shape)  # Create 3D array of indices
 
         p1 = p1.astype(float)

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 from json import JSONDecodeError
@@ -11,18 +11,19 @@ from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply, QNetworkAccessManage
 from UM.Logger import Logger
 from cura import UltimakerCloudAuthentication
 from cura.API import Account
+
 from .ToolPathUploader import ToolPathUploader
-from ..Models import BaseModel
-from .Models.CloudClusterResponse import CloudClusterResponse
-from .Models.CloudError import CloudError
-from .Models.CloudClusterStatus import CloudClusterStatus
-from .Models.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
-from .Models.CloudPrintResponse import CloudPrintResponse
-from .Models.CloudPrintJobResponse import CloudPrintJobResponse
+from ..Models.BaseModel import BaseModel
+from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+from ..Models.Http.CloudError import CloudError
+from ..Models.Http.CloudClusterStatus import CloudClusterStatus
+from ..Models.Http.CloudPrintJobUploadRequest import CloudPrintJobUploadRequest
+from ..Models.Http.CloudPrintResponse import CloudPrintResponse
+from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 
 ## The generic type variable used to document the methods below.
-CloudApiClientModel = TypeVar("CloudApiClientModel", bound = BaseModel)
+CloudApiClientModel = TypeVar("CloudApiClientModel", bound=BaseModel)
 
 
 ## The cloud API client is responsible for handling the requests and responses from the cloud.
@@ -34,6 +35,9 @@ class CloudApiClient:
     CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
 
+    # In order to avoid garbage collection we keep the callbacks in this list.
+    _anti_gc_callbacks = []  # type: List[Callable[[], None]]
+
     ## Initializes a new cloud API client.
     #  \param account: The user's account object
     #  \param on_error: The callback to be called whenever we receive errors from the server.
@@ -43,8 +47,6 @@ class CloudApiClient:
         self._account = account
         self._on_error = on_error
         self._upload = None  # type: Optional[ToolPathUploader]
-        # In order to avoid garbage collection we keep the callbacks in this list.
-        self._anti_gc_callbacks = []  # type: List[Callable[[], None]]
 
     ## Gets the account used for the API.
     @property
@@ -54,7 +56,7 @@ class CloudApiClient:
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
     def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
-        url = "{}/clusters".format(self.CLUSTER_API_ROOT)
+        url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
         self._addCallback(reply, on_finished, CloudClusterResponse)
 
@@ -69,8 +71,8 @@ class CloudApiClient:
     ## Requests the cloud to register the upload of a print job mesh.
     #  \param request: The request object.
     #  \param on_finished: The function to be called after the result is parsed.
-    def requestUpload(self, request: CloudPrintJobUploadRequest, on_finished: Callable[[CloudPrintJobResponse], Any]
-                      ) -> None:
+    def requestUpload(self, request: CloudPrintJobUploadRequest,
+                      on_finished: Callable[[CloudPrintJobResponse], Any]) -> None:
         url = "{}/jobs/upload".format(self.CURA_API_ROOT)
         body = json.dumps({"data": request.toDict()})
         reply = self._manager.put(self._createEmptyRequest(url), body.encode())
@@ -100,14 +102,9 @@ class CloudApiClient:
     #  \param cluster_id: The ID of the cluster.
     #  \param cluster_job_id: The ID of the print job within the cluster.
     #  \param action: The name of the action to execute.
-    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str, data: Optional[Dict[str, Any]] = None) -> None:
-        body = b""
-        if data:
-            try:
-                body = json.dumps({"data": data}).encode()
-            except JSONDecodeError as err:
-                Logger.log("w", "Could not encode body: %s", err)
-                return
+    def doPrintJobAction(self, cluster_id: str, cluster_job_id: str, action: str,
+                         data: Optional[Dict[str, Any]] = None) -> None:
+        body = json.dumps({"data": data}).encode() if data else b""
         url = "{}/clusters/{}/print_jobs/{}/action/{}".format(self.CLUSTER_API_ROOT, cluster_id, cluster_job_id, action)
         self._manager.post(self._createEmptyRequest(url), body)
 
@@ -171,16 +168,16 @@ class CloudApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
-                     model: Type[CloudApiClientModel],
-                     ) -> None:
+                     model: Type[CloudApiClientModel]) -> None:
         def parse() -> None:
+            self._anti_gc_callbacks.remove(parse)
+
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
                 return
+
             status_code, response = self._parseReply(reply)
-            self._anti_gc_callbacks.remove(parse)
             self._parseModels(response, on_finished, model)
-            return
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)

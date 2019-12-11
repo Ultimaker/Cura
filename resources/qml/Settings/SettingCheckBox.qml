@@ -112,7 +112,7 @@ SettingItem
                         return UM.Theme.getColor("setting_validation_warning");
                 }
                 // Validation is OK.
-                if (control.containsMouse || control.activeFocus)
+                if (control.containsMouse || control.activeFocus || hovered)
                 {
                     return UM.Theme.getColor("setting_control_border_highlight")
                 }

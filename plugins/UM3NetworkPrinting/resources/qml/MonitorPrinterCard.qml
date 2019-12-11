@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.3
@@ -90,7 +90,7 @@ Item
                     verticalCenter: parent.verticalCenter
                 }
                 width: 180 * screenScaleFactor // TODO: Theme!
-                height: printerNameLabel.height + printerFamilyPill.height + 6 * screenScaleFactor // TODO: Theme!
+                height: childrenRect.height
 
                 Rectangle
                 {
@@ -134,6 +134,54 @@ Item
                         left: printerNameLabel.left
                     }
                     text: printer ? printer.type : ""
+                }
+                Item
+                {
+                    id: managePrinterLink
+                    anchors {
+                        top: printerFamilyPill.bottom
+                        topMargin: 6 * screenScaleFactor
+                    }
+                    height: 18 * screenScaleFactor // TODO: Theme!
+                    width: childrenRect.width
+  
+                    Label
+                    {
+                        id: managePrinterText
+                        anchors.verticalCenter: managePrinterLink.verticalCenter
+                        color: UM.Theme.getColor("monitor_text_link")
+                        font: UM.Theme.getFont("default")
+                        linkColor: UM.Theme.getColor("monitor_text_link")
+                        text: catalog.i18nc("@label link to Connect and Cloud interfaces", "Manage printer")
+                        renderType: Text.NativeRendering
+                    }
+                    UM.RecolorImage
+                    {
+                        id: externalLinkIcon
+                        anchors
+                        {
+                            left: managePrinterText.right
+                            leftMargin: 6 * screenScaleFactor
+                            verticalCenter: managePrinterText.verticalCenter
+                        }
+                        color: UM.Theme.getColor("monitor_text_link")
+                        source: UM.Theme.getIcon("external_link")
+                        width: 12 * screenScaleFactor
+                        height: 12 * screenScaleFactor
+                    }
+                }
+                MouseArea
+                {
+                    anchors.fill: managePrinterLink
+                    onClicked: OutputDevice.openPrintJobControlPanel()
+                    onEntered:
+                    {
+                        manageQueueText.font.underline = true
+                    }
+                    onExited:
+                    {
+                        manageQueueText.font.underline = false
+                    }
                 }
             }
 
@@ -202,13 +250,12 @@ Item
             enabled: !contextMenuButton.enabled
         }
 
-		// TODO: uncomment this tooltip as soon as the required firmware is released
-        // MonitorInfoBlurb
-        // {
-        //     id: contextMenuDisabledInfo
-        //     text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
-        //     target: contextMenuButton
-        // }
+        MonitorInfoBlurb
+        {
+            id: contextMenuDisabledInfo
+            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+            target: contextMenuButton
+        }
 
         CameraButton
         {
@@ -447,6 +494,25 @@ Item
             implicitWidth: 96 * screenScaleFactor // TODO: Theme!
             visible: printer && printer.activePrintJob && printer.activePrintJob.configurationChanges.length > 0 && !printerStatus.visible
             onClicked: base.enabled ? overrideConfirmationDialog.open() : {}
+            enabled: OutputDevice.supportsPrintJobActions
+        }
+
+        // For cloud printing, add this mouse area over the disabled details button to indicate that it's not available
+        MouseArea
+        {
+            id: detailsButtonDisabledButtonArea
+            anchors.fill: detailsButton
+            hoverEnabled: detailsButton.visible && !detailsButton.enabled
+            onEntered: overrideButtonDisabledInfo.open()
+            onExited: overrideButtonDisabledInfo.close()
+            enabled: !detailsButton.enabled
+        }
+
+        MonitorInfoBlurb
+        {
+            id: overrideButtonDisabledInfo
+            text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+            target: detailsButton
         }
     }
 

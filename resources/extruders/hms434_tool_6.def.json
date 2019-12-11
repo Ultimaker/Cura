@@ -1,5 +1,4 @@
 {
-    "id": "hms434_tool_6",
     "version": 2,
     "name": "Tool 6",
     "inherits": "fdmextruder",

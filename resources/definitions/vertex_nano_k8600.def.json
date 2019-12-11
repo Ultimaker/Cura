@@ -19,12 +19,6 @@
         "machine_heated_bed": {
             "default_value": false
         },
-        "material_bed_temperature": {
-            "default_value": 0
-        },
-        "material_bed_temperature_layer_0": {
-            "default_value": 0
-        },
         "machine_width": {
             "default_value": 80
         },

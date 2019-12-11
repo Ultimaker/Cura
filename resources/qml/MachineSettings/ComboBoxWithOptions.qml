@@ -91,6 +91,7 @@ UM.TooltipArea
     {
         target: propertyProvider
         onContainerStackChanged: defaultOptionsModel.updateModel()
+        onIsValueUsedChanged: defaultOptionsModel.updateModel()
     }
 
     Cura.ComboBox

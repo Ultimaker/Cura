@@ -99,7 +99,7 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
-                text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
             }
 
             Item

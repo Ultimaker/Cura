@@ -17,6 +17,7 @@ from cura.Scene import ZOffsetDecorator
 
 import random  # used for list shuffling
 
+
 class PlatformPhysics:
     def __init__(self, controller, volume):
         super().__init__()
@@ -49,6 +50,8 @@ class PlatformPhysics:
             return
 
         root = self._controller.getScene().getRoot()
+        build_volume = Application.getInstance().getBuildVolume()
+        build_volume.updateNodeBoundaryCheck()
 
         # Keep a list of nodes that are moving. We use this so that we don't move two intersecting objects in the
         # same direction.
@@ -160,7 +163,6 @@ class PlatformPhysics:
                 op.push()
 
         # After moving, we have to evaluate the boundary checks for nodes
-        build_volume = Application.getInstance().getBuildVolume()
         build_volume.updateNodeBoundaryCheck()
 
     def _onToolOperationStarted(self, tool):

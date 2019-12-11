@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional
@@ -8,7 +8,8 @@ from UM.Logger import Logger
 from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
-from cura.Machines.VariantType import VariantType
+from cura.Machines.ContainerTree import ContainerTree
+from cura.Machines.MachineNode import MachineNode
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 
@@ -26,9 +27,8 @@ class CuraStackBuilder:
     def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
-        quality_manager = application.getQualityManager()
         registry = application.getContainerRegistry()
+        container_tree = ContainerTree.getInstance()
 
         definitions = registry.findDefinitionContainers(id = definition_id)
         if not definitions:
@@ -37,14 +37,7 @@ class CuraStackBuilder:
             return None
 
         machine_definition = definitions[0]
-
-        # get variant container for the global stack
-        global_variant_container = application.empty_variant_container
-        global_variant_node = variant_manager.getDefaultVariantNode(machine_definition, VariantType.BUILD_PLATE)
-        if global_variant_node:
-            global_variant_container = global_variant_node.getContainer()
-        if not global_variant_container:
-            global_variant_container = application.empty_variant_container
+        machine_node = container_tree.machines[machine_definition.getId()]
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
         # Make sure the new name does not collide with any definition or (quality) profile
@@ -56,9 +49,9 @@ class CuraStackBuilder:
         new_global_stack = cls.createGlobalStack(
             new_stack_id = generated_name,
             definition = machine_definition,
-            variant_container = global_variant_container,
+            variant_container = application.empty_variant_container,
             material_container = application.empty_material_container,
-            quality_container = application.empty_quality_container,
+            quality_container = machine_node.preferredGlobalQuality().container,
         )
         new_global_stack.setName(generated_name)
 
@@ -67,32 +60,8 @@ class CuraStackBuilder:
         for position in extruder_dict:
             cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
 
-        for new_extruder in new_global_stack.extruders.values(): #Only register the extruders if we're sure that all of them are correct.
+        for new_extruder in new_global_stack.extruders.values():  # Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
-
-        preferred_quality_type = machine_definition.getMetaDataEntry("preferred_quality_type")
-        quality_group_dict = quality_manager.getQualityGroups(new_global_stack)
-        if not quality_group_dict:
-            # There is no available quality group, set all quality containers to empty.
-            new_global_stack.quality = application.empty_quality_container
-            for extruder_stack in new_global_stack.extruders.values():
-                extruder_stack.quality = application.empty_quality_container
-        else:
-            # Set the quality containers to the preferred quality type if available, otherwise use the first quality
-            # type that's available.
-            if preferred_quality_type not in quality_group_dict:
-                Logger.log("w", "The preferred quality {quality_type} doesn't exist for this set-up. Choosing a random one.".format(quality_type = preferred_quality_type))
-                preferred_quality_type = next(iter(quality_group_dict))
-            quality_group = quality_group_dict.get(preferred_quality_type)
-
-            new_global_stack.quality = quality_group.node_for_global.getContainer()
-            if not new_global_stack.quality:
-                new_global_stack.quality = application.empty_quality_container
-            for position, extruder_stack in new_global_stack.extruders.items():
-                if position in quality_group.nodes_for_extruders and quality_group.nodes_for_extruders[position].getContainer():
-                    extruder_stack.quality = quality_group.nodes_for_extruders[position].getContainer()
-                else:
-                    extruder_stack.quality = application.empty_quality_container
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
         # extruder stack because the global stack didn't have one yet (which is enforced since Cura 3.1).
@@ -108,37 +77,32 @@ class CuraStackBuilder:
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
         from cura.CuraApplication import CuraApplication
         application = CuraApplication.getInstance()
-        variant_manager = application.getVariantManager()
-        material_manager = application.getMaterialManager()
         registry = application.getContainerRegistry()
 
-        # get variant container for extruders
-        extruder_variant_container = application.empty_variant_container
-        extruder_variant_node = variant_manager.getDefaultVariantNode(global_stack.definition, VariantType.NOZZLE,
-                                                                      global_stack = global_stack)
-        extruder_variant_name = None
-        if extruder_variant_node:
-            extruder_variant_container = extruder_variant_node.getContainer()
-            if not extruder_variant_container:
-                extruder_variant_container = application.empty_variant_container
-            extruder_variant_name = extruder_variant_container.getName()
-
+        # Get the extruder definition.
         extruder_definition_dict = global_stack.getMetaDataEntry("machine_extruder_trains")
         extruder_definition_id = extruder_definition_dict[str(extruder_position)]
         try:
             extruder_definition = registry.findDefinitionContainers(id = extruder_definition_id)[0]
-        except IndexError as e:
+        except IndexError:
             # It still needs to break, but we want to know what extruder ID made it break.
             msg = "Unable to find extruder definition with the id [%s]" % extruder_definition_id
             Logger.logException("e", msg)
             raise IndexError(msg)
 
-        # get material container for extruders
-        material_container = application.empty_material_container
-        material_node = material_manager.getDefaultMaterial(global_stack, str(extruder_position), extruder_variant_name,
-                                                            extruder_definition = extruder_definition)
-        if material_node and material_node.getContainer():
-            material_container = material_node.getContainer()
+        # Find out what filament diameter we need.
+        approximate_diameter = round(extruder_definition.getProperty("material_diameter", "value"))  # Can't be modified by definition changes since we are just initialising the stack here.
+
+        # Find the preferred containers.
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        extruder_variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
+        if not extruder_variant_node:
+            Logger.log("w", "Could not find preferred nozzle {nozzle_name}. Falling back to {fallback}.".format(nozzle_name = machine_node.preferred_variant_name, fallback = next(iter(machine_node.variants))))
+            extruder_variant_node = next(iter(machine_node.variants.values()))
+        extruder_variant_container = extruder_variant_node.container
+        material_node = extruder_variant_node.preferredMaterial(approximate_diameter)
+        material_container = material_node.container
+        quality_node = material_node.preferredQuality()
 
         new_extruder_id = registry.uniqueName(extruder_definition_id)
         new_extruder = cls.createExtruderStack(
@@ -148,7 +112,7 @@ class CuraStackBuilder:
             position = extruder_position,
             variant_container = extruder_variant_container,
             material_container = material_container,
-            quality_container = application.empty_quality_container
+            quality_container = quality_node.container
         )
         new_extruder.setNextStack(global_stack)
 
@@ -190,6 +154,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = application.empty_intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 
@@ -238,6 +203,7 @@ class CuraStackBuilder:
         stack.variant = variant_container
         stack.material = material_container
         stack.quality = quality_container
+        stack.intent = application.empty_intent_container
         stack.qualityChanges = application.empty_quality_changes_container
         stack.userChanges = user_container
 

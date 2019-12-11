@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.2
@@ -102,7 +102,6 @@ Item
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium") // 14pt, regular
             anchors.verticalCenter: parent.verticalCenter
-            width: 600 * screenScaleFactor // TODO: Theme! (Should match column size)
 
             // FIXED-LINE-HEIGHT:
             height: 18 * screenScaleFactor // TODO: Theme!
@@ -188,10 +187,7 @@ Item
             }
             model:
             {
-                // When printing over the cloud we don't recieve print jobs until there is one, so
-                // unless there's at least one print job we'll be stuck with skeleton loading
-                // indefinitely.
-                if (Cura.MachineManager.activeMachineIsUsingCloudConnection || OutputDevice.receivedPrintJobs)
+                if (OutputDevice.receivedData)
                 {
                     return OutputDevice.queuedPrintJobs
                 }

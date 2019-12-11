@@ -64,8 +64,10 @@ Item
             height: childrenRect.height
 
             Label {
+                width: parent.width
                 text: materialProperties.name
                 font: UM.Theme.getFont("large_bold")
+                elide: Text.ElideRight
             }
         }
 

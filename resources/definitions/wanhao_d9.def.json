@@ -31,8 +31,6 @@
         "support_angle": { "default_value": 60 },
         "support_enable": { "default_value": true },
         "layer_height_0": { "default_value": 0.15 },
-        "top_thickness": { "default_value": 0.6 },
-        "material_print_temperature": { "default_value": 190 },
         "layer_height": { "default_value": 0.2 },
         "speed_print": { "default_value": 30 },
         "adhesion_type": { "default_value": "raft" },

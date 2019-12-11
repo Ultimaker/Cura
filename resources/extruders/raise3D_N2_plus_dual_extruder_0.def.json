@@ -1,5 +1,4 @@
 {
-    "id": "raise3D_N2_plus_dual_extruder_0",
     "version": 2,
     "name": "Left Extruder",
     "inherits": "fdmextruder",

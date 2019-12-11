@@ -1,33 +1,37 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import TYPE_CHECKING
+from typing import Any, Dict, Optional
 
-from UM.Application import Application
-from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
-
-from .QualityGroup import QualityGroup
-
-if TYPE_CHECKING:
-    from cura.Machines.QualityNode import QualityNode
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 
-class QualityChangesGroup(QualityGroup):
-    def __init__(self, name: str, quality_type: str, parent = None) -> None:
-        super().__init__(name, quality_type, parent)
-        self._container_registry = Application.getInstance().getContainerRegistry()
+##  Data struct to group several quality changes instance containers together.
+#
+#   Each group represents one "custom profile" as the user sees it, which
+#   contains an instance container for the global stack and one instance
+#   container per extruder.
+class QualityChangesGroup(QObject):
 
-    def addNode(self, node: "QualityNode") -> None:
-        extruder_position = node.getMetaDataEntry("position")
+    def __init__(self, name: str, quality_type: str, intent_category: str, parent: Optional["QObject"] = None) -> None:
+        super().__init__(parent)
+        self._name = name
+        self.quality_type = quality_type
+        self.intent_category = intent_category
+        self.is_available = False
+        self.metadata_for_global = {}    # type: Dict[str, Any]
+        self.metadata_per_extruder = {}  # type: Dict[int, Dict[str, Any]]
 
-        if extruder_position is None and self.node_for_global is not None or extruder_position in self.nodes_for_extruders: #We would be overwriting another node.
-            ConfigurationErrorMessage.getInstance().addFaultyContainers(node.getMetaDataEntry("id"))
-            return
+    nameChanged = pyqtSignal()
 
-        if extruder_position is None:  # Then we're a global quality changes profile.
-            self.node_for_global = node
-        else:  # This is an extruder's quality changes profile.
-            self.nodes_for_extruders[extruder_position] = node
+    def setName(self, name: str) -> None:
+        if self._name != name:
+            self._name = name
+            self.nameChanged.emit()
+
+    @pyqtProperty(str, fset = setName, notify = nameChanged)
+    def name(self) -> str:
+        return self._name
 
     def __str__(self) -> str:
-        return "%s[<%s>, available = %s]" % (self.__class__.__name__, self.name, self.is_available)
+        return "{class_name}[{name}, available = {is_available}]".format(class_name = self.__class__.__name__, name = self.name, is_available = self.is_available)

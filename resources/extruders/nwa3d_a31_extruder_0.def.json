@@ -1,5 +1,4 @@
 {
-    "id": "nwa3d_a31_extruder_0",
     "version": 2,
     "name": "Standard 0.4mm",
     "inherits": "fdmextruder",

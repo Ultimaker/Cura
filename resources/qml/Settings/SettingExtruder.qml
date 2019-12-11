@@ -75,7 +75,7 @@ SettingItem
             base.setActiveFocusToNextSetting(false)
         }
 
-        currentIndex: propertyProvider.properties.value
+        currentIndex: propertyProvider.properties.value !== undefined ? propertyProvider.properties.value : 0
 
         property string color: "#fff"
 
