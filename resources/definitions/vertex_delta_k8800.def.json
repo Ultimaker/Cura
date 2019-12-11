@@ -3,10 +3,10 @@
   "version": 2,
   "inherits": "fdmprinter",
   "metadata": {
-    "manufacturer": "Velleman nv",
+    "manufacturer": "Velleman N.V.",
     "file_formats": "text/x-gcode",
     "visible": true,
-    "author": "Velleman",
+    "author": "Velleman N.V.",
     "has_machine_quality": true,
     "has_materials": true,
     "machine_extruder_trains":
@@ -31,7 +31,7 @@
       "default_value": "elliptic"
     },
     "gantry_height": {
-      "default_value": 0
+      "value": "0"
     },
     "machine_gcode_flavor": {
       "default_value": "RepRap (Marlin/Sprinter)"

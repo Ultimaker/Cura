@@ -112,7 +112,7 @@ class PackagesModel(ListModel):
 
         # Filter on all the key-word arguments.
         for key, value in self._filter.items():
-            if key is "tags":
+            if key == "tags":
                 key_filter = lambda item, v = value: v in item["tags"]
             elif "*" in value:
                 key_filter = lambda candidate, k = key, v = value: self._matchRegExp(candidate, k, v)

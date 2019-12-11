@@ -68,6 +68,7 @@ Column
 
                 property var printMaterialLengths: PrintInformation.materialLengths
                 property var printMaterialWeights: PrintInformation.materialWeights
+                property var printMaterialCosts: PrintInformation.materialCosts
 
                 text:
                 {
@@ -77,6 +78,7 @@ Column
                     }
                     var totalLengths = 0
                     var totalWeights = 0
+                    var totalCosts = 0.0
                     if (printMaterialLengths)
                     {
                         for(var index = 0; index < printMaterialLengths.length; index++)
@@ -85,12 +87,20 @@ Column
                             {
                                 totalLengths += printMaterialLengths[index]
                                 totalWeights += Math.round(printMaterialWeights[index])
+                                var cost = printMaterialCosts[index] == undefined ? 0.0 : printMaterialCosts[index]
+                                totalCosts += cost
                             }
                         }
+                    }
+                    if(totalCosts > 0)
+                    {
+                        var costString = "%1 %2".arg(UM.Preferences.getValue("cura/currency")).arg(totalCosts.toFixed(2))
+                        return totalWeights + "g · " + totalLengths.toFixed(2) + "m · " + costString
                     }
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
+                font: UM.Theme.getFont("default")
             }
         }
     }

@@ -6,7 +6,6 @@ CuraAppDisplayName = "@CURA_APP_DISPLAY_NAME@"
 CuraVersion = "@CURA_VERSION@"
 CuraBuildType = "@CURA_BUILDTYPE@"
 CuraDebugMode = True if "@_cura_debugmode@" == "ON" else False
-CuraSDKVersion = "@CURA_SDK_VERSION@"
 CuraCloudAPIRoot = "@CURA_CLOUD_API_ROOT@"
 CuraCloudAPIVersion = "@CURA_CLOUD_API_VERSION@"
 CuraCloudAccountAPIRoot = "@CURA_CLOUD_ACCOUNT_API_ROOT@"

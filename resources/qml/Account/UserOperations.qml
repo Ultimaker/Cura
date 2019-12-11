@@ -9,10 +9,9 @@ import Cura 1.1 as Cura
 
 Column
 {
-    width: Math.max(title.width,
-                    accountButton.width) * 1.5
+    width: Math.max(title.width, accountButton.width) + 2 * UM.Theme.getSize("default_margin").width
 
-    spacing: UM.Theme.getSize("default_margin").width
+    spacing: UM.Theme.getSize("default_margin").height
 
     Label
     {
@@ -20,15 +19,9 @@ Column
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
         renderType: Text.NativeRendering
-        text: catalog.i18nc("@label", "Hi " + profile.username)
+        text: catalog.i18nc("@label The argument is a username.", "Hi %1").arg(profile.username)
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
-    }
-
-    // placeholder
-    Label
-    {
-        text: " "
     }
 
     Cura.SecondaryButton

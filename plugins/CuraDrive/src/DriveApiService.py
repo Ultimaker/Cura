@@ -45,7 +45,7 @@ class DriveApiService:
                 "Authorization": "Bearer {}".format(access_token)
             })
         except requests.exceptions.ConnectionError:
-            Logger.log("w", "Unable to connect with the server.")
+            Logger.logException("w", "Unable to connect with the server.")
             return []
 
         # HTTP status 300s mean redirection. 400s and 500s are errors.
@@ -98,7 +98,12 @@ class DriveApiService:
             # If there is no download URL, we can't restore the backup.
             return self._emitRestoreError()
 
-        download_package = requests.get(download_url, stream = True)
+        try:
+            download_package = requests.get(download_url, stream = True)
+        except requests.exceptions.ConnectionError:
+            Logger.logException("e", "Unable to connect with the server")
+            return self._emitRestoreError()
+
         if download_package.status_code >= 300:
             # Something went wrong when attempting to download the backup.
             Logger.log("w", "Could not download backup from url %s: %s", download_url, download_package.text)
@@ -142,9 +147,14 @@ class DriveApiService:
             Logger.log("w", "Could not get access token.")
             return False
 
-        delete_backup = requests.delete("{}/{}".format(self.BACKUP_URL, backup_id), headers = {
-            "Authorization": "Bearer {}".format(access_token)
-        })
+        try:
+            delete_backup = requests.delete("{}/{}".format(self.BACKUP_URL, backup_id), headers = {
+                "Authorization": "Bearer {}".format(access_token)
+            })
+        except requests.exceptions.ConnectionError:
+            Logger.logException("e", "Unable to connect with the server")
+            return False
+
         if delete_backup.status_code >= 300:
             Logger.log("w", "Could not delete backup: %s", delete_backup.text)
             return False
@@ -159,15 +169,19 @@ class DriveApiService:
         if not access_token:
             Logger.log("w", "Could not get access token.")
             return None
-        
-        backup_upload_request = requests.put(self.BACKUP_URL, json = {
-            "data": {
-                "backup_size": backup_size,
-                "metadata": backup_metadata
-            }
-        }, headers = {
-            "Authorization": "Bearer {}".format(access_token)
-        })
+        try:
+            backup_upload_request = requests.put(
+                self.BACKUP_URL,
+                json = {"data": {"backup_size": backup_size,
+                                 "metadata": backup_metadata
+                                 }
+                        },
+                headers = {
+                    "Authorization": "Bearer {}".format(access_token)
+                })
+        except requests.exceptions.ConnectionError:
+            Logger.logException("e", "Unable to connect with the server")
+            return None
 
         # Any status code of 300 or above indicates an error.
         if backup_upload_request.status_code >= 300:

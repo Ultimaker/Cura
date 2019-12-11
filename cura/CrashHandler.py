@@ -12,9 +12,10 @@ import json
 import ssl
 import urllib.request
 import urllib.error
-import shutil
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
+import certifi
+
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
@@ -22,8 +23,9 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 from UM.Resources import Resources
+
+from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
 
@@ -181,6 +183,7 @@ class CrashHandler:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
 
         crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label Cura build type", "Cura build type") + ":</b> " + str(ApplicationMetadata.CuraBuildType) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
@@ -191,6 +194,7 @@ class CrashHandler:
         group.setLayout(layout)
 
         self.data["cura_version"] = self.cura_version
+        self.data["cura_build_type"] = ApplicationMetadata.CuraBuildType
         self.data["os"] = {"type": platform.system(), "version": platform.version()}
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
@@ -319,7 +323,8 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
+                                     " (Note: Developers may not speak your language, please use English if possible)"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected
@@ -351,11 +356,13 @@ class CrashHandler:
         # Convert data to bytes
         binary_data = json.dumps(self.data).encode("utf-8")
 
+        # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
+        context = ssl.SSLContext(protocol=ssl.PROTOCOL_TLSv1_2)
+        context.load_verify_locations(cafile = certifi.where())
         # Submit data
-        kwoptions = {"data": binary_data, "timeout": 5}
-
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
+        kwoptions = {"data": binary_data,
+                     "timeout": 5,
+                     "context": context}
 
         Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
         if not self.has_started:

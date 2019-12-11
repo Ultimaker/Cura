@@ -162,7 +162,7 @@ class PostProcessingPlugin(QObject, Extension):
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue
-                    spec.loader.exec_module(loaded_script)
+                    spec.loader.exec_module(loaded_script)  # type: ignore
                     sys.modules[script_name] = loaded_script #TODO: This could be a security risk. Overwrite any module with a user-provided name?
 
                     loaded_class = getattr(loaded_script, script_name)
@@ -219,6 +219,7 @@ class PostProcessingPlugin(QObject, Extension):
         self._script_list.clear()
         if not new_stack.getMetaDataEntry("post_processing_scripts"): # Missing or empty.
             self.scriptListChanged.emit() # Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
+            self.setSelectedScriptIndex(-1)
             return
 
         self._script_list.clear()

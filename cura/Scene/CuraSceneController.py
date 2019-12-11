@@ -4,7 +4,7 @@ from PyQt5.QtCore import Qt, pyqtSlot, QObject
 from PyQt5.QtWidgets import QApplication
 
 from UM.Scene.Camera import Camera
-from cura.ObjectsModel import ObjectsModel
+from cura.UI.ObjectsModel import ObjectsModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
 
 from UM.Application import Application

@@ -4,16 +4,16 @@
 import threading
 import time
 import serial.tools.list_ports
+from os import environ
+from re import search
 
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
 
-from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
 from UM.i18n import i18nCatalog
 
-from cura.PrinterOutputDevice import ConnectionState
-from cura.CuraApplication import CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 from . import USBPrinterOutputDevice
 
@@ -114,6 +114,27 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
                 port = (port.device, port.description, port.hwid)
             if only_list_usb and not port[2].startswith("USB"):
                 continue
+
+            # To prevent cura from messing with serial ports of other devices,
+            # filter by regular expressions passed in as environment variables.
+            # Get possible patterns with python3 -m serial.tools.list_ports -v
+
+            # set CURA_DEVICENAMES=USB[1-9] -> e.g. not matching /dev/ttyUSB0
+            pattern = environ.get('CURA_DEVICENAMES')
+            if pattern and not search(pattern, port[0]):
+                continue
+
+            # set CURA_DEVICETYPES=CP2102 -> match a type of serial converter
+            pattern = environ.get('CURA_DEVICETYPES')
+            if pattern and not search(pattern, port[1]):
+                continue
+
+            # set CURA_DEVICEINFOS=LOCATION=2-1.4 -> match a physical port
+            # set CURA_DEVICEINFOS=VID:PID=10C4:EA60 -> match a vendor:product
+            pattern = environ.get('CURA_DEVICEINFOS')
+            if pattern and not search(pattern, port[2]):
+                continue
+
             base_list += [port[0]]
 
         return list(base_list)

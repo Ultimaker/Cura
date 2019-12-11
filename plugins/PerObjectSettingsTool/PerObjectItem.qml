@@ -29,6 +29,17 @@ UM.TooltipArea
             UM.ActiveTool.forceUpdate();
         }
     }
+
+    // When the user removes settings from the list addedSettingsModel, we need to recheck if the
+    // setting is visible or not to show a mark in the CheckBox.
+    Connections
+    {
+        target: addedSettingsModel
+        onVisibleCountChanged:
+        {
+            check.checked = addedSettingsModel.getVisible(model.key)
+        }
+    }
 }
 
 

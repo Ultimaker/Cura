@@ -1,8 +1,8 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.5 as Cura
 
 import QtQuick 2.2
 import QtQuick.Controls 1.1
@@ -14,40 +14,20 @@ Cura.MachineAction
 {
     id: base
     anchors.fill: parent;
+    property alias currentItemIndex: listview.currentIndex
     property var selectedDevice: null
     property bool completeProperties: true
 
+    // For validating IP addresses
+    property var networkingUtil: Cura.NetworkingUtil {}
+
     function connectToPrinter()
     {
-        if(base.selectedDevice && base.completeProperties)
+        if (base.selectedDevice && base.completeProperties)
         {
-            var printerKey = base.selectedDevice.key
-            var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
-            if (manager.getStoredKey() != printerKey)
-            {
-                // Check if there is another instance with the same key
-                if (!manager.existsKey(printerKey))
-                {
-                    manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
-                    manager.setGroupName(printerName)   // TODO To change when the groups have a name
-                    completed()
-                }
-                else
-                {
-                    existingConnectionDialog.open()
-                }
-            }
+            manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
+            completed()
         }
-    }
-
-    MessageDialog
-    {
-        id: existingConnectionDialog
-        title: catalog.i18nc("@window:title", "Existing Connection")
-        icon: StandardIcon.Information
-        text: catalog.i18nc("@message:text", "This printer/group is already added to Cura. Please select another printer/group.")
-        standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
     }
 
     Column
@@ -74,7 +54,7 @@ Cura.MachineAction
             width: parent.width
             wrapMode: Text.WordWrap
             renderType: Text.NativeRendering
-            text: catalog.i18nc("@label", "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.\n\nSelect your printer from the list below:")
+            text: catalog.i18nc("@label", "To print directly to your printer over the network, please make sure your printer is connected to the network using a network cable or by connecting your printer to your WIFI network. If you don't connect Cura with your printer, you can still use a USB drive to transfer g-code files to your printer.") + "\n\n" + catalog.i18nc("@label", "Select your printer from the list below:")
         }
 
         Row
@@ -147,21 +127,6 @@ Cura.MachineAction
                     {
                         id: listview
                         model: manager.foundDevices
-                        onModelChanged:
-                        {
-                            var selectedKey = manager.getLastManualEntryKey()
-                            // If there is no last manual entry key, then we select the stored key (if any)
-                            if (selectedKey == "")
-                                selectedKey = manager.getStoredKey()
-                            for(var i = 0; i < model.length; i++) {
-                                if(model[i].key == selectedKey)
-                                {
-                                    currentIndex = i;
-                                    return
-                                }
-                            }
-                            currentIndex = -1;
-                        }
                         width: parent.width
                         currentIndex: -1
                         onCurrentIndexChanged:
@@ -246,29 +211,10 @@ Cura.MachineAction
                         renderType: Text.NativeRendering
                         text:
                         {
-                            if(base.selectedDevice)
-                            {
-                                if (base.selectedDevice.printerType == "ultimaker3")
-                                {
-                                    return "Ultimaker 3";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
-                                {
-                                    return "Ultimaker 3 Extended";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker_s5")
-                                {
-                                    return "Ultimaker S5";
-                                }
-                                else
-                                {
-                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
-                                }
+                            if (base.selectedDevice) {
+                                return base.selectedDevice.printerTypeName
                             }
-                            else
-                            {
-                                return ""
-                            }
+                            return ""
                         }
                     }
                     Label
@@ -342,6 +288,17 @@ Cura.MachineAction
         }
     }
 
+    MessageDialog
+    {
+        id: invalidIPAddressMessageDialog
+        x: parent ? (parent.x + (parent.width) / 2) : 0
+        y: parent ? (parent.y + (parent.height) / 2) : 0
+        title: catalog.i18nc("@title:window", "Invalid IP address")
+        text: catalog.i18nc("@text", "Please enter a valid IP address.")
+        icon: StandardIcon.Warning
+        standardButtons: StandardButton.Ok
+    }
+
     UM.Dialog
     {
         id: manualPrinterDialog
@@ -371,7 +328,7 @@ Cura.MachineAction
 
             Label
             {
-                text: catalog.i18nc("@alabel", "Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
                 width: parent.width
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering
@@ -404,6 +361,26 @@ Cura.MachineAction
                 text: catalog.i18nc("@action:button", "OK")
                 onClicked:
                 {
+                    // Validate the input first
+                    if (!networkingUtil.isValidIP(manualPrinterDialog.addressText))
+                    {
+                        invalidIPAddressMessageDialog.open()
+                        return
+                    }
+
+                    // if the entered IP address has already been discovered, switch the current item to that item
+                    // and do nothing else.
+                    for (var i = 0; i < manager.foundDevices.length; i++)
+                    {
+                        var device = manager.foundDevices[i]
+                        if (device.address == manualPrinterDialog.addressText)
+                        {
+                            currentItemIndex = i
+                            manualPrinterDialog.hide()
+                            return
+                        }
+                    }
+
                     manager.setManualDevice(manualPrinterDialog.printerKey, manualPrinterDialog.addressText)
                     manualPrinterDialog.hide()
                 }

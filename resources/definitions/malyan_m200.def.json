@@ -1,5 +1,4 @@
 {
-    "id": "malyan_m200",
     "version": 2,
     "name": "Malyan M200",
     "inherits": "fdmprinter",
@@ -30,8 +29,6 @@
         "speed_wall_x": { "value": "speed_print" },
         "speed_support": { "value": "speed_wall_0" },
         "speed_layer_0": { "value": "round(speed_print / 2.0, 2)" },
-        "speed_travel": { "default_value": 50 },
-        "speed_travel_layer_0": { "default_value": 40 },
         "speed_infill": { "value": "speed_print" },
         "speed_topbottom": {"value": "speed_print / 2"},
 
@@ -80,7 +77,6 @@
         "raft_surface_layers": { "default_value": 1 },
         "skirt_line_count": { "default_value": 2},
         "brim_width" : { "default_value": 5},
-        "start_layers_at_same_position": { "default_value": true},
         "retraction_combing": { "default_value": "noskin" },
         "retraction_amount" : { "default_value": 4.5},
         "retraction_speed" : { "default_value": 40},

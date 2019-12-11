@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -48,7 +48,6 @@ class ArrangeArray:
         return self._count
 
     def get(self, index):
-        print(self._arrange)
         return self._arrange[index]
 
     def getFirstEmpty(self):

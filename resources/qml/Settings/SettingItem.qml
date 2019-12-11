@@ -23,19 +23,32 @@ Item
     property alias contents: controlContainer.children
     property alias hovered: mouse.containsMouse
 
-    property var showRevertButton: true
-    property var showInheritButton: true
-    property var showLinkedSettingIcon: true
-    property var doDepthIndentation: true
-    property var doQualityUserSettingEmphasis: true
+    property bool showRevertButton: true
+    property bool showInheritButton: true
+    property bool showLinkedSettingIcon: true
+    property bool doDepthIndentation: true
+    property bool doQualityUserSettingEmphasis: true
     property var settingKey: definition.key //Used to detect each individual setting more easily in Squish GUI tests.
 
     // Create properties to put property provider stuff in (bindings break in qt 5.5.1 otherwise)
     property var state: propertyProvider.properties.state
-    // There is no resolve property if there is only one stack.
-    property var resolve: Cura.MachineManager.activeStackId !== Cura.MachineManager.activeMachineId ? propertyProvider.properties.resolve : "None"
+    property var resolve: propertyProvider.properties.resolve
     property var stackLevels: propertyProvider.stackLevels
     property var stackLevel: stackLevels[0]
+    // A list of stack levels that will trigger to show the revert button
+    property var showRevertStackLevels: [0]
+    property bool resetButtonVisible: {
+        var is_revert_stack_level = false;
+        for (var i in base.showRevertStackLevels)
+        {
+            if (base.stackLevel == i)
+            {
+                is_revert_stack_level = true
+                break
+            }
+        }
+        return is_revert_stack_level && base.showRevertButton
+    }
 
     signal focusReceived()
     signal setActiveFocusToNextSetting(bool forward)
@@ -43,7 +56,8 @@ Item
     signal showTooltip(string text)
     signal hideTooltip()
     signal showAllHiddenInheritedSettings(string category_id)
-    property string tooltipText:
+
+    function createTooltipText()
     {
         var affects = settingDefinitionsModel.getRequiredBy(definition.key, "value")
         var affected_by = settingDefinitionsModel.getRequires(definition.key, "value")
@@ -62,14 +76,19 @@ Item
 
         var tooltip = "<b>%1</b>\n<p>%2</p>".arg(definition.label).arg(definition.description)
 
+        if(!propertyProvider.isValueUsed)
+        {
+            tooltip += "<i>%1</i><br/><br/>".arg(catalog.i18nc("@label", "This setting is not used because all the settings that it influences are overridden."))
+        }
+
         if (affects_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affects")).arg(affects_list)
         }
 
         if (affected_by_list != "")
         {
-            tooltip += "<br/><b>%1</b>\n<ul>\n%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
+            tooltip += "<b>%1</b><ul>%2</ul>".arg(catalog.i18nc("@label Header for list of settings.", "Affected By")).arg(affected_by_list)
         }
 
         return tooltip
@@ -109,7 +128,7 @@ Item
 
             onTriggered:
             {
-                base.showTooltip(base.tooltipText)
+                base.showTooltip(base.createTooltipText())
             }
         }
 
@@ -130,7 +149,7 @@ Item
             color: UM.Theme.getColor("setting_control_text")
             opacity: (definition.visible) ? 1 : 0.5
             // emphasize the setting if it has a value in the user or quality profile
-            font: base.doQualityUserSettingEmphasis && base.stackLevel != undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
+            font: base.doQualityUserSettingEmphasis && base.stackLevel !== undefined && base.stackLevel <= 1 ? UM.Theme.getFont("default_italic") : UM.Theme.getFont("default")
         }
 
         Row
@@ -151,10 +170,11 @@ Item
             {
                 id: linkedSettingIcon;
 
-                visible: Cura.MachineManager.activeStack != Cura.MachineManager.activeMachine && (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
+                visible: (!definition.settable_per_extruder || String(globalPropertyProvider.properties.limit_to_extruder) != "-1") && base.showLinkedSettingIcon
 
-                height: parent.height;
-                width: height;
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                width: height
 
                 color: UM.Theme.getColor("setting_control_button")
                 hoverColor: UM.Theme.getColor("setting_control_button")
@@ -165,23 +185,24 @@ Item
                 {
                     hoverTimer.stop()
                     var tooltipText = catalog.i18nc("@label", "This setting is always shared between all extruders. Changing it here will change the value for all extruders.")
-                    if ((resolve != "None") && (stackLevel != 0))
+                    if ((resolve !== "None") && (stackLevel !== 0))
                     {
                         // We come here if a setting has a resolve and the setting is not manually edited.
                         tooltipText += " " + catalog.i18nc("@label", "The value is resolved from per-extruder values ") + "[" + Cura.ExtruderManager.getInstanceExtruderValues(definition.key) + "]."
                     }
                     base.showTooltip(tooltipText)
                 }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
 
             UM.SimpleButton
             {
                 id: revertButton
 
-                visible: base.stackLevel == 0 && base.showRevertButton
+                visible: base.resetButtonVisible
 
-                height: parent.height
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 width: height
 
                 color: UM.Theme.getColor("setting_control_button")
@@ -208,12 +229,12 @@ Item
                     hoverTimer.stop()
                     base.showTooltip(catalog.i18nc("@label", "This setting has a value that is different from the profile.\n\nClick to restore the value of the profile."))
                 }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
 
             UM.SimpleButton
             {
-                // This button shows when the setting has an inherited function, but is overriden by profile.
+                // This button shows when the setting has an inherited function, but is overridden by profile.
                 id: inheritButton
                 // Inherit button needs to be visible if;
                 // - User made changes that override any loaded settings
@@ -256,10 +277,15 @@ Item
                         // Observed when loading workspace, probably when SettingItems are removed.
                         return false
                     }
+                    if(globalPropertyProvider.properties.limit_to_extruder === undefined)
+                    {
+                        return false
+                    }
                     return Cura.SettingInheritanceManager.getOverridesForExtruder(definition.key, String(globalPropertyProvider.properties.limit_to_extruder)).indexOf(definition.key) >= 0
                 }
 
-                height: parent.height
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
                 width: height
 
                 onClicked:
@@ -277,7 +303,7 @@ Item
                             break
                         }
                     }
-                    if ((last_entry == 4 || last_entry == 11) && base.stackLevel == 0 && base.stackLevels.length == 2)
+                    if ((last_entry === 4 || last_entry === 11) && base.stackLevel === 0 && base.stackLevels.length === 2)
                     {
                         // Special case of the inherit reset. If only the definition (4th or 11th) container) and the first
                         // entry (user container) are set, we can simply remove the container.
@@ -301,7 +327,7 @@ Item
                 iconSource: UM.Theme.getIcon("formula")
 
                 onEntered: { hoverTimer.stop(); base.showTooltip(catalog.i18nc("@label", "This setting is normally calculated, but it currently has an absolute value set.\n\nClick to restore the calculated value.")) }
-                onExited: base.showTooltip(base.tooltipText)
+                onExited: base.showTooltip(base.createTooltipText())
             }
         }
 

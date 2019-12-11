@@ -27,7 +27,7 @@ Item
 
         width: UM.Theme.getSize("action_panel_widget").width
         height: childrenRect.height + 2 * UM.Theme.getSize("thick_margin").height
-        anchors. right: parent.right
+        anchors.right: parent.right
         color: UM.Theme.getColor("main_background")
         border.width: UM.Theme.getSize("default_lining").width
         border.color: UM.Theme.getColor("lining")

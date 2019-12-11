@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 
@@ -19,15 +19,8 @@ Item
     property bool settingsEnabled: Cura.ExtruderManager.activeExtruderStackId || extrudersEnabledCount.properties.value == 1
     property real padding: UM.Theme.getSize("thick_margin").width
 
-    UM.I18nCatalog
-    {
-        id: catalog
-        name: "cura"
-    }
-
     Column
     {
-        width: parent.width - 2 * parent.padding
         spacing: UM.Theme.getSize("wide_margin").height
 
         anchors

@@ -50,6 +50,7 @@ class AuthorizationHelpers:
     #   \param refresh_token:
     #   \return An AuthenticationResponse object.
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
+        Logger.log("d", "Refreshing the access token.")
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -98,7 +99,7 @@ class AuthorizationHelpers:
             })
         except requests.exceptions.ConnectionError:
             # Connection was suddenly dropped. Nothing we can do about that.
-            Logger.log("w", "Something failed while attempting to parse the JWT token")
+            Logger.logException("w", "Something failed while attempting to parse the JWT token")
             return None
         if token_request.status_code not in (200, 201):
             Logger.log("w", "Could not retrieve token data from auth server: %s", token_request.text)

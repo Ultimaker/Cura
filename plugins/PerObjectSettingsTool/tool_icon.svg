@@ -1,3 +1,22 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30">
-    <path d="M30 20L25.1 6.7 27.6 0H12.9l1.6 5H6.4l2.3 6H2.4l2.4 6.2L0 30h19.5l-1.7-4H26l-2.3-6H30zm-12.5 5l-2.8-7.5 2.4-6.5H9.6L7.7 6h14.7L20 12.4l2.9 7.6 2 5h-7.4z"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 28 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>per_model_settings</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M9.73076923,0 L9.226,1.345 L0.449,11 L0,11 L0.639,9.084 L8.896,0 L9.73076923,0 Z M8.49,3.472 L8.907,4.721 L3.199,11 L1.647,11 L8.49,3.472 Z M9.228,5.685 L9.645,6.935 L5.949,11 L4.397,11 L9.228,5.685 Z M9.966,7.899 L10.382,9.148 L8.699,11 L7.147,11 L9.966,7.899 Z M10.704,10.112 L11,11 L9.896,11 L10.704,10.112 Z M7.698,0 L1.332,7.004 L2.23,4.308 L6.146,0 L7.698,0 Z M4.948,0 L2.344,2.866 L1.89,1.656 L3.396,0 L4.948,0 Z M2.198,0 L1.54,0.724 L1.26923077,0 L2.198,0 Z" id="path-1"></path>
+    </defs>
+    <g id="per_model_settings" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Per-model" transform="translate(2.000000, 2.000000)">
+            <polygon id="Path-Copy-5" fill="#000" points="1.26923077 0 9.73076923 0 8.46153846 3.38461538 11 11 0 11 2.53846154 3.38461538"></polygon>
+            <polygon id="Path-Copy-8" fill="#000" points="14.2692308 13 22.7307692 13 21.4615385 16.3846154 24 24 13 24 15.5384615 16.3846154"></polygon>
+            <g id="stripe" transform="translate(13.000000, 0.000000)">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Combined-Shape" fill="#000" xlink:href="#path-1"></use>
+            </g>
+            <path d="M1.990731,13.5 L3.06878027,16.374798 L0.693712943,23.5 L10.3062871,23.5 L7.93121973,16.374798 L9.009269,13.5 L1.990731,13.5 Z" id="Path-Copy-7" stroke="#000"></path>
+        </g>
+    </g>
 </svg>

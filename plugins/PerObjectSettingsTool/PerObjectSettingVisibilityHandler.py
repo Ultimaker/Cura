@@ -1,7 +1,7 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
@@ -12,6 +12,7 @@ import UM.Settings.Models.SettingVisibilityHandler
 
 from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherits-stack setting values from different extruders.
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
+
 
 ##  The per object setting visibility handler ensures that only setting
 #   definitions that have a matching instance Container are returned as visible.

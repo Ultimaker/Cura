@@ -1,5 +1,4 @@
 {
-    "id": "bq_hephestos_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
