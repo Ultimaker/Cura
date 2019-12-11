@@ -1,5 +1,4 @@
 {
-    "id": "builder_premium_small_front",
     "version": 2,
     "name": "Front Extruder",
     "inherits": "fdmextruder",

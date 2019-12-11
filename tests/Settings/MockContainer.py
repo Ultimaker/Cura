@@ -78,6 +78,10 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
     def getAllKeys(self):
         pass
 
+    # Should return false (or even throw an exception) if trust (or other verification) is invalidated.
+    def _trustHook(self, file_name: Optional[str]) -> bool:
+        return True
+
     def setProperty(self, key, property_name, property_value, container = None, set_from_cache = False):
         pass
 

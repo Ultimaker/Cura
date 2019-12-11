@@ -73,9 +73,6 @@ from cura.Scene import ZOffsetDecorator
 
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
-import cura.Machines.MaterialManager #Imported like this to prevent circular imports.
-import cura.Machines.QualityManager #Imported like this to prevent circular imports.
-from cura.Machines.VariantManager import VariantManager
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
@@ -148,7 +145,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 10
+    SettingVersion = 11
 
     Created = False
 
@@ -227,7 +224,7 @@ class CuraApplication(QtApplication):
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
-        self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+        self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
         self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
@@ -520,7 +517,8 @@ class CuraApplication(QtApplication):
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
-        # set the setting version for Preferences
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up preferences..."))
+        # Set the setting version for Preferences
         preferences = self.getPreferences()
         preferences.addPreference("metadata/setting_version", 0)
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
@@ -722,6 +720,8 @@ class CuraApplication(QtApplication):
     ##  Handle loading of all plugin types (and the backend explicitly)
     #   \sa PluginRegistry
     def _loadPlugins(self) -> None:
+        self._plugin_registry.setCheckIfTrusted(ApplicationMetadata.IsEnterpriseVersion)
+
         self._plugin_registry.addType("profile_reader", self._addProfileReader)
         self._plugin_registry.addType("profile_writer", self._addProfileWriter)
 
@@ -880,6 +880,10 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(result = QObject)
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
+        if self._first_start_machine_actions_model is None:
+            self._first_start_machine_actions_model = FirstStartMachineActionsModel(self, parent = self)
+            if self.started:
+                self._first_start_machine_actions_model.initialize()
         return self._first_start_machine_actions_model
 
     @pyqtSlot(result = QObject)
@@ -923,20 +927,6 @@ class CuraApplication(QtApplication):
         if self._extruder_manager is None:
             self._extruder_manager = ExtruderManager()
         return self._extruder_manager
-
-    @deprecated("Use the ContainerTree structure instead.", since = "4.3")
-    def getVariantManager(self, *args) -> VariantManager:
-        return VariantManager.getInstance()
-
-    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
-    @pyqtSlot(result = QObject)
-    def getMaterialManager(self, *args) -> cura.Machines.MaterialManager.MaterialManager:
-        return cura.Machines.MaterialManager.MaterialManager.getInstance()
-
-    # Can't deprecate this function since the deprecation marker collides with pyqtSlot!
-    @pyqtSlot(result = QObject)
-    def getQualityManager(self, *args) -> cura.Machines.QualityManager.QualityManager:
-        return cura.Machines.QualityManager.QualityManager.getInstance()
 
     def getIntentManager(self, *args) -> IntentManager:
         return IntentManager.getInstance()
@@ -1380,16 +1370,19 @@ class CuraApplication(QtApplication):
 
         for node in nodes:
             mesh_data = node.getMeshData()
-            if mesh_data and mesh_data.getFileName():
-                job = ReadMeshJob(mesh_data.getFileName())
-                job._node = node  # type: ignore
-                job.finished.connect(self._reloadMeshFinished)
-                if has_merged_nodes:
-                    job.finished.connect(self.updateOriginOfMergedMeshes)
 
-                job.start()
-            else:
-                Logger.log("w", "Unable to reload data because we don't have a filename.")
+            if mesh_data:
+                file_name = mesh_data.getFileName()
+                if file_name:
+                    job = ReadMeshJob(file_name)
+                    job._node = node  # type: ignore
+                    job.finished.connect(self._reloadMeshFinished)
+                    if has_merged_nodes:
+                        job.finished.connect(self.updateOriginOfMergedMeshes)
+
+                    job.start()
+                else:
+                    Logger.log("w", "Unable to reload data because we don't have a filename.")
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1808,7 +1801,7 @@ class CuraApplication(QtApplication):
         try:
             result = workspace_reader.preRead(file_path, show_dialog=False)
             return result == WorkspaceReader.PreReadResult.accepted
-        except Exception as e:
+        except Exception:
             Logger.logException("e", "Could not check file %s", file_url)
             return False
 
@@ -1904,3 +1897,7 @@ class CuraApplication(QtApplication):
             op.push()
             from UM.Scene.Selection import Selection
             Selection.clear()
+
+    @classmethod
+    def getInstance(cls, *args, **kwargs) -> "CuraApplication":
+        return cast(CuraApplication, super().getInstance(**kwargs))

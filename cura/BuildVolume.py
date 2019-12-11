@@ -26,7 +26,6 @@ catalog = i18nCatalog("cura")
 
 import numpy
 import math
-import copy
 
 from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
@@ -125,10 +124,6 @@ class BuildVolume(SceneNode):
         # activeQualityChanged is always emitted after setActiveVariant, setActiveMaterial and setActiveQuality.
         # Therefore this works.
         self._machine_manager.activeQualityChanged.connect(self._onStackChanged)
-
-        # This should also ways work, and it is semantically more correct,
-        # but it does not update the disallowed areas after material change
-        self._machine_manager.activeStackChanged.connect(self._onStackChanged)
 
         # Enable and disable extruder
         self._machine_manager.extruderChanged.connect(self.updateNodeBoundaryCheck)
@@ -1107,7 +1102,7 @@ class BuildVolume(SceneNode):
 
         # If we are printing one at a time, we need to add the bed adhesion size to the disallowed areas of the objects
         if container_stack.getProperty("print_sequence", "value") == "one_at_a_time":
-            return 0.1  # Return a very small value, so we do draw disallowed area's near the edges.
+            return 0.1
 
         bed_adhesion_size = self._calculateBedAdhesionSize(used_extruders)
         support_expansion = self._calculateSupportExpansion(self._global_container_stack)

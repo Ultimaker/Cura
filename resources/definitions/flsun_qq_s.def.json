@@ -1,5 +1,4 @@
 {
-    "id": "flsun_qq_s",
     "version": 2,
     "name": "FLSUN QQ-S",
     "inherits": "fdmprinter",
@@ -33,14 +32,8 @@
         "z_seam_type": {
             "default_value": "back"
         },
-        "top_thickness": {
-            "default_value": 5
-        },
-        "bottom_layers": {
-            "default_value": 4
-        },
         "gantry_height": {
-            "default_value": 0
+            "value": "0"
         },
         "machine_nozzle_size": {
             "default_value": 0.4

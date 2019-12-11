@@ -1,13 +1,12 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 
-from cura.Settings.cura_empty_instance_containers import empty_variant_container
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.MaterialNode import MaterialNode
 
@@ -83,12 +82,22 @@ class VariantNode(ContainerNode):
     #   if there is no match.
     def preferredMaterial(self, approximate_diameter: int) -> MaterialNode:
         for base_material, material_node in self.materials.items():
-            if self.machine.preferred_material in base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+            if self.machine.preferred_material == base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                 return material_node
-        # First fallback: Choose any material with matching diameter.
+            
+        # First fallback: Check if we should be checking for the 175 variant.
+        if approximate_diameter == 2:
+            preferred_material = self.machine.preferred_material + "_175"
+            for base_material, material_node in self.materials.items():
+                if preferred_material == base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+                    return material_node
+        
+        # Second fallback: Choose any material with matching diameter.
         for material_node in self.materials.values():
             if material_node.getMetaDataEntry("approximate_diameter") and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
+                Logger.log("w", "Could not find preferred material %s, falling back to whatever works", self.machine.preferred_material)
                 return material_node
+
         fallback = next(iter(self.materials.values()))  # Should only happen with empty material node.
         Logger.log("w", "Could not find preferred material {preferred_material} with diameter {diameter} for variant {variant_id}, falling back to {fallback}.".format(
             preferred_material = self.machine.preferred_material,
@@ -122,8 +131,8 @@ class VariantNode(ContainerNode):
         if base_file not in self.materials:  # Completely new base file. Always better than not having a file as long as it matches our set-up.
             if material_definition != "fdmprinter" and material_definition != self.machine.container_id:
                 return
-            material_variant = container.getMetaDataEntry("variant_name", empty_variant_container.getName())
-            if material_variant != self.variant_name:
+            material_variant = container.getMetaDataEntry("variant_name")
+            if material_variant is not None and material_variant != self.variant_name:
                 return
         else:  # We already have this base profile. Replace the base profile if the new one is more specific.
             new_definition = container.getMetaDataEntry("definition")

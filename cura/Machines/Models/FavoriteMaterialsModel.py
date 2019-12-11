@@ -9,14 +9,14 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
     def __init__(self, parent = None):
         super().__init__(parent)
         cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
-        self._update()
+        self._onChanged()
 
     ##  Triggered when any preference changes, but only handles it when the list
     #   of favourites is changed.
     def _onFavoritesChanged(self, preference_key: str) -> None:
         if preference_key != "cura/favorite_materials":
             return
-        self._update()
+        self._onChanged()
 
     def _update(self):
         if not self._canUpdate():
@@ -27,7 +27,7 @@ class FavoriteMaterialsModel(BaseMaterialsModel):
 
         for root_material_id, container_node in self._available_materials.items():
             # Do not include the materials from a to-be-removed package
-            if bool(container_node.container.getMetaDataEntry("removed", False)):
+            if bool(container_node.getMetaDataEntry("removed", False)):
                 continue
 
             # Only add results for favorite materials

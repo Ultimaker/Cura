@@ -244,7 +244,7 @@ Item
             Row
             {
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
-                visible: Cura.MachineManager.hasMaterials
+                visible: Cura.MachineManager.activeMachine.hasMaterials
 
                 Label
                 {
@@ -305,7 +305,7 @@ Item
             Row
             {
                 height: visible ? UM.Theme.getSize("print_setup_big_item").height : 0
-                visible: Cura.MachineManager.hasVariants
+                visible: Cura.MachineManager.activeMachine.hasVariants
 
                 Label
                 {

@@ -46,7 +46,7 @@ TabView
         {
             return ""
         }
-        return linkedMaterials.join(", ");
+        return linkedMaterials;
     }
 
     function getApproximateDiameter(diameter)
@@ -449,7 +449,7 @@ TabView
                     UM.ContainerPropertyProvider
                     {
                         id: variantPropertyProvider
-                        containerId: Cura.MachineManager.activeVariantId
+                        containerId: Cura.MachineManager.activeStack.variant.id
                         watchedProperties: [ "value" ]
                         key: model.key
                     }

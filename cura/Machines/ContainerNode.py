@@ -7,7 +7,7 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Logger import Logger
 from UM.Settings.InstanceContainer import InstanceContainer
-from UM.Decorators import deprecated
+
 
 ##  A node in the container tree. It represents one container.
 #
@@ -42,18 +42,6 @@ class ContainerNode:
         if len(container_metadata) == 0:
             return default
         return container_metadata[0].get(entry, default)
-
-    ##  Get the child with the specified container ID.
-    #   \param child_id The container ID to get from among the children.
-    #   \return The child node, or ``None`` if no child is present with the
-    #   specified ID.
-    @deprecated("Iterate over the children instead of requesting them one by one.", "4.3")
-    def getChildNode(self, child_id: str) -> Optional["ContainerNode"]:
-        return self.children_map.get(child_id)
-
-    @deprecated("Use `.container` instead.", "4.3")
-    def getContainer(self) -> Optional[InstanceContainer]:
-        return self.container
 
     ##  The container that this node's container ID refers to.
     #

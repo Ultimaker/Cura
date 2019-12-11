@@ -1,5 +1,4 @@
 {
-    "id": "cartesio_extruder_3",
     "version": 2,
     "name": "Extruder 4",
     "inherits": "fdmextruder",

@@ -70,12 +70,31 @@ Popup
                         {
                             id: headerLabel
                             text: model.name
+                            color: UM.Theme.getColor("text_inactive")
                             renderType: Text.NativeRendering
+                            width: parent.width
                             height: visible ? contentHeight: 0
-                            enabled: false
                             visible: qualitiesList.visibleChildren.length > 0
                             anchors.left: parent.left
                             anchors.leftMargin: UM.Theme.getSize("default_margin").width
+
+                            MouseArea // tooltip hover area
+                            {
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                enabled: model.description !== undefined
+                                acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                                onEntered:
+                                {
+                                    base.showTooltip(
+                                        headerLabel,
+                                        Qt.point(- UM.Theme.getSize("default_margin").width, 0),
+                                        model.description
+                                    )
+                                }
+                                onExited: base.hideTooltip()
+                            }
                         }
 
                         Column
@@ -145,6 +164,7 @@ Popup
                         visible: profilesList.visibleChildren.length > 1
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        color: UM.Theme.getColor("text_inactive")
                     }
 
                     Column

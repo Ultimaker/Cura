@@ -2,13 +2,8 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt
-
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Qt.ListModel import ListModel
-from UM.Util import parseBool
-
-from cura.Machines.VariantType import VariantType
 
 
 class BuildPlateModel(ListModel):

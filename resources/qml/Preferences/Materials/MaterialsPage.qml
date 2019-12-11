@@ -53,7 +53,11 @@ Item
     }
 
     // When loaded, try to select the active material in the tree
-    Component.onCompleted: resetExpandedActiveMaterial()
+    Component.onCompleted:
+    {
+        resetExpandedActiveMaterial()
+        base.newRootMaterialIdToSwitchTo = active_root_material_id
+    }
 
     // Every time the selected item has changed, notify to the details panel
     onCurrentItemChanged:
@@ -103,7 +107,7 @@ Item
             id: activateMenuButton
             text: catalog.i18nc("@action:button", "Activate")
             iconName: "list-activate"
-            enabled: !isCurrentItemActivated && Cura.MachineManager.hasMaterials
+            enabled: !isCurrentItemActivated && Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
                 forceActiveFocus()
@@ -227,7 +231,7 @@ Item
             text:
             {
                 var caption = catalog.i18nc("@action:label", "Printer") + ": " + Cura.MachineManager.activeMachine.name;
-                if (Cura.MachineManager.hasVariants)
+                if (Cura.MachineManager.activeMachine.hasVariants)
                 {
                     var activeVariantName = ""
                     if(Cura.MachineManager.activeStack != null)
