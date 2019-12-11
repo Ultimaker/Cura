@@ -21,7 +21,8 @@ UM.MainWindow
     id: base
 
     // Cura application window title
-    title: catalog.i18nc("@title:window", "Ultimaker Cura")
+    title: PrintInformation.jobName + " - " + catalog.i18nc("@title:window", CuraApplication.applicationDisplayName)
+
     backgroundColor: UM.Theme.getColor("viewport_background")
 
     UM.I18nCatalog
@@ -301,6 +302,15 @@ UM.MainWindow
                 }
             }
 
+            // A hint for the loaded content view. Overlay items / controls can safely be placed in this area
+            Item {
+                id: mainSafeArea
+                anchors.left: viewOrientationControls.right
+                anchors.right: main.right
+                anchors.top: main.top
+                anchors.bottom: main.bottom
+            }
+
             Loader
             {
                 // A stage can control this area. If nothing is set, it will therefore show the 3D view.
@@ -316,6 +326,12 @@ UM.MainWindow
                 }
 
                 source: UM.Controller.activeStage != null ? UM.Controller.activeStage.mainComponent : ""
+
+                onLoaded: {
+                    if (main.item.safeArea !== undefined){
+                       main.item.safeArea = Qt.binding(function() { return mainSafeArea });
+                    }
+                }
             }
 
             Loader
@@ -447,7 +463,6 @@ UM.MainWindow
         target: Cura.Actions.addProfile
         onTriggered:
         {
-
             preferences.show();
             preferences.setPage(4);
             // Create a new profile after a very short delay so the preference page has time to initiate
@@ -573,7 +588,13 @@ UM.MainWindow
     Connections
     {
         target: Cura.Actions.toggleFullScreen
-        onTriggered: base.toggleFullscreen();
+        onTriggered: base.toggleFullscreen()
+    }
+
+    Connections
+    {
+        target: Cura.Actions.exitFullScreen
+        onTriggered: base.exitFullscreen()
     }
 
     FileDialog
@@ -585,7 +606,12 @@ UM.MainWindow
         modality: Qt.WindowModal
         selectMultiple: true
         nameFilters: UM.MeshFileHandler.supportedReadFileTypes;
-        folder: CuraApplication.getDefaultPath("dialog_load_path")
+        folder:
+        {
+            //Because several implementations of the file dialog only update the folder when it is explicitly set.
+            folder = CuraApplication.getDefaultPath("dialog_load_path");
+            return CuraApplication.getDefaultPath("dialog_load_path");
+        }
         onAccepted:
         {
             // Because several implementations of the file dialog only update the folder

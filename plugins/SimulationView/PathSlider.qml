@@ -56,6 +56,11 @@ Item
         return Math.min(Math.max(value, sliderRoot.minimumValue), sliderRoot.maximumValue)
     }
 
+    onWidthChanged : {
+        // After a width change, the pixel-position of the handle is out of sync with the property value
+        setHandleValue(handleValue)
+    }
+
     // slider track
     Rectangle
     {

@@ -11,7 +11,7 @@ def getMetaData():
     return {
         "stage": {
             "name": i18n_catalog.i18nc("@item:inmenu", "Preview"),
-            "weight": 1
+            "weight": 20
         }
     }
 

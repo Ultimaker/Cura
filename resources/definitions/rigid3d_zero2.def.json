@@ -44,9 +44,6 @@
         "material_print_temperature": {
             "value": 235
         },
-        "material_bed_temperature": {
-            "default_value": 100
-        },
         "speed_print": {
             "default_value": 40
         },
@@ -55,7 +52,7 @@
         },
         "speed_travel": {
             "value": 100
-        },        
+        },
         "support_enable": {
             "default_value": false
         },
@@ -90,14 +87,9 @@
             "default_value": false
         },
         "cool_fan_speed": {
-            "default_value": 50,
             "value": 50
         },
-        "cool_fan_speed_min": {
-            "default_value": 0
-        },
         "cool_fan_full_at_height": {
-            "default_value": 1.0,
             "value": 1.0
         },
         "support_z_distance": {

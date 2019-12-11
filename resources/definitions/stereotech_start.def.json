@@ -5,12 +5,12 @@
     "metadata": {
         "visible": true,
         "author": "Stereotech",
-        "manufacturer": "Other",
+        "manufacturer": "Stereotech LLC.",
         "file_formats": "text/x-gcode",
         "platform": "stereotech_start.stl",
         "icon": "icon_ultimaker2",
-		"platform_offset": [0, 0, 0],
-		"machine_extruder_trains":
+        "platform_offset": [0, 0, 0],
+        "machine_extruder_trains":
         {
             "0": "stereotech_start_extruder_0"
         }

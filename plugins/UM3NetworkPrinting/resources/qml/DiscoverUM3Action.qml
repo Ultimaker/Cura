@@ -23,35 +23,11 @@ Cura.MachineAction
 
     function connectToPrinter()
     {
-        if(base.selectedDevice && base.completeProperties)
+        if (base.selectedDevice && base.completeProperties)
         {
-            var printerKey = base.selectedDevice.key
-            var printerName = base.selectedDevice.name  // TODO To change when the groups have a name
-            if (manager.getStoredKey() != printerKey)
-            {
-                // Check if there is another instance with the same key
-                if (!manager.existsKey(printerKey))
-                {
-                    manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
-                    manager.setGroupName(printerName)   // TODO To change when the groups have a name
-                    completed()
-                }
-                else
-                {
-                    existingConnectionDialog.open()
-                }
-            }
+            manager.associateActiveMachineWithPrinterDevice(base.selectedDevice)
+            completed()
         }
-    }
-
-    MessageDialog
-    {
-        id: existingConnectionDialog
-        title: catalog.i18nc("@window:title", "Existing Connection")
-        icon: StandardIcon.Information
-        text: catalog.i18nc("@message:text", "This printer/group is already added to Cura. Please select another printer/group.")
-        standardButtons: StandardButton.Ok
-        modality: Qt.ApplicationModal
     }
 
     Column
@@ -151,21 +127,6 @@ Cura.MachineAction
                     {
                         id: listview
                         model: manager.foundDevices
-                        onModelChanged:
-                        {
-                            var selectedKey = manager.getLastManualEntryKey()
-                            // If there is no last manual entry key, then we select the stored key (if any)
-                            if (selectedKey == "")
-                                selectedKey = manager.getStoredKey()
-                            for(var i = 0; i < model.length; i++) {
-                                if(model[i].key == selectedKey)
-                                {
-                                    currentIndex = i;
-                                    return
-                                }
-                            }
-                            currentIndex = -1;
-                        }
                         width: parent.width
                         currentIndex: -1
                         onCurrentIndexChanged:
@@ -250,29 +211,10 @@ Cura.MachineAction
                         renderType: Text.NativeRendering
                         text:
                         {
-                            if(base.selectedDevice)
-                            {
-                                if (base.selectedDevice.printerType == "ultimaker3")
-                                {
-                                    return "Ultimaker 3";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker3_extended")
-                                {
-                                    return "Ultimaker 3 Extended";
-                                }
-                                else if (base.selectedDevice.printerType == "ultimaker_s5")
-                                {
-                                    return "Ultimaker S5";
-                                }
-                                else
-                                {
-                                    return catalog.i18nc("@label", "Unknown") // We have no idea what type it is. Should not happen 'in the field'
-                                }
+                            if (base.selectedDevice) {
+                                return base.selectedDevice.printerTypeName
                             }
-                            else
-                            {
-                                return ""
-                            }
+                            return ""
                         }
                     }
                     Label
@@ -349,8 +291,8 @@ Cura.MachineAction
     MessageDialog
     {
         id: invalidIPAddressMessageDialog
-        x: (parent.x + (parent.width) / 2) | 0
-        y: (parent.y + (parent.height) / 2) | 0
+        x: parent ? (parent.x + (parent.width) / 2) : 0
+        y: parent ? (parent.y + (parent.height) / 2) : 0
         title: catalog.i18nc("@title:window", "Invalid IP address")
         text: catalog.i18nc("@text", "Please enter a valid IP address.")
         icon: StandardIcon.Warning
@@ -386,7 +328,7 @@ Cura.MachineAction
 
             Label
             {
-                text: catalog.i18nc("@label", "Enter the IP address or hostname of your printer on the network.")
+                text: catalog.i18nc("@label", "Enter the IP address of your printer on the network.")
                 width: parent.width
                 wrapMode: Text.WordWrap
                 renderType: Text.NativeRendering

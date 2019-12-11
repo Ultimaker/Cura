@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: 800 * screenScaleFactor
-    height: 400 * screenScaleFactor
+    width: UM.Theme.getSize("popup_dialog").width
+    height: UM.Theme.getSize("popup_dialog").height
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
@@ -100,7 +100,6 @@ UM.Dialog
                 {
                     text: styleData.value
                     font: UM.Theme.getFont("system")
-                    color: UM.Theme.getColor("setting_control_disabled_text")
                 }
             }
 

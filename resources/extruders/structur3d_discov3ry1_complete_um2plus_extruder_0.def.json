@@ -1,5 +1,4 @@
 {
-    "id": "structur3d_discov3ry1_complete_um2plus_extruder_0",
     "version": 2,
     "name": "Discov3ry Extruder",
     "inherits": "fdmextruder",

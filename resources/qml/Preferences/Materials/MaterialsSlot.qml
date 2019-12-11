@@ -10,6 +10,8 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+// A single material row, typically used in a MaterialsBrandSection
+
 Rectangle
 {
     id: materialSlot
@@ -51,7 +53,7 @@ Rectangle
         anchors.left: swatch.right
         anchors.verticalCenter: materialSlot.verticalCenter
         anchors.leftMargin: UM.Theme.getSize("narrow_margin").width
-        font.italic: Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
+        font.italic: material != null && Cura.MachineManager.currentRootMaterialId[Cura.ExtruderManager.activeExtruderIndex] == material.root_material_id
     }
     MouseArea
     {
@@ -60,7 +62,7 @@ Rectangle
         {
             materialList.currentBrand = material.brand
             materialList.currentType = material.brand + "_" + material.material
-            base.currentItem = material
+            base.setExpandedActiveMaterial(material.root_material_id)
         }
         hoverEnabled: true
         onEntered: { materialSlot.hovered = true }
@@ -82,11 +84,12 @@ Rectangle
         {
             if (materialSlot.is_favorite)
             {
-                base.materialManager.removeFavorite(material.root_material_id)
-                return
+                CuraApplication.getMaterialManagementModel().removeFavorite(material.root_material_id)
             }
-            base.materialManager.addFavorite(material.root_material_id)
-            return
+            else
+            {
+                CuraApplication.getMaterialManagementModel().addFavorite(material.root_material_id)
+            }
         }
         style: ButtonStyle
         {
