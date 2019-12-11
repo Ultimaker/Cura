@@ -1,8 +1,9 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
 from typing import Optional
 
-from cura.CuraApplication import CuraApplication
+from UM.Settings.ContainerRegistry import ContainerRegistry
 from cura.PrinterOutput.Models.MaterialOutputModel import MaterialOutputModel
 
 from ..BaseModel import BaseModel
@@ -24,32 +25,27 @@ class ClusterPrinterConfigurationMaterial(BaseModel):
         self.material = material
         super().__init__(**kwargs)
 
-    ## Creates a material output model based on this cloud printer material.
+    ##  Creates a material output model based on this cloud printer material.
+    #
+    #   A material is chosen that matches the current GUID. If multiple such
+    #   materials are available, read-only materials are preferred and the
+    #   material with the earliest alphabetical name will be selected.
+    #   \return A material output model that matches the current GUID.
     def createOutputModel(self) -> MaterialOutputModel:
-        material_manager = CuraApplication.getInstance().getMaterialManager()
-        material_group_list = material_manager.getMaterialGroupListByGUID(self.guid) or []
-
-        # Sort the material groups by "is_read_only = True" first, and then the name alphabetically.
-        read_only_material_group_list = list(filter(lambda x: x.is_read_only, material_group_list))
-        non_read_only_material_group_list = list(filter(lambda x: not x.is_read_only, material_group_list))
-        material_group = None
-        if read_only_material_group_list:
-            read_only_material_group_list = sorted(read_only_material_group_list, key = lambda x: x.name)
-            material_group = read_only_material_group_list[0]
-        elif non_read_only_material_group_list:
-            non_read_only_material_group_list = sorted(non_read_only_material_group_list, key = lambda x: x.name)
-            material_group = non_read_only_material_group_list[0]
-
-        if material_group:
-            container = material_group.root_material_node.getContainer()
-            color = container.getMetaDataEntry("color_code")
-            brand = container.getMetaDataEntry("brand")
-            material_type = container.getMetaDataEntry("material")
-            name = container.getName()
+        container_registry = ContainerRegistry.getInstance()
+        same_guid = container_registry.findInstanceContainersMetadata(GUID = self.guid)
+        if same_guid:
+            read_only = sorted(filter(lambda metadata: container_registry.isReadOnly(metadata["id"]), same_guid), key = lambda metadata: metadata["name"])
+            if read_only:
+                material_metadata = read_only[0]
+            else:
+                material_metadata = min(same_guid, key = lambda metadata: metadata["name"])
         else:
-            color = self.color
-            brand = self.brand
-            material_type = self.material
-            name = "Empty" if self.material == "empty" else "Unknown"
+            material_metadata = {
+                "color_code": self.color,
+                "brand": self.brand,
+                "material": self.material,
+                "name": "Empty" if self.material == "empty" else "Unknown"
+            }
 
-        return MaterialOutputModel(guid=self.guid, type=material_type, brand=brand, color=color, name=name)
+        return MaterialOutputModel(guid = self.guid, type = material_metadata["material"], brand = material_metadata["brand"], color = material_metadata["color_code"], name = material_metadata["name"])

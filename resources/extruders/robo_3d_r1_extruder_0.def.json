@@ -1,5 +1,4 @@
 {
-    "id": "robo_3d_r1_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

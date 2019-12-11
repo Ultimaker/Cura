@@ -291,8 +291,8 @@ Cura.MachineAction
     MessageDialog
     {
         id: invalidIPAddressMessageDialog
-        x: (parent.x + (parent.width) / 2) | 0
-        y: (parent.y + (parent.height) / 2) | 0
+        x: parent ? (parent.x + (parent.width) / 2) : 0
+        y: parent ? (parent.y + (parent.height) / 2) : 0
         title: catalog.i18nc("@title:window", "Invalid IP address")
         text: catalog.i18nc("@text", "Please enter a valid IP address.")
         icon: StandardIcon.Warning

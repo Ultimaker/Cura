@@ -94,6 +94,8 @@ UM.PreferencesPage
         zoomToMouseCheckbox.checked = boolCheck(UM.Preferences.getValue("view/zoom_to_mouse"))
         UM.Preferences.resetPreference("view/top_layer_count");
         topLayerCountCheckbox.checked = boolCheck(UM.Preferences.getValue("view/top_layer_count"))
+        UM.Preferences.resetPreference("general/restore_window_geometry")
+        restoreWindowPositionCheckbox.checked = boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
 
         UM.Preferences.resetPreference("general/camera_perspective_mode")
         var defaultCameraMode = UM.Preferences.getValue("general/camera_perspective_mode")
@@ -158,7 +160,7 @@ UM.PreferencesPage
                             append({ text: "日本語", code: "ja_JP" })
                             append({ text: "한국어", code: "ko_KR" })
                             append({ text: "Nederlands", code: "nl_NL" })
-                            //Polish is disabled for being incomplete: append({ text: "Polski", code: "pl_PL" })
+                            append({ text: "Polski", code: "pl_PL" })
                             append({ text: "Português do Brasil", code: "pt_BR" })
                             append({ text: "Português", code: "pt_PT" })
                             append({ text: "Русский", code: "ru_RU" })
@@ -360,7 +362,13 @@ UM.PreferencesPage
                     id: invertZoomCheckbox
                     text: catalog.i18nc("@action:button", "Invert the direction of camera zoom.");
                     checked: boolCheck(UM.Preferences.getValue("view/invert_zoom"))
-                    onClicked: UM.Preferences.setValue("view/invert_zoom",  checked)
+                    onClicked: {
+                        if(!checked && zoomToMouseCheckbox.checked) //Fix for Github issue Ultimaker/Cura#6490: Make sure the camera origin is in front when unchecking.
+                        {
+                            UM.Controller.setCameraOrigin("home");
+                        }
+                        UM.Preferences.setValue("view/invert_zoom", checked);
+                    }
                 }
             }
 
@@ -455,6 +463,21 @@ UM.PreferencesPage
                     text: catalog.i18nc("@option:check", "Force layer view compatibility mode (restart required)")
                     checked: boolCheck(UM.Preferences.getValue("view/force_layer_view_compatibility_mode"))
                     onCheckedChanged: UM.Preferences.setValue("view/force_layer_view_compatibility_mode", checked)
+                }
+            }
+
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                text: catalog.i18nc("@info:tooltip", "Should Cura open at the location it was closed?")
+
+                CheckBox
+                {
+                    id: restoreWindowPositionCheckbox
+                    text: catalog.i18nc("@option:check", "Restore window position on start")
+                    checked: boolCheck(UM.Preferences.getValue("general/restore_window_geometry"))
+                    onCheckedChanged: UM.Preferences.setValue("general/restore_window_geometry", checked)
                 }
             }
 

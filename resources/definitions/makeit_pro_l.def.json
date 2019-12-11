@@ -77,26 +77,11 @@
         "retraction_amount": {
           "default_value": 6
         },
-        "retraction_min_travel": {
-          "default_value": 1.5
-        },
-        "speed_travel": {
-          "default_value": 150
-        },
         "speed_print": {
           "default_value": 60
         },
         "wall_thickness": {
           "default_value": 1.2
-        },
-        "bottom_thickness": {
-          "default_value": 0.2
-        },
-        "speed_layer_0": {
-          "default_value": 20
-        },
-        "speed_print_layer_0": {
-          "default_value": 20
         },
         "cool_min_layer_time_fan_speed_max": {
           "default_value": 5

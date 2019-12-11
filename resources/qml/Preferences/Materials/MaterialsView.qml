@@ -17,12 +17,13 @@ TabView
     property QtObject properties
     property var currentMaterialNode: null
 
-    property bool editingEnabled: false;
+    property bool editingEnabled: false
     property string currency: UM.Preferences.getValue("cura/currency") ? UM.Preferences.getValue("cura/currency") : "€"
     property real firstColumnWidth: (width * 0.50) | 0
     property real secondColumnWidth: (width * 0.40) | 0
     property string containerId: ""
     property var materialPreferenceValues: UM.Preferences.getValue("cura/material_settings") ? JSON.parse(UM.Preferences.getValue("cura/material_settings")) : {}
+    property var materialManagementModel: CuraApplication.getMaterialManagementModel()
 
     property double spoolLength: calculateSpoolLength()
     property real costPerMeter: calculateCostPerMeter()
@@ -45,7 +46,7 @@ TabView
         {
             return ""
         }
-        return linkedMaterials.join(", ");
+        return linkedMaterials;
     }
 
     function getApproximateDiameter(diameter)
@@ -110,6 +111,8 @@ TabView
                     {
                         base.setMetaDataEntry("approximate_diameter", old_approximate_diameter_value, getApproximateDiameter(new_diameter_value).toString());
                         base.setMetaDataEntry("properties/diameter", properties.diameter, new_diameter_value);
+                        // CURA-6868 Make sure to update the extruder to user a diameter-compatible material.
+                        Cura.MachineManager.updateMaterialWithVariant()
                         base.resetSelectedMaterial()
                     }
 
@@ -446,7 +449,7 @@ TabView
                     UM.ContainerPropertyProvider
                     {
                         id: variantPropertyProvider
-                        containerId: Cura.MachineManager.activeVariantId
+                        containerId: Cura.MachineManager.activeStack.variant.id
                         watchedProperties: [ "value" ]
                         key: model.key
                     }
@@ -565,7 +568,7 @@ TabView
         }
 
         // update the values
-        CuraApplication.getMaterialManager().setMaterialName(base.currentMaterialNode, new_name)
+        base.materialManagementModel.setMaterialName(base.currentMaterialNode, new_name)
         properties.name = new_name
     }
 

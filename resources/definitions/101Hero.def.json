@@ -34,7 +34,6 @@
         },
         "speed_print": {  "default_value": 14 },
         "speed_travel": { "value": "speed_print" },
-        "speed_infill": { "default_value": 14 },
         "speed_wall": { "value": "speed_print * 0.7" },
         "speed_topbottom": { "value": "speed_print * 0.7" },
         "speed_layer_0": { "value": "speed_print * 0.7" },

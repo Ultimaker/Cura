@@ -32,7 +32,7 @@ ListView
         width: listView.width
         outputDevice: Cura.MachineManager.printerOutputDevices.length >= 1 ? Cura.MachineManager.printerOutputDevices[0] : null
 
-        checked: Cura.MachineManager.activeMachineId == model.id
+        checked: Cura.MachineManager.activeMachine.id == model.id
 
         onClicked:
         {

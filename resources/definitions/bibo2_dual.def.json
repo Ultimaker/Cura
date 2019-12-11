@@ -1,5 +1,4 @@
 {
-    "id": "BIBO2 dual",
     "version": 2,
     "name": "BIBO2 dual",
     "inherits": "fdmprinter",
@@ -85,10 +84,10 @@
             "default_value": 2
         },
         "prime_tower_position_x": {
-            "default_value": 50
+            "value": "50"
         },
         "prime_tower_position_y": {
-            "default_value": 50
+            "value": "50"
         }
     }
 }

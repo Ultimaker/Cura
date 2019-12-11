@@ -25,7 +25,7 @@ Item
     property int controlWidth: (columnWidth / 3) | 0
     property var labelFont: UM.Theme.getFont("default")
 
-    property string machineStackId: Cura.MachineManager.activeMachineId
+    property string machineStackId: Cura.MachineManager.activeMachine.id
 
     property var forceUpdateFunction: manager.forceUpdate
 
@@ -330,6 +330,18 @@ Item
                     target: Cura.MachineManager
                     onGlobalContainerChanged: extruderCountModel.update()
                 }
+            }
+
+            Cura.SimpleCheckBox  // "Shared Heater"
+            {
+                id: sharedHeaterCheckBox
+                containerStackId: machineStackId
+                settingKey: "machine_extruders_share_heater"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Shared Heater")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
             }
         }
     }

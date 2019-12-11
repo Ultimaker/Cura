@@ -1,5 +1,4 @@
 {
-    "id": "strateo3d_left_extruder",
     "version": 2,
     "name": "Left Extruder 2",
     "inherits": "fdmextruder",

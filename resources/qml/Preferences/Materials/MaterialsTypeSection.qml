@@ -20,7 +20,8 @@ Item
     property var expanded: materialList.expandedTypes.indexOf(materialBrand + "_" + materialName) > -1
     property var colorsModel: materialType != null ? materialType.colors: null
     height: childrenRect.height
-    width: parent.width
+    width: parent ? parent.width :undefined
+    anchors.left: parent ? parent.left : undefined
     Rectangle
     {
         id: material_type_header_background
@@ -54,7 +55,7 @@ Item
         leftPadding: UM.Theme.getSize("default_margin").width
         anchors
         {
-            left: parent.left
+            left: parent ? parent.left : undefined
         }
         Label
         {
@@ -64,33 +65,25 @@ Item
             id: material_type_name
             verticalAlignment: Text.AlignVCenter
         }
-        Button
+        Item // this one causes lots of warnings
         {
-            text: ""
             implicitWidth: UM.Theme.getSize("favorites_button").width
             implicitHeight: UM.Theme.getSize("favorites_button").height
             UM.RecolorImage {
                 anchors
                 {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
+                    verticalCenter: parent ? parent.verticalCenter : undefined
+                    horizontalCenter: parent ? parent.horizontalCenter : undefined
                 }
                 width: UM.Theme.getSize("standard_arrow").width
                 height: UM.Theme.getSize("standard_arrow").height
                 color: "black"
                 source: material_type_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
             }
-            style: ButtonStyle
-            {
-                background: Rectangle
-                {
-                    anchors.fill: parent
-                    color: "transparent"
-                }
-            }
+
         }
     }
-    MouseArea
+    MouseArea // causes lots of warnings
     {
         anchors.fill: material_type_header
         onPressed:

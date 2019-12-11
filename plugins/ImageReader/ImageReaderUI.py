@@ -34,6 +34,8 @@ class ImageReaderUI(QObject):
         self.peak_height = 2.5
         self.smoothing = 1
         self.lighter_is_higher = False;
+        self.use_transparency_model = True;
+        self.transmittance_1mm = 50.0; # based on pearl PLA
 
         self._ui_lock = threading.Lock()
         self._cancelled = False
@@ -75,6 +77,7 @@ class ImageReaderUI(QObject):
 
         self._ui_view.findChild(QObject, "Base_Height").setProperty("text", str(self.base_height))
         self._ui_view.findChild(QObject, "Peak_Height").setProperty("text", str(self.peak_height))
+        self._ui_view.findChild(QObject, "Transmittance").setProperty("text", str(self.transmittance_1mm))
         self._ui_view.findChild(QObject, "Smoothing").setProperty("value", self.smoothing)
 
     def _createConfigUI(self):
@@ -144,3 +147,11 @@ class ImageReaderUI(QObject):
     @pyqtSlot(int)
     def onImageColorInvertChanged(self, value):
         self.lighter_is_higher = (value == 1)
+
+    @pyqtSlot(int)
+    def onColorModelChanged(self, value):
+        self.use_transparency_model = (value == 0)
+
+    @pyqtSlot(int)
+    def onTransmittanceChanged(self, value):
+        self.transmittance_1mm = value

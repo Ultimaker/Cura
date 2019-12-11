@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtSignal
@@ -29,8 +29,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
     def _update(self):
         if not self._canUpdate():
             return
-        # Get updated list of favorites
-        self._favorite_ids = self._material_manager.getFavorites()
+        super()._update()
 
         brand_item_list = []
         brand_group_dict = {}
@@ -55,7 +54,8 @@ class MaterialBrandsModel(BaseMaterialsModel):
 
             # Now handle the individual materials
             item = self._createMaterialItem(root_material_id, container_node)
-            brand_group_dict[brand][material_type].append(item)
+            if item:
+                brand_group_dict[brand][material_type].append(item)
 
         # Part 2: Organize the tree into models
         #

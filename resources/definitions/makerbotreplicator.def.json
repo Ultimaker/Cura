@@ -18,9 +18,7 @@
     "overrides": {
         "prime_tower_size": { "default_value": 10.0 },
         "infill_sparse_density": { "default_value": 10 },
-        "speed_travel": { "default_value": 150 },
         "layer_height": { "default_value": 0.15 },
-        "material_print_temperature": { "default_value": 220 },
         "machine_extruder_count": { "default_value": 1 },
         "machine_heated_bed": { "default_value": true },
         "machine_center_is_zero": { "default_value": false },
