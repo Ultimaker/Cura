@@ -1,4 +1,4 @@
-#Copyright (c) 2018 Ultimaker B.V.
+#Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import cast
@@ -7,13 +7,13 @@ from Charon.VirtualFile import VirtualFile #To open UFP files.
 from Charon.OpenMode import OpenMode #To indicate that we want to write to UFP files.
 from io import StringIO #For converting g-code to bytes.
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Mesh.MeshWriter import MeshWriter #The writer we need to implement.
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 from UM.PluginRegistry import PluginRegistry #To get the g-code writer.
 from PyQt5.QtCore import QBuffer
 
+from cura.CuraApplication import CuraApplication
 from cura.Snapshot import Snapshot
 from cura.Utils.Threading import call_on_qt_thread
 
@@ -83,9 +83,9 @@ class UFPWriter(MeshWriter):
             Logger.log("d", "Thumbnail not created, cannot save it")
 
         # Store the material.
-        application = Application.getInstance()
+        application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
-        material_manager = application.getMaterialManager()
+        container_registry = application.getContainerRegistry()
         global_stack = machine_manager.activeMachine
 
         material_extension = "xml.fdm_material"
@@ -111,12 +111,12 @@ class UFPWriter(MeshWriter):
                 continue
 
             material_root_id = material.getMetaDataEntry("base_file")
-            material_group = material_manager.getMaterialGroup(material_root_id)
-            if material_group is None:
-                Logger.log("e", "Cannot find material container with root id [%s]", material_root_id)
+            material_root_query = container_registry.findContainers(id = material_root_id)
+            if not material_root_query:
+                Logger.log("e", "Cannot find material container with root id {root_id}".format(root_id = material_root_id))
                 return False
+            material_container = material_root_query[0]
 
-            material_container = material_group.root_material_node.getContainer()
             try:
                 serialized_material = material_container.serialize()
             except NotImplementedError:

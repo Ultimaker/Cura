@@ -400,7 +400,7 @@ class CuraEngineBackend(QObject, Backend):
                 self.setState(BackendState.NotStarted)
 
         if job.getResult() == StartJobResult.ObjectsWithDisabledExtruder:
-            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because there are objects associated with disabled Extruder %s." % job.getMessage()),
+            self._error_message = Message(catalog.i18nc("@info:status", "Unable to slice because there are objects associated with disabled Extruder %s.") % job.getMessage(),
                                           title = catalog.i18nc("@info:title", "Unable to slice"))
             self._error_message.show()
             self.setState(BackendState.Error)
@@ -834,9 +834,8 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.disconnect(self._onSettingChanged)
             self._global_container_stack.containersChanged.disconnect(self._onChanged)
-            extruders = list(self._global_container_stack.extruders.values())
 
-            for extruder in extruders:
+            for extruder in self._global_container_stack.extruderList:
                 extruder.propertyChanged.disconnect(self._onSettingChanged)
                 extruder.containersChanged.disconnect(self._onChanged)
 
@@ -845,8 +844,8 @@ class CuraEngineBackend(QObject, Backend):
         if self._global_container_stack:
             self._global_container_stack.propertyChanged.connect(self._onSettingChanged)  # Note: Only starts slicing when the value changed.
             self._global_container_stack.containersChanged.connect(self._onChanged)
-            extruders = list(self._global_container_stack.extruders.values())
-            for extruder in extruders:
+
+            for extruder in self._global_container_stack.extruderList:
                 extruder.propertyChanged.connect(self._onSettingChanged)
                 extruder.containersChanged.connect(self._onChanged)
             self._onChanged()

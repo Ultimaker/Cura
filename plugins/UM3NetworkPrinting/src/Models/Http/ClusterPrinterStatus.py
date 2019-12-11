@@ -79,6 +79,7 @@ class ClusterPrinterStatus(BaseModel):
     def updateOutputModel(self, model: PrinterOutputModel) -> None:
         model.updateKey(self.uuid)
         model.updateName(self.friendly_name)
+        model.updateUniqueName(self.unique_name)
         model.updateType(self.machine_variant)
         model.updateState(self.status if self.enabled else "disabled")
         model.updateBuildplate(self.build_plate.type if self.build_plate else "glass")

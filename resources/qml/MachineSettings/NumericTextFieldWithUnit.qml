@@ -68,7 +68,7 @@ UM.TooltipArea
         anchors.left: parent.left
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }

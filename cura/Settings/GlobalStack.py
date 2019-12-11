@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from collections import defaultdict
@@ -8,7 +8,7 @@ import uuid
 
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal
 
-from UM.Decorators import override
+from UM.Decorators import deprecated, override
 from UM.MimeTypeDatabase import MimeType, MimeTypeDatabase
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.SettingInstance import InstanceState
@@ -20,6 +20,7 @@ from UM.Platform import Platform
 from UM.Util import parseBool
 
 import cura.CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -61,12 +62,13 @@ class GlobalStack(CuraContainerStack):
     #
     #   \return The extruders registered with this stack.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
+    @deprecated("Please use extruderList instead.", "4.4")
     def extruders(self) -> Dict[str, "ExtruderStack"]:
         return self._extruders
 
     @pyqtProperty("QVariantList", notify = extrudersChanged)
     def extruderList(self) -> List["ExtruderStack"]:
-        result_tuple_list = sorted(list(self.extruders.items()), key=lambda x: int(x[0]))
+        result_tuple_list = sorted(list(self._extruders.items()), key=lambda x: int(x[0]))
         result_list = [item[1] for item in result_tuple_list]
 
         machine_extruder_count = self.getProperty("machine_extruder_count", "value")
@@ -107,6 +109,19 @@ class GlobalStack(CuraContainerStack):
                     pass
         return result
 
+    # Returns a boolean indicating if this machine has a remote connection. A machine is considered as remotely
+    # connected if its connection types contain one of the following values:
+    #   - ConnectionType.NetworkConnection
+    #   - ConnectionType.CloudConnection
+    @pyqtProperty(bool, notify = configuredConnectionTypesChanged)
+    def hasRemoteConnection(self) -> bool:
+        has_remote_connection = False
+
+        for connection_type in self.configuredConnectionTypes:
+            has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                         ConnectionType.CloudConnection.value]
+        return has_remote_connection
+
     ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:
         configured_connection_types = self.configuredConnectionTypes
@@ -129,6 +144,14 @@ class GlobalStack(CuraContainerStack):
         if configuration_type == "machine":
             return "machine_stack"
         return configuration_type
+
+    def getIntentCategory(self) -> str:
+        intent_category = "default"
+        for extruder in self.extruderList:
+            category = extruder.intent.getMetaDataEntry("intent_category", "default")
+            if category != "default" and category != intent_category:
+                intent_category = category
+        return intent_category
 
     def getBuildplateName(self) -> Optional[str]:
         name = None
@@ -264,15 +287,15 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    @pyqtProperty(int, constant=True)
-    def hasMaterials(self):
+    @pyqtProperty(bool, constant = True)
+    def hasMaterials(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    @pyqtProperty(int, constant=True)
-    def hasVariants(self):
+    @pyqtProperty(bool, constant = True)
+    def hasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    @pyqtProperty(int, constant=True)
+    @pyqtProperty(bool, constant = True)
     def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 

@@ -28,19 +28,20 @@ if TYPE_CHECKING:
 class SettingInheritanceManager(QObject):
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
-        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+
         self._global_container_stack = None  # type: Optional[ContainerStack]
         self._settings_with_inheritance_warning = []  # type: List[str]
         self._active_container_stack = None  # type: Optional[ExtruderStack]
-        self._onGlobalContainerChanged()
-
-        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
-        self._onActiveExtruderChanged()
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(500)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
+
+        Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
+        ExtruderManager.getInstance().activeExtruderChanged.connect(self._onActiveExtruderChanged)
+        self._onGlobalContainerChanged()
+        self._onActiveExtruderChanged()
 
     settingsWithIntheritanceChanged = pyqtSignal()
 
@@ -88,8 +89,8 @@ class SettingInheritanceManager(QObject):
             self.settingsWithIntheritanceChanged.emit()
 
     @pyqtSlot()
-    def forceUpdate(self) -> None:
-        self._update()
+    def scheduleUpdate(self) -> None:
+        self._update_timer.start()
 
     def _onActiveExtruderChanged(self) -> None:
         new_active_stack = ExtruderManager.getInstance().getActiveExtruderStack()
@@ -106,7 +107,7 @@ class SettingInheritanceManager(QObject):
             if self._active_container_stack is not None:
                 self._active_container_stack.propertyChanged.connect(self._onPropertyChanged)
                 self._active_container_stack.containersChanged.connect(self._onContainersChanged)
-            self._update()  # Ensure that the settings_with_inheritance_warning list is populated.
+            self._update_timer.start()  # Ensure that the settings_with_inheritance_warning list is populated.
 
     def _onPropertyChanged(self, key: str, property_name: str) -> None:
         if (property_name == "value" or property_name == "enabled") and self._global_container_stack:

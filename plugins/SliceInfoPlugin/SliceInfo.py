@@ -18,6 +18,8 @@ from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Qt.Duration import DurationFormat
 
+from cura import ApplicationMetadata
+
 from .SliceInfoJob import SliceInfoJob
 
 
@@ -119,6 +121,7 @@ class SliceInfo(QObject, Extension):
             data["time_stamp"] = time.time()
             data["schema_version"] = 0
             data["cura_version"] = application.getVersion()
+            data["cura_build_type"] = ApplicationMetadata.CuraBuildType
 
             active_mode = Application.getInstance().getPreferences().getValue("cura/active_mode")
             if active_mode == 0:
@@ -174,6 +177,7 @@ class SliceInfo(QObject, Extension):
                 extruder_dict["extruder_settings"] = extruder_settings
                 data["extruders"].append(extruder_dict)
 
+            data["intent_category"] = global_stack.getIntentCategory()
             data["quality_profile"] = global_stack.quality.getMetaData().get("quality_type")
 
             data["user_modified_setting_keys"] = self._getUserModifiedSettingKeys()

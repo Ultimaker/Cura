@@ -39,8 +39,8 @@ class SimpleModeSettingsManager(QObject):
         user_setting_keys.update(global_stack.userChanges.getAllKeys())
 
         # check user settings in the extruder stacks
-        if global_stack.extruders:
-            for extruder_stack in global_stack.extruders.values():
+        if global_stack.extruderList:
+            for extruder_stack in global_stack.extruderList:
                 user_setting_keys.update(extruder_stack.userChanges.getAllKeys())
 
         # remove settings that are visible in recommended (we don't show the reset button for those)

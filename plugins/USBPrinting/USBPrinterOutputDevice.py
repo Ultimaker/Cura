@@ -61,7 +61,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
-        self._update_thread = Thread(target = self._update, daemon = True)
+        self._update_thread = Thread(target = self._update, daemon = True, name = "USBPrinterUpdate")
 
         self._last_temperature_request = None  # type: Optional[int]
         self._firmware_idle_count = 0
@@ -212,7 +212,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             self._serial.close()
 
         # Re-create the thread so it can be started again later.
-        self._update_thread = Thread(target=self._update, daemon=True)
+        self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
         self._serial = None
 
     ##  Send a command to printer.
@@ -328,7 +328,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _setFirmwareName(self, name):
         new_name = re.findall(r"FIRMWARE_NAME:(.*);", str(name))
-        if  new_name:
+        if new_name:
             self._firmware_name = new_name[0]
             Logger.log("i", "USB output device Firmware name: %s", self._firmware_name)
         else:

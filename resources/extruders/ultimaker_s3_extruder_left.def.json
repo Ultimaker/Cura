@@ -1,5 +1,4 @@
 {
-    "id": "ultimaker_s3_extruder_left",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
