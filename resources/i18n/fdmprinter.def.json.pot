@@ -1792,7 +1792,8 @@ msgid ""
 "triangle, tri-hexagon, cubic, octet, quarter cubic, cross and concentric "
 "patterns are fully printed every layer. Gyroid, cubic, quarter cubic and "
 "octet infill change with every layer to provide a more equal distribution of "
-"strength over each direction."
+"strength over each direction. Truncated octahedron infill generates a fast"
+"constructed honeycomb structure out of squares and hexagons."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -1858,6 +1859,11 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_pattern option gyroid"
 msgid "Gyroid"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "infill_pattern option truncated_octahedron"
+msgid "Truncated Octahedron"
 msgstr ""
 
 #: fdmprinter.def.json

@@ -1721,7 +1721,8 @@
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
                         "cross_3d": "Cross 3D",
-                        "gyroid": "Gyroid"
+                        "gyroid": "Gyroid",
+                        "truncated_octahedron": "Truncated Octahedron",
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
