@@ -1,5 +1,4 @@
 {
-    "id": "voron2_extruder_0",
     "version": 2,
     "name": "Toolhead",
     "inherits": "fdmextruder",
