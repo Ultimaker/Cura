@@ -1247,6 +1247,8 @@ class MachineManager(QObject):
                 if metadata_key in new_machine.getMetaData():
                     continue  # Don't copy the already preset stuff.
                 new_machine.setMetaDataEntry(metadata_key, self._global_container_stack.getMetaDataEntry(metadata_key))
+            # Special case, group_id should be overwritten!
+            new_machine.setMetaDataEntry("group_id", self._global_container_stack.getMetaDataEntry("group_id"))
         else:
             Logger.log("i", "Found a %s with the key %s. Let's use it!", machine_name, self.activeMachineNetworkKey())
 
