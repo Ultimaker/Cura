@@ -51,8 +51,8 @@ try:
     from cura.CuraVersion import CuraAppDisplayName  # type: ignore
     if CuraAppDisplayName == "":
         CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
-        if IsEnterpriseVersion:
-            CuraAppDisplayName = CuraAppDisplayName + " Enterprise"
+    if IsEnterpriseVersion:
+        CuraAppDisplayName = CuraAppDisplayName + " Enterprise"
 
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
