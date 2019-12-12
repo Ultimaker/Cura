@@ -2890,7 +2890,7 @@ msgstr "Coste del filamento"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:276
 msgctxt "@label"
 msgid "Filament weight"
-msgstr "Anchura del filamento"
+msgstr "Peso del filamento"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:294
 msgctxt "@label"
