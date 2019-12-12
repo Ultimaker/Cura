@@ -32,7 +32,7 @@
         "machine_depth": {
             "default_value": 150
         },
-        "machine_head_polygon": {
+        "machine_head_with_fans_polygon": {
             "default_value": [
                 [-30, 34],
                 [-30, -32],

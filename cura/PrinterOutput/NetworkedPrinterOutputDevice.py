@@ -154,7 +154,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
         part = QHttpPart()
 
         if not content_header.startswith("form-data;"):
-            content_header = "form_data; " + content_header
+            content_header = "form-data; " + content_header
         part.setHeader(QNetworkRequest.ContentDispositionHeader, content_header)
 
         if content_type is not None:
