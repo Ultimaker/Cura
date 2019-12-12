@@ -9,7 +9,6 @@
         "file_formats": "text/x-gcode",
 
         "has_materials":         true,
-        "has_machine_materials": true,
         "exclude_materials": [
  "chromatik_pla",
  "dsm_arnitel2045_175", "dsm_novamid1070_175",
