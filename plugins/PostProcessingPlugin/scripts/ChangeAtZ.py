@@ -266,7 +266,7 @@ class ChangeAtZ(Script):
 					"label": "Retract Feed Rate",
 					"description": "New Retract Feed Rate (units/s)",
 					"unit": "units/s",
-					"type": "int",
+					"type": "float",
 					"default_value": 40,
 					"minimum_value": "0",
 					"minimum_value_warning": "0",
@@ -283,7 +283,7 @@ class ChangeAtZ(Script):
 					"label": "Retract Length",
 					"description": "New Retract Length (units)",
 					"unit": "units",
-					"type": "int",
+					"type": "float",
 					"default_value": 6,
 					"minimum_value": "0",
 					"minimum_value_warning": "0",
@@ -308,12 +308,12 @@ class ChangeAtZ(Script):
 		self.setIntSettingIfEnabled(caz_instance, "g1_Change_flowrate", "flowrate", "g2_flowrate")
 		self.setIntSettingIfEnabled(caz_instance, "g3_Change_flowrateOne", "flowrateOne", "g4_flowrateOne")
 		self.setIntSettingIfEnabled(caz_instance, "g5_Change_flowrateTwo", "flowrateTwo", "g6_flowrateTwo")
-		self.setIntSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
-		self.setIntSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
-		self.setIntSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
+		self.setFloatSettingIfEnabled(caz_instance, "h1_Change_bedTemp", "bedTemp", "h2_bedTemp")
+		self.setFloatSettingIfEnabled(caz_instance, "i1_Change_extruderOne", "extruderOne", "i2_extruderOne")
+		self.setFloatSettingIfEnabled(caz_instance, "i3_Change_extruderTwo", "extruderTwo", "i4_extruderTwo")
 		self.setIntSettingIfEnabled(caz_instance, "j1_Change_fanSpeed", "fanSpeed", "j2_fanSpeed")
-		self.setIntSettingIfEnabled(caz_instance, "caz_change_retractfeedrate", "retractfeedrate", "caz_retractfeedrate")
-		self.setIntSettingIfEnabled(caz_instance, "caz_change_retractlength", "retractlength", "caz_retractlength")
+		self.setFloatSettingIfEnabled(caz_instance, "caz_change_retractfeedrate", "retractfeedrate", "caz_retractfeedrate")
+		self.setFloatSettingIfEnabled(caz_instance, "caz_change_retractlength", "retractlength", "caz_retractlength")
 
 		# see if we're applying to a single layer or to all layers hence forth
 		caz_instance.IsApplyToSingleLayer = self.getSettingValueByKey("c_behavior") == "single_layer"
@@ -323,7 +323,7 @@ class ChangeAtZ(Script):
 
 		# change our target based on what we're targeting
 		caz_instance.TargetLayer = self.getIntSettingByKey("b_targetL", None)
-		caz_instance.TargetZ = self.getIntSettingByKey("b_targetZ", None)
+		caz_instance.TargetZ = self.getFloatSettingByKey("b_targetZ", None)
 
 		# run our script
 		return caz_instance.execute(data)
@@ -345,6 +345,23 @@ class ChangeAtZ(Script):
 		# set our value in the target settings
 		caz_instance.TargetValues[target] = value
 
+	# Sets the given TargetValue in the ChangeAtZ instance if the trigger is specified
+	def setFloatSettingIfEnabled(self, caz_instance, trigger, target, setting):
+
+		# stop here if our trigger isn't enabled
+		if not self.getSettingValueByKey(trigger):
+			return
+
+		# get our value from the settings
+		value = self.getFloatSettingByKey(setting, None)
+
+		# skip if there's no value or we can't interpret it
+		if value is None:
+			return
+
+		# set our value in the target settings
+		caz_instance.TargetValues[target] = value
+
 	# Returns the given settings value as an integer or the default if it cannot parse it
 	def getIntSettingByKey(self, key, default):
 
@@ -354,6 +371,14 @@ class ChangeAtZ(Script):
 		except:
 			return default
 
+	# Returns the given settings value as an integer or the default if it cannot parse it
+	def getFloatSettingByKey(self, key, default):
+
+		# change our target based on what we're targeting
+		try:
+			return float(self.getSettingValueByKey(key))
+		except:
+			return default
 
 # The primary ChangeAtZ class that does all the gcode editing. This was broken out into an
 # independent class so it could be debugged using a standard IDE
@@ -408,7 +433,7 @@ class ChangeAtZProcessor:
 				self.processLayerHeight(line)
 
 				# skip this line if we're not there yet
-				if not self.isTargetLayerOrHeight(line):
+				if not self.isTargetLayerOrHeight():
 
 					# read any settings we might need
 					self.processSetting(line)
@@ -599,7 +624,7 @@ class ChangeAtZProcessor:
 			return default
 
 	# Determines if the current line is at or below the target required to start modifying
-	def isTargetLayerOrHeight(self, line):
+	def isTargetLayerOrHeight(self):
 
 		# target selected by layer no.
 		if self.IsTargetByLayer:
@@ -650,7 +675,7 @@ class ChangeAtZProcessor:
 			return
 
 		# get our value from the command
-		current_z = self.getIntValue(line_no_comments, "Z", None)
+		current_z = self.getFloatValue(line_no_comments, "Z", None)
 
 		# stop if there's no change
 		if current_z == self.CurrentZ:
@@ -767,7 +792,7 @@ class ChangeAtZProcessor:
 			return new_line
 
 		# get our desired retract length
-		retract_length = int(self.TargetValues["retractlength"])
+		retract_length = float(self.TargetValues["retractlength"])
 
 		# subtract the difference between the default and the desired
 		extrude_length -= (retract_length - self.RetractLength)
@@ -819,7 +844,7 @@ class ChangeAtZProcessor:
 			return new_line
 
 		# get our desired retract feed rate
-		retract_feed_rate = int(self.TargetValues["retractfeedrate"])
+		retract_feed_rate = float(self.TargetValues["retractfeedrate"])
 
 		# convert to units/min
 		retract_feed_rate *= 60
@@ -896,11 +921,11 @@ def debug():
 
 	caz_instance.reset()
 	caz_instance.IsTargetByLayer = False
-	caz_instance.TargetZ = 10
-	caz_instance.TargetValues["bedTemp"] = 75
+	caz_instance.TargetZ = 10.5
+	caz_instance.TargetValues["bedTemp"] = 75.111
 	caz_instance.TargetValues["printspeed"] = 150
-	caz_instance.TargetValues["retractfeedrate"] = 40
-	caz_instance.TargetValues["retractlength"] = 10
+	caz_instance.TargetValues["retractfeedrate"] = 40.555
+	caz_instance.TargetValues["retractlength"] = 10.3333
 
 	# and again
 	gcode = debug_iteration(gcode, caz_instance)
