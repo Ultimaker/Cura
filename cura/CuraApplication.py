@@ -67,11 +67,9 @@ from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.CuraSceneController import CuraSceneController
 from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Scene.GCodeListDecorator import GCodeListDecorator
+
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
-
-from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
