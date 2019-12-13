@@ -1257,16 +1257,19 @@ class MachineManager(QObject):
         new_machine.setMetaDataEntry("hidden", False)
         self._global_container_stack.setMetaDataEntry("hidden", True)
 
-        # The new_machine only has the global user changes and not the per-extruder user changes (since it has an empty
-        # extruderList before it becomes active). Keep a temporary copy of the per-extruder user changes and transfer
-        # it to the user changes of the new machine after the new_machine becomes active.
+        # The new_machine does not contain user changes (global or per-extruder user changes).
+        # Keep a temporary copy of the global and per-extruder user changes and transfer them to the user changes
+        # of the new machine after the new_machine becomes active.
+        global_user_changes = self._global_container_stack.userChanges
         per_extruder_user_changes = {}
         for extruder_name, extruder_stack in self._global_container_stack.extruders.items():
             per_extruder_user_changes[extruder_name] = extruder_stack.userChanges
 
         self.setActiveMachine(new_machine.getId())
 
-        # Apply the per-extruder userChanges to the new_machine (which is of different type than the previous one).
+        # Apply the global and per-extruder userChanges to the new_machine (which is of different type than the
+        # previous one).
+        self._global_container_stack.setUserChanges(global_user_changes)
         for extruder_name in self._global_container_stack.extruders.keys():
             self._global_container_stack.extruders[extruder_name].setUserChanges(per_extruder_user_changes[extruder_name])
 
