@@ -9,6 +9,7 @@ import os
 import os.path
 import time
 import json
+import locale
 from typing import cast
 
 from sentry_sdk.hub import Hub
@@ -176,8 +177,10 @@ class CrashHandler:
         try:
             from UM.Application import Application
             self.cura_version = Application.getInstance().getVersion()
+            self.cura_locale = Application.getInstance().getPreferences().getValue("general/language")
         except:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
+            self.cura_locale = "??_??"
 
         crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
         crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
@@ -193,12 +196,16 @@ class CrashHandler:
         self.data["os"] = {"type": platform.system(), "version": platform.version()}
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
+        self.data["locale_os"] = locale.getlocale(locale.LC_MESSAGES)[0] if hasattr(locale, 'LC_MESSAGES') else locale.getdefaultlocale()[0]
+        self.data["locale_cura"] = self.cura_locale
 
         with configure_scope() as scope:
             scope.set_tag("qt_version", QT_VERSION_STR)
             scope.set_tag("pyqt_version", PYQT_VERSION_STR)
             scope.set_tag("os", platform.system())
             scope.set_tag("os_version", platform.version())
+            scope.set_tag("locale_os", self.data["locale_os"])
+            scope.set_tag("locale_cura", self.cura_locale)
             scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
 
         return group
