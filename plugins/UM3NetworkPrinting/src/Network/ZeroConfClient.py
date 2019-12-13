@@ -125,7 +125,7 @@ class ZeroConfClient:
         if not info.address:
             info = zero_conf.get_service_info(service_type, name)
 
-        if info:
+        if info and info.address:
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
