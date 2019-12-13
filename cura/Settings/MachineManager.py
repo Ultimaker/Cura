@@ -1008,9 +1008,9 @@ class MachineManager(QObject):
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruders[str(position)].quality = node.container
+            self._global_container_stack.extruderList[position].quality = node.container
             if empty_quality_changes:
-                self._global_container_stack.extruders[str(position)].qualityChanges = empty_quality_changes_container
+                self._global_container_stack.extruderList[position].qualityChanges = empty_quality_changes_container
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
