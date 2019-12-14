@@ -6665,7 +6665,17 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "magic_fuzzy_skin_thickness":
+                "magic_fuzzy_skin_outside_only":
+                {
+                    "label": "Fuzzy Skin Outside Only",
+                    "description": "Jitter only the parts' outlines and not the parts' holes.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "magic_fuzzy_skin_enabled",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+               "magic_fuzzy_skin_thickness":
                 {
                     "label": "Fuzzy Skin Thickness",
                     "description": "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered.",
