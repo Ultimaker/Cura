@@ -1,0 +1,81 @@
+{
+    "name": "Erzay3D",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Alexander Kirsanov",
+        "manufacturer": "Robokinetika",
+        "category": "Other",
+        "file_formats": "text/x-gcode",
+        "machine_extruder_trains":
+        {
+            "0": "erzay3d_extruder_0"
+        }
+    },
+
+    "overrides": {
+    "machine_start_gcode" : { "default_value": "G28\nG1 Z15.0 F6000\nG92 E0" },
+    "machine_shape": { "default_value": "elliptic"},
+    "machine_name": { "default_value": "Erzay3D" },
+    "machine_depth": { "default_value": 210 },
+    "machine_width": { "default_value": 210 },
+    "machine_height": { "default_value": 230 },
+    "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+    "machine_center_is_zero": { "default_value": true },
+    "machine_extruder_count": { "default_value": 1 },
+    "machine_nozzle_size": { "default_value": 0.4 },
+    "material_diameter": { "default_value": 1.75 },
+    "machine_heated_bed": { "default_value": true },
+    "material_bed_temp_wait": { "default_value": true },
+    "material_print_temp_wait": { "default_value": true },
+    "material_print_temp_prepend": { "default_value": true },
+    "machine_buildplate_type": { "default_value": "glass" },
+    "machine_nozzle_head_distance": { "default_value": 2.5 },
+    "machine_heat_zone_length": { "default_value": 12.5 },
+    "machine_max_feedrate_x": { "default_value": 200 },
+    "machine_max_feedrate_y": { "default_value": 200 },
+    "machine_max_feedrate_z": { "default_value": 200 },
+    "machine_max_feedrate_e": { "default_value": 50 },
+    "machine_max_acceleration_x": { "default_value": 3000 }, 
+    "machine_max_acceleration_y": { "default_value": 3000 }, 
+    "machine_max_acceleration_z": { "default_value": 3000 },
+    "machine_max_acceleration_e": { "default_value": 3000 },
+    "machine_acceleration": { "default_value": 1000 },
+    "machine_max_jerk_xy": { "default_value": 10 },
+    "machine_max_jerk_z": { "default_value": 10 },
+    "machine_max_jerk_e": { "default_value": 10 },
+    "machine_steps_per_mm_x": { "default_value": 1600 },
+    "machine_steps_per_mm_y": { "default_value": 1600 },
+    "machine_steps_per_mm_z": { "default_value": 1600 },
+    "machine_steps_per_mm_e": { "default_value": 174 },
+    "machine_feeder_wheel_diameter": { "default_value": 12 },
+
+    "layer_height": { "default_value": 0.2 },
+    "layer_height_0": { "default_value": 0.2 },
+
+    "ironing_pattern": { "default_value": "concentric" },
+    "ironing_flow": { "default_value": 7.0 },
+
+    "infill_sparse_density": { "default_value": 20 },
+
+    "default_material_print_temperature": { "default_value": 220 },
+    "retraction_amount": { "default_value": 6.5 },
+
+    "speed_print": { "default_value": 40 },
+    "speed_equalize_flow_enabled": { "default_value": true },
+    "speed_equalize_flow_max": { "default_value": 100 },
+
+    "acceleration_print": { "default_value": 1000 },
+
+    "jerk_print": { "default_value": 10 },
+
+    "support_angle": { "default_value": 65 },
+    "support_brim_enable": { "default_value": true },
+
+    "adhesion_type": { "default_value": "skirt" },
+    "brim_outside_only": { "default_value": false },
+
+    "meshfix_maximum_resolution": { "default_value": 0.05 }
+    }
+}

@@ -8,6 +8,8 @@ import ssl
 import urllib.request
 import urllib.error
 
+import certifi
+
 
 class SliceInfoJob(Job):
     def __init__(self, url, data):
@@ -20,11 +22,14 @@ class SliceInfoJob(Job):
             Logger.log("e", "URL or DATA for sending slice info was not set!")
             return
 
-        # Submit data
-        kwoptions = {"data" : self._data, "timeout" : 5}
+        # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
+        context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLSv1_2)
+        context.load_verify_locations(cafile = certifi.where())
 
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
+        # Submit data
+        kwoptions = {"data": self._data,
+                     "timeout": 5,
+                     "context": context}
 
         Logger.log("i", "Sending anonymous slice info to [%s]...", self._url)
 

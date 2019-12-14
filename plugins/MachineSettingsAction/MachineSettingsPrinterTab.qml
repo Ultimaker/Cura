@@ -3,6 +3,7 @@
 
 import QtQuick 2.10
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 
 import UM 1.3 as UM
 import Cura 1.1 as Cura
@@ -16,40 +17,37 @@ Item
     id: base
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    anchors.left: parent.left
-    anchors.right: parent.right
-    anchors.top: parent.top
-
-    property int labelWidth: 120 * screenScaleFactor
-    property int controlWidth: (UM.Theme.getSize("setting_control").width * 3 / 4) | 0
-    property var labelFont: UM.Theme.getFont("default")
-
     property int columnWidth: ((parent.width - 2 * UM.Theme.getSize("default_margin").width) / 2) | 0
     property int columnSpacing: 3 * screenScaleFactor
     property int propertyStoreIndex: manager ? manager.storeContainerIndex : 1  // definition_changes
 
-    property string machineStackId: Cura.MachineManager.activeMachineId
+    property int labelWidth: (columnWidth * 2 / 3 - UM.Theme.getSize("default_margin").width * 2) | 0
+    property int controlWidth: (columnWidth / 3) | 0
+    property var labelFont: UM.Theme.getFont("default")
+
+    property string machineStackId: Cura.MachineManager.activeMachine.id
 
     property var forceUpdateFunction: manager.forceUpdate
 
-    Item
+    RowLayout
     {
         id: upperBlock
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
-
-        height: childrenRect.height
-
+        anchors
+        {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
+        spacing: UM.Theme.getSize("default_margin").width
+        
         // =======================================
         // Left-side column for "Printer Settings"
         // =======================================
         Column
         {
-            anchors.top: parent.top
-            anchors.left: parent.left
-            width: base.columnWidth
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
@@ -59,6 +57,8 @@ Item
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Cura.NumericTextFieldWithUnit  // "X (Width)"
@@ -140,6 +140,18 @@ Item
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
+            Cura.SimpleCheckBox  // "Heated build volume"
+            {
+                id: heatedVolumeCheckBox
+                containerStackId: machineStackId
+                settingKey: "machine_heated_build_volume"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Heated build volume")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
+
             Cura.ComboBoxWithOptions  // "G-code flavor"
             {
                 id: gcodeFlavorComboBox
@@ -163,9 +175,8 @@ Item
         // =======================================
         Column
         {
-            anchors.top: parent.top
-            anchors.right: parent.right
-            width: base.columnWidth
+            Layout.fillWidth: true
+            Layout.alignment: Qt.AlignTop
 
             spacing: base.columnSpacing
 
@@ -175,6 +186,8 @@ Item
                 font: UM.Theme.getFont("medium_bold")
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
+                width: parent.width
+                elide: Text.ElideRight
             }
 
             Cura.PrintHeadMinMaxTextField  // "X min"
@@ -192,6 +205,7 @@ Item
                 axisName: "x"
                 axisMinOrMax: "min"
                 allowNegativeValue: true
+                allowPositiveValue: false
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -211,6 +225,7 @@ Item
                 axisName: "y"
                 axisMinOrMax: "min"
                 allowNegativeValue: true
+                allowPositiveValue: false
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -229,7 +244,8 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "max"
-                allowNegativeValue: true
+                allowNegativeValue: false
+                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -250,7 +266,8 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "max"
-                allowNegativeValue: true
+                allowNegativeValue: false
+                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -314,25 +331,38 @@ Item
                     onGlobalContainerChanged: extruderCountModel.update()
                 }
             }
+
+            Cura.SimpleCheckBox  // "Shared Heater"
+            {
+                id: sharedHeaterCheckBox
+                containerStackId: machineStackId
+                settingKey: "machine_extruders_share_heater"
+                settingStoreIndex: propertyStoreIndex
+                labelText: catalog.i18nc("@label", "Shared Heater")
+                labelFont: base.labelFont
+                labelWidth: base.labelWidth
+                forceUpdateOnChangeFunction: forceUpdateFunction
+            }
         }
     }
 
-    Item  // Start and End G-code
+    RowLayout  // Start and End G-code
     {
         id: lowerBlock
-        anchors.top: upperBlock.bottom
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("default_margin").width
+        anchors
+        {
+            top: upperBlock.bottom
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+            margins: UM.Theme.getSize("default_margin").width
+        }
 
         Cura.GcodeTextArea   // "Start G-code"
         {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            anchors.left: parent.left
-            width: base.columnWidth - UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             labelText: catalog.i18nc("@title:label", "Start G-code")
             containerStackId: machineStackId
@@ -342,11 +372,8 @@ Item
 
         Cura.GcodeTextArea   // "End G-code"
         {
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: UM.Theme.getSize("default_margin").height
-            anchors.right: parent.right
-            width: base.columnWidth - UM.Theme.getSize("default_margin").width
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
             labelText: catalog.i18nc("@title:label", "End G-code")
             containerStackId: machineStackId

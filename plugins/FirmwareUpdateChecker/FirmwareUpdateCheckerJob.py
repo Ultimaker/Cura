@@ -10,6 +10,9 @@ from UM.Version import Version
 import urllib.request
 from urllib.error import URLError
 from typing import Dict, Optional
+import ssl
+
+import certifi
 
 from .FirmwareUpdateCheckerLookup import FirmwareUpdateCheckerLookup, getSettingsKeyForMachine
 from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
@@ -39,8 +42,12 @@ class FirmwareUpdateCheckerJob(Job):
         result = self.STRING_ZERO_VERSION
 
         try:
+            # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
+            context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLSv1_2)
+            context.load_verify_locations(cafile = certifi.where())
+
             request = urllib.request.Request(url, headers = self._headers)
-            response = urllib.request.urlopen(request)
+            response = urllib.request.urlopen(request, context = context)
             result = response.read().decode("utf-8")
         except URLError:
             Logger.log("w", "Could not reach '{0}', if this URL is old, consider removal.".format(url))
@@ -104,7 +111,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # because the new version of Cura will be release before the firmware and we don't want to
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
-                    Logger.log("i", "SHOWING FIRMWARE UPDATE MESSAGE")
+                    Logger.log("i", "Showing firmware update message for new version: {version}".format(version = current_version))
                     message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name,
                                                            self._lookups.getRedirectUserUrl())
                     message.actionTriggered.connect(self._callback)
@@ -113,7 +120,7 @@ class FirmwareUpdateCheckerJob(Job):
                 Logger.log("i", "No machine with name {0} in list of firmware to check.".format(self._machine_name))
 
         except Exception as e:
-            Logger.log("w", "Failed to check for new version: %s", e)
+            Logger.logException("w", "Failed to check for new version: %s", e)
             if not self.silent:
                 Message(i18n_catalog.i18nc("@info", "Could not access update information.")).show()
             return

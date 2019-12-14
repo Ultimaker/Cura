@@ -68,7 +68,7 @@ Item
             Cura.NumericTextFieldWithUnit  // "Nozzle size"
             {
                 id: extruderNozzleSizeField
-                visible: !Cura.MachineManager.hasVariants
+                visible: !Cura.MachineManager.activeMachine.hasVariants
                 containerStackId: base.extruderStackId
                 settingKey: "machine_nozzle_size"
                 settingStoreIndex: propertyStoreIndex

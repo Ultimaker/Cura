@@ -25,7 +25,7 @@ Rectangle
     {
         // Readability:
         var connectedTypes = [2, 3];
-        var types = Cura.MachineManager.activeMachineConfiguredConnectionTypes
+        var types = Cura.MachineManager.activeMachine.configuredConnectionTypes
 
         // Check if configured connection types includes either 2 or 3 (LAN or cloud)
         for (var i = 0; i < types.length; i++)
@@ -97,7 +97,7 @@ Rectangle
                 horizontalCenter: parent.horizontalCenter
             }
             visible: isNetworkConfigured && !isConnected
-            text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.")
+            text: catalog.i18nc("@info", "Please make sure your printer has a connection:\n- Check if the printer is turned on.\n- Check if the printer is connected to the network.\n- Check if you are signed in to discover cloud-connected printers.")
             font: UM.Theme.getFont("medium")
             color: UM.Theme.getColor("monitor_text_primary")
             wrapMode: Text.WordWrap

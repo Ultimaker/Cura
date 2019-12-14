@@ -72,10 +72,10 @@
             "default_value": "M107\nM1002\nM104 S0 T1\nM104 S0 T0\nM140 S0\nM117 Print Complete.\nG28 X0 Y0\nG91\nG1 Z10\nG90\nM84"
         },
         "prime_tower_position_x": {
-            "default_value": 195
+            "value": "195"
         },
         "prime_tower_position_y": {
-            "default_value": 149
+            "value": "149"
         }
     }
 }

@@ -1,6 +1,6 @@
 # Copyright (c) 2016 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
-
+from UM.Logger import Logger
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -20,14 +20,10 @@ class PerObjectSettingsTool(Tool):
 
         self.setExposedProperties("SelectedObjectId", "ContainerID", "SelectedActiveExtruder", "MeshType")
 
-        self._advanced_mode = False
         self._multi_extrusion = False
         self._single_model_selected = False
 
         Selection.selectionChanged.connect(self.propertyChanged)
-
-        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferenceChanged)
-        self._onPreferenceChanged("cura/active_mode")
 
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
@@ -70,8 +66,16 @@ class PerObjectSettingsTool(Tool):
             selected_object.addDecorator(SettingOverrideDecorator())
         selected_object.callDecoration("setActiveExtruder", extruder_stack_id)
 
-    def setMeshType(self, mesh_type):
+    ## Returns True when the mesh_type was changed, False when current mesh_type == mesh_type
+    def setMeshType(self, mesh_type: str) -> bool:
+        if self.getMeshType() == mesh_type:
+            return False
+
         selected_object = Selection.getSelectedObject(0)
+        if selected_object is None:
+            Logger.log("w", "Tried setting the mesh type of the selected object, but no object was selected")
+            return False
+
         stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
         if not stack:
             selected_object.addDecorator(SettingOverrideDecorator())
@@ -90,6 +94,9 @@ class PerObjectSettingsTool(Tool):
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
 
+        self.propertyChanged.emit()
+        return True
+
     def getMeshType(self):
         selected_object = Selection.getSelectedObject(0)
         stack = selected_object.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
@@ -102,11 +109,6 @@ class PerObjectSettingsTool(Tool):
                 return property_key
 
         return ""
-
-    def _onPreferenceChanged(self, preference):
-        if preference == "cura/active_mode":
-            self._advanced_mode = Application.getInstance().getPreferences().getValue(preference) == 1
-            self._updateEnabled()
 
     def _onGlobalContainerChanged(self):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
@@ -140,4 +142,4 @@ class PerObjectSettingsTool(Tool):
             self._single_model_selected = False # Group is selected, so tool needs to be disabled
         else:
             self._single_model_selected = True
-        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._advanced_mode and self._single_model_selected)
+        Application.getInstance().getController().toolEnabledChanged.emit(self._plugin_id, self._single_model_selected)

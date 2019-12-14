@@ -1,21 +1,24 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from typing import TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 from UM.Application import Application
 
-import SimulationView
+if TYPE_CHECKING:
+    from .SimulationView import SimulationView
 
 
 class SimulationViewProxy(QObject):
-    def __init__(self, parent=None):
+    def __init__(self, simulation_view: "SimulationView", parent=None):
         super().__init__(parent)
+        self._simulation_view = simulation_view
         self._current_layer = 0
         self._controller = Application.getInstance().getController()
         self._controller.activeViewChanged.connect(self._onActiveViewChanged)
-        self._onActiveViewChanged()
         self.is_simulationView_selected = False
+        self._onActiveViewChanged()
 
     currentLayerChanged = pyqtSignal()
     currentPathChanged = pyqtSignal()
@@ -28,182 +31,112 @@ class SimulationViewProxy(QObject):
 
     @pyqtProperty(bool, notify=activityChanged)
     def layerActivity(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getActivity()
-        return False
+        return self._simulation_view.getActivity()
 
     @pyqtProperty(int, notify=maxLayersChanged)
     def numLayers(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMaxLayers()
-        return 0
+        return self._simulation_view.getMaxLayers()
 
     @pyqtProperty(int, notify=currentLayerChanged)
     def currentLayer(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getCurrentLayer()
-        return 0
+        return self._simulation_view.getCurrentLayer()
 
     @pyqtProperty(int, notify=currentLayerChanged)
     def minimumLayer(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMinimumLayer()
-        return 0
+        return self._simulation_view.getMinimumLayer()
 
     @pyqtProperty(int, notify=maxPathsChanged)
     def numPaths(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMaxPaths()
-        return 0
+        return self._simulation_view.getMaxPaths()
 
     @pyqtProperty(int, notify=currentPathChanged)
     def currentPath(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getCurrentPath()
-        return 0
+        return self._simulation_view.getCurrentPath()
 
     @pyqtProperty(int, notify=currentPathChanged)
     def minimumPath(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMinimumPath()
-        return 0
+        return self._simulation_view.getMinimumPath()
 
     @pyqtProperty(bool, notify=busyChanged)
     def busy(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.isBusy()
-        return False
+        return self._simulation_view.isBusy()
 
     @pyqtProperty(bool, notify=preferencesChanged)
     def compatibilityMode(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getCompatibilityMode()
-        return False
+        return self._simulation_view.getCompatibilityMode()
+
+    @pyqtProperty(int, notify=globalStackChanged)
+    def extruderCount(self):
+        return self._simulation_view.getExtruderCount()
 
     @pyqtSlot(int)
     def setCurrentLayer(self, layer_num):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setLayer(layer_num)
+        self._simulation_view.setLayer(layer_num)
 
     @pyqtSlot(int)
     def setMinimumLayer(self, layer_num):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setMinimumLayer(layer_num)
+        self._simulation_view.setMinimumLayer(layer_num)
 
     @pyqtSlot(int)
     def setCurrentPath(self, path_num):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setPath(path_num)
+        self._simulation_view.setPath(path_num)
 
     @pyqtSlot(int)
     def setMinimumPath(self, path_num):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setMinimumPath(path_num)
+        self._simulation_view.setMinimumPath(path_num)
 
     @pyqtSlot(int)
     def setSimulationViewType(self, layer_view_type):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setSimulationViewType(layer_view_type)
+        self._simulation_view.setSimulationViewType(layer_view_type)
 
     @pyqtSlot(result=int)
     def getSimulationViewType(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getSimulationViewType()
-        return 0
+        return self._simulation_view.getSimulationViewType()
 
     @pyqtSlot(bool)
     def setSimulationRunning(self, running):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setSimulationRunning(running)
+        self._simulation_view.setSimulationRunning(running)
 
     @pyqtSlot(result=bool)
     def getSimulationRunning(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.isSimulationRunning()
-        return False
+        return self._simulation_view.isSimulationRunning()
 
     @pyqtSlot(result=float)
     def getMinFeedrate(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMinFeedrate()
-        return 0
+        return self._simulation_view.getMinFeedrate()
 
     @pyqtSlot(result=float)
     def getMaxFeedrate(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMaxFeedrate()
-        return 0
+        return self._simulation_view.getMaxFeedrate()
 
     @pyqtSlot(result=float)
     def getMinThickness(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMinThickness()
-        return 0
+        return self._simulation_view.getMinThickness()
 
     @pyqtSlot(result=float)
     def getMaxThickness(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getMaxThickness()
-        return 0
+        return self._simulation_view.getMaxThickness()
 
     # Opacity 0..1
     @pyqtSlot(int, float)
     def setExtruderOpacity(self, extruder_nr, opacity):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setExtruderOpacity(extruder_nr, opacity)
+        self._simulation_view.setExtruderOpacity(extruder_nr, opacity)
 
     @pyqtSlot(int)
     def setShowTravelMoves(self, show):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setShowTravelMoves(show)
+        self._simulation_view.setShowTravelMoves(show)
 
     @pyqtSlot(int)
     def setShowHelpers(self, show):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setShowHelpers(show)
+        self._simulation_view.setShowHelpers(show)
 
     @pyqtSlot(int)
     def setShowSkin(self, show):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setShowSkin(show)
+        self._simulation_view.setShowSkin(show)
 
     @pyqtSlot(int)
     def setShowInfill(self, show):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            active_view.setShowInfill(show)
-
-    @pyqtProperty(int, notify=globalStackChanged)
-    def extruderCount(self):
-        active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            return active_view.getExtruderCount()
-        return 0
+        self._simulation_view.setShowInfill(show)
 
     def _layerActivityChanged(self):
         self.activityChanged.emit()
@@ -236,24 +169,25 @@ class SimulationViewProxy(QObject):
 
     def _onActiveViewChanged(self):
         active_view = self._controller.getActiveView()
-        if isinstance(active_view, SimulationView.SimulationView.SimulationView):
-            # remove other connection if once the SimulationView was created.
-            if self.is_simulationView_selected:
-                active_view.currentLayerNumChanged.disconnect(self._onLayerChanged)
-                active_view.currentPathNumChanged.disconnect(self._onPathChanged)
-                active_view.maxLayersChanged.disconnect(self._onMaxLayersChanged)
-                active_view.maxPathsChanged.disconnect(self._onMaxPathsChanged)
-                active_view.busyChanged.disconnect(self._onBusyChanged)
-                active_view.activityChanged.disconnect(self._onActivityChanged)
-                active_view.globalStackChanged.disconnect(self._onGlobalStackChanged)
-                active_view.preferencesChanged.disconnect(self._onPreferencesChanged)
-
+        if active_view == self._simulation_view:
+            self._simulation_view.currentLayerNumChanged.connect(self._onLayerChanged)
+            self._simulation_view.currentPathNumChanged.connect(self._onPathChanged)
+            self._simulation_view.maxLayersChanged.connect(self._onMaxLayersChanged)
+            self._simulation_view.maxPathsChanged.connect(self._onMaxPathsChanged)
+            self._simulation_view.busyChanged.connect(self._onBusyChanged)
+            self._simulation_view.activityChanged.connect(self._onActivityChanged)
+            self._simulation_view.globalStackChanged.connect(self._onGlobalStackChanged)
+            self._simulation_view.preferencesChanged.connect(self._onPreferencesChanged)
             self.is_simulationView_selected = True
-            active_view.currentLayerNumChanged.connect(self._onLayerChanged)
-            active_view.currentPathNumChanged.connect(self._onPathChanged)
-            active_view.maxLayersChanged.connect(self._onMaxLayersChanged)
-            active_view.maxPathsChanged.connect(self._onMaxPathsChanged)
-            active_view.busyChanged.connect(self._onBusyChanged)
-            active_view.activityChanged.connect(self._onActivityChanged)
-            active_view.globalStackChanged.connect(self._onGlobalStackChanged)
-            active_view.preferencesChanged.connect(self._onPreferencesChanged)
+        elif self.is_simulationView_selected:
+            # Disconnect all of em again.
+            self.is_simulationView_selected = False
+            self._simulation_view.currentLayerNumChanged.disconnect(self._onLayerChanged)
+            self._simulation_view.currentPathNumChanged.disconnect(self._onPathChanged)
+            self._simulation_view.maxLayersChanged.disconnect(self._onMaxLayersChanged)
+            self._simulation_view.maxPathsChanged.disconnect(self._onMaxPathsChanged)
+            self._simulation_view.busyChanged.disconnect(self._onBusyChanged)
+            self._simulation_view.activityChanged.disconnect(self._onActivityChanged)
+            self._simulation_view.globalStackChanged.disconnect(self._onGlobalStackChanged)
+            self._simulation_view.preferencesChanged.disconnect(self._onPreferencesChanged)
+

@@ -1,5 +1,4 @@
 {
-    "id": "hms434_tool_7",
     "version": 2,
     "name": "Tool 7",
     "inherits": "fdmextruder",
@@ -17,10 +16,10 @@
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": ""
+          "default_value": "\n;changing to tool7"
         },
         "machine_extruder_end_code": {
-           "default_value": ""
+           "default_value": "\n;ending tool7"
         }
     }
 }

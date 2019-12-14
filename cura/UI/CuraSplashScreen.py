@@ -7,14 +7,21 @@ from PyQt5.QtWidgets import QSplashScreen
 
 from UM.Resources import Resources
 from UM.Application import Application
+from cura import ApplicationMetadata
 
 
 class CuraSplashScreen(QSplashScreen):
     def __init__(self):
         super().__init__()
         self._scale = 0.7
+        self._version_y_offset = 0  # when extra visual elements are in the background image, move version text down
 
-        splash_image = QPixmap(Resources.getPath(Resources.Images, "cura.png"))
+        if ApplicationMetadata.IsEnterpriseVersion:
+            splash_image = QPixmap(Resources.getPath(Resources.Images, "cura_enterprise.png"))
+            self._version_y_offset = 26
+        else:
+            splash_image = QPixmap(Resources.getPath(Resources.Images, "cura.png"))
+
         self.setPixmap(splash_image)
 
         self._current_message = ""
@@ -52,30 +59,27 @@ class CuraSplashScreen(QSplashScreen):
         painter.setRenderHint(QPainter.Antialiasing, True)
 
         version = Application.getInstance().getVersion().split("-")
-        buildtype = Application.getInstance().getBuildType()
-        if buildtype:
-            version[0] += " (%s)" % buildtype
 
-        # draw version text
+        # Draw version text
         font = QFont()  # Using system-default font here
-        font.setPixelSize(37)
+        font.setPixelSize(18)
         painter.setFont(font)
-        painter.drawText(215, 66, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
+        painter.drawText(60, 70 + self._version_y_offset, 330 * self._scale, 230 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[0])
         if len(version) > 1:
             font.setPixelSize(16)
             painter.setFont(font)
             painter.setPen(QColor(200, 200, 200, 255))
-            painter.drawText(247, 105, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
+            painter.drawText(247, 105 + self._version_y_offset, 330 * self._scale, 255 * self._scale, Qt.AlignLeft | Qt.AlignTop, version[1])
         painter.setPen(QColor(255, 255, 255, 255))
 
-        # draw the loading image
+        # Draw the loading image
         pen = QPen()
         pen.setWidth(6 * self._scale)
         pen.setColor(QColor(32, 166, 219, 255))
         painter.setPen(pen)
         painter.drawArc(60, 150, 32 * self._scale, 32 * self._scale, self._loading_image_rotation_angle * 16, 300 * 16)
 
-        # draw message text
+        # Draw message text
         if self._current_message:
             font = QFont()  # Using system-default font here
             font.setPixelSize(13)

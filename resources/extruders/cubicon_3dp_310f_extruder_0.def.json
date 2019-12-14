@@ -1,5 +1,4 @@
 {
-    "id": "cubicon_3dp_310f_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
