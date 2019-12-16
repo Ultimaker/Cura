@@ -11,6 +11,12 @@ home_dir = os.path.expanduser("~")
 
 
 class SentryLogger(LogOutput):
+    # Sentry (https://sentry.io) is the service that Cura uses for logging crashes. This logger ensures that the
+    # regular log entries that we create are added as breadcrumbs so when a crash actually happens, they are already
+    # processed and ready for sending.
+    # Note that this only prepares them for sending. It only sends them when the user actually agrees to sending the
+    # information.
+    
     _levels = {
         "w": "warning",
         "i": "info",
