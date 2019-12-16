@@ -15,6 +15,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
+from UM.Message import Message
 
 from cura import ApplicationMetadata
 from cura import UltimakerCloudAuthentication
@@ -61,6 +62,7 @@ class Toolbox(QObject, Extension):
             "authors":             [],
             "packages":            [],
             "updates":             [],
+            "installed_plugins":   [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
@@ -68,6 +70,7 @@ class Toolbox(QObject, Extension):
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
             "updates":             PackagesModel(self),
+            "installed_plugins":   PackagesModel(self),
         }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
@@ -198,6 +201,12 @@ class Toolbox(QObject, Extension):
             sdk_version = self._sdk_version
         )
 
+        # https://api.ultimaker.com/cura-packages/v1/
+        self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}".format(
+            cloud_api_root=self._cloud_api_root,
+            cloud_api_version=self._cloud_api_version,
+        )
+
         # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
         installed_package_ids_with_versions = [":".join(items) for items in
                                                self._package_manager.getAllInstalledPackageIdsAndVersions()]
@@ -207,15 +216,18 @@ class Toolbox(QObject, Extension):
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
             "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
-                base_url = self._api_url, query = installed_packages_query))
+                base_url = self._api_url, query = installed_packages_query)),
+            "installed_plugins": QUrl("{base_url}/user/packages".format(base_url=self._api_url_user_packages))
         }
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserInstalledPlugins)
 
         # On boot we check which packages have updates.
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._fetchPackageUpdates()
+        self._fetchUserInstalledPlugins()
 
     def _prepareNetworkManager(self):
         if self._network_manager is not None:
@@ -236,6 +248,11 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("authors")
         # Gather installed packages:
         self._updateInstalledModels()
+
+    def _fetchUserInstalledPlugins(self):
+        self._prepareNetworkManager()
+        if self._application.getCuraAPI().account.isLoggedIn:
+            self._makeRequestByType("installed_plugins")
 
     # Displays the toolbox
     @pyqtSlot()
@@ -540,9 +557,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
-        if package_id in self._plugin_registry.getActivePlugins():
-            return True
-        return False
+        return package_id in self._plugin_registry.getActivePlugins()
 
     # Check for plugins that were installed with the old plugin browser
     def isOldPlugin(self, plugin_id: str) -> bool:
@@ -561,10 +576,11 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("d", "Requesting %s metadata from server.", request_type)
+        Logger.log("d", "Requesting '%s' metadata from server.", request_type)
         request = QNetworkRequest(self._request_urls[request_type])
         for header_name, header_value in self._request_headers:
             request.setRawHeader(header_name, header_value)
+        self._updateRequestHeader()
         if self._network_manager:
             self._network_manager.get(request)
 
@@ -646,8 +662,10 @@ class Toolbox(QObject, Extension):
                                 Logger.log("e", "Could not find the %s model.", response_type)
                                 break
 
-                            self._server_response_data[response_type] = json_data["data"]
-                            self._models[response_type].setMetadata(self._server_response_data[response_type])
+                            # Workaround: Do not add Metadata for "installed_plugins" check JUST YET
+                            if response_type != "installed_plugins":
+                                self._server_response_data[response_type] = json_data["data"]
+                                self._models[response_type].setMetadata(self._server_response_data[response_type])
 
                             if response_type == "packages":
                                 self._models[response_type].setFilter({"type": "plugin"})
@@ -661,9 +679,27 @@ class Toolbox(QObject, Extension):
                                 # Tell the package manager that there's a new set of updates available.
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
+                            elif response_type == "installed_plugins":
+                                user_subscribed = [(plugin['package_id'], plugin['package_version']) for plugin in json_data['data']]
+                                Logger.log("i", "- User is subscribed to {} package(s).".format(len(user_subscribed)))
+                                user_installed = self._package_manager.getUserInstalledPackagesOnMarketplace()
+                                Logger.log("i", "- User has installed locally {} package(s).".format(len(user_installed)))
 
-                            self.metadataChanged.emit()
-
+                                # Check for discrepancies between Cura installed and Cloud subscribed packages
+                                # convert them to set() to check if they are equal
+                                if set(user_installed) != set(user_subscribed):
+                                    Logger.log('d', "Mismatch found between Cloud subscribed packages and Cura installed packages")
+                                    sync_message = Message(i18n_catalog.i18nc(
+                                        "@info:generic",
+                                        "\nDo you want to sync material and software packages with your account?"),
+                                        lifetime=0,
+                                        title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+                                    sync_message.addAction("sync",
+                                                           name=i18n_catalog.i18nc("@action:button", "Sync"),
+                                                           icon="",
+                                                           description="Sync your Cloud subscribed packages to your local environment.",
+                                                           button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+                                    sync_message.show()
                             if self.isLoadingComplete():
                                 self.setViewPage("overview")
 
