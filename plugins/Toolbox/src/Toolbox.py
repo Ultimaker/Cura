@@ -62,7 +62,7 @@ class Toolbox(QObject, Extension):
             "authors":             [],
             "packages":            [],
             "updates":             [],
-            "installed_plugins":   [],
+            "installed_packages":   [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
@@ -70,7 +70,7 @@ class Toolbox(QObject, Extension):
             "authors":             AuthorsModel(self),
             "packages":            PackagesModel(self),
             "updates":             PackagesModel(self),
-            "installed_plugins":   PackagesModel(self),
+            "installed_packages":  PackagesModel(self),
         }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
@@ -217,7 +217,7 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
             "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
                 base_url = self._api_url, query = installed_packages_query)),
-            "installed_plugins": QUrl("{base_url}/user/packages".format(base_url=self._api_url_user_packages))
+            "installed_packages": QUrl("{base_url}/user/packages".format(base_url=self._api_url_user_packages))
         }
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
@@ -252,7 +252,7 @@ class Toolbox(QObject, Extension):
     def _fetchUserInstalledPlugins(self):
         self._prepareNetworkManager()
         if self._application.getCuraAPI().account.isLoggedIn:
-            self._makeRequestByType("installed_plugins")
+            self._makeRequestByType("installed_packages")
 
     # Displays the toolbox
     @pyqtSlot()
@@ -662,8 +662,8 @@ class Toolbox(QObject, Extension):
                                 Logger.log("e", "Could not find the %s model.", response_type)
                                 break
 
-                            # Workaround: Do not add Metadata for "installed_plugins" check JUST YET
-                            if response_type != "installed_plugins":
+                            # Workaround: Do not add Metadata for "installed_packages" check JUST YET
+                            if response_type != "installed_packages":
                                 self._server_response_data[response_type] = json_data["data"]
                                 self._models[response_type].setMetadata(self._server_response_data[response_type])
 
@@ -679,7 +679,7 @@ class Toolbox(QObject, Extension):
                                 # Tell the package manager that there's a new set of updates available.
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
-                            elif response_type == "installed_plugins":
+                            elif response_type == "installed_packages":
                                 user_subscribed = [(plugin['package_id'], plugin['package_version']) for plugin in json_data['data']]
                                 Logger.log("i", "- User is subscribed to {} package(s).".format(len(user_subscribed)))
                                 user_installed = self._package_manager.getUserInstalledPackagesOnMarketplace()
