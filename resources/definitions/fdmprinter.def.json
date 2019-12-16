@@ -5154,6 +5154,20 @@
                         }
                     }
                 },
+               "brim_gap":
+                {
+                    "label": "Brim Distance",
+                    "description": "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skirt_brim_line_width",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
+                },
                 "brim_replaces_support":
                 {
                     "label": "Brim Replaces Support",
