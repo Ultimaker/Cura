@@ -41,7 +41,7 @@ class SentryLogger(LogOutput):
     @staticmethod
     def _pruneSensitiveData(message):
         if home_dir in message:
-            message = message.replace(home_dir, "<censored_path>")
+            message = message.replace(home_dir, "<user_home>")
         return message
 
     @staticmethod
