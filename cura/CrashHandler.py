@@ -225,7 +225,7 @@ class CrashHandler:
         self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
 
         active_machine_definition_id = "unknown"
-        active_machine_manufacterer = "unknown"
+        active_machine_manufacturer = "unknown"
 
         try:
             from cura.CuraApplication import CuraApplication
@@ -234,10 +234,10 @@ class CrashHandler:
             global_stack = machine_manager.activeMachine
             if global_stack is None:
                 active_machine_definition_id = "empty"
-                active_machine_manufacterer = "empty"
+                active_machine_manufacturer = "empty"
             else:
                 active_machine_definition_id = global_stack.definition.getId()
-                active_machine_manufacterer = global_stack.definition.getMetaDataEntry("manufacturer", "unknown")
+                active_machine_manufacturer = global_stack.definition.getMetaDataEntry("manufacturer", "unknown")
         except:
             pass
 
@@ -246,7 +246,7 @@ class CrashHandler:
             scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
             scope.set_tag("gpu_type", opengl_instance.getGPUType())
             scope.set_tag("active_machine", active_machine_definition_id)
-            scope.set_tag("active_machine_manufacterer", active_machine_manufacterer)
+            scope.set_tag("active_machine_manufacturer", active_machine_manufacturer)
 
         return info
 
