@@ -28,6 +28,10 @@
         },
         "machine_end_gcode": {
             "default_value": "\n;---------------------------------\n;;; Jellybox End Script Begin ;;;\n;_________________________________\n; end gcode last modified Nov 30, 2018\nM117 Finishing Up ;write Finishing Up\n\nM107        ;turn the fan off\nM104 S0     ;extruder heater off\nM140 S0     ;bed heater off (if you have it)\nG91         ;relative positioning (includes extruder)\nG1 E-1 F2500 ;retract the filament a bit before lifting the nozzle to release some of the pressure\nG1 Z0.5 E-4 X-10 F9000 ;get out and retract filament even more\nG1 E-25 F2500 ;retract even more\nG90         ;absolute positioning (includes extruder)\nG28 X       ;home X so the head is out of the way\nG1 Y140     ;move Y forward, so the print is more accessible\nM84         ;steppers off\n\nM117 Print finished ;write Print finished\n;---------------------------------------\n;;; Jellybox End Script End ;;;\n;_______________________________________"
+        },
+
+        "retraction_prime_speed": {
+            "value": "max(retraction_speed - 30, 5)"
         }
     }
 }
