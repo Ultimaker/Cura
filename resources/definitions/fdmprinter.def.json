@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 10,
+        "setting_version": 11,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -416,34 +416,6 @@
                     "type": "polygons",
                     "default_value":
                     [
-                    ],
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": false,
-                    "settable_per_meshgroup": false
-                },
-                "machine_head_polygon":
-                {
-                    "label": "Machine Head Polygon",
-                    "description": "A 2D silhouette of the print head (fan caps excluded).",
-                    "type": "polygon",
-                    "default_value":
-                    [
-                        [
-                            -1,
-                            1
-                        ],
-                        [
-                            -1,
-                            -1
-                        ],
-                        [
-                            1,
-                            -1
-                        ],
-                        [
-                            1,
-                            1
-                        ]
                     ],
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2101,6 +2073,36 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "skin_edge_support_thickness":
+                {
+                    "label": "Skin Edge Support Thickness",
+                    "description": "The thickness of the extra infill that supports skin edges.",
+                    "unit": "mm",
+                    "default_value": 0.8,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_height",
+                    "type": "float",
+                    "value": "0",
+                    "comment": "This was put at 0 to keep the default behaviour the same, but in the original PR the 'value' was: resolveOrValue('infill_sparse_thickness') * (4 if infill_sparse_density < 12.5 else (3 if infill_sparse_density < 25 else (2 if infill_sparse_density < 50 else 1)))",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_sparse_density > 0",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                         "skin_edge_support_layers":
+                         {
+                              "label": "Skin Edge Support Layers",
+                              "description": "The number of infill layers that supports skin edges.",
+                              "default_value": 4,
+                              "minimum_value": "0",
+                              "type": "int",
+                              "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
+                              "limit_to_extruder": "infill_extruder_nr",
+                              "enabled": "infill_sparse_density > 0",
+                              "settable_per_mesh": true
+                         }
+                    }
                 }
             }
         },
@@ -2737,7 +2739,6 @@
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width * 1.5",
                     "maximum_value_warning": "10",
-                    "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
