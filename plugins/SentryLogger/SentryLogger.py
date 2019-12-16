@@ -25,9 +25,9 @@ class SentryLogger(LogOutput):
                 level = self._translateLogType(log_type[0])
                 if level is not None:
                     self._show_once.add(message)
-                    add_breadcrumb(level=level, message=message)
+                    add_breadcrumb(level = level, message = message)
         else:
-            add_breadcrumb(level=level, message=message)
+            add_breadcrumb(level = level, message = message)
 
     @staticmethod
     def _pruneSensitiveData(message):

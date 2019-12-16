@@ -196,7 +196,7 @@ class CrashHandler:
         self.data["os"] = {"type": platform.system(), "version": platform.version()}
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
-        self.data["locale_os"] = locale.getlocale(locale.LC_MESSAGES)[0] if hasattr(locale, 'LC_MESSAGES') else locale.getdefaultlocale()[0]
+        self.data["locale_os"] = locale.getlocale(locale.LC_MESSAGES)[0] if hasattr(locale, "LC_MESSAGES") else locale.getdefaultlocale()[0]
         self.data["locale_cura"] = self.cura_locale
 
         with configure_scope() as scope:
