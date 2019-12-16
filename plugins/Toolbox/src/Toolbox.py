@@ -700,6 +700,9 @@ class Toolbox(QObject, Extension):
                                                            description="Sync your Cloud subscribed packages to your local environment.",
                                                            button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
                                     sync_message.show()
+
+                            self.metadataChanged.emit()
+
                             if self.isLoadingComplete():
                                 self.setViewPage("overview")
 
