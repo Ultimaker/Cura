@@ -59,17 +59,17 @@ class Toolbox(QObject, Extension):
 
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
-            "authors":             [],
-            "packages":            [],
-            "updates":             [],
-            "subscribed_packages":   [],
+            "authors":              [],
+            "packages":             [],
+            "updates":              [],
+            "subscribed_packages":  [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
-            "authors":             AuthorsModel(self),
-            "packages":            PackagesModel(self),
-            "updates":             PackagesModel(self),
+            "authors":              AuthorsModel(self),
+            "packages":             PackagesModel(self),
+            "updates":              PackagesModel(self),
             "subscribed_packages":  PackagesModel(self),
         }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
@@ -200,9 +200,8 @@ class Toolbox(QObject, Extension):
             cloud_api_version = self._cloud_api_version,
             sdk_version = self._sdk_version
         )
-
-        # https://api.ultimaker.com/cura-packages/v1/
-        self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}".format(
+        # https://api.ultimaker.com/cura-packages/v1/user/packages
+        self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}/user/packages".format(
             cloud_api_root=self._cloud_api_root,
             cloud_api_version=self._cloud_api_version,
         )
@@ -217,17 +216,17 @@ class Toolbox(QObject, Extension):
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
             "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
                 base_url = self._api_url, query = installed_packages_query)),
-            "subscribed_packages": QUrl("{base_url}/user/packages".format(base_url=self._api_url_user_packages))
+            "subscribed_packages": QUrl(self._api_url_user_packages)
         }
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserInstalledPlugins)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
 
         # On boot we check which packages have updates.
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._fetchPackageUpdates()
-        self._fetchUserInstalledPlugins()
+        self._fetchUserSubscribedPackages()
 
     def _prepareNetworkManager(self):
         if self._network_manager is not None:
@@ -249,7 +248,7 @@ class Toolbox(QObject, Extension):
         # Gather installed packages:
         self._updateInstalledModels()
 
-    def _fetchUserInstalledPlugins(self):
+    def _fetchUserSubscribedPackages(self):
         if self._application.getCuraAPI().account.isLoggedIn:
             self._prepareNetworkManager()
             self._makeRequestByType("subscribed_packages")
