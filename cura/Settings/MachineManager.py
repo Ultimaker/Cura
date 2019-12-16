@@ -894,8 +894,8 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
-        if self._global_container_stack is None:
-            Logger.log("w", "Could not find extruder on position %s", position)
+        if self._global_container_stack is None or position not in self._global_container_stack.extruders:
+            Logger.log("w", "Could not find extruder on position %s.", position)
             return
         extruder = self._global_container_stack.extruderList[position]
 
