@@ -9,7 +9,16 @@ import os
 
 home_dir = os.path.expanduser("~")
 
+
 class SentryLogger(LogOutput):
+    _levels = {
+        "w": "warning",
+        "i": "info",
+        "c": "fatal",
+        "e": "error",
+        "d": "debug"
+    }
+
     def __init__(self) -> None:
         super().__init__()
         self._show_once = set()  # type: Set[str]
@@ -37,16 +46,4 @@ class SentryLogger(LogOutput):
 
     @staticmethod
     def _translateLogType(log_type: str) -> Optional[str]:
-        level = None
-        if log_type == "w":
-            level = "warning"
-        elif log_type == "i":
-            level = "info"
-        elif log_type == "c":
-            level = "fatal"
-        elif log_type == "e":
-            level = "error"
-        elif log_type == "d":
-            level = "debug"
-
-        return level
+        return SentryLogger._levels.get(log_type)
