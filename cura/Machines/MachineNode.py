@@ -162,6 +162,7 @@ class MachineNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
             self.variants["empty"] = VariantNode("empty_variant", machine = self)
+            self.variants["empty"].materialsChanged.connect(self.materialsChanged)
         else:
             # Find all the variants for this definition ID.
             variants = container_registry.findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
