@@ -67,11 +67,9 @@ from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
 from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
 from cura.Scene.CuraSceneController import CuraSceneController
 from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Scene.GCodeListDecorator import GCodeListDecorator
+
 from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Scene import ZOffsetDecorator
-
-from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
 
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
@@ -145,7 +143,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 10
+    SettingVersion = 11
 
     Created = False
 
@@ -170,7 +168,7 @@ class CuraApplication(QtApplication):
                          app_display_name = ApplicationMetadata.CuraAppDisplayName,
                          version = ApplicationMetadata.CuraVersion,
                          api_version = ApplicationMetadata.CuraSDKVersion,
-                         buildtype = ApplicationMetadata.CuraBuildType,
+                         build_type = ApplicationMetadata.CuraBuildType,
                          is_debug_mode = ApplicationMetadata.CuraDebugMode,
                          tray_icon_name = "cura-icon-32.png",
                          **kwargs)

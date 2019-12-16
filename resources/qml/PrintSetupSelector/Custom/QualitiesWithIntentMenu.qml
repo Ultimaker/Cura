@@ -164,6 +164,7 @@ Popup
                         visible: profilesList.visibleChildren.length > 1
                         anchors.left: parent.left
                         anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                        color: UM.Theme.getColor("text_inactive")
                     }
 
                     Column
