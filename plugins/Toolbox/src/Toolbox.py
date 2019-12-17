@@ -681,7 +681,7 @@ class Toolbox(QObject, Extension):
                             elif response_type == "subscribed_packages":
                                 user_subscribed = [(plugin["package_id"], plugin["package_version"]) for plugin in json_data["data"]]
                                 Logger.log("d", "User is subscribed to {} package(s).".format(len(user_subscribed)))
-                                user_installed = self._package_manager.getUserSubscribedPackagesAndVersions()
+                                user_installed = self._package_manager.getUserInstalledPackagesAndVersions()
                                 Logger.log("d", "User has installed locally {} package(s).".format(len(user_installed)))
 
                                 # Check for discrepancies between Cura installed and Cloud subscribed packages
