@@ -2073,6 +2073,36 @@
                             "settable_per_mesh": true
                         }
                     }
+                },
+                "skin_edge_support_thickness":
+                {
+                    "label": "Skin Edge Support Thickness",
+                    "description": "The thickness of the extra infill that supports skin edges.",
+                    "unit": "mm",
+                    "default_value": 0.8,
+                    "minimum_value": "0",
+                    "maximum_value": "machine_height",
+                    "type": "float",
+                    "value": "0",
+                    "comment": "This was put at 0 to keep the default behaviour the same, but in the original PR the 'value' was: resolveOrValue('infill_sparse_thickness') * (4 if infill_sparse_density < 12.5 else (3 if infill_sparse_density < 25 else (2 if infill_sparse_density < 50 else 1)))",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "enabled": "infill_sparse_density > 0",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                         "skin_edge_support_layers":
+                         {
+                              "label": "Skin Edge Support Layers",
+                              "description": "The number of infill layers that supports skin edges.",
+                              "default_value": 4,
+                              "minimum_value": "0",
+                              "type": "int",
+                              "value": "math.ceil(round(skin_edge_support_thickness / resolveOrValue('infill_sparse_thickness'), 4))",
+                              "limit_to_extruder": "infill_extruder_nr",
+                              "enabled": "infill_sparse_density > 0",
+                              "settable_per_mesh": true
+                         }
+                    }
                 }
             }
         },
@@ -5123,6 +5153,20 @@
                             "limit_to_extruder": "adhesion_extruder_nr"
                         }
                     }
+                },
+               "brim_gap":
+                {
+                    "label": "Brim Distance",
+                    "description": "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "skirt_brim_line_width",
+                    "enabled": "resolveOrValue('adhesion_type') == 'brim'",
+                    "settable_per_mesh": true,
+                    "settable_per_extruder": true,
+                    "limit_to_extruder": "adhesion_extruder_nr"
                 },
                 "brim_replaces_support":
                 {
