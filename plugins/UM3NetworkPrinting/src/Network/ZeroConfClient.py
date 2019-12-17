@@ -123,7 +123,9 @@ class ZeroConfClient:
 
         # Request more data if info is not complete
         if not info.address:
-            info = zero_conf.get_service_info(service_type, name)
+            new_info = zero_conf.get_service_info(service_type, name)
+            if new_info is not None:
+                info = new_info
 
         if info:
             type_of_device = info.properties.get(b"type", None)
