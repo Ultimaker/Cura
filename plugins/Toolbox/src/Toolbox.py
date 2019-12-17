@@ -164,7 +164,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, int)
     def ratePackage(self, package_id: str, rating: int) -> None:
-        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url=self._api_url, package_id = package_id))
+        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url = self._api_url, package_id = package_id))
 
         self._rate_request = QNetworkRequest(url)
         for header_name, header_value in self._request_headers:
@@ -202,8 +202,8 @@ class Toolbox(QObject, Extension):
         )
         # https://api.ultimaker.com/cura-packages/v1/user/packages
         self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}/user/packages".format(
-            cloud_api_root=self._cloud_api_root,
-            cloud_api_version=self._cloud_api_version,
+            cloud_api_root = self._cloud_api_root,
+            cloud_api_version = self._cloud_api_version,
         )
 
         # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
@@ -691,13 +691,13 @@ class Toolbox(QObject, Extension):
                                     sync_message = Message(i18n_catalog.i18nc(
                                         "@info:generic",
                                         "\nDo you want to sync material and software packages with your account?"),
-                                        lifetime=0,
-                                        title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+                                        lifetime = 0,
+                                        title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
                                     sync_message.addAction("sync",
-                                                           name=i18n_catalog.i18nc("@action:button", "Sync"),
-                                                           icon="",
-                                                           description="Sync your Cloud subscribed packages to your local environment.",
-                                                           button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+                                                           name = i18n_catalog.i18nc("@action:button", "Sync"),
+                                                           icon = "",
+                                                           description = "Sync your Cloud subscribed packages to your local environment.",
+                                                           button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
                                     sync_message.show()
 
                             self.metadataChanged.emit()
@@ -810,39 +810,39 @@ class Toolbox(QObject, Extension):
 
     # Exposed Models:
     # --------------------------------------------------------------------------
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def authorsModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["authors"])
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["packages"])
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsShowcaseModel(self) -> PackagesModel:
         return self._plugins_showcase_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsAvailableModel(self) -> PackagesModel:
         return self._plugins_available_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsInstalledModel(self) -> PackagesModel:
         return self._plugins_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsShowcaseModel(self) -> AuthorsModel:
         return self._materials_showcase_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsAvailableModel(self) -> AuthorsModel:
         return self._materials_available_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsInstalledModel(self) -> PackagesModel:
         return self._materials_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
 
