@@ -1,6 +1,6 @@
 ---
 name: CI/CD for push
-on: push
+on: [push]
 jobs:
   build:
     name: Build and test
@@ -15,7 +15,7 @@ jobs:
       run: docker/build.sh
 
 name: CI/CD for pull_request
-on: pull_request
+on: [pull_request]
 jobs:
   build:
     name: Build and test
