@@ -1,30 +1,15 @@
 ---
-name: CI/CD for push
-on: [push]
+name: CI/CD
+on: [push, pull_request]
 jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
     container: ultimaker/cura-build-environment
     steps:
-    - name: Checkout code
+    - name: Checkout master
       uses: actions/checkout@v1
     - name: Build and test
       env:
         GIT_REF_NAME: github.ref
-      run: docker/build.sh
-
-name: CI/CD for pull_request
-on: [pull_request]
-jobs:
-  build:
-    name: Build and test
-    runs-on: ubuntu-latest
-    container: ultimaker/cura-build-environment
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v1
-    - name: Build and test
-      env:
-        GIT_REF_NAME: github.base_ref
       run: docker/build.sh
