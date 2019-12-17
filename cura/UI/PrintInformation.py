@@ -197,11 +197,7 @@ class PrintInformation(QObject):
 
         material_preference_values = json.loads(self._application.getInstance().getPreferences().getValue("cura/material_settings"))
 
-        extruder_stacks = global_stack.extruders
-
-        for position in extruder_stacks:
-            extruder_stack = extruder_stacks[position]
-            index = int(position)
+        for index, extruder_stack in enumerate(global_stack.extruderList):
             if index >= len(self._material_amounts):
                 continue
             amount = self._material_amounts[index]
@@ -302,9 +298,7 @@ class PrintInformation(QObject):
 
         # Only update the job name when it's not user-specified.
         if not self._is_user_specified_job_name:
-            if self._pre_sliced:
-                self._job_name = catalog.i18nc("@label", "Pre-sliced file {0}", base_name)
-            elif self._application.getInstance().getPreferences().getValue("cura/jobname_prefix"):
+            if self._application.getInstance().getPreferences().getValue("cura/jobname_prefix") and not self._pre_sliced:
                 # Don't add abbreviation if it already has the exact same abbreviation.
                 if base_name.startswith(self._abbr_machine + "_"):
                     self._job_name = base_name

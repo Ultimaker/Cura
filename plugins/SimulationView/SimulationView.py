@@ -48,7 +48,7 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## View used to display g-code paths.
+## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
@@ -83,9 +83,13 @@ class SimulationView(CuraView):
         self._simulationview_composite_shader = None  # type: Optional["ShaderProgram"]
         self._old_composite_shader = None  # type: Optional["ShaderProgram"]
 
+        self._max_feedrate = sys.float_info.min
+        self._min_feedrate = sys.float_info.max
+        self._max_thickness = sys.float_info.min
+        self._min_thickness = sys.float_info.max
+
         self._global_container_stack = None  # type: Optional[ContainerStack]
-        self._proxy = SimulationViewProxy()
-        self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+        self._proxy = None
 
         self._resetSettings()
         self._legend_items = None
@@ -104,7 +108,6 @@ class SimulationView(CuraView):
         Application.getInstance().getPreferences().addPreference("layerview/show_skin", True)
         Application.getInstance().getPreferences().addPreference("layerview/show_infill", True)
 
-        Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
         self._updateWithPreferences()
 
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
@@ -180,8 +183,7 @@ class SimulationView(CuraView):
 
     def _onSceneChanged(self, node: "SceneNode") -> None:
         if node.getMeshData() is None:
-            self.resetLayerData()
-
+            return
         self.setActivity(False)
         self.calculateMaxLayers()
         self.calculateMaxPathsOnLayer(self._current_layer_num)
@@ -211,6 +213,8 @@ class SimulationView(CuraView):
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+        if renderer is None:
+            return
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
@@ -218,10 +222,10 @@ class SimulationView(CuraView):
             if theme is not None:
                 self._ghost_shader.setUniformValue("u_color", Color(*theme.getColor("layerview_ghost").getRgb()))
 
-        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+        for node in DepthFirstIterator(scene.getRoot()):
             # We do not want to render ConvexHullNode as it conflicts with the bottom layers.
             # However, it is somewhat relevant when the node is selected, so do render it then.
-            if type(node) is ConvexHullNode and not Selection.isSelected(node.getWatchedNode()):
+            if type(node) is ConvexHullNode and not Selection.isSelected(cast(ConvexHullNode, node).getWatchedNode()):
                 continue
 
             if not node.render(renderer):
@@ -384,7 +388,7 @@ class SimulationView(CuraView):
                     self._max_thickness = max(float(p.lineThicknesses.max()), self._max_thickness)
                     try:
                         self._min_thickness = min(float(p.lineThicknesses[numpy.nonzero(p.lineThicknesses)].min()), self._min_thickness)
-                    except:
+                    except ValueError:
                         # Sometimes, when importing a GCode the line thicknesses are zero and so the minimum (avoiding
                         # the zero) can't be calculated
                         Logger.log("i", "Min thickness can't be calculated because all the values are zero")
@@ -441,6 +445,8 @@ class SimulationView(CuraView):
     ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
     #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        if self._proxy is None:
+            self._proxy = SimulationViewProxy(self)
         return self._proxy
 
     def endRendering(self) -> None:
@@ -460,6 +466,13 @@ class SimulationView(CuraView):
                 return True
 
         if event.type == Event.ViewActivateEvent:
+            # Start listening to changes.
+            Application.getInstance().getPreferences().preferenceChanged.connect(self._onPreferencesChanged)
+            self._controller.getScene().getRoot().childrenChanged.connect(self._onSceneChanged)
+
+            self.calculateMaxLayers()
+            self.calculateMaxPathsOnLayer(self._current_layer_num)
+
             # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
             # This can happen when you do the following steps:
             #   1. Start Cura
@@ -479,7 +492,11 @@ class SimulationView(CuraView):
 
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
-            self.getRenderer().addRenderPass(layer_pass)
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            renderer.addRenderPass(layer_pass)
 
             # Make sure the NozzleNode is add to the root
             nozzle = self.getNozzleNode()
@@ -498,7 +515,7 @@ class SimulationView(CuraView):
                     self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
-                self._composite_pass = cast(CompositePass, self.getRenderer().getRenderPass("composite"))
+                self._composite_pass = cast(CompositePass, renderer.getRenderPass("composite"))
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()[:]  # make a copy so we can restore to it later
             self._composite_pass.getLayerBindings().append("simulationview")
@@ -506,13 +523,21 @@ class SimulationView(CuraView):
             self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
 
         elif event.type == Event.ViewDeactivateEvent:
+            self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
+            Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
             self._wireprint_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             if self._nozzle_node:
                 self._nozzle_node.setParent(None)
-            self.getRenderer().removeRenderPass(self._layer_pass)
+
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            if self._layer_pass is not None:
+                renderer.removeRenderPass(self._layer_pass)
             if self._composite_pass:
                 self._composite_pass.setLayerBindings(cast(List[str], self._old_layer_bindings))
                 self._composite_pass.setCompositeShader(cast(ShaderProgram, self._old_composite_shader))
@@ -572,14 +597,14 @@ class SimulationView(CuraView):
             self._current_layer_jumps = job.getResult().get("jumps")
         self._controller.getScene().sceneChanged.emit(self._controller.getScene().getRoot())
 
-        self._top_layers_job = None  # type: Optional["_CreateTopLayersJob"]
+        self._top_layers_job = None
 
     def _updateWithPreferences(self) -> None:
         self._solid_layers = int(Application.getInstance().getPreferences().getValue("view/top_layer_count"))
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self.setSimulationViewType(int(float(Application.getInstance().getPreferences().getValue("layerview/layer_view_type"))));
+        self.setSimulationViewType(int(float(Application.getInstance().getPreferences().getValue("layerview/layer_view_type"))))
 
         for extruder_nr, extruder_opacity in enumerate(Application.getInstance().getPreferences().getValue("layerview/extruder_opacities").split("|")):
             try:

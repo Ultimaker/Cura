@@ -50,6 +50,7 @@ class ObjectsModel(ListModel):
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
         Application.getInstance().getPreferences().preferenceChanged.connect(self._updateDelayed)
+        Selection.selectionChanged.connect(self._updateDelayed)
 
         self._update_timer = QTimer()
         self._update_timer.setInterval(200)

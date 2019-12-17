@@ -10,6 +10,8 @@ import QtQuick.Dialogs 1.2
 import UM 1.2 as UM
 import Cura 1.0 as Cura
 
+// An expandable list of materials. Includes both the header (this file) and the items (brandMaterialList)
+
 Item
 {
     id: brand_section
@@ -50,9 +52,8 @@ Item
             verticalAlignment: Text.AlignVCenter
             leftPadding: (UM.Theme.getSize("default_margin").width / 2) | 0
         }
-        Button
+        Item
         {
-            text: ""
             implicitWidth: UM.Theme.getSize("favorites_button").width
             implicitHeight: UM.Theme.getSize("favorites_button").height
             UM.RecolorImage
@@ -66,10 +67,6 @@ Item
                 height: UM.Theme.getSize("standard_arrow").height
                 color: "black"
                 source: brand_section.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
-            }
-            style: ButtonStyle
-            {
-                background: Item { }
             }
         }
     }
@@ -99,7 +96,7 @@ Item
         id: brandMaterialList
         anchors.top: brand_header.bottom
         width: parent.width
-        anchors.left: parent.left
+        anchors.left: parent ? parent.left : undefined
         height: brand_section.expanded ? childrenRect.height : 0
         visible: brand_section.expanded
 
@@ -109,7 +106,7 @@ Item
             delegate: Loader
             {
                 id: loader
-                width: parent.width
+                width: parent ? parent.width : 0
                 property var element: model
                 sourceComponent: hasMaterialTypes ? materialsTypeSection : materialSlot
             }

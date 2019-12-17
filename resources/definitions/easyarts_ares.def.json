@@ -5,7 +5,7 @@
     "metadata": {
         "visible": true,
         "author": "nliaudat",
-        "manufacturer": "EasyArts (discontinued)",
+        "manufacturer": "EasyArts",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {
@@ -49,26 +49,8 @@
         "top_bottom_thickness": {
             "default_value": 1
         },
-        "bottom_thickness": {
-            "default_value": 1
-        },
         "speed_print": {
             "default_value": 75
-        },
-        "speed_infill": {
-            "default_value": 100
-        },
-        "speed_wall": {
-            "default_value": 25
-        },
-        "speed_topbottom": {
-            "default_value": 15
-        },
-        "speed_travel": {
-            "default_value": 150
-        },
-        "speed_layer_0": {
-            "default_value": 30
         },
         "support_enable": {
             "default_value": true

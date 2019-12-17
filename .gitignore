@@ -35,7 +35,7 @@ cura.desktop
 .pydevproject
 .settings
 
-#Externally located plug-ins.
+#Externally located plug-ins commonly installed by our devs.
 plugins/cura-big-flame-graph
 plugins/cura-god-mode-plugin
 plugins/cura-siemensnx-plugin
@@ -52,6 +52,7 @@ plugins/FlatProfileExporter
 plugins/GodMode
 plugins/OctoPrintPlugin
 plugins/ProfileFlattener
+plugins/SettingsGuide
 plugins/X3GWriter
 
 #Build stuff
@@ -72,3 +73,6 @@ run.sh
 CuraEngine
 
 /.coverage
+
+#Prevents import failures when plugin running tests
+plugins/__init__.py

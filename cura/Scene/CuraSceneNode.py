@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from copy import deepcopy
@@ -6,13 +6,14 @@ from typing import cast, Dict, List, Optional
 
 from UM.Application import Application
 from UM.Math.AxisAlignedBox import AxisAlignedBox
-from UM.Math.Polygon import Polygon #For typing.
+from UM.Math.Polygon import Polygon  # For typing.
 from UM.Scene.SceneNode import SceneNode
-from UM.Scene.SceneNodeDecorator import SceneNodeDecorator #To cast the deepcopy of every decorator back to SceneNodeDecorator.
+from UM.Scene.SceneNodeDecorator import SceneNodeDecorator  # To cast the deepcopy of every decorator back to SceneNodeDecorator.
 
-import cura.CuraApplication #To get the build plate.
-from cura.Settings.ExtruderStack import ExtruderStack #For typing.
-from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator #For per-object settings.
+import cura.CuraApplication  # To get the build plate.
+from cura.Settings.ExtruderStack import ExtruderStack  # For typing.
+from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator  # For per-object settings.
+
 
 ##  Scene nodes that are models are only seen when selecting the corresponding build plate
 #   Note that many other nodes can just be UM SceneNode objects.
@@ -20,7 +21,7 @@ class CuraSceneNode(SceneNode):
     def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_setting_override: bool = False) -> None:
         super().__init__(parent = parent, visible = visible, name = name)
         if not no_setting_override:
-            self.addDecorator(SettingOverrideDecorator())  # now we always have a getActiveExtruderPosition, unless explicitly disabled
+            self.addDecorator(SettingOverrideDecorator())  # Now we always have a getActiveExtruderPosition, unless explicitly disabled
         self._outside_buildarea = False
 
     def setOutsideBuildArea(self, new_value: bool) -> None:
@@ -58,7 +59,7 @@ class CuraSceneNode(SceneNode):
             if extruder_id is not None:
                 if extruder_id == extruder.getId():
                     return extruder
-            else: # If the id is unknown, then return the extruder in the position 0
+            else:  # If the id is unknown, then return the extruder in the position 0
                 try:
                     if extruder.getMetaDataEntry("position", default = "0") == "0":  # Check if the position is zero
                         return extruder
@@ -85,24 +86,14 @@ class CuraSceneNode(SceneNode):
             1.0
         ]
 
-    ##  Return if the provided bbox collides with the bbox of this scene node
-    def collidesWithBbox(self, check_bbox: AxisAlignedBox) -> bool:
-        bbox = self.getBoundingBox()
-        if bbox is not None:
-            # Mark the node as outside the build volume if the bounding box test fails.
-            if check_bbox.intersectsBox(bbox) != AxisAlignedBox.IntersectionResult.FullIntersection:
-                return True
-
-        return False
-
     ##  Return if any area collides with the convex hull of this scene node
-    def collidesWithArea(self, areas: List[Polygon]) -> bool:
-        convex_hull = self.callDecoration("getConvexHull")
+    def collidesWithAreas(self, areas: List[Polygon]) -> bool:
+        convex_hull = self.callDecoration("getPrintingArea")
         if convex_hull:
             if not convex_hull.isValid():
                 return False
 
-            # Check for collisions between disallowed areas and the object
+            # Check for collisions between provided areas and the object
             for area in areas:
                 overlap = convex_hull.intersectsPolygon(area)
                 if overlap is None:

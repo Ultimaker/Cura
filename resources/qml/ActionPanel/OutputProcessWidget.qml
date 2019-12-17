@@ -100,6 +100,7 @@ Column
                     return totalWeights + "g · " + totalLengths.toFixed(2) + "m"
                 }
                 source: UM.Theme.getIcon("spool")
+                font: UM.Theme.getFont("default")
             }
         }
     }

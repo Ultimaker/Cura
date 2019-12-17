@@ -1,10 +1,16 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
+// Main window for the Toolbox
+
 import QtQuick 2.2
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
 import UM 1.1 as UM
+
+import "./pages"
+import "./dialogs"
+import "./components"
 
 Window
 {
@@ -14,8 +20,8 @@ Window
     modality: Qt.ApplicationModal
     flags: Qt.Dialog | Qt.CustomizeWindowHint | Qt.WindowTitleHint | Qt.WindowCloseButtonHint
 
-    width: Math.floor(720 * screenScaleFactor)
-    height: Math.floor(640 * screenScaleFactor)
+    width: UM.Theme.getSize("large_popup_dialog").width
+    height:  UM.Theme.getSize("large_popup_dialog").height
     minimumWidth: width
     maximumWidth: minimumWidth
     minimumHeight: height
@@ -29,9 +35,16 @@ Window
     Item
     {
         anchors.fill: parent
+
+        WelcomePage
+        {
+            visible: toolbox.viewPage === "welcome"
+        }
+
         ToolboxHeader
         {
             id: header
+            visible: toolbox.viewPage !== "welcome"
         }
 
         Item
@@ -48,32 +61,32 @@ Window
             ToolboxLoadingPage
             {
                 id: viewLoading
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "loading"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "loading"
             }
             ToolboxErrorPage
             {
                 id: viewErrored
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "errored"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "errored"
             }
             ToolboxDownloadsPage
             {
                 id: viewDownloads
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "overview"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "overview"
             }
             ToolboxDetailPage
             {
                 id: viewDetail
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "detail"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "detail"
             }
             ToolboxAuthorPage
             {
                 id: viewAuthor
-                visible: toolbox.viewCategory != "installed" && toolbox.viewPage == "author"
+                visible: toolbox.viewCategory !== "installed" && toolbox.viewPage === "author"
             }
             ToolboxInstalledPage
             {
                 id: installedPluginList
-                visible: toolbox.viewCategory == "installed"
+                visible: toolbox.viewCategory === "installed"
             }
         }
 

@@ -34,3 +34,11 @@ class MaterialOutputModel(QObject):
     @pyqtProperty(str, constant = True)
     def name(self) -> str:
         return self._name
+
+    def __eq__(self, other):
+        if self is other:
+            return True
+        if type(other) is not MaterialOutputModel:
+            return False
+
+        return self.guid == other.guid and self.type == other.type and self.brand == other.brand and self.color == other.color and self.name == other.name

@@ -1,5 +1,4 @@
 {
-    "id": "monoprice_select_mini_v1",
     "version": 2,
     "name": "Monoprice Select Mini V1",
     "inherits": "malyan_m200",

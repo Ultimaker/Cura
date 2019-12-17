@@ -66,7 +66,7 @@ class Snapshot:
         looking_from_offset = Vector(-1, 1, 2)
         if size > 0:
             # determine the watch distance depending on the size
-            looking_from_offset = looking_from_offset * size * 1.3
+            looking_from_offset = looking_from_offset * size * 1.75
         camera.setPosition(look_at + looking_from_offset)
         camera.lookAt(look_at)
 
@@ -85,8 +85,10 @@ class Snapshot:
             preview_pass.setCamera(camera)
             preview_pass.render()
             pixel_output = preview_pass.getOutput()
-
-            min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+            try:
+                min_x, max_x, min_y, max_y = Snapshot.getImageBoundaries(pixel_output)
+            except ValueError:
+                return None
 
             size = max((max_x - min_x) / render_width, (max_y - min_y) / render_height)
             if size > 0.5 or satisfied:

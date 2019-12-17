@@ -5,18 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.1\n"
+"Project-Id-Version: Cura 4.4\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-05-14 12:48+0000\n"
-"PO-Revision-Date: 2019-05-28 09:49+0200\n"
-"Last-Translator: Bothof <info@bothof.nl>\n"
-"Language-Team: Japanese\n"
+"POT-Creation-Date: 2019-11-05 13:13+0000\n"
+"PO-Revision-Date: 2019-09-23 14:15+0200\n"
+"Last-Translator: Lionbridge <info@lionbridge.com>\n"
+"Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.2.1\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -232,6 +232,16 @@ msgid "Whether the machine has a heated build plate present."
 msgstr "プリンターに加熱式ビルドプレートが付属しているかどうか。"
 
 #: fdmprinter.def.json
+msgctxt "machine_heated_build_volume label"
+msgid "Has Build Volume Temperature Stabilization"
+msgstr "造形温度安定化処理有り"
+
+#: fdmprinter.def.json
+msgctxt "machine_heated_build_volume description"
+msgid "Whether the machine is able to stabilize the build volume temperature."
+msgstr "機器が造形温度を安定化処理できるかどうかです。"
+
+#: fdmprinter.def.json
 msgctxt "machine_center_is_zero label"
 msgid "Is Center Origin"
 msgstr "中心位置"
@@ -359,7 +369,7 @@ msgstr "ノズルが冷却される前にエクストルーダーが静止しな
 
 #: fdmprinter.def.json
 msgctxt "machine_gcode_flavor label"
-msgid "G-code Flavour"
+msgid "G-code Flavor"
 msgstr "G-codeフレーバー"
 
 #: fdmprinter.def.json
@@ -1064,6 +1074,16 @@ msgid "The number of bottom layers. When calculated by the bottom thickness, thi
 msgstr "最底面のレイヤー数。下の厚さで計算すると、この値は整数に変換されます。"
 
 #: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr "初期底面レイヤー"
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
+msgstr "ビルドプレートから上にある初期底面レイヤーの数。下の厚さで計算すると、この値は整数に変換されます。"
+
+#: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
 msgid "Top/Bottom Pattern"
 msgstr "上層/底層パターン"
@@ -1316,6 +1336,56 @@ msgctxt "z_seam_type option sharpest_corner"
 msgid "Sharpest Corner"
 msgstr "鋭い角"
 
+#: fdmprinter.def.json
+msgctxt "z_seam_position label"
+msgid "Z Seam Position"
+msgstr "Zシーム位置"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position description"
+msgid "The position near where to start printing each part in a layer."
+msgstr "レイヤー内の各パーツの印刷を開始する場所付近の位置。"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backleft"
+msgid "Back Left"
+msgstr "後方左"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option back"
+msgid "Back"
+msgstr "戻る"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option backright"
+msgid "Back Right"
+msgstr "後方右"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option right"
+msgid "Right"
+msgstr "右"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontright"
+msgid "Front Right"
+msgstr "前方右"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option front"
+msgid "Front"
+msgstr "前"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option frontleft"
+msgid "Front Left"
+msgstr "前左"
+
+#: fdmprinter.def.json
+msgctxt "z_seam_position option left"
+msgid "Left"
+msgstr "左"
+
 # msgstr "最も鋭利な角"
 #: fdmprinter.def.json
 msgctxt "z_seam_x label"
@@ -1344,11 +1414,10 @@ msgctxt "z_seam_corner label"
 msgid "Seam Corner Preference"
 msgstr "シームコーナー設定"
 
-# msgstr "薄層のプレファレンス"
 #: fdmprinter.def.json
 msgctxt "z_seam_corner description"
-msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
-msgstr "モデル輪郭のコーナーがシーム（縫い目）の位置に影響するかどうかを制御します。 Noneはコーナーがシームの位置に影響を与えないことを意味します。 Seam（縫い目）を非表示にすると、内側のコーナーでシームが発生しやすくなります。 Seamを表示すると、外側の角にシームが発生する可能性が高くなります。 シームを隠す、または表示するを選択することにより、内側または外側コーナーでシームを発生させる可能性が高くなります。"
+msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner. Smart Hiding allows both inside and outside corners, but chooses inside corners more frequently, if appropriate."
+msgstr "モデル輪郭の角がシームの位置に影響を及ぼすかどうかを制御します。[なし] は、角がシームの位置に影響を及ぼさないことを意味します。シームを隠すにすると、シームが内側の角に生じる可能性が高くなります。シームを外側にすると、シームが外側の角に生じる可能性が高くなります。シームを隠す／外側に出すは、シームが内側または外側の角に生じる可能性が高くなります。スマート・シームを使用すると、内外両側の角を使用できますが、適切な場合には内側の角が選択される頻度が高まります。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_corner option z_seam_corner_none"
@@ -1373,6 +1442,11 @@ msgctxt "z_seam_corner option z_seam_corner_any"
 msgid "Hide or Expose Seam"
 msgstr "シーム表示/非表示"
 
+#: fdmprinter.def.json
+msgctxt "z_seam_corner option z_seam_corner_weighted"
+msgid "Smart Hiding"
+msgstr "スマート・シーム"
+
 # msgstr "シームを非表示または表示する"
 #: fdmprinter.def.json
 msgctxt "z_seam_relative label"
@@ -1387,14 +1461,13 @@ msgstr "有効時は、Zシームは各パーツの真ん中に設定されま�
 
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic label"
-msgid "Ignore Small Z Gaps"
-msgstr "小さいZギャップは無視"
+msgid "No Skin in Z Gaps"
+msgstr "Z 軸ギャップにスキンなし"
 
-# msgstr "小さなZギャップを無視する"
 #: fdmprinter.def.json
 msgctxt "skin_no_small_gaps_heuristic description"
-msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
-msgstr "モデルに垂直方向のギャップが小さくある場合、これらの狭いスペースにおいて上部および下部スキンを生成するために、約5％の計算時間が追加されます。そのような場合は、設定を無効にしてください。"
+msgid "When the model has small vertical gaps of only a few layers, there should normally be skin around those layers in the narrow space. Enable this setting to not generate skin if the vertical gap is very small. This improves printing time and slicing time, but technically leaves infill exposed to the air."
+msgstr "モデルの垂直方向に少数層のみの小さなギャップがある場合、通常は、その狭いスペース内にある層の周囲にスキンが存在する必要があります。垂直方向のギャップが非常に小さい場合は、この設定を有効にしてスキンが生成されないようにします。これにより、印刷時間とスライス時間が向上しますが、技術的には空気にさらされたインフィルを残します。"
 
 #: fdmprinter.def.json
 msgctxt "skin_outline_count label"
@@ -1412,11 +1485,10 @@ msgctxt "ironing_enabled label"
 msgid "Enable Ironing"
 msgstr "アイロン有効"
 
-# msgstr "アイロンを有効にする"
 #: fdmprinter.def.json
 msgctxt "ironing_enabled description"
-msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
-msgstr "ノズルから吐出せずに上部表面を再度動く機能。表面を溶かしてよりスムースにします。"
+msgid "Go over the top surface one additional time, but this time extruding very little material. This is meant to melt the plastic on top further, creating a smoother surface. The pressure in the nozzle chamber is kept high so that the creases in the surface are filled with material."
+msgstr "微量の材料のみを吐出して、再度上部表面を動きます。これにより上部のプラスティックが溶かされ、よりスムースな表面になります。ノズルチャンバーには高い圧力が保たれるため、表面上のしわが材料で埋められます。"
 
 #: fdmprinter.def.json
 msgctxt "ironing_only_highest_layer label"
@@ -1517,6 +1589,26 @@ msgstr "アイロンジャーク"
 msgctxt "jerk_ironing description"
 msgid "The maximum instantaneous velocity change while performing ironing."
 msgstr "アイロン時の最大加速度。"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap label"
+msgid "Skin Overlap Percentage"
+msgstr "表面公差量"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "壁とスキンの中央ライン（のエンドポイント）が交差する量（スキンラインのライン幅と壁の最内部に対する割合）を調整します。わずかな交差によって、壁がスキンにしっかりつながります。スキンと壁のライン幅が同じで、割合が50%を超えると、スキンが壁を通過している可能性があります。これは、その時点で、スキン押出機のノズルの位置が、すでに壁の真ん中を過ぎている可能性があるためです。"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap_mm label"
+msgid "Skin Overlap"
+msgstr "表面公差"
+
+#: fdmprinter.def.json
+msgctxt "skin_overlap_mm description"
+msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
+msgstr "壁とスキンの中央ライン（のエンドポイント）が交差する量を調整します。わずかな交差によって、壁がスキンにしっかりつながります。スキンと壁のライン幅が同じで、壁の幅が半分以上の値になると、スキンが壁を通過している可能性があります。これは、その時点で、スキン押出機のノズルの位置が、すでに壁の真ん中を過ぎている可能性があるためです。"
 
 #: fdmprinter.def.json
 msgctxt "infill label"
@@ -1691,6 +1783,16 @@ msgid "The infill pattern is moved this distance along the Y axis."
 msgstr "インフィルパターンはY軸に沿ってこの距離を移動します。"
 
 #: fdmprinter.def.json
+msgctxt "infill_randomize_start_location label"
+msgid "Randomize Infill Start"
+msgstr "インフィル開始のランダム化"
+
+#: fdmprinter.def.json
+msgctxt "infill_randomize_start_location description"
+msgid "Randomize which infill line is printed first. This prevents one segment becoming the strongest, but it does so at the cost of an additional travel move."
+msgstr "どのインフィルラインが最初に印刷されるかをランダム化します。これによって1つのセグメントが強くなることを回避しますが、追加の移動距離が必要となります。"
+
+#: fdmprinter.def.json
 msgctxt "infill_multiplier label"
 msgid "Infill Line Multiplier"
 msgstr "インフィルライン乗算"
@@ -1744,26 +1846,6 @@ msgstr "インフィル公差"
 msgctxt "infill_overlap_mm description"
 msgid "The amount of overlap between the infill and the walls. A slight overlap allows the walls to connect firmly to the infill."
 msgstr "インフィルと壁が交差する量、わずかな交差によって壁がインフィルにしっかりつながります。"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap label"
-msgid "Skin Overlap Percentage"
-msgstr "表面公差量"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap description"
-msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines, as a percentage of the line widths of the skin lines and the innermost wall. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any percentage over 50% may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "壁とスキンの中央ライン（のエンドポイント）が交差する量（スキンラインのライン幅と壁の最内部に対する割合）を調整します。わずかな交差によって、壁がスキンにしっかりつながります。スキンと壁のライン幅が同じで、割合が50%を超えると、スキンが壁を通過している可能性があります。これは、その時点で、スキン押出機のノズルの位置が、すでに壁の真ん中を過ぎている可能性があるためです。"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap_mm label"
-msgid "Skin Overlap"
-msgstr "表面公差"
-
-#: fdmprinter.def.json
-msgctxt "skin_overlap_mm description"
-msgid "Adjust the amount of overlap between the walls and (the endpoints of) the skin-centerlines. A slight overlap allows the walls to connect firmly to the skin. Note that, given an equal skin and wall line-width, any value over half the width of the wall may already cause any skin to go past the wall, because at that point the position of the nozzle of the skin-extruder may already reach past the middle of the wall."
-msgstr "壁とスキンの中央ライン（のエンドポイント）が交差する量を調整します。わずかな交差によって、壁がスキンにしっかりつながります。スキンと壁のライン幅が同じで、壁の幅が半分以上の値になると、スキンが壁を通過している可能性があります。これは、その時点で、スキン押出機のノズルの位置が、すでに壁の真ん中を過ぎている可能性があるためです。"
 
 #: fdmprinter.def.json
 msgctxt "infill_wipe_dist label"
@@ -1960,8 +2042,8 @@ msgstr "造形温度"
 
 #: fdmprinter.def.json
 msgctxt "build_volume_temperature description"
-msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
-msgstr "造形に使用した温度。これがゼロ (0) の場合、造形温度は調整できません。"
+msgid "The temperature of the environment to print in. If this is 0, the build volume temperature will not be adjusted."
+msgstr "印刷するプリンタ内の温度。これがゼロ (0) の場合、造形温度は調整できません。"
 
 #: fdmprinter.def.json
 msgctxt "material_print_temperature label"
@@ -2074,6 +2156,86 @@ msgid "Shrinkage ratio in percentage."
 msgstr "収縮率をパーセントで示す。"
 
 #: fdmprinter.def.json
+msgctxt "material_crystallinity label"
+msgid "Crystalline Material"
+msgstr "結晶性材料"
+
+#: fdmprinter.def.json
+msgctxt "material_crystallinity description"
+msgid "Is this material the type that breaks off cleanly when heated (crystalline), or is it the type that produces long intertwined polymer chains (non-crystalline)?"
+msgstr "この材料は加熱時にきれいに分解するタイプ (結晶性) または長く絡み合ったポリマー鎖 (非結晶) を作り出すタイプのいずれですか?"
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position label"
+msgid "Anti-ooze Retracted Position"
+msgstr "滲出防止引戻し位置"
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retracted_position description"
+msgid "How far the material needs to be retracted before it stops oozing."
+msgstr "滲出を止めるには材料をどこまで引き戻す必要があるか。"
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed label"
+msgid "Anti-ooze Retraction Speed"
+msgstr "滲出防止引戻し速度"
+
+#: fdmprinter.def.json
+msgctxt "material_anti_ooze_retraction_speed description"
+msgid "How fast the material needs to be retracted during a filament switch to prevent oozing."
+msgstr "滲出を防止するにはフィラメントスイッチ中に材料をどの程度速く引き戻す必要があるか。"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position label"
+msgid "Break Preparation Retracted Position"
+msgstr "フィラメントの引き出し準備引戻し位置"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_retracted_position description"
+msgid "How far the filament can be stretched before it breaks, while heated."
+msgstr "加熱中にフィラメントの引き出しが生じる距離。"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed label"
+msgid "Break Preparation Retraction Speed"
+msgstr "フィラメント引き出し準備引戻し速度"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_speed description"
+msgid "How fast the filament needs to be retracted just before breaking it off in a retraction."
+msgstr "フィラメントの引き出しが起こるための引き戻しの距離。"
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position label"
+msgid "Break Retracted Position"
+msgstr "フィラメント引き出しの引戻し位置"
+
+#: fdmprinter.def.json
+msgctxt "material_break_retracted_position description"
+msgid "How far to retract the filament in order to break it cleanly."
+msgstr "フィラメントをきれいに引き出すにはフィラメントをどこまで引き戻すか。"
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed label"
+msgid "Break Retraction Speed"
+msgstr "フィラメント引き出しの引戻し速度"
+
+#: fdmprinter.def.json
+msgctxt "material_break_speed description"
+msgid "The speed at which to retract the filament in order to break it cleanly."
+msgstr "フィラメントをきれいに引き出すために維持すべきフィラメントの引戻し速度。"
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature label"
+msgid "Break Temperature"
+msgstr "フィラメント引き出し温度"
+
+#: fdmprinter.def.json
+msgctxt "material_break_temperature description"
+msgid "The temperature at which the filament is broken for a clean break."
+msgstr "フィラメントがきれいに引き出される温度。"
+
+#: fdmprinter.def.json
 msgctxt "material_flow label"
 msgid "Flow"
 msgstr "フロー"
@@ -2082,6 +2244,126 @@ msgstr "フロー"
 msgctxt "material_flow description"
 msgid "Flow compensation: the amount of material extruded is multiplied by this value."
 msgstr "流れの補修: 押出されるマテリアルの量は、この値から乗算されます。"
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow label"
+msgid "Wall Flow"
+msgstr "壁のフロー"
+
+#: fdmprinter.def.json
+msgctxt "wall_material_flow description"
+msgid "Flow compensation on wall lines."
+msgstr "壁のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow label"
+msgid "Outer Wall Flow"
+msgstr "外壁のフロー"
+
+#: fdmprinter.def.json
+msgctxt "wall_0_material_flow description"
+msgid "Flow compensation on the outermost wall line."
+msgstr "最外壁のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow label"
+msgid "Inner Wall(s) Flow"
+msgstr "内壁のフロー"
+
+#: fdmprinter.def.json
+msgctxt "wall_x_material_flow description"
+msgid "Flow compensation on wall lines for all wall lines except the outermost one."
+msgstr "最外壁以外の壁のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow label"
+msgid "Top/Bottom Flow"
+msgstr "上面/下面フロー"
+
+#: fdmprinter.def.json
+msgctxt "skin_material_flow description"
+msgid "Flow compensation on top/bottom lines."
+msgstr "上面/下面のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow label"
+msgid "Top Surface Skin Flow"
+msgstr "上部表面スキンフロー"
+
+#: fdmprinter.def.json
+msgctxt "roofing_material_flow description"
+msgid "Flow compensation on lines of the areas at the top of the print."
+msgstr "印刷物の上部表面のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow label"
+msgid "Infill Flow"
+msgstr "インフィルフロー"
+
+#: fdmprinter.def.json
+msgctxt "infill_material_flow description"
+msgid "Flow compensation on infill lines."
+msgstr "インフィルのフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow label"
+msgid "Skirt/Brim Flow"
+msgstr "スカート/ブリムのフロー"
+
+#: fdmprinter.def.json
+msgctxt "skirt_brim_material_flow description"
+msgid "Flow compensation on skirt or brim lines."
+msgstr "スカートまたはブリムのフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow label"
+msgid "Support Flow"
+msgstr "支持材のフロー"
+
+#: fdmprinter.def.json
+msgctxt "support_material_flow description"
+msgid "Flow compensation on support structure lines."
+msgstr "支持材のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow label"
+msgid "Support Interface Flow"
+msgstr "支持材界面フロー"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_material_flow description"
+msgid "Flow compensation on lines of support roof or floor."
+msgstr "支持材の天井面または床面のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow label"
+msgid "Support Roof Flow"
+msgstr "支持材天井面フロー"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_material_flow description"
+msgid "Flow compensation on support roof lines."
+msgstr "支持材天井面のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow label"
+msgid "Support Floor Flow"
+msgstr "支持材床面フロー"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_material_flow description"
+msgid "Flow compensation on support floor lines."
+msgstr "支持材床面のフロー補正。"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow label"
+msgid "Prime Tower Flow"
+msgstr "プライムタワーのフロー"
+
+#: fdmprinter.def.json
+msgctxt "prime_tower_flow description"
+msgid "Flow compensation on prime tower lines."
+msgstr "プライムタワーのフロー補正。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2200,8 +2482,8 @@ msgstr "サポート引き戻し限界"
 
 #: fdmprinter.def.json
 msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
-msgstr "サポートからサポートに直線移動する場合は、引き戻しを省略します。この設定を有効にすると、印刷時間が短縮されますが、サポート構造内部の糸引きが多くなります。"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr "支持材から支持材に直線移動する場合は、引戻しを省略します。この設定を有効にすると、印刷時間は節約できますが、支持材内で過剰な糸引きが発生する可能性があります。"
 
 #: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
@@ -2252,6 +2534,16 @@ msgstr "ノズルスイッチ押し戻し速度"
 msgctxt "switch_extruder_prime_speed description"
 msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
 msgstr "ノズル スイッチ後にフィラメントが押し戻される速度。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr "ノズル切替え後のプライムに必要な余剰量"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr "ノズル切替え後のプライムに必要な余剰材料。"
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -2447,14 +2739,14 @@ msgid "The speed at which the skirt and brim are printed. Normally this is done 
 msgstr "スカートとブリムのプリント速度　通常は一層目のスピードと同じですが、異なる速度でスカートやブリムをプリントしたい場合に設定してください。"
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override label"
-msgid "Maximum Z Speed"
-msgstr "最大Z速度"
+msgctxt "speed_z_hop label"
+msgid "Z Hop Speed"
+msgstr "Z 軸ホップ速度"
 
 #: fdmprinter.def.json
-msgctxt "max_feedrate_z_override description"
-msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
-msgstr "ビルトプレートが移動する最高速度　この値を0に設定すると、ファームウェアのデフォルト値のZの最高速度が適用されます。"
+msgctxt "speed_z_hop description"
+msgid "The speed at which the vertical Z movement is made for Z Hops. This is typically lower than the print speed since the build plate or machine's gantry is harder to move."
+msgstr "Z 軸ホップに対して垂直 Z 軸方向の動きが行われる速度。これは通常、ビルドプレートまたはマシンのガントリーが動きにくいため、印刷速度よりも低くなります。"
 
 #: fdmprinter.def.json
 msgctxt "speed_slowdown_layers label"
@@ -2963,17 +3255,6 @@ msgid "The distance between the nozzle and already printed parts when avoiding d
 msgstr "ノズルが既に印刷された部分を移動する際の間隔。"
 
 #: fdmprinter.def.json
-msgctxt "start_layers_at_same_position label"
-msgid "Start Layers with the Same Part"
-msgstr "同じパーツでレイヤーを開始する"
-
-#: fdmprinter.def.json
-#, fuzzy
-msgctxt "start_layers_at_same_position description"
-msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
-msgstr "各レイヤーの印刷は決まった場所近い距離のポイントにて印刷を始めます。そのため、前のレイヤーが終わった部分から新しいレイヤーのプリントを開始しません。これによりオーバーハングや小さなパーツの印刷改善されますが、その代わり印刷時間が長くなります。"
-
-#: fdmprinter.def.json
 msgctxt "layer_start_x label"
 msgid "Layer Start X"
 msgstr "レイヤー始点X"
@@ -3079,7 +3360,6 @@ msgid "Regular Fan Speed"
 msgstr "標準ファン速度"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_min description"
 msgid "The speed at which the fans spin before hitting the threshold. When a layer prints faster than the threshold, the fan speed gradually inclines towards the maximum fan speed."
 msgstr "しきい値に達する前のファンの回転スピード。プリント速度がしきい値より速くなると、ファンの速度は上がっていきます。"
@@ -3110,7 +3390,6 @@ msgid "Initial Fan Speed"
 msgstr "初期ファン速度"
 
 #: fdmprinter.def.json
-#, fuzzy
 msgctxt "cool_fan_speed_0 description"
 msgid "The speed at which the fans spin at the start of the print. In subsequent layers the fan speed is gradually increased up to the layer corresponding to Regular Fan Speed at Height."
 msgstr "プリント開始時にファンが回転する速度。後続のレイヤーでは、ファン速度は、高さに応じて早くなります。"
@@ -3385,14 +3664,14 @@ msgid "Distance between the printed initial layer support structure lines. This 
 msgstr "印刷した初期層間の距離が構造ライをサポートします。この設定は、対応濃度で算出されます。"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle label"
-msgid "Support Infill Line Direction"
+msgctxt "support_infill_angles label"
+msgid "Support Infill Line Directions"
 msgstr "サポートインフィルラインの向き"
 
 #: fdmprinter.def.json
-msgctxt "support_infill_angle description"
-msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
-msgstr "対応するインフィルラインの向きです。サポートインフィルパターンは平面で回転します。"
+msgctxt "support_infill_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angle 0 degrees."
+msgstr "使用する整数線の方向のリスト。リストの要素は、層が進行するにつれて順番に使用され、リストの終わりに達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストであり、デフォルト角度の0度を使用します。"
 
 #: fdmprinter.def.json
 msgctxt "support_brim_enable label"
@@ -3522,8 +3801,8 @@ msgstr "サポート接合距離"
 
 #: fdmprinter.def.json
 msgctxt "support_join_distance description"
-msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
-msgstr "X/Y方向のサポート構造間の最大距離。別の構造がこの値より近づいた場合、構造は 1 つにマージします。"
+msgid "The maximum distance between support structures in the X/Y directions. When separate structures are closer together than this value, the structures merge into one."
+msgstr "支持材間における X/Y 軸方向の最大距離。個別の支持材間の距離がこの値よりも近い場合、支持材は 1 つにマージされます。"
 
 #: fdmprinter.def.json
 msgctxt "support_offset label"
@@ -3827,8 +4106,8 @@ msgstr "最小サポートインターフェイス領域"
 
 #: fdmprinter.def.json
 msgctxt "minimum_interface_area description"
-msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
-msgstr "インターフェイスポリゴンをサポートする最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr "サポートインターフェイスポリゴンの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area label"
@@ -3837,8 +4116,8 @@ msgstr "最小サポートルーフ領域"
 
 #: fdmprinter.def.json
 msgctxt "minimum_roof_area description"
-msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr "サポートのルーフに対する最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr "サポートのルーフの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area label"
@@ -3847,8 +4126,8 @@ msgstr "最小サポートフロア領域"
 
 #: fdmprinter.def.json
 msgctxt "minimum_bottom_area description"
-msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
-msgstr "サポートのフロアに対する最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will be printed as normal support."
+msgstr "サポートのフロアの最小領域サイズ。この値より小さい領域のポリゴンは通常のサポートとしてプリントされます。"
 
 #: fdmprinter.def.json
 msgctxt "support_interface_offset label"
@@ -3879,6 +4158,36 @@ msgstr "サポートフロア水平展開"
 msgctxt "support_bottom_offset description"
 msgid "Amount of offset applied to the floors of the support."
 msgstr "サポートのフロアに適用されるオフセット量。"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_angles label"
+msgid "Support Interface Line Directions"
+msgstr "サポート面のライン方向"
+
+#: fdmprinter.def.json
+msgctxt "support_interface_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_angles label"
+msgid "Support Roof Line Directions"
+msgstr "サポートルーフライン方向"
+
+#: fdmprinter.def.json
+msgctxt "support_roof_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_angles label"
+msgid "Support Floor Line Directions"
+msgstr "サポートフロアライン方向"
+
+#: fdmprinter.def.json
+msgctxt "support_bottom_angles description"
+msgid "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the default angles (alternates between 45 and 135 degrees if interfaces are quite thick or 90 degrees)."
+msgstr "使用する整数線の方向のリスト。リストの要素は、レイヤの層に合わせて順番に使用され、リストの末尾に達すると、最初から再び開始されます。リスト項目はコンマで区切られ、リスト全体は大括弧で囲まれています。デフォルトは空のリストとなり、デフォルトの角度を使用します（面がかなり厚い場合には45度と135度を交互に使用、それ以外では90度を使用）。"
 
 #: fdmprinter.def.json
 msgctxt "support_fan_enable label"
@@ -3922,14 +4231,14 @@ msgid "The diameter of a special tower."
 msgstr "特別な塔の直径。"
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter label"
-msgid "Minimum Diameter"
-msgstr "最小直径"
+msgctxt "support_tower_maximum_supported_diameter label"
+msgid "Maximum Tower-Supported Diameter"
+msgstr "最大タワーサポート直径"
 
 #: fdmprinter.def.json
-msgctxt "support_minimal_diameter description"
-msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
-msgstr "特殊なサポート塔によって支持される小さな領域のX / Y方向の最小直径。"
+msgctxt "support_tower_maximum_supported_diameter description"
+msgid "Maximum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+msgstr "特殊なサポートタワーにより支持される小さな領域のX / Y方向の最小直径。"
 
 #: fdmprinter.def.json
 msgctxt "support_tower_roof_angle label"
@@ -4432,16 +4741,6 @@ msgid "Print a tower next to the print which serves to prime the material after 
 msgstr "印刷物の横にタワーを造形して、ノズル交換後にフィラメントの調整をします。"
 
 #: fdmprinter.def.json
-msgctxt "prime_tower_circular label"
-msgid "Circular Prime Tower"
-msgstr "円形プライムタワー"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_circular description"
-msgid "Make the prime tower as a circular shape."
-msgstr "プライムタワーを円形にします。"
-
-#: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
 msgstr "プライムタワーのサイズ"
@@ -4480,16 +4779,6 @@ msgstr "プライムタワーY位置"
 msgctxt "prime_tower_position_y description"
 msgid "The y coordinate of the position of the prime tower."
 msgstr "プライムタワーの位置のy座標。"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_flow label"
-msgid "Prime Tower Flow"
-msgstr "プライムタワーのフロー"
-
-#: fdmprinter.def.json
-msgctxt "prime_tower_flow description"
-msgid "Flow compensation: the amount of material extruded is multiplied by this value."
-msgstr "吐出量: マテリアルの吐出量はこの値の乗算で計算されます。"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
@@ -4630,6 +4919,36 @@ msgstr "空の最初のメッシュの削除"
 msgctxt "remove_empty_first_layers description"
 msgid "Remove empty layers beneath the first printed layer if they are present. Disabling this setting can cause empty first layers if the Slicing Tolerance setting is set to Exclusive or Middle."
 msgstr "最初に印刷したレイヤーの下に空のレイヤーがある場合は取り除きます。この設定を無効にすると、スライストレランスが「排他」または「中間」に設定されている場合に最初のレイヤーが空になる原因になります。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr "最大解像度"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
+msgstr "スライス後の線分の最小サイズ。これを増やすと、メッシュの解像度が低くなります。これにより、プリンタが g コードの処理速度に追いつくことができ、処理できないメッシュの詳細を取り除いてスライス速度を速めます。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr "最大移動解像度"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
+msgstr "スライス後の移動線分の最小サイズ。これを増やすと、移動の跡が滑らかでなくなります。これにより、プリンタが g コードの処理速度に追いつくことができますが、精度が低下します。"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr "最大偏差"
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true."
+msgstr "最大解像度設定の解像度を下げるときに許容される最大偏差です。これを大きくすると印刷の精度は低くなりますが、g-codeは小さくなります。最大偏差は最大解像度の限度であるため、最大偏差でこの2つが競合する場合には常にtrueとなります。"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic label"
@@ -4796,11 +5115,10 @@ msgctxt "smooth_spiralized_contours label"
 msgid "Smooth Spiralized Contours"
 msgstr "滑らかな輪郭"
 
-# msgstr "滑らかならせん状の輪郭"
 #: fdmprinter.def.json
 msgctxt "smooth_spiralized_contours description"
-msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
-msgstr "らせん状の輪郭を滑らかにしてZシームの視認性を低下させます（Zシームは印刷物上でほとんどみえませんが、レイヤービューでは確認できます。）スムージングは​​細かいサーフェスの詳細をぼかす傾向があることに注意してください。"
+msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+msgstr "らせん状の輪郭を滑らかにしてZシームの視認性を低下させます (Zシームは印刷物上でほとんどみえませんが、層ビューでは確認できます)。スムージングは、細かい表面の詳細をぼかす傾向があることに注意してください。"
 
 #: fdmprinter.def.json
 msgctxt "relative_extrusion label"
@@ -5019,36 +5337,6 @@ msgid "Polygons in sliced layers that have a circumference smaller than this amo
 msgstr "この量よりも小さい円周を持つスライスレイヤーのポリゴンは、除外されます。値を小さくすると、スライス時間のコストで、メッシュの解像度が高くなります。つまり、ほとんどが高解像 SLA プリンター、極小多機能 3D モデルです。"
 
 #: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution label"
-msgid "Maximum Resolution"
-msgstr "最大解像度"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution description"
-msgid "The minimum size of a line segment after slicing. If you increase this, the mesh will have a lower resolution. This may allow the printer to keep up with the speed it has to process g-code and will increase slice speed by removing details of the mesh that it can't process anyway."
-msgstr "スライス後の線分の最小サイズ。これを増やすと、メッシュの解像度が低くなります。これにより、プリンタが g コードの処理速度に追いつくことができ、処理できないメッシュの詳細を取り除いてスライス速度を速めます。"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution label"
-msgid "Maximum Travel Resolution"
-msgstr "最大移動解像度"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution description"
-msgid "The minimum size of a travel line segment after slicing. If you increase this, the travel moves will have less smooth corners. This may allow the printer to keep up with the speed it has to process g-code, but it may cause model avoidance to become less accurate."
-msgstr "スライス後の移動線分の最小サイズ。これを増やすと、移動の跡が滑らかでなくなります。これにより、プリンタが g コードの処理速度に追いつくことができますが、精度が低下します。"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation label"
-msgid "Maximum Deviation"
-msgstr "最大偏差"
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation description"
-msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
-msgstr "最大解像度設定の解像度を下げるときに許容される最大偏差です。これを大きくすると、印刷の精度は低くなりますが、g-code は小さくなります。"
-
-#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr "接続部分のサポート分割"
@@ -5192,16 +5480,6 @@ msgid "The speed by which to move during coasting, relative to the speed of the 
 msgstr "コースティング中の移動速度。印刷時の経路の速度設定に比例します。ボーデンチューブの圧力が低下するので、100％よりわずかに低い値が推奨される。"
 
 #: fdmprinter.def.json
-msgctxt "skin_alternate_rotation label"
-msgid "Alternate Skin Rotation"
-msgstr "レイヤー回転変更"
-
-#: fdmprinter.def.json
-msgctxt "skin_alternate_rotation description"
-msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
-msgstr "トップ/ボトムのレイヤーが印刷される方向を変更します。通常、それらは斜めに印刷されます。この設定では、X方向のみとY方向のみが追加されます。"
-
-#: fdmprinter.def.json
 msgctxt "cross_infill_pocket_size label"
 msgid "Cross 3D Pocket Size"
 msgstr "3Dクロスポケットのサイズ"
@@ -5316,8 +5594,8 @@ msgstr "円錐サポートを有効にする"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_enabled description"
-msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
-msgstr "実験的機能：オーバーハング部分よりも底面のサポート領域を小さくする。"
+msgid "Make support areas smaller at the bottom than at the overhang."
+msgstr "オーバーハング部分よりも底面の支持領域を小さくする。"
 
 #: fdmprinter.def.json
 msgctxt "support_conical_angle label"
@@ -5381,23 +5659,23 @@ msgstr "各線分に導入されたランダム点間の平均距離。ポリゴ
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
-msgid "Flow rate compensation max extrusion offset"
+msgid "Flow Rate Compensation Max Extrusion Offset"
 msgstr "流量補正時の最大抽出オフセット"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
-msgid "The maximum distance in mm to compensate."
-msgstr "補正の最大距離をミリ単位で指定します。"
+msgid "The maximum distance in mm to move the filament to compensate for changes in flow rate."
+msgstr "流量の変化を補正するためにフィラメントを移動する最大距離（mm）。"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
-msgid "Flow rate compensation factor"
+msgid "Flow Rate Compensation Factor"
 msgstr "流量補正要因"
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
-msgid "The multiplication factor for the flow rate -> distance translation."
-msgstr "流量を距離に変換する際の要因。"
+msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
+msgstr "流量の変化を補正するためにフィラメントを移動する距離。フィラメントが1秒の押出で移動する距離の割合として指定します。"
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5688,13 +5966,13 @@ msgstr "次のレイヤーの高さを前のレイヤーの高さと比べた差
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
-msgid "Adaptive Layers Threshold"
-msgstr "適応レイヤーしきい値"
+msgid "Adaptive Layers Topography Size"
+msgstr "適応レイヤーのトポグラフィーサイズ"
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
-msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
-msgstr "小さいレイヤーを使用するかどうかの閾値。この値が、レイヤー中の最も急な斜面のタンジェントと比較されます。"
+msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
+msgstr "隣接する2つのレイヤー間の目標水平距離。この設定を小さくすると、レイヤーのエッジが近づくように薄いレイヤーが使用されます。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5703,8 +5981,8 @@ msgstr "張り出し壁アングル"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
-msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
-msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用して印刷されます。値が 90 の場合は、オーバーハング壁として処理されません。"
+msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
+msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用してプリントされます。値が90の場合は、オーバーハング壁として処理されません。サポートによってサポートされているオーバーハングも、オーバーハングとして処理されません。"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -6057,6 +6335,46 @@ msgid "The distance to move the head back and forth across the brush."
 msgstr "ブラシ全体でヘッド前後に動かす距離。"
 
 #: fdmprinter.def.json
+msgctxt "small_hole_max_size label"
+msgid "Small Hole Max Size"
+msgstr "小さい穴の最大サイズ"
+
+#: fdmprinter.def.json
+msgctxt "small_hole_max_size description"
+msgid "Holes and part outlines with a diameter smaller than this will be printed using Small Feature Speed."
+msgstr "これより直径が小さな輪郭の穴とパーツは、Small Feature Speedを使用して印刷されます。"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_max_length label"
+msgid "Small Feature Max Length"
+msgstr "小型形体の最大長さ"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_max_length description"
+msgid "Feature outlines that are shorter than this length will be printed using Small Feature Speed."
+msgstr "この長さより短い輪郭の形体は、Small Feature Speedを使用して印刷されます。"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor label"
+msgid "Small Feature Speed"
+msgstr "Small Feature Speed"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor description"
+msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "小型形体は通常のプリント速度に対してこの割合でプリントされます。低速でプリントすると、接着と精度が向上します。"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor_0 label"
+msgid "Small Feature Initial Layer Speed"
+msgstr "小型形体の初期レイヤー速度"
+
+#: fdmprinter.def.json
+msgctxt "small_feature_speed_factor_0 description"
+msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
+msgstr "最初のレイヤーの小型形体は通常のプリント速度に対してこの割合でプリントされます。低速でプリントすると、接着と精度が向上します。"
+
+#: fdmprinter.def.json
 msgctxt "command_line_settings label"
 msgid "Command Line Settings"
 msgstr "コマンドライン設定"
@@ -6115,6 +6433,155 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+#~ msgctxt "minimum_interface_area description"
+#~ msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "インターフェイスポリゴンをサポートする最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+
+#~ msgctxt "minimum_roof_area description"
+#~ msgid "Minimum area size for the roofs of the support. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "サポートのルーフに対する最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+
+#~ msgctxt "minimum_bottom_area description"
+#~ msgid "Minimum area size for the floors of the support. Polygons which have an area smaller than this value will not be generated."
+#~ msgstr "サポートのフロアに対する最小領域サイズ。この領域よりポリゴンが小さい場合は生成されません。"
+
+#~ msgctxt "skin_alternate_rotation label"
+#~ msgid "Alternate Skin Rotation"
+#~ msgstr "レイヤー回転変更"
+
+#~ msgctxt "skin_alternate_rotation description"
+#~ msgid "Alternate the direction in which the top/bottom layers are printed. Normally they are printed diagonally only. This setting adds the X-only and Y-only directions."
+#~ msgstr "トップ/ボトムのレイヤーが印刷される方向を変更します。通常、それらは斜めに印刷されます。この設定では、X方向のみとY方向のみが追加されます。"
+
+#~ msgctxt "flow_rate_max_extrusion_offset label"
+#~ msgid "Flow rate compensation max extrusion offset"
+#~ msgstr "流量補正時の最大抽出オフセット"
+
+#~ msgctxt "flow_rate_max_extrusion_offset description"
+#~ msgid "The maximum distance in mm to compensate."
+#~ msgstr "補正の最大距離をミリ単位で指定します。"
+
+#~ msgctxt "flow_rate_extrusion_offset_factor label"
+#~ msgid "Flow rate compensation factor"
+#~ msgstr "流量補正要因"
+
+#~ msgctxt "flow_rate_extrusion_offset_factor description"
+#~ msgid "The multiplication factor for the flow rate -> distance translation."
+#~ msgstr "流量を距離に変換する際の要因。"
+
+#~ msgctxt "adaptive_layer_height_threshold label"
+#~ msgid "Adaptive Layers Threshold"
+#~ msgstr "適応レイヤーしきい値"
+
+#~ msgctxt "adaptive_layer_height_threshold description"
+#~ msgid "Threshold whether to use a smaller layer or not. This number is compared to the tan of the steepest slope in a layer."
+#~ msgstr "小さいレイヤーを使用するかどうかの閾値。この値が、レイヤー中の最も急な斜面のタンジェントと比較されます。"
+
+#~ msgctxt "wall_overhang_angle description"
+#~ msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging."
+#~ msgstr "この角度以上に張り出した壁は、オーバーハング壁設定を使用して印刷されます。値が 90 の場合は、オーバーハング壁として処理されません。"
+
+#~ msgctxt "small_feature_speed_factor description"
+#~ msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+#~ msgstr "小型形体は通常の印刷速度よりこの割合で印刷されます。低速の印刷によって、接着と精度が向上します。"
+
+#~ msgctxt "small_feature_speed_factor_0 label"
+#~ msgid "First Layer Speed"
+#~ msgstr "最初のレイヤー速度"
+
+#~ msgctxt "small_feature_speed_factor_0 description"
+#~ msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhestion and accuracy."
+#~ msgstr "小型形体の最初のレイヤーは通常の印刷速度よりこの割合で印刷されます。低速の印刷によって、接着と精度が向上します。"
+
+# msgstr "アイロンを有効にする"
+#~ msgctxt "ironing_enabled description"
+#~ msgid "Go over the top surface one additional time, but without extruding material. This is meant to melt the plastic on top further, creating a smoother surface."
+#~ msgstr "ノズルから吐出せずに上部表面を再度動く機能。表面を溶かしてよりスムースにします。"
+
+#~ msgctxt "start_layers_at_same_position label"
+#~ msgid "Start Layers with the Same Part"
+#~ msgstr "同じパーツでレイヤーを開始する"
+
+#, fuzzy
+#~ msgctxt "start_layers_at_same_position description"
+#~ msgid "In each layer start with printing the object near the same point, so that we don't start a new layer with printing the piece which the previous layer ended with. This makes for better overhangs and small parts, but increases printing time."
+#~ msgstr "各レイヤーの印刷は決まった場所近い距離のポイントにて印刷を始めます。そのため、前のレイヤーが終わった部分から新しいレイヤーのプリントを開始しません。これによりオーバーハングや小さなパーツの印刷改善されますが、その代わり印刷時間が長くなります。"
+
+#~ msgctxt "support_infill_angles description"
+#~ msgid "Orientation of the infill pattern for supports. The support infill pattern is rotated in the horizontal plane."
+#~ msgstr "対応するインフィルラインの向きです。サポートインフィルパターンは平面で回転します。"
+
+#~ msgctxt "meshfix_maximum_deviation description"
+#~ msgid "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller."
+#~ msgstr "最大解像度設定の解像度を下げるときに許容される最大偏差です。これを大きくすると、印刷の精度は低くなりますが、g-code は小さくなります。"
+
+#~ msgctxt "machine_gcode_flavor label"
+#~ msgid "G-code Flavour"
+#~ msgstr "G-codeフレーバー"
+
+# msgstr "薄層のプレファレンス"
+#~ msgctxt "z_seam_corner description"
+#~ msgid "Control whether corners on the model outline influence the position of the seam. None means that corners have no influence on the seam position. Hide Seam makes the seam more likely to occur on an inside corner. Expose Seam makes the seam more likely to occur on an outside corner. Hide or Expose Seam makes the seam more likely to occur at an inside or outside corner."
+#~ msgstr "モデル輪郭のコーナーがシーム（縫い目）の位置に影響するかどうかを制御します。 Noneはコーナーがシームの位置に影響を与えないことを意味します。 Seam（縫い目）を非表示にすると、内側のコーナーでシームが発生しやすくなります。 Seamを表示すると、外側の角にシームが発生する可能性が高くなります。 シームを隠す、または表示するを選択することにより、内側または外側コーナーでシームを発生させる可能性が高くなります。"
+
+#~ msgctxt "skin_no_small_gaps_heuristic label"
+#~ msgid "Ignore Small Z Gaps"
+#~ msgstr "小さいZギャップは無視"
+
+# msgstr "小さなZギャップを無視する"
+#~ msgctxt "skin_no_small_gaps_heuristic description"
+#~ msgid "When the model has small vertical gaps, about 5% extra computation time can be spent on generating top and bottom skin in these narrow spaces. In such case, disable the setting."
+#~ msgstr "モデルに垂直方向のギャップが小さくある場合、これらの狭いスペースにおいて上部および下部スキンを生成するために、約5％の計算時間が追加されます。そのような場合は、設定を無効にしてください。"
+
+#~ msgctxt "build_volume_temperature description"
+#~ msgid "The temperature used for build volume. If this is 0, the build volume temperature will not be adjusted."
+#~ msgstr "造形に使用した温度。これがゼロ (0) の場合、造形温度は調整できません。"
+
+#~ msgctxt "limit_support_retractions description"
+#~ msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excesive stringing within the support structure."
+#~ msgstr "サポートからサポートに直線移動する場合は、引き戻しを省略します。この設定を有効にすると、印刷時間が短縮されますが、サポート構造内部の糸引きが多くなります。"
+
+#~ msgctxt "max_feedrate_z_override label"
+#~ msgid "Maximum Z Speed"
+#~ msgstr "最大Z速度"
+
+#~ msgctxt "max_feedrate_z_override description"
+#~ msgid "The maximum speed with which the build plate is moved. Setting this to zero causes the print to use the firmware defaults for the maximum z speed."
+#~ msgstr "ビルトプレートが移動する最高速度　この値を0に設定すると、ファームウェアのデフォルト値のZの最高速度が適用されます。"
+
+#~ msgctxt "support_join_distance description"
+#~ msgid "The maximum distance between support structures in the X/Y directions. When seperate structures are closer together than this value, the structures merge into one."
+#~ msgstr "X/Y方向のサポート構造間の最大距離。別の構造がこの値より近づいた場合、構造は 1 つにマージします。"
+
+#~ msgctxt "support_minimal_diameter label"
+#~ msgid "Minimum Diameter"
+#~ msgstr "最小直径"
+
+#~ msgctxt "support_minimal_diameter description"
+#~ msgid "Minimum diameter in the X/Y directions of a small area which is to be supported by a specialized support tower."
+#~ msgstr "特殊なサポート塔によって支持される小さな領域のX / Y方向の最小直径。"
+
+#~ msgctxt "prime_tower_circular label"
+#~ msgid "Circular Prime Tower"
+#~ msgstr "円形プライムタワー"
+
+#~ msgctxt "prime_tower_circular description"
+#~ msgid "Make the prime tower as a circular shape."
+#~ msgstr "プライムタワーを円形にします。"
+
+#~ msgctxt "prime_tower_flow description"
+#~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
+#~ msgstr "吐出量: マテリアルの吐出量はこの値の乗算で計算されます。"
+
+# msgstr "滑らかならせん状の輪郭"
+#~ msgctxt "smooth_spiralized_contours description"
+#~ msgid "Smooth the spiralized contours to reduce the visibility of the Z seam (the Z-seam should be barely visible on the print but will still be visible in the layer view). Note that smoothing will tend to blur fine surface details."
+#~ msgstr "らせん状の輪郭を滑らかにしてZシームの視認性を低下させます（Zシームは印刷物上でほとんどみえませんが、レイヤービューでは確認できます。）スムージングは​​細かいサーフェスの詳細をぼかす傾向があることに注意してください。"
+
+#~ msgctxt "support_conical_enabled description"
+#~ msgid "Experimental feature: Make support areas smaller at the bottom than at the overhang."
+#~ msgstr "実験的機能：オーバーハング部分よりも底面のサポート領域を小さくする。"
 
 #~ msgctxt "extruders_enabled_count label"
 #~ msgid "Number of Extruders that are enabled"

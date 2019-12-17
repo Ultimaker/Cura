@@ -87,9 +87,25 @@ Cura.MachineAction
             }
         }
     }
+
+    Label
+    {
+        id: machineNameLabel
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
+        text: Cura.MachineManager.activeMachine.name
+        horizontalAlignment: Text.AlignHCenter
+        font: UM.Theme.getFont("large_bold")
+        color: UM.Theme.getColor("text")
+        renderType: Text.NativeRendering
+    }
+
     UM.TabRow
     {
         id: tabBar
+        anchors.top: machineNameLabel.bottom
+        anchors.topMargin: UM.Theme.getSize("default_margin").height
         width: parent.width
         Repeater
         {

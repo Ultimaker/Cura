@@ -35,6 +35,7 @@ UM.TooltipArea
     property alias labelWidth: fieldLabel.width
     property alias unitText: unitLabel.text
 
+    property alias textField: textFieldWithUnit
     property alias valueText: textFieldWithUnit.text
     property alias valueValidator: textFieldWithUnit.validator
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
@@ -43,6 +44,8 @@ UM.TooltipArea
 
     // whether negative value is allowed. This affects the validation of the input field.
     property bool allowNegativeValue: false
+    // whether positive value is allowed. This affects the validation of the input field.
+    property bool allowPositiveValue: true
 
     // callback functions
     property var afterOnEditingFinishedFunction: dummy_func
@@ -65,7 +68,7 @@ UM.TooltipArea
         anchors.left: parent.left
         anchors.verticalCenter: textFieldWithUnit.verticalCenter
         visible: text != ""
-        font: UM.Theme.getFont("medium")
+        font: UM.Theme.getFont("default")
         color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
@@ -153,7 +156,13 @@ UM.TooltipArea
             const value = propertyProvider.properties.value
             return value ? value : ""
         }
-        validator: RegExpValidator { regExp: allowNegativeValue ? /-?[0-9\.,]{0,6}/ : /[0-9\.,]{0,6}/ }
+        validator: DoubleValidator
+        {
+            bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
+            top: allowPositiveValue ? Number.POSITIVE_INFINITY : 0
+            decimals: 6
+            notation: DoubleValidator.StandardNotation
+        }
 
         onEditingFinished: editingFinishedFunction()
 

@@ -1,5 +1,4 @@
 {
-    "id": "anet_a6_extruder_0",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

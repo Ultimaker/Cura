@@ -1,6 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2019 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
-
 import QtQuick 2.2
 import QtQuick.Controls 2.0
 import UM 1.3 as UM
@@ -21,10 +20,6 @@ Item
 
     // The print job which all other data is derived from
     property var printJob: null
-
-    // If the printer is a cloud printer or not. Other items base their enabled state off of this boolean. In the future
-    // they might not need to though.
-    property bool cloudConnection: Cura.MachineManager.activeMachineIsUsingCloudConnection
 
     width: parent.width
     height: childrenRect.height
@@ -69,6 +64,7 @@ Item
                     visible: printJob
 
                     // FIXED-LINE-HEIGHT:
+                    width: parent.width
                     height: parent.height
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
@@ -80,6 +76,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 height: 18 * screenScaleFactor // TODO: Theme!
                 width: UM.Theme.getSize("monitor_column").width
+
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
@@ -88,6 +85,7 @@ Item
                     visible: !printJob
                     radius: 2 * screenScaleFactor // TODO: Theme!
                 }
+
                 Label
                 {
                     text: printJob ? OutputDevice.formatDuration(printJob.timeTotal) : ""
@@ -183,13 +181,10 @@ Item
                 id: printerConfiguration
                 anchors.verticalCenter: parent.verticalCenter
                 buildplate: catalog.i18nc("@label", "Glass")
-                configurations:
-                [
-                    base.printJob.configuration.extruderConfigurations[0],
-                    base.printJob.configuration.extruderConfigurations[1]
-                ]
+                configurations: base.printJob.configuration.extruderConfigurations
                 height: 72 * screenScaleFactor // TODO: Theme!
             }
+
             Label {
                 text: printJob && printJob.owner ? printJob.owner : ""
                 color: UM.Theme.getColor("monitor_text_primary")
@@ -217,7 +212,7 @@ Item
         }
         width: 32 * screenScaleFactor // TODO: Theme!
         height: 32 * screenScaleFactor // TODO: Theme!
-        enabled: !cloudConnection
+        enabled: OutputDevice.supportsPrintJobActions
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
@@ -247,10 +242,10 @@ Item
         enabled: !contextMenuButton.enabled
     }
 
-    MonitorInfoBlurb
-    {
-        id: contextMenuDisabledInfo
-        text: catalog.i18nc("@info", "These options are not available because you are monitoring a cloud printer.")
-        target: contextMenuButton
-    }
+     MonitorInfoBlurb
+     {
+         id: contextMenuDisabledInfo
+         text: catalog.i18nc("@info", "Please update your printer's firmware to manage the queue remotely.")
+         target: contextMenuButton
+     }
 }

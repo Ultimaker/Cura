@@ -1,7 +1,7 @@
 // Copyright (c) 2018 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
-import QtQuick 2.7
+import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
@@ -20,10 +20,16 @@ RowLayout
         {
             if (Cura.MachineManager.activeStack)
             {
-                var text = Cura.MachineManager.activeQualityOrQualityChangesName
+                var resultMap = Cura.MachineManager.activeQualityDisplayNameMap
+                var text = resultMap["main"]
+                if (resultMap["suffix"])
+                {
+                    text += " - " + resultMap["suffix"]
+                }
+
                 if (!Cura.MachineManager.hasNotSupportedQuality)
                 {
-                    text += " " + layerHeight.properties.value + "mm"
+                    text += " - " + layerHeight.properties.value + "mm"
                     text += Cura.MachineManager.isActiveQualityExperimental ? " - " + catalog.i18nc("@label", "Experimental") : ""
                 }
                 return text
@@ -31,6 +37,7 @@ RowLayout
             return ""
         }
         font: UM.Theme.getFont("medium")
+        elide: Text.ElideMiddle
 
         UM.SettingPropertyProvider
         {
