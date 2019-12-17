@@ -679,7 +679,7 @@ class Toolbox(QObject, Extension):
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
                             elif response_type == "subscribed_packages":
-                                user_subscribed = [(plugin['package_id'], plugin['package_version']) for plugin in json_data['data']]
+                                user_subscribed = [(plugin["package_id"], plugin["package_version"]) for plugin in json_data["data"]]
                                 Logger.log("d", "User is subscribed to {} package(s).".format(len(user_subscribed)))
                                 user_installed = self._package_manager.getUserSubscribedPackagesAndVersions()
                                 Logger.log("d", "User has installed locally {} package(s).".format(len(user_installed)))
@@ -687,7 +687,7 @@ class Toolbox(QObject, Extension):
                                 # Check for discrepancies between Cura installed and Cloud subscribed packages
                                 # convert them to set() to check if they are equal
                                 if set(user_installed) != set(user_subscribed):
-                                    Logger.log('d', "Mismatch found between Cloud subscribed packages and Cura installed packages")
+                                    Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
                                     sync_message = Message(i18n_catalog.i18nc(
                                         "@info:generic",
                                         "\nDo you want to sync material and software packages with your account?"),
