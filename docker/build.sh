@@ -20,7 +20,14 @@ cd "${PROJECT_DIR}"
 # Check the branch to use:
 #  1. Use the Uranium branch with the branch same if it exists.
 #  2. Otherwise, use the default branch name "master"
-echo "GIT_REF_NAME: ${GIT_REF_NAME}"
+echo "GITHUB_REF: ${GITHUB_REF}"
+echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
+
+GIT_REF_NAME="${GITHUB_REF}"
+if [ -n "${GITHUB_BASE_REF}" ]; then
+  GIT_REF_NAME="${GITHUB_BASE_REF}"
+fi
+
 URANIUM_BRANCH="${GIT_REF_NAME:-master}"
 output="$(git ls-remote --heads https://github.com/Ultimaker/Uranium.git "${URANIUM_BRANCH}")"
 if [ -z "${output}" ]; then
