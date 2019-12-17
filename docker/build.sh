@@ -27,6 +27,7 @@ GIT_REF_NAME="${GITHUB_REF}"
 if [ -n "${GITHUB_BASE_REF}" ]; then
   GIT_REF_NAME="${GITHUB_BASE_REF}"
 fi
+GIT_REF_NAME="$(basename "${GIT_REF_NAME}")"
 
 URANIUM_BRANCH="${GIT_REF_NAME:-master}"
 output="$(git ls-remote --heads https://github.com/Ultimaker/Uranium.git "${URANIUM_BRANCH}")"
