@@ -2408,6 +2408,54 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_flush_purge_speed":
+                {
+                    "label": "Flush Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_flush_purge_length":
+                {
+                    "label": "Flush Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 60,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_speed":
+                {
+                    "label": "End Of Filament Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_length":
+                {
+                    "label": "End Of Filament Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 20,
+                    "enabled": false
+                },
+                "material_maximum_park_duration":
+                {
+                    "label": "Maximum Park Duration",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 300,
+                    "enabled": false
+                },
+                "material_no_load_move_factor":
+                {
+                    "label": "No Load Move Factor",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.940860215,
+                    "enabled": false
+                },
                 "material_flow":
                 {
                     "label": "Flow",
