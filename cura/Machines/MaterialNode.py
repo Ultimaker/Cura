@@ -71,11 +71,14 @@ class MaterialNode(ContainerNode):
                 qualities = container_registry.findInstanceContainersMetadata(type = "quality",
                                                                               definition = self.variant.machine.quality_definition,
                                                                               variant = self.variant.variant_name,
-                                                                              material = self.container_id)
+                                                                              material = self.base_file)  # First try by exact material ID.
+                # CURA-7070
+                # The quality profiles only reference a material with the material_root_id. They will never state something
+                # such as "generic_pla_ultimaker_s5_AA_0.4". So we search with the "base_file" which is the material_root_id.
             else:
                 qualities = container_registry.findInstanceContainersMetadata(type = "quality",
                                                                               definition = self.variant.machine.quality_definition,
-                                                                              material = self.container_id)
+                                                                              material = self.base_file)
             if not qualities:
                 my_material_type = self.material_type
                 if self.variant.machine.has_variants:
