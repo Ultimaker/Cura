@@ -1,6 +1,11 @@
 ---
 name: CI/CD
-on: [push, pull_request]
+on:
+  push:
+    - master
+    - 'WIP**'
+    - '4.*'
+  pull_request:
 jobs:
   build:
     name: Build and test
