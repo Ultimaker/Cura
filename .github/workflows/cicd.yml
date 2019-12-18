@@ -2,9 +2,10 @@
 name: CI/CD
 on:
   push:
-    - master
-    - 'WIP**'
-    - '4.*'
+    branches:
+      - master
+      - 'WIP**'
+      - '4.*'
   pull_request:
 jobs:
   build:
