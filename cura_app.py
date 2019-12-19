@@ -9,7 +9,10 @@ import os
 import sys
 
 from UM.Platform import Platform
+from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
+
+import sentry_sdk
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
@@ -18,7 +21,24 @@ parser.add_argument("--debug",
                     default = False,
                     help = "Turn on the debug mode by setting this option."
                     )
+
 known_args = vars(parser.parse_known_args()[0])
+
+sentry_env = "production"
+if ApplicationMetadata.CuraVersion == "master":
+    sentry_env = "development"
+try:
+    if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
+        sentry_env = "nightly"
+except IndexError:
+    pass
+
+sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                environment = sentry_env,
+                release = "cura%s" % ApplicationMetadata.CuraVersion,
+                default_integrations = False,
+                max_breadcrumbs = 300,
+                server_name = "cura")
 
 if not known_args["debug"]:
     def get_cura_dir_path():
