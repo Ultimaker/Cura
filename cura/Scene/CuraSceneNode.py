@@ -88,7 +88,7 @@ class CuraSceneNode(SceneNode):
 
     ##  Return if any area collides with the convex hull of this scene node
     def collidesWithAreas(self, areas: List[Polygon]) -> bool:
-        convex_hull = self.callDecoration("getConvexHull")
+        convex_hull = self.callDecoration("getPrintingArea")
         if convex_hull:
             if not convex_hull.isValid():
                 return False
