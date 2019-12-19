@@ -1106,7 +1106,7 @@ class XmlMaterialProfile(InstanceContainer):
         "break position": "material_break_retracted_position",
         "flush purge speed": "material_flush_purge_speed",
         "flush purge length": "material_flush_purge_length",
-        "end of filament purge speed": "material_end_of_material_purge_speed",
+        "end of filament purge speed": "material_end_of_filament_purge_speed",
         "end of filament purge length": "material_end_of_filament_purge_length",
         "maximum park duration": "material_maximum_park_duration",
         "no load move factor": "material_no_load_move_factor",
