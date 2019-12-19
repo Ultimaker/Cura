@@ -99,7 +99,30 @@ def test_fetchUserSubscribedPackages(toolbox: "Toolbox"):
         "package_version": "1.0.1",
         "published_date": "2019-12-18T01:01:01.000Z",
         "sdk_versions": ["7.0.0"]
-    }]}""", 0)  # All packages are already installed.
+    }]}""", 0),  # All subscribed packages are installed. The user has more packages.
+    ("""{"data": [{
+        "description": "First pre-installed and subscribed package.",
+        "display_name": "Package 1",
+        "download_url": "https://i.redd.it/kkq9vgnzbxo31.jpg",
+        "icon_url": "https://i.redd.it/aa6qwbbhaq331.jpg",
+        "md5_hash": "MD5",
+        "package_id": "Package1",
+        "package_type": "plugin",
+        "package_version": "0.9.9",
+        "published_date": "2019-12-19T01:01:01.000Z",
+        "sdk_versions": ["7.0.0"]
+    }, {
+        "description": "Second pre-installed and subscribed package.",
+        "display_name": "Package 2",
+        "download_url": "https://i.redd.it/r0t7kaz907t11.jpg",
+        "icon_url": "https://i.redd.it/12arbid24yy21.jpg",
+        "md5_hash", "DM5",
+        "package_id": "Package2",
+        "package_type": "plugin",
+        "package_version": "0.9.9",
+        "published_date": "2019-12-19T01:01:01.000Z",
+        "sdk_versions": ["7.0.0"]
+    }]}""", 0)
 ])
 def test_fetchUserSubscribedPackagesResponse(toolbox: "Toolbox", json_data: str, message_created: int):
     toolbox._package_manager.getUserInstalledPackagesAndVersions = MagicMock(return_value = [("Package1", "1.0.0"), ("Package2", "2.3.4")])
