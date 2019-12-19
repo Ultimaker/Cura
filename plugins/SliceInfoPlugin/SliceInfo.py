@@ -261,7 +261,7 @@ class SliceInfo(QObject, Extension):
             binary_data = json.dumps(data).encode("utf-8")
 
             # Send slice info non-blocking
-            network_manager = self._application.getHttpNetworkRequestManager()
+            network_manager = self._application.getHttpRequestManager()
             network_manager.post(self.info_url, data = binary_data,
                                  callback = self._onRequestFinished, error_callback = self._onRequestError)
         except Exception:
