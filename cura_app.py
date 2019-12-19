@@ -37,7 +37,8 @@ sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
                 environment = sentry_env,
                 release = "cura%s" % ApplicationMetadata.CuraVersion,
                 default_integrations = False,
-                max_breadcrumbs = 200)
+                max_breadcrumbs = 300,
+                server_name = "cura")
 
 if not known_args["debug"]:
     def get_cura_dir_path():
