@@ -47,7 +47,6 @@
 
         "machine_nozzle_tip_outer_diameter": { "default_value": 1 },
         "machine_nozzle_head_distance": { "default_value": 3 },
-        "machine_nozzle_expansion_angle": { "default_value": 45 },
 
         "machine_max_acceleration_x": { "default_value": 6000 },
         "machine_max_acceleration_y": { "default_value": 6000 },
