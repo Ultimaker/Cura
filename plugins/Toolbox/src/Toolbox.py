@@ -24,6 +24,9 @@ from cura.Machines.ContainerTree import ContainerTree
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .SubscribedPackagesModel import SubscribedPackagesModel
+
+from PyQt5.QtQml import qmlRegisterType
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
@@ -37,6 +40,9 @@ class Toolbox(QObject, Extension):
         super().__init__()
 
         self._application = application  # type: CuraApplication
+
+        # self._application.qm
+        # qmlRegisterType(Toolbox, "Cura", 1, 6, "Toolbox")
 
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
         self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: str
@@ -57,6 +63,9 @@ class Toolbox(QObject, Extension):
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
+        self.subscribed_compatible_packages = []    # type: List[str]
+        self.subscribed_incompatible_packages = []  # type: List[str]
+
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
             "authors":              [],
@@ -70,8 +79,8 @@ class Toolbox(QObject, Extension):
             "authors":              AuthorsModel(self),
             "packages":             PackagesModel(self),
             "updates":              PackagesModel(self),
-            "subscribed_packages":  PackagesModel(self),
-        }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
+            "subscribed_packages":  SubscribedPackagesModel(self),
+        }  # type: Dict[str, Union[AuthorsModel, PackagesModel, SubscribedPackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
         self._plugins_available_model = PackagesModel(self)
@@ -679,14 +688,32 @@ class Toolbox(QObject, Extension):
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
                             elif response_type == "subscribed_packages":
-                                user_subscribed = [(plugin["package_id"], plugin["package_version"]) for plugin in json_data["data"]]
-                                Logger.log("d", "User is subscribed to {} package(s).".format(len(user_subscribed)))
-                                user_installed = self._package_manager.getUserInstalledPackagesAndVersions()
+
+                                import collections
+                                Package = collections.namedtuple("Package", ["package_id", "sdk_versions"])
+
+                                user_subscribed = [Package(plugin['package_id'], plugin['sdk_versions']) for plugin in json_data["data"]]
+                                user_subscribed_list = [plugin["package_id"] for plugin in json_data["data"]]
+
+                                self.subscribed_compatible_packages.clear()
+                                self.subscribed_incompatible_packages.clear()
+
+                                for subscribed in user_subscribed:
+                                    if self._sdk_version not in subscribed.sdk_versions:
+                                        self.subscribed_incompatible_packages.append(subscribed)
+                                    else:
+                                        self.subscribed_compatible_packages.append(subscribed)
+
+
+                                print("compatible packages: \n {}".format(self.subscribed_compatible_packages))
+                                print("incompatible packages: \n {}".format(self.subscribed_incompatible_packages))
+
+                                self._models["subscribed_packages"].update()
+
+                                user_installed = self._package_manager.getUserInstalledPackages()
                                 Logger.log("d", "User has installed locally {} package(s).".format(len(user_installed)))
 
-                                # Check for discrepancies between Cura installed and Cloud subscribed packages
-                                # convert them to set() to check if they are equal
-                                if set(user_installed) != set(user_subscribed):
+                                if set(user_installed) != set(user_subscribed_list):
                                     Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
                                     sync_message = Message(i18n_catalog.i18nc(
                                         "@info:generic",
@@ -699,6 +726,7 @@ class Toolbox(QObject, Extension):
                                                            description = "Sync your Cloud subscribed packages to your local environment.",
                                                            button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
                                     sync_message.show()
+                                    sync_message.actionTriggered.connect(self.some_function)
 
                             self.metadataChanged.emit()
 
@@ -715,6 +743,14 @@ class Toolbox(QObject, Extension):
         elif reply.operation() == QNetworkAccessManager.PutOperation:
             # Ignore any operation that is not a get operation
             pass
+
+    def some_function(self, messageId: str, actionId: str) -> None:
+        print("Clicked the BUTTON")
+
+        compatibilityDialog = "resources/qml/dialogs/CompatibilityDialog.qml"
+        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), compatibilityDialog)
+        self._view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})  # what is toolbox: self
+
 
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):
@@ -813,6 +849,10 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def authorsModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["authors"])
+
+    @pyqtProperty(QObject, constant = True)
+    def subscribedPackagesModel(self) -> SubscribedPackagesModel:
+        return cast(SubscribedPackagesModel, self._models["subscribed_packages"])
 
     @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:

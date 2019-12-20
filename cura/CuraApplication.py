@@ -1062,6 +1062,9 @@ class CuraApplication(QtApplication):
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
 
+        # from plugins.Toolbox.src.SubscribedPackagesModel import SubscribedPackagesModel
+        # qmlRegisterType(SubscribedPackagesModel, "Cura", 1, 6, "SubscribedPackagesModel") ### This might not be needed
+
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
