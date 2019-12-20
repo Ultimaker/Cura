@@ -705,15 +705,13 @@ class Toolbox(QObject, Extension):
                                         self.subscribed_compatible_packages.append(subscribed)
 
 
-                                print("compatible packages: \n {}".format(self.subscribed_compatible_packages))
-                                print("incompatible packages: \n {}".format(self.subscribed_incompatible_packages))
-
                                 self._models["subscribed_packages"].update()
 
                                 user_installed = self._package_manager.getUserInstalledPackages()
                                 Logger.log("d", "User has installed locally {} package(s).".format(len(user_installed)))
 
-                                if set(user_installed) != set(user_subscribed_list):
+                                # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
+                                if list(set(user_subscribed_list).difference(user_installed)):
                                     Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
                                     sync_message = Message(i18n_catalog.i18nc(
                                         "@info:generic",
