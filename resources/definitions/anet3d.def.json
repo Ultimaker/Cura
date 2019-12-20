@@ -1,0 +1,148 @@
+{
+    "version": 2,
+    "name": "anet3d",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Tiger.He",
+        "manufacturer": "Anet",
+        "category": "anet3d",
+        "visible": false,
+        "file_formats": "text/x-gcode",
+        "first_start_actions": ["MachineSettingsAction"],
+        
+        "preferred_variant_name": "0.4mm Nozzle",
+        "preferred_quality_type": "standard",
+        "preferred_material": "generic_pla"
+    },
+    "overrides": {
+        "machine_max_feedrate_x": { "value": 500 },
+        "machine_max_feedrate_y": { "value": 500 },
+        "machine_max_feedrate_z": { "value": 10 },
+        "machine_max_feedrate_e": { "value": 50 },
+
+        "machine_max_acceleration_x": { "value": 500 },
+        "machine_max_acceleration_y": { "value": 500 },
+        "machine_max_acceleration_z": { "value": 100 },
+        "machine_max_acceleration_e": { "value": 5000 },
+        "machine_acceleration": { "value": 500 },
+
+        "machine_max_jerk_xy": { "value": 10 },
+        "machine_max_jerk_z": { "value": 0.4 },
+        "machine_max_jerk_e": { "value": 5 },
+
+        "machine_heated_bed": { "default_value": true },
+
+        "material_diameter": { "default_value": 1.75 },
+
+        "acceleration_print": { "value": 1000 },
+        "acceleration_travel": { "value": 1000 },
+        "acceleration_travel_layer_0": { "value": "acceleration_travel" },
+        "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
+
+        "jerk_print": { "value": 30.0 },
+        "jerk_travel": { "value": "jerk_print" },
+        "jerk_travel_layer_0": { "value": "jerk_travel" },
+
+        "acceleration_enabled": { "value": true },
+        "jerk_enabled": { "value": false },
+
+        "speed_print": { "value": 50.0 } ,
+        "speed_infill": { "value": "speed_print * 2" },
+        "speed_wall": { "value": "speed_print / 2" },
+        "speed_wall_0": { "value": "speed_wall" },
+        "speed_wall_x": { "value": "speed_wall" },
+        "speed_topbottom": { "value": "speed_print / 2" },
+        "speed_roofing": { "value": "speed_topbottom" },
+        "speed_travel": { "value": "150.0 if speed_print < 60 else 250.0 if speed_print > 100 else speed_print * 2.5" },
+        "speed_layer_0": { "value": "speed_print / 2" },
+        "speed_print_layer_0": { "value": "speed_layer_0" },
+        "speed_travel_layer_0": { "value": "100 if speed_layer_0 < 20 else 150 if speed_layer_0 > 30 else speed_layer_0 * 5" },
+        "speed_prime_tower": { "value": "speed_print" },
+        "speed_support": { "value": "speed_print" },
+        "speed_support_interface": { "value": "speed_print" },
+        "speed_z_hop": { "value": 5 },
+
+        "skirt_brim_speed": { "value": "speed_layer_0" },
+
+        "line_width": { "value": "machine_nozzle_size" },
+
+        "optimize_wall_printing_order": { "value": true },
+
+        "material_initial_print_temperature": { "value": "material_print_temperature" },
+        "material_final_print_temperature": { "value": "material_print_temperature" },
+        "material_flow": { "value": 100 },
+        "travel_compensate_overlapping_walls_0_enabled": { "value": "False" },
+
+        "z_seam_type": { "value": "'back'" },
+        "z_seam_corner": { "value": "'z_seam_corner_weighted'" },
+        
+        "infill_sparse_density": { "value": "20" },
+        "infill_pattern": { "value": "'lines' if infill_sparse_density > 50 else 'cubic'" },
+        "infill_before_walls": { "value": true },
+        "infill_overlap": { "value": 30.0 },
+        "skin_overlap": { "value": 10.0 },
+        "infill_wipe_dist": { "value": 1.0 },
+        "wall_0_wipe_dist": { "value": 0.2 },
+
+        "fill_perimeter_gaps": { "value": "'everywhere'" },
+        "fill_outline_gaps": { "value": false },
+        "filter_out_tiny_gaps": { "value": true },
+
+        "retraction_speed": {
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value": 200
+        },
+        "retraction_retract_speed": {
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value": 200
+        },
+        "retraction_prime_speed": {
+            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value": 200
+        },
+        
+        "retraction_hop_enabled": { "value": "False" },
+        "retraction_hop": { "value": 1 },
+        "retraction_combing": { "value": "'off' if retraction_hop_enabled else 'noskin'" },
+        "retraction_combing_max_distance": { "value": 30 },
+        "travel_avoid_other_parts": { "value": true },
+        "travel_avoid_supports": { "value": true },
+        "travel_retract_before_outer_wall": { "value": true },
+        
+        "retraction_enable": { "value": true },
+        "retraction_count_max": { "value": 100 },
+        "retraction_extrusion_window": { "value": 10 },
+        "retraction_min_travel": { "value": 1.5 },
+
+        "cool_fan_full_at_height": { "value": "layer_height_0 + 2 * layer_height" },
+        "cool_fan_enabled": { "value": true },
+        "cool_min_layer_time": { "value": 10 },
+
+        "adaptive_layer_height_variation": { "value": 0.04 },
+        "adaptive_layer_height_variation_step": { "value": 0.04 },
+
+        "meshfix_maximum_resolution": { "value": "0.05" },
+        "meshfix_maximum_travel_resolution": { "value": "meshfix_maximum_resolution" },
+
+        "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
+        "wall_thickness": {"value": "line_width * 2" },
+        
+        "material_print_temperature": {"minimum_value": "0"},
+        "material_bed_temperature": {"minimum_value": "0"},
+        "material_standby_temperature": {"minimum_value": "0"},
+        
+        "extruder_prime_pos_y":{"minimum_value": "0","maximum_value": "machine_depth"},
+        "extruder_prime_pos_x":{"minimum_value": "0","maximum_value": "machine_width"},
+        "relative_extrusion":{"value": false,"enabled": false},
+        
+        "machine_use_extruder_offset_to_offset_coords": {"default_value": true},
+        "machine_gcode_flavor": {"default_value": "RepRap (Marlin/Sprinter)"},
+        
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "gantry_height": {
+            "value": "0"
+        }
+    }
+}
