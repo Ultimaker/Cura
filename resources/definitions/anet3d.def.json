@@ -13,6 +13,10 @@
         "preferred_variant_name": "0.4mm Nozzle",
         "preferred_quality_type": "standard",
         "preferred_material": "generic_pla"
+        "machine_extruder_trains":
+        {
+            "0": "anet3d_extruder_0"
+        }
     },
     "overrides": {
         "machine_max_feedrate_x": { "value": 500 },
