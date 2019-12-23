@@ -5,6 +5,7 @@ import json
 import os
 import tempfile
 import platform
+import functools
 from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -26,8 +27,6 @@ from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
 from .SubscribedPackagesModel import SubscribedPackagesModel
 
-from PyQt5.QtQml import qmlRegisterType
-
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
@@ -40,9 +39,6 @@ class Toolbox(QObject, Extension):
         super().__init__()
 
         self._application = application  # type: CuraApplication
-
-        # self._application.qm
-        # qmlRegisterType(Toolbox, "Cura", 1, 6, "Toolbox")
 
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
         self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: str
@@ -63,8 +59,6 @@ class Toolbox(QObject, Extension):
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
-        # self.subscribed_compatible_packages = []    # type: List[str]
-        # self.subscribed_incompatible_packages = []  # type: List[str]
         self.subscribed_packages = []   # type: List[Dict[str, str]]
 
         # The responses as given by the server parsed to a list.
@@ -689,76 +683,7 @@ class Toolbox(QObject, Extension):
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
                             elif response_type == "subscribed_packages":
-
-                                # import collections
-                                # Package = collections.namedtuple("Package", ["package_id", "icon_url", "sdk_versions", "is_compatible"])
-                                # Package.__new__.__defaults__ = (None, ) * len(Package._fields)
-
-                                # There is not always an ICON_URL in the response payload !
-                                # user_subscribed = [Package(plugin['package_id'], plugin.get("icon_url", ""), plugin['sdk_versions']) for plugin in json_data["data"]]
-                                user_subscribed_list = [plugin["package_id"] for plugin in json_data["data"]]
-
-                                all_subscribed_packages = []
-
-                                self.subscribed_packages.clear()
-
-                                for package in json_data["data"]:
-                                    packagex = {
-                                        "name": package["package_id"],
-                                        "sdk_versions": package["sdk_versions"]
-                                        }
-
-                                    # packagex = Package(package["package_id"], package["sdk_versions"], )
-                                    if self._sdk_version not in package["sdk_versions"]:
-                                        packagex.update({"is_compatible": False})
-                                        # packagex._replace(is_compatible=0)
-                                        # packagex.is_compatible = "1"
-                                    else:
-                                        # packagex._replace(is_compatible="1")
-                                        # packagex.is_compatible = "0"
-                                        packagex.update({"is_compatible": True})
-
-                                    try:
-                                        packagex.update({"icon_url": package["icon_url"]})
-                                    except KeyError: # There is no 'icon_url" in the response payload for this package
-                                        packagex.update({"icon_url": ""})
-
-                                    self.subscribed_packages.append(packagex)
-                                    # all_subscribed_packages.append(packagex)
-                                # print("ALL PACKAGES: {}".format(all_subscribed_packages))
-
-                                # self.subscribed_compatible_packages.clear()
-                                # self.subscribed_incompatible_packages.clear()
-
-
-
-                                # for subscribed in user_subscribed:
-                                #     if self._sdk_version not in subscribed.sdk_versions:
-                                #         self.subscribed_incompatible_packages.append(subscribed)
-                                #     else:
-                                #         self.subscribed_compatible_packages.append(subscribed)
-
-
-                                self._models["subscribed_packages"].update()
-
-                                user_installed = self._package_manager.getUserInstalledPackages()
-                                Logger.log("d", "User has installed locally {} package(s).".format(len(user_installed)))
-
-                                # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
-                                if list(set(user_subscribed_list).difference(user_installed)):
-                                    Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
-                                    sync_message = Message(i18n_catalog.i18nc(
-                                        "@info:generic",
-                                        "\nDo you want to sync material and software packages with your account?"),
-                                        lifetime = 0,
-                                        title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
-                                    sync_message.addAction("sync",
-                                                           name = i18n_catalog.i18nc("@action:button", "Sync"),
-                                                           icon = "",
-                                                           description = "Sync your Cloud subscribed packages to your local environment.",
-                                                           button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
-                                    sync_message.show()
-                                    sync_message.actionTriggered.connect(self.some_function)
+                                self._checkCompatibilities(json_data["data"])
 
                             self.metadataChanged.emit()
 
@@ -776,13 +701,50 @@ class Toolbox(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
-    def some_function(self, messageId: str, actionId: str) -> None:
-        print("Clicked the BUTTON")
+    def _checkCompatibilities(self, json_data):
+        user_subscribed_list = [plugin["package_id"] for plugin in json_data]
+        user_installed_packages = self._package_manager.getUserInstalledPackages()
+
+        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
+        if list(set(user_subscribed_list).difference(user_installed_packages)):
+            Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
+            sync_message = Message(i18n_catalog.i18nc(
+                "@info:generic",
+                "\nDo you want to sync material and software packages with your account?"),
+                lifetime=0,
+                title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            sync_message.addAction("sync",
+                                   name=i18n_catalog.i18nc("@action:button", "Sync"),
+                                   icon="",
+                                   description="Sync your Cloud subscribed packages to your local environment.",
+                                   button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+
+            self._onSyncButtonClickedHelper = functools.partial(self._onSyncButtonClicked, json_data)
+            sync_message.actionTriggered.connect(self._onSyncButtonClickedHelper)
+            sync_message.show()
+
+    def _onSyncButtonClicked(self, json_data, messageId: str, actionId: str) -> None:
+        self.subscribed_packages.clear()
+        # We create the packages from the HTTP payload
+        for item in json_data:
+            package = {"name": item["package_id"], "sdk_versions": item["sdk_versions"]}
+
+            if self._sdk_version not in item["sdk_versions"]:
+                package.update({"is_compatible": False})
+            else:
+                package.update({"is_compatible": True})
+
+            try:
+                package.update({"icon_url": item["icon_url"]})
+            except KeyError: # There is no 'icon_url" in the response payload for this package
+                package.update({"icon_url": ""})
+
+            self.subscribed_packages.append(package)
+        self._models["subscribed_packages"].update()
 
         compatibilityDialog = "resources/qml/dialogs/CompatibilityDialog.qml"
         path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), compatibilityDialog)
-        self._view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})  # what is toolbox: self
-
+        self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
 
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):
