@@ -40,7 +40,8 @@ Item
         // update active type label
         for (var button in meshTypeButtons.children)
         {
-            if (meshTypeButtons.children[button].checked){
+            if (meshTypeButtons.children[button].checked)
+            {
                 meshTypeLabel.text = catalog.i18nc("@label", "Mesh Type") + ": " + meshTypeButtons.children[button].text
                 break
             }
@@ -130,7 +131,7 @@ Item
 
         }
 
-         Label
+        Label
         {
             id: meshTypeLabel
             font: UM.Theme.getFont("default")
@@ -321,10 +322,7 @@ Item
                         Connections
                         {
                             target: inheritStackProvider
-                            onPropertiesChanged:
-                            {
-                                provider.forcePropertiesChanged()
-                            }
+                            onPropertiesChanged: provider.forcePropertiesChanged()
                         }
 
                         Connections
@@ -460,5 +458,4 @@ Item
 
         Cura.SettingUnknown { }
     }
-
 }
