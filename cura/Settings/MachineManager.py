@@ -894,8 +894,8 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
-        if self._global_container_stack is None:
-            Logger.log("w", "Could not find extruder on position %s", position)
+        if self._global_container_stack is None or str(position) not in self._global_container_stack.extruders:
+            Logger.log("w", "Could not find extruder on position %s.", position)
             return
         extruder = self._global_container_stack.extruderList[position]
 
@@ -1008,9 +1008,9 @@ class MachineManager(QObject):
 
         # Set quality and quality_changes for each ExtruderStack
         for position, node in quality_group.nodes_for_extruders.items():
-            self._global_container_stack.extruders[str(position)].quality = node.container
+            self._global_container_stack.extruderList[position].quality = node.container
             if empty_quality_changes:
-                self._global_container_stack.extruders[str(position)].qualityChanges = empty_quality_changes_container
+                self._global_container_stack.extruderList[position].qualityChanges = empty_quality_changes_container
 
         self.activeQualityGroupChanged.emit()
         self.activeQualityChangesGroupChanged.emit()
@@ -1241,6 +1241,7 @@ class MachineManager(QObject):
         if not new_machine:
             new_machine = CuraStackBuilder.createMachine(machine_definition_id + "_sync", machine_definition_id)
             if not new_machine:
+                Logger.log("e", "Failed to create new machine when switching configuration.")
                 return
             
             for metadata_key in self._global_container_stack.getMetaData():
@@ -1256,7 +1257,21 @@ class MachineManager(QObject):
         new_machine.setMetaDataEntry("hidden", False)
         self._global_container_stack.setMetaDataEntry("hidden", True)
 
+        # The new_machine does not contain user changes (global or per-extruder user changes).
+        # Keep a temporary copy of the global and per-extruder user changes and transfer them to the user changes
+        # of the new machine after the new_machine becomes active.
+        global_user_changes = self._global_container_stack.userChanges
+        per_extruder_user_changes = {}
+        for extruder_name, extruder_stack in self._global_container_stack.extruders.items():
+            per_extruder_user_changes[extruder_name] = extruder_stack.userChanges
+
         self.setActiveMachine(new_machine.getId())
+
+        # Apply the global and per-extruder userChanges to the new_machine (which is of different type than the
+        # previous one).
+        self._global_container_stack.setUserChanges(global_user_changes)
+        for extruder_name in self._global_container_stack.extruders.keys():
+            self._global_container_stack.extruders[extruder_name].setUserChanges(per_extruder_user_changes[extruder_name])
 
     @pyqtSlot(QObject)
     def applyRemoteConfiguration(self, configuration: PrinterConfigurationModel) -> None:

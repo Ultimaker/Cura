@@ -74,9 +74,6 @@
         "machine_nozzle_head_distance": {
             "default_value": 3
         },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
-        },
         "machine_max_feedrate_x": {
             "default_value": 300
         },

@@ -123,13 +123,15 @@ class ZeroConfClient:
 
         # Request more data if info is not complete
         if not info.address:
-            info = zero_conf.get_service_info(service_type, name)
+            new_info = zero_conf.get_service_info(service_type, name)
+            if new_info is not None:
+                info = new_info
 
-        if info:
+        if info and info.address:
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
-                    address = '.'.join(map(lambda n: str(n), info.address))
+                    address = '.'.join(map(str, info.address))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
                     Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)
