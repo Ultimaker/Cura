@@ -790,7 +790,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_info = ContainerInfo(None, None, None)
                 quality_changes_info.extruder_info_dict["0"] = container_info
                 # If the global stack we're "targeting" has never been active, but was updated from Cura 3.4,
-                # it might not have it's extruders set properly. 
+                # it might not have its extruders set properly.
                 if not global_stack.extruders:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
