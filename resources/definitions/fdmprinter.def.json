@@ -2084,7 +2084,6 @@
                     "maximum_value": "machine_height",
                     "type": "float",
                     "value": "0",
-                    "comment": "This was put at 0 to keep the default behaviour the same, but in the original PR the 'value' was: resolveOrValue('infill_sparse_thickness') * (4 if infill_sparse_density < 12.5 else (3 if infill_sparse_density < 25 else (2 if infill_sparse_density < 50 else 1)))",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
