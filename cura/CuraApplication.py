@@ -745,6 +745,7 @@ class CuraApplication(QtApplication):
         super().run()
 
         Logger.log("i", "Initializing machine manager")
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
         self._machine_manager = MachineManager(self, parent = self)
 
         Logger.log("i", "Initializing container manager")
@@ -861,6 +862,8 @@ class CuraApplication(QtApplication):
         # Initialize QML engine
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
+        self.getTheme()  # preload
+        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Initialize engine..."))
         self.initializeEngine()
 
         # Initialize UI state
