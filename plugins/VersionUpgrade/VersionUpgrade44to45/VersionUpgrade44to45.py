@@ -3,10 +3,6 @@ from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
-# Merged preferences: machine_head_polygon and machine_head_with_fans_polygon -> machine_head_with_fans_polygon
-# When both are present, machine_head_polygon will be removed
-# When only one of the two is present, it's value will be used
-
 
 class VersionUpgrade44to45(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
@@ -41,6 +37,9 @@ class VersionUpgrade44to45(VersionUpgrade):
         # Update version number.
         parser["metadata"]["setting_version"] = "11"
 
+        # Merged preferences: machine_head_polygon and machine_head_with_fans_polygon -> machine_head_with_fans_polygon
+        # When both are present, machine_head_polygon will be removed
+        # When only one of the two is present, it's value will be used
         if "values" in parser:
             # merge machine_head_with_fans_polygon (preferred) and machine_head_polygon
             if "machine_head_with_fans_polygon" in parser["values"]:
