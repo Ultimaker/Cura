@@ -195,9 +195,6 @@
     "support_xy_distance_overhang": {
       "value": "0.5"
     },
-    "support_tree_wall_thickness": {
-      "value": "0.4"
-    },
     "acceleration_print_layer_0": {
       "value": "250"
     },
