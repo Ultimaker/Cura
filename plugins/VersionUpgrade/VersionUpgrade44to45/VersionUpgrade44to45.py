@@ -11,6 +11,10 @@ _merged_settings = {
     "support_wall_count": "support_tree_wall_count"
 }
 
+_removed_settings = {
+    "support_tree_wall_thickness"
+}
+
 class VersionUpgrade44to45(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
@@ -53,6 +57,10 @@ class VersionUpgrade44to45(VersionUpgrade):
                 if removed in parser["values"]:
                     if preferred not in parser["values"]:
                         parser["values"][preferred] = parser["values"][removed]
+                    del parser["values"][removed]
+
+            for removed in _removed_settings:
+                if removed in parser["values"]:
                     del parser["values"][removed]
 
         result = io.StringIO()
