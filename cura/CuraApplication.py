@@ -637,6 +637,7 @@ class CuraApplication(QtApplication):
 
     @override(Application)
     def setGlobalContainerStack(self, stack: "GlobalStack") -> None:
+        self._setLoadingHint("Preparing Active Machine...")
         super().setGlobalContainerStack(stack)
 
     ## A reusable dialogbox
@@ -740,6 +741,14 @@ class CuraApplication(QtApplication):
             raise RuntimeError("Could not load the backend plugin!")
 
         self._plugins_loaded = True
+
+    ## Set a short, user-friendly hint about current loading status.
+    # The way this message is displayed depends on application state
+    def _setLoadingHint(self, hint: str):
+        if self.started:
+            Logger.info(hint)
+        else:
+            self.showSplashMessage(hint)
 
     def run(self):
         super().run()
