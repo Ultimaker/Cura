@@ -45,6 +45,7 @@ Item
                 break
             }
         }
+        visibility_handler.addSkipResetSetting(currentMeshType)
     }
 
     function setOverhangsMeshType()
@@ -203,6 +204,7 @@ Item
 
                         visibilityHandler: Cura.PerObjectSettingVisibilityHandler
                         {
+                            id: visibility_handler
                             selectedObjectId: UM.ActiveTool.properties.getValue("SelectedObjectId")
                         }
 
