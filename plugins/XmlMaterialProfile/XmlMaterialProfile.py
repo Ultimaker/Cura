@@ -1106,6 +1106,12 @@ class XmlMaterialProfile(InstanceContainer):
         "break preparation speed": "material_break_preparation_speed",
         "break preparation temperature": "material_break_preparation_temperature",
         "break position": "material_break_retracted_position",
+        "flush purge speed": "material_flush_purge_speed",
+        "flush purge length": "material_flush_purge_length",
+        "end of filament purge speed": "material_end_of_filament_purge_speed",
+        "end of filament purge length": "material_end_of_filament_purge_length",
+        "maximum park duration": "material_maximum_park_duration",
+        "no load move factor": "material_no_load_move_factor",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
     }  # type: Dict[str, str]
