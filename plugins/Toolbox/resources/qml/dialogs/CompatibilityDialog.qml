@@ -55,7 +55,7 @@ Rectangle
                 }
                 Text{
                     id: packageName
-                    text: model.name
+                    text: model.name + " (Compatible: " + model.is_compatible + ")"
                     anchors.centerIn: parent
                 }
                 MouseArea{

@@ -702,12 +702,13 @@ class Toolbox(QObject, Extension):
             pass
 
     def _checkCompatibilities(self, json_data):
-        user_subscribed_list = [plugin["package_id"] for plugin in json_data]
+        user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
 
-        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
-        if list(set(user_subscribed_list).difference(user_installed_packages)):
-            Logger.log("d", "Mismatch found between Cloud subscribed packages and Cura installed packages")
+        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
+        package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
+        if package_discrepancy:
+            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
                 "\nDo you want to sync material and software packages with your account?"),
@@ -719,27 +720,28 @@ class Toolbox(QObject, Extension):
                                    description="Sync your Cloud subscribed packages to your local environment.",
                                    button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
 
-            self._onSyncButtonClickedHelper = functools.partial(self._onSyncButtonClicked, json_data)
+            self._onSyncButtonClickedHelper = functools.partial(self._onSyncButtonClicked, json_data, package_discrepancy)
             sync_message.actionTriggered.connect(self._onSyncButtonClickedHelper)
             sync_message.show()
 
-    def _onSyncButtonClicked(self, json_data, messageId: str, actionId: str) -> None:
-        self.subscribed_packages.clear()
-        # We create the packages from the HTTP payload
+    def _onSyncButtonClicked(self, json_data, package_discrepancy, messageId: str, actionId: str) -> None:
+        # self.subscribed_packages.clear()
+        # We 'create' the packages from the HTTP payload
         for item in json_data:
+            if item["package_id"] not in package_discrepancy: # But we skip packages that the user has locally installed
+                continue
             package = {"name": item["package_id"], "sdk_versions": item["sdk_versions"]}
-
             if self._sdk_version not in item["sdk_versions"]:
                 package.update({"is_compatible": False})
             else:
                 package.update({"is_compatible": True})
-
             try:
                 package.update({"icon_url": item["icon_url"]})
             except KeyError: # There is no 'icon_url" in the response payload for this package
                 package.update({"icon_url": ""})
 
             self.subscribed_packages.append(package)
+            Logger.log("d", "Package '{}' scheduled for installing.".format(package['name']))
         self._models["subscribed_packages"].update()
 
         compatibilityDialog = "resources/qml/dialogs/CompatibilityDialog.qml"
