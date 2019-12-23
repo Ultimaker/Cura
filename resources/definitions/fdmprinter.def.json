@@ -4232,7 +4232,7 @@
                     "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
                     "maximum_value_warning": "3",
                     "type": "int",
-                    "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
+                    "value": "1 if support_tree_enable else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
@@ -6198,24 +6198,7 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "enabled": "support_tree_enable",
                     "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_tree_wall_count":
-                        {
-                            "label": "Tree Support Wall Line Count",
-                            "description": "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
-                            "type": "int",
-                            "minimum_value": "0",
-                            "minimum_value_warning": "1",
-                            "default_value": 1,
-                            "value": "round(support_tree_wall_thickness / support_line_width)",
-                            "limit_to_extruder": "support_infill_extruder_nr",
-                            "enabled": "support_tree_enable",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
+                    "settable_per_extruder": true
                 },
                 "slicing_tolerance":
                 {

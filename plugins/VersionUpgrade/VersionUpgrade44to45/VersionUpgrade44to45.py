@@ -7,7 +7,8 @@ from UM.VersionUpgrade import VersionUpgrade
 # are overwritten, the key wins. If only the key or the value is overwritten,
 # that value is used in the key.
 _merged_settings = {
-    "machine_head_with_fans_polygon": "machine_head_polygon"
+    "machine_head_with_fans_polygon": "machine_head_polygon",
+    "support_wall_count": "support_tree_wall_count"
 }
 
 class VersionUpgrade44to45(VersionUpgrade):
