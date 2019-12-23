@@ -13,27 +13,63 @@ import UM 1.1 as UM
 import Cura 1.6 as Cura
 
 
-UM.Dialog
-{
+UM.Dialog{
     visible: true
+    title: "Changes from your account"
+    Label{
+        text: "Some text here"
+        height: 50
+    }
+Rectangle
+{
+    id: compatibleRectangle
+    width: parent.width
+    height: 300
+    Label{
+        text: "Some text here"
+        height: 50
+    }
 
-    title: "Some title"
-    minimumWidth: UM.Theme.getSize("license_window_minimum").width
-    minimumHeight: UM.Theme.getSize("license_window_minimum").height
-    width: minimumWidth
-    height: minimumHeight
 
-                ListView
-                {
-                    id: listView
+
+    // Compatible packages
+    Column{
+        id: compatibleColumn
+        anchors.fill: parent
+        spacing: 2
+
+        Repeater{
+            model: toolbox.subscribedPackagesModel
+            delegate: Rectangle{
+                id: someRect
+                width: parent.width
+                height: 50
+                border.color: "black"
+                Image{
+                    source: model.icon_url || "../../images/logobot.svg"
+                    width: 50
+                    height: parent.height
+                    //anchors.left: parent.left
+                    //anchors.right: packageName.left
+                    anchors.rightMargin: 20
+                }
+                Text{
+                    id: packageName
+                    text: model.name
+                    anchors.centerIn: parent
+                }
+                MouseArea{
                     anchors.fill: parent
-
-
-                    model: toolbox.subscribedPackagesModel
-
-                    delegate: Label
-                    {
-                        text: "A :)"
+                    onClicked: {
+                        console.log("Clicked!")
                     }
                 }
+
+            }
+        }
+    }
+}
+
+
+
 }

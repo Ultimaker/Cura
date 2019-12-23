@@ -63,8 +63,9 @@ class Toolbox(QObject, Extension):
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
-        self.subscribed_compatible_packages = []    # type: List[str]
-        self.subscribed_incompatible_packages = []  # type: List[str]
+        # self.subscribed_compatible_packages = []    # type: List[str]
+        # self.subscribed_incompatible_packages = []  # type: List[str]
+        self.subscribed_packages = []   # type: List[Dict[str, str]]
 
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
@@ -689,20 +690,53 @@ class Toolbox(QObject, Extension):
                                 self._package_manager.setPackagesWithUpdate(packages)
                             elif response_type == "subscribed_packages":
 
-                                import collections
-                                Package = collections.namedtuple("Package", ["package_id", "sdk_versions"])
+                                # import collections
+                                # Package = collections.namedtuple("Package", ["package_id", "icon_url", "sdk_versions", "is_compatible"])
+                                # Package.__new__.__defaults__ = (None, ) * len(Package._fields)
 
-                                user_subscribed = [Package(plugin['package_id'], plugin['sdk_versions']) for plugin in json_data["data"]]
+                                # There is not always an ICON_URL in the response payload !
+                                # user_subscribed = [Package(plugin['package_id'], plugin.get("icon_url", ""), plugin['sdk_versions']) for plugin in json_data["data"]]
                                 user_subscribed_list = [plugin["package_id"] for plugin in json_data["data"]]
 
-                                self.subscribed_compatible_packages.clear()
-                                self.subscribed_incompatible_packages.clear()
+                                all_subscribed_packages = []
 
-                                for subscribed in user_subscribed:
-                                    if self._sdk_version not in subscribed.sdk_versions:
-                                        self.subscribed_incompatible_packages.append(subscribed)
+                                self.subscribed_packages.clear()
+
+                                for package in json_data["data"]:
+                                    packagex = {
+                                        "name": package["package_id"],
+                                        "sdk_versions": package["sdk_versions"]
+                                        }
+
+                                    # packagex = Package(package["package_id"], package["sdk_versions"], )
+                                    if self._sdk_version not in package["sdk_versions"]:
+                                        packagex.update({"is_compatible": False})
+                                        # packagex._replace(is_compatible=0)
+                                        # packagex.is_compatible = "1"
                                     else:
-                                        self.subscribed_compatible_packages.append(subscribed)
+                                        # packagex._replace(is_compatible="1")
+                                        # packagex.is_compatible = "0"
+                                        packagex.update({"is_compatible": True})
+
+                                    try:
+                                        packagex.update({"icon_url": package["icon_url"]})
+                                    except KeyError: # There is no 'icon_url" in the response payload for this package
+                                        packagex.update({"icon_url": ""})
+
+                                    self.subscribed_packages.append(packagex)
+                                    # all_subscribed_packages.append(packagex)
+                                # print("ALL PACKAGES: {}".format(all_subscribed_packages))
+
+                                # self.subscribed_compatible_packages.clear()
+                                # self.subscribed_incompatible_packages.clear()
+
+
+
+                                # for subscribed in user_subscribed:
+                                #     if self._sdk_version not in subscribed.sdk_versions:
+                                #         self.subscribed_incompatible_packages.append(subscribed)
+                                #     else:
+                                #         self.subscribed_compatible_packages.append(subscribed)
 
 
                                 self._models["subscribed_packages"].update()
