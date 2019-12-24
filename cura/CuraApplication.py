@@ -508,14 +508,14 @@ class CuraApplication(QtApplication):
         self.getController().contextMenuRequested.connect(self._onContextMenuRequested)
         self.getCuraSceneController().activeBuildPlateChanged.connect(self.updatePlatformActivityDelayed)
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Loading machines..."))
 
         self._container_registry.allMetadataLoaded.connect(ContainerRegistry.getInstance)
 
         with self._container_registry.lockFile():
             self._container_registry.loadAllMetadata()
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up preferences..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Setting up preferences..."))
         # Set the setting version for Preferences
         preferences = self.getPreferences()
         preferences.addPreference("metadata/setting_version", 0)
@@ -637,7 +637,7 @@ class CuraApplication(QtApplication):
 
     @override(Application)
     def setGlobalContainerStack(self, stack: "GlobalStack") -> None:
-        self._setLoadingHint("Preparing Active Machine...")
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
 
     ## A reusable dialogbox
@@ -754,7 +754,7 @@ class CuraApplication(QtApplication):
         super().run()
 
         Logger.log("i", "Initializing machine manager")
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
         self._machine_manager = MachineManager(self, parent = self)
 
         Logger.log("i", "Initializing container manager")
@@ -831,7 +831,7 @@ class CuraApplication(QtApplication):
 
     ##  Run Cura with GUI (desktop mode).
     def runWithGUI(self):
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Setting up scene..."))
 
         controller = self.getController()
 
@@ -866,12 +866,12 @@ class CuraApplication(QtApplication):
         self._camera_animation = CameraAnimation.CameraAnimation()
         self._camera_animation.setCameraTool(self.getController().getTool("CameraTool"))
 
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Loading interface..."))
 
         # Initialize QML engine
         self.setMainQml(Resources.getPath(self.ResourceTypes.QmlFiles, "Cura.qml"))
         self._qml_import_paths.append(Resources.getPath(self.ResourceTypes.QmlFiles))
-        self.showSplashMessage(self._i18n_catalog.i18nc("@info:progress", "Initialize engine..."))
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing engine..."))
         self.initializeEngine()
 
         # Initialize UI state
