@@ -11,5 +11,5 @@ class PluginInfo(PluginObject):
         PluginInfo.__instance = self
 
     @classmethod
-    def getInstance(cls, *args, **kwargs) -> "USBPrinterOutputDeviceManager":
+    def getInstance(cls, *args, **kwargs) -> "PluginInfo":
         return cls.__instance
