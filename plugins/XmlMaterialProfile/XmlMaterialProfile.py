@@ -9,6 +9,7 @@ import sys
 from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
+from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Logger import Logger
 import UM.Dictionary
@@ -19,6 +20,7 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
+from plugins.XmlMaterialProfile import PluginInfo
 
 try:
     from .XmlMaterialValidator import XmlMaterialValidator
@@ -1068,7 +1070,9 @@ class XmlMaterialProfile(InstanceContainer):
     #   This loads the mapping from a file.
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
-        product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
+        plugin_id = PluginInfo.getInstance().getPluginId()
+        plugin_path = PluginRegistry.getInstance().getPluginPath(plugin_id)
+        product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
