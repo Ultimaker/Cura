@@ -17,7 +17,12 @@
             "minimum_value": "0"
         },
         "material_bed_temperature": {
-            "minimum_value": "0"
+            "minimum_value": "0",
+            "maximum_value_warning": "125"
+        },
+        "material_bed_temperature_layer_0":
+        {
+            "maximum_value_warning": "125"
         },
         "material_standby_temperature": {
             "minimum_value": "0"
