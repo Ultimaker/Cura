@@ -756,13 +756,16 @@ class CuraApplication(QtApplication):
         Logger.log("i", "Initializing machine manager")
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
         self._machine_manager = MachineManager(self, parent = self)
+        self.processEvents()
 
         Logger.log("i", "Initializing container manager")
         self._container_manager = ContainerManager(self)
+        self.processEvents()
 
         Logger.log("i", "Initializing machine error checker")
         self._machine_error_checker = MachineErrorChecker(self)
         self._machine_error_checker.initialize()
+        self.processEvents()
 
         # Check if we should run as single instance or not. If so, set up a local socket server which listener which
         # coordinates multiple Cura instances and accepts commands.
@@ -770,6 +773,7 @@ class CuraApplication(QtApplication):
             self.__setUpSingleInstanceServer()
 
         # Setup scene and build volume
+        self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing build volume..."))
         root = self.getController().getScene().getRoot()
         self._volume = BuildVolume.BuildVolume(self, root)
         Arrange.build_volume = self._volume
@@ -777,13 +781,13 @@ class CuraApplication(QtApplication):
         # initialize info objects
         self._print_information = PrintInformation.PrintInformation(self)
         self._cura_actions = CuraActions.CuraActions(self)
-
+        self.processEvents()
         # Initialize setting visibility presets model.
         self._setting_visibility_presets_model = SettingVisibilityPresetsModel(self.getPreferences(), parent = self)
 
         # Initialize Cura API
         self._cura_API.initialize()
-
+        self.processEvents()
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
         self._add_printer_pages_model.initialize()
@@ -843,7 +847,7 @@ class CuraApplication(QtApplication):
 
         # Set default background color for scene
         self.getRenderer().setBackgroundColor(QColor(245, 245, 245))
-
+        self.processEvents()
         # Initialize platform physics
         self._physics = PlatformPhysics.PlatformPhysics(controller, self._volume)
 
@@ -1040,14 +1044,17 @@ class CuraApplication(QtApplication):
         super().registerObjects(engine)
 
         # global contexts
+        self.processEvents()
         engine.rootContext().setContextProperty("Printer", self)
         engine.rootContext().setContextProperty("CuraApplication", self)
         engine.rootContext().setContextProperty("PrintInformation", self._print_information)
         engine.rootContext().setContextProperty("CuraActions", self._cura_actions)
         engine.rootContext().setContextProperty("CuraSDKVersion", ApplicationMetadata.CuraSDKVersion)
 
+        self.processEvents()
         qmlRegisterUncreatableType(CuraApplication, "Cura", 1, 0, "ResourceTypes", "Just an Enum type")
 
+        self.processEvents()
         qmlRegisterSingletonType(CuraSceneController, "Cura", 1, 0, "SceneController", self.getCuraSceneController)
         qmlRegisterSingletonType(ExtruderManager, "Cura", 1, 0, "ExtruderManager", self.getExtruderManager)
         qmlRegisterSingletonType(MachineManager, "Cura", 1, 0, "MachineManager", self.getMachineManager)
@@ -1056,16 +1063,16 @@ class CuraApplication(QtApplication):
         qmlRegisterSingletonType(SimpleModeSettingsManager, "Cura", 1, 0, "SimpleModeSettingsManager", self.getSimpleModeSettingsManager)
         qmlRegisterSingletonType(MachineActionManager.MachineActionManager, "Cura", 1, 0, "MachineActionManager", self.getMachineActionManager)
 
+        self.processEvents()
         qmlRegisterType(NetworkingUtil, "Cura", 1, 5, "NetworkingUtil")
-
         qmlRegisterType(WelcomePagesModel, "Cura", 1, 0, "WelcomePagesModel")
         qmlRegisterType(WhatsNewPagesModel, "Cura", 1, 0, "WhatsNewPagesModel")
         qmlRegisterType(AddPrinterPagesModel, "Cura", 1, 0, "AddPrinterPagesModel")
         qmlRegisterType(TextManager, "Cura", 1, 0, "TextManager")
         qmlRegisterType(RecommendedMode, "Cura", 1, 0, "RecommendedMode")
 
+        self.processEvents()
         qmlRegisterType(NetworkMJPGImage, "Cura", 1, 0, "NetworkMJPGImage")
-
         qmlRegisterType(ObjectsModel, "Cura", 1, 0, "ObjectsModel")
         qmlRegisterType(BuildPlateModel, "Cura", 1, 0, "BuildPlateModel")
         qmlRegisterType(MultiBuildPlateModel, "Cura", 1, 0, "MultiBuildPlateModel")
@@ -1073,14 +1080,15 @@ class CuraApplication(QtApplication):
         qmlRegisterType(ExtrudersModel, "Cura", 1, 0, "ExtrudersModel")
         qmlRegisterType(GlobalStacksModel, "Cura", 1, 0, "GlobalStacksModel")
 
+        self.processEvents()
         qmlRegisterType(FavoriteMaterialsModel, "Cura", 1, 0, "FavoriteMaterialsModel")
         qmlRegisterType(GenericMaterialsModel, "Cura", 1, 0, "GenericMaterialsModel")
         qmlRegisterType(MaterialBrandsModel, "Cura", 1, 0, "MaterialBrandsModel")
         qmlRegisterSingletonType(QualityManagementModel, "Cura", 1, 0, "QualityManagementModel", self.getQualityManagementModel)
         qmlRegisterSingletonType(MaterialManagementModel, "Cura", 1, 5, "MaterialManagementModel", self.getMaterialManagementModel)
 
+        self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
-
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
         qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
@@ -1089,6 +1097,7 @@ class CuraApplication(QtApplication):
         qmlRegisterType(IntentModel, "Cura", 1, 6, "IntentModel")
         qmlRegisterType(IntentCategoryModel, "Cura", 1, 6, "IntentCategoryModel")
 
+        self.processEvents()
         qmlRegisterType(MaterialSettingsVisibilityHandler, "Cura", 1, 0, "MaterialSettingsVisibilityHandler")
         qmlRegisterType(SettingVisibilityPresetsModel, "Cura", 1, 0, "SettingVisibilityPresetsModel")
         qmlRegisterType(QualitySettingsModel, "Cura", 1, 0, "QualitySettingsModel")
@@ -1117,6 +1126,7 @@ class CuraApplication(QtApplication):
                 continue
 
             qmlRegisterType(QUrl.fromLocalFile(path), "Cura", 1, 0, type_name)
+            self.processEvents()
 
     def onSelectionChanged(self):
         if Selection.hasSelection():
