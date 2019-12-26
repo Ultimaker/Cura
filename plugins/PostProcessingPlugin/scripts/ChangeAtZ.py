@@ -548,11 +548,13 @@ class ChangeAtZProcessor:
 		if "bedTemp" in self.TargetValues:
 			defaults.append("M190 S" + str(self.TargetValues["bedTemp"]))
 
-		# set our extruder temps
+		# set our extruder one temp (if specified)
 		if "extruderOne" in self.TargetValues:
-			defaults.append("M109 S" + str(self.TargetValues["extruderOne"]))
-		elif "extruderTwo" in self.TargetValues:
-			defaults.append("M109 S" + str(self.TargetValues["extruderTwo"]))
+			defaults.append("M109 S" + str(self.TargetValues["extruderOne"]) + " T0")
+
+		# set our extruder two temp (if specified)
+		if "extruderTwo" in self.TargetValues:
+			defaults.append("M109 S" + str(self.TargetValues["extruderTwo"]) + " T1")
 
 		# set our fan speed
 		if "fanSpeed" in self.TargetValues:
@@ -940,6 +942,8 @@ def debug():
 	caz_instance.TargetValues["printspeed"] = 100
 	caz_instance.TargetValues["retractfeedrate"] = 10
 	caz_instance.TargetValues["retractlength"] = 0
+	caz_instance.TargetValues["extruderOne"] = 100
+	caz_instance.TargetValues["extruderTwo"] = 200
 
 	# and again
 	gcode = debug_iteration(gcode, caz_instance)
