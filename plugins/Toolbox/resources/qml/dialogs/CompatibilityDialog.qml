@@ -56,7 +56,6 @@ UM.Dialog{
                     model: toolbox.subscribedPackagesModel
                     Component
                     {
-                        id: compatibleDelegate
                         Item
                         {
                             width: parent.width
@@ -74,7 +73,6 @@ UM.Dialog{
                             }
                             Label
                             {
-                                id: compatibleLabel
                                 text: model.name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
@@ -100,7 +98,6 @@ UM.Dialog{
                     model: toolbox.subscribedPackagesModel
                     Component
                     {
-                        id: incompatibleDelegate
                         Item
                         {
                             width: parent.width
@@ -118,7 +115,6 @@ UM.Dialog{
                             }
                             Label
                             {
-                                id: incompatibleLabel
                                 text: model.name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
