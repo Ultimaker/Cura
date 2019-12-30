@@ -4,7 +4,7 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Prusa Research",
+        "author": "Krypta1",
         "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
