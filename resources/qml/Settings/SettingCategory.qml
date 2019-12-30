@@ -151,7 +151,7 @@ Button
     {
         if (definition.expanded)
         {
-            settingDefinitionsModel.collapse(definition.key)
+            settingDefinitionsModel.collapseRecursive(definition.key)
         }
         else
         {
