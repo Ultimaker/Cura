@@ -701,7 +701,7 @@ class Toolbox(QObject, Extension):
             # Ignore any operation that is not a get operation
             pass
 
-    def _checkCompatibilities(self, json_data):
+    def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
 
@@ -725,16 +725,16 @@ class Toolbox(QObject, Extension):
             sync_message.show()
 
     def _onSyncButtonClicked(self, json_data, package_discrepancy, messageId: str, actionId: str) -> None:
-        # self.subscribed_packages.clear()
+        self.subscribed_packages.clear()
         # We 'create' the packages from the HTTP payload
         for item in json_data:
             if item["package_id"] not in package_discrepancy: # But we skip packages that the user has locally installed
                 continue
             package = {"name": item["package_id"], "sdk_versions": item["sdk_versions"]}
             if self._sdk_version not in item["sdk_versions"]:
-                package.update({"is_compatible": False})
+                package.update({"is_compatible": "False"})
             else:
-                package.update({"is_compatible": True})
+                package.update({"is_compatible": "True"})
             try:
                 package.update({"icon_url": item["icon_url"]})
             except KeyError: # There is no 'icon_url" in the response payload for this package
