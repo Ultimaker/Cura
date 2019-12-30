@@ -750,7 +750,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
-            quality_changes_intent_category_per_extruder = {position: info.parser["metadata"].get("intent_category", "default") for position, info in quality_changes_info.extruder_info_dict.items()}
+
+            # quality changes container may not be present for every extruder. Prepopulate the dict with default values.
+            quality_changes_intent_category_per_extruder = {position: "default" for position in self._machine_info.extruder_info_dict}
+            for position, info in quality_changes_info.extruder_info_dict.items():
+                quality_changes_intent_category_per_extruder[position] = info.parser["metadata"].get("intent_category", "default")
 
             quality_changes_name = quality_changes_info.name
             create_new = self._resolve_strategies.get("quality_changes") != "override"
