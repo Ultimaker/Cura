@@ -8,7 +8,6 @@
         "manufacturer": "NWA 3D LLC",
         "file_formats": "text/x-gcode",
         "platform_offset": [0, 0, 0],
-        "has_materials": true,
         "has_variants": true,
         "variants_name": "Nozzle Size",
         "preferred_variant_name": "Standard 0.4mm",
