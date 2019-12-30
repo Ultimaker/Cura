@@ -1,6 +1,6 @@
 # Copyright (c) 2017 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from plugins.XmlMaterialProfile.PluginInfo import PluginInfo
+
 from . import XmlMaterialProfile
 from . import XmlMaterialUpgrader
 
@@ -46,5 +46,4 @@ def register(app):
 
     return {"version_upgrade": upgrader,
             "settings_container": XmlMaterialProfile.XmlMaterialProfile("default_xml_material_profile"),
-            "plugin_info": PluginInfo()
             }

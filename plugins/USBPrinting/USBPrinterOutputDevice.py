@@ -88,9 +88,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._firmware_name_requested = False
         self._firmware_updater = AvrFirmwareUpdater(self)
 
-        from .USBPrinterOutputDeviceManager import USBPrinterOutputDeviceManager
-        plugin_id = USBPrinterOutputDeviceManager.getInstance().getPluginId()
-        plugin_path = PluginRegistry.getInstance().getPluginPath(plugin_id)
+        plugin_path = PluginRegistry.getInstance().getPluginPath("USBPrinting")
         self._monitor_view_qml_path = os.path.join(plugin_path, "MonitorItem.qml")
 
         CuraApplication.getInstance().getOnExitCallbackManager().addCallback(self._checkActivePrintingUponAppExit)

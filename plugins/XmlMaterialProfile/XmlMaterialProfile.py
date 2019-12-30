@@ -20,7 +20,6 @@ from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
-from plugins.XmlMaterialProfile import PluginInfo
 
 try:
     from .XmlMaterialValidator import XmlMaterialValidator
@@ -1070,8 +1069,7 @@ class XmlMaterialProfile(InstanceContainer):
     #   This loads the mapping from a file.
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
-        plugin_id = PluginInfo.getInstance().getPluginId()
-        plugin_path = PluginRegistry.getInstance().getPluginPath(plugin_id)
+        plugin_path = PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile")
         product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
