@@ -30,11 +30,11 @@ Button
             {
                 return UM.Theme.getColor("setting_category_disabled")
             }
-            else if (base.hovered && base.checkable && base.checked)
+            else if (base.hovered && base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_hover")
             }
-            else if (base.pressed || (base.checkable && base.checked))
+            else if (base.pressed || (base.expanded))
             {
                 return UM.Theme.getColor("setting_category_active")
             }
@@ -55,6 +55,7 @@ Button
     signal setActiveFocusToNextSetting(bool forward)
 
     property var focusItem: base
+    property bool expanded: definition.expanded
 
     contentItem: Item
     {
@@ -79,10 +80,10 @@ Button
                 if (!base.enabled)
                 {
                     return UM.Theme.getColor("setting_category_disabled_text")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
+                } else if ((base.hovered || base.activeFocus) && base.expanded)
                 {
                     return UM.Theme.getColor("setting_category_active_hover_text")
-                } else if (base.pressed || (base.checkable && base.checked))
+                } else if (base.pressed || base.expanded)
                 {
                     return UM.Theme.getColor("setting_category_active_text")
                 } else if (base.hovered || base.activeFocus)
@@ -123,11 +124,11 @@ Button
             {
                 return UM.Theme.getColor("setting_category_disabled_text")
             }
-            else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
+            else if((base.hovered || base.activeFocus) && base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_hover_text")
             }
-            else if(base.pressed || (base.checkable && base.checked))
+            else if(base.pressed || base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_text")
             }
@@ -143,9 +144,6 @@ Button
         sourceSize.width: width + 15 * screenScaleFactor
         sourceSize.height: width + 15 * screenScaleFactor
     }
-
-    checkable: true
-    checked: definition.expanded
 
     onClicked:
     {
@@ -226,7 +224,6 @@ Button
         onClicked:
         {
             settingDefinitionsModel.expandRecursive(definition.key)
-            base.checked = true //todo should not be necessary and also breaks binding, right?
             base.showAllHiddenInheritedSettings(definition.key)
         }
 
