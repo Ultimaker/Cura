@@ -19,7 +19,7 @@ Button
     background: Rectangle
     {
         id: backgroundRectangle
-        implicitHeight: UM.Theme.getSize("section").height
+        height: UM.Theme.getSize("section").height
         color:
         {
             if (base.color)
