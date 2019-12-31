@@ -5,7 +5,6 @@ import json
 import os
 import tempfile
 import platform
-import functools
 from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QUrl, QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -665,10 +664,8 @@ class Toolbox(QObject, Extension):
                                 Logger.log("e", "Could not find the %s model.", response_type)
                                 break
 
-                            # Workaround: Do not add Metadata for "subscribed_packages" check JUST YET
-                            if response_type != "subscribed_packages":
-                                self._server_response_data[response_type] = json_data["data"]
-                                self._models[response_type].setMetadata(self._server_response_data[response_type])
+                            self._server_response_data[response_type] = json_data["data"]
+                            self._models[response_type].setMetadata(self._server_response_data[response_type])
 
                             if response_type == "packages":
                                 self._models[response_type].setFilter({"type": "plugin"})
@@ -708,6 +705,8 @@ class Toolbox(QObject, Extension):
         # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
         if package_discrepancy:
+            self._models["subscribed_packages"].addValue(package_discrepancy)
+            self._models["subscribed_packages"].update()
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
@@ -720,31 +719,11 @@ class Toolbox(QObject, Extension):
                                    description="Sync your Cloud subscribed packages to your local environment.",
                                    button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
 
-            self._onSyncButtonClickedHelper = functools.partial(self._onSyncButtonClicked, json_data, package_discrepancy)
-            sync_message.actionTriggered.connect(self._onSyncButtonClickedHelper)
+            sync_message.actionTriggered.connect(self._onSyncButtonClicked)
             sync_message.show()
 
-    def _onSyncButtonClicked(self, json_data, package_discrepancy, sync_message: Message, actionId: str) -> None:
+    def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()
-        self.subscribed_packages.clear()
-        # We 'create' the packages from the HTTP payload
-        for item in json_data:
-            if item["package_id"] not in package_discrepancy: # But we skip packages that the user has locally installed
-                continue
-            package = {"name": item["package_id"], "sdk_versions": item["sdk_versions"]}
-            if self._sdk_version not in item["sdk_versions"]:
-                package.update({"is_compatible": "False"})
-            else:
-                package.update({"is_compatible": "True"})
-            try:
-                package.update({"icon_url": item["icon_url"]})
-            except KeyError: # There is no 'icon_url" in the response payload for this package
-                package.update({"icon_url": ""})
-
-            self.subscribed_packages.append(package)
-            Logger.log("d", "Package '{}' scheduled for installing.".format(package['name']))
-        self._models["subscribed_packages"].update()
-
         compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
         plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path_prefix:
