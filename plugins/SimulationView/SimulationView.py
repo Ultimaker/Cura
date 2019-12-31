@@ -296,9 +296,6 @@ class SimulationView(CuraView):
             self._layer_view_type = layer_view_type
             self.currentLayerNumChanged.emit()
 
-            scene = Application.getInstance().getController().getScene()
-            scene.sceneChanged.emit(scene.getRoot())
-
     ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
         return self._layer_view_type
@@ -575,6 +572,8 @@ class SimulationView(CuraView):
 
     def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)
+        scene = Application.getInstance().getController().getScene()
+        scene.sceneChanged.emit(scene.getRoot())
 
     def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:
