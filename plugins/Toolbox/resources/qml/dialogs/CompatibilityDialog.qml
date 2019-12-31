@@ -76,7 +76,7 @@ UM.Dialog{
                                 text: model.name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
-                                anchors.leftMargin: 20
+                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
@@ -118,7 +118,7 @@ UM.Dialog{
                                 text: model.name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
-                                anchors.leftMargin: 20
+                                anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
