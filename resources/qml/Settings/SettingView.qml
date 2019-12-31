@@ -222,7 +222,6 @@ Item
         ListView
         {
             id: contents
-            spacing: UM.Theme.getSize("default_lining").height
             cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
@@ -251,7 +250,7 @@ Item
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height : - contents.spacing
+                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height : 0
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled === "True" ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
