@@ -694,9 +694,6 @@ class Toolbox(QObject, Extension):
                         Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
-        elif reply.operation() == QNetworkAccessManager.PutOperation:
-            # Ignore any operation that is not a get operation
-            pass
 
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
