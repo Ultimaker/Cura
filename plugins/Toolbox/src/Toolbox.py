@@ -58,8 +58,6 @@ class Toolbox(QObject, Extension):
         self._old_plugin_ids = set()  # type: Set[str]
         self._old_plugin_metadata = dict()  # type: Dict[str, Dict[str, Any]]
 
-        self.subscribed_packages = []   # type: List[Dict[str, str]]
-
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
             "authors":              [],
