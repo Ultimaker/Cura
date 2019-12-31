@@ -15,6 +15,7 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
+from UM.Message import Message
 
 from cura import ApplicationMetadata
 from cura import UltimakerCloudAuthentication
@@ -23,6 +24,7 @@ from cura.Machines.ContainerTree import ContainerTree
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
+from .SubscribedPackagesModel import SubscribedPackagesModel
 
 if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
@@ -58,17 +60,19 @@ class Toolbox(QObject, Extension):
 
         # The responses as given by the server parsed to a list.
         self._server_response_data = {
-            "authors":             [],
-            "packages":            [],
-            "updates":             [],
+            "authors":              [],
+            "packages":             [],
+            "updates":              [],
+            "subscribed_packages":  [],
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
-            "authors":             AuthorsModel(self),
-            "packages":            PackagesModel(self),
-            "updates":             PackagesModel(self),
-        }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
+            "authors":              AuthorsModel(self),
+            "packages":             PackagesModel(self),
+            "updates":              PackagesModel(self),
+            "subscribed_packages":  SubscribedPackagesModel(self),
+        }  # type: Dict[str, Union[AuthorsModel, PackagesModel, SubscribedPackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
         self._plugins_available_model = PackagesModel(self)
@@ -161,7 +165,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, int)
     def ratePackage(self, package_id: str, rating: int) -> None:
-        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url=self._api_url, package_id = package_id))
+        url = QUrl("{base_url}/packages/{package_id}/ratings".format(base_url = self._api_url, package_id = package_id))
 
         self._rate_request = QNetworkRequest(url)
         for header_name, header_value in self._request_headers:
@@ -197,6 +201,11 @@ class Toolbox(QObject, Extension):
             cloud_api_version = self._cloud_api_version,
             sdk_version = self._sdk_version
         )
+        # https://api.ultimaker.com/cura-packages/v1/user/packages
+        self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}/user/packages".format(
+            cloud_api_root = self._cloud_api_root,
+            cloud_api_version = self._cloud_api_version,
+        )
 
         # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
         installed_package_ids_with_versions = [":".join(items) for items in
@@ -207,15 +216,18 @@ class Toolbox(QObject, Extension):
             "authors": QUrl("{base_url}/authors".format(base_url = self._api_url)),
             "packages": QUrl("{base_url}/packages".format(base_url = self._api_url)),
             "updates": QUrl("{base_url}/packages/package-updates?installed_packages={query}".format(
-                base_url = self._api_url, query = installed_packages_query))
+                base_url = self._api_url, query = installed_packages_query)),
+            "subscribed_packages": QUrl(self._api_url_user_packages)
         }
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
 
         # On boot we check which packages have updates.
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._fetchPackageUpdates()
+        self._fetchUserSubscribedPackages()
 
     def _prepareNetworkManager(self):
         if self._network_manager is not None:
@@ -236,6 +248,11 @@ class Toolbox(QObject, Extension):
         self._makeRequestByType("authors")
         # Gather installed packages:
         self._updateInstalledModels()
+
+    def _fetchUserSubscribedPackages(self):
+        if self._application.getCuraAPI().account.isLoggedIn:
+            self._prepareNetworkManager()
+            self._makeRequestByType("subscribed_packages")
 
     # Displays the toolbox
     @pyqtSlot()
@@ -540,9 +557,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, result = bool)
     def isEnabled(self, package_id: str) -> bool:
-        if package_id in self._plugin_registry.getActivePlugins():
-            return True
-        return False
+        return package_id in self._plugin_registry.getActivePlugins()
 
     # Check for plugins that were installed with the old plugin browser
     def isOldPlugin(self, plugin_id: str) -> bool:
@@ -561,10 +576,11 @@ class Toolbox(QObject, Extension):
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
-        Logger.log("d", "Requesting %s metadata from server.", request_type)
+        Logger.log("d", "Requesting '%s' metadata from server.", request_type)
         request = QNetworkRequest(self._request_urls[request_type])
         for header_name, header_value in self._request_headers:
             request.setRawHeader(header_name, header_value)
+        self._updateRequestHeader()
         if self._network_manager:
             self._network_manager.get(request)
 
@@ -661,6 +677,8 @@ class Toolbox(QObject, Extension):
                                 # Tell the package manager that there's a new set of updates available.
                                 packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
                                 self._package_manager.setPackagesWithUpdate(packages)
+                            elif response_type == "subscribed_packages":
+                                self._checkCompatibilities(json_data["data"])
 
                             self.metadataChanged.emit()
 
@@ -674,9 +692,38 @@ class Toolbox(QObject, Extension):
                         Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
-        elif reply.operation() == QNetworkAccessManager.PutOperation:
-            # Ignore any operation that is not a get operation
-            pass
+
+    def _checkCompatibilities(self, json_data) -> None:
+        user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
+        user_installed_packages = self._package_manager.getUserInstalledPackages()
+
+        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
+        package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
+        if package_discrepancy:
+            self._models["subscribed_packages"].addValue(package_discrepancy)
+            self._models["subscribed_packages"].update()
+            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
+            sync_message = Message(i18n_catalog.i18nc(
+                "@info:generic",
+                "\nDo you want to sync material and software packages with your account?"),
+                lifetime=0,
+                title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            sync_message.addAction("sync",
+                                   name=i18n_catalog.i18nc("@action:button", "Sync"),
+                                   icon="",
+                                   description="Sync your Cloud subscribed packages to your local environment.",
+                                   button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+
+            sync_message.actionTriggered.connect(self._onSyncButtonClicked)
+            sync_message.show()
+
+    def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
+        sync_message.hide()
+        compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
+        plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if plugin_path_prefix:
+            path = os.path.join(plugin_path_prefix, compatibility_dialog_path)
+            self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
 
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):
@@ -772,39 +819,43 @@ class Toolbox(QObject, Extension):
 
     # Exposed Models:
     # --------------------------------------------------------------------------
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def authorsModel(self) -> AuthorsModel:
         return cast(AuthorsModel, self._models["authors"])
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
+    def subscribedPackagesModel(self) -> SubscribedPackagesModel:
+        return cast(SubscribedPackagesModel, self._models["subscribed_packages"])
+
+    @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["packages"])
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsShowcaseModel(self) -> PackagesModel:
         return self._plugins_showcase_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsAvailableModel(self) -> PackagesModel:
         return self._plugins_available_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsInstalledModel(self) -> PackagesModel:
         return self._plugins_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsShowcaseModel(self) -> AuthorsModel:
         return self._materials_showcase_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsAvailableModel(self) -> AuthorsModel:
         return self._materials_available_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsInstalledModel(self) -> PackagesModel:
         return self._materials_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
 
