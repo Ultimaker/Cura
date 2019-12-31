@@ -724,7 +724,8 @@ class Toolbox(QObject, Extension):
             sync_message.actionTriggered.connect(self._onSyncButtonClickedHelper)
             sync_message.show()
 
-    def _onSyncButtonClicked(self, json_data, package_discrepancy, messageId: str, actionId: str) -> None:
+    def _onSyncButtonClicked(self, json_data, package_discrepancy, sync_message: Message, actionId: str) -> None:
+        sync_message.hide()
         self.subscribed_packages.clear()
         # We 'create' the packages from the HTTP payload
         for item in json_data:
@@ -744,9 +745,11 @@ class Toolbox(QObject, Extension):
             Logger.log("d", "Package '{}' scheduled for installing.".format(package['name']))
         self._models["subscribed_packages"].update()
 
-        compatibilityDialog = "resources/qml/dialogs/CompatibilityDialog.qml"
-        path = os.path.join(PluginRegistry.getInstance().getPluginPath(self.getPluginId()), compatibilityDialog)
-        self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
+        compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
+        plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        if plugin_path_prefix:
+            path = os.path.join(plugin_path_prefix, compatibility_dialog_path)
+            self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
 
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):
