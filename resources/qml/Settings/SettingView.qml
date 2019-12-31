@@ -192,6 +192,12 @@ Item
                 definitionsModel.setAllVisible(true)
                 filter.updateDefinitionModel()
             }
+
+            onCollapseAllCategories:
+            {
+                definitionsModel.collapseAllCategories()
+                filter.updateDefinitionModel()
+            }
         }
     }
 

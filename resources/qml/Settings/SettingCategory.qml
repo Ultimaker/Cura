@@ -107,7 +107,7 @@ Button
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
             color: UM.Theme.getColor("setting_control_button")
-            source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+            source: definition.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
     }
 
@@ -226,7 +226,7 @@ Button
         onClicked:
         {
             settingDefinitionsModel.expandRecursive(definition.key)
-            base.checked = true
+            base.checked = true //todo should not be necessary and also breaks binding, right?
             base.showAllHiddenInheritedSettings(definition.key)
         }
 
