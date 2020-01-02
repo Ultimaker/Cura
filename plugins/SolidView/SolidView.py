@@ -121,7 +121,7 @@ class SolidView(View):
 
         if not self._xray_error_image:
             self._xray_error_image = OpenGL.getInstance().createTexture()
-            texture_file = "cura-icon-32.png" #TODO make an img for this!
+            texture_file = "xray_error.png"
             try:
                 self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
             except FileNotFoundError:
