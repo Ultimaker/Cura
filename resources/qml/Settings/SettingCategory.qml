@@ -34,7 +34,7 @@ Button
             {
                 return UM.Theme.getColor("setting_category_active_hover")
             }
-            else if (base.pressed || (base.expanded))
+            else if (base.pressed || base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active")
             }
