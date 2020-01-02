@@ -149,6 +149,9 @@ class SimulationViewProxy(QObject):
         self.currentPathChanged.emit()
         self._layerActivityChanged()
 
+        scene = Application.getInstance().getController().getScene()
+        scene.sceneChanged.emit(scene.getRoot())
+
     def _onMaxLayersChanged(self):
         self.maxLayersChanged.emit()
 

@@ -77,6 +77,10 @@ class SettingVisibilityPresetsModel(QObject):
 
             items.append(setting_visibility_preset)
 
+        # Add the "all" visibility:
+        all_setting_visibility_preset = SettingVisibilityPreset(preset_id = "all", name = "All", weight = 9001)
+        all_setting_visibility_preset.setSettings(list(CuraApplication.getInstance().getMachineManager().getAllSettingKeys()))
+        items.append(all_setting_visibility_preset)
         # Sort them on weight (and if that fails, use ID)
         items.sort(key = lambda k: (int(k.weight), k.presetId))
 
