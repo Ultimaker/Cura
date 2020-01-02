@@ -46,19 +46,10 @@ class SimulationPass(RenderPass):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
 
-    def render(self):
-        if not self._layer_shader:
-            if self._compatibility_mode:
-                shader_filename = "layers.shader"
-                shadow_shader_filename = "layers_shadow.shader"
-            else:
-                shader_filename = "layers3d.shader"
-                shadow_shader_filename = "layers3d_shadow.shader"
-            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shader_filename))
-            self._layer_shadow_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shadow_shader_filename))
-            self._current_shader = self._layer_shader
+    def _updateLayerShaderValues(self):
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
-        self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        self._layer_shader.setUniformValue("u_active_extruder",
+                                           float(max(0, self._extruder_manager.activeExtruderIndex)))
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
@@ -71,7 +62,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
         else:
-            #defaults
+            # defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
             self._layer_shader.setUniformValue("u_min_feedrate", 0)
             self._layer_shader.setUniformValue("u_max_thickness", 1)
@@ -82,6 +73,20 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
+
+    def render(self):
+        if not self._layer_shader:
+            if self._compatibility_mode:
+                shader_filename = "layers.shader"
+                shadow_shader_filename = "layers_shadow.shader"
+            else:
+                shader_filename = "layers3d.shader"
+                shadow_shader_filename = "layers3d_shadow.shader"
+            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shader_filename))
+            self._layer_shadow_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shadow_shader_filename))
+            self._current_shader = self._layer_shader
+
+        self._updateLayerShaderValues()
 
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
@@ -97,7 +102,6 @@ class SimulationPass(RenderPass):
         nozzle_node = None
 
         for node in DepthFirstIterator(self._scene.getRoot()):
-
             if isinstance(node, ToolHandle):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
 
