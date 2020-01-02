@@ -195,8 +195,10 @@ Item
 
             onCollapseAllCategories:
             {
+                settingsSearchTimer.stop()
+                filter.text = "" // clear search field
+                filter.editingFinished()
                 definitionsModel.collapseAllCategories()
-                filter.updateDefinitionModel()
             }
         }
     }
