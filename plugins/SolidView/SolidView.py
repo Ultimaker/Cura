@@ -6,7 +6,7 @@ from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
-from PyQt5.QtGui import QOpenGLContext
+from PyQt5.QtGui import QOpenGLContext, QImage
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -43,6 +43,8 @@ class SolidView(View):
         self._xray_pass = None
         self._xray_composite_shader = None
         self._composite_pass = None
+        self._xray_error_image = None
+        self._xray_error_image_size = None
 
         self._extruders_model = None
         self._theme = None
@@ -118,6 +120,15 @@ class SolidView(View):
 
         self._checkSetup()
 
+        if not self._xray_error_image:
+            self._xray_error_image = OpenGL.getInstance().createTexture()
+            texture_file = "cura-icon-32.png" #TODO make an img for this!
+            try:
+                self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
+            except FileNotFoundError:
+                Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
+            self._xray_error_image_size = QImage(Resources.getPath(Resources.Images, texture_file)).size()
+
         if not self._xray_shader:
             self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
@@ -125,9 +136,10 @@ class SolidView(View):
             self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SolidView"), "xray_composite.shader"))
             theme = Application.getInstance().getTheme()
             self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-            self._xray_composite_shader.setUniformValue("u_xray_error_dark", Color(*theme.getColor("xray_error_dark").getRgb()))
-            self._xray_composite_shader.setUniformValue("u_xray_error_light", Color(*theme.getColor("xray_error_light").getRgb()))
             self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+            self._xray_composite_shader.setTexture(3, self._xray_error_image)
+            [ww,wh] = [1920,1080]
+            self._xray_composite_shader.setUniformValue("u_xray_error_img_scaling", [ww / self._xray_error_image_size.width(), wh / self._xray_error_image_size.height()])
 
         if not self.getRenderer().getRenderPass("xray"):
             # Currently the RenderPass constructor requires a size > 0

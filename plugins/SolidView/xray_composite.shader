@@ -23,15 +23,15 @@ fragment =
     uniform sampler2D u_layer0; //Default pass.
     uniform sampler2D u_layer1; //Selection pass.
     uniform sampler2D u_layer2; //X-ray pass.
+    uniform sampler2D u_xray_error; //X-ray error image.
 
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_xray_error_dark;
-    uniform vec4 u_xray_error_light;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
+    uniform vec2 u_xray_error_img_scaling;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -62,16 +62,7 @@ fragment =
         float intersection_count = texture2D(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            float lightness = (result.r + result.g + result.b) / 3.0;
-            //if ( (mod((v_uvs.x / u_offset[8].x - v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) == (mod((v_uvs.x / u_offset[8].x + v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) ) // diamond pattern
-            if (lightness > 0.5)
-            {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_dark;
-            }
-            else
-            {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_light;
-            }
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_img_scaling);
         }
 
         vec4 sum = vec4(0.0);
@@ -113,15 +104,15 @@ fragment41core =
     uniform sampler2D u_layer0; //Default pass.
     uniform sampler2D u_layer1; //Selection pass.
     uniform sampler2D u_layer2; //X-ray pass.
+    uniform sampler2D u_xray_error; //X-ray error image.
 
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_xray_error_dark;
-    uniform vec4 u_xray_error_light;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
+    uniform vec2 u_xray_error_img_scaling;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -153,16 +144,7 @@ fragment41core =
         float intersection_count = texture(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            float lightness = (result.r + result.g + result.b) / 3.0;
-            //if ( (mod((v_uvs.x / u_offset[8].x - v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) == (mod((v_uvs.x / u_offset[8].x + v_uvs.y / u_offset[8].y) * 0.1, 2.0) >= 1.0) ) // diamond pattern
-            if (lightness > 0.5)
-            {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_dark;
-            }
-            else
-            {
-                result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * u_xray_error_light;
-            }
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_img_scaling);
         }
 
         vec4 sum = vec4(0.0);
@@ -189,13 +171,12 @@ fragment41core =
 u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
+u_xray_error = 3
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
-u_error_color = [0.0, 0.0, 0.0, 1.0]
-u_xray_error_dark = [1.0, 0.0, 0.0, 1.0]
-u_xray_error_light = [1.0, 1.0, 0.0, 1.0]
 u_xray_error_strength = 0.4
+u_xray_error_img_scaling = [1.0,1.0]
 
 [bindings]
 
