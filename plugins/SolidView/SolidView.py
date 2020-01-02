@@ -44,7 +44,6 @@ class SolidView(View):
         self._xray_composite_shader = None
         self._composite_pass = None
         self._xray_error_image = None
-        self._xray_error_image_size = None
 
         self._extruders_model = None
         self._theme = None
@@ -127,7 +126,6 @@ class SolidView(View):
                 self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
             except FileNotFoundError:
                 Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
-            self._xray_error_image_size = QImage(Resources.getPath(Resources.Images, texture_file)).size()
 
         if not self._xray_shader:
             self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
@@ -138,8 +136,6 @@ class SolidView(View):
             self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
             self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
             self._xray_composite_shader.setTexture(3, self._xray_error_image)
-            [ww,wh] = [1920,1080]
-            self._xray_composite_shader.setUniformValue("u_xray_error_img_scaling", [ww / self._xray_error_image_size.width(), wh / self._xray_error_image_size.height()])
 
         if not self.getRenderer().getRenderPass("xray"):
             # Currently the RenderPass constructor requires a size > 0

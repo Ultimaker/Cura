@@ -31,7 +31,6 @@ fragment =
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
-    uniform vec2 u_xray_error_img_scaling;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -62,7 +61,8 @@ fragment =
         float intersection_count = texture2D(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_img_scaling);
+            vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);
         }
 
         vec4 sum = vec4(0.0);
@@ -112,7 +112,6 @@ fragment41core =
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
-    uniform vec2 u_xray_error_img_scaling;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -144,7 +143,8 @@ fragment41core =
         float intersection_count = texture(u_layer2, v_uvs).r * 255.0;
         if(mod(intersection_count, 2.0) >= 1.0)
         {
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_img_scaling);
+            vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);
         }
 
         vec4 sum = vec4(0.0);
@@ -176,7 +176,6 @@ u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
 u_xray_error_strength = 0.4
-u_xray_error_img_scaling = [1.0,1.0]
 
 [bindings]
 
