@@ -185,14 +185,7 @@ Item
             label: Label {}
         }
 
-        menu: SettingVisibilityPresetsMenu
-        {
-            onShowAllSettings:
-            {
-                definitionsModel.setAllVisible(true)
-                filter.updateDefinitionModel()
-            }
-        }
+        menu: SettingVisibilityPresetsMenu {}
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.

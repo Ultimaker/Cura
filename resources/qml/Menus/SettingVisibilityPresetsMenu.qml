@@ -14,8 +14,6 @@ Menu
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
-    signal showAllSettings()
-
     Instantiator
     {
         model: settingVisibilityPresetsModel.items
@@ -36,17 +34,6 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    MenuSeparator {}
-    MenuItem
-    {
-        text: catalog.i18nc("@action:inmenu", "Show All Settings")
-        checkable: false
-        exclusiveGroup: group
-        onTriggered:
-        {
-            showAllSettings();
-        }
-    }
     MenuSeparator {}
     MenuItem
     {
