@@ -753,6 +753,11 @@ class CuraApplication(QtApplication):
     def run(self):
         super().run()
 
+        Logger.log("i", "Initializing machine error checker")
+        self._machine_error_checker = MachineErrorChecker(self)
+        self._machine_error_checker.initialize()
+        self.processEvents()
+
         Logger.log("i", "Initializing machine manager")
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing machine manager..."))
         self._machine_manager = MachineManager(self, parent = self)
@@ -760,11 +765,6 @@ class CuraApplication(QtApplication):
 
         Logger.log("i", "Initializing container manager")
         self._container_manager = ContainerManager(self)
-        self.processEvents()
-
-        Logger.log("i", "Initializing machine error checker")
-        self._machine_error_checker = MachineErrorChecker(self)
-        self._machine_error_checker.initialize()
         self.processEvents()
 
         # Check if we should run as single instance or not. If so, set up a local socket server which listener which
