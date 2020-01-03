@@ -76,9 +76,9 @@ def main():
             print("\nCommand %s failed checking. :(" % commands[i])
             success_code = 1
     if success_code:        
-        print("MYPY check was compleded, but did not pass")
+        print("MYPY check was completed, but did not pass")
     else:
-        print("MYPY check was compleded and passed with flying colors")
+        print("MYPY check was completed and passed with flying colors")
     return success_code
 
 if __name__ == "__main__":
