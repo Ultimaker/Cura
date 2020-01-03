@@ -1,6 +1,6 @@
 from UM.Logger import Logger
 
-from PyQt5.QtCore import Qt, pyqtSlot, QObject
+from PyQt5.QtCore import Qt, pyqtSlot, QObject, QTimer
 from PyQt5.QtWidgets import QApplication
 
 from UM.Scene.Camera import Camera
@@ -26,16 +26,23 @@ class CuraSceneController(QObject):
 
         self._last_selected_index = 0
         self._max_build_plate = 1  # default
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(100)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self.updateMaxBuildPlate)
+        Application.getInstance().getController().getScene().sceneChanged.connect(self.updateMaxBuildPlateDelayed)
 
-        Application.getInstance().getController().getScene().sceneChanged.connect(self.updateMaxBuildPlate)  # it may be a bit inefficient when changing a lot simultaneously
-
-    def updateMaxBuildPlate(self, *args):
+    def updateMaxBuildPlateDelayed(self, *args):
         if args:
             source = args[0]
         else:
             source = None
+
         if not isinstance(source, SceneNode) or isinstance(source, Camera):
             return
+        self._change_timer.start()
+
+    def updateMaxBuildPlate(self, *args):
         max_build_plate = self._calcMaxBuildPlate()
         changed = False
         if max_build_plate != self._max_build_plate:
