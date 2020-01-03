@@ -40,13 +40,6 @@ fragment =
 
     float kernel[9];
 
-    float hash12(vec2 p)
-    {
-        vec2 pp = p * 1234.3;
-        vec2 p2 = fract(pp) + fract(dot(pp, pp.yx + vec2(12.0,51.0)));
-        return fract(fract(p2.x * p2.y) * 123.312);
-    }
-
     void main()
     {
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
@@ -121,13 +114,6 @@ fragment41core =
     out vec4 frag_color;
 
     float kernel[9];
-
-    float hash12(vec2 p)
-    {
-        vec2 pp = p * 1234.3;
-        vec2 p2 = fract(pp) + fract(dot(pp, pp.yx + vec2(12.0,51.0)));
-        return fract(fract(p2.x * p2.y) * 123.312);
-    }
 
     void main()
     {
