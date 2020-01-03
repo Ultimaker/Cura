@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Renkforce RF100",
+    "name": "Renkforce RF100 V2",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Simon Peter (based on RF100.ini by Conrad Electronic SE)",
@@ -66,7 +66,7 @@
             "value": "0.3"
         },
         "machine_depth": {
-            "value": "100"
+            "value": "120"
         },
         "machine_end_gcode": {
             "default_value": ";End GCode\nG91 ;relative positioning\nG1 E-1 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure\nG1 Z+0.5 E-2 F300 ;move Z up a bit and retract filament even more\nM104 S0 ;extruder heater off\nM140 S0 ;heated bed heater off (if you have it)\nG0 Z{machine_height} F1800 ;move the platform all the way down\nG28 X0 Y0 F1800 ;move X/Y to min endstops, so the head is out of the way\nM84 ;steppers off\nG90 ;absolute positioning\nM117 Done"
@@ -87,16 +87,16 @@
             "value": "8"
         },
         "machine_height": {
-            "value": "100"
+            "value": "120"
         },
         "machine_name": {
-            "default_value": "Renkforce RF100"
+            "default_value": "Renkforce RF100 V2"
         },
         "machine_start_gcode": {
             "default_value": ";Sliced at: {day} {date} {time}\nG21 ;metric values\nG90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM107 ;start with the fan off\nG1 Z5.0 F1800 ;move Z to 5mm\nG28 X0 Y0 F1800 ;move X/Y to min endstops\nG28 Z0 ;move Z to min endstop\nG92 E0 ;zero the extruded length\nG1 F200 E4.0 ;extrude 4.0mm of feed stock to build pressure\nG1 Z5.0 F300 ;move the platform down 5mm\nG92 E0 ;zero the extruded length again\nG1 F1800\n;Put printing message on LCD screen\nM117 Printing..."
         },
         "machine_width": {
-            "value": "100"
+            "value": "120"
         },
         "material_bed_temperature": {
             "enabled": false
