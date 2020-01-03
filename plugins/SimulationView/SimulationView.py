@@ -274,7 +274,7 @@ class SimulationView(CuraView):
                 self._minimum_path_num = self._current_path_num
 
             self._startUpdateTopLayers()
-
+            self.recalculateStartEndElements()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
@@ -599,7 +599,7 @@ class SimulationView(CuraView):
     def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:
             return
-
+        self.recalculateStartEndElements()
         if self._top_layers_job:
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()
