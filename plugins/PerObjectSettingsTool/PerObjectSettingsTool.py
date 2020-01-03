@@ -68,7 +68,8 @@ class PerObjectSettingsTool(Tool):
 
     ## Returns True when the mesh_type was changed, False when current mesh_type == mesh_type
     def setMeshType(self, mesh_type: str) -> bool:
-        if self.getMeshType() == mesh_type:
+        old_mesh_type = self.getMeshType()
+        if old_mesh_type == mesh_type:
             return False
 
         selected_object = Selection.getSelectedObject(0)
@@ -93,6 +94,17 @@ class PerObjectSettingsTool(Tool):
                     new_instance.setProperty("value", True)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
+
+        for property_key in ["top_bottom_thickness", "wall_thickness"]:
+            if mesh_type == "infill_mesh":
+                if not settings.getInstance(property_key):
+                    definition = stack.getSettingDefinition(property_key)
+                    new_instance = SettingInstance(definition, settings)
+                    new_instance.setProperty("value", 0)
+                    new_instance.resetState()  # Ensure that the state is not seen as a user state.
+                    settings.addInstance(new_instance)
+            elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
+                settings.removeInstance(property_key)
 
         self.propertyChanged.emit()
         return True
