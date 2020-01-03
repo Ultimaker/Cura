@@ -185,7 +185,16 @@ Item
             label: Label {}
         }
 
-        menu: SettingVisibilityPresetsMenu {}
+        menu: SettingVisibilityPresetsMenu
+        {
+            onCollapseAllCategories:
+            {
+                settingsSearchTimer.stop()
+                filter.text = "" // clear search field
+                filter.editingFinished()
+                definitionsModel.collapseAllCategories()
+            }
+        }
     }
 
     // Mouse area that gathers the scroll events to not propagate it to the main view.

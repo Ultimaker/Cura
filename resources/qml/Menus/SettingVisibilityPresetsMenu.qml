@@ -14,6 +14,8 @@ Menu
 
     property QtObject settingVisibilityPresetsModel: CuraApplication.getSettingVisibilityPresetsModel()
 
+    signal collapseAllCategories()
+
     Instantiator
     {
         model: settingVisibilityPresetsModel.items
@@ -34,6 +36,15 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
+    MenuSeparator {}
+    MenuItem
+    {
+        text: catalog.i18nc("@action:inmenu", "Collapse All Categories")
+        onTriggered:
+        {
+            collapseAllCategories();
+        }
+    }
     MenuSeparator {}
     MenuItem
     {
