@@ -1721,11 +1721,29 @@
                         "zigzag": "Zig Zag",
                         "cross": "Cross",
                         "cross_3d": "Cross 3D",
-                        "gyroid": "Gyroid"
+                        "gyroid": "Gyroid",
+                        "schwarz_p": "Schwarz P",
+                        "schwarz_d": "Schwarz D"
                     },
                     "default_value": "grid",
                     "enabled": "infill_sparse_density > 0",
                     "value": "'lines' if infill_sparse_density > 25 else 'grid'",
+                    "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_pattern_resolution":
+                {
+                    "label": "Infill Pattern Resolution",
+                    "description": "The resolution of the infill pattern of the print. High resolution produces the most accurate pattern, low resolution generates the fewest lines.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "high_resolution": "High",
+                        "medium_resolution": "Medium",
+                        "low_resolution": "Low"
+                    },
+                    "default_value": "high_resolution",
+                    "enabled": "infill_sparse_density > 0 and (infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d')",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1736,7 +1754,7 @@
                     "type": "bool",
                     "default_value": false,
                     "value": "infill_pattern == 'cross' or infill_pattern == 'cross_3d'",
-                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid'",
+                    "enabled": "infill_pattern == 'lines' or infill_pattern == 'grid' or infill_pattern == 'triangles' or infill_pattern == 'trihexagon' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'cross' or infill_pattern == 'cross_3d' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1768,7 +1786,7 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -1779,8 +1797,20 @@
                     "unit": "mm",
                     "type": "float",
                     "default_value": 0,
-                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag'",
+                    "enabled": "infill_pattern == 'grid' or infill_pattern == 'lines' or infill_pattern == 'triangles' or infill_pattern == 'cubic' or infill_pattern == 'tetrahedral' or infill_pattern == 'quarter_cubic' or infill_pattern == 'zigzag' or infill_pattern == 'gyroid' or infill_pattern == 'schwarz_p' or infill_pattern == 'schwarz_d'",
                     "limit_to_extruder": "infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "infill_scaling_z":
+                {
+                    "label": "Infill Vertical Scaling",
+                    "description": "Scales the vertical infill pattern. Values larger than 100% stretch the pattern, values less than 100% compress the pattern. Note that some infill patterns do not work well with scaling values that differ greatly from 100%.",
+                    "unit": "%",
+                    "minimum_value": "1",
+                    "maximum_value": "1000000",
+                    "default_value": 100,
+                    "type": "float",
+                    "enabled": "infill_sparse_density > 0 and infill_pattern in ('cubic', 'cubicsubdiv', 'quarter_cubic', 'tetrahedral', 'cross_3d', 'gyroid', 'schwarz_p', 'schwarz_d')",
                     "settable_per_mesh": true
                 },
                 "infill_randomize_start_location":
@@ -4194,7 +4224,24 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
-                "support_wall_count":
+                "support_pattern_resolution":
+                {
+                    "label": "Support Pattern Resolution",
+                    "description": "The resolution of the support pattern of the print. High resolution produces the most accurate pattern, low resolution generates the fewest lines.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "high_resolution": "High",
+                        "medium_resolution": "Medium",
+                        "low_resolution": "Low"
+                    },
+                    "default_value": "medium_resolution",
+                    "enabled": "(support_enable or support_tree_enable) and support_pattern == 'gyroid'",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+               "support_wall_count":
                 {
                     "label": "Support Wall Line Count",
                     "description": "The number of walls with which to surround support infill. Adding a wall can make support print more reliably and can support overhangs better, but increases print time and material used.",
