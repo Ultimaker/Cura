@@ -173,6 +173,17 @@ class Toolbox(QObject, Extension):
         data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
         self._rate_reply = cast(QNetworkAccessManager, self._network_manager).put(self._rate_request, data.encode())
 
+    @pyqtSlot(str)
+    def subscribe(self, package_id: str) -> None:
+        if self._application.getCuraAPI().account.isLoggedIn: # instead of this, can there be a decorator like in Django, @login_required?
+            url = QUrl(self._api_url_user_packages)
+            self._rate_request = QNetworkRequest(url)
+            for header_name, header_value in self._request_headers:
+                cast(QNetworkRequest, self._rate_request).setRawHeader(header_name, header_value)
+
+            data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, self._sdk_version)
+            self._rate_reply = cast(QNetworkAccessManager, self._network_manager).put(self._rate_request, data.encode())
+
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
         return self._license_dialog_plugin_name
@@ -692,6 +703,12 @@ class Toolbox(QObject, Extension):
                         Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
                         self.setViewPage("errored")
                         self.resetDownload()
+        elif reply.operation() == QNetworkAccessManager.PutOperation:
+            # Maybe some useful log messages? There are now AT LEAST 2 functions that are using PutOperation
+            # pass
+            print(reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
+            print(reply.readAll())
+
 
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
@@ -768,6 +785,7 @@ class Toolbox(QObject, Extension):
             return
 
         self.install(file_path)
+        self.subscribe(package_info["package_id"])
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
