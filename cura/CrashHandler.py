@@ -12,9 +12,13 @@ import json
 import locale
 from typing import cast
 
-from sentry_sdk.hub import Hub
-from sentry_sdk.utils import event_from_exception
-from sentry_sdk import configure_scope
+try:
+    from sentry_sdk.hub import Hub
+    from sentry_sdk.utils import event_from_exception
+    from sentry_sdk import configure_scope
+    with_sentry_sdk = True
+except ImportError:
+    with_sentry_sdk = False
 
 from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
@@ -66,8 +70,9 @@ class CrashHandler:
         if has_started and exception_type in skip_exception_types:
             return
 
-        with configure_scope() as scope:
-            scope.set_tag("during_startup", not has_started)
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("during_startup", not has_started)
 
         if not has_started:
             self._send_report_checkbox = None
@@ -203,16 +208,17 @@ class CrashHandler:
         layout.addWidget(label)
         group.setLayout(layout)
 
-        with configure_scope() as scope:
-            scope.set_tag("qt_version", QT_VERSION_STR)
-            scope.set_tag("pyqt_version", PYQT_VERSION_STR)
-            scope.set_tag("os", platform.system())
-            scope.set_tag("os_version", platform.version())
-            scope.set_tag("locale_os", self.data["locale_os"])
-            scope.set_tag("locale_cura", self.cura_locale)
-            scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
-
-            scope.set_user({"id": str(uuid.getnode())})
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("qt_version", QT_VERSION_STR)
+                scope.set_tag("pyqt_version", PYQT_VERSION_STR)
+                scope.set_tag("os", platform.system())
+                scope.set_tag("os_version", platform.version())
+                scope.set_tag("locale_os", self.data["locale_os"])
+                scope.set_tag("locale_cura", self.cura_locale)
+                scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
+    
+                scope.set_user({"id": str(uuid.getnode())})
 
         return group
 
@@ -247,12 +253,13 @@ class CrashHandler:
         except:
             pass
 
-        with configure_scope() as scope:
-            scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
-            scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
-            scope.set_tag("gpu_type", opengl_instance.getGPUType())
-            scope.set_tag("active_machine", active_machine_definition_id)
-            scope.set_tag("active_machine_manufacturer", active_machine_manufacturer)
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
+                scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
+                scope.set_tag("gpu_type", opengl_instance.getGPUType())
+                scope.set_tag("active_machine", active_machine_definition_id)
+                scope.set_tag("active_machine_manufacturer", active_machine_manufacturer)
 
         return info
 
@@ -335,9 +342,10 @@ class CrashHandler:
                                       "module_name": module_name, "version": module_version, "is_plugin": isPlugin}
         self.data["exception"] = exception_dict
 
-        with configure_scope() as scope:
-            scope.set_tag("is_plugin", isPlugin)
-            scope.set_tag("module", module_name)
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("is_plugin", isPlugin)
+                scope.set_tag("module", module_name)
 
         return group
 
@@ -396,15 +404,24 @@ class CrashHandler:
         # Before sending data, the user comments are stored
         self.data["user_info"] = self.user_description_text_area.toPlainText()
 
-        try:
-            hub = Hub.current
-            event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
-            hub.capture_event(event, hint=hint)
-            hub.flush()
-        except Exception as e:  # We don't want any exception to cause problems
-            Logger.logException("e", "An exception occurred while trying to send crash report")
+        if with_sentry_sdk:
+            try:
+                hub = Hub.current
+                event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
+                hub.capture_event(event, hint=hint)
+                hub.flush()
+            except Exception as e:  # We don't want any exception to cause problems
+                Logger.logException("e", "An exception occurred while trying to send crash report")
+                if not self.has_started:
+                    print("An exception occurred while trying to send crash report: %s" % e)
+        else:
+            msg = "SentrySDK is not available and the report could not be sent."
+            Logger.logException("e", msg)
             if not self.has_started:
-                print("An exception occurred while trying to send crash report: %s" % e)
+                print(msg)
+                print("Exception type: {}".format(self.exception_type))
+                print("Value: {}".format(self.value))
+                print("Traceback: {}".format(self.traceback))
 
         os._exit(1)
 
