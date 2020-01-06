@@ -82,13 +82,9 @@ class MachineManager(QObject):
 
         self._stacks_have_errors = None  # type: Optional[bool]
 
-        self._onGlobalContainerChanged()
-
         extruder_manager = self._application.getExtruderManager()
 
         extruder_manager.activeExtruderChanged.connect(self._onActiveExtruderStackChanged)
-        self._onActiveExtruderStackChanged()
-
         extruder_manager.activeExtruderChanged.connect(self.activeMaterialChanged)
         extruder_manager.activeExtruderChanged.connect(self.activeVariantChanged)
         extruder_manager.activeExtruderChanged.connect(self.activeQualityChanged)

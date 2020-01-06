@@ -46,19 +46,10 @@ class SimulationPass(RenderPass):
         self._layer_view = layerview
         self._compatibility_mode = layerview.getCompatibilityMode()
 
-    def render(self):
-        if not self._layer_shader:
-            if self._compatibility_mode:
-                shader_filename = "layers.shader"
-                shadow_shader_filename = "layers_shadow.shader"
-            else:
-                shader_filename = "layers3d.shader"
-                shadow_shader_filename = "layers3d_shadow.shader"
-            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shader_filename))
-            self._layer_shadow_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shadow_shader_filename))
-            self._current_shader = self._layer_shader
+    def _updateLayerShaderValues(self):
         # Use extruder 0 if the extruder manager reports extruder index -1 (for single extrusion printers)
-        self._layer_shader.setUniformValue("u_active_extruder", float(max(0, self._extruder_manager.activeExtruderIndex)))
+        self._layer_shader.setUniformValue("u_active_extruder",
+                                           float(max(0, self._extruder_manager.activeExtruderIndex)))
         if self._layer_view:
             self._layer_shader.setUniformValue("u_max_feedrate", self._layer_view.getMaxFeedrate())
             self._layer_shader.setUniformValue("u_min_feedrate", self._layer_view.getMinFeedrate())
@@ -71,7 +62,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_skin", self._layer_view.getShowSkin())
             self._layer_shader.setUniformValue("u_show_infill", self._layer_view.getShowInfill())
         else:
-            #defaults
+            # defaults
             self._layer_shader.setUniformValue("u_max_feedrate", 1)
             self._layer_shader.setUniformValue("u_min_feedrate", 0)
             self._layer_shader.setUniformValue("u_max_thickness", 1)
@@ -83,6 +74,20 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_show_skin", 1)
             self._layer_shader.setUniformValue("u_show_infill", 1)
 
+    def render(self):
+        if not self._layer_shader:
+            if self._compatibility_mode:
+                shader_filename = "layers.shader"
+                shadow_shader_filename = "layers_shadow.shader"
+            else:
+                shader_filename = "layers3d.shader"
+                shadow_shader_filename = "layers3d_shadow.shader"
+            self._layer_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shader_filename))
+            self._layer_shadow_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SimulationView"), shadow_shader_filename))
+            self._current_shader = self._layer_shader
+
+        self._updateLayerShaderValues()
+
         if not self._tool_handle_shader:
             self._tool_handle_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "toolhandle.shader"))
 
@@ -93,12 +98,10 @@ class SimulationPass(RenderPass):
         self.bind()
 
         tool_handle_batch = RenderBatch(self._tool_handle_shader, type = RenderBatch.RenderType.Overlay, backface_cull = True)
-        active_build_plate = Application.getInstance().getMultiBuildPlateModel().activeBuildPlate
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
         for node in DepthFirstIterator(self._scene.getRoot()):
-
             if isinstance(node, ToolHandle):
                 tool_handle_batch.addItem(node.getWorldTransformation(), mesh = node.getSolidMesh())
 
@@ -113,29 +116,24 @@ class SimulationPass(RenderPass):
 
                 # Render all layers below a certain number as line mesh instead of vertices.
                 if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
-                    start = 0
-                    end = 0
-                    element_counts = layer_data.getElementCounts()
-                    for layer in sorted(element_counts.keys()):
-                        # In the current layer, we show just the indicated paths
-                        if layer == self._layer_view._current_layer_num:
-                            # We look for the position of the head, searching the point of the current path
-                            index = self._layer_view._current_path_num
-                            offset = 0
-                            for polygon in layer_data.getLayer(layer).polygons:
-                                # The size indicates all values in the two-dimension array, and the second dimension is
-                                # always size 3 because we have 3D points.
-                                if index >= polygon.data.size // 3 - offset:
-                                    index -= polygon.data.size // 3 - offset
-                                    offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
-                                    continue
-                                # The head position is calculated and translated
-                                head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
-                                break
-                            break
-                        if self._layer_view._minimum_layer_num > layer:
-                            start += element_counts[layer]
-                        end += element_counts[layer]
+                    start = self._layer_view.start_elements_index
+                    end = self._layer_view.end_elements_index
+                    index = self._layer_view._current_path_num
+                    offset = 0
+                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
+                    if layer is None:
+                        continue
+                    for polygon in layer.polygons:
+                        # The size indicates all values in the two-dimension array, and the second dimension is
+                        # always size 3 because we have 3D points.
+                        if index >= polygon.data.size // 3 - offset:
+                            index -= polygon.data.size // 3 - offset
+                            offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
+                            continue
+                        # The head position is calculated and translated
+                        head_position = Vector(polygon.data[index + offset][0], polygon.data[index + offset][1],
+                                               polygon.data[index + offset][2]) + node.getWorldPosition()
+                        break
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end
