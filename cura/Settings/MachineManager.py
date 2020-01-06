@@ -227,7 +227,7 @@ class MachineManager(QObject):
             except TypeError:
                 pass
 
-            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            for extruder_stack in self._global_container_stack.extruderList:
                 extruder_stack.propertyChanged.disconnect(self._onPropertyChanged)
                 extruder_stack.containersChanged.disconnect(self._onContainersChanged)
 
@@ -257,7 +257,7 @@ class MachineManager(QObject):
                 self._global_container_stack.setMaterial(empty_material_container)
 
             # Listen for changes on all extruder stacks
-            for extruder_stack in ExtruderManager.getInstance().getActiveExtruderStacks():
+            for extruder_stack in self._global_container_stack.extruderList:
                 extruder_stack.propertyChanged.connect(self._onPropertyChanged)
                 extruder_stack.containersChanged.connect(self._onContainersChanged)
 
@@ -365,7 +365,7 @@ class MachineManager(QObject):
 
         # Not a very pretty solution, but the extruder manager doesn't really know how many extruders there are
         machine_extruder_count = self._global_container_stack.getProperty("machine_extruder_count", "value")
-        extruder_stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+        extruder_stacks = self._global_container_stack.extruderList
         count = 1  # We start with the global stack
         for stack in extruder_stacks:
             md = stack.getMetaData()
@@ -388,8 +388,7 @@ class MachineManager(QObject):
         if self._global_container_stack.getTop().getNumInstances() != 0:
             return True
 
-        stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
-        for stack in stacks:
+        for stack in self._global_container_stack.extruderList:
             if stack.getTop().getNumInstances() != 0:
                 return True
 
@@ -426,7 +425,7 @@ class MachineManager(QObject):
             stack = ExtruderManager.getInstance().getActiveExtruderStack()
             stacks = [stack]
         else:
-            stacks = ExtruderManager.getInstance().getActiveExtruderStacks()
+            stacks = self._global_container_stack.extruderList
 
         for stack in stacks:
             if stack is not None:
@@ -611,10 +610,9 @@ class MachineManager(QObject):
         if self._active_container_stack is None or self._global_container_stack is None:
             return
         new_value = self._active_container_stack.getProperty(key, "value")
-        extruder_stacks = [stack for stack in ExtruderManager.getInstance().getActiveExtruderStacks()]
 
         # Check in which stack the value has to be replaced
-        for extruder_stack in extruder_stacks:
+        for extruder_stack in self._global_container_stack.extruderList:
             if extruder_stack != self._active_container_stack and extruder_stack.getProperty(key, "value") != new_value:
                 extruder_stack.userChanges.setProperty(key, "value", new_value)  # TODO: nested property access, should be improved
 
@@ -928,7 +926,7 @@ class MachineManager(QObject):
     def _getContainerChangedSignals(self) -> List[Signal]:
         if self._global_container_stack is None:
             return []
-        return [s.containersChanged for s in ExtruderManager.getInstance().getActiveExtruderStacks() + [self._global_container_stack]]
+        return [s.containersChanged for s in self._global_container_stack.extruderList + [self._global_container_stack]]
 
     @pyqtSlot(str, str, str)
     def setSettingForAllExtruders(self, setting_name: str, property_name: str, property_value: str) -> None:
