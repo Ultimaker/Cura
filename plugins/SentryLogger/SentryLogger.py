@@ -5,7 +5,7 @@ from UM.Logger import LogOutput
 from typing import Set
 try:
     from sentry_sdk import add_breadcrumb
-except ModuleNotFoundError:
+except ImportError:
     pass
 from typing import Optional
 import os

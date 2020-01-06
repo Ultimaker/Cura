@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Any
 try:
     import sentry_sdk
     has_sentry = True
-except ModuleNotFoundError:
+except ImportError:
     has_sentry = False
 
 from . import SentryLogger
