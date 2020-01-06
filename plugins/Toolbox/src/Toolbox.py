@@ -230,7 +230,6 @@ class Toolbox(QObject, Extension):
 
     def _fetchUserSubscribedPackages(self):
         if self._application.getCuraAPI().account.isLoggedIn:
-            self._prepareNetworkManager()
             self._makeRequestByType("subscribed_packages")
 
     def _fetchPackageData(self) -> None:
