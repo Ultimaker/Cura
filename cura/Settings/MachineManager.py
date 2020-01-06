@@ -399,8 +399,7 @@ class MachineManager(QObject):
     def numUserSettings(self) -> int:
         if not self._global_container_stack:
             return 0
-        num_user_settings = 0
-        num_user_settings += self._global_container_stack.getTop().getNumInstances()
+        num_user_settings = self._global_container_stack.getTop().getNumInstances()
         stacks = self._global_container_stack.extruderList
         for stack in stacks:
             num_user_settings += stack.getTop().getNumInstances()
