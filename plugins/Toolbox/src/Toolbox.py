@@ -27,7 +27,7 @@ from .PackagesModel import PackagesModel
 from .SubscribedPackagesModel import SubscribedPackagesModel
 
 if TYPE_CHECKING:
-    from UM.TaskManagement.HttpRequestManager import HttpRequestData
+    from UM.TaskManagement.HttpRequestData import HttpRequestData
     from cura.Settings.GlobalStack import GlobalStack
 
 i18n_catalog = i18nCatalog("cura")
