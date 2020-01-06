@@ -175,7 +175,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def subscribe(self, package_id: str) -> None:
-        if self._application.getCuraAPI().account.isLoggedIn: # instead of this, can there be a decorator like in Django, @login_required?
+        if self._application.getCuraAPI().account.isLoggedIn:
             url = QUrl(self._api_url_user_packages)
             self._rate_request = QNetworkRequest(url)
             for header_name, header_value in self._request_headers:
@@ -704,11 +704,13 @@ class Toolbox(QObject, Extension):
                         self.setViewPage("errored")
                         self.resetDownload()
         elif reply.operation() == QNetworkAccessManager.PutOperation:
-            # Maybe some useful log messages? There are now AT LEAST 2 functions that are using PutOperation
-            # pass
-            print(reply.attribute(QNetworkRequest.HttpStatusCodeAttribute))
-            print(reply.readAll())
-
+            status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+            try:
+                json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+                if status_code >= 400:
+                    Logger.warning("An unexpected error occurred. [{}]".format(json_data) )
+            except json.decoder.JSONDecodeError:
+                Logger.log("w", "Received invalid JSON data")
 
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
