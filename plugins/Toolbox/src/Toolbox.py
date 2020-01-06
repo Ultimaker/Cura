@@ -15,12 +15,12 @@ from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
 from UM.i18n import i18nCatalog
 from UM.Version import Version
-from UM.Message import Message
 
 from cura import ApplicationMetadata
 from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
+from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
@@ -32,8 +32,7 @@ if TYPE_CHECKING:
 
 i18n_catalog = i18nCatalog("cura")
 
-
-##  The Toolbox class is responsible of communicating with the server through the API
+##  Provides a marketplace for users to download plugins an materials
 class Toolbox(QObject, Extension):
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
@@ -41,9 +40,6 @@ class Toolbox(QObject, Extension):
         self._application = application  # type: CuraApplication
 
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
-        self._cloud_api_version = UltimakerCloudAuthentication.CuraCloudAPIVersion  # type: str
-        self._cloud_api_root = UltimakerCloudAuthentication.CuraCloudAPIRoot  # type: str
-        self._api_url = None  # type: Optional[str]
 
         # Network:
         self._download_request_data = None  # type: Optional[HttpRequestData]
@@ -61,17 +57,15 @@ class Toolbox(QObject, Extension):
         self._server_response_data = {
             "authors":              [],
             "packages":             [],
-            "updates":              [],
-            "subscribed_packages":  [],
+            "updates":              []
         }  # type: Dict[str, List[Any]]
 
         # Models:
         self._models = {
             "authors":              AuthorsModel(self),
             "packages":             PackagesModel(self),
-            "updates":              PackagesModel(self),
-            "subscribed_packages":  SubscribedPackagesModel(self),
-        }  # type: Dict[str, Union[AuthorsModel, PackagesModel, SubscribedPackagesModel]]
+            "updates":              PackagesModel(self)
+        }  # type: Dict[str, Union[AuthorsModel, PackagesModel]]
 
         self._plugins_showcase_model = PackagesModel(self)
         self._plugins_available_model = PackagesModel(self)
@@ -159,7 +153,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str, int)
     def ratePackage(self, package_id: str, rating: int) -> None:
-        url = "{base_url}/packages/{package_id}/ratings".format(base_url = self._api_url, package_id = package_id)
+        url = "{base_url}/packages/{package_id}/ratings".format(base_url = CloudApiModel.api_url, package_id = package_id)
         data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
 
         self._application.getHttpRequestManager().put(url, headers_dict = self._request_headers,
@@ -196,16 +190,6 @@ class Toolbox(QObject, Extension):
     def _onAppInitialized(self) -> None:
         self._plugin_registry = self._application.getPluginRegistry()
         self._package_manager = self._application.getPackageManager()
-        self._api_url = "{cloud_api_root}/cura-packages/v{cloud_api_version}/cura/v{sdk_version}".format(
-            cloud_api_root = self._cloud_api_root,
-            cloud_api_version = self._cloud_api_version,
-            sdk_version = self._sdk_version
-        )
-        # https://api.ultimaker.com/cura-packages/v1/user/packages
-        self._api_url_user_packages = "{cloud_api_root}/cura-packages/v{cloud_api_version}/user/packages".format(
-            cloud_api_root = self._cloud_api_root,
-            cloud_api_version = self._cloud_api_version,
-        )
 
         # We need to construct a query like installed_packages=ID:VERSION&installed_packages=ID:VERSION, etc.
         installed_package_ids_with_versions = [":".join(items) for items in
@@ -213,26 +197,19 @@ class Toolbox(QObject, Extension):
         installed_packages_query = "&installed_packages=".join(installed_package_ids_with_versions)
 
         self._request_urls = {
-            "authors": "{base_url}/authors".format(base_url = self._api_url),
-            "packages": "{base_url}/packages".format(base_url = self._api_url),
+            "authors": "{base_url}/authors".format(base_url = CloudApiModel.api_url),
+            "packages": "{base_url}/packages".format(base_url = CloudApiModel.api_url),
             "updates": "{base_url}/packages/package-updates?installed_packages={query}".format(
-                base_url = self._api_url, query = installed_packages_query),
-            "subscribed_packages": self._api_url_user_packages,
+                base_url = CloudApiModel.api_url, query = installed_packages_query)
         }
 
         self._application.getCuraAPI().account.loginStateChanged.connect(self._restart)
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
 
         # On boot we check which packages have updates.
         if CuraApplication.getInstance().getPreferences().getValue("info/automatic_update_check") and len(installed_package_ids_with_versions) > 0:
             # Request the latest and greatest!
             self._makeRequestByType("updates")
-        self._fetchUserSubscribedPackages()
 
-
-    def _fetchUserSubscribedPackages(self):
-        if self._application.getCuraAPI().account.isLoggedIn:
-            self._makeRequestByType("subscribed_packages")
 
     def _fetchPackageData(self) -> None:
         self._makeRequestByType("packages")
@@ -652,45 +629,11 @@ class Toolbox(QObject, Extension):
             # Tell the package manager that there's a new set of updates available.
             packages = set([pkg["package_id"] for pkg in self._server_response_data[request_type]])
             self._package_manager.setPackagesWithUpdate(packages)
-        elif request_type == "subscribed_packages":
-            self._checkCompatibilities(json_data["data"])
 
         self.metadataChanged.emit()
 
         if self.isLoadingComplete():
             self.setViewPage("overview")
-
-    def _checkCompatibilities(self, json_data) -> None:
-        user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
-        user_installed_packages = self._package_manager.getUserInstalledPackages()
-
-        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
-        package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
-        if package_discrepancy:
-            self._models["subscribed_packages"].addValue(package_discrepancy)
-            self._models["subscribed_packages"].update()
-            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
-            sync_message = Message(i18n_catalog.i18nc(
-                "@info:generic",
-                "\nDo you want to sync material and software packages with your account?"),
-                lifetime=0,
-                title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
-            sync_message.addAction("sync",
-                                   name=i18n_catalog.i18nc("@action:button", "Sync"),
-                                   icon="",
-                                   description="Sync your Cloud subscribed packages to your local environment.",
-                                   button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
-
-            sync_message.actionTriggered.connect(self._onSyncButtonClicked)
-            sync_message.show()
-
-    def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
-        sync_message.hide()
-        compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
-        plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        if plugin_path_prefix:
-            path = os.path.join(plugin_path_prefix, compatibility_dialog_path)
-            self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
 
     # This function goes through all known remote versions of a package and notifies the package manager of this change
     def _notifyPackageManager(self):

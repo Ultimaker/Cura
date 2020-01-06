@@ -2,6 +2,7 @@
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 from .src import Toolbox
+from .src.SubscriptionChecker import SubscriptionChecker
 
 
 def getMetaData():
@@ -9,4 +10,7 @@ def getMetaData():
 
 
 def register(app):
-    return {"extension": Toolbox.Toolbox(app)}
+    return {
+        "extension": Toolbox.Toolbox(app),
+        "subscription_checker": SubscriptionChecker(app)
+    }
