@@ -560,55 +560,12 @@ class Toolbox(QObject, Extension):
         self._updateRequestHeader()
         url = self._request_urls[request_type]
 
-        callback = lambda r, rt = request_type: self._onAuthorsDataRequestFinished(rt, r)
-        error_callback = lambda r, e, rt = request_type: self._onAuthorsDataRequestFinished(rt, r, e)
+        callback = lambda r, rt = request_type: self._onDataRequestFinished(rt, r)
+        error_callback = lambda r, e, rt = request_type: self._onDataRequestError(rt, r, e)
         self._application.getHttpRequestManager().get(url,
                                                       headers_dict = self._request_headers,
                                                       callback = callback,
                                                       error_callback = error_callback)
-
-    def _onAuthorsDataRequestFinished(self, request_type: str,
-                                      reply: "QNetworkReply",
-                                      error: Optional["QNetworkReply.NetworkError"] = None) -> None:
-        if error is not None or reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-            Logger.log("w",
-                       "Unable to connect with the server, we got a response code %s while trying to connect to %s",
-                       reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
-            self.setViewPage("errored")
-            return
-
-        try:
-            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
-            # Check for errors:
-            if "errors" in json_data:
-                for error in json_data["errors"]:
-                    Logger.log("e", "%s", error["title"])
-                return
-
-            # Create model and apply metadata:
-            if not self._models[request_type]:
-                Logger.log("e", "Could not find the %s model.", request_type)
-                return
-
-            self._server_response_data[request_type] = json_data["data"]
-            self._models[request_type].setMetadata(self._server_response_data[request_type])
-
-            if request_type == "packages":
-                self._models[request_type].setFilter({"type": "plugin"})
-                self.reBuildMaterialsModels()
-                self.reBuildPluginsModels()
-            elif request_type == "authors":
-                self._models[request_type].setFilter({"package_types": "material"})
-                self._models[request_type].setFilter({"tags": "generic"})
-
-            self.metadataChanged.emit()
-
-            if self.isLoadingComplete():
-                self.setViewPage("overview")
-
-        except json.decoder.JSONDecodeError:
-            Logger.log("w", "Received invalid JSON for %s.", request_type)
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
@@ -644,67 +601,65 @@ class Toolbox(QObject, Extension):
         if network_accessibility == QNetworkAccessManager.NotAccessible:
             self.resetDownload()
 
-    def _onRequestFinished(self, reply: QNetworkReply) -> None:
-        if reply.error() == QNetworkReply.TimeoutError:
-            Logger.log("w", "Got a timeout.")
-            self.setViewPage("errored")
-            self.resetDownload()
+    def _onDataRequestError(self, request_type: str, reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
+        Logger.log("e", "Request [%s] failed due to error [%s]: %s", request_type, error, reply.errorString())
+        self.setViewPage("errored")
+
+    def _onDataRequestFinished(self, request_type: str, reply: "QNetworkReply") -> None:
+        if reply.operation() != QNetworkAccessManager.GetOperation:
+            Logger.log("e", "_onDataRequestFinished() only handles GET requests but got [%s] instead", reply.operation())
             return
 
-        if reply.error() == QNetworkReply.HostNotFoundError:
-            Logger.log("w", "Unable to reach server.")
+        http_status_code = reply.attribute(QNetworkRequest.HttpStatusCodeAttribute)
+        if http_status_code != 200:
+            Logger.log("e", "Request type [%s] got non-200 HTTP response: [%s]", http_status_code)
             self.setViewPage("errored")
-            self.resetDownload()
             return
 
-        if reply.operation() == QNetworkAccessManager.GetOperation:
-            for response_type, url in self._request_urls.items():
-                if reply.url() == url:
-                    if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) == 200:
-                        try:
-                            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+        data = bytes(reply.readAll())
+        try:
+            json_data = json.loads(data.decode("utf-8"))
+        except json.decoder.JSONDecodeError:
+            Logger.log("e", "Failed to decode response data as JSON for request type [%s], response data [%s]",
+                       request_type, data)
+            self.setViewPage("errored")
+            return
 
-                            # Check for errors:
-                            if "errors" in json_data:
-                                for error in json_data["errors"]:
-                                    Logger.log("e", "%s", error["title"])
-                                return
+        # Check for errors:
+        if "errors" in json_data:
+            for error in json_data["errors"]:
+                Logger.log("e", "Request type [%s] got response showing error: %s", error["title"])
+            self.setViewPage("errored")
+            return
 
-                            # Create model and apply metadata:
-                            if not self._models[response_type]:
-                                Logger.log("e", "Could not find the %s model.", response_type)
-                                break
+        # Create model and apply metadata:
+        if not self._models[request_type]:
+            Logger.log("e", "Could not find the model for request type [%s].", request_type)
+            self.setViewPage("errored")
+            return
 
-                            self._server_response_data[response_type] = json_data["data"]
-                            self._models[response_type].setMetadata(self._server_response_data[response_type])
+        self._server_response_data[request_type] = json_data["data"]
+        self._models[request_type].setMetadata(self._server_response_data[request_type])
 
-                            if response_type == "packages":
-                                self._models[response_type].setFilter({"type": "plugin"})
-                                self.reBuildMaterialsModels()
-                                self.reBuildPluginsModels()
-                                self._notifyPackageManager()
-                            elif response_type == "authors":
-                                self._models[response_type].setFilter({"package_types": "material"})
-                                self._models[response_type].setFilter({"tags": "generic"})
-                            elif response_type == "updates":
-                                # Tell the package manager that there's a new set of updates available.
-                                packages = set([pkg["package_id"] for pkg in self._server_response_data[response_type]])
-                                self._package_manager.setPackagesWithUpdate(packages)
-                            elif response_type == "subscribed_packages":
-                                self._checkCompatibilities(json_data["data"])
+        if request_type == "packages":
+            self._models[request_type].setFilter({"type": "plugin"})
+            self.reBuildMaterialsModels()
+            self.reBuildPluginsModels()
+            self._notifyPackageManager()
+        elif request_type == "authors":
+            self._models[request_type].setFilter({"package_types": "material"})
+            self._models[request_type].setFilter({"tags": "generic"})
+        elif request_type == "updates":
+            # Tell the package manager that there's a new set of updates available.
+            packages = set([pkg["package_id"] for pkg in self._server_response_data[request_type]])
+            self._package_manager.setPackagesWithUpdate(packages)
+        elif request_type == "subscribed_packages":
+            self._checkCompatibilities(json_data["data"])
 
-                            self.metadataChanged.emit()
+        self.metadataChanged.emit()
 
-                            if self.isLoadingComplete():
-                                self.setViewPage("overview")
-
-                        except json.decoder.JSONDecodeError:
-                            Logger.log("w", "Received invalid JSON for %s.", response_type)
-                            break
-                    else:
-                        Logger.log("w", "Unable to connect with the server, we got a response code %s while trying to connect to %s", reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
-                        self.setViewPage("errored")
-                        self.resetDownload()
+        if self.isLoadingComplete():
+            self.setViewPage("overview")
 
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
