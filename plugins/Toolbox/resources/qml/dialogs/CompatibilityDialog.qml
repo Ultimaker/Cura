@@ -48,6 +48,7 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages will be added:")
+                    visible: toolbox.has_compatible_packages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
@@ -59,8 +60,8 @@ UM.Dialog{
                         Item
                         {
                             width: parent.width
-                            property var lineHeight: 60
-                            visible: model.is_compatible == "True" ? true : false
+                            property int lineHeight: 60
+                            visible: model.is_compatible === "True" ? true : false
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the compatible packages here
                             Image
                             {
@@ -90,6 +91,7 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages can not be installed because of incompatible Cura version:")
+                    visible: toolbox.has_incompatible_packages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
@@ -101,8 +103,8 @@ UM.Dialog{
                         Item
                         {
                             width: parent.width
-                            property var lineHeight: 60
-                            visible: model.is_compatible == "True" ? false : true
+                            property int lineHeight: 60
+                            visible: model.is_compatible === "True" ? false : true
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {

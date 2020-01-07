@@ -10,6 +10,7 @@ class SubscribedPackagesModel(ListModel):
     def __init__(self, parent = None):
         super().__init__(parent)
 
+        self._items = []
         self._metadata = None
         self._discrepancies = None
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
@@ -27,7 +28,7 @@ class SubscribedPackagesModel(ListModel):
             self._discrepancies = discrepancy
 
     def update(self):
-        items = []
+        self._items.clear()
 
         for item in self._metadata:
             if item["package_id"] not in self._discrepancies:
@@ -42,5 +43,20 @@ class SubscribedPackagesModel(ListModel):
             except KeyError:  # There is no 'icon_url" in the response payload for this package
                 package.update({"icon_url": ""})
 
-            items.append(package)
-        self.setItems(items)
+            self._items.append(package)
+        self.setItems(self._items)
+        print(self._items)
+
+    def has_compatible_packages(self):
+        has_compatible_items  = False
+        for item in self._items:
+            if item['is_compatible'] == 'True':
+                has_compatible_items = True
+        return has_compatible_items
+
+    def has_incompatible_packages(self):
+        has_incompatible_items  = False
+        for item in self._items:
+            if item['is_compatible'] == 'False':
+                has_incompatible_items = True
+        return has_incompatible_items
