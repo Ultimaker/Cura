@@ -139,6 +139,7 @@ UM.Dialog{
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").height
             text: catalog.i18nc("@button", "Next")
+            onClicked: accept()
         }
     }
 }

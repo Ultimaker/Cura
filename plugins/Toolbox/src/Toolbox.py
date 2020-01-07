@@ -23,7 +23,7 @@ from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
-from .SubscribedPackagesModel import SubscribedPackagesModel
+from .CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 
 if TYPE_CHECKING:
     from UM.TaskManagement.HttpRequestData import HttpRequestData

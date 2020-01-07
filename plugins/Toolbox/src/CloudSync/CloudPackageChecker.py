@@ -1,26 +1,25 @@
 import json
-import os
-from typing import Dict, Optional
+from typing import Optional
 
 from PyQt5.QtCore import QObject
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
-from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Message import Message
-from UM.PluginRegistry import PluginRegistry
+from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestScope import UltimakerCloudScope
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
-from plugins.Toolbox.src.SubscribedPackagesModel import SubscribedPackagesModel
+from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 from plugins.Toolbox.src.Toolbox import i18n_catalog
 
 
-class SubscriptionChecker(QObject, Extension):
+class CloudPackageChecker(QObject):
 
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
+        self.discrepancies = Signal()  # Emits SubscribedPackagesModel
         self._application = application  # type: CuraApplication
         self._scope = UltimakerCloudScope(application)
         self._model = SubscribedPackagesModel()
@@ -39,7 +38,7 @@ class SubscriptionChecker(QObject, Extension):
 
     def _fetchUserSubscribedPackages(self):
         if self._application.getCuraAPI().account.isLoggedIn:
-            self._getUserPackages("subscribed_packages")
+            self._getUserPackages()
 
     def _handleCompatibilityData(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
@@ -53,9 +52,9 @@ class SubscriptionChecker(QObject, Extension):
         self._model.update()
 
         if package_discrepancy:
-            self._handlePackageDiscrepancies(package_discrepancy)
+            self._handlePackageDiscrepancies()
 
-    def _handlePackageDiscrepancies(self, package_discrepancy):
+    def _handlePackageDiscrepancies(self):
         Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
         sync_message = Message(i18n_catalog.i18nc(
             "@info:generic",
@@ -72,14 +71,10 @@ class SubscriptionChecker(QObject, Extension):
 
     def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()
-        compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
-        plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        if plugin_path_prefix:
-            path = os.path.join(plugin_path_prefix, compatibility_dialog_path)
-            self.compatibility_dialog_view = self._application.createQmlComponent(path, {"subscribedPackagesModel": self._model})
+        self.discrepancies.emit(self._model)
 
-    def _getUserPackages(self, request_type: str) -> None:
-        Logger.log("d", "Requesting [%s] metadata from server.", request_type)
+    def _getUserPackages(self) -> None:
+        Logger.log("d", "Requesting subscribed packages metadata from server.")
         url = CloudApiModel.api_url_user_packages
 
         self._application.getHttpRequestManager().get(url,

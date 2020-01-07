@@ -2,7 +2,8 @@
 # Toolbox is released under the terms of the LGPLv3 or higher.
 
 from .src import Toolbox
-from .src.SubscriptionChecker import SubscriptionChecker
+from plugins.Toolbox.src.CloudSync.CloudPackageChecker import CloudPackageChecker
+from .src.CloudSync.SyncOrchestrator import SyncOrchestrator
 
 
 def getMetaData():
@@ -11,6 +12,5 @@ def getMetaData():
 
 def register(app):
     return {
-        "extension": Toolbox.Toolbox(app),
-        "subscription_checker": SubscriptionChecker(app)
+        "extension": [Toolbox.Toolbox(app), SyncOrchestrator(app)]
     }
