@@ -35,9 +35,9 @@ class SubscribedPackagesModel(ListModel):
                 continue
             package = {"name": item["display_name"], "sdk_versions": item["sdk_versions"]}
             if self._sdk_version not in item["sdk_versions"]:
-                package.update({"is_compatible": "False"})
+                package.update({"is_compatible": False})
             else:
-                package.update({"is_compatible": "True"})
+                package.update({"is_compatible": True})
             try:
                 package.update({"icon_url": item["icon_url"]})
             except KeyError:  # There is no 'icon_url" in the response payload for this package
@@ -50,13 +50,13 @@ class SubscribedPackagesModel(ListModel):
     def has_compatible_packages(self):
         has_compatible_items  = False
         for item in self._items:
-            if item['is_compatible'] == 'True':
+            if item['is_compatible'] == True:
                 has_compatible_items = True
         return has_compatible_items
 
     def has_incompatible_packages(self):
         has_incompatible_items  = False
         for item in self._items:
-            if item['is_compatible'] == 'False':
+            if item['is_compatible'] == False:
                 has_incompatible_items = True
         return has_incompatible_items

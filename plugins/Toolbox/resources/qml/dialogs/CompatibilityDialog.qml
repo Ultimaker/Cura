@@ -61,7 +61,7 @@ UM.Dialog{
                         {
                             width: parent.width
                             property int lineHeight: 60
-                            visible: model.is_compatible === "True" ? true : false
+                            visible: model.is_compatible
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the compatible packages here
                             Image
                             {
@@ -104,7 +104,7 @@ UM.Dialog{
                         {
                             width: parent.width
                             property int lineHeight: 60
-                            visible: model.is_compatible === "True" ? false : true
+                            visible: !model.is_compatible
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {
