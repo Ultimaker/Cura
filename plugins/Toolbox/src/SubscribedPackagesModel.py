@@ -45,7 +45,6 @@ class SubscribedPackagesModel(ListModel):
 
             self._items.append(package)
         self.setItems(self._items)
-        print(self._items)
 
     def has_compatible_packages(self):
         has_compatible_items  = False
