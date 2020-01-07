@@ -65,7 +65,7 @@ Item
                         height: UM.Theme.getSize("save_button_specs_icons").height
                         sourceSize.width: width
                         sourceSize.height: width
-                        color: control.hovered ? UM.Theme.getColor("text_scene_hover") : UM.Theme.getColor("text_scene")
+                        color: control.hovered ? UM.Theme.getColor("small_button_text_hover") : UM.Theme.getColor("small_button_text")
                         source: UM.Theme.getIcon("pencil")
                     }
                 }
@@ -83,10 +83,22 @@ Item
             text: PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
 
+            property string textBeforeEdit: ""
+
+            onActiveFocusChanged:
+            {
+                if (activeFocus)
+                {
+                    textBeforeEdit = text
+                }
+            }
+
             onEditingFinished:
             {
-                var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
-                PrintInformation.setJobName(new_name, true)
+                if (text != textBeforeEdit) {
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
+                    PrintInformation.setJobName(new_name, true)
+                }
                 printJobTextfield.focus = false
             }
 

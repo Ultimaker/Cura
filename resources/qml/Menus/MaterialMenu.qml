@@ -14,7 +14,11 @@ Menu
 
     property int extruderIndex: 0
     property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
-    property string activeMaterialId: Cura.MachineManager.allActiveMaterialIds[Cura.ExtruderManager.extruderIds[extruderIndex]]
+    property var activeExtruder: Cura.MachineManager.activeMachine.extruderList[extruderIndex]
+    property bool isActiveExtruderEnabled: activeExtruder === undefined ? false : activeExtruder.isEnabled
+
+    property string activeMaterialId: activeExtruder === undefined ? false : activeExtruder.material.id
+
     property bool updateModels: true
     Cura.FavoriteMaterialsModel
     {
@@ -50,12 +54,13 @@ Menu
         {
             text: model.brand + " " + model.name
             checkable: true
+            enabled: isActiveExtruderEnabled
             checked: model.root_material_id === menu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
-            exclusiveGroup: group
+            exclusiveGroup: favoriteGroup  // One favorite and one item from the others can be active at the same time.
         }
         onObjectAdded: menu.insertItem(index, object)
-        onObjectRemoved: menu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
+        onObjectRemoved: menu.removeItem(index)
     }
 
     MenuSeparator {}
@@ -72,12 +77,13 @@ Menu
             {
                 text: model.name
                 checkable: true
+                enabled: isActiveExtruderEnabled
                 checked: model.root_material_id === menu.currentRootMaterialId
                 exclusiveGroup: group
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             }
             onObjectAdded: genericMenu.insertItem(index, object)
-            onObjectRemoved: genericMenu.removeItem(object) // TODO: This ain't gonna work, removeItem() takes an index, not object
+            onObjectRemoved: genericMenu.removeItem(index)
         }
     }
 
@@ -110,6 +116,7 @@ Menu
                         {
                             text: model.name
                             checkable: true
+                            enabled: isActiveExtruderEnabled
                             checked: model.id === menu.activeMaterialId
                             exclusiveGroup: group
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
@@ -126,8 +133,14 @@ Menu
         onObjectRemoved: menu.removeItem(object)
     }
 
-    ExclusiveGroup {
+    ExclusiveGroup
+    {
         id: group
+    }
+
+    ExclusiveGroup
+    {
+        id: favoriteGroup
     }
 
     MenuSeparator {}

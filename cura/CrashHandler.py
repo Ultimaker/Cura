@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import platform
@@ -7,14 +7,20 @@ import faulthandler
 import tempfile
 import os
 import os.path
-import time
+import uuid
 import json
-import ssl
-import urllib.request
-import urllib.error
-import shutil
+import locale
+from typing import cast
 
-from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, Qt, QUrl
+try:
+    from sentry_sdk.hub import Hub
+    from sentry_sdk.utils import event_from_exception
+    from sentry_sdk import configure_scope
+    with_sentry_sdk = True
+except ImportError:
+    with_sentry_sdk = False
+
+from PyQt5.QtCore import QT_VERSION_STR, PYQT_VERSION_STR, QUrl
 from PyQt5.QtWidgets import QDialog, QDialogButtonBox, QVBoxLayout, QLabel, QTextEdit, QGroupBox, QCheckBox, QPushButton
 from PyQt5.QtGui import QDesktopServices
 
@@ -22,8 +28,8 @@ from UM.Application import Application
 from UM.Logger import Logger
 from UM.View.GL.OpenGL import OpenGL
 from UM.i18n import i18nCatalog
-from UM.Platform import Platform
 from UM.Resources import Resources
+from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
 
@@ -44,9 +50,8 @@ skip_exception_types = [
     GeneratorExit
 ]
 
-class CrashHandler:
-    crash_url = "https://stats.ultimaker.com/api/cura"
 
+class CrashHandler:
     def __init__(self, exception_type, value, tb, has_started = True):
         self.exception_type = exception_type
         self.value = value
@@ -54,20 +59,20 @@ class CrashHandler:
         self.has_started = has_started
         self.dialog = None # Don't create a QDialog before there is a QApplication
 
-        # While we create the GUI, the information will be stored for sending afterwards
-        self.data = dict()
-        self.data["time_stamp"] = time.time()
-
         Logger.log("c", "An uncaught error has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):
             for part in line.rstrip("\n").split("\n"):
                 Logger.log("c", part)
-
+        self.data = {}
         # If Cura has fully started, we only show fatal errors.
         # If Cura has not fully started yet, we always show the early crash dialog. Otherwise, Cura will just crash
         # without any information.
         if has_started and exception_type in skip_exception_types:
             return
+
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("during_startup", not has_started)
 
         if not has_started:
             self._send_report_checkbox = None
@@ -177,23 +182,43 @@ class CrashHandler:
         try:
             from UM.Application import Application
             self.cura_version = Application.getInstance().getVersion()
+            self.cura_locale = Application.getInstance().getPreferences().getValue("general/language")
         except:
             self.cura_version = catalog.i18nc("@label unknown version of Cura", "Unknown")
-
-        crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
-        crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
-        crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
-        crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
-        crash_info += "<b>" + catalog.i18nc("@label OpenGL version", "OpenGL") + ":</b> " + str(self._getOpenGLInfo()) + "<br/>"
-        label.setText(crash_info)
-
-        layout.addWidget(label)
-        group.setLayout(layout)
+            self.cura_locale = "??_??"
 
         self.data["cura_version"] = self.cura_version
         self.data["os"] = {"type": platform.system(), "version": platform.version()}
         self.data["qt_version"] = QT_VERSION_STR
         self.data["pyqt_version"] = PYQT_VERSION_STR
+        self.data["locale_os"] = locale.getlocale(locale.LC_MESSAGES)[0] if hasattr(locale, "LC_MESSAGES") else \
+        locale.getdefaultlocale()[0]
+        self.data["locale_cura"] = self.cura_locale
+
+        crash_info = "<b>" + catalog.i18nc("@label Cura version number", "Cura version") + ":</b> " + str(self.cura_version) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "Cura language") + ":</b> " + str(self.cura_locale) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "OS language") + ":</b> " + str(self.data["locale_os"]) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label Type of platform", "Platform") + ":</b> " + str(platform.platform()) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "Qt version") + ":</b> " + str(QT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label", "PyQt version") + ":</b> " + str(PYQT_VERSION_STR) + "<br/>"
+        crash_info += "<b>" + catalog.i18nc("@label OpenGL version", "OpenGL") + ":</b> " + str(self._getOpenGLInfo()) + "<br/>"
+
+        label.setText(crash_info)
+
+        layout.addWidget(label)
+        group.setLayout(layout)
+
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("qt_version", QT_VERSION_STR)
+                scope.set_tag("pyqt_version", PYQT_VERSION_STR)
+                scope.set_tag("os", platform.system())
+                scope.set_tag("os_version", platform.version())
+                scope.set_tag("locale_os", self.data["locale_os"])
+                scope.set_tag("locale_cura", self.cura_locale)
+                scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
+    
+                scope.set_user({"id": str(uuid.getnode())})
 
         return group
 
@@ -210,6 +235,31 @@ class CrashHandler:
         info += "</ul>"
 
         self.data["opengl"] = {"version": opengl_instance.getOpenGLVersion(), "vendor": opengl_instance.getGPUVendorName(), "type": opengl_instance.getGPUType()}
+
+        active_machine_definition_id = "unknown"
+        active_machine_manufacturer = "unknown"
+
+        try:
+            from cura.CuraApplication import CuraApplication
+            application = cast(CuraApplication, Application.getInstance())
+            machine_manager = application.getMachineManager()
+            global_stack = machine_manager.activeMachine
+            if global_stack is None:
+                active_machine_definition_id = "empty"
+                active_machine_manufacturer = "empty"
+            else:
+                active_machine_definition_id = global_stack.definition.getId()
+                active_machine_manufacturer = global_stack.definition.getMetaDataEntry("manufacturer", "unknown")
+        except:
+            pass
+
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("opengl_version", opengl_instance.getOpenGLVersion())
+                scope.set_tag("gpu_vendor", opengl_instance.getGPUVendorName())
+                scope.set_tag("gpu_type", opengl_instance.getGPUType())
+                scope.set_tag("active_machine", active_machine_definition_id)
+                scope.set_tag("active_machine_manufacturer", active_machine_manufacturer)
 
         return info
 
@@ -292,6 +342,11 @@ class CrashHandler:
                                       "module_name": module_name, "version": module_version, "is_plugin": isPlugin}
         self.data["exception"] = exception_dict
 
+        if with_sentry_sdk:
+            with configure_scope() as scope:
+                scope.set_tag("is_plugin", isPlugin)
+                scope.set_tag("module", module_name)
+
         return group
 
     def _logInfoWidget(self):
@@ -319,7 +374,8 @@ class CrashHandler:
 
     def _userDescriptionWidget(self):
         group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description"))
+        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
+                                     " (Note: Developers may not speak your language, please use English if possible)"))
         layout = QVBoxLayout()
 
         # When sending the report, the user comments will be collected
@@ -348,33 +404,24 @@ class CrashHandler:
         # Before sending data, the user comments are stored
         self.data["user_info"] = self.user_description_text_area.toPlainText()
 
-        # Convert data to bytes
-        binary_data = json.dumps(self.data).encode("utf-8")
-
-        # Submit data
-        kwoptions = {"data": binary_data, "timeout": 5}
-
-        if Platform.isOSX():
-            kwoptions["context"] = ssl._create_unverified_context()
-
-        Logger.log("i", "Sending crash report info to [%s]...", self.crash_url)
-        if not self.has_started:
-            print("Sending crash report info to [%s]...\n" % self.crash_url)
-
-        try:
-            f = urllib.request.urlopen(self.crash_url, **kwoptions)
-            Logger.log("i", "Sent crash report info.")
+        if with_sentry_sdk:
+            try:
+                hub = Hub.current
+                event, hint = event_from_exception((self.exception_type, self.value, self.traceback))
+                hub.capture_event(event, hint=hint)
+                hub.flush()
+            except Exception as e:  # We don't want any exception to cause problems
+                Logger.logException("e", "An exception occurred while trying to send crash report")
+                if not self.has_started:
+                    print("An exception occurred while trying to send crash report: %s" % e)
+        else:
+            msg = "SentrySDK is not available and the report could not be sent."
+            Logger.logException("e", msg)
             if not self.has_started:
-                print("Sent crash report info.\n")
-            f.close()
-        except urllib.error.HTTPError as e:
-            Logger.logException("e", "An HTTP error occurred while trying to send crash report")
-            if not self.has_started:
-                print("An HTTP error occurred while trying to send crash report: %s" % e)
-        except Exception as e:  # We don't want any exception to cause problems
-            Logger.logException("e", "An exception occurred while trying to send crash report")
-            if not self.has_started:
-                print("An exception occurred while trying to send crash report: %s" % e)
+                print(msg)
+                print("Exception type: {}".format(self.exception_type))
+                print("Value: {}".format(self.value))
+                print("Traceback: {}".format(self.traceback))
 
         os._exit(1)
 

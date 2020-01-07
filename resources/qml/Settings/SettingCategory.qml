@@ -19,7 +19,7 @@ Button
     background: Rectangle
     {
         id: backgroundRectangle
-        implicitHeight: UM.Theme.getSize("section").height
+        height: UM.Theme.getSize("section").height
         color:
         {
             if (base.color)
@@ -30,11 +30,11 @@ Button
             {
                 return UM.Theme.getColor("setting_category_disabled")
             }
-            else if (base.hovered && base.checkable && base.checked)
+            else if (base.hovered && base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_hover")
             }
-            else if (base.pressed || (base.checkable && base.checked))
+            else if (base.pressed || base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active")
             }
@@ -55,6 +55,7 @@ Button
     signal setActiveFocusToNextSetting(bool forward)
 
     property var focusItem: base
+    property bool expanded: definition.expanded
 
     contentItem: Item
     {
@@ -79,10 +80,10 @@ Button
                 if (!base.enabled)
                 {
                     return UM.Theme.getColor("setting_category_disabled_text")
-                } else if ((base.hovered || base.activeFocus) && base.checkable && base.checked)
+                } else if ((base.hovered || base.activeFocus) && base.expanded)
                 {
                     return UM.Theme.getColor("setting_category_active_hover_text")
-                } else if (base.pressed || (base.checkable && base.checked))
+                } else if (base.pressed || base.expanded)
                 {
                     return UM.Theme.getColor("setting_category_active_text")
                 } else if (base.hovered || base.activeFocus)
@@ -107,7 +108,7 @@ Button
             height: UM.Theme.getSize("standard_arrow").height
             sourceSize.height: width
             color: UM.Theme.getColor("setting_control_button")
-            source: base.checked ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
+            source: definition.expanded ? UM.Theme.getIcon("arrow_bottom") : UM.Theme.getIcon("arrow_left")
         }
     }
 
@@ -123,11 +124,11 @@ Button
             {
                 return UM.Theme.getColor("setting_category_disabled_text")
             }
-            else if((base.hovered || base.activeFocus) && base.checkable && base.checked)
+            else if((base.hovered || base.activeFocus) && base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_hover_text")
             }
-            else if(base.pressed || (base.checkable && base.checked))
+            else if(base.pressed || base.expanded)
             {
                 return UM.Theme.getColor("setting_category_active_text")
             }
@@ -144,14 +145,11 @@ Button
         sourceSize.height: width + 15 * screenScaleFactor
     }
 
-    checkable: true
-    checked: definition.expanded
-
     onClicked:
     {
         if (definition.expanded)
         {
-            settingDefinitionsModel.collapse(definition.key)
+            settingDefinitionsModel.collapseRecursive(definition.key)
         }
         else
         {
@@ -226,7 +224,6 @@ Button
         onClicked:
         {
             settingDefinitionsModel.expandRecursive(definition.key)
-            base.checked = true
             base.showAllHiddenInheritedSettings(definition.key)
         }
 

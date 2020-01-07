@@ -82,7 +82,7 @@ def test_validateQualityProfiles(file_name):
 
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
-        print("Go an Exception while reading he file [%s]: %s" % (file_name, e))
+        print("Got an Exception while reading he file [%s]: %s" % (file_name, e))
         assert False
 
 
@@ -110,5 +110,5 @@ def test_validateVariantProfiles(file_name):
                     assert False
     except Exception as e:
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
-        print("Go an Exception while reading he file [%s]: %s" % (file_name, e))
+        print("Got an Exception while reading he file [%s]: %s" % (file_name, e))
         assert False

@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "name": "Ultimaker 2 Extended with Olsson",
+    "inherits": "ultimaker2_extended",
+    "metadata": {
+        "has_variants": true
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "Ultimaker 2 Extended with Olsson" }
+    }
+}

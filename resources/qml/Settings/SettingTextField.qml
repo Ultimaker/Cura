@@ -33,7 +33,7 @@ SettingItem
         anchors.fill: parent
 
         radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: Math.round(UM.Theme.getSize("default_lining").width)
+        border.width: UM.Theme.getSize("default_lining").width
         border.color:
         {
             if(!enabled)
@@ -42,6 +42,7 @@ SettingItem
             }
             switch(propertyProvider.properties.validationState)
             {
+                case "ValidatorState.Invalid":
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":
@@ -65,6 +66,7 @@ SettingItem
             }
             switch(propertyProvider.properties.validationState)
             {
+                case "ValidatorState.Invalid":
                 case "ValidatorState.Exception":
                 case "ValidatorState.MinimumError":
                 case "ValidatorState.MaximumError":

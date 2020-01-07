@@ -1,12 +1,11 @@
 {
     "version": 2,
-    "name": "Discov3ry Complete (Ultimaker 2+)",
+    "name": "Discov3ry Complete",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Andrew Finkle, CTO",
         "manufacturer": "Structur3d.io",
         "visible": true,
-        "weight": 1,
         "file_formats": "text/x-gcode",
         "platform": "ultimaker2_platform.obj",
         "platform_texture": "Ultimaker2Plusbackplate.png",
@@ -15,9 +14,7 @@
         "has_variants": true,
         "variants_name": "Print core",
         "preferred_variant_name": "0.84mm (Green)",
-        "has_machine_materials": true,
         "preferred_material": "structur3d_dap100silicone",
-        "has_variant_materials": false,
         "has_machine_quality": false,
         "preferred_quality_type": "extra_fast",
         "first_start_actions": [],
@@ -58,9 +55,6 @@
         "line_width": {
             "value": "round(machine_nozzle_size * 0.875, 2)"
         },
-        "speed_layer_0": {
-            "default_value": 10
-        },
         "speed_support": {
             "value": "speed_wall_0"
         },
@@ -77,13 +71,10 @@
             "default_value": true
         },
         "gantry_height": {
-            "default_value": 52
+            "value": "52"
         },
         "machine_nozzle_head_distance": {
             "default_value": 5
-        },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
         },
         "machine_heat_zone_length": {
             "default_value": 20

@@ -47,7 +47,7 @@ Cura.ExpandablePopup
         Label
         {
             id: title
-            text: catalog.i18nc("@label", "View types")
+            text: catalog.i18nc("@label", "View type")
             verticalAlignment: Text.AlignVCenter
             height: parent.height
             elide: Text.ElideRight

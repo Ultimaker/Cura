@@ -2,12 +2,14 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
-import webbrowser
 from datetime import datetime, timedelta
 from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
+
 import requests.exceptions
 
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
@@ -33,6 +35,8 @@ class AuthorizationService:
 
     # Emit signal when authentication failed.
     onAuthenticationError = Signal()
+
+    accessTokenChanged = Signal()
 
     def __init__(self, settings: "OAuth2Settings", preferences: Optional["Preferences"] = None) -> None:
         self._settings = settings
@@ -68,6 +72,7 @@ class AuthorizationService:
                 self._user_profile = self._parseJWT()
             except requests.exceptions.ConnectionError:
                 # Unable to get connection, can't login.
+                Logger.logException("w", "Unable to validate user data with the remote server.")
                 return None
 
         if not self._user_profile and self._auth_data:
@@ -83,6 +88,7 @@ class AuthorizationService:
     def _parseJWT(self) -> Optional["UserProfile"]:
         if not self._auth_data or self._auth_data.access_token is None:
             # If no auth data exists, we should always log in again.
+            Logger.log("d", "There was no auth data or access token")
             return None
         user_data = self._auth_helpers.parseJWT(self._auth_data.access_token)
         if user_data:
@@ -90,12 +96,16 @@ class AuthorizationService:
             return user_data
         # The JWT was expired or invalid and we should request a new one.
         if self._auth_data.refresh_token is None:
+            Logger.log("w", "There was no refresh token in the auth data.")
             return None
         self._auth_data = self._auth_helpers.getAccessTokenUsingRefreshToken(self._auth_data.refresh_token)
         if not self._auth_data or self._auth_data.access_token is None:
+            Logger.log("w", "Unable to use the refresh token to get a new access token.")
             # The token could not be refreshed using the refresh token. We should login again.
             return None
-
+        # Ensure it gets stored as otherwise we only have it in memory. The stored refresh token has been deleted
+        # from the server already.
+        self._storeAuthData(self._auth_data)
         return self._auth_helpers.parseJWT(self._auth_data.access_token)
 
     ##  Get the access token as provided by the repsonse data.
@@ -124,7 +134,8 @@ class AuthorizationService:
             self._storeAuthData(response)
             self.onAuthStateChanged.emit(logged_in = True)
         else:
-            self.onAuthStateChanged(logged_in = False)
+            Logger.log("w", "Failed to get a new access token from the server.")
+            self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Delete the authentication data that we have stored locally (eg; logout)
     def deleteAuthData(self) -> None:
@@ -154,7 +165,7 @@ class AuthorizationService:
         })
 
         # Open the authorization page in a new browser window.
-        webbrowser.open_new("{}?{}".format(self._auth_url, query_string))
+        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
         # Start a local web server to receive the callback URL on.
         self._server.start(verification_code)
@@ -186,14 +197,13 @@ class AuthorizationService:
                         self._unable_to_get_data_message.hide()
 
                     self._unable_to_get_data_message = Message(i18n_catalog.i18nc("@info", "Unable to reach the Ultimaker account server."), title = i18n_catalog.i18nc("@info:title", "Warning"))
-                    self._unable_to_get_data_message.addAction("retry", i18n_catalog.i18nc("@action:button", "Retry"), "[no_icon]", "[no_description]")
-                    self._unable_to_get_data_message.actionTriggered.connect(self._onMessageActionTriggered)
                     self._unable_to_get_data_message.show()
         except ValueError:
             Logger.logException("w", "Could not load auth data from preferences")
 
     ##  Store authentication data in preferences.
     def _storeAuthData(self, auth_data: Optional[AuthenticationResponse] = None) -> None:
+        Logger.log("d", "Attempting to store the auth data")
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
@@ -206,6 +216,5 @@ class AuthorizationService:
             self._user_profile = None
             self._preferences.resetPreference(self._settings.AUTH_DATA_PREFERENCE_KEY)
 
-    def _onMessageActionTriggered(self, _, action):
-        if action == "retry":
-            self.loadAuthDataFromPreferences()
+        self.accessTokenChanged.emit()
+

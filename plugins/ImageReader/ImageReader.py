@@ -3,7 +3,9 @@
 
 import numpy
 
-from PyQt5.QtGui import QImage, qRed, qGreen, qBlue
+import math
+
+from PyQt5.QtGui import QImage, qRed, qGreen, qBlue, qAlpha
 from PyQt5.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
@@ -46,9 +48,9 @@ class ImageReader(MeshReader):
 
     def _read(self, file_name):
         size = max(self._ui.getWidth(), self._ui.getDepth())
-        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.image_color_invert)
+        return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_transparency_model, self._ui.transmittance_1mm)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, image_color_invert):
+    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -99,12 +101,14 @@ class ImageReader(MeshReader):
         for x in range(0, width):
             for y in range(0, height):
                 qrgb = img.pixel(x, y)
-                avg = float(qRed(qrgb) + qGreen(qrgb) + qBlue(qrgb)) / (3 * 255)
-                height_data[y, x] = avg
+                if use_transparency_model:
+                    height_data[y, x] = (0.299 * math.pow(qRed(qrgb) / 255.0, 2.2) + 0.587 * math.pow(qGreen(qrgb) / 255.0, 2.2) + 0.114 * math.pow(qBlue(qrgb) / 255.0, 2.2))
+                else:
+                    height_data[y, x] = (0.212655 * qRed(qrgb) + 0.715158 * qGreen(qrgb) + 0.072187 * qBlue(qrgb)) / 255 # fast computation ignoring gamma and degamma
 
         Job.yieldThread()
 
-        if image_color_invert:
+        if lighter_is_higher == use_transparency_model:
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):
@@ -124,8 +128,20 @@ class ImageReader(MeshReader):
 
             Job.yieldThread()
 
-        height_data *= scale_vector.y
-        height_data += base_height
+        if use_transparency_model:
+            divisor = 1.0 / math.log(transmittance_1mm / 100.0) # log-base doesn't matter here. Precompute this value for faster computation of each pixel.
+            min_luminance = (transmittance_1mm / 100.0) ** (peak_height - base_height)
+            for (y, x) in numpy.ndindex(height_data.shape):
+                mapped_luminance = min_luminance + (1.0 - min_luminance) * height_data[y, x]
+                height_data[y, x] = base_height + divisor * math.log(mapped_luminance) # use same base as a couple lines above this
+        else:
+            height_data *= scale_vector.y
+            height_data += base_height
+
+        if img.hasAlphaChannel():
+            for x in range(0, width):
+                for y in range(0, height):
+                    height_data[y, x] *= qAlpha(img.pixel(x, y)) / 255.0
 
         heightmap_face_count = 2 * height_minus_one * width_minus_one
         total_face_count = heightmap_face_count + (width_minus_one * 2) * (height_minus_one * 2) + 2

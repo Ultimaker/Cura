@@ -58,9 +58,6 @@
         "machine_nozzle_head_distance": {
             "default_value": 5
         },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
-        },
         "machine_heat_zone_length": { 
             "default_value": 16
         },
@@ -68,7 +65,7 @@
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_head_with_fans_polygon":
         {

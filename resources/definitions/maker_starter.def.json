@@ -33,7 +33,7 @@
             "default_value": false
         },
         "gantry_height": {
-            "default_value": 55
+            "value": "55"
         },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
@@ -47,62 +47,17 @@
         "machine_nozzle_head_distance": {
             "default_value": 3
         },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
-        },
         "layer_height_0": {
             "default_value": 0.2
         },
-        "wall_line_count": {
-            "default_value": 2
-        },
-        "top_layers": {
-            "default_value": 4
-        },
-        "bottom_layers": {
-            "default_value": 4
-        },
         "speed_print": {
             "default_value": 50
-        },
-        "speed_wall": {
-            "default_value": 30
-        },
-        "speed_wall_0": {
-            "default_value": 30
-        },
-        "speed_wall_x": {
-            "default_value": 30
-        },
-        "speed_topbottom": {
-            "default_value": 50
-        },
-        "speed_support": {
-            "default_value": 50
-        },
-        "speed_travel": {
-            "default_value": 120
-        },
-        "speed_layer_0": {
-            "default_value": 20
-        },
-        "skirt_brim_speed": {
-            "default_value": 15
         },
         "speed_slowdown_layers": {
             "default_value": 4
         },
         "infill_sparse_density": {
             "default_value": 20
-        },
-        "cool_fan_speed_min": {
-            "default_value": 50
-        },
-        "cool_fan_speed_max": {
-            "default_value": 100
-        },
-        "cool_fan_full_layer": {
-            "default_value": 4
         },
         "cool_min_layer_time": {
             "default_value": 5
@@ -122,41 +77,17 @@
         "support_z_distance": {
             "default_value": 0.2
         },
-        "support_top_distance": {
-            "default_value": 0.2
-        },
-        "support_bottom_distance": {
-            "default_value": 0.24
-        },
         "support_pattern": {
             "default_value": "ZigZag"
         },
         "support_infill_rate": {
-            "default_value": 15
+            "value": "15 if support_enable else 0 if support_tree_enable else 15"
         },
         "adhesion_type": {
             "default_value": "raft"
         },
         "skirt_brim_minimal_length": {
             "default_value": 100
-        },
-        "raft_base_line_spacing": {
-            "default_value": 2
-        },
-        "raft_base_thickness": {
-            "default_value": 0.3
-        },
-        "raft_base_line_width": {
-            "default_value": 2
-        },
-        "raft_base_speed": {
-            "default_value": 15
-        },
-        "raft_interface_thickness": {
-            "default_value": 0.24
-        },
-        "raft_interface_line_width": {
-            "default_value": 0.6
         },
         "raft_airgap": {
             "default_value": 0.2
