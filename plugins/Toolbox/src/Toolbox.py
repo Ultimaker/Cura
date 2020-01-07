@@ -597,10 +597,6 @@ class Toolbox(QObject, Extension):
 
     # Handlers for Network Events
     # --------------------------------------------------------------------------
-    def _onNetworkAccessibleChanged(self, network_accessibility: QNetworkAccessManager.NetworkAccessibility) -> None:
-        if network_accessibility == QNetworkAccessManager.NotAccessible:
-            self.resetDownload()
-
     def _onDataRequestError(self, request_type: str, reply: "QNetworkReply", error: "QNetworkReply.NetworkError") -> None:
         Logger.log("e", "Request [%s] failed due to error [%s]: %s", request_type, error, reply.errorString())
         self.setViewPage("errored")
