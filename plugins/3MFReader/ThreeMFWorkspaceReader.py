@@ -1005,8 +1005,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData():
-                global_stack.setMetaDataEntry(key, value)
+            global_stack.setMetaDataEntry(key, value)
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
