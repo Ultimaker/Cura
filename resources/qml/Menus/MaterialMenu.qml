@@ -13,11 +13,19 @@ Menu
     title: catalog.i18nc("@label:category menu label", "Material")
 
     property int extruderIndex: 0
-    property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
-    property var activeExtruder: Cura.MachineManager.activeMachine.extruderList[extruderIndex]
-    property bool isActiveExtruderEnabled: activeExtruder === undefined ? false : activeExtruder.isEnabled
+    property string currentRootMaterialId:
+    {
+        var value = Cura.MachineManager.currentRootMaterialId[extruderIndex]
+        return (value === undefined) ? "" : value
+    }
+    property var activeExtruder:
+    {
+        var activeMachine = Cura.MachineManager.activeMachine
+        return (activeMachine === null) ? null : activeMachine.extruderList[extruderIndex]
+    }
+    property bool isActiveExtruderEnabled: activeExtruder === null ? false : activeExtruder.isEnabled
 
-    property string activeMaterialId: activeExtruder === undefined ? false : activeExtruder.material.id
+    property string activeMaterialId: activeExtruder === null ? false : activeExtruder.material.id
 
     property bool updateModels: true
     Cura.FavoriteMaterialsModel

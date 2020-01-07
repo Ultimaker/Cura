@@ -28,12 +28,22 @@ Menu
             text: model.hotend_name
             checkable: true
             checked: {
+                var activeMachine = Cura.MachineManager.activeMachine
+                if (activeMachine === null)
+                {
+                    return false
+                }
                 var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
                 return (extruder === undefined) ? false : (extruder.variant.name == model.hotend_name)
             }
             exclusiveGroup: group
             enabled:
             {
+                var activeMachine = Cura.MachineManager.activeMachine
+                if (activeMachine === null)
+                {
+                    return false
+                }
                 var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
                 return (extruder === undefined) ? false : extruder.isEnabled
             }
