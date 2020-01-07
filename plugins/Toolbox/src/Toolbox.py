@@ -794,11 +794,11 @@ class Toolbox(QObject, Extension):
 
     @pyqtProperty(bool, constant=True)
     def has_compatible_packages(self) -> str:
-        return self._models["subscribed_packages"].has_compatible_packages()
+        return self._models["subscribed_packages"].hasCompatiblePackages()
 
     @pyqtProperty(bool, constant=True)
     def has_incompatible_packages(self) -> str:
-        return self._models["subscribed_packages"].has_incompatible_packages()
+        return self._models["subscribed_packages"].hasIncompatiblePackages()
 
     @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:

@@ -46,14 +46,14 @@ class SubscribedPackagesModel(ListModel):
             self._items.append(package)
         self.setItems(self._items)
 
-    def has_compatible_packages(self):
+    def hasCompatiblePackages(self):
         has_compatible_items  = False
         for item in self._items:
             if item['is_compatible'] == True:
                 has_compatible_items = True
         return has_compatible_items
 
-    def has_incompatible_packages(self):
+    def hasIncompatiblePackages(self):
         has_incompatible_items  = False
         for item in self._items:
             if item['is_compatible'] == False:
