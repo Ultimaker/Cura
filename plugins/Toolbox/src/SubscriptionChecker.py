@@ -1,6 +1,5 @@
 import json
 import os
-import platform
 from typing import Dict, Optional
 
 from PyQt5.QtCore import QObject
@@ -10,6 +9,7 @@ from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
+from UM.TaskManagement.HttpRequestScope import UltimakerCloudScope
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 from plugins.Toolbox.src.SubscribedPackagesModel import SubscribedPackagesModel
@@ -22,10 +22,10 @@ class SubscriptionChecker(QObject, Extension):
         super().__init__()
 
         self._application = application  # type: CuraApplication
+        self._scope = UltimakerCloudScope(application)
         self._model = SubscribedPackagesModel()
 
         self._application.initializationFinished.connect(self._onAppInitialized)
-        self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -76,17 +76,16 @@ class SubscriptionChecker(QObject, Extension):
         plugin_path_prefix = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path_prefix:
             path = os.path.join(plugin_path_prefix, compatibility_dialog_path)
-            self.compatibility_dialog_view = self._application.getInstance().createQmlComponent(path, {"toolbox": self})
+            self.compatibility_dialog_view = self._application.createQmlComponent(path, {"subscribedPackagesModel": self._model})
 
     def _getUserPackages(self, request_type: str) -> None:
         Logger.log("d", "Requesting [%s] metadata from server.", request_type)
-        self._updateRequestHeader()
         url = CloudApiModel.api_url_user_packages
 
         self._application.getHttpRequestManager().get(url,
-                                                      headers_dict = self._request_headers,
                                                       callback = self._onUserPackagesRequestFinished,
-                                                      error_callback = self._onUserPackagesRequestFinished)
+                                                      error_callback = self._onUserPackagesRequestFinished,
+                                                      scope = self._scope)
 
     def _onUserPackagesRequestFinished(self,
                                       reply: "QNetworkReply",
@@ -109,16 +108,3 @@ class SubscriptionChecker(QObject, Extension):
             self._handleCompatibilityData(json_data["data"])
         except json.decoder.JSONDecodeError:
             Logger.log("w", "Received invalid JSON for user packages")
-
-    def _updateRequestHeader(self):
-        # todo DRY, copied from Toolbox. To RequestManager?
-        self._request_headers = {
-            "User-Agent": "%s/%s (%s %s)" % (self._application.getApplicationName(),
-                                             self._application.getVersion(),
-                                             platform.system(),
-                                             platform.machine())
-        }
-        access_token = self._application.getCuraAPI().account.accessToken
-        if access_token:
-            self._request_headers["Authorization"] = "Bearer {}".format(access_token)
-

@@ -54,7 +54,7 @@ UM.Dialog{
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item
@@ -97,7 +97,7 @@ UM.Dialog{
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item

@@ -17,7 +17,6 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
-from cura import UltimakerCloudAuthentication
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
@@ -45,7 +44,7 @@ class Toolbox(QObject, Extension):
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
-        self._request_headers = dict()  # type: Dict[str, str]
+        self._request_headers = dict()  # type: Dict[str, str] # todo DRY headers, use scope
         self._updateRequestHeader()
 
         self._request_urls = {}  # type: Dict[str, str]
