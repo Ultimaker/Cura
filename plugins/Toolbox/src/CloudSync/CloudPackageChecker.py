@@ -7,7 +7,7 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-from UM.TaskManagement.HttpRequestScope import UltimakerCloudScope
+from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
