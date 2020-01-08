@@ -1,5 +1,5 @@
 {
-    "id": "GEEETECH_A20M_1st",
+    "id": "GEEETECH_A20M_1",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
