@@ -33,9 +33,6 @@
 		{		
 			"default_value": "M107; \nM104 S0; turn off hotend heater \nM140 S0; turn off bed heater \nG91; Switch to use Relative Coordinates \nG1 E-2 F300; retract the filament a bit before lifting the nozzle to release some of the pressure \nG1 Z5 E-5 F4800; move nozzle up a bit and retract filament even more \nG28 X0; return to home positions so the nozzle is out of the way \nM84; turn off stepper motors \nG90; switch to absolute positioning \nM82; absolute extrusion mode"
 		},
-		"gantry_height": {
-            "default_value": 120
-        },
         "machine_width": { "default_value": 110 },
         "machine_depth": { "default_value": 110 },
         "machine_height": { "default_value": 120 },
