@@ -1,5 +1,4 @@
 {
-    "id": "GEEETECH_A20T_3",
     "version": 2,
     "name": "Extruder 3",
     "inherits": "fdmextruder",
