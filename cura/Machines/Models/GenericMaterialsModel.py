@@ -18,11 +18,11 @@ class GenericMaterialsModel(BaseMaterialsModel):
 
         for root_material_id, container_node in self._available_materials.items():
             # Do not include the materials from a to-be-removed package
-            if bool(container_node.container.getMetaDataEntry("removed", False)):
+            if bool(container_node.getMetaDataEntry("removed", False)):
                 continue
 
             # Only add results for generic materials
-            if container_node.container.getMetaDataEntry("brand", "unknown").lower() != "generic":
+            if container_node.getMetaDataEntry("brand", "unknown").lower() != "generic":
                 continue
 
             item = self._createMaterialItem(root_material_id, container_node)

@@ -1,5 +1,4 @@
 {
-    "id": "flsun_qq_extruder",
     "version": 2,
     "name": "Extruder",
     "inherits": "fdmextruder",

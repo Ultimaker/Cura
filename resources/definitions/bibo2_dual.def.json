@@ -1,5 +1,4 @@
 {
-    "id": "BIBO2 dual",
     "version": 2,
     "name": "BIBO2 dual",
     "inherits": "fdmprinter",

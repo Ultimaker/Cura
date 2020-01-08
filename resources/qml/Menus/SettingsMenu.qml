@@ -22,13 +22,13 @@ Menu
         Menu
         {
             title: modelData.name
-            property var extruder: Cura.MachineManager.getExtruder(model.index)
-            NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.hasVariants; extruderIndex: index }
-            MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.hasMaterials; extruderIndex: index }
+            property var extruder: (base.activeMachine === null) ? null : activeMachine.extruderList[model.index]
+            NozzleMenu { title: Cura.MachineManager.activeDefinitionVariantsName; visible: Cura.MachineManager.activeMachine.hasVariants; extruderIndex: index }
+            MaterialMenu { title: catalog.i18nc("@title:menu", "&Material"); visible: Cura.MachineManager.activeMachine.hasMaterials; extruderIndex: index }
 
             MenuSeparator
             {
-                visible: Cura.MachineManager.hasVariants || Cura.MachineManager.hasMaterials
+                visible: Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasMaterials
             }
 
             MenuItem

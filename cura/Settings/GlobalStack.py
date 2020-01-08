@@ -20,6 +20,7 @@ from UM.Platform import Platform
 from UM.Util import parseBool
 
 import cura.CuraApplication
+from cura.PrinterOutput.PrinterOutputDevice import ConnectionType
 
 from . import Exceptions
 from .CuraContainerStack import CuraContainerStack
@@ -107,6 +108,19 @@ class GlobalStack(CuraContainerStack):
                     # We got invalid data, probably a None.
                     pass
         return result
+
+    # Returns a boolean indicating if this machine has a remote connection. A machine is considered as remotely
+    # connected if its connection types contain one of the following values:
+    #   - ConnectionType.NetworkConnection
+    #   - ConnectionType.CloudConnection
+    @pyqtProperty(bool, notify = configuredConnectionTypesChanged)
+    def hasRemoteConnection(self) -> bool:
+        has_remote_connection = False
+
+        for connection_type in self.configuredConnectionTypes:
+            has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
+                                                         ConnectionType.CloudConnection.value]
+        return has_remote_connection
 
     ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:
@@ -273,15 +287,15 @@ class GlobalStack(CuraContainerStack):
     def getHeadAndFansCoordinates(self):
         return self.getProperty("machine_head_with_fans_polygon", "value")
 
-    @pyqtProperty(int, constant=True)
-    def hasMaterials(self):
+    @pyqtProperty(bool, constant = True)
+    def hasMaterials(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_materials", False))
 
-    @pyqtProperty(int, constant=True)
-    def hasVariants(self):
+    @pyqtProperty(bool, constant = True)
+    def hasVariants(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variants", False))
 
-    @pyqtProperty(int, constant=True)
+    @pyqtProperty(bool, constant = True)
     def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 

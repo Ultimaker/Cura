@@ -1,9 +1,10 @@
 #Copyright (c) 2019 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
 import collections
+from PyQt5.QtCore import Qt, QTimer
 from typing import TYPE_CHECKING, Optional, Dict
+from cura.Machines.Models.IntentTranslations import intent_translations
 
 from cura.Machines.Models.IntentModel import IntentModel
 from cura.Settings.IntentManager import IntentManager
@@ -29,21 +30,29 @@ class IntentCategoryModel(ListModel):
 
     modelUpdated = pyqtSignal()
 
+    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
+
     # Translations to user-visible string. Ordered by weight.
     # TODO: Create a solution for this name and weight to be used dynamically.
-    _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
-    _translations["default"] = {
-        "name": catalog.i18nc("@label", "Default")
-    }
-    _translations["engineering"] = {
-        "name": catalog.i18nc("@label", "Engineering"),
-        "description": catalog.i18nc("@text", "Suitable for engineering work")
-
-    }
-    _translations["smooth"] = {
-        "name": catalog.i18nc("@label", "Smooth"),
-        "description": catalog.i18nc("@text", "Optimized for a smooth surfaces")
-    }
+    @classmethod
+    def _get_translations(cls):
+        if len(cls._translations) == 0:
+            cls._translations["default"] = {
+                "name": catalog.i18nc("@label", "Default")
+            }
+            cls._translations["visual"] = {
+                "name": catalog.i18nc("@label", "Visual"),
+                "description": catalog.i18nc("@text", "The visual profile is designed to print visual prototypes and models with the intent of high visual and surface quality.")
+            }
+            cls._translations["engineering"] = {
+                "name": catalog.i18nc("@label", "Engineering"),
+                "description": catalog.i18nc("@text", "The engineering profile is designed to print functional prototypes and end-use parts with the intent of better accuracy and for closer tolerances.")
+            }
+            cls._translations["quick"] = {
+                "name": catalog.i18nc("@label", "Draft"),
+                "description": catalog.i18nc("@text", "The draft profile is designed to print initial prototypes and concept validation with the intent of significant print time reduction.")
+            }
+        return cls._translations
 
     ##  Creates a new model for a certain intent category.
     #   \param The category to list the intent profiles for.
@@ -61,15 +70,18 @@ class IntentCategoryModel(ListModel):
 
         ContainerRegistry.getInstance().containerAdded.connect(self._onContainerChange)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChange)
-
-        machine_manager = application.getMachineManager()
-        machine_manager.globalContainerChanged.connect(self.update)
-        machine_manager.activeQualityGroupChanged.connect(self.update)
-        machine_manager.activeStackChanged.connect(self.update)
+        machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
+        machine_manager.activeMaterialChanged.connect(self.update)
+        machine_manager.activeVariantChanged.connect(self.update)
         machine_manager.extruderChanged.connect(self.update)
 
         extruder_manager = application.getExtruderManager()
         extruder_manager.extrudersChanged.connect(self.update)
+
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(500)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
 
         self.update()
 
@@ -78,8 +90,11 @@ class IntentCategoryModel(ListModel):
         if container.getMetaDataEntry("type") == "intent":
             self.update()
 
+    def update(self):
+        self._update_timer.start()
+
     ##  Updates the list of intents.
-    def update(self) -> None:
+    def _update(self) -> None:
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
@@ -89,15 +104,15 @@ class IntentCategoryModel(ListModel):
                 "name": IntentCategoryModel.translation(category, "name", catalog.i18nc("@label", "Unknown")),
                 "description": IntentCategoryModel.translation(category, "description", None),
                 "intent_category": category,
-                "weight": list(self._translations.keys()).index(category),
+                "weight": list(IntentCategoryModel._get_translations().keys()).index(category),
                 "qualities": qualities
             })
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
 
-    ##  Get a display value for a category. See IntenCategoryModel._translations
+    ##  Get a display value for a category.
     ##  for categories and keys
     @staticmethod
     def translation(category: str, key: str, default: Optional[str] = None):
-        display_strings = IntentCategoryModel._translations.get(category, {})
+        display_strings = IntentCategoryModel._get_translations().get(category, {})
         return display_strings.get(key, default)

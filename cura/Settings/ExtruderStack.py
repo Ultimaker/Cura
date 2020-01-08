@@ -51,6 +51,10 @@ class ExtruderStack(CuraContainerStack):
     def getNextStack(self) -> Optional["GlobalStack"]:
         return super().getNextStack()
 
+    @pyqtProperty(int, constant = True)
+    def position(self) -> int:
+        return int(self.getMetaDataEntry("position"))
+
     def setEnabled(self, enabled: bool) -> None:
         if self.getMetaDataEntry("enabled", True) == enabled: # No change.
             return # Don't emit a signal then.

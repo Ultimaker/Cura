@@ -14,6 +14,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.cura_empty_instance_containers import empty_quality_changes_container
 from cura.Settings.IntentManager import IntentManager
 from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
+from cura.Machines.Models.IntentTranslations import intent_translations
 
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
@@ -336,10 +337,11 @@ class QualityManagementModel(ListModel):
                 "quality_type": quality_type,
                 "quality_changes_group": None,
                 "intent_category": intent_category,
-                "section_name": catalog.i18nc("@label", intent_category.capitalize()),
+                "section_name": catalog.i18nc("@label", intent_translations.get(intent_category, {}).get("name", catalog.i18nc("@label", "Unknown"))),
             })
         # Sort by quality_type for each intent category
-        result = sorted(result, key = lambda x: (x["intent_category"], x["quality_type"]))
+
+        result = sorted(result, key = lambda x: (list(intent_translations).index(x["intent_category"]), x["quality_type"]))
         item_list += result
 
         # Create quality_changes group items

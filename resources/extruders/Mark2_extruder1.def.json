@@ -1,5 +1,4 @@
 {
-    "id": "Mark2_extruder1",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",

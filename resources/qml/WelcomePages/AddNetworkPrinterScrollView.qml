@@ -66,12 +66,13 @@ Item
             {
                 id: networkPrinterListView
                 anchors.fill: parent
-                model: CuraApplication.getDiscoveredPrintersModel().discoveredPrinters
+                model: contentLoader.enabled ? CuraApplication.getDiscoveredPrintersModel().discoveredPrinters: undefined
 
                 section.property: "modelData.sectionName"
                 section.criteria: ViewSection.FullString
                 section.delegate: sectionHeading
-
+                boundsBehavior: Flickable.StopAtBounds
+                flickDeceleration: 20000  // To prevent the flicking behavior.
                 cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
                 Component.onCompleted:

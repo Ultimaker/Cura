@@ -11,7 +11,6 @@ from UM.Util import parseBool
 from UM.OutputDevice.OutputDeviceManager import ManualDeviceAdditionAttempt
 
 if TYPE_CHECKING:
-    from PyQt5.QtCore import QObject
     from UM.OutputDevice.OutputDevicePlugin import OutputDevicePlugin
     from cura.CuraApplication import CuraApplication
     from cura.PrinterOutput.NetworkedPrinterOutputDevice import NetworkedPrinterOutputDevice
@@ -205,7 +204,7 @@ class DiscoveredPrintersModel(QObject):
     @pyqtProperty("QVariantMap", notify = discoveredPrintersChanged)
     def discoveredPrintersByAddress(self) -> Dict[str, DiscoveredPrinter]:
         return self._discovered_printer_by_ip_dict
-
+    
     @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(

@@ -2,11 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import Optional, Dict, Any, Set, List
 
-from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import Qt, QObject, pyqtProperty, pyqtSignal, QTimer
 
 import cura.CuraApplication
 from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
+from UM.Logger import Logger
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.MaterialNode import MaterialNode
 from cura.Machines.Models.MachineModelUtils import fetchLayerHeight
@@ -31,9 +32,14 @@ class IntentModel(ListModel):
 
         self._intent_category = "engineering"
 
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(100)
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self._update)
+
         machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
-        machine_manager.globalContainerChanged.connect(self._update)
-        machine_manager.extruderChanged.connect(self._update)  # We also need to update if an extruder gets disabled
+        machine_manager.globalContainerChanged.connect(self._updateDelayed)
+        machine_manager.extruderChanged.connect(self._updateDelayed)  # We also need to update if an extruder gets disabled
         ContainerRegistry.getInstance().containerAdded.connect(self._onChanged)
         ContainerRegistry.getInstance().containerRemoved.connect(self._onChanged)
         self._layer_height_unit = ""  # This is cached
@@ -51,9 +57,12 @@ class IntentModel(ListModel):
     def intentCategory(self) -> str:
         return self._intent_category
 
+    def _updateDelayed(self):
+        self._update_timer.start()
+
     def _onChanged(self, container):
         if container.getMetaDataEntry("type") == "intent":
-            self._update()
+            self._updateDelayed()
 
     def _update(self) -> None:
         new_items = []  # type: List[Dict[str, Any]]
@@ -101,6 +110,9 @@ class IntentModel(ListModel):
 
         for extruder in global_stack.extruderList:
             active_variant_name = extruder.variant.getMetaDataEntry("name")
+            if active_variant_name not in machine_node.variants:
+                Logger.log("w", "Could not find the variant %s", active_variant_name)
+                continue
             active_variant_node = machine_node.variants[active_variant_name]
             active_material_node = active_variant_node.materials[extruder.material.getMetaDataEntry("base_file")]
             nodes.add(active_material_node)

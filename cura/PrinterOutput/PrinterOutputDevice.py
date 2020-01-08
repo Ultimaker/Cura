@@ -10,7 +10,6 @@ from UM.Logger import Logger
 from UM.Signal import signalemitter
 from UM.Qt.QtApplication import QtApplication
 from UM.FlameProfiler import pyqtSlot
-from UM.Decorators import deprecated
 from UM.i18n import i18nCatalog
 from UM.OutputDevice.OutputDevice import OutputDevice
 
@@ -203,10 +202,6 @@ class PrinterOutputDevice(QObject, OutputDevice):
     def acceptsCommands(self) -> bool:
         return self._accepts_commands
 
-    @deprecated("Please use the protected function instead", "3.2")
-    def setAcceptsCommands(self, accepts_commands: bool) -> None:
-        self._setAcceptsCommands(accepts_commands)
-
     ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def _setAcceptsCommands(self, accepts_commands: bool) -> None:
         if self._accepts_commands != accepts_commands:
@@ -225,6 +220,9 @@ class PrinterOutputDevice(QObject, OutputDevice):
             if printer.printerConfiguration is not None and printer.printerConfiguration.hasAnyMaterialLoaded():
                 all_configurations.add(printer.printerConfiguration)
             all_configurations.update(printer.availableConfigurations)
+        if None in all_configurations:  # Shouldn't happen, but it does. I don't see how it could ever happen. Skip adding that configuration. List could end up empty!
+            Logger.log("e", "Found a broken configuration in the synced list!")
+            all_configurations.remove(None)
         new_configurations = sorted(all_configurations, key = lambda config: config.printerType or "")
         if new_configurations != self._unique_configurations:
             self._unique_configurations = new_configurations

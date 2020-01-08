@@ -1,5 +1,4 @@
 {
-    "id": "uni_print_3d",
     "name": "UNI-PRINT-3D",
     "version": 2,
     "inherits": "fdmprinter",

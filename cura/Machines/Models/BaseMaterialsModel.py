@@ -6,6 +6,7 @@ from typing import Dict, Set
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
+from UM.Logger import Logger
 
 import cura.CuraApplication  # Imported like this to prevent a circular reference.
 from cura.Machines.ContainerTree import ContainerTree
@@ -44,7 +45,7 @@ class BaseMaterialsModel(ListModel):
         # can be caused in the middle of a XMLMaterial loading, and the material container we try to find may not be
         # in the system yet. This will cause an infinite recursion of (1) trying to load a material, (2) trying to
         # update the material model, (3) cannot find the material container, load it, (4) repeat #1.
-        self._update_timer = QTimer()
+        self._update_timer = QTimer(self)
         self._update_timer.setInterval(100)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)
@@ -53,7 +54,7 @@ class BaseMaterialsModel(ListModel):
         self._machine_manager.globalContainerChanged.connect(self._updateExtruderStack)
         self._updateExtruderStack()
 
-        # Update this model when switching machines, when adding materials or changing their metadata.
+        # Update this model when switching machines or tabs, when adding materials or changing their metadata.
         self._machine_manager.activeStackChanged.connect(self._onChanged)
         ContainerTree.getInstance().materialsChanged.connect(self._materialsListChanged)
         self._application.getMaterialManagementModel().favoritesChanged.connect(self._onChanged)
@@ -140,8 +141,8 @@ class BaseMaterialsModel(ListModel):
         if material_base_file in self._available_materials:
             self._onChanged()
 
-    ## This is an abstract method that needs to be implemented by the specific
-    #  models themselves.
+    ##  This is an abstract method that needs to be implemented by the specific
+    #   models themselves.
     def _update(self):
         self._favorite_ids = set(cura.CuraApplication.CuraApplication.getInstance().getPreferences().getValue("cura/favorite_materials").split(";"))
 
@@ -153,9 +154,14 @@ class BaseMaterialsModel(ListModel):
         if not extruder_stack:
             return
         nozzle_name = extruder_stack.variant.getName()
-        materials = ContainerTree.getInstance().machines[global_stack.definition.getId()].variants[nozzle_name].materials
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        if nozzle_name not in machine_node.variants:
+            Logger.log("w", "Unable to find variant %s in container tree", nozzle_name)
+            self._available_materials = {}
+            return
+        materials = machine_node.variants[nozzle_name].materials
         approximate_material_diameter = extruder_stack.getApproximateMaterialDiameter()
-        self._available_materials = {key: material for key, material in materials.items() if float(material.container.getMetaDataEntry("approximate_diameter")) == approximate_material_diameter}
+        self._available_materials = {key: material for key, material in materials.items() if float(material.getMetaDataEntry("approximate_diameter", -1)) == approximate_material_diameter}
 
     ## This method is used by all material models in the beginning of the
     #  _update() method in order to prevent errors. It's the same in all models

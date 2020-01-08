@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-09-10 16:55+0000\n"
+"POT-Creation-Date: 2019-11-05 13:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE\n"
@@ -1119,6 +1119,18 @@ msgctxt "bottom_layers description"
 msgid ""
 "The number of bottom layers. When calculated by the bottom thickness, this "
 "value is rounded to a whole number."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers label"
+msgid "Initial Bottom Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "initial_bottom_layers description"
+msgid ""
+"The number of initial bottom layers, from the build-plate upwards. When "
+"calculated by the bottom thickness, this value is rounded to a whole number."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4567,7 +4579,7 @@ msgstr ""
 msgctxt "minimum_interface_area description"
 msgid ""
 "Minimum area size for support interface polygons. Polygons which have an "
-"area smaller than this value will not be generated."
+"area smaller than this value will be printed as normal support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4579,7 +4591,7 @@ msgstr ""
 msgctxt "minimum_roof_area description"
 msgid ""
 "Minimum area size for the roofs of the support. Polygons which have an area "
-"smaller than this value will not be generated."
+"smaller than this value will be printed as normal support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -4591,7 +4603,7 @@ msgstr ""
 msgctxt "minimum_bottom_area description"
 msgid ""
 "Minimum area size for the floors of the support. Polygons which have an area "
-"smaller than this value will not be generated."
+"smaller than this value will be printed as normal support."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5519,6 +5531,49 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution label"
+msgid "Maximum Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_resolution description"
+msgid ""
+"The minimum size of a line segment after slicing. If you increase this, the "
+"mesh will have a lower resolution. This may allow the printer to keep up "
+"with the speed it has to process g-code and will increase slice speed by "
+"removing details of the mesh that it can't process anyway."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution label"
+msgid "Maximum Travel Resolution"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_travel_resolution description"
+msgid ""
+"The minimum size of a travel line segment after slicing. If you increase "
+"this, the travel moves will have less smooth corners. This may allow the "
+"printer to keep up with the speed it has to process g-code, but it may cause "
+"model avoidance to become less accurate."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation label"
+msgid "Maximum Deviation"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "meshfix_maximum_deviation description"
+msgid ""
+"The maximum deviation allowed when reducing the resolution for the Maximum "
+"Resolution setting. If you increase this, the print will be less accurate, "
+"but the g-code will be smaller. Maximum Deviation is a limit for Maximum "
+"Resolution, so if the two conflict the Maximum Deviation will always be held "
+"true."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "blackmagic label"
 msgid "Special Modes"
 msgstr ""
@@ -5983,49 +6038,6 @@ msgid ""
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution label"
-msgid "Maximum Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_resolution description"
-msgid ""
-"The minimum size of a line segment after slicing. If you increase this, the "
-"mesh will have a lower resolution. This may allow the printer to keep up "
-"with the speed it has to process g-code and will increase slice speed by "
-"removing details of the mesh that it can't process anyway."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution label"
-msgid "Maximum Travel Resolution"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_travel_resolution description"
-msgid ""
-"The minimum size of a travel line segment after slicing. If you increase "
-"this, the travel moves will have less smooth corners. This may allow the "
-"printer to keep up with the speed it has to process g-code, but it may cause "
-"model avoidance to become less accurate."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation label"
-msgid "Maximum Deviation"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "meshfix_maximum_deviation description"
-msgid ""
-"The maximum deviation allowed when reducing the resolution for the Maximum "
-"Resolution setting. If you increase this, the print will be less accurate, "
-"but the g-code will be smaller. Maximum Deviation is a limit for Maximum "
-"Resolution, so if the two conflict the Maximum Deviation will always be held "
-"true."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "support_skip_some_zags label"
 msgid "Break Up Support In Chunks"
 msgstr ""
@@ -6193,19 +6205,6 @@ msgid ""
 "The speed by which to move during coasting, relative to the speed of the "
 "extrusion path. A value slightly under 100% is advised, since during the "
 "coasting move the pressure in the bowden tube drops."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "skin_alternate_rotation label"
-msgid "Alternate Skin Rotation"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "skin_alternate_rotation description"
-msgid ""
-"Alternate the direction in which the top/bottom layers are printed. Normally "
-"they are printed diagonally only. This setting adds the X-only and Y-only "
-"directions."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6419,22 +6418,27 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset label"
-msgid "Flow rate compensation max extrusion offset"
+msgid "Flow Rate Compensation Max Extrusion Offset"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_max_extrusion_offset description"
-msgid "The maximum distance in mm to compensate."
+msgid ""
+"The maximum distance in mm to move the filament to compensate for changes in "
+"flow rate."
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor label"
-msgid "Flow rate compensation factor"
+msgid "Flow Rate Compensation Factor"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
-msgid "The multiplication factor for the flow rate -> distance translation."
+msgid ""
+"How far to move the filament in order to compensate for changes in flow "
+"rate, as a percentage of how far the filament would move in one second of "
+"extrusion."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6786,14 +6790,15 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold label"
-msgid "Adaptive Layers Threshold"
+msgid "Adaptive Layers Topography Size"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid ""
-"Threshold whether to use a smaller layer or not. This number is compared to "
-"the tan of the steepest slope in a layer."
+"Target horizontal distance between two adjacent layers. Reducing this "
+"setting causes thinner layers to be used to bring the edges of the layers "
+"closer together."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6805,7 +6810,9 @@ msgstr ""
 msgctxt "wall_overhang_angle description"
 msgid ""
 "Walls that overhang more than this angle will be printed using overhanging "
-"wall settings. When the value is 90, no walls will be treated as overhanging."
+"wall settings. When the value is 90, no walls will be treated as "
+"overhanging. Overhang that gets supported by support will not be treated as "
+"overhang either."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -7238,19 +7245,19 @@ msgstr ""
 msgctxt "small_feature_speed_factor description"
 msgid ""
 "Small features will be printed at this percentage of their normal print "
-"speed. Slower printing can help with adhestion and accuracy."
+"speed. Slower printing can help with adhesion and accuracy."
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
-msgid "First Layer Speed"
+msgid "Small Feature Initial Layer Speed"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid ""
 "Small features on the first layer will be printed at this percentage of "
-"their normal print speed. Slower printing can help with adhestion and "
+"their normal print speed. Slower printing can help with adhesion and "
 "accuracy."
 msgstr ""
 

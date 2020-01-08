@@ -239,7 +239,7 @@ class VersionUpgrade41to42(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
         # Update version number.
@@ -325,7 +325,9 @@ class VersionUpgrade41to42(VersionUpgrade):
             material_id = parser["containers"]["3"]
             old_quality_id = parser["containers"]["2"]
             if material_id in _creality_quality_per_material and old_quality_id in _creality_quality_per_material[material_id]:
-                parser["containers"]["2"] = _creality_quality_per_material[material_id][old_quality_id]
+                if definition_id == "creality_cr10_extruder_0":  # We can't disambiguate between Creality CR-10 and Creality-CR10S since they share the same extruder definition. Have to go by the name.
+                    if "cr-10s" in parser["metadata"].get("machine", "Creality CR-10").lower():  # Not perfect, since the user can change this name :(
+                        parser["containers"]["2"] = _creality_quality_per_material[material_id][old_quality_id]
 
             stack_copy = {}  # type: Dict[str, str]  # Make a copy so that we don't modify the dict we're iterating over.
             stack_copy.update(parser["containers"])

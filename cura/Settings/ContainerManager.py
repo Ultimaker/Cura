@@ -85,7 +85,7 @@ class ContainerManager(QObject):
         if container_node.container is None:
             Logger.log("w", "Container node {0} doesn't have a container.".format(container_node.container_id))
             return False
-        root_material_id = container_node.container.getMetaDataEntry("base_file", "")
+        root_material_id = container_node.getMetaDataEntry("base_file", "")
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         if container_registry.isReadOnly(root_material_id):
             Logger.log("w", "Cannot set metadata of read-only container %s.", root_material_id)
@@ -247,7 +247,7 @@ class ContainerManager(QObject):
 
         try:
             with open(file_url, "rt", encoding = "utf-8") as f:
-                container.deserialize(f.read())
+                container.deserialize(f.read(), file_url)
         except PermissionError:
             return {"status": "error", "message": "Permission denied when trying to read the file."}
         except ContainerFormatError:
@@ -339,19 +339,18 @@ class ContainerManager(QObject):
     #   \return A list of names of materials with the same GUID.
     @pyqtSlot("QVariant", bool, result = "QStringList")
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
-        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(guid = material_node.guid)
+        same_guid = ContainerRegistry.getInstance().findInstanceContainersMetadata(GUID = material_node.guid)
         if exclude_self:
-            return [metadata["name"] for metadata in same_guid if metadata["base_file"] != material_node.base_file]
+            return list({meta["name"] for meta in same_guid if meta["base_file"] != material_node.base_file})
         else:
-            return [metadata["name"] for metadata in same_guid]
+            return list({meta["name"] for meta in same_guid})
 
     ##  Unlink a material from all other materials by creating a new GUID
     #   \param material_id \type{str} the id of the material to create a new GUID for.
     @pyqtSlot("QVariant")
     def unlinkMaterial(self, material_node: "MaterialNode") -> None:
         # Get the material group
-        if material_node.container is None:
-            Logger.log("w", "Material node {0} doesn't have a container.".format(material_node.container_id))
+        if material_node.container is None:  # Failed to lazy-load this container.
             return
         root_material_query = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry().findInstanceContainers(id = material_node.getMetaDataEntry("base_file", ""))
         if not root_material_query:

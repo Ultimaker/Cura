@@ -43,7 +43,7 @@ class ZeroConfClient:
             Logger.logException("e", "Failed to create zeroconf instance.")
             return
 
-        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True)
+        self._service_changed_request_thread = Thread(target = self._handleOnServiceChangedRequests, daemon = True, name = "ZeroConfServiceChangedThread")
         self._service_changed_request_thread.start()
         self._zero_conf_browser = ServiceBrowser(self._zero_conf, self.ZERO_CONF_NAME, [self._queueService])
 
@@ -123,13 +123,15 @@ class ZeroConfClient:
 
         # Request more data if info is not complete
         if not info.address:
-            info = zero_conf.get_service_info(service_type, name)
+            new_info = zero_conf.get_service_info(service_type, name)
+            if new_info is not None:
+                info = new_info
 
-        if info:
+        if info and info.address:
             type_of_device = info.properties.get(b"type", None)
             if type_of_device:
                 if type_of_device == b"printer":
-                    address = '.'.join(map(lambda n: str(n), info.address))
+                    address = '.'.join(map(str, info.address))
                     self.addedNetworkCluster.emit(str(name), address, info.properties)
                 else:
                     Logger.log("w", "The type of the found device is '%s', not 'printer'." % type_of_device)

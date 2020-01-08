@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 import os
 import sys
-import subprocess
-
+from multiprocessing.dummy import Pool
+from functools import partial
+from subprocess import call
 
 # A quick Python implementation of unix 'where' command.
 def where(exe_name: str, search_path: str = os.getenv("PATH")) -> str:
@@ -62,21 +63,23 @@ def main():
 
     mods = ["cura"] + plugins + findModules("plugins/VersionUpgrade")
     success_code = 0
-    for mod in mods:
-        print("------------- Checking module {mod}".format(**locals()))
-        if sys.platform == "win32":
-            result = subprocess.run([mypy_module, "-p", mod, "--ignore-missing-imports"])
-        else:
-            result = subprocess.run([sys.executable, mypy_module, "-p", mod, "--ignore-missing-imports"])
-        if result.returncode != 0:
-            print("\nModule {mod} failed checking. :(".format(**locals()))
-            success_code = 1
-    if success_code:
-        print("\n\nSome modules failed checking!")
-    else:
-        print("\n\nDone checking. All is good.")
-    return success_code
 
+    pool = Pool(2) # Run two commands at once
+
+    if sys.platform == "win32":
+        commands = ["%s -p %s --ignore-missing-imports" % (mypy_module, mod) for mod in mods]
+    else:
+        commands = ["%s %s -p %s --ignore-missing-imports" % (sys.executable, mypy_module, mod) for mod in mods]
+
+    for i, returncode in enumerate(pool.imap(partial(call, shell=True), commands)):
+        if returncode != 0:
+            print("\nCommand %s failed checking. :(" % commands[i])
+            success_code = 1
+    if success_code:        
+        print("MYPY check was completed, but did not pass")
+    else:
+        print("MYPY check was completed and passed with flying colors")
+    return success_code
 
 if __name__ == "__main__":
     sys.exit(main())

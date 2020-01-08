@@ -375,11 +375,27 @@ def test_getPropertyResolveInInstance(global_stack):
 
 ##  Tests whether the value in instances gets evaluated before the resolve in definitions.
 def test_getPropertyInstancesBeforeResolve(global_stack):
+    def getValueProperty(key, property, context = None):
+        if key != "material_bed_temperature":
+            return None
+        if property == "value":
+            return 10
+        if property == "limit_to_extruder":
+            return -1
+        return InstanceState.User
+
+    def getResolveProperty(key, property, context = None):
+        if key != "material_bed_temperature":
+            return None
+        if property == "resolve":
+            return 7.5
+        return None
+
     value = unittest.mock.MagicMock() #Sets just the value.
-    value.getProperty = lambda key, property, context = None: (10 if property == "value" else (InstanceState.User if property != "limit_to_extruder" else "-1")) if key == "material_bed_temperature" else None
+    value.getProperty = unittest.mock.MagicMock(side_effect = getValueProperty)
     value.getMetaDataEntry = unittest.mock.MagicMock(return_value = "quality")
     resolve = unittest.mock.MagicMock() #Sets just the resolve.
-    resolve.getProperty = lambda key, property, context = None: 7.5 if (key == "material_bed_temperature" and property == "resolve") else None
+    resolve.getProperty = unittest.mock.MagicMock(side_effect = getResolveProperty)
 
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock): #To guard against the type checking.
         global_stack.definition = resolve

@@ -9,6 +9,7 @@ import sys
 from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
+from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
 from UM.Logger import Logger
 import UM.Dictionary
@@ -76,7 +77,9 @@ class XmlMaterialProfile(InstanceContainer):
                     new_setting_values_dict[self.__material_properties_setting_map[k]] = v
 
         if not apply_to_all:  # Historical: If you only want to modify THIS container. We only used that to prevent recursion but with the below code that's no longer necessary.
-            container_query = registry.findContainers(id = self.getId())
+            # CURA-6920: This is an optimization, but it also fixes the problem that you can only set metadata for a
+            # material container that can be found in the container registry.
+            container_query = [self]
         else:
             container_query = registry.findContainers(base_file = self.getMetaDataEntry("base_file"))
 
@@ -718,6 +721,8 @@ class XmlMaterialProfile(InstanceContainer):
                         new_hotend_material._dirty = False
 
                         if is_new_material:
+                            if ContainerRegistry.getInstance().isReadOnly(self.getId()):
+                                ContainerRegistry.getInstance().setExplicitReadOnly(new_hotend_material.getId())
                             containers_to_add.append(new_hotend_material)
 
                     # there is only one ID for a machine. Once we have reached here, it means we have already found
@@ -1064,7 +1069,8 @@ class XmlMaterialProfile(InstanceContainer):
     #   This loads the mapping from a file.
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
-        product_to_id_file = os.path.join(os.path.dirname(sys.modules[cls.__module__].__file__), "product_to_id.json")
+        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
+        product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
         with open(product_to_id_file, encoding = "utf-8") as f:
             product_to_id_map = json.load(f)
         product_to_id_map = {key: [value] for key, value in product_to_id_map.items()}
@@ -1100,7 +1106,14 @@ class XmlMaterialProfile(InstanceContainer):
         "anti ooze retract speed": "material_anti_ooze_retraction_speed",
         "break preparation position": "material_break_preparation_retracted_position",
         "break preparation speed": "material_break_preparation_speed",
+        "break preparation temperature": "material_break_preparation_temperature",
         "break position": "material_break_retracted_position",
+        "flush purge speed": "material_flush_purge_speed",
+        "flush purge length": "material_flush_purge_length",
+        "end of filament purge speed": "material_end_of_filament_purge_speed",
+        "end of filament purge length": "material_end_of_filament_purge_length",
+        "maximum park duration": "material_maximum_park_duration",
+        "no load move factor": "material_no_load_move_factor",
         "break speed": "material_break_speed",
         "break temperature": "material_break_temperature"
     }  # type: Dict[str, str]

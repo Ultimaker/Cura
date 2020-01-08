@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -72,7 +72,7 @@ class GcodeStartEndFormatter(Formatter):
         value = default_value_str
         # "-1" is global stack, and if the setting value exists in the global stack, use it as the fallback value.
         if key in kwargs["-1"]:
-            value = kwargs["-1"]
+            value = kwargs["-1"][key]
         if str(extruder_nr) in kwargs and key in kwargs[str(extruder_nr)]:
             value = kwargs[str(extruder_nr)][key]
 
@@ -153,7 +153,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for position, extruder_stack in stack.extruders.items():
+        for extruder_stack in stack.extruderList:
             material = extruder_stack.findContainer({"type": "material"})
             if not extruder_stack.isEnabled:
                 continue
@@ -161,7 +161,6 @@ class StartSliceJob(Job):
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
-
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):

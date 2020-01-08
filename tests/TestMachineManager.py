@@ -15,6 +15,7 @@ def machine_manager(application, extruder_manager, container_registry, global_st
     application.getGlobalContainerStack = MagicMock(return_value = global_stack)
     with patch("cura.Settings.CuraContainerRegistry.CuraContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
         manager = MachineManager(application)
+        manager._onGlobalContainerChanged()
 
     return manager
 
@@ -90,35 +91,10 @@ def createMockedInstanceContainer(instance_id, name = ""):
     return instance
 
 
-def test_allActiveMaterialIds(machine_manager, extruder_manager):
-    extruder_1 = createMockedExtruder("extruder_1")
-    extruder_2 = createMockedExtruder("extruder_2")
-    extruder_1.material = createMockedInstanceContainer("material_1")
-    extruder_2.material = createMockedInstanceContainer("material_2")
-    extruder_manager.getActiveExtruderStacks = MagicMock(return_value = [extruder_1, extruder_2])
-    assert machine_manager.allActiveMaterialIds == {"extruder_1": "material_1", "extruder_2": "material_2"}
-
-
 def test_globalVariantName(machine_manager, application):
     global_stack = application.getGlobalContainerStack()
     global_stack.variant = createMockedInstanceContainer("beep", "zomg")
     assert machine_manager.globalVariantName == "zomg"
-
-
-def test_activeMachineDefinitionName(machine_manager):
-    global_stack = machine_manager.activeMachine
-    global_stack.definition = createMockedInstanceContainer("beep", "zomg")
-    assert machine_manager.activeMachineDefinitionName == "zomg"
-
-
-def test_activeMachineId(machine_manager):
-    assert machine_manager.activeMachineId == "GlobalStack"
-
-
-def test_activeVariantBuildplateName(machine_manager):
-    global_stack = machine_manager.activeMachine
-    global_stack.variant = createMockedInstanceContainer("beep", "zomg")
-    assert machine_manager.activeVariantBuildplateName == "zomg"
 
 
 def test_resetSettingForAllExtruders(machine_manager):

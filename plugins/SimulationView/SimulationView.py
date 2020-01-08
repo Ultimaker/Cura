@@ -48,7 +48,7 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## View used to display g-code paths.
+## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
@@ -71,6 +71,8 @@ class SimulationView(CuraView):
         self._max_paths = 0
         self._current_path_num = 0
         self._minimum_path_num = 0
+        self.start_elements_index = 0
+        self.end_elements_index = 0
         self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
 
         self._busy = False
@@ -213,6 +215,8 @@ class SimulationView(CuraView):
     def beginRendering(self) -> None:
         scene = self.getController().getScene()
         renderer = self.getRenderer()
+        if renderer is None:
+            return
 
         if not self._ghost_shader:
             self._ghost_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "color.shader"))
@@ -241,6 +245,7 @@ class SimulationView(CuraView):
                 self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
+            self.recalculateStartEndElements()
 
             self.currentLayerNumChanged.emit()
 
@@ -255,7 +260,7 @@ class SimulationView(CuraView):
                 self._current_layer_num = self._minimum_layer_num
 
             self._startUpdateTopLayers()
-
+            self.recalculateStartEndElements()
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
@@ -269,7 +274,7 @@ class SimulationView(CuraView):
                 self._minimum_path_num = self._current_path_num
 
             self._startUpdateTopLayers()
-
+            self.recalculateStartEndElements()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
@@ -290,8 +295,9 @@ class SimulationView(CuraView):
     #
     #   \param layer_view_type integer as in SimulationView.qml and this class
     def setSimulationViewType(self, layer_view_type: int) -> None:
-        self._layer_view_type = layer_view_type
-        self.currentLayerNumChanged.emit()
+        if layer_view_type != self._layer_view_type:
+            self._layer_view_type = layer_view_type
+            self.currentLayerNumChanged.emit()
 
     ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
@@ -355,6 +361,24 @@ class SimulationView(CuraView):
         if abs(self._min_thickness - sys.float_info.max) < 10: # Some lenience due to floating point rounding.
             return 0.0 # If it's still max-float, there are no measurements. Use 0 then.
         return self._min_thickness
+
+    def recalculateStartEndElements(self):
+        self.start_elements_index = 0
+        self.end_elements_index = 0
+        scene = self.getController().getScene()
+        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
+            layer_data = node.callDecoration("getLayerData")
+            if not layer_data:
+                continue
+
+            # Found a the layer data!
+            element_counts = layer_data.getElementCounts()
+            for layer in sorted(element_counts.keys()):
+                if layer == self._current_layer_num:
+                    break
+                if self._minimum_layer_num > layer:
+                    self.start_elements_index += element_counts[layer]
+                self.end_elements_index += element_counts[layer]
 
     def getMaxThickness(self) -> float:
         return self._max_thickness
@@ -490,7 +514,11 @@ class SimulationView(CuraView):
 
             # Make sure the SimulationPass is created
             layer_pass = self.getSimulationPass()
-            self.getRenderer().addRenderPass(layer_pass)
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            renderer.addRenderPass(layer_pass)
 
             # Make sure the NozzleNode is add to the root
             nozzle = self.getNozzleNode()
@@ -509,7 +537,7 @@ class SimulationView(CuraView):
                     self._simulationview_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
             if not self._composite_pass:
-                self._composite_pass = cast(CompositePass, self.getRenderer().getRenderPass("composite"))
+                self._composite_pass = cast(CompositePass, renderer.getRenderPass("composite"))
 
             self._old_layer_bindings = self._composite_pass.getLayerBindings()[:]  # make a copy so we can restore to it later
             self._composite_pass.getLayerBindings().append("simulationview")
@@ -525,7 +553,13 @@ class SimulationView(CuraView):
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
             if self._nozzle_node:
                 self._nozzle_node.setParent(None)
-            self.getRenderer().removeRenderPass(self._layer_pass)
+
+            renderer = self.getRenderer()
+            if renderer is None:
+                return False
+
+            if self._layer_pass is not None:
+                renderer.removeRenderPass(self._layer_pass)
             if self._composite_pass:
                 self._composite_pass.setLayerBindings(cast(List[str], self._old_layer_bindings))
                 self._composite_pass.setCompositeShader(cast(ShaderProgram, self._old_composite_shader))
@@ -559,11 +593,13 @@ class SimulationView(CuraView):
 
     def _onCurrentLayerNumChanged(self) -> None:
         self.calculateMaxPathsOnLayer(self._current_layer_num)
+        scene = Application.getInstance().getController().getScene()
+        scene.sceneChanged.emit(scene.getRoot())
 
     def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:
             return
-
+        self.recalculateStartEndElements()
         if self._top_layers_job:
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()

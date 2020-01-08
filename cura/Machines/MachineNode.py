@@ -140,7 +140,7 @@ class MachineNode(ContainerNode):
             elif groups_by_name[name].intent_category == "default":  # Intent category should be stored as "default" if everything is default or as the intent if any of the extruder have an actual intent.
                 groups_by_name[name].intent_category = quality_changes.get("intent_category", "default")
 
-            if "position" in quality_changes:  # An extruder profile.
+            if quality_changes.get("position") is not None and quality_changes.get("position") != "None":  # An extruder profile.
                 groups_by_name[name].metadata_per_extruder[int(quality_changes["position"])] = quality_changes
             else:  # Global profile.
                 groups_by_name[name].metadata_for_global = quality_changes
@@ -162,6 +162,7 @@ class MachineNode(ContainerNode):
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
             self.variants["empty"] = VariantNode("empty_variant", machine = self)
+            self.variants["empty"].materialsChanged.connect(self.materialsChanged)
         else:
             # Find all the variants for this definition ID.
             variants = container_registry.findInstanceContainersMetadata(type = "variant", definition = self.container_id, hardware_type = "nozzle")
@@ -177,5 +178,7 @@ class MachineNode(ContainerNode):
         global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = self.quality_definition, global_quality = "True")  # First try specific to this printer.
         if len(global_qualities) == 0:  # This printer doesn't override the global qualities.
             global_qualities = container_registry.findInstanceContainersMetadata(type = "quality", definition = "fdmprinter", global_quality = "True")  # Otherwise pick the global global qualities.
+            if len(global_qualities) == 0:  # There are no global qualities either?! Something went very wrong, but we'll not crash and properly fill the tree.
+                global_qualities = [cura.CuraApplication.CuraApplication.getInstance().empty_quality_container.getMetaData()]
         for global_quality in global_qualities:
             self.global_qualities[global_quality["quality_type"]] = QualityNode(global_quality["id"], parent = self)

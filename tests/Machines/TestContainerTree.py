@@ -29,6 +29,7 @@ def createMockedStack(definition_id: str):
 def container_registry():
     result = MagicMock()
     result.findContainerStacks = MagicMock(return_value = [createMockedStack("machine_1"), createMockedStack("machine_2")])
+    result.findContainersMetadata = lambda id: [{"id": id}] if id in {"machine_1", "machine_2"} else []
     return result
 
 @pytest.fixture
@@ -37,41 +38,13 @@ def application():
 
 
 def test_containerTreeInit(container_registry):
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value=container_registry)):
-        container_tree = ContainerTree()
-
-    assert "machine_1" in container_tree.machines
-    assert "machine_2" in container_tree.machines
-
-
-def test_newMachineAdded(container_registry):
-    mocked_definition_container = MagicMock(spec=DefinitionContainer)
-    mocked_definition_container.getId = MagicMock(return_value = "machine_3")
-
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        container_tree = ContainerTree()
-        # machine_3 shouldn't be there, as on init it wasn't in the registry
-        assert "machine_3" not in container_tree.machines
+        with patch("UM.Application.Application.getInstance"):
+            container_tree = ContainerTree()
 
-        # It should only react when a globalStack is added.
-        container_tree._machineAdded(mocked_definition_container)
-        assert "machine_3" not in container_tree.machines
+        assert "machine_1" in container_tree.machines
+        assert "machine_2" in container_tree.machines
 
-        container_tree._machineAdded(createMockedStack("machine_3"))
-        assert "machine_3" in container_tree.machines
-
-
-def test_alreadyKnownMachineAdded(container_registry):
-    mocked_definition_container = MagicMock(spec = DefinitionContainer)
-    mocked_definition_container.getId = MagicMock(return_value = "machine_2")
-
-    with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        container_tree = ContainerTree()
-        assert len(container_tree.machines) == 2
-
-        # The ID is already there, so no machine should be added.
-        container_tree._machineAdded(mocked_definition_container)
-        assert len(container_tree.machines) == 2
 
 def test_getCurrentQualityGroupsNoGlobalStack(container_registry):
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
@@ -81,12 +54,12 @@ def test_getCurrentQualityGroupsNoGlobalStack(container_registry):
 
     assert len(result) == 0
 
+
 def test_getCurrentQualityGroups(container_registry, application):
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        container_tree = ContainerTree()
-        container_tree.machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
-
-        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+            container_tree = ContainerTree()
+            container_tree.machines._machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
             result = container_tree.getCurrentQualityGroups()
 
     # As defined in the fixture for application.
@@ -97,6 +70,7 @@ def test_getCurrentQualityGroups(container_registry, application):
     container_tree.machines["current_global_stack"].getQualityGroups.assert_called_with(expected_variant_names, expected_material_base_files, expected_is_enabled)
     assert result == container_tree.machines["current_global_stack"].getQualityGroups.return_value
 
+
 def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
         with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = MagicMock(getGlobalContainerStack = MagicMock(return_value = None)))):
@@ -105,12 +79,12 @@ def test_getCurrentQualityChangesGroupsNoGlobalStack(container_registry):
 
     assert len(result) == 0
 
+
 def test_getCurrentQualityChangesGroups(container_registry, application):
     with patch("UM.Settings.ContainerRegistry.ContainerRegistry.getInstance", MagicMock(return_value = container_registry)):
-        container_tree = ContainerTree()
-        container_tree.machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
-
-        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value = application)):
+        with patch("cura.CuraApplication.CuraApplication.getInstance", MagicMock(return_value=application)):
+            container_tree = ContainerTree()
+            container_tree.machines._machines["current_global_stack"] = MagicMock()  # Mock so that we can track whether the getQualityGroups function gets called with correct parameters.
             result = container_tree.getCurrentQualityChangesGroups()
 
     # As defined in the fixture for application.

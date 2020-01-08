@@ -2,6 +2,7 @@ import configparser
 from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
+from UM.Util import parseBool  # To parse whether the Alternate Skin Rotations function is activated.
 
 _renamed_container_id_map = {
     "ultimaker2_0.25": "ultimaker2_olsson_0.25",
@@ -51,7 +52,7 @@ class VersionUpgrade43to44(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None)
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
         # Update version number.
@@ -60,6 +61,18 @@ class VersionUpgrade43to44(VersionUpgrade):
         # Intent profiles were added, so the quality changes should match with no intent (so "default")
         if parser["metadata"].get("type", "") == "quality_changes":
             parser["metadata"]["intent_category"] = "default"
+
+        if "values" in parser:
+            # Alternate skin rotation should be translated to top/bottom line directions.
+            if "skin_alternate_rotation" in parser["values"] and parseBool(parser["values"]["skin_alternate_rotation"]):
+                parser["values"]["skin_angles"] = "[45, 135, 0, 90]"
+            # Unit of adaptive layers topography size changed.
+            if "adaptive_layer_height_threshold" in parser["values"]:
+                val = parser["values"]["adaptive_layer_height_threshold"]
+                if val.startswith("="):
+                    val = val[1:]
+                val = "=({val}) / 1000".format(val = val)  # Convert microns to millimetres. Works even if the profile contained a formula.
+                parser["values"]["adaptive_layer_height_threshold"] = val
 
         result = io.StringIO()
         parser.write(result)

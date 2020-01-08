@@ -44,6 +44,9 @@ class PostProcessingPlugin(QObject, Extension):
         # There can be duplicates, which will be executed in sequence.
         self._script_list = []  # type: List[Script]
         self._selected_script_index = -1
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if self._global_container_stack:
+            self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
         Application.getInstance().getOutputDeviceManager().writeStarted.connect(self.execute)
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)  # When the current printer changes, update the list of scripts.
@@ -209,33 +212,34 @@ class PostProcessingPlugin(QObject, Extension):
         self.scriptListChanged.emit()
         self._propertyChanged()
 
-    ##  When the global container stack is changed, swap out the list of active
-    #   scripts.
-    def _onGlobalContainerStackChanged(self) -> None:
+    def _restoreScriptInforFromMetadata(self):
         self.loadAllScripts()
-        new_stack = Application.getInstance().getGlobalContainerStack()
+        new_stack = self._global_container_stack
         if new_stack is None:
             return
         self._script_list.clear()
-        if not new_stack.getMetaDataEntry("post_processing_scripts"): # Missing or empty.
-            self.scriptListChanged.emit() # Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
+        if not new_stack.getMetaDataEntry("post_processing_scripts"):  # Missing or empty.
+            self.scriptListChanged.emit()  # Even emit this if it didn't change. We want it to write the empty list to the stack's metadata.
             self.setSelectedScriptIndex(-1)
             return
 
         self._script_list.clear()
         scripts_list_strs = new_stack.getMetaDataEntry("post_processing_scripts")
-        for script_str in scripts_list_strs.split("\n"):  # Encoded config files should never contain three newlines in a row. At most 2, just before section headers.
+        for script_str in scripts_list_strs.split(
+                "\n"):  # Encoded config files should never contain three newlines in a row. At most 2, just before section headers.
             if not script_str:  # There were no scripts in this one (or a corrupt file caused more than 3 consecutive newlines here).
                 continue
             script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\")  # Unescape escape sequences.
-            script_parser = configparser.ConfigParser(interpolation = None)
+            script_parser = configparser.ConfigParser(interpolation=None)
             script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
             script_parser.read_string(script_str)
             for script_name, settings in script_parser.items():  # There should only be one, really! Otherwise we can't guarantee the order or allow multiple uses of the same script.
                 if script_name == "DEFAULT":  # ConfigParser always has a DEFAULT section, but we don't fill it. Ignore this one.
                     continue
-                if script_name not in self._loaded_scripts: # Don't know this post-processing plug-in.
-                    Logger.log("e", "Unknown post-processing script {script_name} was encountered in this global stack.".format(script_name = script_name))
+                if script_name not in self._loaded_scripts:  # Don't know this post-processing plug-in.
+                    Logger.log("e",
+                               "Unknown post-processing script {script_name} was encountered in this global stack.".format(
+                                   script_name=script_name))
                     continue
                 new_script = self._loaded_scripts[script_name]()
                 new_script.initialize()
@@ -245,7 +249,22 @@ class PostProcessingPlugin(QObject, Extension):
                 self._script_list.append(new_script)
 
         self.setSelectedScriptIndex(0)
+        # Ensure that we always force an update (otherwise the fields don't update correctly!)
+        self.selectedIndexChanged.emit()
         self.scriptListChanged.emit()
+        self._propertyChanged()
+
+    ##  When the global container stack is changed, swap out the list of active
+    #   scripts.
+    def _onGlobalContainerStackChanged(self) -> None:
+        if self._global_container_stack:
+            self._global_container_stack.metaDataChanged.disconnect(self._restoreScriptInforFromMetadata)
+
+        self._global_container_stack = Application.getInstance().getGlobalContainerStack()
+
+        if self._global_container_stack:
+            self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
+        self._restoreScriptInforFromMetadata()
 
     @pyqtSlot()
     def writeScriptsToStack(self) -> None:
@@ -267,14 +286,18 @@ class PostProcessingPlugin(QObject, Extension):
 
         script_list_string = "\n".join(script_list_strs)  # ConfigParser should never output three newlines in a row when serialised, so it's a safe delimiter.
 
-        global_stack = Application.getInstance().getGlobalContainerStack()
-        if global_stack is None:
+        if self._global_container_stack is None:
             return
 
-        if "post_processing_scripts" not in global_stack.getMetaData():
-            global_stack.setMetaDataEntry("post_processing_scripts", "")
+        # Ensure we don't get triggered by our own write.
+        self._global_container_stack.metaDataChanged.disconnect(self._restoreScriptInforFromMetadata)
 
-        global_stack.setMetaDataEntry("post_processing_scripts", script_list_string)
+        if "post_processing_scripts" not in self._global_container_stack.getMetaData():
+            self._global_container_stack.setMetaDataEntry("post_processing_scripts", "")
+
+        self._global_container_stack.setMetaDataEntry("post_processing_scripts", script_list_string)
+        # We do want to listen to other events.
+        self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
     ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self) -> None:

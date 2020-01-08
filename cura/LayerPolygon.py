@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from UM.Application import Application
+from UM.Qt.QtApplication import QtApplication
 from typing import Any, Optional
 import numpy
 
@@ -232,7 +232,7 @@ class LayerPolygon:
     @classmethod
     def getColorMap(cls):
         if cls.__color_map is None:
-            theme = Application.getInstance().getTheme()
+            theme = QtApplication.getInstance().getTheme()
             cls.__color_map = numpy.array([
                 theme.getColor("layerview_none").getRgbF(), # NoneType
                 theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type

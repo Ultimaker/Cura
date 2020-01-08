@@ -37,10 +37,6 @@ class CuraStackBuilder:
             return None
 
         machine_definition = definitions[0]
-        # The container tree listens to the containerAdded signal to add the definition and build the tree,
-        # but that signal is emitted with a delay which might not have passed yet.
-        # Therefore we must make sure that it's manually added here.
-        container_tree.addMachineNodeByDefinitionId(machine_definition.getId())
         machine_node = container_tree.machines[machine_definition.getId()]
 
         generated_name = registry.createUniqueName("machine", "", name, machine_definition.getName())
