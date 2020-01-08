@@ -1337,10 +1337,12 @@
                 "fill_perimeter_gaps":
                 {
                     "label": "Fill Gaps Between Walls",
-                    "description": "Fills the gaps between walls where no walls fit.",
+                    "description": "Fills the gaps between walls where no walls fit. Everywhere fills the gaps between the walls and also the gaps between the walls and the skin and infill. Wall And Skin Gaps fills the gaps between the walls and also fills the gaps between the walls and skin but doesn't fill gaps in infill.",
                     "type": "enum",
                     "options": {
                         "nowhere": "Nowhere",
+                        "only_wall_gaps": "Only Wall Gaps",
+                        "wall_and_skin_gaps": "Wall And Skin Gaps",
                         "everywhere": "Everywhere"
                     },
                     "default_value": "everywhere",
