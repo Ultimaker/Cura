@@ -1,5 +1,4 @@
 {
-    "id": "mp_mini_delta",
 	"version": 2,
     "name": "MP Mini Delta",
 	"inherits": "fdmprinter",
