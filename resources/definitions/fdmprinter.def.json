@@ -4521,6 +4521,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
+                    "maximum_value_warning": "5",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
