@@ -10,9 +10,9 @@
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "GEEETECH_A20T_1st",
-            "1": "GEEETECH_A20T_2nd",
-            "2": "GEEETECH_A20T_3rd"
+            "0": "GEEETECH_A20T_1",
+            "1": "GEEETECH_A20T_2",
+            "2": "GEEETECH_A20T_3"
         }
 
     },
