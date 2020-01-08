@@ -221,12 +221,6 @@ class Toolbox(QObject, Extension):
             self._makeRequestByType("updates")
         self._fetchUserSubscribedPackages()
 
-    @pyqtSlot()
-    def browsePackages(self) -> None:
-        # Make remote requests:
-        self._fetchPackageData()
-        # Gather installed packages:
-        self._updateInstalledModels()
 
     def _fetchUserSubscribedPackages(self):
         if self._application.getCuraAPI().account.isLoggedIn:
@@ -235,6 +229,7 @@ class Toolbox(QObject, Extension):
     def _fetchPackageData(self) -> None:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
+        self._updateInstalledModels()
 
     # Displays the toolbox
     @pyqtSlot()
