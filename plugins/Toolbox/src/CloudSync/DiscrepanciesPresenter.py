@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, Dict
 
 from PyQt5.QtCore import QObject
 
@@ -15,7 +15,7 @@ class DiscrepanciesPresenter(QObject):
     def __init__(self, app: QtApplication):
         super().__init__(app)
 
-        self.packageMutations = Signal()  # {"SettingsGuide" : "install", "PrinterSettings" : "uninstall"}
+        self.packageMutations = Signal()  #  Emits SubscribedPackagesModel
 
         self._app = app
         self._dialog = None  # type: Optional[QObject]
@@ -28,6 +28,5 @@ class DiscrepanciesPresenter(QObject):
 
     def _onConfirmClicked(self, model: SubscribedPackagesModel):
         # For now, all packages presented to the user should be installed.
-        # Later, we will support uninstall ?or ignoring? of a certain package
-        choices = {item["package_id"]: "install" for item in model.items}
-        self.packageMutations.emit(choices)
+        # Later, we might remove items for which the user unselected the package
+        self.packageMutations.emit(model)

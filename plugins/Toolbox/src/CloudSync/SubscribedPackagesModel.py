@@ -33,7 +33,13 @@ class SubscribedPackagesModel(ListModel):
         for item in self._metadata:
             if item["package_id"] not in self._discrepancies:
                 continue
-            package = {"package_id": item["package_id"], "name": item["display_name"], "sdk_versions": item["sdk_versions"]}
+            package = {
+                "package_id": item["package_id"],
+                "name": item["display_name"],
+                "sdk_versions": item["sdk_versions"],
+                "download_url": item["download_url"],
+                "md5_hash": item["md5_hash"],
+            }
             if self._sdk_version not in item["sdk_versions"]:
                 package.update({"is_compatible": False})
             else:
