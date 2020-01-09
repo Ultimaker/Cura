@@ -7417,7 +7417,7 @@
                 "clean_between_layers":
                 {
                     "label": "Wipe Nozzle Between Layers",
-                    "description": "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
+                    "description": "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
                     "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -7427,7 +7427,7 @@
                 "max_extrusion_before_wipe":
                 {
                     "label": "Material Volume Between Wipes",
-                    "description": "Maximum material, that can be extruded before another nozzle wipe is initiated.",
+                    "description": "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer.",
                     "default_value": 10,
                     "type": "float",
                     "unit": "mm³",
