@@ -14,7 +14,7 @@ import UM 1.1 as UM
 UM.Dialog
 {
     id: licenseDialog
-    title: catalog.i18nc("@title:window", "Plugin License Agreement")
+    title: licenseModel.dialogTitle
     minimumWidth: UM.Theme.getSize("license_window_minimum").width
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
@@ -32,18 +32,18 @@ UM.Dialog
 
         Label
         {
-            id: licenseTitle
+            id: licenseHeader
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            text: licenseModel.title
+            text: licenseModel.headerText
             wrapMode: Text.Wrap
             renderType: Text.NativeRendering
         }
         TextArea
         {
             id: licenseText
-            anchors.top: licenseTitle.bottom
+            anchors.top: licenseHeader.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
@@ -59,14 +59,14 @@ UM.Dialog
             id: acceptButton
             anchors.margins: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@action:button", "Accept")
-            onClicked: handler.onLicenseAccepted
+            onClicked: { handler.onLicenseAccepted() }
         },
         Button
         {
             id: declineButton
             anchors.margins: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@action:button", "Decline")
-            onClicked: handler.onLicenseDeclined
+            onClicked: { handler.onLicenseDeclined() }
         }
     ]
 }

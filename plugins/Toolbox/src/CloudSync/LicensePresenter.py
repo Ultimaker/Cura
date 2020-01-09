@@ -23,6 +23,7 @@ class LicensePresenter(QObject):
 
         self._current_package_idx = 0
         self._package_models = None  # type: Optional[Dict]
+        self._license_model = LicenseModel()  # type: LicenseModel
 
         self._app = app
 
@@ -39,11 +40,11 @@ class LicensePresenter(QObject):
 
             context_properties = {
                 "catalog": i18nCatalog("cura"),
-                "licenseModel": LicenseModel("initial title", "initial text"),
+                "licenseModel": self._license_model,
                 "handler": self
             }
             self._dialog = self._app.createQmlComponent(path, context_properties)
-
+        self._license_model.setPageCount(len(self._package_models))
         self._present_current_package()
 
     @pyqtSlot()
@@ -74,7 +75,10 @@ class LicensePresenter(QObject):
             self.onLicenseAccepted()
             return
 
-        self._dialog.setProperty("licenseModel", LicenseModel("testTitle", "hoi"))
+        self._license_model.setCurrentPageNumber(self._current_package_idx)
+        self._license_model.setPackageName(package_model["package_id"])
+        self._license_model.setLicenseText(license_content)
+
         self._dialog.open()  # does nothing if already open
 
     def _check_next_page(self):

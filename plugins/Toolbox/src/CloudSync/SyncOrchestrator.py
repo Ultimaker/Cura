@@ -1,6 +1,7 @@
 from typing import List, Dict
 
 from UM.Extension import Extension
+from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox import CloudPackageChecker
@@ -38,24 +39,27 @@ class SyncOrchestrator(Extension):
         self._downloadPresenter = DownloadPresenter(app)  # type: DownloadPresenter
 
         self._licensePresenter = LicensePresenter(app)  # type: LicensePresenter
+        self._licensePresenter.license_answers.connect(self._onLicenseAnswers)
 
     def _onDiscrepancies(self, model: SubscribedPackagesModel):
-        # todo revert
-        self._onDownloadFinished({"SupportEraser" : "/home/nvanhooff/Downloads/ThingiBrowser-v7.0.0-2019-12-12T18_24_40Z.curapackage"}, [])
-        # plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        # self._discrepanciesPresenter.present(plugin_path, model)
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        self._discrepanciesPresenter.present(plugin_path, model)
 
     def _onPackageMutations(self, mutations: SubscribedPackagesModel):
         self._downloadPresenter = self._downloadPresenter.resetCopy()
         self._downloadPresenter.done.connect(self._onDownloadFinished)
         self._downloadPresenter.download(mutations)
 
-    ## When a set of packages have finished downloading
+    ## Called when a set of packages have finished downloading
     # \param success_items: Dict[package_id, file_path]
     # \param error_items: List[package_id]
     def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]):
         # todo handle error items
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         self._licensePresenter.present(plugin_path, success_items)
+
+    # Called when user has accepted / declined all licenses for the downloaded packages
+    def _onLicenseAnswers(self, answers: Dict[str, bool]):
+        Logger.debug("Got license answers: {}", answers)
 
 
