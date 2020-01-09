@@ -164,6 +164,14 @@ class Toolbox(QObject, Extension):
 
         self._application.getHttpRequestManager().put(url, headers_dict = self._request_headers,
                                                       data = data.encode())
+    @pyqtSlot(str)
+    def subscribe(self, package_id: str) -> None:
+        if self._application.getCuraAPI().account.isLoggedIn:
+            data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, self._sdk_version)
+            self._application.getHttpRequestManager().put(url=self._api_url_user_packages,
+                                                          headers_dict=self._request_headers,
+                                                          data=data.encode()
+                                                          )
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -728,6 +736,7 @@ class Toolbox(QObject, Extension):
             return
 
         self.install(file_path)
+        self.subscribe(package_info["package_id"])
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
