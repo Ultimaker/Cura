@@ -1,0 +1,59 @@
+{
+    "version": 2,
+    "name": "GEEETECH A20T",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Amit L",
+        "manufacturer": "GEEETECH TECH.",
+        "file_formats": "text/x-gcode",
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "GEEETECH_A20T_1",
+            "1": "GEEETECH_A20T_2",
+            "2": "GEEETECH_A20T_3"
+        }
+
+    },
+
+    "overrides": {
+        "machine_name": { "default_value": "GEEETECH A20T" },
+        "machine_width": {
+            "default_value": 255
+        },
+        "machine_height": {
+            "default_value": 255
+        },
+        "machine_depth": {
+            "default_value": 255
+        },        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "layer_height": { "default_value": 0.1 },
+        "layer_height_0": { "default_value": 0.15 },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_speed": { "default_value": 35 },
+        "adhesion_type": { "default_value": "skirt" },
+        "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
+        "gantry_height": { "value": "28" },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_e": { "default_value": 120 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.2 },
+        "machine_max_jerk_e": { "default_value": 2.5 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode": {
+            "default_value": "G28 \nG1 Z15 F300\nM107\nG90\nM82\nM104 S215\nM140 S55\nG92 E0\nM109 S215\nM107\nM163 S0 P0.33\nM163 S1 P0.33\nM163 S2 P0.33\nM164 S4\nG0 X10 Y20 F6000\nG1 Z0.8\nG1 F300 X200 E40\nG1 F1200 Z2\nG92 E0\nG28"
+        },
+        "machine_end_gcode": {
+            "default_value": "G91\nG1 E-1\nG0 X0 Y200\nM104 S0\nG90\nG92 E0\nM140 S0\nM84\nM104 S0\nM140 S0\nM84"
+        },
+        "machine_extruder_count": {
+            "default_value": 3
+        }
+
+    }
+}
