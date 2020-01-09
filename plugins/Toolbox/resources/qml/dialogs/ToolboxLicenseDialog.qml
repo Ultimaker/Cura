@@ -13,6 +13,7 @@ import UM 1.1 as UM
 
 UM.Dialog
 {
+    id: licenseDialog
     title: catalog.i18nc("@title:window", "Plugin License Agreement")
     minimumWidth: UM.Theme.getSize("license_window_minimum").width
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
@@ -21,16 +22,21 @@ UM.Dialog
     property var pluginName;
     property var licenseContent;
     property var pluginFileLocation;
+
     Item
     {
         anchors.fill: parent
+
+        UM.I18nCatalog{id: catalog; name: "cura"}
+
+
         Label
         {
             id: licenseTitle
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            text: licenseDialog.pluginName + ": " + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+            text: licenseModel.title
             wrapMode: Text.Wrap
             renderType: Text.NativeRendering
         }
@@ -43,7 +49,7 @@ UM.Dialog
             anchors.right: parent.right
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             readOnly: true
-            text: licenseDialog.licenseContent || ""
+            text: licenseModel.licenseText
         }
     }
     rightButtons:
@@ -53,22 +59,14 @@ UM.Dialog
             id: acceptButton
             anchors.margins: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@action:button", "Accept")
-            onClicked:
-            {
-                licenseDialog.close();
-                toolbox.install(licenseDialog.pluginFileLocation);
-                toolbox.subscribe(licenseDialog.pluginName);
-            }
+            onClicked: handler.onLicenseAccepted
         },
         Button
         {
             id: declineButton
             anchors.margins: UM.Theme.getSize("default_margin").width
             text: catalog.i18nc("@action:button", "Decline")
-            onClicked:
-            {
-                licenseDialog.close();
-            }
+            onClicked: handler.onLicenseDeclined
         }
     ]
 }

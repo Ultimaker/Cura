@@ -1,9 +1,12 @@
+from typing import List, Dict
+
 from UM.Extension import Extension
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox import CloudPackageChecker
 from plugins.Toolbox.src.CloudSync.DiscrepanciesPresenter import DiscrepanciesPresenter
 from plugins.Toolbox.src.CloudSync.DownloadPresenter import DownloadPresenter
+from plugins.Toolbox.src.CloudSync.LicensePresenter import LicensePresenter
 from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 
 
@@ -15,8 +18,8 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 #   the user selected to be performed
 # - The SyncOrchestrator uses PackageManager to remove local packages the users wants to see removed
 # - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
-# - The LicencePresenter extracts licences from the downloaded packages and presents a licence for each package to
-# - be installed. It emits the `licenceAnswers` {'packageId' : bool} for accept or declines
+# - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
+# - be installed. It emits the `licenseAnswers` {'packageId' : bool} for accept or declines
 # - The CloudPackageManager removes the declined packages from the account
 # - The SyncOrchestrator uses PackageManager to install the downloaded packages.
 # - Bliss / profit / done
@@ -24,18 +27,35 @@ class SyncOrchestrator(Extension):
 
     def __init__(self, app: CuraApplication):
         super().__init__()
+        self._name = "SyncOrchestrator" # Critical to differentiate This PluginObject from the Toolbox
 
-        self._checker = CloudPackageChecker(app)
+        self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
 
-        self._discrepanciesPresenter = DiscrepanciesPresenter(app)
+        self._discrepanciesPresenter = DiscrepanciesPresenter(app)  # type: DiscrepanciesPresenter
         self._discrepanciesPresenter.packageMutations.connect(self._onPackageMutations)
 
-        self._downloadPresenter = DownloadPresenter(app)
+        self._downloadPresenter = DownloadPresenter(app)  # type: DownloadPresenter
+
+        self._licensePresenter = LicensePresenter(app)  # type: LicensePresenter
 
     def _onDiscrepancies(self, model: SubscribedPackagesModel):
-        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        self._discrepanciesPresenter.present(plugin_path, model)
+        # todo revert
+        self._onDownloadFinished({"SupportEraser" : "/home/nvanhooff/Downloads/ThingiBrowser-v7.0.0-2019-12-12T18_24_40Z.curapackage"}, [])
+        # plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        # self._discrepanciesPresenter.present(plugin_path, model)
 
     def _onPackageMutations(self, mutations: SubscribedPackagesModel):
+        self._downloadPresenter = self._downloadPresenter.resetCopy()
+        self._downloadPresenter.done.connect(self._onDownloadFinished)
         self._downloadPresenter.download(mutations)
+
+    ## When a set of packages have finished downloading
+    # \param success_items: Dict[package_id, file_path]
+    # \param error_items: List[package_id]
+    def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]):
+        # todo handle error items
+        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        self._licensePresenter.present(plugin_path, success_items)
+
+
