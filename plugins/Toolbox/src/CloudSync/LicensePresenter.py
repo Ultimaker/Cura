@@ -8,18 +8,20 @@ from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from UM.i18n import i18nCatalog
 
-
 from plugins.Toolbox.src.CloudSync.LicenseModel import LicenseModel
 
 
+## Call present() to show a licenseDialog for a set of packages
+#  licenseAnswers emits a list of Dicts containing answers when the user has made a choice for all provided packages
 class LicensePresenter(QObject):
 
     def __init__(self, app: CuraApplication):
         super().__init__()
-        self._dialog = None  #type: Optional[QObject]
+        self._dialog = None  # type: Optional[QObject]
         self._package_manager = app.getPackageManager()  # type: PackageManager
-        # Emits # todo
-        self.license_answers = Signal()
+        # Emits List[Dict[str, str]] containing for example
+        # [{ "package_id": "BarbarianPlugin", "package_path" : "/tmp/dg345as", "accepted" : True }]
+        self.licenseAnswers = Signal()
 
         self._current_package_idx = 0
         self._package_models = None  # type: Optional[Dict]
@@ -30,6 +32,7 @@ class LicensePresenter(QObject):
         self._compatibility_dialog_path = "resources/qml/dialogs/ToolboxLicenseDialog.qml"
 
     ## Show a license dialog for multiple packages where users can read a license and accept or decline them
+    # \param plugin_path: Root directory of the Toolbox plugin
     # \param packages: Dict[package id, file path]
     def present(self, plugin_path: str, packages: Dict[str, str]):
         path = os.path.join(plugin_path, self._compatibility_dialog_path)
@@ -87,7 +90,7 @@ class LicensePresenter(QObject):
             self._present_current_package()
         else:
             self._dialog.close()
-            self.license_answers.emit(self._package_models)
+            self.licenseAnswers.emit(self._package_models)
 
 
 

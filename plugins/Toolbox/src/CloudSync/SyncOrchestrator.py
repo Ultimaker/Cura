@@ -20,7 +20,7 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 # - The SyncOrchestrator uses PackageManager to remove local packages the users wants to see removed
 # - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
 # - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
-# - be installed. It emits the `licenseAnswers` {'packageId' : bool} for accept or declines
+#   be installed. It emits the `licenseAnswers` {'packageId' : bool} for accept or declines
 # - The CloudPackageManager removes the declined packages from the account
 # - The SyncOrchestrator uses PackageManager to install the downloaded packages.
 # - Bliss / profit / done
@@ -28,7 +28,9 @@ class SyncOrchestrator(Extension):
 
     def __init__(self, app: CuraApplication):
         super().__init__()
-        self._name = "SyncOrchestrator" # Critical to differentiate This PluginObject from the Toolbox
+        # Differentiate This PluginObject from the Toolbox. self.getId() includes _name.
+        # getPluginId() will return the same value for The toolbox extension and this one
+        self._name = "SyncOrchestrator"
 
         self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
@@ -39,7 +41,7 @@ class SyncOrchestrator(Extension):
         self._downloadPresenter = DownloadPresenter(app)  # type: DownloadPresenter
 
         self._licensePresenter = LicensePresenter(app)  # type: LicensePresenter
-        self._licensePresenter.license_answers.connect(self._onLicenseAnswers)
+        self._licensePresenter.licenseAnswers.connect(self._onLicenseAnswers)
 
     def _onDiscrepancies(self, model: SubscribedPackagesModel):
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())

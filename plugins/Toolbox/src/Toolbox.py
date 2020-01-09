@@ -31,6 +31,8 @@ if TYPE_CHECKING:
 
 i18n_catalog = i18nCatalog("cura")
 
+# todo Remove license and download dialog, use SyncOrchestrator instead
+
 ##  Provides a marketplace for users to download plugins an materials
 class Toolbox(QObject, Extension):
     def __init__(self, application: CuraApplication) -> None:
