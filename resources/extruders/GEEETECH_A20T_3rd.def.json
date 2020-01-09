@@ -1,0 +1,19 @@
+{
+    "version": 2,
+    "name": "Extruder 3",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "GEEETECH_A20T",
+        "position": "2"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 2,
+            "maximum_value": "2"
+        },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 }
+
+    }
+}
