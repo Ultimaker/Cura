@@ -1,0 +1,43 @@
+{
+    "version": 2,
+    "name": "3DTech Semi-Professional v10",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "3DTech",
+        "manufacturer": "3DTech",
+        "weight": 25,
+        "file_formats": "text/x-gcode",
+		"platform": "3dtech_semi_professional_platform.stl",
+        "has_materials": true,
+        "has_machine_quality": true,
+        "machine_extruder_trains":
+        {
+            "0": "3dtech_semi_professional_extruder_0"
+        }
+    },
+    "overrides": {
+        "machine_name": { "default_value": "3DTECH SP Control" },
+        "machine_width": {
+            "default_value": 250
+        },
+        "machine_depth": {
+            "default_value": 250
+        },
+		"machine_height": {
+            "default_value": 300
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ; home all axes\nG29 ;\nG1 Z5 F3000 ; lift\nG1 X5 Y25 F5000 ; move to prime\nG1 Z0.2 F3000 ; get ready to prime\nG92 E0 ; reset extrusion distance\nG1 Y100 E20 F600 ; prime nozzle\nG1 Y140 F5000 ; quick wipe"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0 ; Retract the filament\nG92 E1\nG1 E-1 F300\nG28 X0 Y0\nM84"
+        }
+    }
+}
