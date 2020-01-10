@@ -266,7 +266,6 @@ class CuraApplication(QtApplication):
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
 
-        from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
         # Redefined here in order to please the typing.
         self._container_registry = None # type: CuraContainerRegistry
