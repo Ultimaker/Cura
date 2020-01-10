@@ -1,0 +1,108 @@
+# Copyright (c) 2019 Ultimaker B.V.
+# This file contains the Pylint rules used in the stardust projects.
+
+# To configure PyLint as an external tool in PyCharm, create a new External Tool with the settings:
+#
+# Name: PyLint
+# Program: Check with 'which pylint'. For example: ~/.local/bin/pylint
+# Arguments: $FileDirName$ --rcfile=.pylintrc --msg-template='{abspath}:{line}:{column}:({symbol}):{msg_id}:{msg}'
+# Working directory: $ContentRoot$
+# Output filters: $FILE_PATH$:$LINE$:$COLUMN$:.*
+#
+# You can add a keyboard shortcut in the keymap settings. To run Pylint to a project, select the module
+# you want to check (e.g. cura folder) before running the external tool.
+#
+# If you find a better way to configure the external tool please edit this file.
+
+[MASTER]
+# List of plugins (as comma separated values of python modules names) to load,
+# usually to register additional checkers.
+load-plugins=pylint_quotes
+
+# We expect double string quotes
+string-quote=double-avoid-escape
+
+# When enabled, pylint would attempt to guess common misconfiguration and emit
+# user-friendly hints instead of false-positive error messages.
+suggestion-mode=yes
+
+# Add files or directories to the blacklist. They should be base names, not paths.
+ignore=tests
+
+[REFACTORING]
+# Maximum number of nested blocks for function / method body
+max-nested-blocks=5
+
+[MESSAGES CONTROL]
+# C0326: No space allowed around keyword argument assignment
+# C0411: Ignore import order because the rules are different than in PyCharm, so automatic imports break lots of builds
+# C0412: Ignore import order because the rules are different than in PyCharm, so automatic imports break lots of builds
+# C0413: Ignore import order because the rules are different than in PyCharm, so automatic imports break lots of builds
+# R0201: Method could be a function (no-self-use)
+# R0401: Cyclic imports (cyclic-import) are used for typing
+# R0801: Unfortunately the error is triggered for a lot of similar models (duplicate-code)
+# R1710: Either all return statements in a function should return an expression, or none of them should.
+# W0221: Parameters differ from overridden method (tornado http methods have a flexible number of parameters)
+# W0511: Ignore warnings generated for TODOs in the code
+# C0111: We don't use docstring
+# C0303: Trailing whitespace isn't something we care about
+# C4001: You can put " in a string if you escape it first... 
+disable=C0326,C0411,C0412,C0413,R0201,R0401,R0801,R1710,W0221,W0511, C0111, C0303,C4001
+
+[FORMAT]
+# Maximum number of characters on a single line.
+max-line-length=120
+
+# Maximum number of lines in a module.
+max-module-lines=500
+
+good-names=os
+
+[BASIC]
+# allow modules and functions to use PascalCase
+module-rgx=[a-zA-Z0-9_]+$
+function-rgx=
+method-rgx=([a-z_][a-z0-9_]{2,30}|([a-z_][A-Za-z0-9]{2,30}))$
+
+[DESIGN]
+# Maximum number of arguments for function / method.
+max-args=7
+
+# Maximum number of attributes for a class (see R0902).
+max-attributes=8
+
+# Maximum number of boolean expressions in an if statement.
+max-bool-expr=5
+
+# Maximum number of branch for function / method body.
+max-branches=12
+
+# Maximum number of locals for function / method body.
+max-locals=15
+
+# Maximum number of parents for a class (see R0901).
+max-parents=7
+
+# Maximum number of public methods for a class (see R0904).
+max-public-methods=20
+
+# Maximum number of return / yield for function / method body.
+max-returns=6
+
+# Maximum number of statements in function / method body.
+max-statements=50
+
+# Minimum number of public methods for a class (R0903).
+# We set this to 0 because our models and fields do not have methods.
+min-public-methods=0
+
+ignored-argument-names=arg|args|kwargs|_
+
+[CLASSES]
+defining-attr-methods=__init__,__new__,setUp,initialize
+
+[TYPECHECK]
+ignored-classes=NotImplemented
+
+[VARIABLES]
+dummy-variables-rgx=_+[a-z0-9_]{2,30}
