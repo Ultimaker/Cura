@@ -83,17 +83,14 @@ class DownloadPresenter:
     def _onFinished(self, package_id: str, reply: QNetworkReply):
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
 
-        file_fd, file_path = tempfile.mkstemp()
-        os.close(file_fd)  # close the file so we can open it from python
-
         try:
-            with open(file_path, "wb+") as temp_file:
+            with tempfile.NamedTemporaryFile(mode ="wb+", suffix =".curapackage", delete = False) as temp_file:
                 bytes_read = reply.read(256 * 1024)
                 while bytes_read:
                     temp_file.write(bytes_read)
                     bytes_read = reply.read(256 * 1024)
                     self._app.processEvents()
-            self._progress[package_id]["file_written"] = file_path
+                self._progress[package_id]["file_written"] = temp_file.name
         except IOError as e:
             Logger.logException("e", "Failed to write downloaded package to temp file", e)
             self._onError(package_id)
