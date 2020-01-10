@@ -2,8 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 import numpy
 
-from typing import Optional
+from typing import Optional, cast
 
+from UM.Qt.Bindings.Theme import Theme
 from UM.Qt.QtApplication import QtApplication
 from UM.Logger import Logger
 
@@ -232,7 +233,7 @@ class LayerPolygon:
     @classmethod
     def getColorMap(cls) -> numpy.ndarray:
         if cls.__color_map is None:
-            theme = QtApplication.getInstance().getTheme()
+            theme = cast(Theme, QtApplication.getInstance().getTheme())
             cls.__color_map = numpy.array([
                 theme.getColor("layerview_none").getRgbF(), # NoneType
                 theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type
