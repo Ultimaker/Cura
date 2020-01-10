@@ -62,7 +62,15 @@ good-names=os
 # allow modules and functions to use PascalCase
 module-rgx=[a-zA-Z0-9_]+$
 function-rgx=
-method-rgx=([a-z_][a-z0-9_]{2,30}|([a-z_][A-Za-z0-9]{2,30}))$
+## Allowed methods:
+# getSomething
+# _getSomething
+# __getSomething
+# __new__
+## Disallowed:
+# _GET
+# GetSomething 
+method-rgx=(_{,2}[a-z][A-Za-z0-9]*_{,2})$
 
 [DESIGN]
 # Maximum number of arguments for function / method.
