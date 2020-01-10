@@ -69,7 +69,7 @@ class Arrange:
             points = copy.deepcopy(vertices._points)
 
             # After scaling (like up to 0.1 mm) the node might not have points
-            if len(points) == 0:
+            if not points:
                 continue
 
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
@@ -114,7 +114,7 @@ class Arrange:
             found_spot = True
             self.place(x, y, offset_shape_arr)  # place the object in arranger
         else:
-            Logger.log("d", "Could not find spot!"),
+            Logger.log("d", "Could not find spot!")
             found_spot = False
             node.setPosition(Vector(200, center_y, 100))
         return found_spot

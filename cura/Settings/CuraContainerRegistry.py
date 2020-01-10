@@ -15,7 +15,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.ContainerStack import ContainerStack
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingInstance import SettingInstance
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Platform import Platform
@@ -176,7 +175,7 @@ class CuraContainerRegistry(ContainerRegistry):
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
 
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
         container_tree = ContainerTree.getInstance()
@@ -384,7 +383,7 @@ class CuraContainerRegistry(ContainerRegistry):
         if not quality_type:
             return catalog.i18nc("@info:status", "Profile is missing a quality type.")
 
-        global_stack = Application.getInstance().getGlobalContainerStack()
+        global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return None
         definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition

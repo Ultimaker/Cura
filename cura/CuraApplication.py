@@ -1442,7 +1442,7 @@ class CuraApplication(QtApplication):
             if center is not None:
                 object_centers.append(center)
 
-        if object_centers and len(object_centers) > 0:
+        if object_centers:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
             middle_z = sum([v.z for v in object_centers]) / len(object_centers)
@@ -1492,7 +1492,7 @@ class CuraApplication(QtApplication):
                 if center is not None:
                     object_centers.append(center)
 
-            if object_centers and len(object_centers) > 0:
+            if object_centers:
                 middle_x = sum([v.x for v in object_centers]) / len(object_centers)
                 middle_y = sum([v.y for v in object_centers]) / len(object_centers)
                 middle_z = sum([v.z for v in object_centers]) / len(object_centers)
@@ -1674,7 +1674,7 @@ class CuraApplication(QtApplication):
         extension = os.path.splitext(f)[1]
         extension = extension.lower()
         filename = os.path.basename(f)
-        if len(self._currently_loading_files) > 0:
+        if self._currently_loading_files:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
             if extension in self._non_sliceable_extensions:
                 message = Message(
@@ -1795,8 +1795,8 @@ class CuraApplication(QtApplication):
                 node.addDecorator(build_plate_decorator)
             build_plate_decorator.setBuildPlateNumber(target_build_plate)
 
-            op = AddSceneNodeOperation(node, scene.getRoot())
-            op.push()
+            operation = AddSceneNodeOperation(node, scene.getRoot())
+            operation.push()
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)

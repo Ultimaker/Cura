@@ -1,10 +1,10 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from UM.Qt.QtApplication import QtApplication
-from typing import Any, Optional
 import numpy
 
+from typing import Optional
+
+from UM.Qt.QtApplication import QtApplication
 from UM.Logger import Logger
 
 
