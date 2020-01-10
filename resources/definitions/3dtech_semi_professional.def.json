@@ -1,16 +1,13 @@
 {
     "version": 2,
-    "name": "3DTech Semi-Professional v10",
+    "name": "3DTech Semi-Professional",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "3DTech",
         "manufacturer": "3DTech",
-        "weight": 25,
         "file_formats": "text/x-gcode",
 		"platform": "3dtech_semi_professional_platform.stl",
-        "has_materials": true,
-        "has_machine_quality": true,
         "machine_extruder_trains":
         {
             "0": "3dtech_semi_professional_extruder_0"
