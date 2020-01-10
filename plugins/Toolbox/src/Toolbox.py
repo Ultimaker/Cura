@@ -24,6 +24,7 @@ from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
 from .PackagesModel import PackagesModel
 from .CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
+from .UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
     from UM.TaskManagement.HttpRequestData import HttpRequestData
@@ -46,8 +47,7 @@ class Toolbox(QObject, Extension):
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
-        self._request_headers = dict()  # type: Dict[str, str] # todo DRY headers, use scope
-        self._updateRequestHeader()
+        self._scope = UltimakerCloudScope(application)
 
         self._request_urls = {}  # type: Dict[str, str]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
@@ -105,7 +105,6 @@ class Toolbox(QObject, Extension):
         self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
-        self._application.getCuraAPI().account.accessTokenChanged.connect(self._updateRequestHeader)
 
     # Signals:
     # --------------------------------------------------------------------------
@@ -127,24 +126,12 @@ class Toolbox(QObject, Extension):
 
     ##  Go back to the start state (welcome screen or loading if no login required)
     def _restart(self):
-        self._updateRequestHeader()
         # For an Essentials build, login is mandatory
         if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
             self.setViewPage("welcome")
         else:
             self.setViewPage("loading")
             self._fetchPackageData()
-
-    def _updateRequestHeader(self):
-        self._request_headers = {
-            "User-Agent": "%s/%s (%s %s)" % (self._application.getApplicationName(),
-                                             self._application.getVersion(),
-                                             platform.system(),
-                                             platform.machine())
-        }
-        access_token = self._application.getCuraAPI().account.accessToken
-        if access_token:
-            self._request_headers["Authorization"] = "Bearer {}".format(access_token)
 
     def _resetUninstallVariables(self) -> None:
         self._package_id_to_uninstall = None  # type: Optional[str]
@@ -157,8 +144,8 @@ class Toolbox(QObject, Extension):
         url = "{base_url}/packages/{package_id}/ratings".format(base_url = CloudApiModel.api_url, package_id = package_id)
         data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
 
-        self._application.getHttpRequestManager().put(url, headers_dict = self._request_headers,
-                                                      data = data.encode())
+        self._application.getHttpRequestManager().put(url, data = data.encode(), scope = self._scope)
+
     @pyqtSlot(str)
     def subscribe(self, package_id: str) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
@@ -538,15 +525,14 @@ class Toolbox(QObject, Extension):
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
         Logger.log("d", "Requesting [%s] metadata from server.", request_type)
-        self._updateRequestHeader()
         url = self._request_urls[request_type]
 
         callback = lambda r, rt = request_type: self._onDataRequestFinished(rt, r)
         error_callback = lambda r, e, rt = request_type: self._onDataRequestError(rt, r, e)
         self._application.getHttpRequestManager().get(url,
-                                                      headers_dict = self._request_headers,
                                                       callback = callback,
-                                                      error_callback = error_callback)
+                                                      error_callback = error_callback,
+                                                      scope=self._scope)
 
     @pyqtSlot(str)
     def startDownload(self, url: str) -> None:
@@ -555,10 +541,12 @@ class Toolbox(QObject, Extension):
         callback = lambda r: self._onDownloadFinished(r)
         error_callback = lambda r, e: self._onDownloadFailed(r, e)
         download_progress_callback = self._onDownloadProgress
-        request_data = self._application.getHttpRequestManager().get(url, headers_dict = self._request_headers,
+        request_data = self._application.getHttpRequestManager().get(url,
                                                                      callback = callback,
                                                                      error_callback = error_callback,
-                                                                     download_progress_callback = download_progress_callback)
+                                                                     download_progress_callback = download_progress_callback,
+                                                                     scope=self._scope
+                                                                     )
 
         self._download_request_data = request_data
         self.setDownloadProgress(0)
