@@ -104,7 +104,7 @@ UM.Dialog{
                         {
                             width: parent.width
                             property int lineHeight: 60
-                            visible: !model.is_compatible
+                            visible: !model.is_compatible && !model.is_dismissed
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {
@@ -117,6 +117,7 @@ UM.Dialog{
                             }
                             Label
                             {
+                                id: packageName
                                 text: model.name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
@@ -124,6 +125,22 @@ UM.Dialog{
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
+                            }
+
+                            Label
+                            {
+                                id: dismissLabel
+                                text: "(Dismiss)"
+                                font: UM.Theme.getFont("small")
+                                anchors.right: parent.right
+                                anchors.verticalCenter: packageIcon.verticalCenter
+                                color: UM.Theme.getColor("text")
+
+                                MouseArea
+                                {
+                                    anchors.fill: parent
+                                    onClicked: toolbox.dismissIncompatiblePackage(model.package_id)
+                                }
                             }
                         }
                     }
