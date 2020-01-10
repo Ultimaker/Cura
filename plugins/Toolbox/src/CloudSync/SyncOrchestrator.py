@@ -11,6 +11,7 @@ from plugins.Toolbox.src.CloudSync.CloudPackageManager import CloudPackageManage
 from plugins.Toolbox.src.CloudSync.DiscrepanciesPresenter import DiscrepanciesPresenter
 from plugins.Toolbox.src.CloudSync.DownloadPresenter import DownloadPresenter
 from plugins.Toolbox.src.CloudSync.LicensePresenter import LicensePresenter
+from plugins.Toolbox.src.CloudSync.RestartApplicationPresenter import RestartApplicationPresenter
 from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 
 
@@ -41,22 +42,24 @@ class SyncOrchestrator(Extension):
         self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
 
-        self._discrepanciesPresenter = DiscrepanciesPresenter(app)  # type: DiscrepanciesPresenter
-        self._discrepanciesPresenter.packageMutations.connect(self._onPackageMutations)
+        self._discrepancies_presenter = DiscrepanciesPresenter(app)  # type: DiscrepanciesPresenter
+        self._discrepancies_presenter.packageMutations.connect(self._onPackageMutations)
 
-        self._downloadPresenter = DownloadPresenter(app)  # type: DownloadPresenter
+        self._download_Presenter = DownloadPresenter(app)  # type: DownloadPresenter
 
-        self._licensePresenter = LicensePresenter(app)  # type: LicensePresenter
-        self._licensePresenter.licenseAnswers.connect(self._onLicenseAnswers)
+        self._license_presenter = LicensePresenter(app)  # type: LicensePresenter
+        self._license_presenter.licenseAnswers.connect(self._onLicenseAnswers)
+
+        self._restart_presenter = RestartApplicationPresenter(app)
 
     def _onDiscrepancies(self, model: SubscribedPackagesModel):
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        self._discrepanciesPresenter.present(plugin_path, model)
+        self._discrepancies_presenter.present(plugin_path, model)
 
     def _onPackageMutations(self, mutations: SubscribedPackagesModel):
-        self._downloadPresenter = self._downloadPresenter.resetCopy()
-        self._downloadPresenter.done.connect(self._onDownloadFinished)
-        self._downloadPresenter.download(mutations)
+        self._download_Presenter = self._download_Presenter.resetCopy()
+        self._download_Presenter.done.connect(self._onDownloadFinished)
+        self._download_Presenter.download(mutations)
 
     ## Called when a set of packages have finished downloading
     # \param success_items: Dict[package_id, file_path]
@@ -64,7 +67,7 @@ class SyncOrchestrator(Extension):
     def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]):
         # todo handle error items
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
-        self._licensePresenter.present(plugin_path, success_items)
+        self._license_presenter.present(plugin_path, success_items)
 
     # Called when user has accepted / declined all licenses for the downloaded packages
     def _onLicenseAnswers(self, answers: [Dict[str, Any]]):
@@ -80,9 +83,11 @@ class SyncOrchestrator(Extension):
             else:
                 # todo unsubscribe declined packages
                 pass
-
             # delete temp file
             os.remove(item["package_path"])
+
+        self._restart_presenter.present()
+
 
 
 
