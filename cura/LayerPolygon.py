@@ -61,7 +61,7 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
+        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
         
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
@@ -153,7 +153,7 @@ class LayerPolygon:
         return self._color_map[line_types]
 
     def isInfillOrSkinType(self, line_types: numpy.ndarray) -> numpy.ndarray:
-        return self._isInfillOrSkinTypeMap[line_types]
+        return self._is_infill_or_skin_type_map[line_types]
 
     def lineMeshVertexCount(self) -> int:
         return self._vertex_end - self._vertex_begin

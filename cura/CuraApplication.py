@@ -15,7 +15,7 @@ from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qm
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application
-from UM.Decorators import override, deprecated
+from UM.Decorators import override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Message import Message
@@ -1870,16 +1870,14 @@ class CuraApplication(QtApplication):
         main_window = QtApplication.getInstance().getMainWindow()
         if main_window:
             return main_window.width()
-        else:
-            return 0
+        return 0
 
     @pyqtSlot(result = int)
     def appHeight(self) -> int:
         main_window = QtApplication.getInstance().getMainWindow()
         if main_window:
             return main_window.height()
-        else:
-            return 0
+        return 0
 
     @pyqtSlot()
     def deleteAll(self, only_selectable: bool = True) -> None:
