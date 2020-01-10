@@ -152,9 +152,9 @@ class Toolbox(QObject, Extension):
     def subscribe(self, package_id: str) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, self._sdk_version)
-            self._application.getHttpRequestManager().put(url=self._api_url_user_packages,
-                                                          headers_dict=self._request_headers,
-                                                          data=data.encode()
+            self._application.getHttpRequestManager().put(url=CloudApiModel.api_url_user_packages,
+                                                          data=data.encode(),
+                                                          scope=self._scope
                                                           )
 
     def getLicenseDialogPluginFileLocation(self) -> str:
@@ -299,13 +299,14 @@ class Toolbox(QObject, Extension):
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
-    def install(self, file_path: str) -> None:
-        self._package_manager.installPackage(file_path)
+    def install(self, file_path: str) -> Optional[str]:
+        package_id = self._package_manager.installPackage(file_path)
         self.installChanged.emit()
         self._updateInstalledModels()
         self.metadataChanged.emit()
         self._restart_required = True
         self.restartRequiredChanged.emit()
+        return package_id
 
     ##  Check package usage and uninstall
     #   If the package is in use, you'll get a confirmation dialog to set everything to default
@@ -380,7 +381,9 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def onLicenseAccepted(self):
         self.closeLicenseDialog.emit()
-        self.install(self.getLicenseDialogPluginFileLocation())
+        package_id = self.install(self.getLicenseDialogPluginFileLocation())
+        self.subscribe(package_id)
+
 
     @pyqtSlot()
     def onLicenseDeclined(self):
@@ -677,8 +680,10 @@ class Toolbox(QObject, Extension):
             self.openLicenseDialog(package_info["package_id"], license_content, file_path)
             return
 
-        self.install(file_path)
-        self.subscribe(package_info["package_id"])
+        package_id = self.install(file_path)
+        if package_id != package_info["package_id"]:
+            Logger.error("Installed package {} does not match {}".format(package_id, package_info["package_id"]))
+        self.subscribe(package_id)
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
