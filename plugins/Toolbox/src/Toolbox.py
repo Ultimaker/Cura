@@ -103,7 +103,6 @@ class Toolbox(QObject, Extension):
 
         # variables for the license agreement dialog
         self._license_dialog_plugin_file_location = ""  # type: str
-        self._restart_dialog_message = ""  # type: str
 
         self._application.initializationFinished.connect(self._onAppInitialized)
 
