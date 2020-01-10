@@ -8,12 +8,11 @@ from collections import deque
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
 from typing import Optional, Any, Set
 
-from UM.Application import Application
 from UM.Logger import Logger
 from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.Validator import ValidatorState
 
-
+import cura.CuraApplication
 #
 # This class performs setting error checks for the currently active machine.
 #
@@ -40,7 +39,7 @@ class MachineErrorChecker(QObject):
                                      # error check needs to take place while there is already one running at the moment.
         self._check_in_progress = False  # Whether there is an error check running in progress at the moment.
 
-        self._application = Application.getInstance()
+        self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
         self._start_time = 0.  # measure checking time
