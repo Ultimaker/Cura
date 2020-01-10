@@ -1,10 +1,13 @@
-from typing import List, Dict
+import os
+from typing import List, Dict, Any
 
 from UM.Extension import Extension
 from UM.Logger import Logger
+from UM.PackageManager import PackageManager
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.CloudSync.CloudPackageChecker import CloudPackageChecker
+from plugins.Toolbox.src.CloudSync.CloudPackageManager import CloudPackageManager
 from plugins.Toolbox.src.CloudSync.DiscrepanciesPresenter import DiscrepanciesPresenter
 from plugins.Toolbox.src.CloudSync.DownloadPresenter import DownloadPresenter
 from plugins.Toolbox.src.CloudSync.LicensePresenter import LicensePresenter
@@ -31,6 +34,9 @@ class SyncOrchestrator(Extension):
         # Differentiate This PluginObject from the Toolbox. self.getId() includes _name.
         # getPluginId() will return the same value for The toolbox extension and this one
         self._name = "SyncOrchestrator"
+
+        self._package_manager = app.getPackageManager()
+        self._cloud_package_manager = CloudPackageManager(app)
 
         self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
@@ -61,7 +67,24 @@ class SyncOrchestrator(Extension):
         self._licensePresenter.present(plugin_path, success_items)
 
     # Called when user has accepted / declined all licenses for the downloaded packages
-    def _onLicenseAnswers(self, answers: Dict[str, bool]):
+    def _onLicenseAnswers(self, answers: [Dict[str, Any]]):
         Logger.debug("Got license answers: {}", answers)
+
+        for item in answers:
+            if item["accepted"]:
+                # install and subscribe packages
+                if not self._package_manager.installPackage(item["package_path"]):
+                    Logger.error("could not install {}".format(item["package_id"]))
+                    continue
+                self._cloud_package_manager.subscribe(item["package_id"])
+            else:
+                # todo unsubscribe declined packages
+                pass
+
+            # delete temp file
+            os.remove(item["package_path"])
+
+
+
 
 

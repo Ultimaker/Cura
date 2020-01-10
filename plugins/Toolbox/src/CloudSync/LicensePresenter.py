@@ -19,7 +19,7 @@ class LicensePresenter(QObject):
         super().__init__()
         self._dialog = None  # type: Optional[QObject]
         self._package_manager = app.getPackageManager()  # type: PackageManager
-        # Emits List[Dict[str, str]] containing for example
+        # Emits List[Dict[str, [Any]] containing for example
         # [{ "package_id": "BarbarianPlugin", "package_path" : "/tmp/dg345as", "accepted" : True }]
         self.licenseAnswers = Signal()
 

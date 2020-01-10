@@ -1,5 +1,6 @@
 from PyQt5.QtNetwork import QNetworkRequest
 
+from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestScope import DefaultUserAgentScope
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
@@ -14,6 +15,10 @@ class UltimakerCloudScope(DefaultUserAgentScope):
     def request_hook(self, request: QNetworkRequest):
         super().request_hook(request)
         token = self._account.accessToken
+        if not self._account.isLoggedIn or token is None:
+            Logger.warning("Cannot add authorization to Cloud Api request")
+            return
+
         header_dict = {
             "Authorization": "Bearer {}".format(token)
         }

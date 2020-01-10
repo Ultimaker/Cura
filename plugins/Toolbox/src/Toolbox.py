@@ -150,12 +150,7 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def subscribe(self, package_id: str) -> None:
-        if self._application.getCuraAPI().account.isLoggedIn:
-            data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, self._sdk_version)
-            self._application.getHttpRequestManager().put(url=CloudApiModel.api_url_user_packages,
-                                                          data=data.encode(),
-                                                          scope=self._scope
-                                                          )
+        self._cloud_package_manager.subscribe(package_id)
 
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
