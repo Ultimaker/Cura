@@ -149,17 +149,17 @@ class LayerPolygon:
     def getColors(self):
         return self._colors
 
-    def mapLineTypeToColor(self, line_types):
+    def mapLineTypeToColor(self, line_types: numpy.ndarray) -> numpy.ndarray:
         return self._color_map[line_types]
 
-    def isInfillOrSkinType(self, line_types):
+    def isInfillOrSkinType(self, line_types: numpy.ndarray) -> numpy.ndarray:
         return self._isInfillOrSkinTypeMap[line_types]
 
-    def lineMeshVertexCount(self):
-        return (self._vertex_end - self._vertex_begin)
+    def lineMeshVertexCount(self) -> int:
+        return self._vertex_end - self._vertex_begin
 
-    def lineMeshElementCount(self):
-        return (self._index_end - self._index_begin)
+    def lineMeshElementCount(self) -> int:
+        return self._index_end - self._index_begin
 
     @property
     def extruder(self):
@@ -202,7 +202,7 @@ class LayerPolygon:
         return self._jump_count
 
     # Calculate normals for the entire polygon using numpy.
-    def getNormals(self):
+    def getNormals(self) -> numpy.ndarray:
         normals = numpy.copy(self._data)
         normals[:, 1] = 0.0 # We are only interested in 2D normals
 
@@ -226,11 +226,11 @@ class LayerPolygon:
 
         return normals
 
-    __color_map = None # type: numpy.ndarray[Any]
+    __color_map = None  # type: numpy.ndarray
 
     ##  Gets the instance of the VersionUpgradeManager, or creates one.
     @classmethod
-    def getColorMap(cls):
+    def getColorMap(cls) -> numpy.ndarray:
         if cls.__color_map is None:
             theme = QtApplication.getInstance().getTheme()
             cls.__color_map = numpy.array([

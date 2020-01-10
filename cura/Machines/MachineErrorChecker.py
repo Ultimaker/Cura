@@ -6,6 +6,7 @@ import time
 from collections import deque
 
 from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtProperty
+from typing import Optional, Any, Set
 
 from UM.Application import Application
 from UM.Logger import Logger
@@ -24,16 +25,16 @@ from UM.Settings.Validator import ValidatorState
 #
 class MachineErrorChecker(QObject):
 
-    def __init__(self, parent = None):
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
 
         self._global_stack = None
 
         self._has_errors = True  # Result of the error check, indicating whether there are errors in the stack
-        self._error_keys = set()  # A set of settings keys that have errors
-        self._error_keys_in_progress = set()  # The variable that stores the results of the currently in progress check
+        self._error_keys = set()  # type: Set[str] # A set of settings keys that have errors
+        self._error_keys_in_progress = set()  # type: Set[str]  # The variable that stores the results of the currently in progress check
 
-        self._stacks_and_keys_to_check = None  # a FIFO queue of tuples (stack, key) to check for errors
+        self._stacks_and_keys_to_check = None  # type: Optional[deque]  # a FIFO queue of tuples (stack, key) to check for errors
 
         self._need_to_check = False  # Whether we need to schedule a new check or not. This flag is set when a new
                                      # error check needs to take place while there is already one running at the moment.
@@ -42,7 +43,7 @@ class MachineErrorChecker(QObject):
         self._application = Application.getInstance()
         self._machine_manager = self._application.getMachineManager()
 
-        self._start_time = 0  # measure checking time
+        self._start_time = 0.  # measure checking time
 
         # This timer delays the starting of error check so we can react less frequently if the user is frequently
         # changing settings.
@@ -94,13 +95,13 @@ class MachineErrorChecker(QObject):
 
     #   Start the error check for property changed
     #   this is seperate from the startErrorCheck because it ignores a number property types
-    def startErrorCheckPropertyChanged(self, key, property_name):
+    def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
         if property_name != "value":
             return
         self.startErrorCheck()
 
     # Starts the error check timer to schedule a new error check.
-    def startErrorCheck(self, *args) -> None:
+    def startErrorCheck(self, *args: Any) -> None:
         if not self._check_in_progress:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()

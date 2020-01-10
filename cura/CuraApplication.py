@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable, List
+from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
 
 import numpy
 
@@ -193,7 +193,7 @@ class CuraApplication(QtApplication):
 
         self._cura_package_manager = None
 
-        self._machine_action_manager = None
+        self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
 
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
@@ -699,7 +699,7 @@ class CuraApplication(QtApplication):
             self._message_box_callback_arguments = []
 
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
-    def saveSettings(self):
+    def saveSettings(self) -> None:
         if not self.started:
             # Do not do saving during application start or when data should not be saved on quit.
             return
@@ -989,8 +989,8 @@ class CuraApplication(QtApplication):
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
     #   It wants to give this function an engine and script engine, but we don't care about that.
-    def getMachineActionManager(self, *args):
-        return self._machine_action_manager
+    def getMachineActionManager(self, *args: Any) -> MachineActionManager.MachineActionManager:
+        return cast(MachineActionManager.MachineActionManager, self._machine_action_manager)
 
     @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self) -> MaterialManagementModel:

@@ -1,6 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import List
+from typing import List, Optional
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Logger import Logger
@@ -8,6 +8,7 @@ from UM.Math.Polygon import Polygon
 from UM.Math.Vector import Vector
 from UM.Scene.SceneNode import SceneNode
 from cura.Arranging.ShapeArray import ShapeArray
+from cura.BuildVolume import BuildVolume
 from cura.Scene import ZOffsetDecorator
 
 from collections import namedtuple
@@ -27,7 +28,7 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 #
 #   Note: Make sure the scale is the same between ShapeArray objects and the Arrange instance.
 class Arrange:
-    build_volume = None
+    build_volume = None  # type: Optional[BuildVolume]
 
     def __init__(self, x, y, offset_x, offset_y, scale= 0.5):
         self._scale = scale  # convert input coordinates to arrange coordinates

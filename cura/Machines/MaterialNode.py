@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from typing import Dict
     from cura.Machines.VariantNode import VariantNode
 
+
 ##  Represents a material in the container tree.
 #
 #   Its subcontainers are quality profiles.
