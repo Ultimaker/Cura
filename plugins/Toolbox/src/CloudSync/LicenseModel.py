@@ -40,7 +40,7 @@ class LicenseModel(QObject):
             self._license_text = license_text
             self.licenseTextChanged.emit()
 
-    def setCurrentPageNumber(self, idx: int) -> None:
+    def setCurrentPageIdx(self, idx: int) -> None:
         self._current_page_idx = idx
         self._updateDialogTitle()
 

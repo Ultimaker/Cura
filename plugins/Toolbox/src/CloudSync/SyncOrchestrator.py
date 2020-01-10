@@ -4,7 +4,7 @@ from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox import CloudPackageChecker
+from plugins.Toolbox.src.CloudSync.CloudPackageChecker import CloudPackageChecker
 from plugins.Toolbox.src.CloudSync.DiscrepanciesPresenter import DiscrepanciesPresenter
 from plugins.Toolbox.src.CloudSync.DownloadPresenter import DownloadPresenter
 from plugins.Toolbox.src.CloudSync.LicensePresenter import LicensePresenter

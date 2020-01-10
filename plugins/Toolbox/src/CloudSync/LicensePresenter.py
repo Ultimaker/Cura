@@ -78,7 +78,7 @@ class LicensePresenter(QObject):
             self.onLicenseAccepted()
             return
 
-        self._license_model.setCurrentPageNumber(self._current_package_idx)
+        self._license_model.setCurrentPageIdx(self._current_package_idx)
         self._license_model.setPackageName(package_model["package_id"])
         self._license_model.setLicenseText(license_content)
 

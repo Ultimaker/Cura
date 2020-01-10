@@ -22,6 +22,7 @@ from cura.Machines.ContainerTree import ContainerTree
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 
 from .AuthorsModel import AuthorsModel
+from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
 from .CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
@@ -77,6 +78,8 @@ class Toolbox(QObject, Extension):
         self._materials_installed_model = PackagesModel(self)
         self._materials_generic_model = PackagesModel(self)
 
+        self._license_model = LicenseModel()
+
         # These properties are for keeping track of the UI state:
         # ----------------------------------------------------------------------
         # View category defines which filter to use, and therefore effectively
@@ -99,8 +102,6 @@ class Toolbox(QObject, Extension):
         self._restart_required = False  # type: bool
 
         # variables for the license agreement dialog
-        self._license_dialog_plugin_name = ""  # type: str
-        self._license_dialog_license_content = ""  # type: str
         self._license_dialog_plugin_file_location = ""  # type: str
         self._restart_dialog_message = ""  # type: str
 
@@ -122,6 +123,7 @@ class Toolbox(QObject, Extension):
     filterChanged = pyqtSignal()
     metadataChanged = pyqtSignal()
     showLicenseDialog = pyqtSignal()
+    closeLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
 
     ##  Go back to the start state (welcome screen or loading if no login required)
@@ -155,21 +157,16 @@ class Toolbox(QObject, Extension):
                                                           data=data.encode()
                                                           )
 
-    @pyqtSlot(result = str)
-    def getLicenseDialogPluginName(self) -> str:
-        return self._license_dialog_plugin_name
-
-    @pyqtSlot(result = str)
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
 
-    @pyqtSlot(result = str)
-    def getLicenseDialogLicenseContent(self) -> str:
-        return self._license_dialog_license_content
-
     def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str) -> None:
-        self._license_dialog_plugin_name = plugin_name
-        self._license_dialog_license_content = license_content
+        # Set page 1/1 when opening the dialog for a single package
+        self._license_model.setCurrentPageIdx(0)
+        self._license_model.setPageCount(1)
+
+        self._license_model.setPackageName(plugin_name)
+        self._license_model.setLicenseText(license_content)
         self._license_dialog_plugin_file_location = plugin_file_location
         self.showLicenseDialog.emit()
 
@@ -227,7 +224,11 @@ class Toolbox(QObject, Extension):
             return None
         path = os.path.join(plugin_path, "resources", "qml", qml_name)
 
-        dialog = self._application.createQmlComponent(path, {"toolbox": self})
+        dialog = self._application.createQmlComponent(path, {
+            "toolbox": self,
+            "handler": self,
+            "licenseModel": self._license_model
+        })
         if not dialog:
             raise Exception("Failed to create Marketplace dialog")
         return dialog
@@ -375,6 +376,15 @@ class Toolbox(QObject, Extension):
             self.uninstall(self._package_id_to_uninstall)
         self._resetUninstallVariables()
         self.closeConfirmResetDialog()
+
+    @pyqtSlot()
+    def onLicenseAccepted(self):
+        self.closeLicenseDialog.emit()
+        self.install(self.getLicenseDialogPluginFileLocation())
+
+    @pyqtSlot()
+    def onLicenseDeclined(self):
+        self.closeLicenseDialog.emit()
 
     def _markPackageMaterialsAsToBeUninstalled(self, package_id: str) -> None:
         container_registry = self._application.getContainerRegistry()

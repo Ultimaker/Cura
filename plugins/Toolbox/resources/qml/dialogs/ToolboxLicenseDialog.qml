@@ -19,9 +19,6 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
     height: minimumHeight
-    property var pluginName;
-    property var licenseContent;
-    property var pluginFileLocation;
 
     Item
     {

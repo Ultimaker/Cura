@@ -4,6 +4,7 @@ from typing import Optional
 from PyQt5.QtCore import QObject
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
+from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
@@ -11,7 +12,6 @@ from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
-from plugins.Toolbox.src.Toolbox import i18n_catalog
 
 
 class CloudPackageChecker(QObject):
@@ -25,6 +25,7 @@ class CloudPackageChecker(QObject):
         self._model = SubscribedPackagesModel()
 
         self._application.initializationFinished.connect(self._onAppInitialized)
+        self._i18n_catalog = i18nCatalog("cura")
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -56,13 +57,13 @@ class CloudPackageChecker(QObject):
 
     def _handlePackageDiscrepancies(self):
         Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
-        sync_message = Message(i18n_catalog.i18nc(
+        sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
             "\nDo you want to sync material and software packages with your account?"),
             lifetime=0,
-            title=i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
         sync_message.addAction("sync",
-                               name=i18n_catalog.i18nc("@action:button", "Sync"),
+                               name=self._i18n_catalog.i18nc("@action:button", "Sync"),
                                icon="",
                                description="Sync your Cloud subscribed packages to your local environment.",
                                button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
