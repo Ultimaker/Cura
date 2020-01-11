@@ -558,8 +558,8 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def dismissIncompatiblePackage(self, package_id):
-        print("---in toolbox: %s" % package_id)
         self._models["subscribed_packages"].setDismiss(package_id)
+        self._package_manager.setAsDismissed(package_id)
 
     # Make API Calls
     # --------------------------------------------------------------------------
@@ -668,12 +668,17 @@ class Toolbox(QObject, Extension):
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
+        user_dismissed_packages = list(self._package_manager.getDismissedPackages())
+
+        user_installed_packages += user_dismissed_packages
 
         # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
+
         if package_discrepancy:
             self._models["subscribed_packages"].addValue(package_discrepancy)
             self._models["subscribed_packages"].update()
+            self._models["subscribed_packages"].addDismissed(user_dismissed_packages)
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
@@ -802,11 +807,11 @@ class Toolbox(QObject, Extension):
         return cast(SubscribedPackagesModel, self._models["subscribed_packages"])
 
     @pyqtProperty(bool, constant=True)
-    def has_compatible_packages(self) -> str:
+    def has_compatible_packages(self) -> bool:
         return self._models["subscribed_packages"].hasCompatiblePackages()
 
     @pyqtProperty(bool, constant=True)
-    def has_incompatible_packages(self) -> str:
+    def has_incompatible_packages(self) -> bool:
         return self._models["subscribed_packages"].hasIncompatiblePackages()
 
     @pyqtProperty(QObject, constant = True)

@@ -55,7 +55,6 @@ class SubscribedPackagesModel(ListModel):
                 package.update({"icon_url": ""})
 
             self._items.append(package)
-        print("All items:: %s" % self._items)
         self.setItems(self._items)
 
 
@@ -73,11 +72,14 @@ class SubscribedPackagesModel(ListModel):
                 has_incompatible_items = True
         return has_incompatible_items
 
-    @pyqtSlot(str)
     def setDismiss(self, package_id) -> None:
         package_id_in_list_of_items = self.find(key="package_id", value=package_id)
         if package_id_in_list_of_items != -1:
             self.setProperty(package_id_in_list_of_items, property="is_dismissed", value=True)
             Logger.debug("Package {} has been dismissed".format(package_id))
 
-        # Now store this package_id as DISMISSED somewhere in local files
+    def addDismissed(self, list_of_dismissed) -> None:
+        for package in list_of_dismissed:
+            item = self.find(key="package_id", value=package)
+            if item != -1:
+                self.setProperty(item, property="is_dismissed", value=True)
