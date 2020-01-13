@@ -4,10 +4,8 @@
 from PyQt5.QtCore import Qt
 from UM.Qt.ListModel import ListModel
 from cura import ApplicationMetadata
-
-from PyQt5.QtCore import pyqtSlot
-
 from UM.Logger import Logger
+from typing import List
 
 
 class SubscribedPackagesModel(ListModel):
@@ -19,32 +17,30 @@ class SubscribedPackagesModel(ListModel):
         self._discrepancies = None
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
 
-        self.addRoleName(Qt.UserRole + 1, "name")
-        self.addRoleName(Qt.UserRole + 2, "icon_url")
-        self.addRoleName(Qt.UserRole + 3, "is_compatible")
-        self.addRoleName(Qt.UserRole + 4, "is_dismissed")
-        self.addRoleName(Qt.UserRole + 5, "package_id")
+        self.addRoleName(Qt.UserRole + 1, "package_id")
+        self.addRoleName(Qt.UserRole + 2, "display_name")
+        self.addRoleName(Qt.UserRole + 3, "icon_url")
+        self.addRoleName(Qt.UserRole + 4, "is_compatible")
+        self.addRoleName(Qt.UserRole + 5, "is_dismissed")
 
-
-    def setMetadata(self, data):
+    def setMetadata(self, data) -> None:
         if self._metadata != data:
             self._metadata = data
 
-    def addValue(self, discrepancy):
+    def addDiscrepancies(self, discrepancy: List[str]) -> None:
         if self._discrepancies != discrepancy:
             self._discrepancies = discrepancy
 
-    def update(self):
+    def initialize(self) -> None:
         self._items.clear()
 
         for item in self._metadata:
             if item["package_id"] not in self._discrepancies:
                 continue
-            package = {"package_id": item["package_id"],
-                       "name": item["display_name"],
-                       "sdk_versions": item["sdk_versions"],
-                       "is_dismissed": False
-                       }
+            package = {"package_id":    item["package_id"],
+                       "display_name":  item["display_name"],
+                       "sdk_versions":  item["sdk_versions"],
+                       "is_dismissed":  False}
             if self._sdk_version not in item["sdk_versions"]:
                 package.update({"is_compatible": False})
             else:
@@ -56,7 +52,6 @@ class SubscribedPackagesModel(ListModel):
 
             self._items.append(package)
         self.setItems(self._items)
-
 
     def hasCompatiblePackages(self) -> bool:
         has_compatible_items  = False
@@ -72,14 +67,16 @@ class SubscribedPackagesModel(ListModel):
                 has_incompatible_items = True
         return has_incompatible_items
 
-    def setDismiss(self, package_id) -> None:
-        package_id_in_list_of_items = self.find(key="package_id", value=package_id)
-        if package_id_in_list_of_items != -1:
-            self.setProperty(package_id_in_list_of_items, property="is_dismissed", value=True)
+    # Sets the "is_compatible" to True for the given package, in memory
+    def dismissPackage(self, package_id: str) -> None:
+        package = self.find(key="package_id", value=package_id)
+        if package != -1:
+            self.setProperty(package, property="is_dismissed", value=True)
             Logger.debug("Package {} has been dismissed".format(package_id))
 
-    def addDismissed(self, list_of_dismissed) -> None:
-        for package in list_of_dismissed:
-            item = self.find(key="package_id", value=package)
-            if item != -1:
-                self.setProperty(item, property="is_dismissed", value=True)
+    # Reads the dismissed_packages from user config file and applies them so they won't be shown in the Compatibility Dialog
+    def applyDismissedPackages(self, dismissed_packages: List[str]) -> None:
+        for package in dismissed_packages:
+            exists = self.find(key="package_id", value=package)
+            if exists != -1:
+                self.setProperty(exists, property="is_dismissed", value=True)

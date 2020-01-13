@@ -74,7 +74,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -117,8 +117,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                id: packageName
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -129,7 +128,6 @@ UM.Dialog{
 
                             Label
                             {
-                                id: dismissLabel
                                 text: "(Dismiss)"
                                 font: UM.Theme.getFont("small")
                                 anchors.right: parent.right

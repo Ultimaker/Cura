@@ -557,9 +557,9 @@ class Toolbox(QObject, Extension):
         return populated == len(self._server_response_data.items())
 
     @pyqtSlot(str)
-    def dismissIncompatiblePackage(self, package_id):
-        self._models["subscribed_packages"].setDismiss(package_id)
-        self._package_manager.setAsDismissed(package_id)
+    def dismissIncompatiblePackage(self, package_id: str):
+        self._models["subscribed_packages"].dismissPackage(package_id)  # sets "is_compatible" to True, in-memory
+        self._package_manager.dismissPackage(package_id)  # adds this package_id as dismissed in the user config file
 
     # Make API Calls
     # --------------------------------------------------------------------------
@@ -668,17 +668,15 @@ class Toolbox(QObject, Extension):
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
-        user_dismissed_packages = list(self._package_manager.getDismissedPackages())
-
-        user_installed_packages += user_dismissed_packages
-
-        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
+        user_dismissed_packages = self._package_manager.getDismissedPackages()
+        if user_dismissed_packages:
+            user_installed_packages += user_dismissed_packages
+        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
-
         if package_discrepancy:
-            self._models["subscribed_packages"].addValue(package_discrepancy)
-            self._models["subscribed_packages"].update()
-            self._models["subscribed_packages"].addDismissed(user_dismissed_packages)
+            self._models["subscribed_packages"].addDiscrepancies(package_discrepancy)
+            self._models["subscribed_packages"].initialize()
+            self._models["subscribed_packages"].applyDismissedPackages(user_dismissed_packages)
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
