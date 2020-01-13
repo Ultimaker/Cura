@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -21,7 +21,16 @@ UM.MainWindow
     id: base
 
     // Cura application window title
-    title: PrintInformation.jobName + " - " + catalog.i18nc("@title:window", CuraApplication.applicationDisplayName)
+    title:
+    {
+        let result = "";
+        if(PrintInformation.jobName != "")
+        {
+            result += PrintInformation.jobName + " - ";
+        }
+        result += CuraApplication.applicationDisplayName;
+        return result;
+    }
 
     backgroundColor: UM.Theme.getColor("viewport_background")
 
