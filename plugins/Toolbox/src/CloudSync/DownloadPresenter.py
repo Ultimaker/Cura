@@ -29,7 +29,7 @@ class DownloadPresenter:
         self._scope = UltimakerCloudScope(app)
 
         self._started = False
-        self._progress_message = None  # type: Optional[Message]
+        self._progress_message = self._createProgressMessage()
         self._progress = {}  # type: Dict[str, Dict[str, Any]] # package_id, Dict
         self._error = []  # type: List[str] # package_id
 
@@ -57,7 +57,7 @@ class DownloadPresenter:
             }
 
         self._started = True
-        self._showProgressMessage()
+        self._progress_message.show()
 
     def abort(self):
         manager = HttpRequestManager.getInstance()
@@ -70,15 +70,14 @@ class DownloadPresenter:
         self.done.disconnectAll()
         return DownloadPresenter(self._app)
 
-    def _showProgressMessage(self):
-        self._progress_message = Message(i18n_catalog.i18nc(
+    def _createProgressMessage(self) -> Message:
+        return Message(i18n_catalog.i18nc(
             "@info:generic",
             "\nSyncing..."),
             lifetime = 0,
             use_inactivity_timer=False,
             progress = 0.0,
             title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
-        self._progress_message.show()
 
     def _onFinished(self, package_id: str, reply: QNetworkReply):
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
@@ -110,7 +109,7 @@ class DownloadPresenter:
 
         self._progress_message.setProgress(100.0 * (received / total))  # [0 .. 100] %
 
-    def _onError(self, package_id: str):
+    def _onError(self, package_id: str) -> None:
         self._progress.pop(package_id)
         self._error.append(package_id)
         self._checkDone()
@@ -125,3 +124,4 @@ class DownloadPresenter:
 
         self._progress_message.hide()
         self.done.emit(success_items, error_items)
+        return True

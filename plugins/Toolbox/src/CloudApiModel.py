@@ -1,3 +1,5 @@
+from typing import Union
+
 from cura import ApplicationMetadata, UltimakerCloudAuthentication
 
 

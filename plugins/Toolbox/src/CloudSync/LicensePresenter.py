@@ -1,5 +1,5 @@
 import os
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
@@ -24,7 +24,7 @@ class LicensePresenter(QObject):
         self.licenseAnswers = Signal()
 
         self._current_package_idx = 0
-        self._package_models = None  # type: Optional[Dict]
+        self._package_models = []  # type: List[Dict]
         self._license_model = LicenseModel()  # type: LicenseModel
 
         self._app = app
