@@ -73,6 +73,8 @@ class SyncOrchestrator(Extension):
     def _onLicenseAnswers(self, answers: [Dict[str, Any]]):
         Logger.debug("Got license answers: {}", answers)
 
+        has_changes = False  # True when at least one package is installed
+
         for item in answers:
             if item["accepted"]:
                 # install and subscribe packages
@@ -80,13 +82,15 @@ class SyncOrchestrator(Extension):
                     Logger.error("could not install {}".format(item["package_id"]))
                     continue
                 self._cloud_package_manager.subscribe(item["package_id"])
+                has_changes = True
             else:
                 # todo unsubscribe declined packages
                 pass
             # delete temp file
             os.remove(item["package_path"])
 
-        self._restart_presenter.present()
+        if has_changes:
+            self._restart_presenter.present()
 
 
 
