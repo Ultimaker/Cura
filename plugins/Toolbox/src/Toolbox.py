@@ -164,6 +164,14 @@ class Toolbox(QObject, Extension):
 
         self._application.getHttpRequestManager().put(url, headers_dict = self._request_headers,
                                                       data = data.encode())
+    @pyqtSlot(str)
+    def subscribe(self, package_id: str) -> None:
+        if self._application.getCuraAPI().account.isLoggedIn:
+            data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, self._sdk_version)
+            self._application.getHttpRequestManager().put(url=self._api_url_user_packages,
+                                                          headers_dict=self._request_headers,
+                                                          data=data.encode()
+                                                          )
 
     @pyqtSlot(result = str)
     def getLicenseDialogPluginName(self) -> str:
@@ -221,12 +229,6 @@ class Toolbox(QObject, Extension):
             self._makeRequestByType("updates")
         self._fetchUserSubscribedPackages()
 
-    @pyqtSlot()
-    def browsePackages(self) -> None:
-        # Make remote requests:
-        self._fetchPackageData()
-        # Gather installed packages:
-        self._updateInstalledModels()
 
     def _fetchUserSubscribedPackages(self):
         if self._application.getCuraAPI().account.isLoggedIn:
@@ -235,6 +237,7 @@ class Toolbox(QObject, Extension):
     def _fetchPackageData(self) -> None:
         self._makeRequestByType("packages")
         self._makeRequestByType("authors")
+        self._updateInstalledModels()
 
     # Displays the toolbox
     @pyqtSlot()
@@ -733,6 +736,7 @@ class Toolbox(QObject, Extension):
             return
 
         self.install(file_path)
+        self.subscribe(package_info["package_id"])
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -791,6 +795,14 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def subscribedPackagesModel(self) -> SubscribedPackagesModel:
         return cast(SubscribedPackagesModel, self._models["subscribed_packages"])
+
+    @pyqtProperty(bool, constant=True)
+    def has_compatible_packages(self) -> bool:
+        return self._models["subscribed_packages"].hasCompatiblePackages()
+
+    @pyqtProperty(bool, constant=True)
+    def has_incompatible_packages(self) -> bool:
+        return self._models["subscribed_packages"].hasIncompatiblePackages()
 
     @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:

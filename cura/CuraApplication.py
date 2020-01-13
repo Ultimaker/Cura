@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable, List
+from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
 
 import numpy
 
@@ -15,7 +15,7 @@ from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qm
 
 from UM.i18n import i18nCatalog
 from UM.Application import Application
-from UM.Decorators import override, deprecated
+from UM.Decorators import override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
 from UM.Message import Message
@@ -193,7 +193,7 @@ class CuraApplication(QtApplication):
 
         self._cura_package_manager = None
 
-        self._machine_action_manager = None
+        self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
 
         self.empty_container = None  # type: EmptyInstanceContainer
         self.empty_definition_changes_container = None  # type: EmptyInstanceContainer
@@ -266,7 +266,6 @@ class CuraApplication(QtApplication):
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
 
-        from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
         self._container_registry_class = CuraContainerRegistry
         # Redefined here in order to please the typing.
         self._container_registry = None # type: CuraContainerRegistry
@@ -699,7 +698,7 @@ class CuraApplication(QtApplication):
             self._message_box_callback_arguments = []
 
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
-    def saveSettings(self):
+    def saveSettings(self) -> None:
         if not self.started:
             # Do not do saving during application start or when data should not be saved on quit.
             return
@@ -989,8 +988,8 @@ class CuraApplication(QtApplication):
     ##  Get the machine action manager
     #   We ignore any *args given to this, as we also register the machine manager as qml singleton.
     #   It wants to give this function an engine and script engine, but we don't care about that.
-    def getMachineActionManager(self, *args):
-        return self._machine_action_manager
+    def getMachineActionManager(self, *args: Any) -> MachineActionManager.MachineActionManager:
+        return cast(MachineActionManager.MachineActionManager, self._machine_action_manager)
 
     @pyqtSlot(result = QObject)
     def getMaterialManagementModel(self) -> MaterialManagementModel:
@@ -1443,7 +1442,7 @@ class CuraApplication(QtApplication):
             if center is not None:
                 object_centers.append(center)
 
-        if object_centers and len(object_centers) > 0:
+        if object_centers:
             middle_x = sum([v.x for v in object_centers]) / len(object_centers)
             middle_y = sum([v.y for v in object_centers]) / len(object_centers)
             middle_z = sum([v.z for v in object_centers]) / len(object_centers)
@@ -1493,7 +1492,7 @@ class CuraApplication(QtApplication):
                 if center is not None:
                     object_centers.append(center)
 
-            if object_centers and len(object_centers) > 0:
+            if object_centers:
                 middle_x = sum([v.x for v in object_centers]) / len(object_centers)
                 middle_y = sum([v.y for v in object_centers]) / len(object_centers)
                 middle_z = sum([v.z for v in object_centers]) / len(object_centers)
@@ -1675,7 +1674,7 @@ class CuraApplication(QtApplication):
         extension = os.path.splitext(f)[1]
         extension = extension.lower()
         filename = os.path.basename(f)
-        if len(self._currently_loading_files) > 0:
+        if self._currently_loading_files:
             # If a non-slicable file is already being loaded, we prevent loading of any further non-slicable files
             if extension in self._non_sliceable_extensions:
                 message = Message(
@@ -1796,8 +1795,8 @@ class CuraApplication(QtApplication):
                 node.addDecorator(build_plate_decorator)
             build_plate_decorator.setBuildPlateNumber(target_build_plate)
 
-            op = AddSceneNodeOperation(node, scene.getRoot())
-            op.push()
+            operation = AddSceneNodeOperation(node, scene.getRoot())
+            operation.push()
 
             node.callDecoration("setActiveExtruder", default_extruder_id)
             scene.sceneChanged.emit(node)
@@ -1871,16 +1870,14 @@ class CuraApplication(QtApplication):
         main_window = QtApplication.getInstance().getMainWindow()
         if main_window:
             return main_window.width()
-        else:
-            return 0
+        return 0
 
     @pyqtSlot(result = int)
     def appHeight(self) -> int:
         main_window = QtApplication.getInstance().getMainWindow()
         if main_window:
             return main_window.height()
-        else:
-            return 0
+        return 0
 
     @pyqtSlot()
     def deleteAll(self, only_selectable: bool = True) -> None:
