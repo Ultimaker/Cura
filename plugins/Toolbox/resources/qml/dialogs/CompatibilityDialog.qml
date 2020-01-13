@@ -125,17 +125,24 @@ UM.Dialog{
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
                             }
-                            Label
+                            UM.TooltipArea
                             {
-                                text: "(Dismiss)"
-                                font: UM.Theme.getFont("small")
+                                width: childrenRect.width;
+                                height: childrenRect.height;
+                                text: catalog.i18nc("@info:tooltip", "Dismisses the package and won't be shown in this dialog anymore")
                                 anchors.right: parent.right
                                 anchors.verticalCenter: packageIcon.verticalCenter
-                                color: UM.Theme.getColor("text")
-                                MouseArea
+                                Label
                                 {
-                                    anchors.fill: parent
-                                    onClicked: toolbox.dismissIncompatiblePackage(model.package_id)
+                                    text: "(Dismiss)"
+                                    font: UM.Theme.getFont("small")
+                                    color: UM.Theme.getColor("text")
+                                    MouseArea
+                                    {
+                                        cursorShape: Qt.PointingHandCursor
+                                        anchors.fill: parent
+                                        onClicked: toolbox.dismissIncompatiblePackage(model.package_id)
+                                    }
                                 }
                             }
                         }
