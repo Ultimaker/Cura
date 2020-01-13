@@ -125,7 +125,6 @@ UM.Dialog{
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
                             }
-
                             Label
                             {
                                 text: "(Dismiss)"
@@ -133,7 +132,6 @@ UM.Dialog{
                                 anchors.right: parent.right
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
-
                                 MouseArea
                                 {
                                     anchors.fill: parent
