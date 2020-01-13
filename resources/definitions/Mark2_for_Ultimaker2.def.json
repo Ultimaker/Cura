@@ -58,9 +58,6 @@
         "machine_nozzle_head_distance": {
             "default_value": 5
         },
-        "machine_nozzle_expansion_angle": {
-            "default_value": 45
-        },
         "machine_heat_zone_length": {
             "default_value": 20
         },

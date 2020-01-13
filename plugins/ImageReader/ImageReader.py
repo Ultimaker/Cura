@@ -5,7 +5,7 @@ import numpy
 
 import math
 
-from PyQt5.QtGui import QImage, qRed, qGreen, qBlue
+from PyQt5.QtGui import QImage, qRed, qGreen, qBlue, qAlpha
 from PyQt5.QtCore import Qt
 
 from UM.Mesh.MeshReader import MeshReader
@@ -137,6 +137,11 @@ class ImageReader(MeshReader):
         else:
             height_data *= scale_vector.y
             height_data += base_height
+
+        if img.hasAlphaChannel():
+            for x in range(0, width):
+                for y in range(0, height):
+                    height_data[y, x] *= qAlpha(img.pixel(x, y)) / 255.0
 
         heightmap_face_count = 2 * height_minus_one * width_minus_one
         total_face_count = heightmap_face_count + (width_minus_one * 2) * (height_minus_one * 2) + 2

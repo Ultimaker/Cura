@@ -65,10 +65,7 @@ class SolidView(View):
             else:
                 self._support_angle = support_angle_stack.getProperty("support_angle", "value")
 
-    def beginRendering(self):
-        scene = self.getController().getScene()
-        renderer = self.getRenderer()
-
+    def _checkSetup(self):
         if not self._extruders_model:
             self._extruders_model = Application.getInstance().getExtrudersModel()
 
@@ -94,6 +91,12 @@ class SolidView(View):
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
+
+    def beginRendering(self):
+        scene = self.getController().getScene()
+        renderer = self.getRenderer()
+
+        self._checkSetup()
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:

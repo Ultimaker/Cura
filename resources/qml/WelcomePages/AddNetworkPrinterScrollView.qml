@@ -66,7 +66,7 @@ Item
             {
                 id: networkPrinterListView
                 anchors.fill: parent
-                model: CuraApplication.getDiscoveredPrintersModel().discoveredPrinters
+                model: contentLoader.enabled ? CuraApplication.getDiscoveredPrintersModel().discoveredPrinters: undefined
 
                 section.property: "modelData.sectionName"
                 section.criteria: ViewSection.FullString

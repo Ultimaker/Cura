@@ -204,7 +204,7 @@ class DiscoveredPrintersModel(QObject):
     @pyqtProperty("QVariantMap", notify = discoveredPrintersChanged)
     def discoveredPrintersByAddress(self) -> Dict[str, DiscoveredPrinter]:
         return self._discovered_printer_by_ip_dict
-
+    
     @pyqtProperty("QVariantList", notify = discoveredPrintersChanged)
     def discoveredPrinters(self) -> List["DiscoveredPrinter"]:
         item_list = list(

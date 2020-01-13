@@ -1,5 +1,5 @@
 import time
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 from PyQt5.QtNetwork import QNetworkAccessManager
 from PyQt5.QtCore import QUrl
@@ -9,8 +9,8 @@ from cura.PrinterOutput.PrinterOutputDevice import ConnectionState
 
 def test_properties():
     properties = { b"firmware_version": b"12", b"printer_type": b"BHDHAHHADAD", b"address": b"ZOMG", b"name": b":(", b"testProp": b"zomg"}
-
-    output_device = NetworkedPrinterOutputDevice(device_id = "test", address = "127.0.0.1", properties = properties)
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id = "test", address = "127.0.0.1", properties = properties)
     assert output_device.address == "ZOMG"
     assert output_device.firmwareVersion == "12"
     assert output_device.printerType == "BHDHAHHADAD"
@@ -24,7 +24,8 @@ def test_properties():
 
 
 def test_authenticationState():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
 
     output_device.setAuthenticationState(AuthState.Authenticated)
 
@@ -32,7 +33,8 @@ def test_authenticationState():
 
 
 def test_post():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
@@ -53,7 +55,8 @@ def test_post():
 
 
 def test_get():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
@@ -74,7 +77,8 @@ def test_get():
 
 
 def test_delete():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
@@ -95,7 +99,8 @@ def test_delete():
 
 
 def test_put():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     mocked_network_manager = MagicMock()
     output_device._manager = mocked_network_manager
 
@@ -116,7 +121,8 @@ def test_put():
 
 
 def test_timeout():
-    output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
+    with patch("UM.Qt.QtApplication.QtApplication.getInstance"):
+        output_device = NetworkedPrinterOutputDevice(device_id="test", address="127.0.0.1", properties={})
     output_device.setConnectionState(ConnectionState.Connected)
 
     assert output_device.connectionState == ConnectionState.Connected

@@ -48,7 +48,7 @@ SettingItem
                 case "False":
                     return false
                 default:
-                    return value
+                    return (value !== undefined) ? value : false
             }
         }
 

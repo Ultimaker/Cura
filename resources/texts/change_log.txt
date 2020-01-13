@@ -1,3 +1,8 @@
+[4.4.1]
+* Bug fixes
+ - Fixed problem where wrong material was selected by default.
+ - Fixed a problem where custom profiles were disappearing when loading a project without a nozzle profile.
+
 [4.4.0]
 *Intent profiles. 
 What’s the intent of your print? A rapid prototype? A visual prototype? An end-use part with specific holes sizes? Intent profiles accelerate the CAD-CAM workflow by preconfiguring all the right settings in Ultimaker Cura for each of these use cases. Simply select a profile that matches the intent of your design, slice, and you’re ready to print immediately, without the need to adjust the typical settings. For now, there are three Intent profiles: 

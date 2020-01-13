@@ -6,9 +6,9 @@ from UM.Operations.Operation import Operation
 
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
+
 ##  Simple operation to set the buildplate number of a scenenode.
 class SetBuildPlateNumberOperation(Operation):
-    
     def __init__(self, node: SceneNode, build_plate_nr: int) -> None:
         super().__init__()
         self._node = node
@@ -16,11 +16,11 @@ class SetBuildPlateNumberOperation(Operation):
         self._previous_build_plate_nr = None
         self._decorator_added = False
 
-    def undo(self):
+    def undo(self) -> None:
         if self._previous_build_plate_nr:
             self._node.callDecoration("setBuildPlateNumber", self._previous_build_plate_nr)
 
-    def redo(self):
+    def redo(self) -> None:
         stack = self._node.callDecoration("getStack") #Don't try to get the active extruder since it may be None anyway.
         if not stack:
             self._node.addDecorator(SettingOverrideDecorator())

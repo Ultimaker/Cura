@@ -1,13 +1,19 @@
 ---
 name: CI/CD
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - master
+      - 'WIP**'
+      - '4.*'
+  pull_request:
 jobs:
   build:
     name: Build and test
     runs-on: ubuntu-latest
     container: ultimaker/cura-build-environment
     steps:
-    - name: Checkout master
-      uses: actions/checkout@v1.2.0
+    - name: Checkout Cura
+      uses: actions/checkout@v2
     - name: Build and test
       run: docker/build.sh
