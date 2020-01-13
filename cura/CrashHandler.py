@@ -58,6 +58,8 @@ class CrashHandler:
         self.traceback = tb
         self.has_started = has_started
         self.dialog = None # Don't create a QDialog before there is a QApplication
+        self.cura_version = None
+        self.cura_locale = None
 
         Logger.log("c", "An uncaught error has occurred!")
         for line in traceback.format_exception(exception_type, value, tb):

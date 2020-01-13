@@ -148,7 +148,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     @pyqtProperty(QObject, notify = printersChanged)
     def activePrinter(self) -> Optional["PrinterOutputModel"]:
-        if len(self._printers):
+        if self._printers:
             return self._printers[0]
         return None
 
