@@ -74,7 +74,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -104,7 +104,7 @@ UM.Dialog{
                         {
                             width: parent.width
                             property int lineHeight: 60
-                            visible: !model.is_compatible
+                            visible: !model.is_compatible && !model.is_dismissed
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {
@@ -117,13 +117,33 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
+                            }
+                            UM.TooltipArea
+                            {
+                                width: childrenRect.width;
+                                height: childrenRect.height;
+                                text: catalog.i18nc("@info:tooltip", "Dismisses the package and won't be shown in this dialog anymore")
+                                anchors.right: parent.right
+                                anchors.verticalCenter: packageIcon.verticalCenter
+                                Label
+                                {
+                                    text: "(Dismiss)"
+                                    font: UM.Theme.getFont("small")
+                                    color: UM.Theme.getColor("text")
+                                    MouseArea
+                                    {
+                                        cursorShape: Qt.PointingHandCursor
+                                        anchors.fill: parent
+                                        onClicked: toolbox.dismissIncompatiblePackage(model.package_id)
+                                    }
+                                }
                             }
                         }
                     }
