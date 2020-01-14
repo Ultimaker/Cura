@@ -24,16 +24,13 @@ class SubscribedPackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 5, "is_dismissed")
 
     def setMetadata(self, data: List[Dict[str, List[Any]]]) -> None:
-        if self._metadata != data:
-            self._metadata = data
+        self._metadata = data
 
     def addDiscrepancies(self, discrepancy: List[str]) -> None:
-        if set(self._discrepancies) != set(discrepancy): # convert to set() to check if they are same list, regardless of list order
-            self._discrepancies = discrepancy
+        self._discrepancies = discrepancy
 
     def initialize(self) -> None:
         self._items.clear()
-
         for item in self._metadata:
             if item["package_id"] not in self._discrepancies:
                 continue
@@ -49,7 +46,6 @@ class SubscribedPackagesModel(ListModel):
                 package.update({"icon_url": item["icon_url"]})
             except KeyError:  # There is no 'icon_url" in the response payload for this package
                 package.update({"icon_url": ""})
-
             self._items.append(package)
         self.setItems(self._items)
 
