@@ -676,8 +676,7 @@ class Toolbox(QObject, Extension):
         if package_discrepancy:
             self._models["subscribed_packages"].addDiscrepancies(package_discrepancy)
             self._models["subscribed_packages"].initialize()
-            self._models["subscribed_packages"].applyDismissedPackages(user_dismissed_packages)
-            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
+            Logger.debug("Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
                 "\nDo you want to sync material and software packages with your account?"),
@@ -688,7 +687,6 @@ class Toolbox(QObject, Extension):
                                    icon="",
                                    description="Sync your Cloud subscribed packages to your local environment.",
                                    button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
-
             sync_message.actionTriggered.connect(self._onSyncButtonClicked)
             sync_message.show()
 

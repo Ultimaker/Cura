@@ -5,7 +5,7 @@ from PyQt5.QtCore import Qt
 from UM.Qt.ListModel import ListModel
 from cura import ApplicationMetadata
 from UM.Logger import Logger
-from typing import List
+from typing import List, Dict, Any
 
 
 class SubscribedPackagesModel(ListModel):
@@ -23,12 +23,12 @@ class SubscribedPackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 4, "is_compatible")
         self.addRoleName(Qt.UserRole + 5, "is_dismissed")
 
-    def setMetadata(self, data) -> None:
+    def setMetadata(self, data: List[Dict[str, List[Any]]]) -> None:
         if self._metadata != data:
             self._metadata = data
 
     def addDiscrepancies(self, discrepancy: List[str]) -> None:
-        if self._discrepancies != discrepancy:
+        if set(self._discrepancies) != set(discrepancy): # convert to set() to check if they are same list, regardless of list order
             self._discrepancies = discrepancy
 
     def initialize(self) -> None:
@@ -73,10 +73,3 @@ class SubscribedPackagesModel(ListModel):
         if package != -1:
             self.setProperty(package, property="is_dismissed", value=True)
             Logger.debug("Package {} has been dismissed".format(package_id))
-
-    # Reads the dismissed_packages from user config file and applies them so they won't be shown in the Compatibility Dialog
-    def applyDismissedPackages(self, dismissed_packages: List[str]) -> None:
-        for package in dismissed_packages:
-            exists = self.find(key="package_id", value=package)
-            if exists != -1:
-                self.setProperty(exists, property="is_dismissed", value=True)
