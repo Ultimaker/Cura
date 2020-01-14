@@ -73,10 +73,21 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         version_config_parser.write(version_file_string)
         archive.writestr(version_file, version_file_string.getvalue())
 
+        self._writePluginMetadataToArchive(archive)
+
         # Close the archive & reset states.
         archive.close()
         mesh_writer.setStoreArchive(False)
         return True
+
+    def _writePluginMetadataToArchive(self, archive):
+        file_name = "Cura/plugin_metadata.json"
+
+        file_in_archive = zipfile.ZipInfo(file_name)
+        # For some reason we have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
+        file_in_archive.compress_type = zipfile.ZIP_DEFLATED
+        import json
+        archive.writestr(file_in_archive, json.dumps(Application.getInstance()._workspace_metadata_storage.getAllData()))
 
     ##  Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
     #   \param container That follows the \type{ContainerInterface} to archive.
