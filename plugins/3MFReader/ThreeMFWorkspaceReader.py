@@ -4,7 +4,7 @@
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import cast, Dict, List, Optional, Tuple
+from typing import cast, Dict, List, Optional, Tuple, Any
 
 import xml.etree.ElementTree as ET
 
@@ -732,7 +732,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
-        return nodes
+
+        return nodes, self._loadMetadata(file_name)
+
+    def _loadMetadata(self, file_name) -> Dict[str, Dict[str, Any]]:
+        archive = zipfile.ZipFile(file_name, "r")
+        import json
+        try:
+            return json.loads(archive.open("Cura/plugin_metadata.json").read().decode("utf-8"))
+        except KeyError:
+            # The plugin_metadata.json file doesn't exist
+            return dict()
 
     def _processQualityChanges(self, global_stack):
         if self._machine_info.quality_changes_info is None:
