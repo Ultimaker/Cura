@@ -42,11 +42,20 @@ class DownloadPresenter:
         for item in model.items:
             package_id = item["package_id"]
 
+            def finishedCallback(reply: QNetworkReply, pid = package_id) -> None:
+                self._onFinished(pid, reply)
+
+            def progressCallback(rx: int, rt: int, pid = package_id) -> None:
+                self._onProgress(pid, rx, rt)
+
+            def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, pid = package_id) -> None:
+                self._onError(pid)
+
             request_data = manager.get(
                 item["download_url"],
-                callback = lambda reply, pid = package_id: self._onFinished(pid, reply),
-                download_progress_callback = lambda rx, rt, pid = package_id: self._onProgress(pid, rx, rt),
-                error_callback = lambda rx, rt, pid = package_id: self._onProgress(pid, rx, rt),
+                callback = finishedCallback,
+                download_progress_callback = progressCallback,
+                error_callback = errorCallback,
                 scope = self._scope)
 
             self._progress[package_id] = {

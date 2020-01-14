@@ -24,6 +24,7 @@ class DiscrepanciesPresenter(QObject):
     def present(self, plugin_path: str, model: SubscribedPackagesModel):
         path = os.path.join(plugin_path, self._compatibility_dialog_path)
         self._dialog = self._app.createQmlComponent(path, {"subscribedPackagesModel": model})
+        assert self._dialog
         self._dialog.accepted.connect(lambda: self._onConfirmClicked(model))
 
     def _onConfirmClicked(self, model: SubscribedPackagesModel):

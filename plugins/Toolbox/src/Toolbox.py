@@ -48,7 +48,7 @@ class Toolbox(QObject, Extension):
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
-        self._scope = UltimakerCloudScope(application)
+        self._scope = UltimakerCloudScope(application)  # type: UltimakerCloudScope
 
         self._request_urls = {}  # type: Dict[str, str]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated
