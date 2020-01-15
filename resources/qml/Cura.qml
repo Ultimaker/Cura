@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -21,7 +21,16 @@ UM.MainWindow
     id: base
 
     // Cura application window title
-    title: PrintInformation.jobName + " - " + catalog.i18nc("@title:window", CuraApplication.applicationDisplayName)
+    title:
+    {
+        let result = "";
+        if(PrintInformation.jobName != "")
+        {
+            result += PrintInformation.jobName + " - ";
+        }
+        result += CuraApplication.applicationDisplayName;
+        return result;
+    }
 
     backgroundColor: UM.Theme.getColor("viewport_background")
 
@@ -244,23 +253,6 @@ UM.MainWindow
                 }
             }
 
-            Toolbar
-            {
-                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
-                // plugins)
-                id: toolbar
-
-                property int mouseX: base.mouseX
-                property int mouseY: base.mouseY
-
-                anchors
-                {
-                    verticalCenter: parent.verticalCenter
-                    left: parent.left
-                }
-                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
-            }
-
             ObjectSelector
             {
                 id: objectSelector
@@ -300,6 +292,23 @@ UM.MainWindow
                     bottom: parent.bottom
                     margins: UM.Theme.getSize("default_margin").width
                 }
+            }
+
+            Toolbar
+            {
+                // The toolbar is the left bar that is populated by all the tools (which are dynamicly populated by
+                // plugins)
+                id: toolbar
+
+                property int mouseX: base.mouseX
+                property int mouseY: base.mouseY
+
+                anchors
+                {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                }
+                visible: CuraApplication.platformActivity && !PrintInformation.preSliced
             }
 
             // A hint for the loaded content view. Overlay items / controls can safely be placed in this area

@@ -556,6 +556,11 @@ class Toolbox(QObject, Extension):
                 populated += 1
         return populated == len(self._server_response_data.items())
 
+    @pyqtSlot(str)
+    def dismissIncompatiblePackage(self, package_id: str):
+        self._models["subscribed_packages"].dismissPackage(package_id)  # sets "is_compatible" to True, in-memory
+        self._package_manager.dismissPackage(package_id)  # adds this package_id as dismissed in the user config file
+
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
@@ -663,13 +668,15 @@ class Toolbox(QObject, Extension):
     def _checkCompatibilities(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
-
-        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace (discrepancy)
+        user_dismissed_packages = self._package_manager.getDismissedPackages()
+        if user_dismissed_packages:
+            user_installed_packages += user_dismissed_packages
+        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
         if package_discrepancy:
-            self._models["subscribed_packages"].addValue(package_discrepancy)
-            self._models["subscribed_packages"].update()
-            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
+            self._models["subscribed_packages"].addDiscrepancies(package_discrepancy)
+            self._models["subscribed_packages"].initialize()
+            Logger.debug("Discrepancy found between Cloud subscribed packages and Cura installed packages")
             sync_message = Message(i18n_catalog.i18nc(
                 "@info:generic",
                 "\nDo you want to sync material and software packages with your account?"),
@@ -680,7 +687,6 @@ class Toolbox(QObject, Extension):
                                    icon="",
                                    description="Sync your Cloud subscribed packages to your local environment.",
                                    button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
-
             sync_message.actionTriggered.connect(self._onSyncButtonClicked)
             sync_message.show()
 
