@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 
 class CuraPackageManager(PackageManager):
-    def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None):
+    def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
 
     def initialize(self) -> None:
