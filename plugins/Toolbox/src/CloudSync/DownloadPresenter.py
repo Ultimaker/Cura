@@ -19,6 +19,8 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 # use download() exactly once: should not be used for multiple sets of downloads since this class contains state
 class DownloadPresenter:
 
+    DISK_WRITE_BUFFER_SIZE = 256 * 1024  # 256 KB
+
     def __init__(self, app: CuraApplication):
         # Emits (Dict[str, str], List[str]) # (success_items, error_items)
         # Dict{success_package_id, temp_file_path}
@@ -93,10 +95,10 @@ class DownloadPresenter:
 
         try:
             with tempfile.NamedTemporaryFile(mode ="wb+", suffix =".curapackage", delete = False) as temp_file:
-                bytes_read = reply.read(256 * 1024)
+                bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
                     temp_file.write(bytes_read)
-                    bytes_read = reply.read(256 * 1024)
+                    bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                     self._app.processEvents()
                 self._progress[package_id]["file_written"] = temp_file.name
         except IOError as e:

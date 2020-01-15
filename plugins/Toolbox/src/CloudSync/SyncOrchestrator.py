@@ -24,10 +24,10 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 # - The SyncOrchestrator uses PackageManager to remove local packages the users wants to see removed
 # - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
 # - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
-#   be installed. It emits the `licenseAnswers` {'packageId' : bool} for accept or declines
+#   be installed. It emits the `licenseAnswers` signal for accept or declines
 # - The CloudPackageManager removes the declined packages from the account
-# - The SyncOrchestrator uses PackageManager to install the downloaded packages.
-# - Bliss / profit / done
+# - The SyncOrchestrator uses PackageManager to install the downloaded packages and delete temp files.
+# - The RestartApplicationPresenter notifies the user that a restart is required for changes to take effect
 class SyncOrchestrator(Extension):
 
     def __init__(self, app: CuraApplication):
@@ -45,7 +45,7 @@ class SyncOrchestrator(Extension):
         self._discrepancies_presenter = DiscrepanciesPresenter(app)  # type: DiscrepanciesPresenter
         self._discrepancies_presenter.packageMutations.connect(self._onPackageMutations)
 
-        self._download_Presenter = DownloadPresenter(app)  # type: DownloadPresenter
+        self._download_presenter = DownloadPresenter(app)  # type: DownloadPresenter
 
         self._license_presenter = LicensePresenter(app)  # type: LicensePresenter
         self._license_presenter.licenseAnswers.connect(self._onLicenseAnswers)
@@ -57,9 +57,9 @@ class SyncOrchestrator(Extension):
         self._discrepancies_presenter.present(plugin_path, model)
 
     def _onPackageMutations(self, mutations: SubscribedPackagesModel):
-        self._download_Presenter = self._download_Presenter.resetCopy()
-        self._download_Presenter.done.connect(self._onDownloadFinished)
-        self._download_Presenter.download(mutations)
+        self._download_presenter = self._download_presenter.resetCopy()
+        self._download_presenter.done.connect(self._onDownloadFinished)
+        self._download_presenter.download(mutations)
 
     ## Called when a set of packages have finished downloading
     # \param success_items: Dict[package_id, file_path]
