@@ -18,17 +18,11 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 ## Presents a dialog telling the user that a restart is required to apply changes
 # Since we cannot restart Cura, the app is closed instead when the button is clicked
 class RestartApplicationPresenter:
-
-    def __init__(self, app: CuraApplication):
-        # Emits (Dict[str, str], List[str]) # (success_items, error_items)
-        # Dict{success_package_id, temp_file_path}
-        # List[errored_package_id]
-        self.done = Signal()
-
+    def __init__(self, app: CuraApplication) -> None:
         self._app = app
         self._i18n_catalog = i18nCatalog("cura")
 
-    def present(self):
+    def present(self) -> None:
         app_name = self._app.getApplicationDisplayName()
 
         message = Message(self._i18n_catalog.i18nc(

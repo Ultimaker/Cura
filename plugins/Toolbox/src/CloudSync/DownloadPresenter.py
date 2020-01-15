@@ -21,7 +21,7 @@ class DownloadPresenter:
 
     DISK_WRITE_BUFFER_SIZE = 256 * 1024  # 256 KB
 
-    def __init__(self, app: CuraApplication):
+    def __init__(self, app: CuraApplication) -> None:
         # Emits (Dict[str, str], List[str]) # (success_items, error_items)
         # Dict{success_package_id, temp_file_path}
         # List[errored_package_id]
@@ -35,7 +35,7 @@ class DownloadPresenter:
         self._progress = {}  # type: Dict[str, Dict[str, Any]] # package_id, Dict
         self._error = []  # type: List[str] # package_id
 
-    def download(self, model: SubscribedPackagesModel):
+    def download(self, model: SubscribedPackagesModel) -> None:
         if self._started:
             Logger.error("Download already started. Create a new %s instead", self.__class__.__name__)
             return
@@ -70,13 +70,13 @@ class DownloadPresenter:
         self._started = True
         self._progress_message.show()
 
-    def abort(self):
+    def abort(self) -> None:
         manager = HttpRequestManager.getInstance()
         for item in self._progress.values():
             manager.abortRequest(item["request_data"])
 
     # Aborts all current operations and returns a copy with the same settings such as app and scope
-    def resetCopy(self):
+    def resetCopy(self) -> "DownloadPresenter":
         self.abort()
         self.done.disconnectAll()
         return DownloadPresenter(self._app)
@@ -90,7 +90,7 @@ class DownloadPresenter:
             progress = 0.0,
             title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
 
-    def _onFinished(self, package_id: str, reply: QNetworkReply):
+    def _onFinished(self, package_id: str, reply: QNetworkReply) -> None:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
 
         try:
@@ -108,7 +108,7 @@ class DownloadPresenter:
 
         self._checkDone()
 
-    def _onProgress(self, package_id: str, rx: int, rt: int):
+    def _onProgress(self, package_id: str, rx: int, rt: int) -> None:
         self._progress[package_id]["received"] = rx
         self._progress[package_id]["total"] = rt
 

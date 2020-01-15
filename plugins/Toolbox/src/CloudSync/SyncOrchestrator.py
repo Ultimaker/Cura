@@ -30,7 +30,7 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 # - The RestartApplicationPresenter notifies the user that a restart is required for changes to take effect
 class SyncOrchestrator(Extension):
 
-    def __init__(self, app: CuraApplication):
+    def __init__(self, app: CuraApplication) -> None:
         super().__init__()
         # Differentiate This PluginObject from the Toolbox. self.getId() includes _name.
         # getPluginId() will return the same value for The toolbox extension and this one
@@ -52,11 +52,11 @@ class SyncOrchestrator(Extension):
 
         self._restart_presenter = RestartApplicationPresenter(app)
 
-    def _onDiscrepancies(self, model: SubscribedPackagesModel):
+    def _onDiscrepancies(self, model: SubscribedPackagesModel) -> None:
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         self._discrepancies_presenter.present(plugin_path, model)
 
-    def _onPackageMutations(self, mutations: SubscribedPackagesModel):
+    def _onPackageMutations(self, mutations: SubscribedPackagesModel) -> None:
         self._download_presenter = self._download_presenter.resetCopy()
         self._download_presenter.done.connect(self._onDownloadFinished)
         self._download_presenter.download(mutations)
@@ -64,13 +64,13 @@ class SyncOrchestrator(Extension):
     ## Called when a set of packages have finished downloading
     # \param success_items: Dict[package_id, file_path]
     # \param error_items: List[package_id]
-    def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]):
+    def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]) -> None:
         # todo handle error items
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         self._license_presenter.present(plugin_path, success_items)
 
     # Called when user has accepted / declined all licenses for the downloaded packages
-    def _onLicenseAnswers(self, answers: List[Dict[str, Any]]):
+    def _onLicenseAnswers(self, answers: List[Dict[str, Any]]) -> None:
         Logger.debug("Got license answers: {}", answers)
 
         has_changes = False  # True when at least one package is installed
@@ -91,9 +91,3 @@ class SyncOrchestrator(Extension):
 
         if has_changes:
             self._restart_presenter.present()
-
-
-
-
-
-

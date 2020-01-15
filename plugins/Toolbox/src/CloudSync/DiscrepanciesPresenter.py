@@ -12,7 +12,7 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 #  choices are emitted on the `packageMutations` Signal.
 class DiscrepanciesPresenter(QObject):
 
-    def __init__(self, app: QtApplication):
+    def __init__(self, app: QtApplication) -> None:
         super().__init__(app)
 
         self.packageMutations = Signal()  #  Emits SubscribedPackagesModel
@@ -22,18 +22,18 @@ class DiscrepanciesPresenter(QObject):
         self._dialog = None  # type: Optional[QObject]
         self._compatibility_dialog_path = "resources/qml/dialogs/CompatibilityDialog.qml"
 
-    def present(self, plugin_path: str, model: SubscribedPackagesModel):
+    def present(self, plugin_path: str, model: SubscribedPackagesModel) -> None:
         path = os.path.join(plugin_path, self._compatibility_dialog_path)
         self._dialog = self._app.createQmlComponent(path, {"subscribedPackagesModel": model, "handler": self})
         assert self._dialog
         self._dialog.accepted.connect(lambda: self._onConfirmClicked(model))
 
     @pyqtSlot("QVariant", str)
-    def dismissIncompatiblePackage(self, model: SubscribedPackagesModel, package_id: str):
+    def dismissIncompatiblePackage(self, model: SubscribedPackagesModel, package_id: str) -> None:
         model.dismissPackage(package_id)  # update the model to update the view
         self._package_manager.dismissPackage(package_id)  # adds this package_id as dismissed in the user config file
 
-    def _onConfirmClicked(self, model: SubscribedPackagesModel):
+    def _onConfirmClicked(self, model: SubscribedPackagesModel) -> None:
         # For now, all compatible packages presented to the user should be installed.
         # Later, we might remove items for which the user unselected the package
         model.setItems(model.getCompatiblePackages())

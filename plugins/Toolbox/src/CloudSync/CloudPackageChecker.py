@@ -15,7 +15,6 @@ from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPack
 
 
 class CloudPackageChecker(QObject):
-
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
@@ -37,7 +36,7 @@ class CloudPackageChecker(QObject):
         # check again whenever the login state changes
         self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
 
-    def _fetchUserSubscribedPackages(self):
+    def _fetchUserSubscribedPackages(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserPackages()
 
@@ -57,7 +56,7 @@ class CloudPackageChecker(QObject):
         if package_discrepancy:
             self._handlePackageDiscrepancies()
 
-    def _handlePackageDiscrepancies(self):
+    def _handlePackageDiscrepancies(self) -> None:
         Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",

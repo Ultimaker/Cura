@@ -3,13 +3,14 @@ from UM.i18n import i18nCatalog
 
 catalog = i18nCatalog("cura")
 
+
 # Model for the ToolboxLicenseDialog
 class LicenseModel(QObject):
     dialogTitleChanged = pyqtSignal()
     headerChanged = pyqtSignal()
     licenseTextChanged = pyqtSignal()
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
         self._current_page_idx = 0
@@ -44,7 +45,7 @@ class LicenseModel(QObject):
         self._current_page_idx = idx
         self._updateDialogTitle()
 
-    def setPageCount(self, count: int):
+    def setPageCount(self, count: int) -> None:
         self._page_count = count
         self._updateDialogTitle()
 
