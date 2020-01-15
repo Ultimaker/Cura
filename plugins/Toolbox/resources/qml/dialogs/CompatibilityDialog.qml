@@ -48,7 +48,7 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages will be added:")
-                    visible: toolbox.has_compatible_packages
+                    visible: subscribedPackagesModel.hasCompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
@@ -91,7 +91,7 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages can not be installed because of incompatible Cura version:")
-                    visible: toolbox.has_incompatible_packages
+                    visible: subscribedPackagesModel.hasIncompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }

@@ -734,18 +734,6 @@ class Toolbox(QObject, Extension):
         return cast(AuthorsModel, self._models["authors"])
 
     @pyqtProperty(QObject, constant = True)
-    def subscribedPackagesModel(self) -> SubscribedPackagesModel:
-        return cast(SubscribedPackagesModel, self._models["subscribed_packages"])
-
-    @pyqtProperty(bool, constant=True)
-    def has_compatible_packages(self) -> str:
-        return self._models["subscribed_packages"].hasCompatiblePackages()
-
-    @pyqtProperty(bool, constant=True)
-    def has_incompatible_packages(self) -> str:
-        return self._models["subscribed_packages"].hasIncompatiblePackages()
-
-    @pyqtProperty(QObject, constant = True)
     def packagesModel(self) -> PackagesModel:
         return cast(PackagesModel, self._models["packages"])
 

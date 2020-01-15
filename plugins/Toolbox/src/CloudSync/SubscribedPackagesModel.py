@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtProperty
 from UM.Qt.ListModel import ListModel
 from cura import ApplicationMetadata
 
@@ -18,6 +18,20 @@ class SubscribedPackagesModel(ListModel):
         self.addRoleName(Qt.UserRole + 1, "name")
         self.addRoleName(Qt.UserRole + 2, "icon_url")
         self.addRoleName(Qt.UserRole + 3, "is_compatible")
+
+    @pyqtProperty(bool, constant=True)
+    def hasCompatiblePackages(self) -> bool:
+        for item in self._items:
+            if item['is_compatible']:
+                return True
+        return False
+
+    @pyqtProperty(bool, constant=True)
+    def hasIncompatiblePackages(self) -> bool:
+        for item in self._items:
+            if not item['is_compatible']:
+                return True
+        return False
 
     def setMetadata(self, data):
         if self._metadata != data:
@@ -52,16 +66,4 @@ class SubscribedPackagesModel(ListModel):
             self._items.append(package)
         self.setItems(self._items)
 
-    def hasCompatiblePackages(self) -> bool:
-        has_compatible_items  = False
-        for item in self._items:
-            if item['is_compatible'] == True:
-                has_compatible_items = True
-        return has_compatible_items
 
-    def hasIncompatiblePackages(self) -> bool:
-        has_incompatible_items  = False
-        for item in self._items:
-            if item['is_compatible'] == False:
-                has_incompatible_items = True
-        return has_incompatible_items
