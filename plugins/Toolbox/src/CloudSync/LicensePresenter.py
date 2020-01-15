@@ -48,17 +48,17 @@ class LicensePresenter(QObject):
             }
             self._dialog = self._app.createQmlComponent(path, context_properties)
         self._license_model.setPageCount(len(self._package_models))
-        self._present_current_package()
+        self._presentCurrentPackage()
 
     @pyqtSlot()
     def onLicenseAccepted(self) -> None:
         self._package_models[self._current_package_idx]["accepted"] = True
-        self._check_next_page()
+        self._checkNextPage()
 
     @pyqtSlot()
     def onLicenseDeclined(self) -> None:
         self._package_models[self._current_package_idx]["accepted"] = False
-        self._check_next_page()
+        self._checkNextPage()
 
     def _initState(self, packages: Dict[str, str]) -> None:
         self._package_models = [
@@ -70,7 +70,7 @@ class LicensePresenter(QObject):
                 for package_id, package_path in packages.items()
         ]
 
-    def _present_current_package(self) -> None:
+    def _presentCurrentPackage(self) -> None:
         package_model = self._package_models[self._current_package_idx]
         license_content = self._package_manager.getPackageLicense(package_model["package_path"])
         if license_content is None:
@@ -84,10 +84,10 @@ class LicensePresenter(QObject):
         if self._dialog:
             self._dialog.open()  # Does nothing if already open
 
-    def _check_next_page(self) -> None:
+    def _checkNextPage(self) -> None:
         if self._current_package_idx + 1 < len(self._package_models):
             self._current_package_idx += 1
-            self._present_current_package()
+            self._presentCurrentPackage()
         else:
             if self._dialog:
                 self._dialog.close()
