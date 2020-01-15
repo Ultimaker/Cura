@@ -28,6 +28,7 @@ class DiscrepanciesPresenter(QObject):
         self._dialog.accepted.connect(lambda: self._onConfirmClicked(model))
 
     def _onConfirmClicked(self, model: SubscribedPackagesModel):
-        # For now, all packages presented to the user should be installed.
+        # For now, all compatible packages presented to the user should be installed.
         # Later, we might remove items for which the user unselected the package
+        model.setItems(model.getCompatiblePackages())
         self.packageMutations.emit(model)

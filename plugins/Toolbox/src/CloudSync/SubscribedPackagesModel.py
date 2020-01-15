@@ -41,6 +41,9 @@ class SubscribedPackagesModel(ListModel):
         if self._discrepancies != discrepancy:
             self._discrepancies = discrepancy
 
+    def getCompatiblePackages(self):
+        return [x for x in self._items if x["is_compatible"]]
+
     def update(self):
         self._items.clear()
 
