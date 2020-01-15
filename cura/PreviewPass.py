@@ -17,9 +17,6 @@ from cura.Scene.CuraSceneNode import CuraSceneNode
 
 if TYPE_CHECKING:
     from UM.View.GL.ShaderProgram import ShaderProgram
-
-MYPY = False
-if MYPY:
     from UM.Scene.Camera import Camera
 
 

@@ -16,8 +16,7 @@ class LayerData(MeshData):
     def getLayer(self, layer):
         if layer in self._layers:
             return self._layers[layer]
-        else:
-            return None
+        return None
 
     def getLayers(self):
         return self._layers

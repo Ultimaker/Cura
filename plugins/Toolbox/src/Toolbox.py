@@ -528,6 +528,11 @@ class Toolbox(QObject, Extension):
                 populated += 1
         return populated == len(self._server_response_data.items())
 
+    @pyqtSlot(str)
+    def dismissIncompatiblePackage(self, package_id: str):
+        self._models["subscribed_packages"].dismissPackage(package_id)  # sets "is_compatible" to True, in-memory
+        self._package_manager.dismissPackage(package_id)  # adds this package_id as dismissed in the user config file
+
     # Make API Calls
     # --------------------------------------------------------------------------
     def _makeRequestByType(self, request_type: str) -> None:
