@@ -141,7 +141,7 @@ UM.Dialog{
                                     {
                                         cursorShape: Qt.PointingHandCursor
                                         anchors.fill: parent
-                                        onClicked: toolbox.dismissIncompatiblePackage(model.package_id)
+                                        onClicked: handler.dismissIncompatiblePackage(subscribedPackagesModel, model.package_id)
                                     }
                                 }
                             }
