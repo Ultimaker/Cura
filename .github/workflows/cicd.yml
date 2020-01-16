@@ -6,6 +6,7 @@ on:
       - master
       - 'WIP**'
       - '4.*'
+      - 'CURA-*'
   pull_request:
 jobs:
   build:
