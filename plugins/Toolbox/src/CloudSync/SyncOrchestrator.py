@@ -1,5 +1,5 @@
 import os
-from typing import List, Dict, Any
+from typing import List, Dict, Any, cast
 
 from UM.Extension import Extension
 from UM.Logger import Logger
@@ -52,7 +52,7 @@ class SyncOrchestrator(Extension):
         self._restart_presenter = RestartApplicationPresenter(app)
 
     def _onDiscrepancies(self, model: SubscribedPackagesModel) -> None:
-        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId()))
         self._discrepancies_presenter.present(plugin_path, model)
 
     def _onPackageMutations(self, mutations: SubscribedPackagesModel) -> None:
@@ -65,7 +65,7 @@ class SyncOrchestrator(Extension):
     # \param error_items: List[package_id]
     def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]) -> None:
         # todo handle error items
-        plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
+        plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId()))
         self._license_presenter.present(plugin_path, success_items)
 
     # Called when user has accepted / declined all licenses for the downloaded packages
