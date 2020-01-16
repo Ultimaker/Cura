@@ -89,7 +89,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
             file_in_archive.compress_type = zipfile.ZIP_DEFLATED
             import json
-            archive.writestr(file_in_archive, json.dumps(metadata, separators = (", ", ": "), indent = 4))
+            archive.writestr(file_in_archive, json.dumps(metadata, separators = (", ", ": "), indent = 4, skipkeys = True))
 
     ##  Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
     #   \param container That follows the \type{ContainerInterface} to archive.
