@@ -83,7 +83,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
     def _writePluginMetadataToArchive(self, archive):
         file_name_template = "%s/plugin_metadata.json"
 
-        for plugin_id, metadata in Application.getInstance()._workspace_metadata_storage.getAllData().items():
+        for plugin_id, metadata in Application.getInstance().getWorkspaceMetadataStorage().getAllData().items():
             file_name = file_name_template % plugin_id
             file_in_archive = zipfile.ZipInfo(file_name)
             # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
