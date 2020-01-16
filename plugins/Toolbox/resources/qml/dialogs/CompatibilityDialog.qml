@@ -48,13 +48,13 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages will be added:")
-                    visible: toolbox.has_compatible_packages
+                    visible: subscribedPackagesModel.hasCompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item
@@ -74,7 +74,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -91,20 +91,20 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages can not be installed because of incompatible Cura version:")
-                    visible: toolbox.has_incompatible_packages
+                    visible: subscribedPackagesModel.hasIncompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item
                         {
                             width: parent.width
                             property int lineHeight: 60
-                            visible: !model.is_compatible
+                            visible: !model.is_compatible && !model.is_dismissed
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {
@@ -117,13 +117,33 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
                                 anchors.verticalCenter: packageIcon.verticalCenter
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
+                            }
+                            UM.TooltipArea
+                            {
+                                width: childrenRect.width;
+                                height: childrenRect.height;
+                                text: catalog.i18nc("@info:tooltip", "Dismisses the package and won't be shown in this dialog anymore")
+                                anchors.right: parent.right
+                                anchors.verticalCenter: packageIcon.verticalCenter
+                                Label
+                                {
+                                    text: "(Dismiss)"
+                                    font: UM.Theme.getFont("small")
+                                    color: UM.Theme.getColor("text")
+                                    MouseArea
+                                    {
+                                        cursorShape: Qt.PointingHandCursor
+                                        anchors.fill: parent
+                                        onClicked: handler.dismissIncompatiblePackage(subscribedPackagesModel, model.package_id)
+                                    }
+                                }
                             }
                         }
                     }
@@ -139,6 +159,7 @@ UM.Dialog{
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").height
             text: catalog.i18nc("@button", "Next")
+            onClicked: accept()
         }
     }
 }

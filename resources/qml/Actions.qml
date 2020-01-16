@@ -54,6 +54,7 @@ Item
     property alias manageProfiles: manageProfilesAction;
 
     property alias manageMaterials: manageMaterialsAction;
+    property alias marketplaceMaterials: marketplaceMaterialsAction;
 
     property alias preferences: preferencesAction;
 
@@ -186,6 +187,12 @@ Item
         text: catalog.i18nc("@action:inmenu", "Manage Materials...")
         iconName: "configure"
         shortcut: "Ctrl+K"
+    }
+
+    Action
+    {
+        id: marketplaceMaterialsAction
+        text: catalog.i18nc("@action:inmenu", "Add more materials from Marketplace")
     }
 
     Action

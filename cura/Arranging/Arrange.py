@@ -69,7 +69,7 @@ class Arrange:
             points = copy.deepcopy(vertices._points)
 
             # After scaling (like up to 0.1 mm) the node might not have points
-            if not points:
+            if not points.size:
                 continue
 
             shape_arr = ShapeArray.fromPolygon(points, scale = scale)
