@@ -21,6 +21,7 @@ from cura.Machines.ContainerTree import ContainerTree
 
 from .CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
+from .CloudSync.CloudPackageManager import CloudPackageManager
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
@@ -43,6 +44,7 @@ class Toolbox(QObject, Extension):
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
 
         # Network:
+        self._cloud_package_manager = CloudPackageManager(application)  # type: CloudPackageManager
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
