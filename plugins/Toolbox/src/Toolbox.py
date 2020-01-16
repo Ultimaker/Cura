@@ -714,6 +714,11 @@ class Toolbox(QObject, Extension):
             self._view_category = category
             self.viewChanged.emit()
 
+    ## Function explicitly defined so that it can be called through the callExtensionsMethod
+    # which cannot receive arguments.
+    def setViewCategoryToMaterials(self) -> None:
+        self.setViewCategory("material")
+
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
     def viewCategory(self) -> str:
         return self._view_category
