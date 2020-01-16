@@ -8,15 +8,20 @@
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "dagoma_discoeasy200.stl",
-        "platform_offset": [0, -29, -11],
+        "platform_offset": [0, -19, -11],
         "has_machine_quality": true,
         "has_materials": true,
+        "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
-            "0": "dagoma_discoeasy200_extruder_0"
+            "0": "dagoma_discoeasy200_extruder_0",
+            "1": "dagoma_discoeasy200_extruder_1"
         }
     },
     "overrides": {
+        "machine_extruder_count": {
+            "default_value": 2
+        },
         "machine_width": {
             "default_value": 205
         },

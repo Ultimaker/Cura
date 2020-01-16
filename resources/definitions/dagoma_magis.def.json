@@ -11,6 +11,7 @@
         "platform_offset": [0, -28, -35],
         "has_machine_quality": true,
         "has_materials": true,
+        "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
             "0": "dagoma_magis_extruder_0"
