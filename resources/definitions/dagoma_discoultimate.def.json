@@ -1,5 +1,5 @@
 {
-    "name": "Dagoma NEVA",
+    "name": "Dagoma DiscoUltimate",
     "version": 2,
     "inherits": "fdmprinter",
     "metadata": {
@@ -7,59 +7,56 @@
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
-        "platform": "dagoma_neva.stl",
-        "platform_offset": [0, -28, -35],
+        "platform": "dagoma_discoultimate.stl",
+        "platform_offset": [0, -29.5, -11],
         "has_machine_quality": true,
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "dagoma_neva_extruder_0"
+            "0": "dagoma_discoultimate_extruder_0"
         }
     },
     "overrides": {
         "machine_width": {
-            "default_value": 195.55
+            "default_value": 205
         },
         "machine_height": {
             "default_value": 205
         },
         "machine_depth": {
-            "default_value": 195.55
+            "default_value": 205
         },
         "machine_center_is_zero": {
-            "default_value": true
+            "default_value": false
         },
         "machine_head_with_fans_polygon": {
             "default_value": [
-                [-36, -42],
-                [-36, 42],
-                [36, 42],
-                [36, -42]
+                [-17, -70],
+                [-17, 40],
+                [17, 40],
+                [17, -70]
             ]
         },
         "gantry_height": {
-          "value": "0"
-        },
-        "machine_shape": {
-            "default_value": "elliptic"
+            "value": "10"
         },
         "machine_start_gcode": {
-            "default_value": ";Gcode by Cura\nG90\nG28\nM107\nM109 R100\nG29\nM109 S{material_print_temperature_layer_0} U-55 X55 V-85 Y-85 W0.26 Z0.26\nM82\nG92 E0\nG1 F200 E6\nG92 E0\nG1 F200 E-3.5\nG0 Z0.15\nG0 X10\nG0 Z3\nG1 F6000\n"
+            "default_value": ";Gcode by Cura\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
         },
         "machine_end_gcode": {
-            "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 E-2 F9000\nG90\nG28\n"
+            "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 F3000\nG90\nG28 X Y\nM107\nM84\n"
         },
         "default_material_print_temperature": {
             "default_value": 205
         },
         "speed_print": {
-            "default_value": 40
+            "default_value": 60
         },
         "retraction_amount": {
-            "default_value": 3.8
+            "default_value": 3.5
         },
         "retraction_speed": {
-            "default_value": 60
+            "default_value": 50
         },
         "adhesion_type": {
             "default_value": "skirt"

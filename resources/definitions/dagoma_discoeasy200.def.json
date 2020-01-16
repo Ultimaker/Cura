@@ -7,8 +7,8 @@
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
-        "platform": "discoeasy200.stl",
-        "platform_offset": [ 105, -59, 280],
+        "platform": "dagoma_discoeasy200.stl",
+        "platform_offset": [0, -29, -11],
         "has_machine_quality": true,
         "has_materials": true,
         "machine_extruder_trains":
@@ -18,13 +18,13 @@
     },
     "overrides": {
         "machine_width": {
-            "default_value": 211
+            "default_value": 205
         },
         "machine_height": {
             "default_value": 205
         },
         "machine_depth": {
-            "default_value": 211
+            "default_value": 205
         },
         "machine_center_is_zero": {
             "default_value": false

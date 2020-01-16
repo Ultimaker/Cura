@@ -7,8 +7,8 @@
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
-        "platform": "neva.stl",
-        "platform_offset": [ 0, 0, 0],
+        "platform": "dagoma_magis.stl",
+        "platform_offset": [0, -28, -35],
         "has_machine_quality": true,
         "has_materials": true,
         "machine_extruder_trains":
