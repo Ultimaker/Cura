@@ -192,7 +192,6 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        iconName: "configure"
         text: catalog.i18nc("@action:inmenu", "Add more materials from Marketplace")
     }
 
