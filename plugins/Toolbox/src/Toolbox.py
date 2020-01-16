@@ -765,6 +765,10 @@ class Toolbox(QObject, Extension):
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
 
+    @pyqtProperty(str, constant=True)
+    def getWebMarketplaceUrl(self) -> str:
+        return ApplicationMetadata.WEB_MARKETPLACE_URL
+
     # Filter Models:
     # --------------------------------------------------------------------------
     @pyqtSlot(str, str, str)

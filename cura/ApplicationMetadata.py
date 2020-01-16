@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 # ---------
@@ -56,3 +56,5 @@ try:
 
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
+
+WEB_MARKETPLACE_URL = "https://marketplace.ultimaker.com/app/cura/materials"
