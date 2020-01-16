@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -153,7 +153,7 @@ class StartSliceJob(Job):
             self.setResult(StartJobResult.MaterialIncompatible)
             return
 
-        for position, extruder_stack in stack.extruders.items():
+        for extruder_stack in stack.extruderList:
             material = extruder_stack.findContainer({"type": "material"})
             if not extruder_stack.isEnabled:
                 continue
@@ -161,7 +161,6 @@ class StartSliceJob(Job):
                 if material.getMetaDataEntry("compatible") == False:
                     self.setResult(StartJobResult.MaterialIncompatible)
                     return
-
 
         # Don't slice if there is a per object setting with an error value.
         for node in DepthFirstIterator(self._scene.getRoot()):
@@ -172,146 +171,145 @@ class StartSliceJob(Job):
                 self.setResult(StartJobResult.ObjectSettingError)
                 return
 
-        with self._scene.getSceneLock():
-            # Remove old layer data.
-            for node in DepthFirstIterator(self._scene.getRoot()):
-                if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
-                    # Singe we walk through all nodes in the scene, they always have a parent.
-                    cast(SceneNode, node.getParent()).removeChild(node)
-                    break
+        # Remove old layer data.
+        for node in DepthFirstIterator(self._scene.getRoot()):
+            if node.callDecoration("getLayerData") and node.callDecoration("getBuildPlateNumber") == self._build_plate_number:
+                # Singe we walk through all nodes in the scene, they always have a parent.
+                cast(SceneNode, node.getParent()).removeChild(node)
+                break
 
-            # Get the objects in their groups to print.
-            object_groups = []
-            if stack.getProperty("print_sequence", "value") == "one_at_a_time":
-                for node in OneAtATimeIterator(self._scene.getRoot()):
-                    temp_list = []
-
-                    # Node can't be printed, so don't bother sending it.
-                    if getattr(node, "_outside_buildarea", False):
-                        continue
-
-                    # Filter on current build plate
-                    build_plate_number = node.callDecoration("getBuildPlateNumber")
-                    if build_plate_number is not None and build_plate_number != self._build_plate_number:
-                        continue
-
-                    children = node.getAllChildren()
-                    children.append(node)
-                    for child_node in children:
-                        mesh_data = child_node.getMeshData()
-                        if mesh_data and mesh_data.getVertices() is not None:
-                            temp_list.append(child_node)
-
-                    if temp_list:
-                        object_groups.append(temp_list)
-                    Job.yieldThread()
-                if len(object_groups) == 0:
-                    Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
-            else:
+        # Get the objects in their groups to print.
+        object_groups = []
+        if stack.getProperty("print_sequence", "value") == "one_at_a_time":
+            for node in OneAtATimeIterator(self._scene.getRoot()):
                 temp_list = []
-                has_printing_mesh = False
-                for node in DepthFirstIterator(self._scene.getRoot()):
-                    mesh_data = node.getMeshData()
-                    if node.callDecoration("isSliceable") and mesh_data and mesh_data.getVertices() is not None:
-                        is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
-                        # Find a reason not to add the node
-                        if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
-                            continue
-                        if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
-                            continue
+                # Node can't be printed, so don't bother sending it.
+                if getattr(node, "_outside_buildarea", False):
+                    continue
 
-                        temp_list.append(node)
-                        if not is_non_printing_mesh:
-                            has_printing_mesh = True
+                # Filter on current build plate
+                build_plate_number = node.callDecoration("getBuildPlateNumber")
+                if build_plate_number is not None and build_plate_number != self._build_plate_number:
+                    continue
 
-                    Job.yieldThread()
-
-                # If the list doesn't have any model with suitable settings then clean the list
-                # otherwise CuraEngine will crash
-                if not has_printing_mesh:
-                    temp_list.clear()
+                children = node.getAllChildren()
+                children.append(node)
+                for child_node in children:
+                    mesh_data = child_node.getMeshData()
+                    if mesh_data and mesh_data.getVertices() is not None:
+                        temp_list.append(child_node)
 
                 if temp_list:
                     object_groups.append(temp_list)
+                Job.yieldThread()
+            if len(object_groups) == 0:
+                Logger.log("w", "No objects suitable for one at a time found, or no correct order found")
+        else:
+            temp_list = []
+            has_printing_mesh = False
+            for node in DepthFirstIterator(self._scene.getRoot()):
+                mesh_data = node.getMeshData()
+                if node.callDecoration("isSliceable") and mesh_data and mesh_data.getVertices() is not None:
+                    is_non_printing_mesh = bool(node.callDecoration("isNonPrintingMesh"))
 
-            global_stack = CuraApplication.getInstance().getGlobalContainerStack()
-            if not global_stack:
-                return
-            extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
-            filtered_object_groups = []
-            has_model_with_disabled_extruders = False
-            associated_disabled_extruders = set()
-            for group in object_groups:
-                stack = global_stack
-                skip_group = False
-                for node in group:
-                    # Only check if the printing extruder is enabled for printing meshes
-                    is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                    extruder_position = node.callDecoration("getActiveExtruderPosition")
-                    if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
-                        skip_group = True
-                        has_model_with_disabled_extruders = True
-                        associated_disabled_extruders.add(extruder_position)
-                if not skip_group:
-                    filtered_object_groups.append(group)
-
-            if has_model_with_disabled_extruders:
-                self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-                associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
-                self.setMessage(", ".join(associated_disabled_extruders))
-                return
-
-            # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
-            # able to find a possible sequence or because there are no objects on the build plate (or they are outside
-            # the build volume)
-            if not filtered_object_groups:
-                self.setResult(StartJobResult.NothingToSlice)
-                return
-
-            self._buildGlobalSettingsMessage(stack)
-            self._buildGlobalInheritsStackMessage(stack)
-
-            # Build messages for extruder stacks
-            for extruder_stack in global_stack.extruderList:
-                self._buildExtruderMessage(extruder_stack)
-
-            for group in filtered_object_groups:
-                group_message = self._slice_message.addRepeatedMessage("object_lists")
-                parent = group[0].getParent()
-                if parent is not None and parent.callDecoration("isGroup"):
-                    self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
-
-                for object in group:
-                    mesh_data = object.getMeshData()
-                    if mesh_data is None:
+                    # Find a reason not to add the node
+                    if node.callDecoration("getBuildPlateNumber") != self._build_plate_number:
                         continue
-                    rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
-                    translate = object.getWorldTransformation().getData()[:3, 3]
+                    if getattr(node, "_outside_buildarea", False) and not is_non_printing_mesh:
+                        continue
 
-                    # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
-                    verts = mesh_data.getVertices()
-                    verts = verts.dot(rot_scale)
-                    verts += translate
+                    temp_list.append(node)
+                    if not is_non_printing_mesh:
+                        has_printing_mesh = True
 
-                    # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
-                    verts[:, [1, 2]] = verts[:, [2, 1]]
-                    verts[:, 1] *= -1
+                Job.yieldThread()
 
-                    obj = group_message.addRepeatedMessage("objects")
-                    obj.id = id(object)
-                    obj.name = object.getName()
-                    indices = mesh_data.getIndices()
-                    if indices is not None:
-                        flat_verts = numpy.take(verts, indices.flatten(), axis=0)
-                    else:
-                        flat_verts = numpy.array(verts)
+            # If the list doesn't have any model with suitable settings then clean the list
+            # otherwise CuraEngine will crash
+            if not has_printing_mesh:
+                temp_list.clear()
 
-                    obj.vertices = flat_verts
+            if temp_list:
+                object_groups.append(temp_list)
 
-                    self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
+        global_stack = CuraApplication.getInstance().getGlobalContainerStack()
+        if not global_stack:
+            return
+        extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
+        filtered_object_groups = []
+        has_model_with_disabled_extruders = False
+        associated_disabled_extruders = set()
+        for group in object_groups:
+            stack = global_stack
+            skip_group = False
+            for node in group:
+                # Only check if the printing extruder is enabled for printing meshes
+                is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
+                extruder_position = node.callDecoration("getActiveExtruderPosition")
+                if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
+                    skip_group = True
+                    has_model_with_disabled_extruders = True
+                    associated_disabled_extruders.add(extruder_position)
+            if not skip_group:
+                filtered_object_groups.append(group)
 
-                    Job.yieldThread()
+        if has_model_with_disabled_extruders:
+            self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
+            associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
+            self.setMessage(", ".join(associated_disabled_extruders))
+            return
+
+        # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being
+        # able to find a possible sequence or because there are no objects on the build plate (or they are outside
+        # the build volume)
+        if not filtered_object_groups:
+            self.setResult(StartJobResult.NothingToSlice)
+            return
+
+        self._buildGlobalSettingsMessage(stack)
+        self._buildGlobalInheritsStackMessage(stack)
+
+        # Build messages for extruder stacks
+        for extruder_stack in global_stack.extruderList:
+            self._buildExtruderMessage(extruder_stack)
+
+        for group in filtered_object_groups:
+            group_message = self._slice_message.addRepeatedMessage("object_lists")
+            parent = group[0].getParent()
+            if parent is not None and parent.callDecoration("isGroup"):
+                self._handlePerObjectSettings(cast(CuraSceneNode, parent), group_message)
+
+            for object in group:
+                mesh_data = object.getMeshData()
+                if mesh_data is None:
+                    continue
+                rot_scale = object.getWorldTransformation().getTransposed().getData()[0:3, 0:3]
+                translate = object.getWorldTransformation().getData()[:3, 3]
+
+                # This effectively performs a limited form of MeshData.getTransformed that ignores normals.
+                verts = mesh_data.getVertices()
+                verts = verts.dot(rot_scale)
+                verts += translate
+
+                # Convert from Y up axes to Z up axes. Equals a 90 degree rotation.
+                verts[:, [1, 2]] = verts[:, [2, 1]]
+                verts[:, 1] *= -1
+
+                obj = group_message.addRepeatedMessage("objects")
+                obj.id = id(object)
+                obj.name = object.getName()
+                indices = mesh_data.getIndices()
+                if indices is not None:
+                    flat_verts = numpy.take(verts, indices.flatten(), axis=0)
+                else:
+                    flat_verts = numpy.array(verts)
+
+                obj.vertices = flat_verts
+
+                self._handlePerObjectSettings(cast(CuraSceneNode, object), obj)
+
+                Job.yieldThread()
 
         self.setResult(StartJobResult.Finished)
 
@@ -345,10 +343,7 @@ class StartSliceJob(Job):
         result["time"] = time.strftime("%H:%M:%S") #Some extra settings.
         result["date"] = time.strftime("%d-%m-%Y")
         result["day"] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][int(time.strftime("%w"))]
-
-        initial_extruder_stack = CuraApplication.getInstance().getExtruderManager().getUsedExtruderStacks()[0]
-        initial_extruder_nr = initial_extruder_stack.getProperty("extruder_nr", "value")
-        result["initial_extruder_nr"] = initial_extruder_nr
+        result["initial_extruder_nr"] = CuraApplication.getInstance().getExtruderManager().getInitialExtruderNr()
 
         return result
 

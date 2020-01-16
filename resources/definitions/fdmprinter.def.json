@@ -2084,7 +2084,6 @@
                     "maximum_value": "machine_height",
                     "type": "float",
                     "value": "0",
-                    "comment": "This was put at 0 to keep the default behaviour the same, but in the original PR the 'value' was: resolveOrValue('infill_sparse_thickness') * (4 if infill_sparse_density < 12.5 else (3 if infill_sparse_density < 25 else (2 if infill_sparse_density < 50 else 1)))",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2420,6 +2419,54 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "material_flush_purge_speed":
+                {
+                    "label": "Flush Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_flush_purge_length":
+                {
+                    "label": "Flush Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 60,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_speed":
+                {
+                    "label": "End Of Filament Purge Speed",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.5,
+                    "enabled": false
+                },
+                "material_end_of_filament_purge_length":
+                {
+                    "label": "End Of Filament Purge Length",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 20,
+                    "enabled": false
+                },
+                "material_maximum_park_duration":
+                {
+                    "label": "Maximum Park Duration",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 300,
+                    "enabled": false
+                },
+                "material_no_load_move_factor":
+                {
+                    "label": "No Load Move Factor",
+                    "description": "Material Station internal value",
+                    "type": "float",
+                    "default_value": 0.940860215,
+                    "enabled": false
+                },
                 "material_flow":
                 {
                     "label": "Flow",
@@ -2634,150 +2681,6 @@
                     "maximum_value_warning": "150",
                     "settable_per_mesh": true
                 },
-                "retraction_enable":
-                {
-                    "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
-                    "type": "bool",
-                    "default_value": true,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retract_at_layer_change":
-                {
-                    "label": "Retract at Layer Change",
-                    "description": "Retract the filament when the nozzle is moving to the next layer.",
-                    "type": "bool",
-                    "default_value": false,
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_amount":
-                {
-                    "label": "Retraction Distance",
-                    "description": "The length of material retracted during a retraction move.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 6.5,
-                    "minimum_value_warning": "-0.0001",
-                    "maximum_value_warning": "10.0",
-                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_speed":
-                {
-                    "label": "Retraction Speed",
-                    "description": "The speed at which the filament is retracted and primed during a retraction move.",
-                    "unit": "mm/s",
-                    "type": "float",
-                    "default_value": 25,
-                    "minimum_value": "0.0001",
-                    "minimum_value_warning": "1",
-                    "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                    "maximum_value_warning": "70",
-                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "retraction_retract_speed":
-                        {
-                            "label": "Retraction Retract Speed",
-                            "description": "The speed at which the filament is retracted during a retraction move.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default_value": 25,
-                            "minimum_value": "0.0001",
-                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                            "minimum_value_warning": "1",
-                            "maximum_value_warning": "70",
-                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                            "value": "retraction_speed",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        },
-                        "retraction_prime_speed":
-                        {
-                            "label": "Retraction Prime Speed",
-                            "description": "The speed at which the filament is primed during a retraction move.",
-                            "unit": "mm/s",
-                            "type": "float",
-                            "default_value": 25,
-                            "minimum_value": "0.0001",
-                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                            "minimum_value_warning": "1",
-                            "maximum_value_warning": "70",
-                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
-                            "value": "retraction_speed",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
-                },
-                "retraction_extra_prime_amount":
-                {
-                    "label": "Retraction Extra Prime Amount",
-                    "description": "Some material can ooze away during a travel move, which can be compensated for here.",
-                    "unit": "mm³",
-                    "type": "float",
-                    "default_value": 0,
-                    "minimum_value_warning": "-0.0001",
-                    "maximum_value_warning": "5.0",
-                    "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_min_travel":
-                {
-                    "label": "Retraction Minimum Travel",
-                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 1.5,
-                    "value": "line_width * 2",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "line_width * 1.5",
-                    "maximum_value_warning": "10",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_count_max":
-                {
-                    "label": "Maximum Retraction Count",
-                    "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
-                    "default_value": 90,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "100",
-                    "type": "int",
-                    "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "retraction_extrusion_window":
-                {
-                    "label": "Minimum Extrusion Distance Window",
-                    "description": "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
-                    "unit": "mm",
-                    "type": "float",
-                    "default_value": 4.5,
-                    "minimum_value": "0",
-                    "maximum_value_warning": "retraction_amount * 2",
-                    "value": "retraction_amount",
-                    "enabled": "retraction_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "limit_support_retractions":
-                {
-                    "label": "Limit Support Retractions",
-                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
-                    "type": "bool",
-                    "default_value": true,
-                    "enabled": "retraction_enable and (support_enable or support_tree_enable)",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
                 "material_standby_temperature":
                 {
                     "label": "Standby Temperature",
@@ -2789,83 +2692,6 @@
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "switch_extruder_retraction_amount":
-                {
-                    "label": "Nozzle Switch Retraction Distance",
-                    "description": "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
-                    "type": "float",
-                    "unit": "mm",
-                    "enabled": "retraction_enable",
-                    "default_value": 20,
-                    "value": "machine_heat_zone_length",
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true
-                },
-                "switch_extruder_retraction_speeds":
-                {
-                    "label": "Nozzle Switch Retraction Speed",
-                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
-                    "type": "float",
-                    "unit": "mm/s",
-                    "enabled": "retraction_enable",
-                    "default_value": 20,
-                    "minimum_value": "0.1",
-                    "minimum_value_warning": "1",
-                    "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                    "maximum_value_warning": "70",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "switch_extruder_retraction_speed":
-                        {
-                            "label": "Nozzle Switch Retract Speed",
-                            "description": "The speed at which the filament is retracted during a nozzle switch retract.",
-                            "type": "float",
-                            "unit": "mm/s",
-                            "enabled": "retraction_enable",
-                            "default_value": 20,
-                            "value": "switch_extruder_retraction_speeds",
-                            "minimum_value": "0.1",
-                            "minimum_value_warning": "1",
-                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                            "maximum_value_warning": "70",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        },
-                        "switch_extruder_prime_speed":
-                        {
-                            "label": "Nozzle Switch Prime Speed",
-                            "description": "The speed at which the filament is pushed back after a nozzle switch retraction.",
-                            "type": "float",
-                            "unit": "mm/s",
-                            "enabled": "retraction_enable",
-                            "default_value": 20,
-                            "value": "switch_extruder_retraction_speeds",
-                            "minimum_value": "0.1",
-                            "minimum_value_warning": "1",
-                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
-                            "maximum_value_warning": "70",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
-                },
-                "switch_extruder_extra_prime_amount": 
-                {
-                    "label": "Nozzle Switch Extra Prime Amount",
-                    "description": "Extra material to prime after nozzle switching.",
-                    "type": "float",
-                    "unit": "mm³",
-                    "default_value": 0,
-                    "minimum_value_warning": "0",
-                    "maximum_value_warning": "100",
-                    "enabled": "retraction_enable",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 }
@@ -3783,6 +3609,150 @@
             "type": "category",
             "children":
             {
+                "retraction_enable":
+                {
+                    "label": "Enable Retraction",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
+                    "type": "bool",
+                    "default_value": true,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retract_at_layer_change":
+                {
+                    "label": "Retract at Layer Change",
+                    "description": "Retract the filament when the nozzle is moving to the next layer.",
+                    "type": "bool",
+                    "default_value": false,
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_amount":
+                {
+                    "label": "Retraction Distance",
+                    "description": "The length of material retracted during a retraction move.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 6.5,
+                    "minimum_value_warning": "-0.0001",
+                    "maximum_value_warning": "10.0",
+                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_speed":
+                {
+                    "label": "Retraction Speed",
+                    "description": "The speed at which the filament is retracted and primed during a retraction move.",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 25,
+                    "minimum_value": "0.0001",
+                    "minimum_value_warning": "1",
+                    "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                    "maximum_value_warning": "70",
+                    "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "retraction_retract_speed":
+                        {
+                            "label": "Retraction Retract Speed",
+                            "description": "The speed at which the filament is retracted during a retraction move.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 25,
+                            "minimum_value": "0.0001",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "minimum_value_warning": "1",
+                            "maximum_value_warning": "70",
+                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                            "value": "retraction_speed",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "retraction_prime_speed":
+                        {
+                            "label": "Retraction Prime Speed",
+                            "description": "The speed at which the filament is primed during a retraction move.",
+                            "unit": "mm/s",
+                            "type": "float",
+                            "default_value": 25,
+                            "minimum_value": "0.0001",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "minimum_value_warning": "1",
+                            "maximum_value_warning": "70",
+                            "enabled": "retraction_enable and machine_gcode_flavor != \"UltiGCode\"",
+                            "value": "retraction_speed",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "retraction_extra_prime_amount":
+                {
+                    "label": "Retraction Extra Prime Amount",
+                    "description": "Some material can ooze away during a travel move, which can be compensated for here.",
+                    "unit": "mm³",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "-0.0001",
+                    "maximum_value_warning": "5.0",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_min_travel":
+                {
+                    "label": "Retraction Minimum Travel",
+                    "description": "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1.5,
+                    "value": "line_width * 2",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "line_width * 1.5",
+                    "maximum_value_warning": "10",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_count_max":
+                {
+                    "label": "Maximum Retraction Count",
+                    "description": "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues.",
+                    "default_value": 90,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "100",
+                    "type": "int",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "retraction_extrusion_window":
+                {
+                    "label": "Minimum Extrusion Distance Window",
+                    "description": "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 4.5,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "retraction_amount * 2",
+                    "value": "retraction_amount",
+                    "enabled": "retraction_enable",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "limit_support_retractions":
+                {
+                    "label": "Limit Support Retractions",
+                    "description": "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure.",
+                    "type": "bool",
+                    "default_value": true,
+                    "enabled": "retraction_enable and (support_enable or support_tree_enable)",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "retraction_combing":
                 {
                     "label": "Combing Mode",
@@ -4233,8 +4203,8 @@
                     "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
                     "maximum_value_warning": "3",
                     "type": "int",
-                    "value": "1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0",
-                    "enabled": "support_enable",
+                    "value": "1 if support_tree_enable else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
+                    "enabled": "support_enable or support_tree_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -4551,6 +4521,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
+                    "maximum_value_warning": "5",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
@@ -5796,6 +5767,83 @@
                     "maximum_value_warning": "20",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
+                },
+                "switch_extruder_retraction_amount":
+                {
+                    "label": "Nozzle Switch Retraction Distance",
+                    "description": "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone.",
+                    "type": "float",
+                    "unit": "mm",
+                    "enabled": "retraction_enable and extruders_enabled_count > 1",
+                    "default_value": 20,
+                    "value": "machine_heat_zone_length",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
+                "switch_extruder_retraction_speeds":
+                {
+                    "label": "Nozzle Switch Retraction Speed",
+                    "description": "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "enabled": "retraction_enable and extruders_enabled_count > 1",
+                    "default_value": 20,
+                    "minimum_value": "0.1",
+                    "minimum_value_warning": "1",
+                    "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                    "maximum_value_warning": "70",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "children":
+                    {
+                        "switch_extruder_retraction_speed":
+                        {
+                            "label": "Nozzle Switch Retract Speed",
+                            "description": "The speed at which the filament is retracted during a nozzle switch retract.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable and extruders_enabled_count > 1",
+                            "default_value": 20,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "maximum_value_warning": "70",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        },
+                        "switch_extruder_prime_speed":
+                        {
+                            "label": "Nozzle Switch Prime Speed",
+                            "description": "The speed at which the filament is pushed back after a nozzle switch retraction.",
+                            "type": "float",
+                            "unit": "mm/s",
+                            "enabled": "retraction_enable and extruders_enabled_count > 1",
+                            "default_value": 20,
+                            "value": "switch_extruder_retraction_speeds",
+                            "minimum_value": "0.1",
+                            "minimum_value_warning": "1",
+                            "maximum_value": "machine_max_feedrate_e if retraction_enable else float('inf')",
+                            "maximum_value_warning": "70",
+                            "settable_per_mesh": false,
+                            "settable_per_extruder": true
+                        }
+                    }
+                },
+                "switch_extruder_extra_prime_amount":
+                {
+                    "label": "Nozzle Switch Extra Prime Amount",
+                    "description": "Extra material to prime after nozzle switching.",
+                    "type": "float",
+                    "unit": "mm³",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "retraction_enable and extruders_enabled_count > 1",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
                 }
             }
         },
@@ -5813,6 +5861,7 @@
                     "description": "Ignore the internal geometry arising from overlapping volumes within a mesh and print the volumes as one. This may cause unintended internal cavities to disappear.",
                     "type": "bool",
                     "default_value": true,
+                    "value": "magic_mesh_surface_mode != 'surface'",
                     "settable_per_mesh": true
                 },
                 "meshfix_union_all_remove_holes":
@@ -6185,38 +6234,6 @@
                     "enabled": "support_tree_enable and support_tree_branch_diameter_angle > 0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
-                },
-                "support_tree_wall_thickness":
-                {
-                    "label": "Tree Support Wall Thickness",
-                    "description": "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value": "0",
-                    "minimum_value_warning": "wall_line_width",
-                    "default_value": 0.8,
-                    "value": "support_line_width",
-                    "limit_to_extruder": "support_infill_extruder_nr",
-                    "enabled": "support_tree_enable",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "children":
-                    {
-                        "support_tree_wall_count":
-                        {
-                            "label": "Tree Support Wall Line Count",
-                            "description": "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily.",
-                            "type": "int",
-                            "minimum_value": "0",
-                            "minimum_value_warning": "1",
-                            "default_value": 1,
-                            "value": "round(support_tree_wall_thickness / support_line_width)",
-                            "limit_to_extruder": "support_infill_extruder_nr",
-                            "enabled": "support_tree_enable",
-                            "settable_per_mesh": false,
-                            "settable_per_extruder": true
-                        }
-                    }
                 },
                 "slicing_tolerance":
                 {
@@ -7400,7 +7417,7 @@
                 "clean_between_layers":
                 {
                     "label": "Wipe Nozzle Between Layers",
-                    "description": "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
+                    "description": "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
                     "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -7410,7 +7427,7 @@
                 "max_extrusion_before_wipe":
                 {
                     "label": "Material Volume Between Wipes",
-                    "description": "Maximum material, that can be extruded before another nozzle wipe is initiated.",
+                    "description": "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer.",
                     "default_value": 10,
                     "type": "float",
                     "unit": "mm³",
@@ -7634,7 +7651,7 @@
                     "default_value": 50,
                     "minimum_value": "1",
                     "minimum_value_warning": "25",
-                    "maximum_value": "100",
+                    "maximum_value_warning": "100",
                     "settable_per_mesh": true
                 },
                 "small_feature_speed_factor_0":
@@ -7647,7 +7664,7 @@
                     "value": "small_feature_speed_factor",
                     "minimum_value": "1",
                     "minimum_value_warning": "25",
-                    "maximum_value": "100",
+                    "maximum_value_warning": "100",
                     "settable_per_mesh": true
                 }
             }

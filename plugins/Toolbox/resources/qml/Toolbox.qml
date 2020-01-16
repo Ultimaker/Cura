@@ -96,17 +96,12 @@ Window
             visible: toolbox.restartRequired
             height: visible ? UM.Theme.getSize("toolbox_footer").height : 0
         }
-        // TODO: Clean this up:
+
         Connections
         {
             target: toolbox
-            onShowLicenseDialog:
-            {
-                licenseDialog.pluginName = toolbox.getLicenseDialogPluginName();
-                licenseDialog.licenseContent = toolbox.getLicenseDialogLicenseContent();
-                licenseDialog.pluginFileLocation = toolbox.getLicenseDialogPluginFileLocation();
-                licenseDialog.show();
-            }
+            onShowLicenseDialog: { licenseDialog.show() }
+            onCloseLicenseDialog: { licenseDialog.close() }
         }
         
         ToolboxLicenseDialog

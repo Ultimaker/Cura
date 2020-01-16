@@ -1,15 +1,21 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+import numpy
+import math
+
+from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
+
 from UM.Mesh.MeshData import MeshData
-from cura.Scene.CuraSceneNode import CuraSceneNode
-from cura.Settings.ExtruderManager import ExtruderManager
+from UM.Mesh.MeshBuilder import MeshBuilder
+
 from UM.Application import Application #To modify the maximum zoom level.
 from UM.i18n import i18nCatalog
 from UM.Scene.Platform import Platform
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Resources import Resources
-from UM.Mesh.MeshBuilder import MeshBuilder
+
 from UM.Math.Vector import Vector
 from UM.Math.Matrix import Matrix
 from UM.Math.Color import Color
@@ -17,22 +23,22 @@ from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Polygon import Polygon
 from UM.Message import Message
 from UM.Signal import Signal
-from PyQt5.QtCore import QTimer
 from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+
 from cura.Settings.GlobalStack import GlobalStack
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Settings.ExtruderManager import ExtruderManager
 
-catalog = i18nCatalog("cura")
+from PyQt5.QtCore import QTimer
 
-import numpy
-import math
-
-from typing import List, Optional, TYPE_CHECKING, Any, Set, cast, Iterable, Dict
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
     from cura.Settings.ExtruderStack import ExtruderStack
     from UM.Settings.ContainerStack import ContainerStack
+
+catalog = i18nCatalog("cura")
 
 # Radius of disallowed area in mm around prime. I.e. how much distance to keep from prime position.
 PRIME_CLEARANCE = 6.5
@@ -1012,13 +1018,13 @@ class BuildVolume(SceneNode):
         all_values = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "value")
         all_types = ExtruderManager.getInstance().getAllExtruderSettings(setting_key, "type")
         for i, (setting_value, setting_type) in enumerate(zip(all_values, all_types)):
-            if not setting_value and (setting_type == "int" or setting_type == "float"):
+            if not setting_value and setting_type in ["int", "float"]:
                 all_values[i] = 0
         return all_values
 
     def _calculateBedAdhesionSize(self, used_extruders):
         if self._global_container_stack is None:
-            return
+            return None
 
         container_stack = self._global_container_stack
         adhesion_type = container_stack.getProperty("adhesion_type", "value")

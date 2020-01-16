@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 #   nodes that have children) but that child node may be a node representing the
 #   empty instance container.
 class ContainerTree:
-    __instance = None
+    __instance = None  # type: Optional["ContainerTree"]
 
     @classmethod
     def getInstance(cls):
@@ -75,7 +75,7 @@ class ContainerTree:
         return self.machines[global_stack.definition.getId()].getQualityChangesGroups(variant_names, material_bases, extruder_enabled)
 
     ##  Ran after completely starting up the application.
-    def _onStartupFinished(self):
+    def _onStartupFinished(self) -> None:
         currently_added = ContainerRegistry.getInstance().findContainerStacks()  # Find all currently added global stacks.
         JobQueue.getInstance().add(self._MachineNodeLoadJob(self, currently_added))
 
@@ -137,7 +137,7 @@ class ContainerTree:
         #   \param container_stacks All of the stacks to pre-load the container
         #   trees for. This needs to be provided from here because the stacks
         #   need to be constructed on the main thread because they are QObject.
-        def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]):
+        def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]) -> None:
             self.tree_root = tree_root
             self.container_stacks = container_stacks
             super().__init__()

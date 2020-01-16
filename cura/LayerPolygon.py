@@ -1,10 +1,11 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
-from UM.Qt.QtApplication import QtApplication
-from typing import Any, Optional
 import numpy
 
+from typing import Optional, cast
+
+from UM.Qt.Bindings.Theme import Theme
+from UM.Qt.QtApplication import QtApplication
 from UM.Logger import Logger
 
 
@@ -61,7 +62,7 @@ class LayerPolygon:
         
         # When type is used as index returns true if type == LayerPolygon.InfillType or type == LayerPolygon.SkinType or type == LayerPolygon.SupportInfillType
         # Should be generated in better way, not hardcoded.
-        self._isInfillOrSkinTypeMap = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
+        self._is_infill_or_skin_type_map = numpy.array([0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0], dtype = numpy.bool)
         
         self._build_cache_line_mesh_mask = None  # type: Optional[numpy.ndarray]
         self._build_cache_needed_points = None  # type: Optional[numpy.ndarray]
@@ -149,17 +150,17 @@ class LayerPolygon:
     def getColors(self):
         return self._colors
 
-    def mapLineTypeToColor(self, line_types):
+    def mapLineTypeToColor(self, line_types: numpy.ndarray) -> numpy.ndarray:
         return self._color_map[line_types]
 
-    def isInfillOrSkinType(self, line_types):
-        return self._isInfillOrSkinTypeMap[line_types]
+    def isInfillOrSkinType(self, line_types: numpy.ndarray) -> numpy.ndarray:
+        return self._is_infill_or_skin_type_map[line_types]
 
-    def lineMeshVertexCount(self):
-        return (self._vertex_end - self._vertex_begin)
+    def lineMeshVertexCount(self) -> int:
+        return self._vertex_end - self._vertex_begin
 
-    def lineMeshElementCount(self):
-        return (self._index_end - self._index_begin)
+    def lineMeshElementCount(self) -> int:
+        return self._index_end - self._index_begin
 
     @property
     def extruder(self):
@@ -202,7 +203,7 @@ class LayerPolygon:
         return self._jump_count
 
     # Calculate normals for the entire polygon using numpy.
-    def getNormals(self):
+    def getNormals(self) -> numpy.ndarray:
         normals = numpy.copy(self._data)
         normals[:, 1] = 0.0 # We are only interested in 2D normals
 
@@ -226,13 +227,13 @@ class LayerPolygon:
 
         return normals
 
-    __color_map = None # type: numpy.ndarray[Any]
+    __color_map = None  # type: numpy.ndarray
 
     ##  Gets the instance of the VersionUpgradeManager, or creates one.
     @classmethod
-    def getColorMap(cls):
+    def getColorMap(cls) -> numpy.ndarray:
         if cls.__color_map is None:
-            theme = QtApplication.getInstance().getTheme()
+            theme = cast(Theme, QtApplication.getInstance().getTheme())
             cls.__color_map = numpy.array([
                 theme.getColor("layerview_none").getRgbF(), # NoneType
                 theme.getColor("layerview_inset_0").getRgbF(), # Inset0Type

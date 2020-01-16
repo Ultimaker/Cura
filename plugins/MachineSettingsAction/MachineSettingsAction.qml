@@ -97,7 +97,6 @@ Cura.MachineAction
         text: Cura.MachineManager.activeMachine.name
         horizontalAlignment: Text.AlignHCenter
         font: UM.Theme.getFont("large_bold")
-        color: UM.Theme.getColor("text")
         renderType: Text.NativeRendering
     }
 

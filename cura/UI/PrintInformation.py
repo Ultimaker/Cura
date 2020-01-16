@@ -7,7 +7,7 @@ import os
 import unicodedata
 from typing import Dict, List, Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QTimer
 
 from UM.Logger import Logger
 from UM.Qt.Duration import Duration
@@ -47,7 +47,12 @@ class PrintInformation(QObject):
         if self._backend:
             self._backend.printDurationMessage.connect(self._onPrintDurationMessage)
 
-        self._application.getController().getScene().sceneChanged.connect(self._onSceneChanged)
+        self._application.getController().getScene().sceneChanged.connect(self._onSceneChangedDelayed)
+
+        self._change_timer = QTimer()
+        self._change_timer.setInterval(100)
+        self._change_timer.setSingleShot(True)
+        self._change_timer.timeout.connect(self._onSceneChanged)
 
         self._is_user_specified_job_name = False
         self._base_name = ""
@@ -418,12 +423,14 @@ class PrintInformation(QObject):
 
         self._onPrintDurationMessage(build_plate, temp_message, temp_material_amounts)
 
-    ##  Listen to scene changes to check if we need to reset the print information
-    def _onSceneChanged(self, scene_node: SceneNode) -> None:
+    def _onSceneChangedDelayed(self, scene_node: SceneNode) -> None:
         # Ignore any changes that are not related to sliceable objects
-        if not isinstance(scene_node, SceneNode)\
-                or not scene_node.callDecoration("isSliceable")\
+        if not isinstance(scene_node, SceneNode) \
+                or not scene_node.callDecoration("isSliceable") \
                 or not scene_node.callDecoration("getBuildPlateNumber") == self._active_build_plate:
             return
+        self._change_timer.start()
 
+    ##  Listen to scene changes to check if we need to reset the print information
+    def _onSceneChanged(self) -> None:
         self.setToZeroPrintInformation(self._active_build_plate)

@@ -154,7 +154,7 @@ Item
         }
     }
 
-    // show the plugin browser dialog
+    // show the Toolbox
     Connections
     {
         target: Cura.Actions.browsePackages

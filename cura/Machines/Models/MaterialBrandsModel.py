@@ -34,7 +34,7 @@ class MaterialBrandsModel(BaseMaterialsModel):
         brand_item_list = []
         brand_group_dict = {}
 
-        # Part 1: Generate the entire tree of brands -> material types -> spcific materials
+        # Part 1: Generate the entire tree of brands -> material types -> specific materials
         for root_material_id, container_node in self._available_materials.items():
             # Do not include the materials from a to-be-removed package
             if bool(container_node.getMetaDataEntry("removed", False)):

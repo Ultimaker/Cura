@@ -14,7 +14,7 @@ class ClusterPrinterMaterialStationSlot(ClusterPrintCoreConfiguration):
     #  \param material_remaining: How much material is remaining on the spool (between 0 and 1, or -1 for missing data).
     #  \param material_empty: Whether the material spool is too empty to be used.
     def __init__(self, slot_index: int, compatible: bool, material_remaining: float,
-                 material_empty: Optional[bool] = False, **kwargs):
+                 material_empty: Optional[bool] = False, **kwargs) -> None:
         self.slot_index = slot_index
         self.compatible = compatible
         self.material_remaining = material_remaining

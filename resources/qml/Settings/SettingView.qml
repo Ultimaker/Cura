@@ -25,7 +25,7 @@ Item
         visible: true
 
         radius: UM.Theme.getSize("setting_control_radius").width
-        border.width: Math.round(UM.Theme.getSize("default_lining").width)
+        border.width: UM.Theme.getSize("default_lining").width
         border.color:
         {
             if (hoverMouseArea.containsMouse || clearFilterButton.containsMouse)
@@ -187,10 +187,12 @@ Item
 
         menu: SettingVisibilityPresetsMenu
         {
-            onShowAllSettings:
+            onCollapseAllCategories:
             {
-                definitionsModel.setAllVisible(true)
-                filter.updateDefinitionModel()
+                settingsSearchTimer.stop()
+                filter.text = "" // clear search field
+                filter.editingFinished()
+                definitionsModel.collapseAllCategories()
             }
         }
     }
@@ -222,7 +224,6 @@ Item
         ListView
         {
             id: contents
-            spacing: UM.Theme.getSize("default_lining").height
             cacheBuffer: 1000000   // Set a large cache to effectively just cache every list item.
 
             model: UM.SettingDefinitionsModel
@@ -251,7 +252,7 @@ Item
                 id: delegate
 
                 width: scrollView.width
-                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height : - contents.spacing
+                height: provider.properties.enabled === "True" ? UM.Theme.getSize("section").height + 2 * UM.Theme.getSize("default_lining").height : 0
                 Behavior on height { NumberAnimation { duration: 100 } }
                 opacity: provider.properties.enabled === "True" ? 1 : 0
                 Behavior on opacity { NumberAnimation { duration: 100 } }
