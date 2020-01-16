@@ -19,12 +19,11 @@ from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-from plugins.Toolbox.src.CloudApiModel import CloudApiModel
+from .CloudApiModel import CloudApiModel
 
 from .AuthorsModel import AuthorsModel
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
-from .CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
