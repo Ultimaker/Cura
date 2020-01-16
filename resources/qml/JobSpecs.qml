@@ -14,7 +14,7 @@ Item
     id: base
 
     property bool activity: CuraApplication.platformActivity
-    property string fileBaseName: PrintInformation.baseName
+    property string fileBaseName: (PrintInformation === null) ? "" : PrintInformation.baseName
 
     UM.I18nCatalog
     {
@@ -80,13 +80,25 @@ Item
             height: UM.Theme.getSize("jobspecs_line").height
             width: Math.max(__contentWidth + UM.Theme.getSize("default_margin").width, 50)
             maximumLength: 120
-            text: PrintInformation.jobName
+            text: (PrintInformation === null) ? "" : PrintInformation.jobName
             horizontalAlignment: TextInput.AlignLeft
+
+            property string textBeforeEdit: ""
+
+            onActiveFocusChanged:
+            {
+                if (activeFocus)
+                {
+                    textBeforeEdit = text
+                }
+            }
 
             onEditingFinished:
             {
-                var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
-                PrintInformation.setJobName(new_name, true)
+                if (text != textBeforeEdit) {
+                    var new_name = text == "" ? catalog.i18nc("@text Print job name", "Untitled") : text
+                    PrintInformation.setJobName(new_name, true)
+                }
                 printJobTextfield.focus = false
             }
 

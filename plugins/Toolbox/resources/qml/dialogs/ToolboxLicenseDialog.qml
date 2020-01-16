@@ -57,6 +57,7 @@ UM.Dialog
             {
                 licenseDialog.close();
                 toolbox.install(licenseDialog.pluginFileLocation);
+                toolbox.subscribe(licenseDialog.pluginName);
             }
         },
         Button

@@ -58,5 +58,5 @@ Button {
     checkable: true
     checked: definition.expanded
 
-    onClicked: definition.expanded ? settingDefinitionsModel.collapse(definition.key) : settingDefinitionsModel.expandRecursive(definition.key)
+    onClicked: definition.expanded ? settingDefinitionsModel.collapseRecursive(definition.key) : settingDefinitionsModel.expandRecursive(definition.key)
 }

@@ -45,7 +45,7 @@ class BaseMaterialsModel(ListModel):
         # can be caused in the middle of a XMLMaterial loading, and the material container we try to find may not be
         # in the system yet. This will cause an infinite recursion of (1) trying to load a material, (2) trying to
         # update the material model, (3) cannot find the material container, load it, (4) repeat #1.
-        self._update_timer = QTimer()
+        self._update_timer = QTimer(self)
         self._update_timer.setInterval(100)
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._update)

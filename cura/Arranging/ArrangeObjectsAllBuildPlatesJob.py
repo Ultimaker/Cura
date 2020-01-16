@@ -29,7 +29,7 @@ class ArrangeArray:
         self._has_empty = False
         self._arrange = []  # type: List[Arrange]
 
-    def _update_first_empty(self):
+    def _updateFirstEmpty(self):
         for i, a in enumerate(self._arrange):
             if a.isEmpty:
                 self._first_empty = i
@@ -42,7 +42,7 @@ class ArrangeArray:
         new_arrange = Arrange.create(x = self._x, y = self._y, fixed_nodes = self._fixed_nodes)
         self._arrange.append(new_arrange)
         self._count += 1
-        self._update_first_empty()
+        self._updateFirstEmpty()
 
     def count(self):
         return self._count

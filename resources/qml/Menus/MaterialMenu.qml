@@ -13,12 +13,20 @@ Menu
     title: catalog.i18nc("@label:category menu label", "Material")
 
     property int extruderIndex: 0
-    property string currentRootMaterialId: Cura.MachineManager.currentRootMaterialId[extruderIndex]
-    property string activeMaterialId:
+    property string currentRootMaterialId:
     {
-        var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
-        return (extruder === undefined) ? "" : extruder.material.id
+        var value = Cura.MachineManager.currentRootMaterialId[extruderIndex]
+        return (value === undefined) ? "" : value
     }
+    property var activeExtruder:
+    {
+        var activeMachine = Cura.MachineManager.activeMachine
+        return (activeMachine === null) ? null : activeMachine.extruderList[extruderIndex]
+    }
+    property bool isActiveExtruderEnabled: activeExtruder === null ? false : activeExtruder.isEnabled
+
+    property string activeMaterialId: activeExtruder === null ? false : activeExtruder.material.id
+
     property bool updateModels: true
     Cura.FavoriteMaterialsModel
     {
@@ -54,7 +62,7 @@ Menu
         {
             text: model.brand + " " + model.name
             checkable: true
-            enabled: Cura.MachineManager.activeMachine.extruderList[extruderIndex].isEnabled
+            enabled: isActiveExtruderEnabled
             checked: model.root_material_id === menu.currentRootMaterialId
             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
             exclusiveGroup: favoriteGroup  // One favorite and one item from the others can be active at the same time.
@@ -77,11 +85,7 @@ Menu
             {
                 text: model.name
                 checkable: true
-                enabled:
-                {
-                    var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
-                    return (extruder === undefined) ? false : extruder.isEnabled
-                }
+                enabled: isActiveExtruderEnabled
                 checked: model.root_material_id === menu.currentRootMaterialId
                 exclusiveGroup: group
                 onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)
@@ -120,11 +124,7 @@ Menu
                         {
                             text: model.name
                             checkable: true
-                            enabled:
-                            {
-                                var extruder = Cura.MachineManager.activeMachine.extruderList[extruderIndex]
-                                return (extruder === undefined) ? false : extruder.isEnabled
-                            }
+                            enabled: isActiveExtruderEnabled
                             checked: model.id === menu.activeMaterialId
                             exclusiveGroup: group
                             onTriggered: Cura.MachineManager.setMaterial(extruderIndex, model.container_node)

@@ -88,7 +88,7 @@ Window
                     right: parent.right
                 }
 
-                textArea.text: manager.getExampleData()
+                textArea.text: (manager === null) ? "" : manager.getExampleData()
                 textArea.textFormat: Text.RichText
                 textArea.wrapMode: Text.Wrap
                 textArea.readOnly: true

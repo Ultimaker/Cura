@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -13,6 +13,7 @@ def user_profile():
     result.profile_image_url = "profile_image_url!"
     result.user_id = "user_id!"
     return result
+
 
 def test_login():
     account = Account(MagicMock())
@@ -55,8 +56,8 @@ def test_logout():
     account.logout()
     mocked_auth_service.deleteAuthData.assert_called_once_with()
 
-
-def test_errorLoginState():
+@patch("UM.Application.Application.getInstance")
+def test_errorLoginState(application):
     account = Account(MagicMock())
     mocked_auth_service = MagicMock()
     account._authorization_service = mocked_auth_service

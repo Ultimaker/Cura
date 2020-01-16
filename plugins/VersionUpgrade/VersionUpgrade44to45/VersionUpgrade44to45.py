@@ -3,10 +3,17 @@ from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
-# Merged preferences: machine_head_polygon and machine_head_with_fans_polygon -> machine_head_with_fans_polygon
-# When both are present, machine_head_polygon will be removed
-# When only one of the two is present, it's value will be used
+# Settings that were merged into one. Each one is a pair of settings. If both
+# are overwritten, the key wins. If only the key or the value is overwritten,
+# that value is used in the key.
+_merged_settings = {
+    "machine_head_with_fans_polygon": "machine_head_polygon",
+    "support_wall_count": "support_tree_wall_count"
+}
 
+_removed_settings = {
+    "support_tree_wall_thickness"
+}
 
 class VersionUpgrade44to45(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
@@ -35,20 +42,26 @@ class VersionUpgrade44to45(VersionUpgrade):
     #
     #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
-        parser = configparser.ConfigParser(interpolation = None, comment_prefixes=())
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
         # Update version number.
         parser["metadata"]["setting_version"] = "11"
 
         if "values" in parser:
-            # merge machine_head_with_fans_polygon (preferred) and machine_head_polygon
-            if "machine_head_with_fans_polygon" in parser["values"]:
-                if "machine_head_polygon" in parser["values"]:
-                    del parser["values"]["machine_head_polygon"]
-            elif "machine_head_polygon" in parser["values"]:
-                parser["values"]["machine_head_with_fans_polygon"] = parser["values"]["machine_head_polygon"]
-                del parser["values"]["machine_head_polygon"]
+            # Merged settings: When two settings are merged, one is preferred.
+            # If the preferred one is available, that value is taken regardless
+            # of the other one. If only the non-preferred one is available, that
+            # value is moved to the preferred setting value.
+            for preferred, removed in _merged_settings.items():
+                if removed in parser["values"]:
+                    if preferred not in parser["values"]:
+                        parser["values"][preferred] = parser["values"][removed]
+                    del parser["values"][removed]
+
+            for removed in _removed_settings:
+                if removed in parser["values"]:
+                    del parser["values"][removed]
 
         result = io.StringIO()
         parser.write(result)

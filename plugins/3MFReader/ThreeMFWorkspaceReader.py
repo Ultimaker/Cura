@@ -750,7 +750,11 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
             quality_changes_info = self._machine_info.quality_changes_info
             quality_changes_quality_type = quality_changes_info.global_info.parser["metadata"]["quality_type"]
-            quality_changes_intent_category_per_extruder = {position: info.parser["metadata"].get("intent_category", "default") for position, info in quality_changes_info.extruder_info_dict.items()}
+
+            # quality changes container may not be present for every extruder. Prepopulate the dict with default values.
+            quality_changes_intent_category_per_extruder = {position: "default" for position in self._machine_info.extruder_info_dict}
+            for position, info in quality_changes_info.extruder_info_dict.items():
+                quality_changes_intent_category_per_extruder[position] = info.parser["metadata"].get("intent_category", "default")
 
             quality_changes_name = quality_changes_info.name
             create_new = self._resolve_strategies.get("quality_changes") != "override"
@@ -790,7 +794,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 container_info = ContainerInfo(None, None, None)
                 quality_changes_info.extruder_info_dict["0"] = container_info
                 # If the global stack we're "targeting" has never been active, but was updated from Cura 3.4,
-                # it might not have it's extruders set properly. 
+                # it might not have its extruders set properly.
                 if not global_stack.extruders:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
                 extruder_stack = global_stack.extruders["0"]
@@ -1001,8 +1005,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         # Set metadata fields that are missing from the global stack
         for key, value in self._machine_info.metadata_dict.items():
-            if key not in global_stack.getMetaData():
-                global_stack.setMetaDataEntry(key, value)
+            global_stack.setMetaDataEntry(key, value)
 
     def _updateActiveMachine(self, global_stack):
         # Actually change the active machine.
