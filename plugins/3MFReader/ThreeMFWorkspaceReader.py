@@ -737,12 +737,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _loadMetadata(self, file_name) -> Dict[str, Dict[str, Any]]:
         archive = zipfile.ZipFile(file_name, "r")
+
+        metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
         import json
-        try:
-            return json.loads(archive.open("Cura/plugin_metadata.json").read().decode("utf-8"))
-        except KeyError:
-            # The plugin_metadata.json file doesn't exist
-            return dict()
+
+        result = dict()
+
+        for metadata_file in metadata_files:
+            try:
+                plugin_id = metadata_file.split("/")[0]
+                result[plugin_id] = json.loads(archive.open("Cura/plugin_metadata.json").read().decode("utf-8"))
+            except Exception:
+                Logger.logException("w", "Unable to retrieve metadata for %s", metadata_file)
+
+        return result
 
     def _processQualityChanges(self, global_stack):
         if self._machine_info.quality_changes_info is None:
