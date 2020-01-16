@@ -53,6 +53,9 @@ class CloudPackageChecker(QObject):
         self._model.addDiscrepancies(package_discrepancy)
         self._model.initialize()
 
+        if not self._model.hasCompatiblePackages:
+            return None
+
         if package_discrepancy:
             self._handlePackageDiscrepancies()
 
