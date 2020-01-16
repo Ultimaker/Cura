@@ -1,7 +1,5 @@
-import os
 import tempfile
-from functools import reduce
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Any
 
 from PyQt5.QtNetwork import QNetworkReply
 
@@ -11,8 +9,8 @@ from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
-from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
+from .SubscribedPackagesModel import SubscribedPackagesModel
+from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 ## Downloads a set of packages from the Ultimaker Cloud Marketplace

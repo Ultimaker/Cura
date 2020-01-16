@@ -8,7 +8,7 @@ from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
 from UM.i18n import i18nCatalog
 
-from plugins.Toolbox.src.CloudSync.LicenseModel import LicenseModel
+from .LicenseModel import LicenseModel
 
 
 ## Call present() to show a licenseDialog for a set of packages

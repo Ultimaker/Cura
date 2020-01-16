@@ -1,6 +1,6 @@
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.CloudApiModel import CloudApiModel
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
+from ..CloudApiModel import CloudApiModel
+from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 ## Manages Cloud subscriptions. When a package is added to a user's account, the user is 'subscribed' to that package

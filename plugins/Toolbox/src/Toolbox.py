@@ -4,7 +4,6 @@
 import json
 import os
 import tempfile
-import platform
 from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -19,8 +18,8 @@ from UM.Version import Version
 from cura import ApplicationMetadata
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-from .CloudApiModel import CloudApiModel
 
+from .CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel

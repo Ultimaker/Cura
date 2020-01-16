@@ -1,18 +1,6 @@
-import os
-import tempfile
-from functools import reduce
-from typing import Dict, List, Optional, Any
-
-from PyQt5.QtNetwork import QNetworkReply
-
-from UM import i18n_catalog, i18nCatalog
-from UM.Logger import Logger
+from UM import i18nCatalog
 from UM.Message import Message
-from UM.Signal import Signal
-from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
-from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 
 
 ## Presents a dialog telling the user that a restart is required to apply changes

@@ -3,16 +3,15 @@ from typing import List, Dict, Any
 
 from UM.Extension import Extension
 from UM.Logger import Logger
-from UM.PackageManager import PackageManager
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.CloudSync.CloudPackageChecker import CloudPackageChecker
-from plugins.Toolbox.src.CloudSync.CloudPackageManager import CloudPackageManager
-from plugins.Toolbox.src.CloudSync.DiscrepanciesPresenter import DiscrepanciesPresenter
-from plugins.Toolbox.src.CloudSync.DownloadPresenter import DownloadPresenter
-from plugins.Toolbox.src.CloudSync.LicensePresenter import LicensePresenter
-from plugins.Toolbox.src.CloudSync.RestartApplicationPresenter import RestartApplicationPresenter
-from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
+from .CloudPackageChecker import CloudPackageChecker
+from .CloudPackageManager import CloudPackageManager
+from .DiscrepanciesPresenter import DiscrepanciesPresenter
+from .DownloadPresenter import DownloadPresenter
+from .LicensePresenter import LicensePresenter
+from .RestartApplicationPresenter import RestartApplicationPresenter
+from .SubscribedPackagesModel import SubscribedPackagesModel
 
 
 ## Orchestrates the synchronizing of packages from the user account to the installed packages

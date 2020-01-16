@@ -8,10 +8,10 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.CloudApiModel import CloudApiModel
-from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
+from ..CloudApiModel import CloudApiModel
+from .SubscribedPackagesModel import SubscribedPackagesModel
+from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 class CloudPackageChecker(QObject):

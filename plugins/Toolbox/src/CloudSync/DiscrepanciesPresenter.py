@@ -1,11 +1,11 @@
 import os
-from typing import Optional, Dict
+from typing import Optional
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
 from UM.Qt.QtApplication import QtApplication
 from UM.Signal import Signal
-from plugins.Toolbox.src.CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
+from .SubscribedPackagesModel import SubscribedPackagesModel
 
 
 ## Shows a list of packages to be added or removed. The user can select which packages to (un)install. The user's
