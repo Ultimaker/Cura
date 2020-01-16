@@ -779,6 +779,9 @@ class Toolbox(QObject, Extension):
             self._view_category = category
             self.viewChanged.emit()
 
+    def setViewCategoryToMaterials(self) -> None:
+        self.setViewCategory("material")
+
     @pyqtProperty(str, fset = setViewCategory, notify = viewChanged)
     def viewCategory(self) -> str:
         return self._view_category

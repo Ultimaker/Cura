@@ -192,7 +192,6 @@ Item
     Action
     {
         id: marketplaceMaterialsAction
-        onTriggered: Qt.openUrlExternally("https://marketplace.ultimaker.com/app/cura/materials")
         iconName: "configure"
         text: catalog.i18nc("@action:inmenu", "Add more materials from Marketplace")
     }
