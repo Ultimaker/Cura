@@ -1,8 +1,10 @@
 import os
 from typing import List, Dict, Any, cast
 
+from UM import i18n_catalog
 from UM.Extension import Extension
 from UM.Logger import Logger
+from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
 from .CloudPackageChecker import CloudPackageChecker
@@ -64,7 +66,10 @@ class SyncOrchestrator(Extension):
     # \param success_items: Dict[package_id, file_path]
     # \param error_items: List[package_id]
     def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]) -> None:
-        # todo handle error items
+        if error_items:
+            message = i18n_catalog.i18nc("@info:generic", "{} plugins failed to download".format(len(error_items)))
+            self._showErrorMessage(message)
+
         plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId()))
         self._license_presenter.present(plugin_path, success_items)
 
@@ -78,7 +83,8 @@ class SyncOrchestrator(Extension):
             if item["accepted"]:
                 # install and subscribe packages
                 if not self._package_manager.installPackage(item["package_path"]):
-                    Logger.error("could not install {}".format(item["package_id"]))
+                    message = "Could not install {}".format(item["package_id"])
+                    self._showErrorMessage(message)
                     continue
                 self._cloud_package_manager.subscribe(item["package_id"])
                 has_changes = True
@@ -89,3 +95,8 @@ class SyncOrchestrator(Extension):
 
         if has_changes:
             self._restart_presenter.present()
+
+    ## Logs an error and shows it to the user
+    def _showErrorMessage(self, text: str):
+        Logger.error(text)
+        Message(text, lifetime=0).show()
