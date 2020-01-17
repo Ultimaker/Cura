@@ -162,12 +162,12 @@ class PostProcessingPlugin(QObject, Extension):
             # Iterate over all scripts.
             if script_name not in sys.modules:
                 try:
-                    file_location = __name__ + "." + script_name, os.path.join(path, script_name + ".py")
+                    file_location = os.path.join(path, script_name + ".py")
                     trust_instance = Trust.getInstanceOrNone()
                     if trust_instance is not None and Trust.signatureFileExistsFor(file_location):
                         if not trust_instance.signedFileCheck(file_location):
                             raise Exception("Can't validate script {0}".format(file_location))
-                    spec = importlib.util.spec_from_file_location(file_location)
+                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, file_location)
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue
