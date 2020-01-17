@@ -83,8 +83,7 @@ class SyncOrchestrator(Extension):
                 self._cloud_package_manager.subscribe(item["package_id"])
                 has_changes = True
             else:
-                # todo unsubscribe declined packages
-                pass
+                self._cloud_package_manager.unsubscribe(item["package_id"])
             # delete temp file
             os.remove(item["package_path"])
 
