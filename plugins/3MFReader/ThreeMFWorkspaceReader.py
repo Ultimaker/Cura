@@ -736,7 +736,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return nodes, self._loadMetadata(file_name)
 
-    def _loadMetadata(self, file_name) -> Dict[str, Dict[str, Any]]:
+    @staticmethod
+    def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
         archive = zipfile.ZipFile(file_name, "r")
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
