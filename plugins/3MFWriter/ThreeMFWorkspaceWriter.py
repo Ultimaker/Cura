@@ -80,7 +80,8 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer.setStoreArchive(False)
         return True
 
-    def _writePluginMetadataToArchive(self, archive):
+    @staticmethod
+    def _writePluginMetadataToArchive(archive: zipfile.ZipFile) -> None:
         file_name_template = "%s/plugin_metadata.json"
 
         for plugin_id, metadata in Application.getInstance().getWorkspaceMetadataStorage().getAllData().items():
