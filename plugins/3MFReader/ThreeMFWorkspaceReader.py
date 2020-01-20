@@ -4,6 +4,7 @@
 from configparser import ConfigParser
 import zipfile
 import os
+import json
 from typing import cast, Dict, List, Optional, Tuple, Any
 
 import xml.etree.ElementTree as ET
@@ -739,7 +740,6 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         archive = zipfile.ZipFile(file_name, "r")
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
-        import json
 
         result = dict()
 
