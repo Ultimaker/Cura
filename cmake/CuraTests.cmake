@@ -56,7 +56,7 @@ function(cura_add_test)
     endif()
 endfunction()
 
-#Add test for whether the shortcut alt-keys are unique in every translation.
+#Add test for import statements which are not compatible with all builds
 add_test(
     NAME "invalid-imports"
     COMMAND ${Python3_EXECUTABLE} scripts/check_invalid_imports.py
