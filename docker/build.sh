@@ -13,6 +13,19 @@ export PKG_CONFIG_PATH="${CURA_BUILD_ENV_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
 cd "${PROJECT_DIR}"
 
+# Check for plugins.* import statements. These imports may work when running from source,
+# but will fail in some build types (linux and mac)
+GREP_OUTPUT=$(grep -Ern "^\s*(from plugins|import plugins)" --include \*.py "${PROJECT_DIR}" || true)
+echo "$GREP_OUTPUT"
+
+if [ -z "$GREP_OUTPUT" ]
+then
+  echo "invalid imports checker: OK"
+else
+  echo "error: sources contain invalid imports. Use relative imports when referencing plugin source files"
+  exit 1
+fi
+
 #
 # Clone Uranium and set PYTHONPATH first
 #
