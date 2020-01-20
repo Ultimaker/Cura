@@ -93,7 +93,7 @@
             "prime_tower_position_y": { "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1" },
             "retraction_amount": { "default_value": 1.5 },
             "retraction_combing": { "default_value": "all" },
-            "retraction_combing_max_distance": { "value": "max(5, retraction_min_travel)" },
+            "retraction_combing_max_distance": { "default_value": 5 },
             "retraction_count_max": { "default_value": 15 },
             "retraction_hop": { "value": "2" },
             "retraction_hop_enabled": { "value": "extruders_enabled_count > 1"  },
