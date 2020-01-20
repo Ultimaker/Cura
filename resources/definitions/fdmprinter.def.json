@@ -3776,8 +3776,9 @@
                     "description": "When non-zero, combing travel moves that are longer than this distance will use retraction.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0,
-                    "minimum_value": "0",
+                    "default_value": 1.5,
+                    "value": "retraction_min_travel",
+                    "minimum_value": "retraction_min_travel",
                     "enabled": "resolveOrValue('retraction_combing') != 'off'",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
