@@ -20,13 +20,14 @@ UM.Dialog
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
     height: minimumHeight
+    backgroundColor: UM.Theme.getColor("main_background")
+    margin: screenScaleFactor * 10
 
     Item
     {
         anchors.fill: parent
 
         UM.I18nCatalog{id: catalog; name: "cura"}
-
 
         Label
         {
