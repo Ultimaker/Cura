@@ -56,6 +56,13 @@ function(cura_add_test)
     endif()
 endfunction()
 
+#Add test for import statements which are not compatible with all builds
+add_test(
+    NAME "invalid-imports"
+    COMMAND ${Python3_EXECUTABLE} scripts/check_invalid_imports.py
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
 cura_add_test(NAME pytest-main DIRECTORY ${CMAKE_SOURCE_DIR}/tests PYTHONPATH "${CMAKE_SOURCE_DIR}|${URANIUM_DIR}")
 
 file(GLOB_RECURSE _plugins plugins/*/__init__.py)

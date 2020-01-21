@@ -16,3 +16,8 @@ class CloudPackageManager:
                                   data=data.encode(),
                                   scope=self._scope
                                   )
+
+    def unsubscribe(self, package_id: str) -> None:
+        url = CloudApiModel.userPackageUrl(package_id)
+        self._request_manager.delete(url=url, scope=self._scope)
+

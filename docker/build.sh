@@ -13,6 +13,8 @@ export PKG_CONFIG_PATH="${CURA_BUILD_ENV_PATH}/lib/pkgconfig:${PKG_CONFIG_PATH}"
 
 cd "${PROJECT_DIR}"
 
+
+
 #
 # Clone Uranium and set PYTHONPATH first
 #
