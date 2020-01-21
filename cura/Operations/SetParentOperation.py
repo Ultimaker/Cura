@@ -14,7 +14,7 @@ class SetParentOperation(Operation.Operation):
     #
     #   \param node The node which will be reparented.
     #   \param parent_node The node which will be the parent.
-    def __init__(self, node: SceneNode, parent_node: Optional[SceneNode]):
+    def __init__(self, node: SceneNode, parent_node: Optional[SceneNode]) -> None:
         super().__init__()
         self._node = node
         self._parent = parent_node
