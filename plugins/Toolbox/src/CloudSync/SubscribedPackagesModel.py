@@ -47,7 +47,7 @@ class SubscribedPackagesModel(ListModel):
     def addDiscrepancies(self, discrepancy: List[str]) -> None:
         self._discrepancies = discrepancy
 
-    def getCompatiblePackages(self):
+    def getCompatiblePackages(self) -> List[str]:
         return [package for package in self._items if package["is_compatible"]]
 
     def initialize(self, json_data: List[Dict[str, List[Any]]]) -> None:

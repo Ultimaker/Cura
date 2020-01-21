@@ -8,11 +8,12 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-from cura.CuraApplication import CuraApplication
+from cura.CuraApplication import CuraApplication, ApplicationMetadata
 from ..CloudApiModel import CloudApiModel
 from .SubscribedPackagesModel import SubscribedPackagesModel
 from ..UltimakerCloudScope import UltimakerCloudScope
 
+from typing import List, Dict, Any
 
 class CloudPackageChecker(QObject):
     def __init__(self, application: CuraApplication) -> None:
@@ -25,6 +26,7 @@ class CloudPackageChecker(QObject):
 
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
+        self._sdk_version = ApplicationMetadata.CuraSDKVersion
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -40,14 +42,14 @@ class CloudPackageChecker(QObject):
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserPackages()
 
-    def _handleCompatibilityData(self, json_data) -> None:
+    def _handleCompatibilityData(self, json_data: List[Dict[str, List[Any]]]) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
 
         # We need to re-evaluate the dismissed packages
         # (i.e. some package might got updated to the correct SDK version in the meantime,
         # hence remove them from the Dismissed Incompatible list)
-        self._package_manager.reEvaluateDismissedPackages(json_data)
+        self._package_manager.reEvaluateDismissedPackages(json_data, self._sdk_version)
         user_dismissed_packages = self._package_manager.getDismissedPackages()
         if user_dismissed_packages:
             user_installed_packages += user_dismissed_packages
