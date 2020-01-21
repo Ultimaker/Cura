@@ -42,7 +42,7 @@ class CloudPackageChecker(QObject):
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserPackages()
 
-    def _handleCompatibilityData(self, json_data: List[Dict[str, List[Any]]]) -> None:
+    def _handleCompatibilityData(self, json_data: List[Dict[str, Any]]) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
 
