@@ -27,6 +27,7 @@ UM.Dialog
     ColumnLayout
     {
         anchors.fill: parent
+        spacing: UM.Theme.getSize("thick_margin").height
 
         UM.I18nCatalog{id: catalog; name: "cura"}
 
@@ -45,22 +46,24 @@ UM.Dialog
             anchors.left: parent.left
             anchors.right: parent.right
             height: childrenRect.height
-
+            spacing: UM.Theme.getSize("default_margin").width
+            leftPadding: UM.Theme.getSize("narrow_margin").width
 
             Image
             {
-                    id: icon
-                    width: 30 * screenScaleFactor
-                    height: width
-                    fillMode: Image.PreserveAspectFit
-                    source: licenseModel.iconUrl || "../../images/logobot.svg"
-                    mipmap: true
+                id: icon
+                width: 30 * screenScaleFactor
+                height: width
+                fillMode: Image.PreserveAspectFit
+                source: licenseModel.iconUrl || "../../images/logobot.svg"
+                mipmap: true
             }
 
             Label
             {
                 id: packageName
                 text: licenseModel.packageName
+                font.bold: true
                 anchors.verticalCenter: icon.verticalCenter
                 height: contentHeight
                 wrapMode: Text.Wrap
