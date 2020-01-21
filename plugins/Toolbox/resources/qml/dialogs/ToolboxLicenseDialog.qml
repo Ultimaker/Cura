@@ -10,6 +10,7 @@ import QtQuick.Controls.Styles 1.4
 // TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
 import UM 1.1 as UM
+import Cura 1.6 as Cura
 
 UM.Dialog
 {
@@ -51,18 +52,22 @@ UM.Dialog
     }
     rightButtons:
     [
-        Button
+        Cura.PrimaryButton
         {
-            id: acceptButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@action:button", "Accept")
+            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+
+            text: catalog.i18nc("@button", "Agree")
             onClicked: { handler.onLicenseAccepted() }
-        },
-        Button
+        }
+    ]
+
+    leftButtons:
+    [
+        Cura.SecondaryButton
         {
             id: declineButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@action:button", "Decline")
+            text: catalog.i18nc("@button", "Decline and remove from account")
             onClicked: { handler.onLicenseDeclined() }
         }
     ]
