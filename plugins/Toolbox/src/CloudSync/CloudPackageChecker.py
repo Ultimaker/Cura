@@ -43,15 +43,19 @@ class CloudPackageChecker(QObject):
     def _handleCompatibilityData(self, json_data) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in json_data]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
+
+        # We need to re-evaluate the dismissed packages
+        # (i.e. some package might got updated to the correct SDK version in the meantime,
+        # hence remove them from the Dismissed Incompatible list)
+        self._package_manager.reEvaluateDismissedPackages(json_data)
         user_dismissed_packages = self._package_manager.getDismissedPackages()
         if user_dismissed_packages:
             user_installed_packages += user_dismissed_packages
         # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
 
-        self._model.setMetadata(json_data)
         self._model.addDiscrepancies(package_discrepancy)
-        self._model.initialize()
+        self._model.initialize(json_data)
 
         if not self._model.hasCompatiblePackages:
             return None
