@@ -152,7 +152,7 @@ UM.Dialog{
 
         } // End of ScrollView
 
-        Cura.ActionButton
+        Cura.PrimaryButton
         {
             id: nextButton
             anchors.bottom: parent.bottom
@@ -160,6 +160,8 @@ UM.Dialog{
             anchors.margins: UM.Theme.getSize("default_margin").height
             text: catalog.i18nc("@button", "Next")
             onClicked: accept()
+            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
         }
     }
 }
