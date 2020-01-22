@@ -8,6 +8,7 @@ from cura.CuraApplication import CuraApplication
 
 ## Add a Authorization header to the request for Ultimaker Cloud Api requests.
 # When the user is not logged in or a token is not available, a warning will be logged
+# Also add the user agent headers (see DefaultUserAgentScope)
 class UltimakerCloudScope(DefaultUserAgentScope):
     def __init__(self, application: CuraApplication):
         super().__init__(application)
