@@ -17,6 +17,7 @@ class LicensePresenter(QObject):
 
     def __init__(self, app: CuraApplication) -> None:
         super().__init__()
+        self._catalog = i18nCatalog("cura")
         self._dialog = None  # type: Optional[QObject]
         self._package_manager = app.getPackageManager()  # type: PackageManager
         # Emits List[Dict[str, [Any]] containing for example
@@ -25,7 +26,8 @@ class LicensePresenter(QObject):
 
         self._current_package_idx = 0
         self._package_models = []  # type: List[Dict]
-        self._license_model = LicenseModel()  # type: LicenseModel
+        decline_button_text = self._catalog.i18nc("@button", "Decline and remove from account")
+        self._license_model = LicenseModel(decline_button_text=decline_button_text)  # type: LicenseModel
 
         self._app = app
 
@@ -42,7 +44,7 @@ class LicensePresenter(QObject):
         if self._dialog is None:
 
             context_properties = {
-                "catalog": i18nCatalog("cura"),
+                "catalog": self._catalog,
                 "licenseModel": self._license_model,
                 "handler": self
             }

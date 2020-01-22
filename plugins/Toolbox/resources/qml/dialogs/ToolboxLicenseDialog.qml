@@ -90,7 +90,7 @@ UM.Dialog
             leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
             rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
 
-            text: catalog.i18nc("@button", "Agree")
+            text: licenseModel.acceptButtonText
             onClicked: { handler.onLicenseAccepted() }
         }
     ]
@@ -100,7 +100,7 @@ UM.Dialog
         Cura.SecondaryButton
         {
             id: declineButton
-            text: catalog.i18nc("@button", "Decline and remove from account")
+            text: licenseModel.declineButtonText
             onClicked: { handler.onLicenseDeclined() }
         }
     ]

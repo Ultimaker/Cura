@@ -6,12 +6,15 @@ catalog = i18nCatalog("cura")
 
 # Model for the ToolboxLicenseDialog
 class LicenseModel(QObject):
+    DEFAULT_DECLINE_BUTTON_TEXT = catalog.i18nc("@button", "Decline")
+    ACCEPT_BUTTON_TEXT = catalog.i18nc("@button", "Agree")
+
     dialogTitleChanged = pyqtSignal()
     packageNameChanged = pyqtSignal()
     licenseTextChanged = pyqtSignal()
     iconChanged = pyqtSignal()
 
-    def __init__(self) -> None:
+    def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT) -> None:
         super().__init__()
 
         self._current_page_idx = 0
@@ -20,6 +23,15 @@ class LicenseModel(QObject):
         self._license_text = ""
         self._package_name = ""
         self._icon_url = ""
+        self._decline_button_text = decline_button_text
+
+    @pyqtProperty(str, constant = True)
+    def acceptButtonText(self):
+        return self.ACCEPT_BUTTON_TEXT
+
+    @pyqtProperty(str, constant = True)
+    def declineButtonText(self):
+        return self._decline_button_text
 
     @pyqtProperty(str, notify=dialogTitleChanged)
     def dialogTitle(self) -> str:
