@@ -154,10 +154,11 @@ class Toolbox(QObject, Extension):
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
 
-    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str) -> None:
+    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str, icon_url: str) -> None:
         # Set page 1/1 when opening the dialog for a single package
         self._license_model.setCurrentPageIdx(0)
         self._license_model.setPageCount(1)
+        self._license_model.setIconUrl(icon_url)
 
         self._license_model.setPackageName(plugin_name)
         self._license_model.setLicenseText(license_content)
@@ -670,14 +671,17 @@ class Toolbox(QObject, Extension):
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
+        package_id = package_info["package_id"]
         if license_content is not None:
-            self.openLicenseDialog(package_info["package_id"], license_content, file_path)
+            # get the icon url for package_id, make sure the result is a string, never None
+            icon_url = next((x["icon_url"] for x in self.packagesModel.items if x["id"] == package_id), None) or ""
+            self.openLicenseDialog(package_id, license_content, file_path, icon_url)
             return
 
-        package_id = self.install(file_path)
-        if package_id != package_info["package_id"]:
-            Logger.error("Installed package {} does not match {}".format(package_id, package_info["package_id"]))
-        self.subscribe(package_id)
+        installed_id = self.install(file_path)
+        if installed_id != package_id:
+            Logger.error("Installed package {} does not match {}".format(installed_id, package_id))
+        self.subscribe(installed_id)
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -699,14 +703,14 @@ class Toolbox(QObject, Extension):
     def isDownloading(self) -> bool:
         return self._is_downloading
 
-    def setActivePackage(self, package: Dict[str, Any]) -> None:
+    def setActivePackage(self, package: QObject) -> None:
         if self._active_package != package:
             self._active_package = package
             self.activePackageChanged.emit()
 
     ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
-    def activePackage(self) -> Optional[Dict[str, Any]]:
+    def activePackage(self) -> Optional[QObject]:
         return self._active_package
 
     def setViewCategory(self, category: str = "plugin") -> None:
