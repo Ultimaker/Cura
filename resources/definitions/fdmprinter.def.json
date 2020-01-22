@@ -1313,6 +1313,48 @@
                         }
                     }
                 },
+                "wall_collapse":
+                {
+                    "label": "Wall Collapse Distance",
+                    "description": "Remove walls if they would overlap more than this distance. Low values can lead to a walls not being extruded well when they overlap with themselves; high values can cause the gaps between walls to be too wide to be printed using a single line.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "value": "0",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "wall_line_width_x",
+                    "limit_to_extruder": "wall_x_extruder_nr",
+                    "settable_per_mesh": true,
+                    "children":
+                    {
+                        "wall_collapse_0":
+                        {
+                            "label": "Outer Wall Collapse Distance",
+                            "description": "Remove outer walls if they would overlap more than this distance. Low values can lead to a walls not being extruded well when they overlap with themselves; high values can cause the gaps between walls to be too wide to be printed using a single line.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.2,
+                            "value": "wall_collapse / wall_line_width_x * wall_line_width_0",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "wall_line_width_0",
+                            "limit_to_extruder": "wall_0_extruder_nr",
+                            "settable_per_mesh": true
+                        },
+                        "wall_collapse_x":
+                        {
+                            "label": "Inner Walls Collapse Distance",
+                            "description": "Remove outer walls if they would overlap more than this distance. Low values can lead to a walls not being extruded well when they overlap with themselves; high values can cause the gaps between walls to be too wide to be printed using a single line.",
+                            "unit": "mm",
+                            "type": "float",
+                            "default_value": 0.2,
+                            "value": "wall_collapse",
+                            "minimum_value_warning": "0",
+                            "maximum_value_warning": "wall_line_width_x",
+                            "limit_to_extruder": "wall_x_extruder_nr",
+                            "settable_per_mesh": true
+                        }
+                    }
+                },
                 "wall_min_flow":
                 {
                     "label": "Minimum Wall Flow",
