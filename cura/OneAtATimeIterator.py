@@ -122,6 +122,6 @@ class _ObjectOrder:
     #   \param order List of indices in which to print objects, ordered by printing
     #   order.
     #   \param todo: List of indices which are not yet inserted into the order list.
-    def __init__(self, order: List[SceneNode], todo: List[SceneNode]):
+    def __init__(self, order: List[SceneNode], todo: List[SceneNode]) -> None:
         self.order = order
         self.todo = todo

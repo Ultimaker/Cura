@@ -154,13 +154,24 @@ Item
         }
     }
 
-    // show the plugin browser dialog
+    // show the Toolbox
     Connections
     {
         target: Cura.Actions.browsePackages
         onTriggered:
         {
             curaExtensions.callExtensionMethod("Toolbox", "launch")
+        }
+    }
+
+    // Show the Marketplace dialog at the materials tab
+    Connections
+    {
+        target: Cura.Actions.marketplaceMaterials
+        onTriggered:
+        {
+            curaExtensions.callExtensionMethod("Toolbox", "launch")
+            curaExtensions.callExtensionMethod("Toolbox", "setViewCategoryToMaterials")
         }
     }
 }

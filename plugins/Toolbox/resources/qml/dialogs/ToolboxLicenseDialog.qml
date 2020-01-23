@@ -10,65 +10,65 @@ import QtQuick.Controls.Styles 1.4
 // TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
 import UM 1.1 as UM
+import Cura 1.6 as Cura
 
 UM.Dialog
 {
-    title: catalog.i18nc("@title:window", "Plugin License Agreement")
+    id: licenseDialog
+    title: licenseModel.dialogTitle
     minimumWidth: UM.Theme.getSize("license_window_minimum").width
     minimumHeight: UM.Theme.getSize("license_window_minimum").height
     width: minimumWidth
     height: minimumHeight
-    property var pluginName;
-    property var licenseContent;
-    property var pluginFileLocation;
+
     Item
     {
         anchors.fill: parent
+
+        UM.I18nCatalog{id: catalog; name: "cura"}
+
+
         Label
         {
-            id: licenseTitle
+            id: licenseHeader
             anchors.top: parent.top
             anchors.left: parent.left
             anchors.right: parent.right
-            text: licenseDialog.pluginName + ": " + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
+            text: licenseModel.headerText
             wrapMode: Text.Wrap
             renderType: Text.NativeRendering
         }
         TextArea
         {
             id: licenseText
-            anchors.top: licenseTitle.bottom
+            anchors.top: licenseHeader.bottom
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.topMargin: UM.Theme.getSize("default_margin").height
             readOnly: true
-            text: licenseDialog.licenseContent || ""
+            text: licenseModel.licenseText
         }
     }
     rightButtons:
     [
-        Button
+        Cura.PrimaryButton
         {
-            id: acceptButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@action:button", "Accept")
-            onClicked:
-            {
-                licenseDialog.close();
-                toolbox.install(licenseDialog.pluginFileLocation);
-                toolbox.subscribe(licenseDialog.pluginName);
-            }
-        },
-        Button
+            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+
+            text: catalog.i18nc("@button", "Agree")
+            onClicked: { handler.onLicenseAccepted() }
+        }
+    ]
+
+    leftButtons:
+    [
+        Cura.SecondaryButton
         {
             id: declineButton
-            anchors.margins: UM.Theme.getSize("default_margin").width
-            text: catalog.i18nc("@action:button", "Decline")
-            onClicked:
-            {
-                licenseDialog.close();
-            }
+            text: catalog.i18nc("@button", "Decline and remove from account")
+            onClicked: { handler.onLicenseDeclined() }
         }
     ]
 }

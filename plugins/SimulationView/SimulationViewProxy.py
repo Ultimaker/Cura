@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class SimulationViewProxy(QObject):
-    def __init__(self, simulation_view: "SimulationView", parent=None):
+    def __init__(self, simulation_view: "SimulationView", parent=None) -> None:
         super().__init__(parent)
         self._simulation_view = simulation_view
         self._current_layer = 0

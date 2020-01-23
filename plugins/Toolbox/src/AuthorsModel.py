@@ -4,7 +4,7 @@
 import re
 from typing import Dict, List, Optional, Union
 
-from PyQt5.QtCore import Qt, pyqtProperty, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 
