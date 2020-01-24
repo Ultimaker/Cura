@@ -675,7 +675,7 @@ class Toolbox(QObject, Extension):
         if license_content is not None:
             # get the icon url for package_id, make sure the result is a string, never None
             icon_url = next((x["icon_url"] for x in self.packagesModel.items if x["id"] == package_id), None) or ""
-            self.openLicenseDialog(package_id, license_content, file_path, icon_url)
+            self.openLicenseDialog(package_info["display_name"], license_content, file_path, icon_url)
             return
 
         installed_id = self.install(file_path)

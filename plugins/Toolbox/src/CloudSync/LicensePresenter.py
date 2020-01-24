@@ -75,6 +75,7 @@ class LicensePresenter(QObject):
 
     def _presentCurrentPackage(self) -> None:
         package_model = self._package_models[self._current_package_idx]
+        package_info = self._package_manager.getPackageInfo(package_model["package_path"])
         license_content = self._package_manager.getPackageLicense(package_model["package_path"])
         if license_content is None:
             # Implicitly accept when there is no license
@@ -82,7 +83,7 @@ class LicensePresenter(QObject):
             return
 
         self._license_model.setCurrentPageIdx(self._current_package_idx)
-        self._license_model.setPackageName(package_model["package_id"])
+        self._license_model.setPackageName(package_info["display_name"])
         self._license_model.setIconUrl(package_model["icon_url"])
         self._license_model.setLicenseText(license_content)
         if self._dialog:
