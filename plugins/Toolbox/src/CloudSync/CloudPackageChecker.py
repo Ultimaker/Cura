@@ -32,7 +32,6 @@ class CloudPackageChecker(QObject):
     # this is initialized. Therefore, we wait until the application is ready.
     def _onAppInitialized(self) -> None:
         self._package_manager = self._application.getPackageManager()
-
         # initial check
         self._fetchUserSubscribedPackages()
         # check again whenever the login state changes
@@ -40,7 +39,33 @@ class CloudPackageChecker(QObject):
 
     def _fetchUserSubscribedPackages(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
-            self._getUserPackages()
+            self._getUserSubscribedPackages()
+
+    def _getUserSubscribedPackages(self) -> None:
+        Logger.log("d", "Requesting subscribed packages metadata from server.")
+        url = CloudApiModel.api_url_user_packages
+        self._application.getHttpRequestManager().get(url,
+                                                      callback = self._onUserPackagesRequestFinished,
+                                                      error_callback = self._onUserPackagesRequestFinished,
+                                                      scope = self._scope)
+
+    def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
+        if error is not None or reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+            Logger.log("w",
+                       "Requesting user packages failed, response code %s while trying to connect to %s",
+                       reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
+            return
+
+        try:
+            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
+            # Check for errors:
+            if "errors" in json_data:
+                for error in json_data["errors"]:
+                    Logger.log("e", "%s", error["title"])
+                return
+            self._handleCompatibilityData(json_data["data"])
+        except json.decoder.JSONDecodeError:
+            Logger.log("w", "Received invalid JSON for user subscribed packages from the Web Marketplace")
 
     def _handleCompatibilityData(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in subscribed_packages_payload]
@@ -53,13 +78,12 @@ class CloudPackageChecker(QObject):
         user_dismissed_packages = self._package_manager.getDismissedPackages()
         if user_dismissed_packages:
             user_installed_packages += user_dismissed_packages
-        # We check if there are packages installed in Cloud Marketplace but not in Cura marketplace
+
+        # We check if there are packages installed in Web Marketplace but not in Cura marketplace
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
-
-        self._model.addDiscrepancies(package_discrepancy) # TODO: Move these two lines below, under if package_discrepancy:
-        self._model.initialize(subscribed_packages_payload)
-
         if package_discrepancy:
+            self._model.addDiscrepancies(package_discrepancy)
+            self._model.initialize(subscribed_packages_payload)
             self._handlePackageDiscrepancies()
 
     def _handlePackageDiscrepancies(self) -> None:
@@ -80,34 +104,3 @@ class CloudPackageChecker(QObject):
     def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()
         self.discrepancies.emit(self._model)
-
-    def _getUserPackages(self) -> None:
-        Logger.log("d", "Requesting subscribed packages metadata from server.")
-        url = CloudApiModel.api_url_user_packages
-
-        self._application.getHttpRequestManager().get(url,
-                                                      callback = self._onUserPackagesRequestFinished,
-                                                      error_callback = self._onUserPackagesRequestFinished,
-                                                      scope = self._scope)
-
-    def _onUserPackagesRequestFinished(self,
-                                      reply: "QNetworkReply",
-                                      error: Optional["QNetworkReply.NetworkError"] = None) -> None:
-        if error is not None or reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
-            Logger.log("w",
-                       "Requesting user packages failed, response code %s while trying to connect to %s",
-                       reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
-            return
-
-        try:
-            json_data = json.loads(bytes(reply.readAll()).decode("utf-8"))
-
-            # Check for errors:
-            if "errors" in json_data:
-                for error in json_data["errors"]:
-                    Logger.log("e", "%s", error["title"])
-                return
-
-            self._handleCompatibilityData(json_data["data"])
-        except json.decoder.JSONDecodeError:
-            Logger.log("w", "Received invalid JSON for user packages")
