@@ -59,9 +59,6 @@ class CloudPackageChecker(QObject):
         self._model.addDiscrepancies(package_discrepancy) # TODO: Move these two lines below, under if package_discrepancy:
         self._model.initialize(subscribed_packages_payload)
 
-        if not self._model.hasCompatiblePackages: # TODO: Remove these two lines...
-            return None
-
         if package_discrepancy:
             self._handlePackageDiscrepancies()
 
