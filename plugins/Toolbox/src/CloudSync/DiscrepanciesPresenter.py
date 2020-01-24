@@ -29,9 +29,12 @@ class DiscrepanciesPresenter(QObject):
         self._dialog.accepted.connect(lambda: self._onConfirmClicked(model))
 
     def _onConfirmClicked(self, model: SubscribedPackagesModel) -> None:
-        # For now, all compatible packages presented to the user should be installed.
-        # Later, we might remove items for which the user unselected the package
+        # If there are incompatible packages - automatically dismiss them
         if model.getIncompatiblePackages():
             self._package_manager.dismissAllIncompatiblePackages(model.getIncompatiblePackages())
-        model.setItems(model.getCompatiblePackages())
-        self.packageMutations.emit(model) # #### proveri sho e ova???
+
+        # For now, all compatible packages presented to the user should be installed.
+        # Later, we might remove items for which the user unselected the package
+        if model.getCompatiblePackages():
+            model.setItems(model.getCompatiblePackages())
+            self.packageMutations.emit(model) # #### proveri sho e ova???

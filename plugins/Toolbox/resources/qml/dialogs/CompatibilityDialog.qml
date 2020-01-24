@@ -20,6 +20,8 @@ UM.Dialog{
     maximumHeight: minimumHeight
     margin: 0
 
+    property string buttonText: subscribedPackagesModel.hasIncompatiblePackages && !subscribedPackagesModel.hasCompatiblePackages ? "Dismiss" : "Next"
+
     Rectangle
     {
         id: root
@@ -138,7 +140,7 @@ UM.Dialog{
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").height
-            text: catalog.i18nc("@button", "Next")
+            text: catalog.i18nc("@button", buttonText)
             onClicked: accept()
             leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
             rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
