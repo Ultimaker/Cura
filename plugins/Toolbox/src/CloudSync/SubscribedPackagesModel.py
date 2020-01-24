@@ -37,13 +37,6 @@ class SubscribedPackagesModel(ListModel):
                 return True
         return False
 
-    @pyqtSlot()
-    def dismissPackage(self, package_id: str) -> None:
-        package = self.find(key="package_id", value=package_id)
-        if package != -1: # find() returns -1 if it doesn't finds what is looking for
-            self.setProperty(package, property="is_dismissed", value=True)
-            Logger.debug("Package {} has been dismissed".format(package_id))
-
     def addDiscrepancies(self, discrepancy: List[str]) -> None:
         self._discrepancies = discrepancy
 
