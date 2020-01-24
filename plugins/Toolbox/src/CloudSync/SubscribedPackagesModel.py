@@ -50,9 +50,12 @@ class SubscribedPackagesModel(ListModel):
     def getCompatiblePackages(self) -> List[Dict[str, Any]]:
         return [package for package in self._items if package["is_compatible"]]
 
-    def initialize(self, json_data: List[Dict[str, Any]]) -> None:
+    def getIncompatiblePackages(self) -> List[str]:
+        return [package["package_id"] for package in self._items if not package["is_compatible"]]
+
+    def initialize(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
         self._items.clear()
-        for item in json_data:
+        for item in subscribed_packages_payload:
             if item["package_id"] not in self._discrepancies:
                 continue
             package = {
