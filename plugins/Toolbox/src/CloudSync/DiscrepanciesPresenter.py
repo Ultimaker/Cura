@@ -32,9 +32,8 @@ class DiscrepanciesPresenter(QObject):
         # If there are incompatible packages - automatically dismiss them
         if model.getIncompatiblePackages():
             self._package_manager.dismissAllIncompatiblePackages(model.getIncompatiblePackages())
-
         # For now, all compatible packages presented to the user should be installed.
         # Later, we might remove items for which the user unselected the package
         if model.getCompatiblePackages():
             model.setItems(model.getCompatiblePackages())
-            self.packageMutations.emit(model) # #### proveri sho e ova???
+            self.packageMutations.emit(model)
