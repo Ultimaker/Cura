@@ -34,4 +34,4 @@ class DiscrepanciesPresenter(QObject):
         if model.getIncompatiblePackages():
             self._package_manager.dismissAllIncompatiblePackages(model.getIncompatiblePackages())
         model.setItems(model.getCompatiblePackages())
-        self.packageMutations.emit(model) # #### proveri sho e ova???
+        self.packageMutations.emit(model)
