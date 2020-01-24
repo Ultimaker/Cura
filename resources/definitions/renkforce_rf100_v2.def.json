@@ -77,10 +77,10 @@
         "machine_head_with_fans_polygon":
         {
             "default_value": [
-				[-26, -27],
-				[38, -27],
-				[38, 55],
-				[-26, 55]
+                [-26, -27],
+                [38, -27],
+                [38, 55],
+                [-26, 55]
             ]
         },
         "gantry_height": {
