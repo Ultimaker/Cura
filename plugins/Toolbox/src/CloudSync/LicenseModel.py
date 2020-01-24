@@ -6,31 +6,52 @@ catalog = i18nCatalog("cura")
 
 # Model for the ToolboxLicenseDialog
 class LicenseModel(QObject):
-    dialogTitleChanged = pyqtSignal()
-    headerChanged = pyqtSignal()
-    licenseTextChanged = pyqtSignal()
+    DEFAULT_DECLINE_BUTTON_TEXT = catalog.i18nc("@button", "Decline")
+    ACCEPT_BUTTON_TEXT = catalog.i18nc("@button", "Agree")
 
-    def __init__(self) -> None:
+    dialogTitleChanged = pyqtSignal()
+    packageNameChanged = pyqtSignal()
+    licenseTextChanged = pyqtSignal()
+    iconChanged = pyqtSignal()
+
+    def __init__(self, decline_button_text: str = DEFAULT_DECLINE_BUTTON_TEXT) -> None:
         super().__init__()
 
         self._current_page_idx = 0
         self._page_count = 1
         self._dialogTitle = ""
-        self._header_text = ""
         self._license_text = ""
         self._package_name = ""
+        self._icon_url = ""
+        self._decline_button_text = decline_button_text
+
+    @pyqtProperty(str, constant = True)
+    def acceptButtonText(self):
+        return self.ACCEPT_BUTTON_TEXT
+
+    @pyqtProperty(str, constant = True)
+    def declineButtonText(self):
+        return self._decline_button_text
 
     @pyqtProperty(str, notify=dialogTitleChanged)
     def dialogTitle(self) -> str:
         return self._dialogTitle
 
-    @pyqtProperty(str, notify=headerChanged)
-    def headerText(self) -> str:
-        return self._header_text
+    @pyqtProperty(str, notify=packageNameChanged)
+    def packageName(self) -> str:
+        return self._package_name
 
     def setPackageName(self, name: str) -> None:
-        self._header_text = name + ": " + catalog.i18nc("@label", "This plugin contains a license.\nYou need to accept this license to install this plugin.\nDo you agree with the terms below?")
-        self.headerChanged.emit()
+        self._package_name = name
+        self.packageNameChanged.emit()
+
+    @pyqtProperty(str, notify=iconChanged)
+    def iconUrl(self) -> str:
+        return self._icon_url
+
+    def setIconUrl(self, url: str):
+        self._icon_url = url
+        self.iconChanged.emit()
 
     @pyqtProperty(str, notify=licenseTextChanged)
     def licenseText(self) -> str:
