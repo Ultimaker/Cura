@@ -747,7 +747,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         for metadata_file in metadata_files:
             try:
                 plugin_id = metadata_file.split("/")[0]
-                result[plugin_id] = json.loads(archive.open("Cura/plugin_metadata.json").read().decode("utf-8"))
+                result[plugin_id] = json.loads(archive.open("%s/plugin_metadata.json" % plugin_id).read().decode("utf-8"))
             except Exception:
                 Logger.logException("w", "Unable to retrieve metadata for %s", metadata_file)
 
