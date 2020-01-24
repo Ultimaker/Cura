@@ -202,8 +202,9 @@ Item
     // dragging a tool handle.
     Rectangle
     {
-        x: -base.x + base.mouseX + UM.Theme.getSize("default_margin").width
-        y: -base.y + base.mouseY + UM.Theme.getSize("default_margin").height
+        id: toolInfo
+        x: visible ? -base.x + base.mouseX + UM.Theme.getSize("default_margin").width: 0
+        y: visible ? -base.y + base.mouseY + UM.Theme.getSize("default_margin").height: 0
 
         width: toolHint.width + UM.Theme.getSize("default_margin").width
         height: toolHint.height;
