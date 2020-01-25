@@ -5,14 +5,14 @@
     "metadata": {
         "visible": true,
         "author": "Amit L",
-        "manufacturer": "GEEETECH TECH.",
+        "manufacturer": "Geeetech",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "GEEETECH_A20T_1",
-            "1": "GEEETECH_A20T_2",
-            "2": "GEEETECH_A20T_3"
+            "0": "geeetech_A20T_1",
+            "1": "geeetech_A20T_2",
+            "2": "geeetech_A20T_3"
         }
 
     },
@@ -20,13 +20,13 @@
     "overrides": {
         "machine_name": { "default_value": "GEEETECH A20T" },
         "machine_width": {
-            "default_value": 255
+            "default_value": 250
         },
         "machine_height": {
-            "default_value": 255
+            "default_value": 250
         },
         "machine_depth": {
-            "default_value": 255
+            "default_value": 250
         },        "machine_center_is_zero": {
             "default_value": false
         },
