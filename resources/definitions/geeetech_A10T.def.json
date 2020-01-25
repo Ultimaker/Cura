@@ -5,14 +5,14 @@
     "metadata": {
         "visible": true,
         "author": "Amit L",
-        "manufacturer": "GEEETECH TECH.",
+        "manufacturer": "Geeetech",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "machine_extruder_trains":
         {
-            "0": "GEEETECH_A10T_1",
-            "1": "GEEETECH_A10T_2",
-            "2": "GEEETECH_A10T_3"
+            "0": "geeetech_A10T_1",
+            "1": "geeetech_A10T_2",
+            "2": "geeetech_A10T_3"
         }
 
     },
