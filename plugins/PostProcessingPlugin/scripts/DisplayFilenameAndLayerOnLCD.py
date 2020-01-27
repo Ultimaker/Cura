@@ -79,6 +79,8 @@ class DisplayFilenameAndLayerOnLCD(Script):
                 if line.startswith(";LAYER_COUNT:"):
                     max_layer = line
                     max_layer = max_layer.split(":")[1]
+                    if self.getSettingValueByKey("startNum") == 0:
+                        max_layer = str(int(max_layer) - 1)
                 if line.startswith(";LAYER:"):
                     if self.getSettingValueByKey("maxlayer"):
                         display_text = display_text + " of " + max_layer
