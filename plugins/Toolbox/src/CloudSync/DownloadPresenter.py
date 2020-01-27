@@ -62,7 +62,8 @@ class DownloadPresenter:
                 "received": 0,
                 "total": 1,  # make sure this is not considered done yet. Also divByZero-safe
                 "file_written": None,
-                "request_data": request_data
+                "request_data": request_data,
+                "package_model": item
             }
 
         self._started = True
@@ -128,7 +129,14 @@ class DownloadPresenter:
             if not item["file_written"]:
                 return False
 
-        success_items = {package_id : value["file_written"] for package_id, value in self._progress.items()}
+        success_items = {
+            package_id:
+                {
+                    "package_path": value["file_written"],
+                    "icon_url": value["package_model"]["icon_url"]
+                }
+            for package_id, value in self._progress.items()
+        }
         error_items = [package_id for package_id in self._error]
 
         self._progress_message.hide()
