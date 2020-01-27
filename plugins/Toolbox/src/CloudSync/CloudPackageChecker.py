@@ -42,7 +42,7 @@ class CloudPackageChecker(QObject):
             self._getUserSubscribedPackages()
 
     def _getUserSubscribedPackages(self) -> None:
-        Logger.log("d", "Requesting subscribed packages metadata from server.")
+        Logger.debug("Requesting subscribed packages metadata from server.")
         url = CloudApiModel.api_url_user_packages
         self._application.getHttpRequestManager().get(url,
                                                       callback = self._onUserPackagesRequestFinished,
