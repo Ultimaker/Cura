@@ -1,0 +1,19 @@
+{
+    "name": "Orion",
+    "version": 2,
+    "inherits": "signal_pro_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "orion_platform.stl",
+        "quality_definition": "signal_pro_base"
+    },
+    "overrides":
+    {
+        "machine_name":     { "default_value": "Orion" },
+        "machine_width":    { "default_value": 500 },
+        "machine_depth":    { "default_value": 500 },
+        "machine_height":   { "default_value": 600 }
+		
+    }
+}
