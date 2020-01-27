@@ -63,9 +63,9 @@ class SyncOrchestrator(Extension):
         self._download_presenter.download(mutations)
 
     ## Called when a set of packages have finished downloading
-    # \param success_items: Dict[package_id, file_path]
+    # \param success_items: Dict[package_id, Dict[str, str]]
     # \param error_items: List[package_id]
-    def _onDownloadFinished(self, success_items: Dict[str, str], error_items: List[str]) -> None:
+    def _onDownloadFinished(self, success_items: Dict[str, Dict[str, str]], error_items: List[str]) -> None:
         if error_items:
             message = i18n_catalog.i18nc("@info:generic", "{} plugins failed to download".format(len(error_items)))
             self._showErrorMessage(message)
