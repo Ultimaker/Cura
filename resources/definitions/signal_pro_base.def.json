@@ -201,7 +201,7 @@
 		"machine_extruder_count": 						{ "default_value": 2 },
         "machine_heated_bed":                           { "default_value": true },
 		"machine_heated_build_volume": 					{ "default_value": true },
-        "build_volume_temperature": 					{ "maximum_value": 45 },
+        "build_volume_temperature": 					{ "maximum_value": 50 },
         "material_print_temperature":                   { "maximum value": 295 },
         "material_bed_temperature":                     { "maximum value": 140 },
         "machine_max_acceleration_x":                   { "default_value": 1500 },
