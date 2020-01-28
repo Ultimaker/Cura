@@ -31,18 +31,26 @@ Rectangle
                 font: UM.Theme.getFont("large")
                 renderType: Text.NativeRendering
             }
-            Label
+            UM.TooltipArea
             {
-                text: catalog.i18nc("@label", "Search materials")
-                width: parent.width - heading.width
-                height: contentHeight
+                width: childrenRect.width
+                height: childrenRect.height
                 anchors.right: parent.right
-                horizontalAlignment: Text.AlignRight
-                elide: Text.ElideLeft
-                color: UM.Theme.getColor("text_medium")
-                font: UM.Theme.getFont("medium")
-                renderType: Text.NativeRendering
-                visible: toolbox.viewCategory === "material"
+                text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
+                Label
+                {
+                    text: "<a href='%2'>".arg(toolbox.getWebMarketplaceUrl("materials")) + catalog.i18nc("@label", "Search materials") + "</a>"
+                    width: contentWidth
+                    height: contentHeight
+                    horizontalAlignment: Text.AlignRight
+                    font: UM.Theme.getFont("medium")
+                    renderType: Text.NativeRendering
+
+                    linkColor: UM.Theme.getColor("text_link")
+                    onLinkActivated: Qt.openUrlExternally(link)
+
+                    visible: toolbox.viewCategory === "material"
+                }
             }
         }
         Grid
