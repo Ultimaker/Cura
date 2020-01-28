@@ -43,7 +43,7 @@ Rectangle
                     width: contentWidth
                     height: contentHeight
                     horizontalAlignment: Text.AlignRight
-                    font: UM.Theme.getFont("medium")
+                    font: UM.Theme.getFont("default")
                     renderType: Text.NativeRendering
 
                     linkColor: UM.Theme.getColor("text_link")
