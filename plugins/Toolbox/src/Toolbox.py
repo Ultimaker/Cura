@@ -4,7 +4,6 @@
 import json
 import os
 import tempfile
-import platform
 from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, Union
 
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
@@ -17,6 +16,7 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
+from cura.CuraVersion import CuraMarketplaceRoot
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
@@ -32,6 +32,8 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 i18n_catalog = i18nCatalog("cura")
+
+DEFAULT_MARKETPLACE_ROOT = "https://marketplace.ultimaker.com"  # type: str
 
 # todo Remove license and download dialog, use SyncOrchestrator instead
 
@@ -767,7 +769,10 @@ class Toolbox(QObject, Extension):
 
     @pyqtProperty(str, constant=True)
     def getWebMarketplaceUrl(self) -> str:
-        return ApplicationMetadata.WEB_MARKETPLACE_URL
+        root = CuraMarketplaceRoot
+        if root == "":
+            root = DEFAULT_MARKETPLACE_ROOT
+        return root + "/app/cura/materials"
 
     # Filter Models:
     # --------------------------------------------------------------------------
