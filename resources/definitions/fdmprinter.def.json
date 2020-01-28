@@ -5984,7 +5984,7 @@
                 "print_sequence":
                 {
                     "label": "Print Sequence",
-                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
+                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. ",
                     "type": "enum",
                     "options":
                     {
