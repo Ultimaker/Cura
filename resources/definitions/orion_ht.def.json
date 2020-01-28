@@ -14,7 +14,7 @@
         "machine_width":                { "default_value": 500 },
         "machine_depth":                { "default_value": 500 },
         "machine_height":               { "default_value": 600 },
-        "material_print_temperature":   { "maximum value": 500 }
+        "material_print_temperature":   { "maximum_value_warning": 500 }
 		
     }
 }
