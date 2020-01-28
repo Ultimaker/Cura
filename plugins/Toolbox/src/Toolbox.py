@@ -149,7 +149,8 @@ class Toolbox(QObject, Extension):
 
     @pyqtSlot(str)
     def subscribe(self, package_id: str) -> None:
-        self._cloud_package_manager.subscribe(package_id)
+        if self._application.getCuraAPI().account.isLoggedIn:
+            self._cloud_package_manager.subscribe(package_id)
 
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
