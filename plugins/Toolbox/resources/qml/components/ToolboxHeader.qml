@@ -80,6 +80,7 @@ Item
 
     UM.TooltipArea
     {
+        id: webMarketplaceButtonTooltipArea
         width: childrenRect.width
         height: parent.height
         text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
@@ -94,7 +95,7 @@ Item
         {
             id: cloudMarketplaceButton
             source: "../../images/shop.svg"
-            color: UM.Theme.getColor("text")
+            color: UM.Theme.getColor(webMarketplaceButtonTooltipArea.containsMouse ? "primary" : "text")
             height: parent.height / 2
             width: height
             anchors.verticalCenter: parent.verticalCenter
