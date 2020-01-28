@@ -81,7 +81,7 @@ Item
     UM.TooltipArea
     {
         width: childrenRect.width;
-        height: childrenRect.height;
+        height: parent.height
         text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
         anchors
         {
@@ -93,11 +93,11 @@ Item
         {
             id: cloudMarketplaceButton
             source: "../../images/shop.svg"
-            height: 45
+            height: parent.height / 2
             width: height
+            anchors.verticalCenter: parent.verticalCenter
             sourceSize.width: width
             sourceSize.height: height
-            //width: UM.Theme.getSize("toolbox_header_tab").width
             fillMode: Image.PreserveAspectFit
             MouseArea
             {
