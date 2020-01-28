@@ -21,7 +21,6 @@ from cura.Machines.ContainerTree import ContainerTree
 
 from .CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
-from .CloudSync.CloudPackageManager import CloudPackageManager
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
@@ -44,7 +43,6 @@ class Toolbox(QObject, Extension):
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
 
         # Network:
-        self._cloud_package_manager = CloudPackageManager(application)  # type: CloudPackageManager
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
@@ -146,11 +144,6 @@ class Toolbox(QObject, Extension):
         data = "{\"data\": {\"cura_version\": \"%s\", \"rating\": %i}}" % (Version(self._application.getVersion()), rating)
 
         self._application.getHttpRequestManager().put(url, data = data.encode(), scope = self._scope)
-
-    @pyqtSlot(str)
-    def subscribe(self, package_id: str) -> None:
-        if self._application.getCuraAPI().account.isLoggedIn:
-            self._cloud_package_manager.subscribe(package_id)
 
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
@@ -378,7 +371,6 @@ class Toolbox(QObject, Extension):
     def onLicenseAccepted(self):
         self.closeLicenseDialog.emit()
         package_id = self.install(self.getLicenseDialogPluginFileLocation())
-        self.subscribe(package_id)
 
 
     @pyqtSlot()
@@ -682,7 +674,6 @@ class Toolbox(QObject, Extension):
         installed_id = self.install(file_path)
         if installed_id != package_id:
             Logger.error("Installed package {} does not match {}".format(installed_id, package_id))
-        self.subscribe(installed_id)
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------

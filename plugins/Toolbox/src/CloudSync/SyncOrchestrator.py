@@ -38,7 +38,8 @@ class SyncOrchestrator(Extension):
         self._name = "SyncOrchestrator"
 
         self._package_manager = app.getPackageManager()
-        self._cloud_package_manager = CloudPackageManager(app)
+        # Keep a reference to the CloudPackageManager. it watches for installed packages and subscribes to them
+        self._cloud_package_manager = CloudPackageManager.getInstance(app)  # type: CloudPackageManager
 
         self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
@@ -86,7 +87,6 @@ class SyncOrchestrator(Extension):
                     message = "Could not install {}".format(item["package_id"])
                     self._showErrorMessage(message)
                     continue
-                self._cloud_package_manager.subscribe(item["package_id"])
                 has_changes = True
             else:
                 self._cloud_package_manager.unsubscribe(item["package_id"])

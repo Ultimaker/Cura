@@ -191,8 +191,6 @@ class CuraApplication(QtApplication):
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
-        self._cura_package_manager = None
-
         self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
 
         self.empty_container = None  # type: EmptyInstanceContainer
@@ -476,7 +474,7 @@ class CuraApplication(QtApplication):
             "CuraEngineBackend", #Cura is useless without this one since you can't slice.
             "FileLogger", #You want to be able to read the log if something goes wrong.
             "XmlMaterialProfile", #Cura crashes without this one.
-            "Toolbox", #This contains the interface to enable/disable plug-ins, so if you disable it you can't enable it back.
+            "Toolbox", #This contains the interface to enable/disable plug-ins and the Cloud functionality.
             "PrepareStage", #Cura is useless without this one since you can't load models.
             "PreviewStage", #This shows the list of the plugin views that are installed in Cura.
             "MonitorStage", #Major part of Cura's functionality.
@@ -631,6 +629,12 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showPreferences(self) -> None:
         self.showPreferencesWindow.emit()
+
+    # This is called by drag-and-dropping curapackage files.
+    @pyqtSlot(QUrl)
+    def installPackageViaDragAndDrop(self, file_url: str) -> Optional[str]:
+        filename = QUrl(file_url).toLocalFile()
+        return self._package_manager.installPackage(filename)
 
     @override(Application)
     def getGlobalContainerStack(self) -> Optional["GlobalStack"]:
