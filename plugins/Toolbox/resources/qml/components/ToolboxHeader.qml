@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -92,11 +92,12 @@ Item
         Image
         {
             id: cloudMarketplaceButton
-            source: "../../images/marketplace.png"
+            source: "../../images/shop.svg"
             height: 45
             width: height
+            sourceSize.width: width
+            sourceSize.height: height
             //width: UM.Theme.getSize("toolbox_header_tab").width
-            mipmap: true
             fillMode: Image.PreserveAspectFit
             MouseArea
             {
