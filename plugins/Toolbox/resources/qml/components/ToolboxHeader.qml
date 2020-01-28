@@ -80,7 +80,7 @@ Item
 
     UM.TooltipArea
     {
-        width: childrenRect.width;
+        width: childrenRect.width
         height: parent.height
         text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
         anchors
@@ -89,6 +89,7 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
+        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl)
         Image
         {
             id: cloudMarketplaceButton
@@ -99,11 +100,6 @@ Item
             sourceSize.width: width
             sourceSize.height: height
             fillMode: Image.PreserveAspectFit
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl)
-            }
         }
     }
 
