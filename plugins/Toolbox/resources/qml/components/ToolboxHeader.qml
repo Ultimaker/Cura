@@ -90,16 +90,16 @@ Item
             verticalCenter: parent.verticalCenter
         }
         onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl)
-        Image
+        UM.RecolorImage
         {
             id: cloudMarketplaceButton
             source: "../../images/shop.svg"
+            color: UM.Theme.getColor("text")
             height: parent.height / 2
             width: height
             anchors.verticalCenter: parent.verticalCenter
             sourceSize.width: width
             sourceSize.height: height
-            fillMode: Image.PreserveAspectFit
         }
     }
 
