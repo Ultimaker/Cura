@@ -89,15 +89,7 @@ Item
             rightMargin: UM.Theme.getSize("default_margin").width
             verticalCenter: parent.verticalCenter
         }
-        onClicked:
-        {
-            let page = "plugins"; //Online page to go to on the Marketplace subdomain.
-            if(materialsTabButton.active)
-            {
-                page = "materials";
-            }
-            Qt.openUrlExternally(toolbox.getWebMarketplaceUrl(page));
-        }
+        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins"))
         UM.RecolorImage
         {
             id: cloudMarketplaceButton
