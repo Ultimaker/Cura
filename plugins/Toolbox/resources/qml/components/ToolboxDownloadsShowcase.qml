@@ -14,17 +14,36 @@ Rectangle
     Column
     {
         height: childrenRect.height + 2 * padding
-        spacing: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("default_margin").height
         width: parent.width
         padding: UM.Theme.getSize("wide_margin").height
-        Label
+        Item
         {
-            id: heading
-            text: catalog.i18nc("@label", "Featured")
-            width: parent.width
-            color: UM.Theme.getColor("text_medium")
-            font: UM.Theme.getFont("large")
-            renderType: Text.NativeRendering
+            width: parent.width - parent.padding * 2
+            height: childrenRect.height
+            Label
+            {
+                id: heading
+                text: catalog.i18nc("@label", "Featured")
+                width: contentWidth
+                height: contentHeight
+                color: UM.Theme.getColor("text_medium")
+                font: UM.Theme.getFont("large")
+                renderType: Text.NativeRendering
+            }
+            Label
+            {
+                text: catalog.i18nc("@label", "Search materials")
+                width: parent.width - heading.width
+                height: contentHeight
+                anchors.right: parent.right
+                horizontalAlignment: Text.AlignRight
+                elide: Text.ElideLeft
+                color: UM.Theme.getColor("text_medium")
+                font: UM.Theme.getFont("medium")
+                renderType: Text.NativeRendering
+                visible: toolbox.viewCategory === "material"
+            }
         }
         Grid
         {
