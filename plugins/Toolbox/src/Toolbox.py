@@ -767,12 +767,12 @@ class Toolbox(QObject, Extension):
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
 
-    @pyqtProperty(str, constant=True)
-    def getWebMarketplaceUrl(self) -> str:
+    @pyqtSlot(str, result = str)
+    def getWebMarketplaceUrl(self, page: str) -> str:
         root = CuraMarketplaceRoot
         if root == "":
             root = DEFAULT_MARKETPLACE_ROOT
-        return root + "/app/cura/materials"
+        return root + "/app/cura/" + page
 
     # Filter Models:
     # --------------------------------------------------------------------------
