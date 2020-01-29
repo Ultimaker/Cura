@@ -1,6 +1,5 @@
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
-from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from ..CloudApiModel import CloudApiModel
 from ..UltimakerCloudScope import UltimakerCloudScope
@@ -25,29 +24,28 @@ class CloudPackageManager:
 
     def __init__(self, app: CuraApplication) -> None:
         if self.__instance is not None:
-            raise Exception("This is a Singleton. use getInstance()")
+            raise RuntimeError("This is a Singleton. use getInstance()")
 
-        self._request_manager = app.getHttpRequestManager()  # type: HttpRequestManager
-        self.account = app.getCuraAPI().account  # type: Account
         self._scope = UltimakerCloudScope(app)  # type: UltimakerCloudScope
 
         app.getPackageManager().packageInstalled.connect(self._onPackageInstalled)
 
     def unsubscribe(self, package_id: str) -> None:
         url = CloudApiModel.userPackageUrl(package_id)
-        self._request_manager.delete(url=url, scope=self._scope)
+        HttpRequestManager.getInstance().delete(url=url, scope=self._scope)
 
-    def subscribe(self, package_id: str) -> None:
+    def _subscribe(self, package_id: str) -> None:
         """You probably don't want to use this directly. All installed packages will be automatically subscribed."""
 
         Logger.debug("Subscribing to {}", package_id)
         data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, CloudApiModel.sdk_version)
-        self._request_manager.put(url=CloudApiModel.api_url_user_packages,
-                                  data=data.encode(),
-                                  scope=self._scope
-                                  )
+        HttpRequestManager.getInstance().put(
+            url=CloudApiModel.api_url_user_packages,
+            data=data.encode(),
+            scope=self._scope
+        )
 
     def _onPackageInstalled(self, package_id: str):
-        if self.account.isLoggedIn:
+        if CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
             # We might already be subscribed, but checking would take one extra request. Instead, simply subscribe
-            self.subscribe(package_id)
+            self._subscribe(package_id)
