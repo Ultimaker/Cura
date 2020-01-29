@@ -3,7 +3,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "GEEETECH_A10M",
+        "machine": "geeetech_A10M",
         "position": "1"
     },
 
