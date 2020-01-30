@@ -32,7 +32,7 @@ class CloudPackageManager:
 
     def unsubscribe(self, package_id: str) -> None:
         url = CloudApiModel.userPackageUrl(package_id)
-        HttpRequestManager.getInstance().delete(url=url, scope=self._scope)
+        HttpRequestManager.getInstance().delete(url = url, scope = self._scope)
 
     def _subscribe(self, package_id: str) -> None:
         """You probably don't want to use this directly. All installed packages will be automatically subscribed."""
@@ -40,9 +40,9 @@ class CloudPackageManager:
         Logger.debug("Subscribing to {}", package_id)
         data = "{\"data\": {\"package_id\": \"%s\", \"sdk_version\": \"%s\"}}" % (package_id, CloudApiModel.sdk_version)
         HttpRequestManager.getInstance().put(
-            url=CloudApiModel.api_url_user_packages,
-            data=data.encode(),
-            scope=self._scope
+            url = CloudApiModel.api_url_user_packages,
+            data = data.encode(),
+            scope = self._scope
         )
 
     def _onPackageInstalled(self, package_id: str):
