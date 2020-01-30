@@ -24,7 +24,6 @@ from plugins.Toolbox.src.CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
-from .CloudSync.SubscribedPackagesModel import SubscribedPackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
