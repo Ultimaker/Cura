@@ -16,7 +16,7 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
-from cura.CuraVersion import CuraMarketplaceRoot
+
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 from plugins.Toolbox.src.CloudApiModel import CloudApiModel
@@ -34,6 +34,11 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 DEFAULT_MARKETPLACE_ROOT = "https://marketplace.ultimaker.com"  # type: str
+
+try:
+    from cura.CuraVersion import CuraMarketplaceRoot
+except ImportError:
+    CuraMarketplaceRoot = DEFAULT_MARKETPLACE_ROOT
 
 # todo Remove license and download dialog, use SyncOrchestrator instead
 
