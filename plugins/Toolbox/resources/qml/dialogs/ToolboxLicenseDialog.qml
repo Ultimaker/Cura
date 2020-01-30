@@ -4,11 +4,9 @@
 import QtQuick 2.10
 import QtQuick.Dialogs 1.1
 import QtQuick.Window 2.2
-import QtQuick.Controls 1.4
+import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtQuick.Controls.Styles 1.4
-
-// TODO: Switch to QtQuick.Controls 2.x and remove QtQuick.Controls.Styles
 
 import UM 1.1 as UM
 import Cura 1.6 as Cura
@@ -36,6 +34,7 @@ UM.Dialog
             id: licenseHeader
             Layout.fillWidth: true
             text: catalog.i18nc("@label", "You need to accept the license to install the package")
+            color: UM.Theme.getColor("text")
             wrapMode: Text.Wrap
             renderType: Text.NativeRendering
         }
@@ -63,6 +62,7 @@ UM.Dialog
             {
                 id: packageName
                 text: licenseModel.packageName
+                color: UM.Theme.getColor("text")
                 font.bold: true
                 anchors.verticalCenter: icon.verticalCenter
                 height: contentHeight
@@ -73,15 +73,17 @@ UM.Dialog
 
         }
 
-        TextArea
+        Cura.ScrollableTextArea
         {
-            id: licenseText
+
             Layout.fillWidth: true
             Layout.fillHeight: true
             anchors.topMargin: UM.Theme.getSize("default_margin").height
-            readOnly: true
-            text: licenseModel.licenseText
+
+            textArea.text: licenseModel.licenseText
+            textArea.readOnly: true
         }
+
     }
     rightButtons:
     [
