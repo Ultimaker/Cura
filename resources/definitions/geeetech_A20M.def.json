@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "GEEETECH A20M",
+    "name": "Geeetech A20M",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
@@ -17,7 +17,7 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "GEEETECH A20M" },
+        "machine_name": { "default_value": "Geeetech A20M" },
         "machine_width": {
             "default_value": 250
         },
