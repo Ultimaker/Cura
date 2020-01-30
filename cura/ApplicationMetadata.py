@@ -56,5 +56,3 @@ try:
 
 except ImportError:
     CuraAppDisplayName = DEFAULT_CURA_DISPLAY_NAME
-
-WEB_MARKETPLACE_URL = "https://marketplace.ultimaker.com/app/cura/materials"
