@@ -8,7 +8,7 @@
         "main_background": [39, 44, 48, 255],
         "message_background": [39, 44, 48, 255],
         "wide_lining": [31, 36, 39, 255],
-        "thick_lining": [255, 255, 255, 30],
+        "thick_lining": [255, 255, 255, 60],
         "lining": [64, 69, 72, 255],
         "viewport_overlay": [30, 36, 39, 255],
 

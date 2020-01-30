@@ -149,7 +149,7 @@
 
         "main_background": [255, 255, 255, 255],
         "wide_lining": [245, 245, 245, 255],
-        "thick_lining": [127, 127, 127, 255],
+        "thick_lining": [180, 180, 180, 255],
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
