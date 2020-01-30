@@ -145,7 +145,7 @@ class CuraFormulaFunctions:
         return global_stack.getProperty(property_key, "value", context = context)
 
     # Gets the extruder value for the given setting key starting from the given container index.
-    def getValueFromContainerAtIndexInExtruder(self, extruder_index: int, property_key: str, container_index: int,
+    def getValueFromContainerAtIndexInExtruder(self, extruder_position: int, property_key: str, container_index: int,
                                                context: Optional["PropertyEvaluationContext"] = None) -> Any:
         machine_manager = self._application.getMachineManager()
         global_stack = machine_manager.activeMachine
@@ -163,7 +163,7 @@ class CuraFormulaFunctions:
         context = self.createContextForDefaultValueEvaluation(extruder_stack)
         context.context["evaluate_from_container_index"] = container_index
 
-        return self.getValueInExtruder(extruder_index, property_key, context)
+        return self.getValueInExtruder(extruder_position, property_key, context)
 
     # Creates a context for evaluating default values (skip the user_changes container).
     def createContextForDefaultValueEvaluation(self, source_stack: "CuraContainerStack") -> "PropertyEvaluationContext":
