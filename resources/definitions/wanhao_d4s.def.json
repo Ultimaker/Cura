@@ -8,7 +8,7 @@
     "manufacturer": "Wanhao",
     "file_formats": "text/x-gcode",
     "has_materials": true,
-    "platform": "wanhao_225_145_platform.stl",
+    "platform": "wanhao_225_145_platform.obj",
     "platform_texture": "Wanhaobackplate.png",
     "machine_extruder_trains": {
         "0": "wanhao_d4s_extruder_0"

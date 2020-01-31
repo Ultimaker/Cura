@@ -8,7 +8,7 @@
     "manufacturer": "Wanhao",
     "file_formats": "text/x-gcode",
     "has_materials": true,
-    "platform": "wanhao_110_110_platform.stl",
+    "platform": "wanhao_110_110_platform.obj",
     "platform_texture": "Wanhaobackplate.png",
     "machine_extruder_trains": {
         "0": "wanhao_i3mini_extruder_0"

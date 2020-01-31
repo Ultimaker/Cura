@@ -46,7 +46,7 @@
             "6": "hms434_tool_7",
             "7": "hms434_tool_8"
         },
-        "platform":            "hms_platform.stl",
+        "platform":            "hms_platform.obj",
         "platform_offset":     [ 26, -13.2, 162.5],
         "platform_texture":    "hms434.png",
         "first_start_actions": ["MachineSettingsAction"],
