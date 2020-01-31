@@ -27,4 +27,4 @@ class AuthorizationRequestServer(HTTPServer):
         self.RequestHandlerClass.verification_code = verification_code  # type: ignore
 
     def setState(self, state: str) -> None:
-        self.RequestHandlerClass.state = state
+        self.RequestHandlerClass.state = state  # type: ignore
