@@ -25,3 +25,6 @@ class AuthorizationRequestServer(HTTPServer):
     ##  Set the verification code on the request handler.
     def setVerificationCode(self, verification_code: str) -> None:
         self.RequestHandlerClass.verification_code = verification_code  # type: ignore
+
+    def setState(self, state: str) -> None:
+        self.RequestHandlerClass.state = state
