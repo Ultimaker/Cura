@@ -55,10 +55,22 @@ class CuraEngineBackend(QObject, Backend):
         if Platform.isWindows():
             executable_name += ".exe"
         default_engine_location = executable_name
-        if os.path.exists(os.path.join(CuraApplication.getInstallPrefix(), "bin", executable_name)):
-            default_engine_location = os.path.join(CuraApplication.getInstallPrefix(), "bin", executable_name)
-        if hasattr(sys, "frozen"):
-            default_engine_location = os.path.join(os.path.dirname(os.path.abspath(sys.executable)), executable_name)
+
+        search_path = [
+            os.path.abspath(os.path.dirname(sys.executable)),
+            os.path.abspath(os.path.join(os.path.dirname(sys.executable), "bin")),
+            os.path.abspath(os.path.join(os.path.dirname(sys.executable), "..")),
+
+            os.path.join(CuraApplication.getInstallPrefix(), "bin"),
+            os.path.dirname(os.path.abspath(sys.executable)),
+        ]
+
+        for path in search_path:
+            engine_path = os.path.join(path, executable_name)
+            if os.path.isfile(engine_path):
+                default_engine_location = engine_path
+                break
+
         if Platform.isLinux() and not default_engine_location:
             if not os.getenv("PATH"):
                 raise OSError("There is something wrong with your Linux installation.")
