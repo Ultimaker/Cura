@@ -145,6 +145,14 @@ class Backup:
     #   \return Whether we had success or not.
     @staticmethod
     def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
+
+        # Implement security recommendations: Sanity check on zip files will make it harder to spoof.
+        from cura.CuraApplication import CuraApplication
+        config_filename = CuraApplication.getInstance().getApplicationName() + ".cfg"  # Should be there if valid.
+        if config_filename not in [file.filename for file in archive.filelist]:
+            Logger.logException("e", "Unable to extract the backup due to corruption of compressed file(s).")
+            return False
+
         Logger.log("d", "Removing current data in location: %s", target_path)
         Resources.factoryReset()
         Logger.log("d", "Extracting backup to location: %s", target_path)
