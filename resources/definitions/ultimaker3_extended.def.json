@@ -8,7 +8,7 @@
         "quality_definition": "ultimaker3",
         "visible": true,
         "file_formats": "application/gzip;text/x-gcode",
-        "platform": "ultimaker3_platform.obj",
+        "platform": "ultimaker3_platform.stl",
         "platform_texture": "Ultimaker3Extendedbackplate.png",
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,

@@ -7,7 +7,7 @@
         "manufacturer": "Ultimaker B.V.",
         "visible": true,
         "file_formats": "application/gzip;text/x-gcode",
-        "platform": "ultimaker3_platform.obj",
+        "platform": "ultimaker3_platform.stl",
         "platform_texture": "Ultimaker3backplate.png",
         "platform_offset": [0, 0, 0],
         "has_machine_quality": true,

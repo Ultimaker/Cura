@@ -7,7 +7,7 @@
         "author": "Stereotech",
         "manufacturer": "Stereotech LLC.",
         "category": "Other",
-        "platform": "stereotech_ste320_platform.obj",
+        "platform": "stereotech_ste320_platform.stl",
         "platform_texture": "StereotechSte320backplate.png",
         "platform_offset": [
             0,

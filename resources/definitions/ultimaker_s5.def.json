@@ -8,7 +8,7 @@
         "category": "Ultimaker",
         "visible": true,
         "file_formats": "application/x-ufp;text/x-gcode",
-        "platform": "ultimaker_s5_platform.obj",
+        "platform": "ultimaker_s5_platform.stl",
         "platform_texture": "UltimakerS5backplate.png",
         "platform_offset": [0, -30, -10],
         "has_machine_quality": true,

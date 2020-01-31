@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "icon": "wanhao-icon.png",
         "has_materials": true,
-        "platform": "wanhao_200_200_platform.obj",
+        "platform": "wanhao_200_200_platform.stl",
         "platform_texture": "Wanhaobackplate.png",
         "machine_extruder_trains": {
             "0": "wanhao_d6_extruder_0"
