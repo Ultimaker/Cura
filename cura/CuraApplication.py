@@ -191,8 +191,6 @@ class CuraApplication(QtApplication):
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
 
-        self._cura_package_manager = None
-
         self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
 
         self.empty_container = None  # type: EmptyInstanceContainer
@@ -631,6 +629,12 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showPreferences(self) -> None:
         self.showPreferencesWindow.emit()
+
+    # This is called by drag-and-dropping curapackage files.
+    @pyqtSlot(QUrl)
+    def installPackageViaDragAndDrop(self, file_url: str) -> Optional[str]:
+        filename = QUrl(file_url).toLocalFile()
+        return self._package_manager.installPackage(filename)
 
     @override(Application)
     def getGlobalContainerStack(self) -> Optional["GlobalStack"]:
