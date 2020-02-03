@@ -75,8 +75,6 @@ class SyncOrchestrator(Extension):
 
     # Called when user has accepted / declined all licenses for the downloaded packages
     def _onLicenseAnswers(self, answers: List[Dict[str, Any]]) -> None:
-        Logger.debug("Got license answers: {}", answers)
-
         has_changes = False  # True when at least one package is installed
 
         for item in answers:
