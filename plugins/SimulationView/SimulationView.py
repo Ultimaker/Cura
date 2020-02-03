@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -116,8 +116,9 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layer data"))
 
         QtApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -149,6 +150,7 @@ class SimulationView(CuraView):
         if self._activity == activity:
             return
         self._activity = activity
+        self._updateSliceWarningVisibility()
         self.activityChanged.emit()
 
     def getSimulationPass(self) -> SimulationPass:
@@ -543,11 +545,13 @@ class SimulationView(CuraView):
             self._composite_pass.getLayerBindings().append("simulationview")
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
+            self._updateSliceWarningVisibility()
 
         elif event.type == Event.ViewDeactivateEvent:
             self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
             Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
             self._wireprint_warning_message.hide()
+            self._slice_first_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -660,6 +664,12 @@ class SimulationView(CuraView):
             return
 
         self._updateWithPreferences()
+
+    def _updateSliceWarningVisibility(self):
+        if not self.getActivity():
+            self._slice_first_warning_message.show()
+        else:
+            self._slice_first_warning_message.hide()
 
 
 class _CreateTopLayersJob(Job):
