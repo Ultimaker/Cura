@@ -146,9 +146,6 @@
         "retraction_enable": {
             "value": "True"
         },
-        "retraction_hop": {
-            "value": "1.0"
-        },
         "retraction_min_travel": {
             "value": "1.5"
         },
