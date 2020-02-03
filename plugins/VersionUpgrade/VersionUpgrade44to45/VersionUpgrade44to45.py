@@ -34,7 +34,6 @@ class VersionUpgrade44to45(VersionUpgrade):
 
         self._extruder_machine_mapping = []  # type: List[ExtruderMachineMapping]
 
-
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
@@ -116,13 +115,13 @@ class VersionUpgrade44to45(VersionUpgrade):
 
     def deleteHiddenMachines(self) -> None:
 
-        # delete extruders associated to hidden machines
+        # Delete extruders associated to hidden machines
         for item in self._extruder_machine_mapping:
             if item.machine_id in self._hidden_machines:
                 Logger.debug("Deleting extruder files for {}".format(item))
                 self._deleteConfigFiles(item.extruder_filename)
 
-        # delete machine files
+        # Delete machine files
         for machine_id, filename in self._hidden_machines.items():
             Logger.debug("Deleting files for hidden machine {}".format(machine_id))
             self._deleteConfigFiles(filename)
