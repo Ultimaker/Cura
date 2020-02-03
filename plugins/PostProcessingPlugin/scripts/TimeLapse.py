@@ -85,7 +85,6 @@ class TimeLapse(Script):
         gcode_to_append += self.putValue(M=400) + " ;Wait for moves to finish\n"
         gcode_to_append += trigger_command + " ;Snap Photo\n"
         gcode_to_append += self.putValue(G=4, P=pause_length) + " ;Wait for camera\n"
-        gcode_to_append += self.putValue()
 
         for idx, layer in enumerate(data):
             for line in layer.split("\n"):
@@ -98,7 +97,7 @@ class TimeLapse(Script):
                 if ";LAYER:" in line:
                     layer += gcode_to_append
 
-                    layer += "G0 X" + str(last_x) + " Y" + str(last_y)+"\n"
+                    layer += "G0 X%s Y%s\n" % (last_x, last_y)
 
                     data[idx] = layer
                     break
