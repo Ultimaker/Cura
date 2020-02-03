@@ -71,6 +71,7 @@ class LicenseModel(QObject):
         self._updateDialogTitle()
 
     def _updateDialogTitle(self):
-        self._dialogTitle = catalog.i18nc("@title:window", "Plugin License Agreement ({}/{})"
-                                          .format(self._current_page_idx + 1, self._page_count))
+        self._dialogTitle = catalog.i18nc("@title:window", "Plugin License Agreement")
+        if self._page_count > 1:
+            self._dialogTitle = self._dialogTitle + " ({}/{})".format(self._current_page_idx + 1, self._page_count)
         self.dialogTitleChanged.emit()
