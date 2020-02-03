@@ -28,7 +28,7 @@ _removed_settings = {
 
 class VersionUpgrade44to45(VersionUpgrade):
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._hidden_machines = {}  # type: Dict[str, str]
         """machine_id -> stack filename prefix"""
 
@@ -114,7 +114,7 @@ class VersionUpgrade44to45(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    def deleteHiddenMachines(self):
+    def deleteHiddenMachines(self) -> None:
 
         # delete extruders associated to hidden machines
         for item in self._extruder_machine_mapping:
@@ -127,7 +127,7 @@ class VersionUpgrade44to45(VersionUpgrade):
             Logger.debug("Deleting files for hidden machine {}".format(machine_id))
             self._deleteConfigFiles(filename)
 
-    def _deleteConfigFiles(self, filename: str):
+    def _deleteConfigFiles(self, filename: str) -> None:
         path_prefix = Resources.getConfigStoragePath()
         # FIXME this rglob pattern does not work
         for file_path in Path(path_prefix).rglob(filename + "*.cfg"):
