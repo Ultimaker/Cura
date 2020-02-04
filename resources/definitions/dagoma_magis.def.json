@@ -70,6 +70,9 @@
         },
         "layer_height_0": {
             "default_value": 0.26
+        },
+        "top_bottom_thickness": {
+            "default_value": 1
         }
     }
 }
