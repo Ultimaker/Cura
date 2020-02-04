@@ -22,6 +22,9 @@
         "machine_extruder_count": {
             "default_value": 2
         },
+        "machine_extruders_share_heater": {
+            "default_value": true
+        },
         "machine_width": {
             "default_value": 205
         },
