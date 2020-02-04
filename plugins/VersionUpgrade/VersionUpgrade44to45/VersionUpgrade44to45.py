@@ -3,9 +3,12 @@
 
 import configparser
 from typing import Tuple, List
+import fnmatch  # To filter files that we need to delete.
 import io
 import os  # To get the path to check for hidden stacks to delete.
+import urllib.parse  # To get the container IDs from file names.
 import re  # To filter directories to search for hidden stacks to delete.
+from UM.Logger import Logger
 from UM.Resources import Resources  # To get the path to check for hidden stacks to delete.
 from UM.Version import Version  # To sort folders by version number.
 from UM.VersionUpgrade import VersionUpgrade
@@ -57,7 +60,44 @@ class VersionUpgrade44to45(VersionUpgrade):
         upgrade from 4.5 they have already been deleted previously or never got
         the broken hidden stacks.
         """
-        pass
+        Logger.log("d", "Removing all hidden container stacks.")
+        hidden_global_stacks = set()  # Which global stacks have been found? We'll delete anything referred to by these. Set of stack IDs.
+        hidden_extruder_stacks = set()  # Which extruder stacks refer to the hidden global profiles?
+        hidden_instance_containers = set()  # Which instance containers are referred to by the hidden stacks?
+
+        # First find all of the hidden container stacks.
+        data_storage = Resources.getDataStoragePath()
+        for root, _, files in os.walk(data_storage):
+            for filename in fnmatch.filter(files, "*.global.cfg"):
+                parser = configparser.ConfigParser(interpolation = None)
+                parser.read(os.path.join(root, filename))
+                if "metadata" in parser and "hidden" in parser["metadata"] and parser["metadata"]["hidden"] == "True":
+                    stack_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
+                    hidden_global_stacks.add(stack_id)
+                    # The user container and definition changes container are specific to this stack. We need to delete those too.
+                    if "containers" in parser:
+                        if "0" in parser["containers"]:
+                            hidden_instance_containers.add(parser["containers"]["0"])
+                        if "6" in parser["containers"]:
+                            hidden_instance_containers.add(parser["containers"]["6"])
+                    os.remove(os.path.join(root, filename))
+
+        # Walk a second time to find all extruder stacks referring to these hidden container stacks.
+        for root, _, files in os.walk(data_storage):
+            for filename in fnmatch.filter(files, "*.extruder.cfg"):
+                parser = configparser.ConfigParser(interpolation = None)
+                parser.read(os.path.join(root, filename))
+                if "metadata" in parser and "machine" in parser["metadata"] and parser["metadata"]["machine"] in hidden_global_stacks:
+                    stack_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
+                    hidden_extruder_stacks.add(stack_id)
+                    os.remove(os.path.join(root, filename))
+
+        # Walk a third time to remove all instance containers that are referred to by either of those.
+        for root, _, files in os.walk(data_storage):
+            for filename in fnmatch.filter(files, "*.inst.cfg"):
+                container_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
+                if container_id in hidden_instance_containers:
+                    os.remove(os.path.join(root, filename))
 
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
