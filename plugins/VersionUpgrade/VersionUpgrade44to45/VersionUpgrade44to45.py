@@ -64,10 +64,12 @@ class VersionUpgrade44to45(VersionUpgrade):
         hidden_global_stacks = set()  # Which global stacks have been found? We'll delete anything referred to by these. Set of stack IDs.
         hidden_extruder_stacks = set()  # Which extruder stacks refer to the hidden global profiles?
         hidden_instance_containers = set()  # Which instance containers are referred to by the hidden stacks?
+        exclude_directories = {"plugins"}
 
         # First find all of the hidden container stacks.
         data_storage = Resources.getDataStoragePath()
-        for root, _, files in os.walk(data_storage):
+        for root, dirs, files in os.walk(data_storage):
+            dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.global.cfg"):
                 parser = configparser.ConfigParser(interpolation = None)
                 parser.read(os.path.join(root, filename))
@@ -83,7 +85,8 @@ class VersionUpgrade44to45(VersionUpgrade):
                     os.remove(os.path.join(root, filename))
 
         # Walk a second time to find all extruder stacks referring to these hidden container stacks.
-        for root, _, files in os.walk(data_storage):
+        for root, dirs, files in os.walk(data_storage):
+            dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.extruder.cfg"):
                 parser = configparser.ConfigParser(interpolation = None)
                 parser.read(os.path.join(root, filename))
@@ -99,7 +102,8 @@ class VersionUpgrade44to45(VersionUpgrade):
                     os.remove(os.path.join(root, filename))
 
         # Walk a third time to remove all instance containers that are referred to by either of those.
-        for root, _, files in os.walk(data_storage):
+        for root, dirs, files in os.walk(data_storage):
+            dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.inst.cfg"):
                 container_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
                 if container_id in hidden_instance_containers:
