@@ -90,6 +90,12 @@ class VersionUpgrade44to45(VersionUpgrade):
                 if "metadata" in parser and "machine" in parser["metadata"] and parser["metadata"]["machine"] in hidden_global_stacks:
                     stack_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
                     hidden_extruder_stacks.add(stack_id)
+                    # The user container and definition changes container are specific to this stack. We need to delete those too.
+                    if "containers" in parser:
+                        if "0" in parser["containers"]:  # User container.
+                            hidden_instance_containers.add(parser["containers"]["0"])
+                        if "6" in parser["containers"]:  # Definition changes container.
+                            hidden_instance_containers.add(parser["containers"]["6"])
                     os.remove(os.path.join(root, filename))
 
         # Walk a third time to remove all instance containers that are referred to by either of those.
