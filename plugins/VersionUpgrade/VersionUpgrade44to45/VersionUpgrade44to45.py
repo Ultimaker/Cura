@@ -72,7 +72,12 @@ class VersionUpgrade44to45(VersionUpgrade):
             dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.global.cfg"):
                 parser = configparser.ConfigParser(interpolation = None)
-                parser.read(os.path.join(root, filename))
+                try:
+                    parser.read(os.path.join(root, filename))
+                except OSError:  # File not found or insufficient rights.
+                    continue
+                except configparser.Error:  # Invalid file format.
+                    continue
                 if "metadata" in parser and "hidden" in parser["metadata"] and parser["metadata"]["hidden"] == "True":
                     stack_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
                     hidden_global_stacks.add(stack_id)
@@ -89,7 +94,12 @@ class VersionUpgrade44to45(VersionUpgrade):
             dirs[:] = [dir for dir in dirs if dir not in exclude_directories]
             for filename in fnmatch.filter(files, "*.extruder.cfg"):
                 parser = configparser.ConfigParser(interpolation = None)
-                parser.read(os.path.join(root, filename))
+                try:
+                    parser.read(os.path.join(root, filename))
+                except OSError:  # File not found or insufficient rights.
+                    continue
+                except configparser.Error:  # Invalid file format.
+                    continue
                 if "metadata" in parser and "machine" in parser["metadata"] and parser["metadata"]["machine"] in hidden_global_stacks:
                     stack_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
                     hidden_extruder_stacks.add(stack_id)
@@ -107,7 +117,10 @@ class VersionUpgrade44to45(VersionUpgrade):
             for filename in fnmatch.filter(files, "*.inst.cfg"):
                 container_id = urllib.parse.unquote_plus(os.path.basename(filename).split(".")[0])
                 if container_id in hidden_instance_containers:
-                    os.remove(os.path.join(root, filename))
+                    try:
+                        os.remove(os.path.join(root, filename))
+                    except OSError:  # Is a directory, file not found, or insufficient rights.
+                        continue
 
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
