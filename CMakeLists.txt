@@ -23,6 +23,7 @@ set(CURA_BUILDTYPE "" CACHE STRING "Build type of Cura, eg. 'PPA'")
 set(CURA_CLOUD_API_ROOT "" CACHE STRING "Alternative Cura cloud API root")
 set(CURA_CLOUD_API_VERSION "" CACHE STRING "Alternative Cura cloud API version")
 set(CURA_CLOUD_ACCOUNT_API_ROOT "" CACHE STRING "Alternative Cura cloud account API version")
+set(CURA_MARKETPLACE_ROOT "" CACHE STRING "Alternative Marketplace location")
 
 configure_file(${CMAKE_SOURCE_DIR}/cura.desktop.in ${CMAKE_BINARY_DIR}/cura.desktop @ONLY)
 
