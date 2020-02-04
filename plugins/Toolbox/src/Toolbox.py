@@ -16,6 +16,7 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
+
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 
@@ -30,6 +31,13 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 i18n_catalog = i18nCatalog("cura")
+
+DEFAULT_MARKETPLACE_ROOT = "https://marketplace.ultimaker.com"  # type: str
+
+try:
+    from cura.CuraVersion import CuraMarketplaceRoot
+except ImportError:
+    CuraMarketplaceRoot = DEFAULT_MARKETPLACE_ROOT
 
 # todo Remove license and download dialog, use SyncOrchestrator instead
 
@@ -765,6 +773,13 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
+
+    @pyqtSlot(str, result = str)
+    def getWebMarketplaceUrl(self, page: str) -> str:
+        root = CuraMarketplaceRoot
+        if root == "":
+            root = DEFAULT_MARKETPLACE_ROOT
+        return root + "/app/cura/" + page
 
     # Filter Models:
     # --------------------------------------------------------------------------
