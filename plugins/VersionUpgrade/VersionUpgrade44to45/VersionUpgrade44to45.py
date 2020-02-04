@@ -76,9 +76,9 @@ class VersionUpgrade44to45(VersionUpgrade):
                     hidden_global_stacks.add(stack_id)
                     # The user container and definition changes container are specific to this stack. We need to delete those too.
                     if "containers" in parser:
-                        if "0" in parser["containers"]:
+                        if "0" in parser["containers"]:  # User container.
                             hidden_instance_containers.add(parser["containers"]["0"])
-                        if "6" in parser["containers"]:
+                        if "6" in parser["containers"]:  # Definition changes container.
                             hidden_instance_containers.add(parser["containers"]["6"])
                     os.remove(os.path.join(root, filename))
 
