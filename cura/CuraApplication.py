@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -190,8 +190,6 @@ class CuraApplication(QtApplication):
         self._single_instance = None
 
         self._cura_formula_functions = None  # type: Optional[CuraFormulaFunctions]
-
-        self._cura_package_manager = None
 
         self._machine_action_manager = None  # type: Optional[MachineActionManager.MachineActionManager]
 
@@ -631,6 +629,12 @@ class CuraApplication(QtApplication):
     @pyqtSlot()
     def showPreferences(self) -> None:
         self.showPreferencesWindow.emit()
+
+    # This is called by drag-and-dropping curapackage files.
+    @pyqtSlot(QUrl)
+    def installPackageViaDragAndDrop(self, file_url: str) -> Optional[str]:
+        filename = QUrl(file_url).toLocalFile()
+        return self._package_manager.installPackage(filename)
 
     @override(Application)
     def getGlobalContainerStack(self) -> Optional["GlobalStack"]:
@@ -1827,15 +1831,21 @@ class CuraApplication(QtApplication):
 
     def _onContextMenuRequested(self, x: float, y: float) -> None:
         # Ensure we select the object if we request a context menu over an object without having a selection.
-        if not Selection.hasSelection():
-            node = self.getController().getScene().findObject(cast(SelectionPass, self.getRenderer().getRenderPass("selection")).getIdAtPosition(x, y))
-            if node:
-                parent = node.getParent()
-                while(parent and parent.callDecoration("isGroup")):
-                    node = parent
-                    parent = node.getParent()
+        if Selection.hasSelection():
+            return
+        selection_pass = cast(SelectionPass, self.getRenderer().getRenderPass("selection"))
+        if not selection_pass:  # If you right-click before the rendering has been initialised there might not be a selection pass yet.
+            print("--------------ding! Got the crash.")
+            return
+        node = self.getController().getScene().findObject(selection_pass.getIdAtPosition(x, y))
+        if not node:
+            return
+        parent = node.getParent()
+        while parent and parent.callDecoration("isGroup"):
+            node = parent
+            parent = node.getParent()
 
-                Selection.add(node)
+        Selection.add(node)
 
     @pyqtSlot()
     def showMoreInformationDialogForAnonymousDataCollection(self):

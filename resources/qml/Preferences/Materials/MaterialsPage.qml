@@ -125,6 +125,7 @@ Item
             id: createMenuButton
             text: catalog.i18nc("@action:button", "Create")
             iconName: "list-add"
+            enabled: Cura.MachineManager.activeMachine.hasMaterials
             onClicked:
             {
                 forceActiveFocus();
@@ -174,7 +175,7 @@ Item
                 forceActiveFocus();
                 importMaterialDialog.open();
             }
-            visible: true
+            enabled: Cura.MachineManager.activeMachine.hasMaterials
         }
 
         // Export button
