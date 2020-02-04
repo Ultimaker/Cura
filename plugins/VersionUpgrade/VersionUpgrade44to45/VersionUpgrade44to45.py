@@ -1,6 +1,13 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import configparser
 from typing import Tuple, List
 import io
+import os  # To get the path to check for hidden stacks to delete.
+import re  # To filter directories to search for hidden stacks to delete.
+from UM.Resources import Resources  # To get the path to check for hidden stacks to delete.
+from UM.Version import Version  # To sort folders by version number.
 from UM.VersionUpgrade import VersionUpgrade
 
 # Settings that were merged into one. Each one is a pair of settings. If both
@@ -16,6 +23,36 @@ _removed_settings = {
 }
 
 class VersionUpgrade44to45(VersionUpgrade):
+    def __init__(self) -> None:
+        """
+        Creates the version upgrade plug-in from 4.4 to 4.5.
+
+        In this case the plug-in will also check for stacks that need to be
+        deleted.
+        """
+        data_storage_root = os.path.dirname(Resources.getDataStoragePath())
+        folders = os.listdir(data_storage_root)  # All version folders.
+        folders = filter(lambda p: re.fullmatch(r"\d+\.\d+", p), folders)  # Only folders with a correct version number as name.
+        latest_version = max(list(folders), key = Version)  # Sort them by semantic version numbering.
+        if latest_version == "4.4":
+            self.removeHiddenStacks()
+
+    def removeHiddenStacks(self) -> None:
+        """
+        If starting the upgrade from 4.4, this will remove any hidden printer
+        stacks from the configuration folder as well as all of the user profiles
+        and definition changes profiles.
+
+        This will ONLY run when upgrading from 4.4, not when e.g. upgrading from
+        4.3 to 4.6 (through 4.4). This is because it's to fix a bug
+        (https://github.com/Ultimaker/Cura/issues/6731) that occurred in 4.4
+        only, so only there will it have hidden stacks that need to be deleted.
+        If people upgrade from 4.3 they don't need to be deleted. If people
+        upgrade from 4.5 they have already been deleted previously or never got
+        the broken hidden stacks.
+        """
+        pass
+
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
