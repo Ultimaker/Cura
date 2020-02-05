@@ -1,10 +1,9 @@
 {
-    "id": "mbot3d_grid2_extruder_right",
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "mbot3d_grid2_dual",
+        "machine": "mbot3d_grid2plus_dual",
         "position": "1"
     },
 

@@ -1,5 +1,4 @@
 {
-    "id": "mbot3d_grid4_extruder_right",
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
