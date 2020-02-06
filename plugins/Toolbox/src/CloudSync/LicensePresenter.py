@@ -63,7 +63,7 @@ class LicensePresenter(QObject):
         self._package_models[self._current_package_idx]["accepted"] = False
         self._checkNextPage()
 
-    def _initState(self, packages: Dict[str, Dict[str, str]]) -> None:
+    def _initState(self, packages: Dict[str, Dict[str, Any]]) -> None:
 
         implicitly_accepted_count = 0
 

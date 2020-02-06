@@ -800,7 +800,7 @@ class MachineManager(QObject):
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
         self.updateDefaultExtruder()
-        self.updateNumberExtrudersEnabled()
+        self.numberExtrudersEnabledChanged.emit()
         self.correctExtruderSettings()
 
         # Check to see if any objects are set to print with an extruder that will no longer exist
