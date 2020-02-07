@@ -43,6 +43,10 @@ class LicensePresenter(QObject):
 
         self._initState(packages)
 
+        if self._page_count == 0:
+            self.licenseAnswers.emit(self._package_models)
+            return
+
         if self._dialog is None:
 
             context_properties = {
