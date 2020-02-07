@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import math
@@ -258,16 +258,19 @@ class FlavorParser:
                     continue
                 if item.startswith(";"):
                     continue
-                if item[0] == "X":
-                    x = float(item[1:])
-                if item[0] == "Y":
-                    y = float(item[1:])
-                if item[0] == "Z":
-                    z = float(item[1:])
-                if item[0] == "F":
-                    f = float(item[1:]) / 60
-                if item[0] == "E":
-                    e = float(item[1:])
+                try:
+                    if item[0] == "X":
+                        x = float(item[1:])
+                    if item[0] == "Y":
+                        y = float(item[1:])
+                    if item[0] == "Z":
+                        z = float(item[1:])
+                    if item[0] == "F":
+                        f = float(item[1:]) / 60
+                    if item[0] == "E":
+                        e = float(item[1:])
+                except ValueError:  # Improperly formatted g-code: Coordinates are not floats.
+                    continue  # Skip the command then.
             params = PositionOptional(x, y, z, f, e)
             return func(position, params, path)
         return position

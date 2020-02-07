@@ -36,6 +36,14 @@ def definition_container():
     assert result.getId() == uid
     return result
 
+@pytest.mark.parametrize("file_path", definition_filepaths)
+def test_definitionIds(file_path):
+    """
+    Test the validity of the definition IDs.
+    :param file_path: The path of the machine definition to test.
+    """
+    definition_id = os.path.basename(file_path).split(".")[0]
+    assert " " not in definition_id  # Definition IDs are not allowed to have spaces.
 
 ##  Tests all definition containers
 @pytest.mark.parametrize("file_path", machine_filepaths)
