@@ -1,9 +1,9 @@
 {
     "version": 2,
-    "name": "Anet ET4 PRO",
+    "name": "Anet ET5 X",
     "inherits": "anet3d",
     "metadata": {
-        "visible": true,        
+        "visible": true,
         "machine_extruder_trains":
         {
             "0": "anet3d_extruder_0"
@@ -11,17 +11,17 @@
     },
 
     "overrides": {
-        "machine_name": { "default_value": "Anet ET4 PRO" },
+        "machine_name": { "default_value": "Anet ET5 X" },
         "machine_width": {
-            "default_value": 220
+            "default_value": 300
         },
         "machine_depth": {
-            "default_value": 220
+            "default_value": 300
         },
         "machine_height": {
-            "default_value": 250
+            "default_value": 400
         },
-				"machine_start_gcode": {
+        "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
         },
         "machine_end_gcode": {

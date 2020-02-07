@@ -3,7 +3,7 @@
     "name": "Anet ET4 X",
     "inherits": "anet3d",
     "metadata": {
-        "visible": true,        
+        "visible": true,
         "machine_extruder_trains":
         {
             "0": "anet3d_extruder_0"
@@ -21,7 +21,7 @@
         "machine_height": {
             "default_value": 250
         },
-				"machine_start_gcode": {
+        "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
         },
         "machine_end_gcode": {
