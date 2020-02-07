@@ -1,7 +1,6 @@
 # Cura
-# Copyright (C) 2019 Ultimaker B.V.
+# Copyright (C) 2020 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""

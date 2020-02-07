@@ -1,7 +1,6 @@
 # Cura JSON setting files
 # Copyright (C) 2017 Ultimaker
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2017.
 #
 msgid ""
 msgstr ""
