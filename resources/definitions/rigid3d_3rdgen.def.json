@@ -1,43 +1,39 @@
 {
-    "name": "Rigid3D 3rdGen",
+    "name": "Rigid3D 3. Nesil",
     "version": 2,
-    "inherits": "fdmprinter",
+    "inherits": "rigid3d_base",
     "metadata": {
-        "visible": true,
-        "author": "Ultimaker",
-        "manufacturer": "Rigid3D",
-        "file_formats": "text/x-gcode",
-        "platform_offset": [ 0, 0, 0],
-        "machine_extruder_trains":
-        {
-            "0": "rigid3d_3rdgen_extruder_0"
-        }
+		"visible": true,
+		"quality_definition": "rigid3d_base",	
+		"preferred_quality_type": "standard"		
     },
-
     "overrides": {
-        "machine_start_gcode": {
-            "default_value": "  ; -- START GCODE --\n  G21\n  G28 ; Home extruder\n  G29 ; Autolevel bed\n  M107 ; Turn off fan\n  G90 ; Absolute positioning\n  M82 ; Extruder in absolute mode\n  G92 E0 ; Reset extruder position\n  ; -- end of START GCODE --\n\n"
-        },
-        "machine_end_gcode": {
-            "default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn extruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n"
-        },
-        "machine_head_with_fans_polygon": { "default_value": [[ 18, 0], [ 18, 65], [ 32, 65], [ 32, 0]] },
-        "cool_min_layer_time": { "default_value": 10 },
-        "prime_tower_size": { "default_value": 7.745966692414834 },
-        "skirt_gap": { "default_value": 5.0 },
-        "layer_height_0": { "default_value": 0.25 },
-        "support_angle": { "default_value": 45 },
-        "retraction_speed": { "default_value": 60.0 },
-        "wall_thickness": { "default_value": 0.8 },
-        "retraction_amount": { "default_value": 1 },
-        "layer_height": { "default_value": 0.25 },
-        "machine_extruder_count": { "default_value": 1 },
-        "machine_heated_bed": { "default_value": true },
-        "machine_center_is_zero": { "default_value": false },
-        "machine_height": { "default_value": 240 },
-        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_name": { "default_value": "Rigid3D 3. Nesil" },
+
+		"machine_heated_bed": { "default_value": true },
+		
+		"machine_width": { "default_value": 270 },
         "machine_depth": { "default_value": 290 },
-        "machine_width": { "default_value": 275 },
-        "machine_name": { "default_value": "Rigid3D 3rd Geneartion" }
+        "machine_height": { "default_value": 240 },
+		
+		"machine_center_is_zero": { "default_value": false },
+		
+		"machine_start_gcode": {"default_value": "  ; -- START GCODE --\n  G21\n  G28 ; Home extruder\n  G29 ; Autolevel bed\n  M107 ; Turn off fan\n  G90 ; Absolute positioning\n  M82 ; Extruder in absolute mode\n  G92 E0 ; Reset extruder position\n  ; -- end of START GCODE --\n\n"},
+        "machine_end_gcode": {"default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn extruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n"},
+		
+
+		
+        "machine_head_polygon": { 
+            "default_value": [
+                 [ -18, -20], [ -18, 45], [ 32, -20], [ 32, 45]
+				 ] 
+        },
+		"machine_head_with_fans_polygon": { 
+            "default_value": [
+                 [ -18, -20], [ -18, 45], [ 32, -20], [ 32, 45]
+				 ] 
+        },
+
+        "gantry_height": { "value": 20 }
     }
 }
