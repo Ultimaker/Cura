@@ -73,7 +73,7 @@ class SubscribedPackagesModel(ListModel):
         self.setItems(self._items)
 
     @staticmethod
-    def _is_any_version_compatible(package_manager: PackageManager, api_versions: [str]) -> bool:
+    def _is_any_version_compatible(package_manager: PackageManager, api_versions: List[str]) -> bool:
         """:return: True when any of the provided api versions is compatible"""
         for version in api_versions:
             if package_manager.isPackageCompatible(Version(version)):
