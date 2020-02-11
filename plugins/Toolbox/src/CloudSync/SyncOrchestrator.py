@@ -72,6 +72,8 @@ class SyncOrchestrator(Extension):
             self._showErrorMessage(message)
 
         plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath(self.getPluginId()))
+        self._license_presenter = self._license_presenter.resetCopy()
+        self._license_presenter.licenseAnswers.connect(self._onLicenseAnswers)
         self._license_presenter.present(plugin_path, success_items)
 
     # Called when user has accepted / declined all licenses for the downloaded packages
