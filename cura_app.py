@@ -31,10 +31,11 @@ known_args = vars(parser.parse_known_args()[0])
 if with_sentry_sdk:
     sentry_env = "unknown"  # Start off with a "IDK"
     if hasattr(sys, "frozen"):
-        sentry_env = "production"  # A frozen build is a "real" distribution.
-    elif ApplicationMetadata.CuraVersion == "master":
-        sentry_env = "development"
-    elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
+        sentry_env = "production"  # A frozen build has the posibility to be a "real" distribution.
+
+    if ApplicationMetadata.CuraVersion == "master":
+        sentry_env = "development"  # Master is always a development version.
+    elif ApplicationMetadata.CuraVersion in ["beta", "BETA"]:
         sentry_env = "beta"
     try:
         if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
