@@ -2,9 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtProperty, pyqtSlot
+
+from UM.PackageManager import PackageManager
 from UM.Qt.ListModel import ListModel
+from UM.Version import Version
+
 from cura import ApplicationMetadata
-from UM.Logger import Logger
 from typing import List, Dict, Any
 
 
@@ -46,7 +49,7 @@ class SubscribedPackagesModel(ListModel):
     def getIncompatiblePackages(self) -> List[str]:
         return [package["package_id"] for package in self._items if not package["is_compatible"]]
 
-    def initialize(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
+    def initialize(self, package_manager: PackageManager, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
         self._items.clear()
         for item in subscribed_packages_payload:
             if item["package_id"] not in self._discrepancies:
@@ -59,15 +62,13 @@ class SubscribedPackagesModel(ListModel):
                 "md5_hash": item["md5_hash"],
                 "is_dismissed": False,
             }
-            if self._sdk_version not in item["sdk_versions"]:
-                package.update({"is_compatible": False})
-            else:
-                package.update({"is_compatible": True})
+
+            compatible = any(package_manager.isPackageCompatible(Version(version)) for version in item["sdk_versions"])
+            package.update({"is_compatible": compatible})
+
             try:
                 package.update({"icon_url": item["icon_url"]})
             except KeyError:  # There is no 'icon_url" in the response payload for this package
                 package.update({"icon_url": ""})
             self._items.append(package)
         self.setItems(self._items)
-
-
