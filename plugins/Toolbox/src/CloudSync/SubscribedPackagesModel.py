@@ -74,8 +74,9 @@ class SubscribedPackagesModel(ListModel):
 
     @staticmethod
     def _is_any_version_compatible(package_manager: PackageManager, api_versions: [str]) -> bool:
-        """:return: True when any of the provided api versions is compatible"""
-        for version in api_versions:
-            if package_manager.isPackageCompatible(Version(version)):
-                return True
-        return False
+        """
+        Check a list of version numbers if any of them applies to our
+        application.
+        :return: ``True`` when any of the provided API versions is compatible.
+        """
+        return any(package_manager.isPackageCompatible(Version(version)) for version in api_versions)
