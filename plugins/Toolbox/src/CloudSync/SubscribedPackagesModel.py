@@ -63,7 +63,7 @@ class SubscribedPackagesModel(ListModel):
                 "is_dismissed": False,
             }
 
-            package.update({"is_compatible": self._is_any_version_compatible(package_manager, item["sdk_versions"])})
+            package.update({"is_compatible": self._isAnyVersionCompatible(package_manager, item["sdk_versions"])})
 
             try:
                 package.update({"icon_url": item["icon_url"]})
@@ -73,9 +73,10 @@ class SubscribedPackagesModel(ListModel):
         self.setItems(self._items)
 
     @staticmethod
-    def _is_any_version_compatible(package_manager: PackageManager, api_versions: List[str]) -> bool:
-        """:return: True when any of the provided api versions is compatible"""
-        for version in api_versions:
-            if package_manager.isPackageCompatible(Version(version)):
-                return True
-        return False
+    def _isAnyVersionCompatible(package_manager: PackageManager, api_versions: List[str]) -> bool:
+        """
+        Check a list of version numbers if any of them applies to our
+        application.
+        :return: ``True`` when any of the provided API versions is compatible.
+        """
+        return any(package_manager.isPackageCompatible(Version(version)) for version in api_versions)
