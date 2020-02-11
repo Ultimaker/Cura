@@ -1,13 +1,12 @@
 # Cura JSON setting files
 # Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.3\n"
+"Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-11-05 13:13+0000\n"
+"POT-Creation-Date: 2020-02-07 14:19+0000\n"
 "PO-Revision-Date: 2019-11-13 23:45+0800\n"
 "Last-Translator: Zhang Heh Ji <dinowchang@gmail.com>\n"
 "Language-Team: Zhang Heh Ji <dinowchang@gmail.com>\n"
@@ -411,6 +410,16 @@ msgid "Whether to use firmware retract commands (G10/G11) instead of using the E
 msgstr "是否使用韌體回抽命令（G10/G11）取代 G1 命令的 E 參數來回抽線材。"
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater label"
+msgid "Extruders Share Heater"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater description"
+msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "禁入區域"
@@ -429,16 +438,6 @@ msgstr "噴頭禁入區域"
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
 msgstr "禁止噴頭進入區域的多邊形清單。"
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon label"
-msgid "Machine Head Polygon"
-msgstr "機器頭多邊形"
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon description"
-msgid "A 2D silhouette of the print head (fan caps excluded)."
-msgstr "列印頭 2D 輪廓圖（不包含風扇蓋）。"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
@@ -1935,6 +1934,26 @@ msgid "Skin areas narrower than this are not expanded. This avoids expanding the
 msgstr "如果表層區域寬度小於此值，則不會延伸。這會避免延伸在模型表面的斜度接近垂直時所形成的狹窄表層區域。"
 
 #: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness label"
+msgid "Skin Edge Support Thickness"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness description"
+msgid "The thickness of the extra infill that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers label"
+msgid "Skin Edge Support Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers description"
+msgid "The number of infill layers that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "耗材"
@@ -2125,6 +2144,16 @@ msgid "How fast the filament needs to be retracted just before breaking it off i
 msgstr "回抽切斷前，耗材回抽的速度。"
 
 #: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature label"
+msgid "Break Preparation Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature description"
+msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
 msgid "Break Retracted Position"
 msgstr "回抽切斷位置"
@@ -2153,6 +2182,66 @@ msgstr "切斷溫度"
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
 msgstr "要讓耗材脆斷所需的溫度。"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed label"
+msgid "Flush Purge Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length label"
+msgid "Flush Purge Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed label"
+msgid "End Of Filament Purge Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length label"
+msgid "End Of Filament Purge Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration label"
+msgid "Maximum Park Duration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor label"
+msgid "No Load Move Factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor description"
+msgid "Material Station internal value"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2295,116 +2384,6 @@ msgid "Flow compensation for the first layer: the amount of material extruded on
 msgstr "第一層的流量補償：在起始層上擠出的耗材量會乘以此值。"
 
 #: fdmprinter.def.json
-msgctxt "retraction_enable label"
-msgid "Enable Retraction"
-msgstr "啟用回抽"
-
-#: fdmprinter.def.json
-msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "當噴頭移動到非列印區域上方時回抽耗材。 "
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change label"
-msgid "Retract at Layer Change"
-msgstr "列印下一層時回抽"
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change description"
-msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "當噴頭移動到下一層時回抽耗材。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount label"
-msgid "Retraction Distance"
-msgstr "回抽距離"
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount description"
-msgid "The length of material retracted during a retraction move."
-msgstr "回抽移動期間回抽的耗材長度。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed label"
-msgid "Retraction Speed"
-msgstr "回抽速度"
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed description"
-msgid "The speed at which the filament is retracted and primed during a retraction move."
-msgstr "回抽移動期間耗材回抽和裝填的速度。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed label"
-msgid "Retraction Retract Speed"
-msgstr "回抽速度"
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed description"
-msgid "The speed at which the filament is retracted during a retraction move."
-msgstr "回抽移動期間耗材回抽的速度。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "回抽裝填速度"
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed description"
-msgid "The speed at which the filament is primed during a retraction move."
-msgstr "回抽移動期間耗材裝填的速度。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount label"
-msgid "Retraction Extra Prime Amount"
-msgstr "回抽額外裝填量"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount description"
-msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "有些耗材可能會在空跑過程中滲出，可以在這裡對其進行補償。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel label"
-msgid "Retraction Minimum Travel"
-msgstr "回抽最小空跑距離"
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel description"
-msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "觸發回抽所需的最小空跑距離。這有助於減少小區域內的回抽次數。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max label"
-msgid "Maximum Retraction Count"
-msgstr "最大回抽次數"
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max description"
-msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "此設定限制在最小擠出距離範圍內發生的回抽數。此範圍內的額外回抽將會忽略。這避免了在同一件耗材上重複回抽，從而導致耗材變扁並引起磨損問題。"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window label"
-msgid "Minimum Extrusion Distance Window"
-msgstr "最小擠出距離範圍"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window description"
-msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
-msgstr "最大回抽次數範圍。此值應大致與回抽距離相等，從而有效地限制在同一段耗材上的回抽次數。"
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions label"
-msgid "Limit Support Retractions"
-msgstr "限制支撐回抽"
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-msgstr "當從支撐直線移動到另一支撐時，省略回抽。啟用此功能可節省列印時間，但會導致支撐內部有較多的牽絲。"
-
-#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr "待機溫度"
@@ -2413,56 +2392,6 @@ msgstr "待機溫度"
 msgctxt "material_standby_temperature description"
 msgid "The temperature of the nozzle when another nozzle is currently used for printing."
 msgstr "當另一個噴頭進行列印時，這個噴頭要保持的溫度。"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount label"
-msgid "Nozzle Switch Retraction Distance"
-msgstr "噴頭切換回抽距離"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "切換擠出機時的回抽量。設定為 0 表示沒有回抽。這值通常和加熱區的長度相同。"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds label"
-msgid "Nozzle Switch Retraction Speed"
-msgstr "噴頭切換回抽速度"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds description"
-msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
-msgstr "回抽耗材的速度。較高的回抽速度效果較好，但回抽速度過高可能導致耗材磨損。"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed label"
-msgid "Nozzle Switch Retract Speed"
-msgstr "噴頭切換回抽速度"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed description"
-msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "噴頭切換回抽期間耗材回抽的速度。"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed label"
-msgid "Nozzle Switch Prime Speed"
-msgstr "噴頭切換裝填速度"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed description"
-msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "噴頭切換回抽後耗材被推回的速度。"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount label"
-msgid "Nozzle Switch Extra Prime Amount"
-msgstr "噴頭切換額外裝填量"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount description"
-msgid "Extra material to prime after nozzle switching."
-msgstr "噴頭切換後額外裝填的耗材量。"
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -3083,6 +3012,116 @@ msgstr "空跑"
 msgctxt "travel description"
 msgid "travel"
 msgstr "空跑"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "啟用回抽"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+msgstr "當噴頭移動到非列印區域上方時回抽耗材。 "
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change label"
+msgid "Retract at Layer Change"
+msgstr "列印下一層時回抽"
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change description"
+msgid "Retract the filament when the nozzle is moving to the next layer."
+msgstr "當噴頭移動到下一層時回抽耗材。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "回抽距離"
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount description"
+msgid "The length of material retracted during a retraction move."
+msgstr "回抽移動期間回抽的耗材長度。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a retraction move."
+msgstr "回抽移動期間耗材回抽和裝填的速度。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr "回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a retraction move."
+msgstr "回抽移動期間耗材回抽的速度。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "回抽裝填速度"
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a retraction move."
+msgstr "回抽移動期間耗材裝填的速度。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount label"
+msgid "Retraction Extra Prime Amount"
+msgstr "回抽額外裝填量"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a travel move, which can be compensated for here."
+msgstr "有些耗材可能會在空跑過程中滲出，可以在這裡對其進行補償。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "回抽最小空跑距離"
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel description"
+msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
+msgstr "觸發回抽所需的最小空跑距離。這有助於減少小區域內的回抽次數。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max label"
+msgid "Maximum Retraction Count"
+msgstr "最大回抽次數"
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max description"
+msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
+msgstr "此設定限制在最小擠出距離範圍內發生的回抽數。此範圍內的額外回抽將會忽略。這避免了在同一件耗材上重複回抽，從而導致耗材變扁並引起磨損問題。"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window label"
+msgid "Minimum Extrusion Distance Window"
+msgstr "最小擠出距離範圍"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window description"
+msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
+msgstr "最大回抽次數範圍。此值應大致與回抽距離相等，從而有效地限制在同一段耗材上的回抽次數。"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr "限制支撐回抽"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr "當從支撐直線移動到另一支撐時，省略回抽。啟用此功能可節省列印時間，但會導致支撐內部有較多的牽絲。"
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -4279,6 +4318,16 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "邊緣所用線條數量。更多邊緣線條可增强與列印平台的附著，但也會減少有效列印區域。"
 
 #: fdmprinter.def.json
+msgctxt "brim_gap label"
+msgid "Brim Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_gap description"
+msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
 msgstr "邊綠取代支撐"
@@ -4709,6 +4758,56 @@ msgid "Distance of the ooze shield from the print, in the X/Y directions."
 msgstr "擦拭牆與模型間的水平（X/Y 方向）距離。"
 
 #: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount label"
+msgid "Nozzle Switch Retraction Distance"
+msgstr "噴頭切換回抽距離"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount description"
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "切換擠出機時的回抽量。設定為 0 表示沒有回抽。這值通常和加熱區的長度相同。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds label"
+msgid "Nozzle Switch Retraction Speed"
+msgstr "噴頭切換回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds description"
+msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
+msgstr "回抽耗材的速度。較高的回抽速度效果較好，但回抽速度過高可能導致耗材磨損。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed label"
+msgid "Nozzle Switch Retract Speed"
+msgstr "噴頭切換回抽速度"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed description"
+msgid "The speed at which the filament is retracted during a nozzle switch retract."
+msgstr "噴頭切換回抽期間耗材回抽的速度。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed label"
+msgid "Nozzle Switch Prime Speed"
+msgstr "噴頭切換裝填速度"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed description"
+msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
+msgstr "噴頭切換回抽後耗材被推回的速度。"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr "噴頭切換額外裝填量"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr "噴頭切換後額外裝填的耗材量。"
+
+#: fdmprinter.def.json
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
 msgstr "網格修復"
@@ -4845,8 +4944,8 @@ msgstr "列印順序"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "選擇一次列印一層中的所有模型或等待一個模型完成後再轉到下一個模型。排隊模式只有在所有模型以一種整個列印頭可以在各個模型之間移動的方式分隔開，且所有模型都低於噴頭和 X / Y 軸之間距離的情况下可用。"
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5072,26 +5171,6 @@ msgstr "樹狀支撐碰撞計算精度"
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
 msgstr "計算避免碰撞模型的計算精度。設定較低的值可產生較精確的樹狀支撐，這樣的支撐問題較少但會嚴重的增加切片所需的時間。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness label"
-msgid "Tree Support Wall Thickness"
-msgstr "樹狀支撐牆厚"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness description"
-msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "樹狀支撐樹枝的牆壁厚度。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count label"
-msgid "Tree Support Wall Line Count"
-msgstr "樹狀支撐牆壁線條數量"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count description"
-msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "樹狀支撐樹枝牆壁的圈數。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5482,6 +5561,16 @@ msgstr "絨毛皮膚"
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "在列印外牆時隨機抖動，使表面具有粗糙和毛絨絨的外觀。"
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only label"
+msgid "Fuzzy Skin Outside Only"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only description"
+msgid "Jitter only the parts' outlines and not the parts' holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5883,6 +5972,16 @@ msgid "If a skin region is supported for less than this percentage of its area, 
 msgstr "假如表層區域受支撐的面積小於此百分比，使用橋樑設定列印。否則用一般的表層設定列印。"
 
 #: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density label"
+msgid "Bridge Sparse Infill Max Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density description"
+msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
 msgstr "橋樑牆壁滑行"
@@ -6049,8 +6148,8 @@ msgstr "換層時擦拭噴頭"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
-msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "是否在層與層之間加入擦拭噴頭的 G-code。啟用此設定會影響換層時的回抽行為。請用「擦拭回抽」設定來控制擦拭時的回抽量。"
+msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6059,8 +6158,8 @@ msgstr "擦拭耗材體積"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
-msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr "在另一次擦拭噴頭前可擠出的最大耗材量。"
+msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6114,8 +6213,8 @@ msgstr "擦拭過程中耗材回抽的速度。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "擦拭回抽裝填速度"
+msgid "Wipe Retraction Prime Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6134,13 +6233,13 @@ msgstr "若無回抽，擦拭後暫停。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
-msgid "Wipe Z Hop When Retracted"
-msgstr "擦拭回抽後 Z 抬升"
+msgid "Wipe Z Hop"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
-msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "每當回抽完成時，列印平台會降低以便在噴頭和列印品之間形成空隙。它可以防止噴頭在空跑過程中撞到列印品，降低將列印品從列印平台撞掉的幾率。"
+msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6291,6 +6390,54 @@ msgstr "網格旋轉矩陣"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在將模型從檔案中載入時套用在模型上的轉換矩陣。"
+
+#~ msgctxt "machine_head_polygon label"
+#~ msgid "Machine Head Polygon"
+#~ msgstr "機器頭多邊形"
+
+#~ msgctxt "machine_head_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps excluded)."
+#~ msgstr "列印頭 2D 輪廓圖（不包含風扇蓋）。"
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+#~ msgstr "選擇一次列印一層中的所有模型或等待一個模型完成後再轉到下一個模型。排隊模式只有在所有模型以一種整個列印頭可以在各個模型之間移動的方式分隔開，且所有模型都低於噴頭和 X / Y 軸之間距離的情况下可用。"
+
+#~ msgctxt "support_tree_wall_thickness label"
+#~ msgid "Tree Support Wall Thickness"
+#~ msgstr "樹狀支撐牆厚"
+
+#~ msgctxt "support_tree_wall_thickness description"
+#~ msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "樹狀支撐樹枝的牆壁厚度。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
+
+#~ msgctxt "support_tree_wall_count label"
+#~ msgid "Tree Support Wall Line Count"
+#~ msgstr "樹狀支撐牆壁線條數量"
+
+#~ msgctxt "support_tree_wall_count description"
+#~ msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "樹狀支撐樹枝牆壁的圈數。較厚的牆壁需要花較長的時間列印，但較不易倒下。"
+
+#~ msgctxt "clean_between_layers description"
+#~ msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+#~ msgstr "是否在層與層之間加入擦拭噴頭的 G-code。啟用此設定會影響換層時的回抽行為。請用「擦拭回抽」設定來控制擦拭時的回抽量。"
+
+#~ msgctxt "max_extrusion_before_wipe description"
+#~ msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+#~ msgstr "在另一次擦拭噴頭前可擠出的最大耗材量。"
+
+#~ msgctxt "wipe_retraction_prime_speed label"
+#~ msgid "Retraction Prime Speed"
+#~ msgstr "擦拭回抽裝填速度"
+
+#~ msgctxt "wipe_hop_enable label"
+#~ msgid "Wipe Z Hop When Retracted"
+#~ msgstr "擦拭回抽後 Z 抬升"
+
+#~ msgctxt "wipe_hop_enable description"
+#~ msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+#~ msgstr "每當回抽完成時，列印平台會降低以便在噴頭和列印品之間形成空隙。它可以防止噴頭在空跑過程中撞到列印品，降低將列印品從列印平台撞掉的幾率。"
 
 #~ msgctxt "minimum_interface_area description"
 #~ msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."

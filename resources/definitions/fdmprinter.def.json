@@ -2122,6 +2122,7 @@
                     "default_value": 210,
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": false,
                     "settable_per_extruder": true,
                     "settable_per_mesh": false,
@@ -2153,6 +2154,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not (material_flow_dependent_temperature)",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2168,6 +2170,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "285",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2183,6 +2186,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2198,6 +2202,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "material_standby_temperature",
                     "maximum_value_warning": "material_print_temperature",
+                    "maximum_value": "365",
                     "enabled": "machine_nozzle_temp_enabled and not machine_extruders_share_heater",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2227,6 +2232,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": false,
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2244,6 +2250,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "build_volume_temperature",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2261,6 +2268,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "max(build_volume_temperature, max(extruderValues('material_bed_temperature')))",
                     "maximum_value_warning": "130",
+                    "maximum_value": "200",
                     "enabled": "machine_heated_bed and machine_gcode_flavor != \"UltiGCode\"",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
@@ -2377,6 +2385,7 @@
                     "enabled": false,
                     "minimum_value": "-273.15",
                     "maximum_value_warning": "300",
+                    "maximum_value": "365",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
@@ -2415,6 +2424,7 @@
                     "default_value": 50,
                     "enabled": false,
                     "minimum_value": "-273.15",
+                    "maximum_value": "365",
                     "maximum_value_warning": "300",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -2691,6 +2701,7 @@
                     "minimum_value": "-273.15",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "260",
+                    "maximum_value": "365",
                     "enabled": "extruders_enabled_count > 1 and machine_nozzle_temp_enabled",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
@@ -4521,6 +4532,7 @@
                     "type": "float",
                     "default_value": 0.0,
                     "minimum_value": "0",
+                    "maximum_value_warning": "5",
                     "enabled": "support_enable",
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": true
@@ -5687,7 +5699,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
+                    "value": "machine_width - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_x'))) - 1",
                     "maximum_value": "machine_width / 2 if machine_center_is_zero else machine_width",
                     "minimum_value": "resolveOrValue('prime_tower_size') - machine_width / 2 if machine_center_is_zero else resolveOrValue('prime_tower_size')",
                     "settable_per_mesh": false,
@@ -5701,7 +5713,7 @@
                     "unit": "mm",
                     "enabled": "resolveOrValue('prime_tower_enable')",
                     "default_value": 200,
-                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1",
+                    "value": "machine_depth - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - max(map(abs, extruderValues('machine_nozzle_offset_y'))) - 1",
                     "maximum_value": "machine_depth / 2 - resolveOrValue('prime_tower_size') if machine_center_is_zero else machine_depth - resolveOrValue('prime_tower_size')",
                     "minimum_value": "machine_depth / -2 if machine_center_is_zero else 0",
                     "settable_per_mesh": false,
@@ -5983,7 +5995,7 @@
                 "print_sequence":
                 {
                     "label": "Print Sequence",
-                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
+                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. ",
                     "type": "enum",
                     "options":
                     {
@@ -6665,7 +6677,17 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "magic_fuzzy_skin_thickness":
+                "magic_fuzzy_skin_outside_only":
+                {
+                    "label": "Fuzzy Skin Outside Only",
+                    "description": "Jitter only the parts' outlines and not the parts' holes.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "magic_fuzzy_skin_enabled",
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+               "magic_fuzzy_skin_thickness":
                 {
                     "label": "Fuzzy Skin Thickness",
                     "description": "The width within which to jitter. It's advised to keep this below the outer wall width, since the inner walls are unaltered.",
@@ -7416,7 +7438,7 @@
                 "clean_between_layers":
                 {
                     "label": "Wipe Nozzle Between Layers",
-                    "description": "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
+                    "description": "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working.",
                     "default_value": false,
                     "type": "bool",
                     "settable_per_mesh": false,
@@ -7426,7 +7448,7 @@
                 "max_extrusion_before_wipe":
                 {
                     "label": "Material Volume Between Wipes",
-                    "description": "Maximum material, that can be extruded before another nozzle wipe is initiated.",
+                    "description": "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer.",
                     "default_value": 10,
                     "type": "float",
                     "unit": "mm³",

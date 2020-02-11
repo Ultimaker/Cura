@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtSignal, pyqtProperty, QObject, QVariant  # For communicating data and events to Qt.
@@ -274,6 +274,25 @@ class ExtruderManager(QObject):
         except IndexError:  # One or more of the extruders was not found.
             Logger.log("e", "Unable to find one or more of the extruders in %s", used_extruder_stack_ids)
             return []
+
+    ##  Get the extruder that the print will start with.
+    #
+    #   This should mirror the implementation in CuraEngine of
+    #   ``FffGcodeWriter::getStartExtruder()``.
+    def getInitialExtruderNr(self) -> int:
+        application = cura.CuraApplication.CuraApplication.getInstance()
+        global_stack = application.getGlobalContainerStack()
+
+        # Starts with the adhesion extruder.
+        if global_stack.getProperty("adhesion_type", "value") != "none":
+            return global_stack.getProperty("adhesion_extruder_nr", "value")
+
+        # No adhesion? Well maybe there is still support brim.
+        if (global_stack.getProperty("support_enable", "value") or global_stack.getProperty("support_tree_enable", "value")) and global_stack.getProperty("support_brim_enable", "value"):
+            return global_stack.getProperty("support_infill_extruder_nr", "value")
+
+        # REALLY no adhesion? Use the first used extruder.
+        return self.getUsedExtruderStacks()[0].getProperty("extruder_nr", "value")
 
     ##  Removes the container stack and user profile for the extruders for a specific machine.
     #

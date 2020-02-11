@@ -3,7 +3,10 @@
 
 from UM.Logger import LogOutput
 from typing import Set
-from sentry_sdk import add_breadcrumb
+try:
+    from sentry_sdk import add_breadcrumb
+except ImportError:
+    pass
 from typing import Optional
 import os
 

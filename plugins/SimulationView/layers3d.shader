@@ -80,7 +80,7 @@ vertex41core =
             case 1:  // "Line type"
                 v_color = a_color;
                 break;
-            case 2:  // "Feedrate"
+            case 2:  // "Speed", or technically 'Feedrate'
                 v_color = feedrateGradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
                 break;
             case 3:  // "Layer thickness"

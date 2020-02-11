@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -40,7 +41,7 @@ class ThreeMFWriter(MeshWriter):
         }
 
         self._unit_matrix_string = self._convertMatrixToString(Matrix())
-        self._archive = None
+        self._archive = None  # type: Optional[zipfile.ZipFile]
         self._store_archive = False
 
     def _convertMatrixToString(self, matrix):

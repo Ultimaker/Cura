@@ -12,7 +12,11 @@ from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
 
-import sentry_sdk
+try:
+    import sentry_sdk
+    with_sentry_sdk = True
+except ImportError:
+    with_sentry_sdk = False
 
 parser = argparse.ArgumentParser(prog = "cura",
                                  add_help = False)
@@ -24,21 +28,26 @@ parser.add_argument("--debug",
 
 known_args = vars(parser.parse_known_args()[0])
 
-sentry_env = "production"
-if ApplicationMetadata.CuraVersion == "master":
-    sentry_env = "development"
-try:
-    if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
-        sentry_env = "nightly"
-except IndexError:
-    pass
-
-sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
-                environment = sentry_env,
-                release = "cura%s" % ApplicationMetadata.CuraVersion,
-                default_integrations = False,
-                max_breadcrumbs = 300,
-                server_name = "cura")
+if with_sentry_sdk:
+    sentry_env = "unknown"  # Start off with a "IDK"
+    if hasattr(sys, "frozen"):
+        sentry_env = "production"  # A frozen build is a "real" distribution.
+    elif ApplicationMetadata.CuraVersion == "master":
+        sentry_env = "development"
+    elif "beta" in ApplicationMetadata.CuraVersion or "BETA" in ApplicationMetadata.CuraVersion:
+        sentry_env = "beta"
+    try:
+        if ApplicationMetadata.CuraVersion.split(".")[2] == "99":
+            sentry_env = "nightly"
+    except IndexError:
+        pass
+    
+    sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                    environment = sentry_env,
+                    release = "cura%s" % ApplicationMetadata.CuraVersion,
+                    default_integrations = False,
+                    max_breadcrumbs = 300,
+                    server_name = "cura")
 
 if not known_args["debug"]:
     def get_cura_dir_path():
@@ -162,6 +171,7 @@ else:
 # tries to create PyQt objects on a non-main thread.
 import Arcus #@UnusedImport
 import Savitar #@UnusedImport
+
 from cura.CuraApplication import CuraApplication
 
 

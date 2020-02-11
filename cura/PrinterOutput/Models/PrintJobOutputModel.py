@@ -161,7 +161,7 @@ class PrintJobOutputModel(QObject):
             self._time_elapsed = new_time_elapsed
             self.timeElapsedChanged.emit()
 
-    def updateState(self, new_state):
+    def updateState(self, new_state: str) -> None:
         if self._state != new_state:
             self._state = new_state
             self.stateChanged.emit()

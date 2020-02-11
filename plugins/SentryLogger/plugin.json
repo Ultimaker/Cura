@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.0",
     "description": "Logs certain events so that they can be used by the crash reporter",
-    "api": "7.0",
+    "api": "7.1",
     "i18n-catalog": "cura"
 }

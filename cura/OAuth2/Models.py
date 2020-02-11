@@ -1,10 +1,10 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional
+from typing import Optional, Dict, Any
 
 
 class BaseModel:
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs: Any) -> None:
         self.__dict__.update(kwargs)
 
 
@@ -53,9 +53,10 @@ class ResponseData(BaseModel):
     redirect_uri = None  # type: Optional[str]
     content_type = "text/html"  # type: str
 
+
 ##  Possible HTTP responses.
 HTTP_STATUS = {
     "OK": ResponseStatus(code = 200, message = "OK"),
     "NOT_FOUND": ResponseStatus(code = 404, message = "NOT FOUND"),
     "REDIRECT": ResponseStatus(code = 302, message = "REDIRECT")
-}
+}  # type: Dict[str, ResponseStatus]

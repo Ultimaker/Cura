@@ -1,13 +1,12 @@
 # Cura JSON setting files
 # Copyright (C) 2019 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.4\n"
+"Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-11-05 13:13+0000\n"
+"POT-Creation-Date: 2020-02-07 14:19+0000\n"
 "PO-Revision-Date: 2017-09-27 12:27+0200\n"
 "Last-Translator: Bothof <info@bothof.nl>\n"
 "Language-Team: Finnish\n"
@@ -406,6 +405,16 @@ msgid "Whether to use firmware retract commands (G10/G11) instead of using the E
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater label"
+msgid "Extruders Share Heater"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater description"
+msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr ""
@@ -424,16 +433,6 @@ msgstr "Suuttimen kielletyt alueet"
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
 msgstr "Monikulmioluettelo, jossa on alueet, joihin suutin ei saa siirtyä."
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon label"
-msgid "Machine Head Polygon"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon description"
-msgid "A 2D silhouette of the print head (fan caps excluded)."
-msgstr "2D-siluetti tulostuspäästä (tuulettimen kannattimet pois lukien)"
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
@@ -1928,6 +1927,26 @@ msgid "Skin areas narrower than this are not expanded. This avoids expanding the
 msgstr "Tätä kapeampia pintakalvoja ei laajenneta. Tällä vältetään laajentamasta kapeita pintakalvoja, jotka syntyvät, kun mallin pinnalla on rinne lähellä pystysuoraa osuutta."
 
 #: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness label"
+msgid "Skin Edge Support Thickness"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness description"
+msgid "The thickness of the extra infill that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers label"
+msgid "Skin Edge Support Layers"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers description"
+msgid "The number of infill layers that supports skin edges."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "Materiaali"
@@ -2118,6 +2137,16 @@ msgid "How fast the filament needs to be retracted just before breaking it off i
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature label"
+msgid "Break Preparation Temperature"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature description"
+msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
 msgid "Break Retracted Position"
 msgstr ""
@@ -2145,6 +2174,66 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed label"
+msgid "Flush Purge Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length label"
+msgid "Flush Purge Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed label"
+msgid "End Of Filament Purge Speed"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length label"
+msgid "End Of Filament Purge Length"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration label"
+msgid "Maximum Park Duration"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration description"
+msgid "Material Station internal value"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor label"
+msgid "No Load Move Factor"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor description"
+msgid "Material Station internal value"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -2288,116 +2377,6 @@ msgid "Flow compensation for the first layer: the amount of material extruded on
 msgstr ""
 
 #: fdmprinter.def.json
-msgctxt "retraction_enable label"
-msgid "Enable Retraction"
-msgstr "Ota takaisinveto käyttöön"
-
-#: fdmprinter.def.json
-msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Vedä tulostuslanka takaisin, kun suutin liikkuu sellaisen alueen yli, jota ei tulosteta. "
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change label"
-msgid "Retract at Layer Change"
-msgstr "Takaisinveto kerroksen muuttuessa"
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change description"
-msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Vedä tulostuslanka takaisin, kun suutin on siirtymässä seuraavaan kerrokseen. "
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount label"
-msgid "Retraction Distance"
-msgstr "Takaisinvetoetäisyys"
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount description"
-msgid "The length of material retracted during a retraction move."
-msgstr "Takaisinvedon yhteydessä sisään vedettävän materiaalin pituus."
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed label"
-msgid "Retraction Speed"
-msgstr "Takaisinvetonopeus"
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed description"
-msgid "The speed at which the filament is retracted and primed during a retraction move."
-msgstr "Nopeus, jolla tulostuslanka vedetään sisään ja esitäytetään takaisinvedon yhteydessä."
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed label"
-msgid "Retraction Retract Speed"
-msgstr "Takaisinvedon vetonopeus"
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed description"
-msgid "The speed at which the filament is retracted during a retraction move."
-msgstr "Nopeus, jolla tulostuslanka vedetään sisään takaisinvedon yhteydessä."
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "Takaisinvedon esitäyttönopeus"
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed description"
-msgid "The speed at which the filament is primed during a retraction move."
-msgstr "Nopeus, jolla tulostuslanka esitäytetään takaisinvedon yhteydessä."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount label"
-msgid "Retraction Extra Prime Amount"
-msgstr "Takaisinvedon esitäytön lisäys"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount description"
-msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "Siirtoliikkeen yhteydessä materiaalia voi tihkua pois. Sitä voidaan kompensoida tässä."
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel label"
-msgid "Retraction Minimum Travel"
-msgstr "Takaisinvedon minimiliike"
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel description"
-msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "Tarvittavan siirtoliikkeen minimietäisyys, jotta takaisinveto yleensäkin tapahtuu. Tällä varmistetaan, ettei takaisinvetoja tapahdu runsaasti pienellä alueella."
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max label"
-msgid "Maximum Retraction Count"
-msgstr "Takaisinvedon maksimiluku"
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max description"
-msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "Tämä asetus rajoittaa pursotuksen minimietäisyyden ikkunassa tapahtuvien takaisinvetojen lukumäärää. Muut tämän ikkunan takaisinvedot jätetään huomiotta. Tällä vältetään toistuvat takaisinvedot samalla tulostuslangan osalla, sillä tällöin lanka voi litistyä ja aiheuttaa hiertymisongelmia."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window label"
-msgid "Minimum Extrusion Distance Window"
-msgstr "Pursotuksen minimietäisyyden ikkuna"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window description"
-msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
-msgstr "Ikkuna, jossa takaisinvedon maksimiluku otetaan käyttöön. Tämän ikkunan tulisi olla suunnilleen takaisinvetoetäisyyden kokoinen, jotta saman kohdan sivuuttavien takaisinvetojen lukumäärää saadaan rajoitettua."
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions label"
-msgid "Limit Support Retractions"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-msgstr ""
-
-#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr "Valmiuslämpötila"
@@ -2406,56 +2385,6 @@ msgstr "Valmiuslämpötila"
 msgctxt "material_standby_temperature description"
 msgid "The temperature of the nozzle when another nozzle is currently used for printing."
 msgstr "Suuttimen lämpötila, kun toista suutinta käytetään tulostukseen."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount label"
-msgid "Nozzle Switch Retraction Distance"
-msgstr "Suuttimen vaihdon takaisinvetoetäisyys"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds label"
-msgid "Nozzle Switch Retraction Speed"
-msgstr "Suuttimen vaihdon takaisinvetonopeus"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds description"
-msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
-msgstr "Nopeus, jolla tulostuslanka vedetään sisään. Suurempi takaisinvetonopeus toimii paremmin, mutta erittäin suuri takaisinvetonopeus saattaa hiertää tulostuslankaa."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed label"
-msgid "Nozzle Switch Retract Speed"
-msgstr "Suuttimen vaihdon takaisinvetonopeus"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed description"
-msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "Nopeus, jolla tulostuslanka vedetään sisään suuttimen vaihdon takaisinvedon yhteydessä."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed label"
-msgid "Nozzle Switch Prime Speed"
-msgstr "Suuttimen vaihdon esitäyttönopeus"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed description"
-msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "Nopeus, jolla tulostuslanka työnnetään takaisin suuttimen vaihdon takaisinvedon jälkeen."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount label"
-msgid "Nozzle Switch Extra Prime Amount"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount description"
-msgid "Extra material to prime after nozzle switching."
-msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -3076,6 +3005,116 @@ msgstr "Siirtoliike"
 msgctxt "travel description"
 msgid "travel"
 msgstr "siirtoliike"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "Ota takaisinveto käyttöön"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+msgstr "Vedä tulostuslanka takaisin, kun suutin liikkuu sellaisen alueen yli, jota ei tulosteta. "
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change label"
+msgid "Retract at Layer Change"
+msgstr "Takaisinveto kerroksen muuttuessa"
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change description"
+msgid "Retract the filament when the nozzle is moving to the next layer."
+msgstr "Vedä tulostuslanka takaisin, kun suutin on siirtymässä seuraavaan kerrokseen. "
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "Takaisinvetoetäisyys"
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount description"
+msgid "The length of material retracted during a retraction move."
+msgstr "Takaisinvedon yhteydessä sisään vedettävän materiaalin pituus."
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "Takaisinvetonopeus"
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a retraction move."
+msgstr "Nopeus, jolla tulostuslanka vedetään sisään ja esitäytetään takaisinvedon yhteydessä."
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr "Takaisinvedon vetonopeus"
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a retraction move."
+msgstr "Nopeus, jolla tulostuslanka vedetään sisään takaisinvedon yhteydessä."
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "Takaisinvedon esitäyttönopeus"
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a retraction move."
+msgstr "Nopeus, jolla tulostuslanka esitäytetään takaisinvedon yhteydessä."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount label"
+msgid "Retraction Extra Prime Amount"
+msgstr "Takaisinvedon esitäytön lisäys"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a travel move, which can be compensated for here."
+msgstr "Siirtoliikkeen yhteydessä materiaalia voi tihkua pois. Sitä voidaan kompensoida tässä."
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "Takaisinvedon minimiliike"
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel description"
+msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
+msgstr "Tarvittavan siirtoliikkeen minimietäisyys, jotta takaisinveto yleensäkin tapahtuu. Tällä varmistetaan, ettei takaisinvetoja tapahdu runsaasti pienellä alueella."
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max label"
+msgid "Maximum Retraction Count"
+msgstr "Takaisinvedon maksimiluku"
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max description"
+msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
+msgstr "Tämä asetus rajoittaa pursotuksen minimietäisyyden ikkunassa tapahtuvien takaisinvetojen lukumäärää. Muut tämän ikkunan takaisinvedot jätetään huomiotta. Tällä vältetään toistuvat takaisinvedot samalla tulostuslangan osalla, sillä tällöin lanka voi litistyä ja aiheuttaa hiertymisongelmia."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window label"
+msgid "Minimum Extrusion Distance Window"
+msgstr "Pursotuksen minimietäisyyden ikkuna"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window description"
+msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
+msgstr "Ikkuna, jossa takaisinvedon maksimiluku otetaan käyttöön. Tämän ikkunan tulisi olla suunnilleen takaisinvetoetäisyyden kokoinen, jotta saman kohdan sivuuttavien takaisinvetojen lukumäärää saadaan rajoitettua."
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -4270,6 +4309,16 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "Reunukseen käytettävien linjojen lukumäärä. Useampi reunuslinja parantaa kiinnitystä alustaan, mutta rajoittaa tehokasta tulostusaluetta."
 
 #: fdmprinter.def.json
+msgctxt "brim_gap label"
+msgid "Brim Distance"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "brim_gap description"
+msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
 msgstr ""
@@ -4700,6 +4749,56 @@ msgid "Distance of the ooze shield from the print, in the X/Y directions."
 msgstr "Tihkusuojuksen etäisyys tulosteesta X-/Y-suunnissa."
 
 #: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount label"
+msgid "Nozzle Switch Retraction Distance"
+msgstr "Suuttimen vaihdon takaisinvetoetäisyys"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount description"
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds label"
+msgid "Nozzle Switch Retraction Speed"
+msgstr "Suuttimen vaihdon takaisinvetonopeus"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds description"
+msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
+msgstr "Nopeus, jolla tulostuslanka vedetään sisään. Suurempi takaisinvetonopeus toimii paremmin, mutta erittäin suuri takaisinvetonopeus saattaa hiertää tulostuslankaa."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed label"
+msgid "Nozzle Switch Retract Speed"
+msgstr "Suuttimen vaihdon takaisinvetonopeus"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed description"
+msgid "The speed at which the filament is retracted during a nozzle switch retract."
+msgstr "Nopeus, jolla tulostuslanka vedetään sisään suuttimen vaihdon takaisinvedon yhteydessä."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed label"
+msgid "Nozzle Switch Prime Speed"
+msgstr "Suuttimen vaihdon esitäyttönopeus"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed description"
+msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
+msgstr "Nopeus, jolla tulostuslanka työnnetään takaisin suuttimen vaihdon takaisinvedon jälkeen."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
 msgstr "Verkkokorjaukset"
@@ -4836,8 +4935,8 @@ msgstr "Tulostusjärjestys"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "Tulostetaanko kaikki mallit kerros kerrallaan vai odotetaanko yhden mallin valmistumista ennen kuin siirrytään seuraavaan. Yksi kerrallaan -tila on mahdollinen vain silloin, jos kaikki mallit ovat erillään siten, että koko tulostuspää voi siirtyä niiden välillä ja kaikki mallit ovat suuttimen ja X-/Y-akselien välistä etäisyyttä alempana."
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5062,26 +5161,6 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness label"
-msgid "Tree Support Wall Thickness"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness description"
-msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count label"
-msgid "Tree Support Wall Line Count"
-msgstr ""
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count description"
-msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -5473,6 +5552,16 @@ msgstr "Karhea pintakalvo"
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "Satunnainen värinä tulostettaessa ulkoseinämää, jotta pinta näyttää viimeistelemättömältä ja karhealta."
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only label"
+msgid "Fuzzy Skin Outside Only"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only description"
+msgid "Jitter only the parts' outlines and not the parts' holes."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5874,6 +5963,16 @@ msgid "If a skin region is supported for less than this percentage of its area, 
 msgstr ""
 
 #: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density label"
+msgid "Bridge Sparse Infill Max Density"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density description"
+msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
 msgstr ""
@@ -6040,7 +6139,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
-msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6050,7 +6149,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
-msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6105,7 +6204,7 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
-msgid "Retraction Prime Speed"
+msgid "Wipe Retraction Prime Speed"
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6125,12 +6224,12 @@ msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
-msgid "Wipe Z Hop When Retracted"
+msgid "Wipe Z Hop"
 msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
-msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
 msgstr ""
 
 #: fdmprinter.def.json
@@ -6282,6 +6381,14 @@ msgstr "Verkon pyöritysmatriisi"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Mallissa käytettävä muunnosmatriisi, kun malli ladataan tiedostosta."
+
+#~ msgctxt "machine_head_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps excluded)."
+#~ msgstr "2D-siluetti tulostuspäästä (tuulettimen kannattimet pois lukien)"
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+#~ msgstr "Tulostetaanko kaikki mallit kerros kerrallaan vai odotetaanko yhden mallin valmistumista ennen kuin siirrytään seuraavaan. Yksi kerrallaan -tila on mahdollinen vain silloin, jos kaikki mallit ovat erillään siten, että koko tulostuspää voi siirtyä niiden välillä ja kaikki mallit ovat suuttimen ja X-/Y-akselien välistä etäisyyttä alempana."
 
 #~ msgctxt "skin_alternate_rotation label"
 #~ msgid "Alternate Skin Rotation"

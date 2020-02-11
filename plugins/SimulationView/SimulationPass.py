@@ -120,7 +120,10 @@ class SimulationPass(RenderPass):
                     end = self._layer_view.end_elements_index
                     index = self._layer_view._current_path_num
                     offset = 0
-                    for polygon in layer_data.getLayer(self._layer_view._current_layer_num).polygons:
+                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
+                    if layer is None:
+                        continue
+                    for polygon in layer.polygons:
                         # The size indicates all values in the two-dimension array, and the second dimension is
                         # always size 3 because we have 3D points.
                         if index >= polygon.data.size // 3 - offset:
