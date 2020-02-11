@@ -47,7 +47,10 @@ class WindowsRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     def checkRemovableDrives(self):
         drives = {}
 
+        # The currently available disk drives, e.g.: bitmask = ...1100 <-- ...DCBA
         bitmask = ctypes.windll.kernel32.GetLogicalDrives()
+        # Since we are ignoring drives A and B, the bitmask has has to shift twice to the right
+        bitmask >>= 2
         # Check possible drive letters, from C to Z
         # Note: using ascii_uppercase because we do not want this to change with locale!
         # Skip A and B, since those drives are typically reserved for floppy disks.
