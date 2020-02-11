@@ -73,7 +73,7 @@ class SubscribedPackagesModel(ListModel):
         self.setItems(self._items)
 
     @staticmethod
-    def _isAnyVersionCompatible(package_manager: PackageManager, api_versions: [str]) -> bool:
+    def _isAnyVersionCompatible(package_manager: PackageManager, api_versions: List[str]) -> bool:
         """
         Check a list of version numbers if any of them applies to our
         application.
