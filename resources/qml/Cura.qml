@@ -24,7 +24,7 @@ UM.MainWindow
     title:
     {
         let result = "";
-        if(PrintInformation.jobName != "")
+        if(PrintInformation !== null && PrintInformation.jobName != "")
         {
             result += PrintInformation.jobName + " - ";
         }

@@ -196,7 +196,7 @@ Button
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
             height: childrenRect.height
-            visible: configuration.buildplateConfiguration != "" && false //Buildplate is disabled as long as we have no printers that properly support buildplate swapping (so we can't test).
+            visible: configuration !== null && configuration.buildplateConfiguration != "" && false //Buildplate is disabled as long as we have no printers that properly support buildplate swapping (so we can't test).
 
             // Show the type of buildplate. The first letter is capitalized
             Cura.IconWithText
