@@ -9,7 +9,11 @@
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "Original_Prusa_i3_MK3S_MK3_platform.stl",
+        "has_machine_quality": true,
         "has_materials": true,
+        "has_variants": true,
+        "preferred_variant_name": "0.4mm Nozzle",
+        "variants_name": "Nozzle Size",
         "machine_extruder_trains":
         {
             "0": "prusa_i3_mk3_extruder_0"
