@@ -10,6 +10,7 @@ try:
     from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
     from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
 except PermissionError:  # Bug in http.server: Can't access MIME types. This will prevent the user from logging in. See Sentry bug Cura-3Q.
+    Logger.error("Can't start a server due to a PermissionError when starting the http.server.")
     AuthorizationRequestServer = None
     AuthorizationRequestHandler = None
 
