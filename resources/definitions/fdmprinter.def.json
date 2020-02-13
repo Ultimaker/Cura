@@ -1389,7 +1389,19 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "z_seam_type":
+                "hole_xy_offset":
+                {
+                    "label": "Hole Horizontal Expansion",
+                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
+                    "unit": "mm",
+                    "type": "float",
+                    "minimum_value_warning": "-1",
+                    "maximum_value_warning": "1",
+                    "default_value": 0,
+                    "limit_to_extruder": "wall_0_extruder_nr",
+                    "settable_per_mesh": true
+                },
+               "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
