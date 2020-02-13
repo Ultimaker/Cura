@@ -1,5 +1,6 @@
-# Copyright (c) 2016 Ultimaker B.V.
-# Uranium is released under the terms of the LGPLv3 or higher.
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 from UM.Logger import Logger
 from UM.Tool import Tool
 from UM.Scene.Selection import Selection
@@ -22,13 +23,12 @@ class PerObjectSettingsTool(Tool):
 
         self._multi_extrusion = False
         self._single_model_selected = False
+        self.visibility_handler = None
 
         Selection.selectionChanged.connect(self.propertyChanged)
-
         Application.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerChanged)
         self._onGlobalContainerChanged()
         Selection.selectionChanged.connect(self._updateEnabled)
-
 
     def event(self, event):
         super().event(event)
@@ -103,6 +103,9 @@ class PerObjectSettingsTool(Tool):
                     new_instance.setProperty("value", 0)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
+                    visible = self.visibility_handler.getVisible()
+                    visible.add(property_key)
+                    self.visibility_handler.setVisible(visible)
             elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
                 settings.removeInstance(property_key)
 

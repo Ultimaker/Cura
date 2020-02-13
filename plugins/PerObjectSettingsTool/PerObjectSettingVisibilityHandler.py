@@ -1,10 +1,11 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
+from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
@@ -23,6 +24,8 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
         self._selected_object_id = None
         self._node = None
         self._stack = None
+
+        PluginRegistry.getInstance().getPluginObject("PerObjectSettingsTool").visibility_handler = self
 
         # this is a set of settings that will be skipped if the user chooses to reset.
         self._skip_reset_setting_set = set()
