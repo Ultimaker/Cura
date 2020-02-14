@@ -8,7 +8,7 @@ from UM.Message import Message
 from UM.PluginRegistry import PluginRegistry
 from cura.CuraApplication import CuraApplication
 from .CloudPackageChecker import CloudPackageChecker
-from .CloudPackageManager import CloudPackageManager
+from .CloudApiClient import CloudApiClient
 from .DiscrepanciesPresenter import DiscrepanciesPresenter
 from .DownloadPresenter import DownloadPresenter
 from .LicensePresenter import LicensePresenter
@@ -26,7 +26,7 @@ from .SubscribedPackagesModel import SubscribedPackagesModel
 # - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
 # - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
 #   be installed. It emits the `licenseAnswers` signal for accept or declines
-# - The CloudPackageManager removes the declined packages from the account
+# - The CloudApiClient removes the declined packages from the account
 # - The SyncOrchestrator uses PackageManager to install the downloaded packages and delete temp files.
 # - The RestartApplicationPresenter notifies the user that a restart is required for changes to take effect
 class SyncOrchestrator(Extension):
@@ -38,8 +38,8 @@ class SyncOrchestrator(Extension):
         self._name = "SyncOrchestrator"
 
         self._package_manager = app.getPackageManager()
-        # Keep a reference to the CloudPackageManager. it watches for installed packages and subscribes to them
-        self._cloud_package_manager = CloudPackageManager.getInstance(app)  # type: CloudPackageManager
+        # Keep a reference to the CloudApiClient. it watches for installed packages and subscribes to them
+        self._cloud_api = CloudApiClient.getInstance(app)  # type: CloudApiClient
 
         self._checker = CloudPackageChecker(app)  # type: CloudPackageChecker
         self._checker.discrepancies.connect(self._onDiscrepancies)
@@ -87,7 +87,7 @@ class SyncOrchestrator(Extension):
                     continue
                 has_changes = True
             else:
-                self._cloud_package_manager.unsubscribe(item["package_id"])
+                self._cloud_api.unsubscribe(item["package_id"])
             # delete temp file
             os.remove(item["package_path"])
 
