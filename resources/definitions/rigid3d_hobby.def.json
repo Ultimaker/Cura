@@ -6,7 +6,9 @@
 		"visible": true,
 		"quality_definition": "rigid3d_base",	
 		"preferred_quality_type": "standard",
-
+        "machine_extruder_trains":{
+            "0": "rigid3d_base_extruder_0"
+        },
         "preferred_material": "generic_pla_175",
         "exclude_materials": [
 			"chromatik_pla",
