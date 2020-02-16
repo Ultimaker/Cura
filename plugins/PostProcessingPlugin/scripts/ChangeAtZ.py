@@ -10,6 +10,7 @@
 # Modified by Stefan Heule, Dim3nsioneer@gmx.ch since V3.0 (see changelog below)
 # Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
 # Modified by Ruben Dulek (Ultimaker), r.dulek@ultimaker.com, to debug.
+# Modifier by Miroslav Krsjak, miro@krsjak.eu, added acceleration/jerk change setting
 
 ##history / changelog:
 ##V3.0.1: TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
@@ -41,6 +42,7 @@
 ## M140 S<temp> - set bed target temperature
 ## M106 S<PWM> - set fan speed to target speed <S>
 ## M605/606 to save and recall material settings on the UM2
+## M201, M205 to change acceleration and/or jerk settings for a whole layer. needs change on layer number, not height
 
 from ..Script import Script
 #from UM.Logger import Logger
@@ -279,6 +281,36 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "15",
                     "maximum_value_warning": "255",
                     "enabled": "j1_Change_fanSpeed"
+                },
+                "k1_Change_acceleration":
+                {
+                    "label": "Change acceleration",
+                    "description": "Select if acceleration has to be changed",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "k2_acceleration":
+                {
+                    "label": "Acceleration",
+                    "description": "Set acceleration string for example 'X1000 Y1000 Z100 E1000'",                    
+                    "type": "str",
+                    "default_value": "X1000 Y1000 Z100 E1000",
+                    "enabled": "k1_Change_acceleration"
+                },
+                "k1_Change_jerk":
+                {
+                    "label": "Change jerk",
+                    "description": "Select if jerk has to be changed",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "k2_jerk":
+                {
+                    "label": "Jerk",
+                    "description": "Set jerk string for example 'X5 Y5 Z5 E10'",                    
+                    "type": "str",
+                    "default_value": "X10 Y10 Z0.4 E5",
+                    "enabled": "k1_Change_jerk"
                 }
             }
         }"""
@@ -311,7 +343,10 @@ class ChangeAtZ(Script):
              "bedTemp": self.getSettingValueByKey("h1_Change_bedTemp"),
              "extruderOne": self.getSettingValueByKey("i1_Change_extruderOne"),
              "extruderTwo": self.getSettingValueByKey("i3_Change_extruderTwo"),
-             "fanSpeed": self.getSettingValueByKey("j1_Change_fanSpeed")}
+             "fanSpeed": self.getSettingValueByKey("j1_Change_fanSpeed"),
+             "acceleration": self.getSettingValueByKey("k1_Change_acceleration"),
+             "jerk": self.getSettingValueByKey("k1_Change_jerk")
+             }
         ChangePrintSpeed = self.getSettingValueByKey("f1_Change_printspeed")
         ChangeStrings = {"speed": "M220 S%f\n",
             "flowrate": "M221 S%f\n",
@@ -320,7 +355,9 @@ class ChangeAtZ(Script):
             "bedTemp": "M140 S%f\n",
             "extruderOne": "M104 S%f T0\n",
             "extruderTwo": "M104 S%f T1\n",
-            "fanSpeed": "M106 S%d\n"}
+            "fanSpeed": "M106 S%d\n",
+            "acceleration": "M201 %s\n",
+            "jerk": "M205 %s\n"}
         target_values = {"speed": self.getSettingValueByKey("e2_speed"),
             "printspeed": self.getSettingValueByKey("f2_printspeed"),
             "flowrate": self.getSettingValueByKey("g2_flowrate"),
@@ -329,9 +366,11 @@ class ChangeAtZ(Script):
             "bedTemp": self.getSettingValueByKey("h2_bedTemp"),
             "extruderOne": self.getSettingValueByKey("i2_extruderOne"),
             "extruderTwo": self.getSettingValueByKey("i4_extruderTwo"),
-            "fanSpeed": self.getSettingValueByKey("j2_fanSpeed")}
+            "fanSpeed": self.getSettingValueByKey("j2_fanSpeed"),
+            "acceleration": self.getSettingValueByKey("k2_acceleration"),
+            "jerk": self.getSettingValueByKey("k2_jerk")}
         old = {"speed": -1, "flowrate": 100, "flowrateOne": -1, "flowrateTwo": -1, "platformTemp": -1, "extruderOne": -1,
-            "extruderTwo": -1, "bedTemp": -1, "fanSpeed": -1, "state": -1}
+            "extruderTwo": -1, "bedTemp": -1, "fanSpeed": -1, "state": -1, "acceleration": ""}
         twLayers = self.getSettingValueByKey("d_twLayers")
         if self.getSettingValueByKey("c_behavior") == "single_layer":
             behavior = 1
@@ -387,14 +426,23 @@ class ChangeAtZ(Script):
                 if ";Small layer" in line: #checks for begin of Cool Head Lift
                     old["state"] = state
                     state = 0
-                if ";LAYER:" in line: #new layer no. found
+                if ";LAYER:" in line: #new layer no. found                
+                    
                     if state == 0:
                         state = old["state"]
                     layer = self.getValue(line, ";LAYER:", layer)
+                    
+                    # add acceleration/jerk settings on layer start
+                    if int(layer) == int(targetL_i) - 1:
+                        if ChangeProp["acceleration"]:                        
+                            modified_gcode += ChangeStrings["acceleration"] % target_values["acceleration"]  
+                        if ChangeProp["jerk"]:                        
+                            modified_gcode += ChangeStrings["jerk"] % target_values["jerk"]                              
+
                     if targetL_i > -100000: #target selected by layer no.
                         if (state == 2 or targetL_i == 0) and layer == targetL_i: #determine targetZ from layer no.; checks for change on layer 0
                             state = 2
-                            targetZ = z + 0.001
+                            targetZ = z + 0.001                            
                 if (self.getValue(line, "T", None) is not None) and (self.getValue(line, "M", None) is None): #looking for single T-cmd
                     pres_ext = self.getValue(line, "T", pres_ext)
                 if "M190" in line or "M140" in line and state < 3: #looking for bed temp, stops after target z is passed
