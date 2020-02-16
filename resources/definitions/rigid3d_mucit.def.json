@@ -8,9 +8,7 @@
 		"preferred_quality_type": "standard",
 		"platform": "rigid3d_mucit_platform.stl",
         "platform_offset": [ 0, -19, 0],
-        "machine_extruder_trains":{
-            "0": "rigid3d_base_extruder_0"
-        },
+
         "preferred_material": "generic_pla_175",
         "exclude_materials": [
 			"chromatik_pla",

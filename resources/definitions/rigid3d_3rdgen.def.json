@@ -5,9 +5,7 @@
     "metadata": {
 		"visible": true,
 		"quality_definition": "rigid3d_base",
-        "machine_extruder_trains":{
-            "0": "rigid3d_base_extruder_0"
-        },		
+
 		"preferred_quality_type": "standard"		
     },
     "overrides": {

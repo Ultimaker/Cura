@@ -6,9 +6,7 @@
 		"visible": true,
 		"quality_definition": "rigid3d_base",	
 		"preferred_quality_type": "standard",
-        "machine_extruder_trains":{
-            "0": "rigid3d_base_extruder_0"
-        },
+
 		"platform": "rigid3d_zero2_platform.stl"			
     },
     "overrides": {
