@@ -19,10 +19,8 @@
 		
 		"machine_center_is_zero": { "default_value": false },
 		
-		"machine_start_gcode": {"default_value": "G28 ; Home extruder\nM420 S1 ; Enable MBL\nM107 ; Turn off fan\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG1 Z5.0 F300 ;Move Z Axis up\nG92 E0 ; Reset extruder position\nG1 X30.0 Y30.0 F3000 ;Move Z Axis up"},
-        "machine_end_gcode": {"default_value": "G1 X0 Y180 ; Get extruder out of way.\nM107 ; Turn off fan\nG91 ; Relative positioning\nG0 Z20 ; Lift extruder up\nT0\nG1 E-1 ; Reduce filament pressure\nM104 T0 S0 ; Turn extruder heater off\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM140 S0 ; Disable heated bed\nM84 ; Turn steppers off\n"},
-		
-
+		"machine_start_gcode": {"default_value": "; -- START GCODE --\nG21 ; mm olculer\nG28 ; Eksenleri sifirla\nM420 S1 ; Yazilim destekli tabla seviyeleme\nM107 ; Fani kapat\nG90 ; Mutlak konumlama\nG1 Z5 F180 ; Z eksenini 5mm yukselt\nG1 X30 Y30 F3000 ; Konuma git\nM82 ; Ekstruder mutlak mod\nG92 E0 ; Ekstruder konumu sifirla\n; -- end of START GCODE --"},
+        "machine_end_gcode": {"default_value": "; -- END GCODE --\nG1 X0 Y180 ; Konuma git\nM107 ; Fani kapat\nG91 ; Goreceli konumlama\nG0 Z20 ; Tablayi alcalt\nT0\nG1 E-2 ; Filaman basincini dusur\nM104 T0 S0 ; Ekstruder isiticiyi kapat\nG90 ; Mutlak konumlama\nG92 E0 ; Ekstruder konumu sifirla\nM140 S0 ; Tabla isiticiyi kapat\nM84 ; Motorlari durdur\nM300 S2093 P150 ; Baski sonu melodisi\nM300 S2637 P150\nM300 S3135 P150\nM300 S4186 P150\nM300 S3135 P150\nM300 S2637 P150\nM300 S2793 P150\nM300 S2349 P150\nM300 S1975 P150\nM300 S2093 P450\n; -- end of END GCODE --\n"},
 		
         "machine_head_polygon": { 
             "default_value": [
