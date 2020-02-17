@@ -75,7 +75,7 @@ def main():
         if returncode != 0:
             print("\nCommand %s failed checking. :(" % commands[i])
             success_code = 1
-    if success_code:        
+    if success_code:
         print("MYPY check was completed, but did not pass")
     else:
         print("MYPY check was completed and passed with flying colors")
