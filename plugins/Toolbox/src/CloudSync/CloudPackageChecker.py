@@ -83,7 +83,7 @@ class CloudPackageChecker(QObject):
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
         if package_discrepancy:
             self._model.addDiscrepancies(package_discrepancy)
-            self._model.initialize(subscribed_packages_payload)
+            self._model.initialize(self._package_manager, subscribed_packages_payload)
             self._handlePackageDiscrepancies()
 
     def _handlePackageDiscrepancies(self) -> None:
