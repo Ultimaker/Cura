@@ -4536,7 +4536,20 @@
                     "limit_to_extruder": "support_infill_extruder_nr",
                     "settable_per_mesh": false
                 },
-                "minimum_support_area": 
+                "min_supporting_model_area":
+                {
+                    "label": "Minimum Supporting Part Area",
+                    "description": "Minimum area for a part to be considered as supporting some area above it.",
+                    "unit": "mm²",
+                    "type": "float",
+                    "default_value": 0.0,
+                    "minimum_value": "0",
+                    "maximum_value_warning": "25",
+                    "enabled": "support_enable",
+                    "limit_to_extruder": "support_infill_extruder_nr",
+                    "settable_per_mesh": true
+                },
+                "minimum_support_area":
                 {
                     "label": "Minimum Support Area",
                     "description": "Minimum area size for support polygons. Polygons which have an area smaller than this value will not be generated.",
