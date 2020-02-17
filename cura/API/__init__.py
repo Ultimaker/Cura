@@ -28,11 +28,12 @@ class CuraAPI(QObject):
     #   The main reason for this is that we want to prevent consumers of API to have a dependency on CuraApplication.
     #   Since the API is intended to be used by plugins, the cura application should have already created this.
     def __new__(cls, application: Optional["CuraApplication"] = None):
-        if cls.__instance is None:
-            if application is None:
-                raise Exception("Upon first time creation, the application must be set.")
-            cls.__instance = super(CuraAPI, cls).__new__(cls)
-            cls._application = application
+        if cls.__instance is not None:
+            raise RuntimeError("Tried to create singleton '{class_name}' more than once.".format(class_name = CuraAPI.__name__))
+        if application is None:
+            raise RuntimeError("Upon first time creation, the application must be set.")
+        cls.__instance = super(CuraAPI, cls).__new__(cls)
+        cls._application = application
         return cls.__instance
 
     def __init__(self, application: Optional["CuraApplication"] = None) -> None:

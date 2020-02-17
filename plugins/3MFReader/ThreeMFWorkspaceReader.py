@@ -4,7 +4,8 @@
 from configparser import ConfigParser
 import zipfile
 import os
-from typing import cast, Dict, List, Optional, Tuple
+import json
+from typing import cast, Dict, List, Optional, Tuple, Any
 
 import xml.etree.ElementTree as ET
 
@@ -732,7 +733,25 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         base_file_name = os.path.basename(file_name)
         self.setWorkspaceName(base_file_name)
-        return nodes
+
+        return nodes, self._loadMetadata(file_name)
+
+    @staticmethod
+    def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
+        archive = zipfile.ZipFile(file_name, "r")
+
+        metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
+
+        result = dict()
+
+        for metadata_file in metadata_files:
+            try:
+                plugin_id = metadata_file.split("/")[0]
+                result[plugin_id] = json.loads(archive.open("%s/plugin_metadata.json" % plugin_id).read().decode("utf-8"))
+            except Exception:
+                Logger.logException("w", "Unable to retrieve metadata for %s", metadata_file)
+
+        return result
 
     def _processQualityChanges(self, global_stack):
         if self._machine_info.quality_changes_info is None:

@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "description": "Backup and restore your configuration.",
     "version": "1.2.0",
-    "api": "7.0",
+    "api": "7.1",
     "i18n-catalog": "cura"
 }

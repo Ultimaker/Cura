@@ -20,6 +20,8 @@ UM.Dialog{
     maximumHeight: minimumHeight
     margin: 0
 
+    property string actionButtonText: subscribedPackagesModel.hasIncompatiblePackages && !subscribedPackagesModel.hasCompatiblePackages ? catalog.i18nc("@button", "Dismiss") : catalog.i18nc("@button", "Next")
+
     Rectangle
     {
         id: root
@@ -90,7 +92,7 @@ UM.Dialog{
                 Label
                 {
                     font: UM.Theme.getFont("default")
-                    text: catalog.i18nc("@label", "The following packages can not be installed because of incompatible Cura version:")
+                    text: catalog.i18nc("@label", "The following packages can not be installed because of an incompatible Cura version:")
                     visible: subscribedPackagesModel.hasIncompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
@@ -125,26 +127,6 @@ UM.Dialog{
                                 color: UM.Theme.getColor("text")
                                 elide: Text.ElideRight
                             }
-                            UM.TooltipArea
-                            {
-                                width: childrenRect.width;
-                                height: childrenRect.height;
-                                text: catalog.i18nc("@info:tooltip", "Dismisses the package and won't be shown in this dialog anymore")
-                                anchors.right: parent.right
-                                anchors.verticalCenter: packageIcon.verticalCenter
-                                Label
-                                {
-                                    text: "(Dismiss)"
-                                    font: UM.Theme.getFont("small")
-                                    color: UM.Theme.getColor("text")
-                                    MouseArea
-                                    {
-                                        cursorShape: Qt.PointingHandCursor
-                                        anchors.fill: parent
-                                        onClicked: handler.dismissIncompatiblePackage(subscribedPackagesModel, model.package_id)
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -152,14 +134,16 @@ UM.Dialog{
 
         } // End of ScrollView
 
-        Cura.ActionButton
+        Cura.PrimaryButton
         {
             id: nextButton
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").height
-            text: catalog.i18nc("@button", "Next")
+            text: actionButtonText
             onClicked: accept()
+            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
         }
     }
 }

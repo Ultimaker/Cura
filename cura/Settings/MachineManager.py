@@ -747,6 +747,11 @@ class MachineManager(QObject):
         result = []  # type: List[str]
         for setting_instance in container.findInstances():
             setting_key = setting_instance.definition.key
+            if setting_key == "print_sequence":
+                old_value = container.getProperty(setting_key, "value")
+                Logger.log("d", "Reset setting [%s] in [%s] because its old value [%s] is no longer valid", setting_key, container, old_value)
+                result.append(setting_key)
+                continue
             if not self._global_container_stack.getProperty(setting_key, "type") in ("extruder", "optional_extruder"):
                 continue
 
@@ -795,7 +800,7 @@ class MachineManager(QObject):
         definition_changes_container.setProperty("machine_extruder_count", "value", extruder_count)
 
         self.updateDefaultExtruder()
-        self.updateNumberExtrudersEnabled()
+        self.numberExtrudersEnabledChanged.emit()
         self.correctExtruderSettings()
 
         # Check to see if any objects are set to print with an extruder that will no longer exist

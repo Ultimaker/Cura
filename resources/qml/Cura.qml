@@ -24,7 +24,7 @@ UM.MainWindow
     title:
     {
         let result = "";
-        if(PrintInformation.jobName != "")
+        if(PrintInformation !== null && PrintInformation.jobName != "")
         {
             result += PrintInformation.jobName + " - ";
         }
@@ -238,7 +238,7 @@ UM.MainWindow
                             if (filename.toLowerCase().endsWith(".curapackage"))
                             {
                                 // Try to install plugin & close.
-                                CuraApplication.getPackageManager().installPackageViaDragAndDrop(filename);
+                                CuraApplication.installPackageViaDragAndDrop(filename);
                                 packageInstallDialog.text = catalog.i18nc("@label", "This package will be installed after restarting.");
                                 packageInstallDialog.icon = StandardIcon.Information;
                                 packageInstallDialog.open();

@@ -36,7 +36,8 @@ class LocalAuthorizationServer:
 
     ##  Starts the local web server to handle the authorization callback.
     #   \param verification_code The verification code part of the OAuth2 client identification.
-    def start(self, verification_code: str) -> None:
+    #   \param state The unique state code (to ensure that the request we get back is really from the server.
+    def start(self, verification_code: str, state: str) -> None:
         if self._web_server:
             # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
             # We still inject the new verification code though.
@@ -53,6 +54,7 @@ class LocalAuthorizationServer:
         self._web_server.setAuthorizationHelpers(self._auth_helpers)
         self._web_server.setAuthorizationCallback(self._auth_state_changed_callback)
         self._web_server.setVerificationCode(verification_code)
+        self._web_server.setState(state)
 
         # Start the server on a new thread.
         self._web_server_thread = threading.Thread(None, self._web_server.serve_forever, daemon = self._daemon)

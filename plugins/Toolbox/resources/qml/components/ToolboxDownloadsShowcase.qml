@@ -14,17 +14,44 @@ Rectangle
     Column
     {
         height: childrenRect.height + 2 * padding
-        spacing: UM.Theme.getSize("default_margin").width
+        spacing: UM.Theme.getSize("default_margin").height
         width: parent.width
         padding: UM.Theme.getSize("wide_margin").height
-        Label
+        Item
         {
-            id: heading
-            text: catalog.i18nc("@label", "Featured")
-            width: parent.width
-            color: UM.Theme.getColor("text_medium")
-            font: UM.Theme.getFont("large")
-            renderType: Text.NativeRendering
+            width: parent.width - parent.padding * 2
+            height: childrenRect.height
+            Label
+            {
+                id: heading
+                text: catalog.i18nc("@label", "Featured")
+                width: contentWidth
+                height: contentHeight
+                color: UM.Theme.getColor("text_medium")
+                font: UM.Theme.getFont("large")
+                renderType: Text.NativeRendering
+            }
+            UM.TooltipArea
+            {
+                width: childrenRect.width
+                height: childrenRect.height
+                anchors.right: parent.right
+                text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
+                Label
+                {
+                    text: "<a href='%2'>".arg(toolbox.getWebMarketplaceUrl("materials")) + catalog.i18nc("@label", "Search materials") + "</a>"
+                    width: contentWidth
+                    height: contentHeight
+                    horizontalAlignment: Text.AlignRight
+                    font: UM.Theme.getFont("default")
+                    renderType: Text.NativeRendering
+
+                    linkColor: UM.Theme.getColor("text_link")
+                    onLinkActivated: Qt.openUrlExternally(link)
+
+                    visible: toolbox.viewCategory === "material"
+                }
+            }
         }
         Grid
         {

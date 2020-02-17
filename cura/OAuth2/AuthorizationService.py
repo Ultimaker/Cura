@@ -153,13 +153,15 @@ class AuthorizationService:
         verification_code = self._auth_helpers.generateVerificationCode()
         challenge_code = self._auth_helpers.generateVerificationCodeChallenge(verification_code)
 
+        state = AuthorizationHelpers.generateVerificationCode()
+
         # Create the query string needed for the OAuth2 flow.
         query_string = urlencode({
             "client_id": self._settings.CLIENT_ID,
             "redirect_uri": self._settings.CALLBACK_URL,
             "scope": self._settings.CLIENT_SCOPES,
             "response_type": "code",
-            "state": "(.Y.)",
+            "state": state,  # Forever in our Hearts, RIP "(.Y.)" (2018-2020)
             "code_challenge": challenge_code,
             "code_challenge_method": "S512"
         })
@@ -168,7 +170,7 @@ class AuthorizationService:
         QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
         # Start a local web server to receive the callback URL on.
-        self._server.start(verification_code)
+        self._server.start(verification_code, state)
 
     ##  Callback method for the authentication flow.
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:

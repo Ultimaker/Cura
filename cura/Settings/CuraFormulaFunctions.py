@@ -133,6 +133,38 @@ class CuraFormulaFunctions:
         context = self.createContextForDefaultValueEvaluation(global_stack)
         return self.getResolveOrValue(property_key, context = context)
 
+    # Gets the value for the given setting key starting from the given container index.
+    def getValueFromContainerAtIndex(self, property_key: str, container_index: int,
+                                     context: Optional["PropertyEvaluationContext"] = None) -> Any:
+        machine_manager = self._application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        context = self.createContextForDefaultValueEvaluation(global_stack)
+        context.context["evaluate_from_container_index"] = container_index
+
+        return global_stack.getProperty(property_key, "value", context = context)
+
+    # Gets the extruder value for the given setting key starting from the given container index.
+    def getValueFromContainerAtIndexInExtruder(self, extruder_position: int, property_key: str, container_index: int,
+                                               context: Optional["PropertyEvaluationContext"] = None) -> Any:
+        machine_manager = self._application.getMachineManager()
+        global_stack = machine_manager.activeMachine
+
+        if extruder_position == -1:
+            extruder_position = int(machine_manager.defaultExtruderPosition)
+
+        global_stack = machine_manager.activeMachine
+        try:
+            extruder_stack = global_stack.extruderList[int(extruder_position)]
+        except IndexError:
+            Logger.log("w", "Value for %s of extruder %s was requested, but that extruder is not available. " % (property_key, extruder_position))
+            return None
+
+        context = self.createContextForDefaultValueEvaluation(extruder_stack)
+        context.context["evaluate_from_container_index"] = container_index
+
+        return self.getValueInExtruder(extruder_position, property_key, context)
+
     # Creates a context for evaluating default values (skip the user_changes container).
     def createContextForDefaultValueEvaluation(self, source_stack: "CuraContainerStack") -> "PropertyEvaluationContext":
         context = PropertyEvaluationContext(source_stack)
