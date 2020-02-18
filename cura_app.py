@@ -163,7 +163,7 @@ sys.excepthook = exceptHook
 # Enable dumping traceback for all threads
 if sys.stderr:
     faulthandler.enable(file = sys.stderr, all_threads = True)
-else:
+elif sys.stdout:
     faulthandler.enable(file = sys.stdout, all_threads = True)
 
 # Workaround for a race condition on certain systems where there
