@@ -51,6 +51,7 @@
             "default_value": 0.21,
             "minimum_value": 0.07
         },
+        "material_bed_temperature": { "value": 40 },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
         "material_print_temperature_layer_0": { "value": "material_print_temperature + 5" },
         "material_bed_temperature_layer_0": { "value": "material_bed_temperature + 5" },
