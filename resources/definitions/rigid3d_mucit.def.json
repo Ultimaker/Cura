@@ -150,13 +150,6 @@
 		"machine_start_gcode": {"default_value": "G21\nG28 ; Home extruder\nM420 S1 ; Enable MBL\nM107 ; Turn off fan\nG91 ; Relative positioning\nG1 Z5 F180;\nG1 X30 Y30 F3000;\nG90 ; Absolute positioning\nM82 ; Extruder in absolute mode\nG92 E0 ; Reset extruder position\n"},
         "machine_end_gcode": {"default_value": "G1 X0 Y145 ; Get extruder out of way.\nM107 ; Turn off fan\nG91 ; Relative positioning\nG0 Z20 ; Lift extruder up\nT0\nG1 E-1 ; Reduce filament pressure\nM104 T0 S0 ; Turn extruder heater off\nG90 ; Absolute positioning\nG92 E0 ; Reset extruder position\nM84 ; Turn steppers off\n"},
 		
-
-		
-        "machine_head_polygon": { 
-            "default_value": [
-                 [ -20, 102], [ -20, -45], [ 45, -45], [ 45, 102]
-				 ] 
-        },
 		"machine_head_with_fans_polygon": { 
             "default_value": [
                  [ -20, 102], [ -20, -45], [ 45, -45], [ 45, 102]

@@ -22,13 +22,6 @@
 		"machine_start_gcode": {"default_value": "  ; -- START GCODE --\n  G21\n  G28 ; Home extruder\n  G29 ; Autolevel bed\n  M107 ; Turn off fan\n  G90 ; Absolute positioning\n  M82 ; Extruder in absolute mode\n  G92 E0 ; Reset extruder position\n  ; -- end of START GCODE --\n\n"},
         "machine_end_gcode": {"default_value": "  ; -- END GCODE --\n  G1 X0 Y230 ; Get extruder out of way.\n  M107 ; Turn off fan\n  G91 ; Relative positioning\n  G0 Z20 ; Lift extruder up\n  T0\n  G1 E-1 ; Reduce filament pressure\n  M104 T0 S0 ; Turn ectruder heater off\n  G90 ; Absolute positioning\n  G92 E0 ; Reset extruder position\n  M140 S0 ; Disable heated bed\n  M84 ; Turn steppers off\n  ; -- end of END GCODE --\n"},
 		
-
-		
-        "machine_head_polygon": { 
-            "default_value": [
-                 [ -22, -67], [ -22, 51], [ 36, -67], [ 36, 51]
-				 ] 
-        },
 		"machine_head_with_fans_polygon": { 
             "default_value": [
                  [ -22, -67], [ -22, 51], [ 36, -67], [ 36, 51]
