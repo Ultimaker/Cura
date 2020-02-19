@@ -2342,7 +2342,7 @@
                     "unit": "mm",
                     "default_value": -4,
                     "enabled": false,
-                    "minimum_value_warning": "-retraction_amount",
+                    "minimum_value_warning": "-switch_extruder_retraction_amount",
                     "maximum_value_warning": "0",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
