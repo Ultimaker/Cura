@@ -38,9 +38,6 @@
         "machine_height": {
             "default_value": 203
         },
-        "gantry_height": {
-            "default_value": 52
-        },
         "machine_center_is_zero": {
             "default_value": false
         },
@@ -86,9 +83,6 @@
         },
         "line_width": {
             "value": "round(machine_nozzle_size * 0.875, 2)"
-        },
-        "speed_layer_0": {
-            "default_value": 20
         },
         "speed_support": {
             "value": "speed_wall_0"

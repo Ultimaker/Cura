@@ -11,25 +11,6 @@
         },
         "prime_tower_enable": {
 			"default_value": true
-		},
-        "layer_start_x":
-        {
-            "default_value": 180.0,
-            "enabled": false
-        },
-        "layer_start_y":
-        {
-            "default_value": 160.0,
-            "enabled": false
-        },
-        "prime_tower_position_x": {
-            "value": "180"
-        },
-        "prime_tower_position_y": {
-            "value": "160"
-        },
-		"material_adhesion_tendency": {
-            "enabled": true
 		}
     }
 }
