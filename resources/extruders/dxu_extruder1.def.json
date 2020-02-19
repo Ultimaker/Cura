@@ -1,12 +1,10 @@
 {
-    "id": "dxu_extruder1",
     "version": 2,
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "dxu",
-        "position": "0",
-        "quality_definition": "dxu_extruder1"
+        "position": "0"
     },
 
     "overrides": {
