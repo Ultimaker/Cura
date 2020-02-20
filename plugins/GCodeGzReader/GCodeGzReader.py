@@ -7,6 +7,20 @@ from UM.Mesh.MeshReader import MeshReader #The class we're extending/implementin
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType #To add the .gcode.gz files to the MIME type database.
 from UM.PluginRegistry import PluginRegistry
 
+import contextlib
+import resource
+
+
+@contextlib.contextmanager
+def limit(limit, type=resource.RLIMIT_AS):
+    soft_limit, hard_limit = resource.getrlimit(type)
+    resource.setrlimit(type, (limit, hard_limit)) # set soft limit
+    try:
+        yield
+    finally:
+        resource.setrlimit(type, (soft_limit, hard_limit)) # restore
+
+
 ##  A file reader that reads gzipped g-code.
 #
 #   If you're zipping g-code, you might as well use gzip!
@@ -25,7 +39,9 @@ class GCodeGzReader(MeshReader):
     def _read(self, file_name):
         with open(file_name, "rb") as file:
             file_data = file.read()
-        uncompressed_gcode = gzip.decompress(file_data).decode("utf-8")
+
+        with limit(1 << 30):  # Prevent a gzip bomb (by setting the max size to 1 gig)
+            uncompressed_gcode = gzip.decompress(file_data).decode("utf-8")
         PluginRegistry.getInstance().getPluginObject("GCodeReader").preReadFromStream(uncompressed_gcode)
         result = PluginRegistry.getInstance().getPluginObject("GCodeReader").readFromStream(uncompressed_gcode, file_name)
 
