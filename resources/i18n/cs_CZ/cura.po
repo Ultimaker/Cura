@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 14:19+0100\n"
-"PO-Revision-Date: 2020-02-20 17:10+0100\n"
+"PO-Revision-Date: 2020-02-20 17:30+0100\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3298,7 +3298,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
-msgstr "Hodnota je rozlišena z hodnot na extruderu"
+msgstr "Hodnota je rozlišena z hodnot na extruderu "
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
@@ -4629,7 +4629,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:57
 msgctxt "@label"
 msgid "Select your printer from the list below:"
-msgstr "Vyberte svou tiskárnu z nabídky níže: "
+msgstr "Vyberte svou tiskárnu z nabídky níže:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:77
 msgctxt "@action:button"
