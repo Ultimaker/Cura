@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0000\n"
-"PO-Revision-Date: 2020-02-20 17:29+0100\n"
+"PO-Revision-Date: 2020-02-20 18:07+0100\n"
 "Language-Team: Denyk <www.github.com/DenyCZ>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -937,12 +937,12 @@ msgstr "Šířka jedné výplně."
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width label"
 msgid "Skirt/Brim Line Width"
-msgstr "Šířka čáry okraje/torza"
+msgstr "Šířka čáry okraje/límce"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_line_width description"
 msgid "Width of a single skirt or brim line."
-msgstr "Šířka jedné torza nebo okraje linie."
+msgstr "Šířka čáry límce nebo okraje linie."
 
 #: fdmprinter.def.json
 msgctxt "support_line_width label"
@@ -2927,12 +2927,12 @@ msgstr "Kompenzace toku na výplňových vedeních."
 #: fdmprinter.def.json
 msgctxt "skirt_brim_material_flow label"
 msgid "Skirt/Brim Flow"
-msgstr "Průtok u torza/okraje"
+msgstr "Průtok u límce/okraje"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_material_flow description"
 msgid "Flow compensation on skirt or brim lines."
-msgstr "Kompenzace toku na torzu nebo okrajových liniích."
+msgstr "Kompenzace toku na límci nebo okrajových liniích."
 
 #: fdmprinter.def.json
 msgctxt "support_material_flow label"
@@ -3249,7 +3249,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed label"
 msgid "Skirt/Brim Speed"
-msgstr "Rychlost tisku torza/okraje"
+msgstr "Rychlost tisku límce/okraje"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_speed description"
@@ -3258,7 +3258,7 @@ msgid ""
 "the initial layer speed, but sometimes you might want to print the skirt or "
 "brim at a different speed."
 msgstr ""
-"Rychlost tisku torzo a okraje. Normálně se tak děje při počáteční rychlosti "
+"Rychlost tisku Límec a okraje. Normálně se tak děje při počáteční rychlosti "
 "vrstvy, ale někdy můžete chtít sukni nebo okraj vytisknout jinou rychlostí."
 
 #: fdmprinter.def.json
@@ -3522,7 +3522,7 @@ msgstr "Zrychlení pro pohyb se pohybuje v počáteční vrstvě."
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim label"
 msgid "Skirt/Brim Acceleration"
-msgstr "Akcelerace tisku torza/okraje"
+msgstr "Akcelerace tisku límce/okraje"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_skirt_brim description"
@@ -3531,7 +3531,7 @@ msgid ""
 "done with the initial layer acceleration, but sometimes you might want to "
 "print the skirt or brim at a different acceleration."
 msgstr ""
-"Zrychlení, s nímž jsou torzo a okraj vytištěny. Normálně se tak děje s "
+"Zrychlení, s nímž jsou Límec a okraj vytištěny. Normálně se tak děje s "
 "počátečním zrychlením vrstvy, ale někdy budete chtít vytisknout sukni nebo "
 "okraje při jiném zrychlení."
 
@@ -3756,7 +3756,7 @@ msgstr "Zrychlení pro pohyb se pohybuje v počáteční vrstvě."
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim label"
 msgid "Skirt/Brim Jerk"
-msgstr "Okamžitá rychlost při tisku torza/okraje"
+msgstr "Okamžitá rychlost při tisku límce/okraje"
 
 #: fdmprinter.def.json
 msgctxt "jerk_skirt_brim description"
@@ -3764,7 +3764,7 @@ msgid ""
 "The maximum instantaneous velocity change with which the skirt and brim are "
 "printed."
 msgstr ""
-"Maximální okamžitá změna rychlosti, se kterou jsou torzo a okraj vytištěny."
+"Maximální okamžitá změna rychlosti, se kterou jsou Límec a okraj vytištěny."
 
 #: fdmprinter.def.json
 msgctxt "travel label"
@@ -5394,7 +5394,7 @@ msgid ""
 msgstr ""
 "Zda se vlákno před tiskem připraví blobem. Zapnutím tohoto nastavení "
 "zajistíte, že extrudér bude mít před tiskem materiál připravený v trysce. "
-"Tisk torza nebo Sukně může také fungovat jako základní nátěr, takže vypnutí "
+"Tisk límce nebo Sukně může také fungovat jako základní nátěr, takže vypnutí "
 "tohoto nastavení ušetří čas."
 
 #: fdmprinter.def.json
@@ -5436,7 +5436,7 @@ msgid ""
 "to the model."
 msgstr ""
 "Různé možnosti, které pomáhají zlepšit jak vytlačování, tak adhezi k "
-"sestavovací desce. Torzo přidává jedinou vrstvu roviny kolem základny vašeho "
+"sestavovací desce. Límec přidává jedinou vrstvu roviny kolem základny vašeho "
 "modelu, aby se zabránilo deformaci. Raft přidává tlustou mřížku se střechou "
 "pod modelem. Okraj je čára vytištěná kolem modelu, ale není k modelu "
 "připojena."
@@ -5449,7 +5449,7 @@ msgstr "Okraj"
 #: fdmprinter.def.json
 msgctxt "adhesion_type option brim"
 msgid "Brim"
-msgstr "Torzo"
+msgstr "Límec"
 
 #: fdmprinter.def.json
 msgctxt "adhesion_type option raft"
@@ -5472,7 +5472,7 @@ msgid ""
 "The extruder train to use for printing the skirt/brim/raft. This is used in "
 "multi-extrusion."
 msgstr ""
-"Vytlačovací stroj se používá pro tisk torza / okraje / raftu. To se používá "
+"Vytlačovací stroj se používá pro tisk límce / okraje / raftu. To se používá "
 "při vícenásobném vytlačování."
 
 #: fdmprinter.def.json
@@ -5508,7 +5508,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length label"
 msgid "Skirt/Brim Minimum Length"
-msgstr "Minimální délka torza/okraje"
+msgstr "Minimální délka límce/okraje"
 
 #: fdmprinter.def.json
 msgctxt "skirt_brim_minimal_length description"
@@ -5518,7 +5518,7 @@ msgid ""
 "until the minimum length is reached. Note: If the line count is set to 0 "
 "this is ignored."
 msgstr ""
-"Minimální délka torza nebo okraje. Pokud tuto délku nedosáhnou všechny linie "
+"Minimální délka límce nebo okraje. Pokud tuto délku nedosáhnou všechny linie "
 "sukní nebo okrajů dohromady, přidává se více sukní nebo okrajových linií, "
 "dokud není dosaženo minimální délky. Poznámka: Pokud je počet řádků nastaven "
 "na 0, ignoruje se."
@@ -5526,7 +5526,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "brim_width label"
 msgid "Brim Width"
-msgstr "Šířka torza"
+msgstr "Šířka límce"
 
 #: fdmprinter.def.json
 msgctxt "brim_width description"
@@ -5535,13 +5535,13 @@ msgid ""
 "enhances adhesion to the build plate, but also reduces the effective print "
 "area."
 msgstr ""
-"Vzdálenost od modelu k nejzazší linii torza. Větší torzo zvyšuje přilnavost "
+"Vzdálenost od modelu k nejzazší linii límce. Větší límec zvyšuje přilnavost "
 "k podložce, ale také snižuje efektivní tiskovou plochu."
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count label"
 msgid "Brim Line Count"
-msgstr "Počet linek pro torzo"
+msgstr "Počet linek pro límec"
 
 #: fdmprinter.def.json
 msgctxt "brim_line_count description"
@@ -5549,13 +5549,13 @@ msgid ""
 "The number of lines used for a brim. More brim lines enhance adhesion to the "
 "build plate, but also reduces the effective print area."
 msgstr ""
-"Počet řádků použitých pro torzo. Více linek torza zvyšuje přilnavost k "
+"Počet řádků použitých pro límec. Více linek límce zvyšuje přilnavost k "
 "podložce, ale také snižuje efektivní tiskovou plochu."
 
 #: fdmprinter.def.json
 msgctxt "brim_gap label"
 msgid "Brim Distance"
-msgstr "Vzdálenost torza"
+msgstr "Vzdálenost límce"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
@@ -5564,13 +5564,13 @@ msgid ""
 "first layer of the print. A small gap can make the brim easier to remove "
 "while still providing the thermal benefits."
 msgstr ""
-"Vodorovná vzdálenost mezi první čarou torza a obrysem první vrstvy tisku. "
-"Malá mezera může usnadnit demontáž torza a přitom poskytovat tepelné výhody."
+"Vodorovná vzdálenost mezi první čarou límce a obrysem první vrstvy tisku. "
+"Malá mezera může usnadnit demontáž límce a přitom poskytovat tepelné výhody."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
-msgstr "Torzo nahrazuje podpory"
+msgstr "Límec nahrazuje podpory"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support description"
@@ -5579,14 +5579,14 @@ msgid ""
 "otherwise be occupied by support. This replaces some regions of the first "
 "layer of support by brim regions."
 msgstr ""
-"Zajistěte, aby torzo bylo natištěno kolem modelu, i když by tento prostor "
+"Zajistěte, aby Límec bylo natištěno kolem modelu, i když by tento prostor "
 "byl jinak obsazen podporou. To nahradí některé regiony první vrstvy podpory "
 "okrajovými regiony."
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only label"
 msgid "Brim Only on Outside"
-msgstr "Torzo pouze venku"
+msgstr "Límec pouze venku"
 
 #: fdmprinter.def.json
 msgctxt "brim_outside_only description"
@@ -5595,7 +5595,7 @@ msgid ""
 "brim you need to remove afterwards, while it doesn't reduce the bed adhesion "
 "that much."
 msgstr ""
-"Torzo tiskněte pouze na vnější stranu modelu. Tím se snižuje množství "
+"Límec tiskněte pouze na vnější stranu modelu. Tím se snižuje množství "
 "okraje, který je třeba následně odstranit, zatímco to tolik nesnižuje "
 "přilnavost k podložce."
 
@@ -6060,7 +6060,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr "Torzo hlavní věže"
+msgstr "Límec hlavní věže"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
@@ -6068,7 +6068,7 @@ msgid ""
 "Prime-towers might need the extra adhesion afforded by a brim even if the "
 "model doesn't. Presently can't be used with the 'Raft' adhesion-type."
 msgstr ""
-"Hlavní věže mohou potřebovat zvláštní přilnavost, kterou poskytuje torzo, i "
+"Hlavní věže mohou potřebovat zvláštní přilnavost, kterou poskytuje Límec, i "
 "když to model neumožňuje. V současnosti nelze použít s adhezním typem „Raft“."
 
 #: fdmprinter.def.json
