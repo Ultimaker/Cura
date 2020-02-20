@@ -997,7 +997,7 @@ msgstr "Šířka jedné hlavní věže."
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor label"
 msgid "Initial Layer Line Width"
-msgstr "Počáteční šířka čáry vrstvy"
+msgstr "Šířka čáry počáteční vrstvy"
 
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor description"
@@ -1006,7 +1006,7 @@ msgid ""
 "improve bed adhesion."
 msgstr ""
 "Násobitel šířky čáry v první vrstvě. Jejich zvýšení by mohlo zlepšit "
-"přilnavost k posteli."
+"přilnavost k podložce."
 
 #: fdmprinter.def.json
 msgctxt "shell label"
@@ -2638,7 +2638,7 @@ msgid ""
 "The temperature used for the heated build plate. If this is 0, the bed "
 "temperature will not be adjusted."
 msgstr ""
-"Teplota použitá pro vyhřívanou podložku. Pokud je to 0, teplota postele "
+"Teplota použitá pro vyhřívanou podložku. Pokud je to 0, teplota podložky "
 "nebude upravena."
 
 #: fdmprinter.def.json
@@ -5597,7 +5597,7 @@ msgid ""
 msgstr ""
 "Torzo tiskněte pouze na vnější stranu modelu. Tím se snižuje množství "
 "okraje, který je třeba následně odstranit, zatímco to tolik nesnižuje "
-"přilnavost k posteli."
+"přilnavost k podložce."
 
 #: fdmprinter.def.json
 msgctxt "raft_margin label"
