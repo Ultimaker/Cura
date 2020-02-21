@@ -217,7 +217,7 @@ msgstr "\nSynchronisierung läuft ..."
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
-msgstr "Sie müssen das Programm beenden und neu starten {{}, bevor Änderungen wirksam werden."
+msgstr "Sie müssen das Programm beenden und neu starten {}, bevor Änderungen wirksam werden."
 
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
