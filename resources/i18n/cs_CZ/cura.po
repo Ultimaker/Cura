@@ -1947,7 +1947,7 @@ msgstr "&Soubor"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:33
 msgctxt "@title:menu menubar:file"
 msgid "&Save..."
-msgstr "&Uložit..."
+msgstr "Uloži&t..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/FileMenu.qml:54
 msgctxt "@title:menu menubar:file"
@@ -2043,7 +2043,7 @@ msgstr "Obchod"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:50
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Settings"
-msgstr "&Nastavení"
+msgstr "Nasta&vení"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingsMenu.qml:15
 msgctxt "@title:menu menubar:settings"
@@ -2089,12 +2089,12 @@ msgstr "Obecné"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:48
 msgctxt "@title:menu menubar:toplevel"
 msgid "&View"
-msgstr "&Pohled"
+msgstr "Po&hled"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:19
 msgctxt "@action:inmenu menubar:view"
 msgid "&Camera position"
-msgstr "&Pozice kamery"
+msgstr "Pozice &kamery"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:44
 msgctxt "@action:inmenu menubar:view"
@@ -2114,7 +2114,7 @@ msgstr "Ortografický"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:80
 msgctxt "@action:inmenu menubar:view"
 msgid "&Build plate"
-msgstr "&Podložka"
+msgstr "Pod&ložka"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:13
 msgctxt "@action:inmenu"
@@ -3705,7 +3705,7 @@ msgstr "Obchod"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:31
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&Upravit"
+msgstr "Upr&avit"
 
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:55
 msgctxt "@title:menu menubar:toplevel"
@@ -3720,7 +3720,7 @@ msgstr "P&reference"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:97
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Help"
-msgstr "&Pomoc"
+msgstr "Po&moc"
 
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:124
 msgctxt "@title:window"
@@ -3799,7 +3799,7 @@ msgstr "Konfigurovat Cura..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:174
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "&Přidat tiskárnu..."
+msgstr "Přidat t&iskárnu..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:180
 msgctxt "@action:inmenu menubar:printer"
@@ -3824,7 +3824,7 @@ msgstr "&Aktualizovat profil s aktuálními nastaveními/přepsáními"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:210
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Discard current changes"
-msgstr "&Smazat aktuální změny"
+msgstr "Smazat aktuální &změny"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:222
 msgctxt "@action:inmenu menubar:profile"
@@ -3893,7 +3893,7 @@ msgstr "&Centerovat model na podložce"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:307
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Group Models"
-msgstr "&Seskupit modely"
+msgstr "Sesk&upit modely"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:327
 msgctxt "@action:inmenu menubar:edit"
@@ -3903,12 +3903,12 @@ msgstr "Rozdělit modely"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:337
 msgctxt "@action:inmenu menubar:edit"
 msgid "&Merge Models"
-msgstr "&Spojit modely"
+msgstr "Spo&jit modely"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:347
 msgctxt "@action:inmenu"
 msgid "&Multiply Model..."
-msgstr "&Násobení modelu..."
+msgstr "Náso&bení modelu..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:354
 msgctxt "@action:inmenu menubar:edit"
@@ -3968,7 +3968,7 @@ msgstr "Zobrazit složku s konfigurací"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:448
 msgctxt "@action:menu"
 msgid "&Marketplace"
-msgstr "&Obchod"
+msgstr "Mark&et"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:17
 msgctxt "@title:window"
