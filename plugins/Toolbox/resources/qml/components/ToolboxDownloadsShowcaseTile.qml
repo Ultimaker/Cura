@@ -23,7 +23,7 @@ Rectangle
         height: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
         width: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
         fillMode: Image.PreserveAspectFit
-        source: model.icon_url || "../../images/logobot.svg"
+        source: model.icon_url || "../../images/placeholder.svg"
         mipmap: true
         anchors
         {

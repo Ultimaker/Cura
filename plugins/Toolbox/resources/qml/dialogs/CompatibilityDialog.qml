@@ -68,7 +68,7 @@ UM.Dialog{
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || "../../images/logobot.svg"
+                                source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
                                 mipmap: true
@@ -111,7 +111,7 @@ UM.Dialog{
                             Image
                             {
                                 id: packageIcon
-                                source: model.icon_url || "../../images/logobot.svg"
+                                source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
                                 mipmap: true

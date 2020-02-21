@@ -67,7 +67,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("wide_margin").width
             height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("wide_margin").width
             fillMode: Image.PreserveAspectFit
-            source: model.icon_url || "../../images/logobot.svg"
+            source: model.icon_url || "../../images/placeholder.svg"
             mipmap: true
         }
         UM.RecolorImage

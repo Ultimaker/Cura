@@ -46,7 +46,7 @@ Item
             {
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                source: details === null ? "" : (details.icon_url || "../../images/logobot.svg")
+                source: details === null ? "" : (details.icon_url || "../../images/placeholder.svg")
                 mipmap: true
             }
         }

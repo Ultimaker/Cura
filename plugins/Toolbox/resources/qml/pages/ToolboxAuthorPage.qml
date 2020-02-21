@@ -33,7 +33,7 @@ Item
             width: UM.Theme.getSize("toolbox_thumbnail_medium").width
             height: UM.Theme.getSize("toolbox_thumbnail_medium").height
             fillMode: Image.PreserveAspectFit
-            source: details.icon_url || "../../images/logobot.svg"
+            source: details.icon_url || "../../images/placeholder.svg"
             mipmap: true
             anchors
             {
