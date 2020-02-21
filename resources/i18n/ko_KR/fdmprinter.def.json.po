@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2020-02-21 14:59+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -419,7 +419,7 @@ msgstr "압출기의 히터 공유"
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr "압출기가 자체 히터를 가지고 있지 않고 단일 히터를 공유하는지에 대한 여부"
+msgstr "압출기가 자체 히터를 가지고 있지 않고 단일 히터를 공유하는지에 대한 여부."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1943,7 +1943,7 @@ msgstr "스킨 에지의 두께 지원"
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness description"
 msgid "The thickness of the extra infill that supports skin edges."
-msgstr "스킨 에지를 지원하는 추가 내부채움의 두께"
+msgstr "스킨 에지를 지원하는 추가 내부채움의 두께."
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers label"
@@ -1953,7 +1953,7 @@ msgstr "스킨 에지의 레이어 지원"
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
-msgstr "스킨 에지를 지원하는 내부채움 레이어의 수"
+msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -4947,8 +4947,7 @@ msgstr "프린팅 순서"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과"
-" X/Y 축 사이의 거리보다 낮습니다. "
+msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과 X/Y 축 사이의 거리보다 낮습니다. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"

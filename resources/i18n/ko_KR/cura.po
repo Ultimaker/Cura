@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0100\n"
-"PO-Revision-Date: 2019-09-23 14:16+0200\n"
+"PO-Revision-Date: 2020-02-21 14:56+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:14
@@ -168,13 +168,15 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Do you want to sync material and software packages with your account?"
-msgstr "\n귀하의 계정으로 재료와 소프트웨어 패키지를 동기화하시겠습니까?"
+msgstr ""
+"\n"
+"귀하의 계정으로 재료와 소프트웨어 패키지를 동기화하시겠습니까?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:94
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:90
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
-msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다."
+msgstr "Ultimaker 계정에서 변경 사항이 감지되었습니다"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:96
 msgctxt "@action:button"
@@ -205,14 +207,16 @@ msgstr "계정에서 거절 및 제거"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/SyncOrchestrator.py:71
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
-msgstr "{}개의 플러그인을 다운로드하지 못했습니다."
+msgstr "{}개의 플러그인을 다운로드하지 못했습니다"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:86
 msgctxt "@info:generic"
 msgid ""
 "\n"
 "Syncing..."
-msgstr "\n동기화 중..."
+msgstr ""
+"\n"
+"동기화 중..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
@@ -2908,7 +2912,7 @@ msgstr "실험적 설정"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
+msgstr[0] "압출기 %2의 구성에 대한 %1 프로파일이 없습니다. 대신 기본 의도가 사용됩니다"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"
@@ -4142,17 +4146,17 @@ msgstr "취소"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:52
 msgctxt "@label"
 msgid "The following packages will be added:"
-msgstr "다음 패키지가 추가됩니다."
+msgstr "다음 패키지가 추가됩니다:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:95
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
-msgstr "호환되지 않는 Cura 버전이기 때문에 다음 패키지를 설치할 수 없습니다."
+msgstr "호환되지 않는 Cura 버전이기 때문에 다음 패키지를 설치할 수 없습니다:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxLicenseDialog.qml:36
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
-msgstr "패키지를 설치하려면 라이선스를 수락해야 합니다."
+msgstr "패키지를 설치하려면 라이선스를 수락해야 합니다"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
@@ -4207,7 +4211,7 @@ msgstr "다운로드"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:31
 msgctxt "@description"
 msgid "Get plugins and materials verified by Ultimaker"
-msgstr "Ultimaker의 확인을 받은 플러그인과 재료를 경험해보십시오."
+msgstr "Ultimaker의 확인을 받은 플러그인과 재료를 경험해보십시오"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:33
 msgctxt "@label"
@@ -4435,12 +4439,12 @@ msgstr "준비 중..."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:88
 msgctxt "@label:status"
 msgid "Aborting..."
-msgstr "중지 중…"
+msgstr "중지 중..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:92
 msgctxt "@label:status"
 msgid "Pausing..."
-msgstr "일시 정지 중…"
+msgstr "일시 정지 중..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorPrintJobProgressBar.qml:94
 msgctxt "@label:status"
@@ -4525,7 +4529,7 @@ msgstr "삭제"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:102
 msgctxt "@label"
 msgid "Pausing..."
-msgstr "일시 정지 중…"
+msgstr "일시 정지 중..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:104
 msgctxt "@label"
@@ -4535,7 +4539,7 @@ msgstr "다시 시작..."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
 msgid "Aborting..."
-msgstr "중지 중…"
+msgstr "중지 중..."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:124
 msgctxt "@label"
@@ -5554,7 +5558,7 @@ msgstr "모델 검사기"
 #: SentryLogger/plugin.json
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr "충돌을 보고하는 리포터가 사용할 수 있도록 특정 이벤트를 기록합니다."
+msgstr "충돌을 보고하는 리포터가 사용할 수 있도록 특정 이벤트를 기록합니다"
 
 #: SentryLogger/plugin.json
 msgctxt "name"

@@ -2913,8 +2913,8 @@ msgstr "Deneysel"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%2 ekstrüderindeki yapılandırmalar için %1 profili yok. Bunun yerine varsayılan amaç kullanılacak"
+msgstr[1] "%2 ekstrüderindeki yapılandırmalar için %1 profili yok. Bunun yerine varsayılan amaç kullanılacak"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"

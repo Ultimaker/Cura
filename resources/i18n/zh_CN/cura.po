@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0100\n"
-"PO-Revision-Date: 2019-07-29 15:51+0100\n"
+"PO-Revision-Date: 2020-02-21 16:41+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.3\n"
 
 #: /home/ruben/Projects/Cura/plugins/CuraProfileReader/__init__.py:14
 #: /home/ruben/Projects/Cura/plugins/CuraProfileWriter/__init__.py:14
@@ -168,7 +168,9 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Do you want to sync material and software packages with your account?"
-msgstr "\n是否要与您的帐户同步材料和软件包?"
+msgstr ""
+"\n"
+"是否要与您的帐户同步材料和软件包?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:94
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:90
@@ -212,7 +214,9 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Syncing..."
-msgstr "\n正在同步..."
+msgstr ""
+"\n"
+"正在同步..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
@@ -821,7 +825,7 @@ msgstr "正在设置场景..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:878
 msgctxt "@info:progress"
 msgid "Loading interface..."
-msgstr "正在载入界面…"
+msgstr "正在载入界面..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:883
 msgctxt "@info:progress"
@@ -2009,7 +2013,7 @@ msgstr "全部勾选"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/SettingPickDialog.qml:55
 msgctxt "@label:textbox"
 msgid "Filter..."
-msgstr "筛选…"
+msgstr "筛选..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:72
 msgctxt "@title"
@@ -2910,7 +2914,7 @@ msgstr "实验性"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
+msgstr[0] "没有 ％1 配置文件可用于挤出器 ％2 中的配置。将改为使用默认意图"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"
@@ -3516,12 +3520,12 @@ msgstr "右视图"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:167
 msgctxt "@action:inmenu"
 msgid "Configure Cura..."
-msgstr "配置 Cura…"
+msgstr "配置 Cura..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:174
 msgctxt "@action:inmenu menubar:printer"
 msgid "&Add Printer..."
-msgstr "新增打印机(&A)…"
+msgstr "新增打印机(&A)..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:180
 msgctxt "@action:inmenu menubar:printer"
@@ -3531,7 +3535,7 @@ msgstr "管理打印机(&I)..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:187
 msgctxt "@action:inmenu"
 msgid "Manage Materials..."
-msgstr "管理材料…"
+msgstr "管理材料..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu"
@@ -3551,7 +3555,7 @@ msgstr "舍弃当前更改（&D）"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:222
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "从当前设置 / 重写值创建配置文件（&C）…"
+msgstr "从当前设置 / 重写值创建配置文件（&C）..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:228
 msgctxt "@action:inmenu menubar:profile"
@@ -3576,7 +3580,7 @@ msgstr "新增功能"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:258
 msgctxt "@action:inmenu menubar:help"
 msgid "About..."
-msgstr "关于…"
+msgstr "关于..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:265
 msgctxt "@action:inmenu menubar:edit"
@@ -3669,12 +3673,12 @@ msgstr "复位所有模型的变动"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:419
 msgctxt "@action:inmenu menubar:file"
 msgid "&Open File(s)..."
-msgstr "打开文件（&O）…"
+msgstr "打开文件（&O）..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:427
 msgctxt "@action:inmenu menubar:file"
 msgid "&New Project..."
-msgstr "新建项目（&N）…"
+msgstr "新建项目（&N）..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:434
 msgctxt "@action:inmenu menubar:help"
@@ -4244,7 +4248,7 @@ msgstr "电子邮件"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxLoadingPage.qml:16
 msgctxt "@info"
 msgid "Fetching packages..."
-msgstr "获取包……"
+msgstr "获取包..."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:30
 msgctxt "@title"

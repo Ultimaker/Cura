@@ -2913,8 +2913,8 @@ msgstr "Experimental"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "No hay ningún perfil %1 para configuración en %2 extrusor. En su lugar se utilizará la opción predeterminada"
+msgstr[1] "No hay ningún perfil %1 para configuraciones en %2 extrusores. En su lugar se utilizará la opción predeterminada"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"
