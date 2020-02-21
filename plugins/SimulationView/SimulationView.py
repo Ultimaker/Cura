@@ -666,7 +666,7 @@ class SimulationView(CuraView):
         self._updateWithPreferences()
 
     def _updateSliceWarningVisibility(self):
-        if not self.getActivity():
+        if not self.getActivity() and not CuraApplication.getInstance().getPreferences().getValue("general/auto_slice"):
             self._slice_first_warning_message.show()
         else:
             self._slice_first_warning_message.hide()
