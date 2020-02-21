@@ -168,23 +168,23 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "\nMalzeme ve yazılım paketlerini hesabınızla senkronize etmek istiyor musunuz?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:94
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:90
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
-msgstr ""
+msgstr "Ultimaker hesabınızda değişiklik tespit edildi"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:96
 msgctxt "@action:button"
 msgid "Sync"
-msgstr ""
+msgstr "Senkronize et"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
 msgid "Decline"
-msgstr ""
+msgstr "Reddet"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
@@ -200,24 +200,24 @@ msgstr "Eklenti Lisans Anlaşması"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicensePresenter.py:30
 msgctxt "@button"
 msgid "Decline and remove from account"
-msgstr ""
+msgstr "Reddet ve hesaptan kaldır"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/SyncOrchestrator.py:71
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
-msgstr ""
+msgstr "{} eklenti indirilemedi"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:86
 msgctxt "@info:generic"
 msgid ""
 "\n"
 "Syncing..."
-msgstr ""
+msgstr "\nSenkronize ediliyor..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
-msgstr ""
+msgstr "Değişikliklerin etkili olması için {} uygulamasını kapatarak yeniden başlatmalısınız."
 
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -699,7 +699,7 @@ msgstr "X3D Dosyası"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:119
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr ""
+msgstr "Kablo Yazdırma etkinleştirildiğinde Cura, katmanları doğru olarak görüntülemez."
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:120
 msgctxt "@info:title"
@@ -709,12 +709,12 @@ msgstr "Simülasyon Görünümü"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
-msgstr ""
+msgstr "Önce dilimleme yapmanız gerektiğinden hiçbir şey gösterilmez."
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:title"
 msgid "No layers to show"
-msgstr ""
+msgstr "Görüntülenecek katman yok"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -801,17 +801,17 @@ msgstr "Tercihler ayarlanıyor..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:645
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
-msgstr ""
+msgstr "Etkin Makine Başlatılıyor..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:767
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
-msgstr ""
+msgstr "Makine yöneticisi başlatılıyor..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:781
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
-msgstr ""
+msgstr "Yapı hacmi başlatılıyor..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:843
 msgctxt "@info:progress"
@@ -826,7 +826,7 @@ msgstr "Arayüz yükleniyor..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:883
 msgctxt "@info:progress"
 msgid "Initializing engine..."
-msgstr ""
+msgstr "Motor başlatılıyor..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1176
 #, python-format
@@ -1160,12 +1160,12 @@ msgstr "Cura sürümü"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:201
 msgctxt "@label"
 msgid "Cura language"
-msgstr ""
+msgstr "Cura dili"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:202
 msgctxt "@label"
 msgid "OS language"
-msgstr ""
+msgstr "İşletim sistemi dili"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
 msgctxt "@label Type of platform"
@@ -1389,7 +1389,7 @@ msgstr "Konum Bulunamıyor"
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:68
 msgctxt "@message"
 msgid "The provided state is not correct."
-msgstr ""
+msgstr "Sağlanan durum doğru değil."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:79
 msgctxt "@message"
@@ -1965,7 +1965,7 @@ msgstr "Görünür ayarlar"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:42
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
-msgstr ""
+msgstr "Tüm Kategorileri Daralt"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:51
 msgctxt "@action:inmenu"
@@ -3110,7 +3110,7 @@ msgstr "Giriş yap"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window"
 msgid "About "
-msgstr ""
+msgstr "Hakkında "
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -3541,7 +3541,7 @@ msgstr "Malzemeleri Yönet..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu"
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Mağazadan daha fazla malzeme ekle"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -3784,28 +3784,30 @@ msgstr "Daha açık olan daha yüksek"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:149
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
-msgstr ""
+msgstr "Litofanlar için yarı saydamlık sağlayacak basit bir logaritmik model bulunur. Yükseklik haritaları için piksel değerleri doğrusal yüksekliklere karşılık"
+" gelir."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 msgctxt "@item:inlistbox"
 msgid "Linear"
-msgstr ""
+msgstr "Doğrusal"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
-msgstr ""
+msgstr "Yarı saydamlık"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:171
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
-msgstr ""
+msgstr "1 milimetre kalınlığında bir baskıya nüfuz eden ışığın yüzdesi. Bu değerin düşürülmesi karanlık bölgelerdeki kontrastı arttırır ve görüntünün açık bölgelerindeki"
+" kontrastı azaltır."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:177
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
-msgstr ""
+msgstr "1 mm Geçirgenlik (%)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
@@ -3961,7 +3963,7 @@ msgstr "Ekstrüder Sayısı"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
 msgctxt "@label"
 msgid "Shared Heater"
-msgstr ""
+msgstr "Ortak Isıtıcı"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:367
 msgctxt "@title:label"
@@ -4095,12 +4097,12 @@ msgstr "Öne Çıkan"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
-msgstr ""
+msgstr "Web Mağazasına Git"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:42
 msgctxt "@label"
 msgid "Search materials"
-msgstr ""
+msgstr "Malzeme ara"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
@@ -4142,27 +4144,27 @@ msgstr "Yüklü"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:14
 msgctxt "@title"
 msgid "Changes from your account"
-msgstr ""
+msgstr "Hesabınızda değişiklik var"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
 msgctxt "@button"
 msgid "Dismiss"
-msgstr ""
+msgstr "Kapat"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:52
 msgctxt "@label"
 msgid "The following packages will be added:"
-msgstr ""
+msgstr "Aşağıdaki paketler eklenecek:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:95
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
-msgstr ""
+msgstr "Aşağıdaki paketler uyumsuz Cura sürümü nedeniyle yüklenemiyor:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxLicenseDialog.qml:36
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
-msgstr ""
+msgstr "Paketi yüklemek için lisansı kabul etmeniz gerekir"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
@@ -4217,7 +4219,7 @@ msgstr "İndirmeler"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:31
 msgctxt "@description"
 msgid "Get plugins and materials verified by Ultimaker"
-msgstr ""
+msgstr "Ultimaker tarafından onaylanan eklentileri ve malzemeleri alın"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:33
 msgctxt "@label"
@@ -5258,12 +5260,12 @@ msgstr "3.4’ten 3.5’e Sürüm Yükseltme"
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr ""
+msgstr "Yapılandırmaları Cura 4.4'ten Cura 4.5'e yükseltir."
 
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
-msgstr ""
+msgstr "4.4'ten 4.5'e Sürüm Yükseltme"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
@@ -5568,12 +5570,12 @@ msgstr "Model Kontrol Edici"
 #: SentryLogger/plugin.json
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr ""
+msgstr "Çökme raporlayıcının kullanabilmesi için belirli olayları günlüğe kaydeder"
 
 #: SentryLogger/plugin.json
 msgctxt "name"
 msgid "Sentry Logger"
-msgstr ""
+msgstr "Nöbetçi Günlükçü"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"

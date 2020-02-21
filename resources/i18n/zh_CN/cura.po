@@ -168,23 +168,23 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "\n是否要与您的帐户同步材料和软件包?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:94
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:90
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
-msgstr ""
+msgstr "检测到您的 Ultimaker 帐户有更改"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:96
 msgctxt "@action:button"
 msgid "Sync"
-msgstr ""
+msgstr "同步"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
 msgid "Decline"
-msgstr ""
+msgstr "拒绝"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
@@ -200,24 +200,24 @@ msgstr "插件许可协议"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicensePresenter.py:30
 msgctxt "@button"
 msgid "Decline and remove from account"
-msgstr ""
+msgstr "拒绝并从帐户中删除"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/SyncOrchestrator.py:71
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
-msgstr ""
+msgstr "{} 个插件下载失败"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:86
 msgctxt "@info:generic"
 msgid ""
 "\n"
 "Syncing..."
-msgstr ""
+msgstr "\n正在同步..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
-msgstr ""
+msgstr "需要退出并重新启动 {}，然后更改才能生效。"
 
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -699,7 +699,7 @@ msgstr "X3D 文件"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:119
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr ""
+msgstr "启用“单线打印”后，Cura 将无法准确地显示打印层。"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:120
 msgctxt "@info:title"
@@ -709,12 +709,12 @@ msgstr "仿真视图"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
-msgstr ""
+msgstr "由于需要先切片，因此未显示任何内容。"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:title"
 msgid "No layers to show"
-msgstr ""
+msgstr "无层可显示"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -801,17 +801,17 @@ msgstr "正在设置偏好设置..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:645
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
-msgstr ""
+msgstr "正在初始化当前机器..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:767
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
-msgstr ""
+msgstr "正在初始化机器管理器..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:781
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
-msgstr ""
+msgstr "正在初始化成形空间体积..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:843
 msgctxt "@info:progress"
@@ -826,7 +826,7 @@ msgstr "正在载入界面…"
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:883
 msgctxt "@info:progress"
 msgid "Initializing engine..."
-msgstr ""
+msgstr "正在初始化引擎..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1176
 #, python-format
@@ -1160,12 +1160,12 @@ msgstr "Cura 版本"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:201
 msgctxt "@label"
 msgid "Cura language"
-msgstr ""
+msgstr "Cura 语言"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:202
 msgctxt "@label"
 msgid "OS language"
-msgstr ""
+msgstr "操作系统语言"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
 msgctxt "@label Type of platform"
@@ -1389,7 +1389,7 @@ msgstr "找不到位置"
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:68
 msgctxt "@message"
 msgid "The provided state is not correct."
-msgstr ""
+msgstr "所提供的状态不正确。"
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:79
 msgctxt "@message"
@@ -1963,7 +1963,7 @@ msgstr "可见设置"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:42
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
-msgstr ""
+msgstr "折叠所有类别"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:51
 msgctxt "@action:inmenu"
@@ -3106,7 +3106,7 @@ msgstr "登录"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window"
 msgid "About "
-msgstr ""
+msgstr "关于 "
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -3536,7 +3536,7 @@ msgstr "管理材料…"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu"
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "从市场添加更多材料"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -3776,28 +3776,28 @@ msgstr "颜色越浅厚度越大"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:149
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
-msgstr ""
+msgstr "对于隐雕，提供一个用于半透明的简单对数模型。对于高度图，像素值与高度线性对应。"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 msgctxt "@item:inlistbox"
 msgid "Linear"
-msgstr ""
+msgstr "线性"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
-msgstr ""
+msgstr "半透明"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:171
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
-msgstr ""
+msgstr "穿透 1 毫米厚的打印件的光线百分比。降低此值将增大图像暗区中的对比度并减小图像亮区中的对比度。"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:177
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
-msgstr ""
+msgstr "1 毫米透射率 (%)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
@@ -3953,7 +3953,7 @@ msgstr "挤出机数目"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
 msgctxt "@label"
 msgid "Shared Heater"
-msgstr ""
+msgstr "共用加热器"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:367
 msgctxt "@title:label"
@@ -4087,12 +4087,12 @@ msgstr "精选"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
-msgstr ""
+msgstr "前往网上市场"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:42
 msgctxt "@label"
 msgid "Search materials"
-msgstr ""
+msgstr "搜索材料"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
@@ -4134,27 +4134,27 @@ msgstr "安装"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:14
 msgctxt "@title"
 msgid "Changes from your account"
-msgstr ""
+msgstr "您的帐户有更改"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
 msgctxt "@button"
 msgid "Dismiss"
-msgstr ""
+msgstr "解除"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:52
 msgctxt "@label"
 msgid "The following packages will be added:"
-msgstr ""
+msgstr "将添加以下程序包："
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:95
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
-msgstr ""
+msgstr "由于 Cura 版本不兼容，无法安装以下程序包："
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxLicenseDialog.qml:36
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
-msgstr ""
+msgstr "需要接受许可证才能安装该程序包"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
@@ -4209,7 +4209,7 @@ msgstr "下载项"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:31
 msgctxt "@description"
 msgid "Get plugins and materials verified by Ultimaker"
-msgstr ""
+msgstr "获取经过 Ultimaker 验证的插件和材料"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:33
 msgctxt "@label"
@@ -5248,12 +5248,12 @@ msgstr "版本自 3.4 升级到 3.5"
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr ""
+msgstr "将配置从 Cura 4.4 升级至 Cura 4.5。"
 
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
-msgstr ""
+msgstr "版本从 4.4 升级至 4.5"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
@@ -5558,12 +5558,12 @@ msgstr "模型检查器"
 #: SentryLogger/plugin.json
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr ""
+msgstr "记录某些事件，以使其可供崩溃报告器使用"
 
 #: SentryLogger/plugin.json
 msgctxt "name"
 msgid "Sentry Logger"
-msgstr ""
+msgstr "Sentry 日志记录"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
