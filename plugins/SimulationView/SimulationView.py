@@ -56,6 +56,8 @@ class SimulationView(CuraView):
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
 
+    _no_layers_warning_preference = "view/no_layers_warning"
+
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
@@ -118,7 +120,10 @@ class SimulationView(CuraView):
 
         self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
-        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layers to show"))
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layers to show"),
+                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
+        self._slice_first_warning_message.optionToggled.connect(self._onDontAskMeAgain)
+        CuraApplication.getInstance().getPreferences().addPreference(self._no_layers_warning_preference, True)
 
         QtApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -666,11 +671,15 @@ class SimulationView(CuraView):
         self._updateWithPreferences()
 
     def _updateSliceWarningVisibility(self):
-        if not self.getActivity() and not CuraApplication.getInstance().getPreferences().getValue("general/auto_slice"):
+        if not self.getActivity()\
+                and not CuraApplication.getInstance().getPreferences().getValue("general/auto_slice")\
+                and CuraApplication.getInstance().getPreferences().getValue(self._no_layers_warning_preference):
             self._slice_first_warning_message.show()
         else:
             self._slice_first_warning_message.hide()
 
+    def _onDontAskMeAgain(self, checked: bool) -> None:
+        CuraApplication.getInstance().getPreferences().setValue(self._no_layers_warning_preference, not checked)
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene: "Scene", layer_number: int, solid_layers: int) -> None:
