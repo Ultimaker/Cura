@@ -75,7 +75,7 @@ class ColorMix(Script):
                     "type": "float",
                     "default_value": 0,
                     "minimum_value": "0",
-                    "minimum_value_warning": "0.1",
+                    "minimum_value_warning": "start_height",
                     "enabled": "behavior == 'blend_value'" 
                 },
                 "mix_start":
@@ -121,17 +121,11 @@ class ColorMix(Script):
             return default
 
     def execute(self, data):
-        #get user variables
-        firstHeight = 0.0
-        secondHeight = 0.0
-        firstMix = 0.0
-        SecondMix = 0.0
-        modelNumber = 0
 
         firstHeight = self.getSettingValueByKey("start_height")
         secondHeight = self.getSettingValueByKey("finish_height")
         firstMix = self.getSettingValueByKey("mix_start")
-        SecondMix = self.getSettingValueByKey("mix_finish")
+        secondMix = self.getSettingValueByKey("mix_finish")
         modelOfInterest = self.getSettingValueByKey("objectNumber")
         
         #get layer height
@@ -144,20 +138,18 @@ class ColorMix(Script):
                     break
             if layerHeight != 0:
                 break
-
+        
+        #default layerHeight if not found
+        if layerHeight == 0:
+            layerHeight = .2
+            
         #get layers to use
         startLayer = 0
         endLayer = 0
         if self.getSettingValueByKey("unitsOfMeasurement") == "mm":
-            if firstHeight == 0:
-                startLayer = 0
-            else:
-                startLayer = round(firstHeight / layerHeight)
-            if secondHeight == 0:
-                endLayer = 0
-            else:
-                endLayer = round(secondHeight / layerHeight)
-        else:  #layer height
+            startLayer = round(firstHeight / layerHeight)
+            endLayer = round(secondHeight / layerHeight)
+        else:  #layer height shifts down by one for g-code
             if firstHeight <= 0:
                 firstHeight = 1
             if secondHeight <= 0:
@@ -169,7 +161,7 @@ class ColorMix(Script):
             endLayer = startLayer
             firstExtruderIncrements = 0
         else:  #blend
-            firstExtruderIncrements = (SecondMix - firstMix) / (endLayer - startLayer)
+            firstExtruderIncrements = (secondMix - firstMix) / (endLayer - startLayer)
         firstExtruderValue = 0
         index = 0
 
