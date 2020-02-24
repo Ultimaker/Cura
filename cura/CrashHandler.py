@@ -10,7 +10,7 @@ import os.path
 import uuid
 import json
 import locale
-from typing import cast
+from typing import cast, Any
 
 try:
     from sentry_sdk.hub import Hub
@@ -87,12 +87,13 @@ class CrashHandler:
 
     @staticmethod
     def pruneSensitiveData(obj: Any) -> Any:
-        if type(obj) is list:
-            return [CrashHandler.pruneSensitiveData(item) for item in obj]
-        if type(obj) is dict:
-            return {k: CrashHandler.pruneSensitiveData(v) for k, v in obj.items()}
-        if type(obj) is str:
+        if isinstance(obj, str):
             return obj.replace(home_dir, "<user_home>")
+        if isinstance(obj, list):
+            return [CrashHandler.pruneSensitiveData(item) for item in obj]
+        if isinstance(obj, dict):
+            return {k: CrashHandler.pruneSensitiveData(v) for k, v in obj.items()}
+
         return obj
 
     @staticmethod
