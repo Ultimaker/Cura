@@ -412,12 +412,12 @@ msgstr "Specifica se usare comandi di retrazione firmware (G10/G11) anziché uti
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
-msgstr ""
+msgstr "Condivisione del riscaldatore da parte degli estrusori"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr ""
+msgstr "Indica se gli estrusori condividono un singolo riscaldatore piuttosto che avere ognuno il proprio."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1936,22 +1936,22 @@ msgstr "Le aree del rivestimento esterno inferiori a questa non vengono prolunga
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
-msgstr ""
+msgstr "Spessore del supporto del bordo del rivestimento"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness description"
 msgid "The thickness of the extra infill that supports skin edges."
-msgstr ""
+msgstr "Spessore del riempimento supplementare che supporta i bordi del rivestimento."
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers label"
 msgid "Skin Edge Support Layers"
-msgstr ""
+msgstr "Layer di supporto del bordo del rivestimento"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
-msgstr ""
+msgstr "Numero di layer di riempimento che supportano i bordi del rivestimento."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2146,12 +2146,12 @@ msgstr "La velocità massima di retrazione del filamento prima che si rompa dura
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature label"
 msgid "Break Preparation Temperature"
-msgstr ""
+msgstr "Temperatura di preparazione alla rottura"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature description"
 msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
-msgstr ""
+msgstr "La temperatura utilizzata per scaricare il materiale. deve essere più o meno uguale alla massima temperatura di stampa possibile."
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
@@ -2186,62 +2186,62 @@ msgstr "La temperatura a cui il filamento viene rotto, con una rottura netta."
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
-msgstr ""
+msgstr "Velocità di svuotamento dello scarico"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
-msgstr ""
+msgstr "Lunghezza di svuotamento dello scarico"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End Of Filament Purge Speed"
-msgstr ""
+msgstr "Velocità di svuotamento della fine del filamento"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End Of Filament Purge Length"
-msgstr ""
+msgstr "Lunghezza di svuotamento della fine del filamento"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
 msgid "Maximum Park Duration"
-msgstr ""
+msgstr "Durata di posizionamento massima"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
-msgstr ""
+msgstr "Fattore di spostamento senza carico"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Valore interno della Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -4320,12 +4320,13 @@ msgstr "Corrisponde al numero di linee utilizzate per un brim. Più linee brim m
 #: fdmprinter.def.json
 msgctxt "brim_gap label"
 msgid "Brim Distance"
-msgstr ""
+msgstr "Distanza del Brim"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr ""
+msgstr "Distanza orizzontale tra la linea del primo brim e il profilo del primo layer della stampa. Un piccolo interstizio può semplificare la rimozione del brim"
+" e allo stesso tempo fornire dei vantaggi termici."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4945,7 +4946,9 @@ msgstr "Sequenza di stampa"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr ""
+msgstr "Indica se stampare tutti i modelli un layer alla volta o se attendere di terminare un modello prima di passare al successivo. La modalità \"uno per volta\""
+" è possibile solo se a) è abilitato solo un estrusore b) tutti i modelli sono separati in modo tale che l'intera testina di stampa possa muoversi tra di"
+" essi e che tutti i modelli siano più bassi della distanza tra l'ugello e gli assi X/Y. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5565,12 +5568,12 @@ msgstr "Distorsione (jitter) casuale durante la stampa della parete esterna, cos
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only label"
 msgid "Fuzzy Skin Outside Only"
-msgstr ""
+msgstr "Fuzzy Skin solo all'esterno"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
-msgstr ""
+msgstr "Distorce solo i profili delle parti, non i fori di queste."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5974,12 +5977,13 @@ msgstr "Se una zona di rivestimento esterno è supportata per meno di questa per
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density label"
 msgid "Bridge Sparse Infill Max Density"
-msgstr ""
+msgstr "Densità massima del riempimento rado del Bridge"
 
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr ""
+msgstr "Densità massima del riempimento considerato rado. Il rivestimento esterno sul riempimento rado è considerato non supportato; pertanto potrebbe essere trattato"
+" come rivestimento esterno ponte."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6149,7 +6153,9 @@ msgstr "Pulitura ugello tra gli strati"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Indica se includere nel G-Code la pulitura ugello tra i layer (massimo 1 per layer). L'attivazione di questa impostazione potrebbe influenzare il comportamento"
+" della retrazione al cambio layer. Utilizzare le impostazioni di retrazione per pulitura per controllare la retrazione in corrispondenza dei layer in cui"
+" sarà in funzione lo script di pulitura."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6159,7 +6165,8 @@ msgstr "Volume di materiale tra le operazioni di pulitura"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr ""
+msgstr "Il massimo volume di materiale che può essere estruso prima di iniziare un'altra operazione di pulitura ugello. Se questo valore è inferiore al volume"
+" del materiale richiesto in un layer, l'impostazione non ha effetto in questo layer, vale a dire che si limita a una pulitura per layer."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6214,7 +6221,7 @@ msgstr "Indica la velocità alla quale il filamento viene retratto durante un mo
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Wipe Retraction Prime Speed"
-msgstr ""
+msgstr "Velocità di pulitura retrazione"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6234,12 +6241,13 @@ msgstr "Pausa dopo ripristino."
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop"
-msgstr ""
+msgstr "Pulitura Z Hop"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "Durante la pulizia, il piano di stampa viene abbassato per creare uno spazio tra l'ugello e la stampa. Questo impedisce l'urto dell'ugello sulla stampa"
+" durante gli spostamenti, riducendo la possibilità di far cadere la stampa dal piano."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"

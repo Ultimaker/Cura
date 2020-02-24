@@ -167,23 +167,23 @@ msgctxt "@info:generic"
 msgid ""
 "\n"
 "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "\nХотите синхронизировать пакеты материалов и программного обеспечения со своей учетной записью?"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:94
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:90
 msgctxt "@info:title"
 msgid "Changes detected from your Ultimaker account"
-msgstr ""
+msgstr "В вашей учетной записи Ultimaker обнаружены изменения"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:96
 msgctxt "@action:button"
 msgid "Sync"
-msgstr ""
+msgstr "Синхронизация"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
 msgid "Decline"
-msgstr ""
+msgstr "Отклонить"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:10
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/UserAgreementContent.qml:56
@@ -199,24 +199,24 @@ msgstr "Лицензионное соглашение плагина"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/LicensePresenter.py:30
 msgctxt "@button"
 msgid "Decline and remove from account"
-msgstr ""
+msgstr "Отклонить и удалить из учетной записи"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/SyncOrchestrator.py:71
 msgctxt "@info:generic"
 msgid "{} plugins failed to download"
-msgstr ""
+msgstr "Встраиваемые модули ({} шт.) не загружены"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:86
 msgctxt "@info:generic"
 msgid ""
 "\n"
 "Syncing..."
-msgstr ""
+msgstr "\nСинхронизация..."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/src/CloudSync/RestartApplicationPresenter.py:18
 msgctxt "@info:generic"
 msgid "You need to quit and restart {} before changes have effect."
-msgstr ""
+msgstr "Для активации изменений вам потребуется завершить работу программного обеспечения {} и перезапустить его."
 
 #: /home/ruben/Projects/Cura/plugins/AMFReader/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -698,7 +698,7 @@ msgstr "Файл X3D"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:119
 msgctxt "@info:status"
 msgid "Cura does not accurately display layers when Wire Printing is enabled."
-msgstr ""
+msgstr "При печати через кабель Cura отображает слои неточно."
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:120
 msgctxt "@info:title"
@@ -708,12 +708,12 @@ msgstr "Вид моделирования"
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:status"
 msgid "Nothing is shown because you need to slice first."
-msgstr ""
+msgstr "Ничего не отображается, поскольку сначала нужно выполнить нарезку на слои."
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationView.py:121
 msgctxt "@info:title"
 msgid "No layers to show"
-msgstr ""
+msgstr "Нет слоев для отображения"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/__init__.py:15
 msgctxt "@item:inlistbox"
@@ -800,17 +800,17 @@ msgstr "Настройка параметров..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:645
 msgctxt "@info:progress"
 msgid "Initializing Active Machine..."
-msgstr ""
+msgstr "Инициализация активной машины..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:767
 msgctxt "@info:progress"
 msgid "Initializing machine manager..."
-msgstr ""
+msgstr "Инициализация диспетчера машин..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:781
 msgctxt "@info:progress"
 msgid "Initializing build volume..."
-msgstr ""
+msgstr "Инициализация объема печати..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:843
 msgctxt "@info:progress"
@@ -825,7 +825,7 @@ msgstr "Загрузка интерфейса..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:883
 msgctxt "@info:progress"
 msgid "Initializing engine..."
-msgstr ""
+msgstr "Инициализация ядра..."
 
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1176
 #, python-format
@@ -1159,12 +1159,12 @@ msgstr "Версия Cura"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:201
 msgctxt "@label"
 msgid "Cura language"
-msgstr ""
+msgstr "Язык Cura"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:202
 msgctxt "@label"
 msgid "OS language"
-msgstr ""
+msgstr "Язык ОС"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:203
 msgctxt "@label Type of platform"
@@ -1388,7 +1388,7 @@ msgstr "Не могу найти место"
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:68
 msgctxt "@message"
 msgid "The provided state is not correct."
-msgstr ""
+msgstr "Указано неверное состояние."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationRequestHandler.py:79
 msgctxt "@message"
@@ -1966,7 +1966,7 @@ msgstr "Видимые параметры"
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:42
 msgctxt "@action:inmenu"
 msgid "Collapse All Categories"
-msgstr ""
+msgstr "Свернуть все категории"
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/SettingVisibilityPresetsMenu.qml:51
 msgctxt "@action:inmenu"
@@ -2915,9 +2915,9 @@ msgstr "Экспериментальное"
 msgctxt "@label %1 is filled in with the type of a profile. %2 is filled with a list of numbers (eg '1' or '1, 2')"
 msgid "There is no %1 profile for the configuration in extruder %2. The default intent will be used instead"
 msgid_plural "There is no %1 profile for the configurations in extruders %2. The default intent will be used instead"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Нет %1 профиля для конфигураций в экструдерах %2. Вместо этого будет использоваться функция по умолчанию"
+msgstr[1] "Нет %1 профилей для конфигураций в экструдерах %2. Вместо этого будет использоваться функция по умолчанию"
+msgstr[2] "Нет %1 профилей для конфигураций в экструдерах %2. Вместо этого будет использоваться функция по умолчанию"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"
@@ -3113,7 +3113,7 @@ msgstr "Войти"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window"
 msgid "About "
-msgstr ""
+msgstr "Сведения "
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -3545,7 +3545,7 @@ msgstr "Управление материалами..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu"
 msgid "Add more materials from Marketplace"
-msgstr ""
+msgstr "Добавить больше материалов из Магазина"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:202
 msgctxt "@action:inmenu menubar:profile"
@@ -3791,28 +3791,29 @@ msgstr "Светлые выше"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:149
 msgctxt "@info:tooltip"
 msgid "For lithophanes a simple logarithmic model for translucency is available. For height maps the pixel values correspond to heights linearly."
-msgstr ""
+msgstr "Для литофании предусмотрена простая логарифмическая модель светопроходимости. В картах высот значения пикселей линейно соответствуют высотам."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 msgctxt "@item:inlistbox"
 msgid "Linear"
-msgstr ""
+msgstr "Линейный"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:161
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:172
 msgctxt "@item:inlistbox"
 msgid "Translucency"
-msgstr ""
+msgstr "Светопроходимость"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:171
 msgctxt "@info:tooltip"
 msgid "The percentage of light penetrating a print with a thickness of 1 millimeter. Lowering this value increases the contrast in dark regions and decreases the contrast in light regions of the image."
-msgstr ""
+msgstr "Процент света, проникающего в отпечаток толщиной 1 миллиметр. Если уменьшить это значение, контрастность в темных областях изображения увеличится, а в"
+" светлых — уменьшится."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:177
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
-msgstr ""
+msgstr "Проходимость через 1 мм (%)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
@@ -3968,7 +3969,7 @@ msgstr "Количество экструдеров"
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:341
 msgctxt "@label"
 msgid "Shared Heater"
-msgstr ""
+msgstr "Общий нагреватель"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsPrinterTab.qml:367
 msgctxt "@title:label"
@@ -4102,12 +4103,12 @@ msgstr "Рекомендуемые"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:86
 msgctxt "@info:tooltip"
 msgid "Go to Web Marketplace"
-msgstr ""
+msgstr "Перейти в интернет-магазин"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDownloadsShowcase.qml:42
 msgctxt "@label"
 msgid "Search materials"
-msgstr ""
+msgstr "Поиск материалов"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:46
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxProgressButton.qml:20
@@ -4149,27 +4150,27 @@ msgstr "Установлено"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:14
 msgctxt "@title"
 msgid "Changes from your account"
-msgstr ""
+msgstr "Изменения в вашей учетной записи"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:23
 msgctxt "@button"
 msgid "Dismiss"
-msgstr ""
+msgstr "Отклонить"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:52
 msgctxt "@label"
 msgid "The following packages will be added:"
-msgstr ""
+msgstr "Будут добавлены следующие пакеты:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/CompatibilityDialog.qml:95
 msgctxt "@label"
 msgid "The following packages can not be installed because of an incompatible Cura version:"
-msgstr ""
+msgstr "Следующие пакеты невозможно установить из-за несовместимой версии Cura:"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxLicenseDialog.qml:36
 msgctxt "@label"
 msgid "You need to accept the license to install the package"
-msgstr ""
+msgstr "Для установки пакета необходимо принять лицензию"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/dialogs/ToolboxConfirmUninstallResetDialog.qml:20
 msgctxt "@title:window"
@@ -4224,7 +4225,7 @@ msgstr "Загрузки"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/WelcomePage.qml:31
 msgctxt "@description"
 msgid "Get plugins and materials verified by Ultimaker"
-msgstr ""
+msgstr "Получите встраиваемые модули и материалы, утвержденные Ultimaker"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxDownloadsPage.qml:33
 msgctxt "@label"
@@ -5267,12 +5268,12 @@ msgstr "Обновление версии 3.4 до 3.5"
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.4 to Cura 4.5."
-msgstr ""
+msgstr "Обновляет конфигурации Cura 4.4 до Cura 4.5."
 
 #: VersionUpgrade/VersionUpgrade44to45/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.4 to 4.5"
-msgstr ""
+msgstr "Обновление версии 4.4 до 4.5"
 
 #: VersionUpgrade/VersionUpgrade33to34/plugin.json
 msgctxt "description"
@@ -5577,12 +5578,12 @@ msgstr "Средство проверки моделей"
 #: SentryLogger/plugin.json
 msgctxt "description"
 msgid "Logs certain events so that they can be used by the crash reporter"
-msgstr ""
+msgstr "Регистрирует определенные события в журнале, чтобы их можно было использовать в отчетах об аварийном завершении работы"
 
 #: SentryLogger/plugin.json
 msgctxt "name"
 msgid "Sentry Logger"
-msgstr ""
+msgstr "Контрольный журнал"
 
 #: GCodeGzWriter/plugin.json
 msgctxt "description"
