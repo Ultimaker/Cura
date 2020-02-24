@@ -161,7 +161,6 @@ class CrashHandler:
         layout.addWidget(self._informationWidget())
         layout.addWidget(self._exceptionInfoWidget())
         layout.addWidget(self._logInfoWidget())
-        layout.addWidget(self._userDescriptionWidget())
         layout.addWidget(self._buttonsWidget())
 
     def _close(self):
@@ -374,21 +373,6 @@ class CrashHandler:
 
         return group
 
-    def _userDescriptionWidget(self):
-        group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
-                                     " (Note: Developers may not speak your language, please use English if possible)"))
-        layout = QVBoxLayout()
-
-        # When sending the report, the user comments will be collected
-        self.user_description_text_area = QTextEdit()
-        self.user_description_text_area.setFocus(True)
-
-        layout.addWidget(self.user_description_text_area)
-        group.setLayout(layout)
-
-        return group
-
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
         buttons.addButton(QDialogButtonBox.Close)
@@ -403,9 +387,6 @@ class CrashHandler:
         return buttons
 
     def _sendCrashReport(self):
-        # Before sending data, the user comments are stored
-        self.data["user_info"] = self.user_description_text_area.toPlainText()
-
         if with_sentry_sdk:
             try:
                 hub = Hub.current
