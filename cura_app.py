@@ -8,6 +8,13 @@ import faulthandler
 import os
 import sys
 
+# Workaround for a race condition on certain systems where there
+# is a race condition between Arcus and PyQt. Importing Arcus
+# first seems to prevent Sip from going into a state where it
+# tries to create PyQt objects on a non-main thread.
+import Arcus  # @UnusedImport
+import Savitar  # @UnusedImport
+
 from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
@@ -168,12 +175,7 @@ if sys.stderr:
 else:
     faulthandler.enable(file = sys.stdout, all_threads = True)
 
-# Workaround for a race condition on certain systems where there
-# is a race condition between Arcus and PyQt. Importing Arcus
-# first seems to prevent Sip from going into a state where it
-# tries to create PyQt objects on a non-main thread.
-import Arcus #@UnusedImport
-import Savitar #@UnusedImport
+
 from cura.CuraApplication import CuraApplication
 
 
