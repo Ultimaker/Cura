@@ -169,6 +169,9 @@ class FlavorParser:
         # A threshold is set to avoid weird paths in the GCode
         if line_width > 1.2:
             return 0.35
+        # Prevent showing infinitely wide lines
+        if line_width < 0.0:
+            return 0.0
         return line_width
 
     def _gCode0(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
