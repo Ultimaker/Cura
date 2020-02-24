@@ -112,24 +112,29 @@ class SimulationPass(RenderPass):
 
                 # Render all layers below a certain number as line mesh instead of vertices.
                 if self._layer_view._current_layer_num > -1 and ((not self._layer_view._only_show_top_layers) or (not self._layer_view.getCompatibilityMode())):
-                    start = self._layer_view.start_elements_index
-                    end = self._layer_view.end_elements_index
-                    index = self._layer_view._current_path_num
-                    offset = 0
-                    layer = layer_data.getLayer(self._layer_view._current_layer_num)
-                    if layer is None:
-                        continue
-                    for polygon in layer.polygons:
-                        # The size indicates all values in the two-dimension array, and the second dimension is
-                        # always size 3 because we have 3D points.
-                        if index >= polygon.data.size // 3 - offset:
-                            index -= polygon.data.size // 3 - offset
-                            offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
-                            continue
-                        # The head position is calculated and translated
-                        head_position = Vector(polygon.data[index + offset][0], polygon.data[index + offset][1],
-                                               polygon.data[index + offset][2]) + node.getWorldPosition()
-                        break
+                    start = 0
+                    end = 0
+                    element_counts = layer_data.getElementCounts()
+                    for layer in sorted(element_counts.keys()):
+                        # In the current layer, we show just the indicated paths
+                        if layer == self._layer_view._current_layer_num:
+                            # We look for the position of the head, searching the point of the current path
+                            index = self._layer_view._current_path_num
+                            offset = 0
+                            for polygon in layer_data.getLayer(layer).polygons:
+                                # The size indicates all values in the two-dimension array, and the second dimension is
+                                # always size 3 because we have 3D points.
+                                if index >= polygon.data.size // 3 - offset:
+                                    index -= polygon.data.size // 3 - offset
+                                    offset = 1  # This is to avoid the first point when there is more than one polygon, since has the same value as the last point in the previous polygon
+                                    continue
+                                # The head position is calculated and translated
+                                head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
+                                break
+                            break
+                        if self._layer_view._minimum_layer_num > layer:
+                            start += element_counts[layer]
+                        end += element_counts[layer]
 
                     # Calculate the range of paths in the last layer
                     current_layer_start = end
