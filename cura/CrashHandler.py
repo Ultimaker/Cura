@@ -86,7 +86,7 @@ class CrashHandler:
         self._createDialog()
 
     @staticmethod
-    def pruneSensitiveData(obj):
+    def pruneSensitiveData(obj: Any) -> Any:
         if type(obj) is list:
             return [CrashHandler.pruneSensitiveData(item) for item in obj]
         if type(obj) is dict:
