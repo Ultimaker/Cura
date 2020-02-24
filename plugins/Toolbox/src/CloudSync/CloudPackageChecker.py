@@ -90,14 +90,14 @@ class CloudPackageChecker(QObject):
         Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
-            "\nDo you want to sync material and software packages with your account?"),
-            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ),
-            lifetime=0)
+            "Do you want to sync material and software packages with your account?"),
+            title = self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ),
+            lifetime = 0)
         sync_message.addAction("sync",
-                               name=self._i18n_catalog.i18nc("@action:button", "Sync"),
-                               icon="",
-                               description="Sync your Cloud subscribed packages to your local environment.",
-                               button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+                               name = self._i18n_catalog.i18nc("@action:button", "Sync"),
+                               icon = "",
+                               description = "Sync your Cloud subscribed packages to your local environment.",
+                               button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         sync_message.actionTriggered.connect(self._onSyncButtonClicked)
         sync_message.show()
 
