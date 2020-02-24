@@ -238,7 +238,7 @@ class FlavorParser:
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
-            self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
+            self._extrusion_length_offset[self._extruder_number] = position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
             self._previous_extrusion_value = params.e
         else:
