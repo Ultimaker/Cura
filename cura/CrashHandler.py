@@ -10,7 +10,7 @@ import os.path
 import uuid
 import json
 import locale
-from typing import cast
+from typing import cast, Any
 
 try:
     from sentry_sdk.hub import Hub
@@ -32,6 +32,8 @@ from UM.Resources import Resources
 from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
+home_dir = os.path.expanduser("~")
+
 
 MYPY = False
 if MYPY:
@@ -82,6 +84,21 @@ class CrashHandler:
 
         self.dialog = QDialog()
         self._createDialog()
+
+    @staticmethod
+    def pruneSensitiveData(obj: Any) -> Any:
+        if isinstance(obj, str):
+            return obj.replace(home_dir, "<user_home>")
+        if isinstance(obj, list):
+            return [CrashHandler.pruneSensitiveData(item) for item in obj]
+        if isinstance(obj, dict):
+            return {k: CrashHandler.pruneSensitiveData(v) for k, v in obj.items()}
+
+        return obj
+
+    @staticmethod
+    def sentryBeforeSend(event, hint):
+        return CrashHandler.pruneSensitiveData(event)
 
     def _createEarlyCrashDialog(self):
         dialog = QDialog()
