@@ -11,6 +11,7 @@ import sys
 from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
+from cura.CrashHandler import CrashHandler
 
 try:
     import sentry_sdk
@@ -42,8 +43,9 @@ if with_sentry_sdk:
             sentry_env = "nightly"
     except IndexError:
         pass
-    
+
     sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
+                    before_send = CrashHandler.sentry_before_send,
                     environment = sentry_env,
                     release = "cura%s" % ApplicationMetadata.CuraVersion,
                     default_integrations = False,

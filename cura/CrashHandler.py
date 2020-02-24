@@ -32,6 +32,8 @@ from UM.Resources import Resources
 from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
+home_dir = os.path.expanduser("~")
+
 
 MYPY = False
 if MYPY:
@@ -82,6 +84,20 @@ class CrashHandler:
 
         self.dialog = QDialog()
         self._createDialog()
+
+    @staticmethod
+    def pruneSensitiveData(obj):
+        if type(obj) is list:
+            return [CrashHandler.pruneSensitiveData(item) for item in obj]
+        if type(obj) is dict:
+            return {k: CrashHandler.pruneSensitiveData(v) for k, v in obj.items()}
+        if type(obj) is str:
+            return obj.replace(home_dir, "<user_home>")
+        return obj
+
+    @staticmethod
+    def sentry_before_send(event, hint):
+        return CrashHandler.pruneSensitiveData(event)
 
     def _createEarlyCrashDialog(self):
         dialog = QDialog()
