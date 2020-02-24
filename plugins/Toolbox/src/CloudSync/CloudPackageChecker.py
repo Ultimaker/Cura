@@ -91,7 +91,8 @@ class CloudPackageChecker(QObject):
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
             "\nDo you want to sync material and software packages with your account?"),
-            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ),
+            lifetime=0)
         sync_message.addAction("sync",
                                name=self._i18n_catalog.i18nc("@action:button", "Sync"),
                                icon="",
