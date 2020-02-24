@@ -45,7 +45,7 @@ if with_sentry_sdk:
         pass
 
     sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
-                    before_send = CrashHandler.sentry_before_send,
+                    before_send = CrashHandler.sentryBeforeSend,
                     environment = sentry_env,
                     release = "cura%s" % ApplicationMetadata.CuraVersion,
                     default_integrations = False,

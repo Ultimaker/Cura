@@ -97,7 +97,7 @@ class CrashHandler:
         return obj
 
     @staticmethod
-    def sentry_before_send(event, hint):
+    def sentryBeforeSend(event, hint):
         return CrashHandler.pruneSensitiveData(event)
 
     def _createEarlyCrashDialog(self):
