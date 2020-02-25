@@ -5596,9 +5596,9 @@ msgstr "固件更新检查程序"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "发现有新打印机连接到您的帐户。您可以在已发现的打印机列表中查找新连接的打印机。"
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "不再显示此消息"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "不再显示此消息"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"

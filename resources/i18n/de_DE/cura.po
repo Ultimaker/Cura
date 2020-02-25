@@ -5602,9 +5602,9 @@ msgstr "Firmware-Update-Prüfer"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "Es wurden neue Drucker gefunden, die Sie zu Ihrem Konto hinzufügen können. Sie finden diese in der Liste gefundener Drucker."
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "Diese Meldung nicht mehr anzeigen"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "Diese Meldung nicht mehr anzeigen"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"

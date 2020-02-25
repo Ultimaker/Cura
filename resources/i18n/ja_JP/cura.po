@@ -5597,9 +5597,9 @@ msgstr "ファームウェアアップデートチェッカー"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "アカウントに接続された新しいプリンターが見つかりました。検出されたプリンターのリストで確認できます。"
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "今後このメッセージを表示しない"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "今後このメッセージを表示しない"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"

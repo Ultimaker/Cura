@@ -5592,9 +5592,9 @@ msgstr "펌웨어 업데이트 검사기"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "새 프린터가 계정에 연결되어 있습니다. 발견한 프린터를 목록에서 찾을 수 있습니다."
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "다시 메시지 표시 안 함"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "다시 메시지 표시 안 함"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"
