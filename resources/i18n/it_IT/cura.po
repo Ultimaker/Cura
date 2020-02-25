@@ -5605,9 +5605,9 @@ msgstr "Controllo aggiornamento firmware"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "Sono state trovate nuove stampanti collegate al tuo account. Puoi vederle nell'elenco delle stampanti rilevate."
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "Non mostrare nuovamente questo messaggio"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "Non mostrare nuovamente questo messaggio"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"

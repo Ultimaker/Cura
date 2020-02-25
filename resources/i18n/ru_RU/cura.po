@@ -5614,9 +5614,9 @@ msgstr "Проверка обновлений"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "Обнаружены новые принтеры, подключенные к вашей учетной записи; вы можете найти их в списке обнаруженных принтеров."
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "Больше не показывать это сообщение"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "Больше не показывать это сообщение"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"

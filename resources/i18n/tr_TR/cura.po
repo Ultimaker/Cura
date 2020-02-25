@@ -5605,9 +5605,9 @@ msgstr "Bellenim Güncelleme Denetleyicisi"
 #~ msgid "New printers have been found connected to your account, you can find them in your list of discovered printers."
 #~ msgstr "Hesabınıza bağlı yeni yazıcılar bulundu. Keşfedilen yazıcılar listenizde bunları görüntüleyebilirsiniz."
 
-#~ msgctxt "@info:option_text"
-#~ msgid "Do not show this message again"
-#~ msgstr "Bu mesajı bir daha gösterme"
+msgctxt "@info:option_text"
+msgid "Do not show this message again"
+msgstr "Bu mesajı bir daha gösterme"
 
 #~ msgctxt "@info:status"
 #~ msgid "Cura does not accurately display layers when Wire Printing is enabled"
