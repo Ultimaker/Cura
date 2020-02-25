@@ -1,6 +1,4 @@
 [4.5.0]
-Usability
-----
 * Ultimaker Marketplace sync.
 Plugins and print profiles downloaded from the Ultimaker Marketplace will now become associated with your Ultimaker account when logged in. If changes are detected in your installation after logging in, an option to sync a list of available packages will become available. You can also add packages to your installation using the web-based Ultimaker Marketplace.
 
@@ -10,8 +8,6 @@ The layer slider number in preview mode is now at the top, instead of on the lef
 * Project name in window title.
 In the same way your browser shows the page title next to the name of the application, Cura now shows the name of the loaded file in the title bar.
 
-Slicing enhancements
-----
 * Fuzzy skin outside only.
 When enabled, this option prevents fuzzy skin inside holes. This way you can still fit your prints around other things – useful for printing grips or similar applications.
 
@@ -42,8 +38,6 @@ Loading an image file into Cura creates a heightmap that can be used to make lit
 * Support for alpha channels in ImageReader.
 Added support for images with transparency, such as PNGs. When using an image with transparency, the contours of the transparent layer will be followed. Contributed by BagelOrb.
 
-Performance improvements
-----
 * Speed up plugin loading.
 fieldOfView has contributed a code optimization to load plugins faster on start. Mileage may vary, but Cura’s startup speed should see a marked improvement.
 
@@ -62,22 +56,19 @@ A contribution from fieldOfview has fixed an issue where the jobname in the bott
 * Property checks on instance containers.
 A new speed optimization for reading setting values from profiles.
 
-New printer definitions
-----
-Native support has been added for the following third-party printers. Find them in the ‘Add printer’ list.
-* BeamUp S. Contributed by Beamup3D.
-* Anet3D. Contributed by springtiger.
-* Lotmaxx. Contributed by sm3dp.
-* eMotionTech. KOUBeMT has contributed updates to eMotionTech materials and the Strateo3D printer.
-* HMS434. Updates contributed by maukcc.
-* 3D Tech. Contributed by dvdsouza.
-* Skriware 2. Contributed by skriDude.
-* Leapfrog Bolt. Contributed by VincentRiemens.
-* Makeblock mCreate. Contributed by pkz0313.
-* Voron2. Contributed by Fulg.
+* Native support has been added for the following third-party printers. Find them in the ‘Add printer’ list.
+- BeamUp S. Contributed by Beamup3D.
+- Anet3D. Contributed by springtiger.
+- Lotmaxx. Contributed by sm3dp.
+- eMotionTech. KOUBeMT has contributed updates to eMotionTech materials and the Strateo3D printer.
+- HMS434. Updates contributed by maukcc.
+- 3D Tech. Contributed by dvdsouza.
+- Skriware 2. Contributed by skriDude.
+- Leapfrog Bolt. Contributed by VincentRiemens.
+- Makeblock mCreate. Contributed by pkz0313.
+- Voron2. Contributed by Fulg.
 
-Bug fixes
-----
+* Bug fixes
 - Fixed a bug in some Windows graphics drivers that would prevent Cura from starting.
 - Round interpolated Z values when spiralizing. Contributed by SmartAvionics.
 - Corrected build plate temperature limits for Ultimaker S-line printers.
