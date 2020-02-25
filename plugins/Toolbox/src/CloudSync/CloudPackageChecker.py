@@ -37,11 +37,11 @@ class CloudPackageChecker(QObject):
     def _onAppInitialized(self) -> None:
         self._package_manager = self._application.getPackageManager()
         # initial check
-        self._loginStateChanged()
+        self._onLoginStateChanged()
         # check again whenever the login state changes
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._loginStateChanged)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
 
-    def _loginStateChanged(self) -> None:
+    def _onLoginStateChanged(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserSubscribedPackages()
         elif self._message is not None:
