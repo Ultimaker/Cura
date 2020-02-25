@@ -15,6 +15,8 @@ import sys
 import Arcus  # @UnusedImport
 import Savitar  # @UnusedImport
 
+from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
+
 from UM.Platform import Platform
 from cura import ApplicationMetadata
 from cura.ApplicationMetadata import CuraAppName
@@ -208,6 +210,11 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
     os.environ["LD_LIBRARY_PATH"] = ":".join(path_list)
     import trimesh.exchange.load
     os.environ["LD_LIBRARY_PATH"] = old_env
+
+if ApplicationMetadata.CuraDebugMode:
+    ssl_conf = QSslConfiguration.defaultConfiguration()
+    ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)
+    QSslConfiguration.setDefaultConfiguration(ssl_conf)
 
 app = CuraApplication()
 app.run()
