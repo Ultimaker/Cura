@@ -12,6 +12,7 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkRepl
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Extension import Extension
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from UM.i18n import i18nCatalog
 from UM.Version import Version
 
@@ -54,7 +55,7 @@ class Toolbox(QObject, Extension):
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
-        self._scope = UltimakerCloudScope(application)  # type: UltimakerCloudScope
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(application))  # type: JsonDecoratorScope
 
         self._request_urls = {}  # type: Dict[str, str]
         self._to_update = []  # type: List[str] # Package_ids that are waiting to be updated

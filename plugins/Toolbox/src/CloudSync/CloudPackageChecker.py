@@ -11,6 +11,7 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication, ApplicationMetadata
 from ..CloudApiModel import CloudApiModel
 from .SubscribedPackagesModel import SubscribedPackagesModel
@@ -18,13 +19,14 @@ from ..UltimakerCloudScope import UltimakerCloudScope
 
 from typing import List, Dict, Any
 
+
 class CloudPackageChecker(QObject):
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
         self.discrepancies = Signal()  # Emits SubscribedPackagesModel
         self._application = application  # type: CuraApplication
-        self._scope = UltimakerCloudScope(application)
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(application))
         self._model = SubscribedPackagesModel()
 
         self._application.initializationFinished.connect(self._onAppInitialized)
