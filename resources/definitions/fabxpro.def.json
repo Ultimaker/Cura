@@ -7,7 +7,7 @@
         "author": "FabX",
         "manufacturer": "FabX",
         "file_formats": "text/x-gcode",
-        "platform": "fabxpro_platform.stl",
+        "platform": "fabxpro_platform.STL",
         "has_materials": true,
         "has_machine_quality": true,
         "machine_extruder_trains":
@@ -30,7 +30,9 @@
         "machine_center_is_zero": {
             "default_value": false
         },
-	"machine_heated_bed": {	"default_value": true },
+	"machine_heated_bed": {
+	    "default_value": true
+	},
         "machine_head_with_fans_polygon":
         {
             "default_value": [
