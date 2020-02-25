@@ -26,6 +26,7 @@ class CloudPackageChecker(QObject):
         self._application = application  # type: CuraApplication
         self._scope = UltimakerCloudScope(application)
         self._model = SubscribedPackagesModel()
+        self._message = None  # type: Optional[Message]
 
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
@@ -36,13 +37,16 @@ class CloudPackageChecker(QObject):
     def _onAppInitialized(self) -> None:
         self._package_manager = self._application.getPackageManager()
         # initial check
-        self._fetchUserSubscribedPackages()
+        self._loginStateChanged()
         # check again whenever the login state changes
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._loginStateChanged)
 
-    def _fetchUserSubscribedPackages(self) -> None:
+    def _loginStateChanged(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserSubscribedPackages()
+        elif self._message is not None:
+            self._message.hide()
+            self._message = None
 
     def _getUserSubscribedPackages(self) -> None:
         Logger.debug("Requesting subscribed packages metadata from server.")
@@ -103,6 +107,7 @@ class CloudPackageChecker(QObject):
                                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         sync_message.actionTriggered.connect(self._onSyncButtonClicked)
         sync_message.show()
+        self._message = sync_message
 
     def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()
