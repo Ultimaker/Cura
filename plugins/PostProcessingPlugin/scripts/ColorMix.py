@@ -36,7 +36,7 @@ class ColorMix(Script):
             "version": 2,
             "settings":
             {
-                "unitsOfMeasurement":
+                "units_of_measurement":
                 {
                     "label": "Units",
                     "description": "Input value as mm or layer number.",
@@ -44,7 +44,7 @@ class ColorMix(Script):
                     "options": {"mm":"mm","layer":"Layer"},
                     "default_value": "layer"
                 },
-                "objectNumber":
+                "object_number":
                 {
                     "label": "Object Number",
                     "description": "Select model to apply to for print one at a time print sequence. 0 = everything",
@@ -126,7 +126,7 @@ class ColorMix(Script):
         secondHeight = self.getSettingValueByKey("finish_height")
         firstMix = self.getSettingValueByKey("mix_start")
         secondMix = self.getSettingValueByKey("mix_finish")
-        modelOfInterest = self.getSettingValueByKey("objectNumber")
+        modelOfInterest = self.getSettingValueByKey("object_number")
         
         #get layer height
         layerHeight = 0
@@ -146,7 +146,7 @@ class ColorMix(Script):
         #get layers to use
         startLayer = 0
         endLayer = 0
-        if self.getSettingValueByKey("unitsOfMeasurement") == "mm":
+        if self.getSettingValueByKey("units_of_measurement") == "mm":
             startLayer = round(firstHeight / layerHeight)
             endLayer = round(secondHeight / layerHeight)
         else:  #layer height shifts down by one for g-code
@@ -180,7 +180,7 @@ class ColorMix(Script):
                 if ";LAYER:" in line:
                     layer = self.getValue(line, ";LAYER:", layer)
                     #get model number by layer 0 repeats
-                    if(layer == 0):
+                    if layer == 0:
                         modelNumber = modelNumber + 1
                     #search for layers to manipulate
                     if (layer >= startLayer) and (layer <= endLayer):
