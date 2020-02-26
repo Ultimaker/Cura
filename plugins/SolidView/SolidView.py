@@ -8,6 +8,9 @@ from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from PyQt5.QtGui import QOpenGLContext, QImage
 
+import numpy as np
+import time
+
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Color import Color
@@ -53,6 +56,9 @@ class SolidView(View):
 
         self._old_composite_shader = None
         self._old_layer_bindings = None
+
+        self._last_xray_checking_time = time.time()
+        self._xray_checking_update_time = 1.0 # seconds
 
         Application.getInstance().engineCreatedSignal.connect(self._onGlobalContainerChanged)
 
@@ -228,9 +234,21 @@ class SolidView(View):
                 if node.callDecoration("isGroup") and Selection.isSelected(node):
                     renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
-
     def endRendering(self):
-        pass
+        # check whether the xray overlay is showing badness
+        if time.time() > self._last_xray_checking_time + self._xray_checking_update_time:
+            self._last_xray_checking_time = time.time()
+            xray_img = self._xray_pass.getOutput()
+            xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
+
+            ptr = xray_img.bits()
+            ptr.setsize(xray_img.byteCount())
+            reds = np.array(ptr).reshape(xray_img.height(), xray_img.width(), 3)[:,:,0]  # Copies the data
+
+            bad_pixel_count = np.sum(np.mod(reds, 2))
+
+            if bad_pixel_count > 0:
+                Logger.log("d", "Super bad xray, man! : %d" % bad_pixel_count)
 
     def event(self, event):
         if event.type == Event.ViewActivateEvent:
