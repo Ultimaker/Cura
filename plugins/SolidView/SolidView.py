@@ -139,38 +139,49 @@ class SolidView(View):
 
         self._checkSetup()
 
-        if not self._xray_error_image:
-            self._xray_error_image = OpenGL.getInstance().createTexture()
-            texture_file = "xray_error.png"
-            try:
-                self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
-            except FileNotFoundError:
-                Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
+        if not CuraApplication.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+            self._xray_error_image = None
+            self._xray_shader = None
+            self._xray_composite_shader = None
+            if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._old_layer_bindings = None
+                self._old_composite_shader = None
+                self._xray_warning_message.hide()
+        else:
+            if not self._xray_error_image:
+                self._xray_error_image = OpenGL.getInstance().createTexture()
+                texture_file = "xray_error.png"
+                try:
+                    self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
+                except FileNotFoundError:
+                    Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
 
-        if not self._xray_shader:
-            self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
+            if not self._xray_shader:
+                self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
-        if not self._xray_composite_shader:
-            self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SolidView"), "xray_composite.shader"))
-            theme = Application.getInstance().getTheme()
-            self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-            self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
-            self._xray_composite_shader.setTexture(3, self._xray_error_image)
+            if not self._xray_composite_shader:
+                self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("SolidView"), "xray_composite.shader"))
+                theme = Application.getInstance().getTheme()
+                self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._xray_composite_shader.setTexture(3, self._xray_error_image)
 
-        if not self.getRenderer().getRenderPass("xray"):
-            # Currently the RenderPass constructor requires a size > 0
-            # This should be fixed in RenderPass's constructor.
-            self._xray_pass = XRayPass.XRayPass(1, 1)
+            if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
+                # Currently the RenderPass constructor requires a size > 0
+                # This should be fixed in RenderPass's constructor.
+                self._xray_pass = XRayPass.XRayPass(1, 1)
 
-            self.getRenderer().addRenderPass(self._xray_pass)
+                self.getRenderer().addRenderPass(self._xray_pass)
 
-            if not self._composite_pass:
-                self._composite_pass = self.getRenderer().getRenderPass("composite")
+                if not self._composite_pass:
+                    self._composite_pass = self.getRenderer().getRenderPass("composite")
 
-            self._old_layer_bindings = self._composite_pass.getLayerBindings()
-            self._composite_pass.setLayerBindings(["default", "selection", "xray"])
-            self._old_composite_shader = self._composite_pass.getCompositeShader()
-            self._composite_pass.setCompositeShader(self._xray_composite_shader)
+                self._old_layer_bindings = self._composite_pass.getLayerBindings()
+                self._composite_pass.setLayerBindings(["default", "selection", "xray"])
+                self._old_composite_shader = self._composite_pass.getCompositeShader()
+                self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
@@ -290,7 +301,8 @@ class SolidView(View):
 
 
         if event.type == Event.ViewDeactivateEvent:
-            self.getRenderer().removeRenderPass(self._xray_pass)
-            self._composite_pass.setLayerBindings(self._old_layer_bindings)
-            self._composite_pass.setCompositeShader(self._old_composite_shader)
-            self._xray_warning_message.hide()
+            if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
+                self.getRenderer().removeRenderPass(self._xray_pass)
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._xray_warning_message.hide()
