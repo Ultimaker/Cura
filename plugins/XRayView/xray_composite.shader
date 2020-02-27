@@ -50,9 +50,9 @@ fragment =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = texture2D(u_layer2, v_uvs).r * 50; // 1 / .02
-        float rest = mod(intersection_count, 2.0);
-        if (rest > 0.5 && rest < 1.5)
+        float intersection_count = texture2D(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
+        float rest = mod(intersection_count + .01, 2.0);
+        if (rest > 1.0 && rest < 1.5)
         {
             result = u_error_color;
         }
@@ -122,9 +122,9 @@ fragment41core =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = texture(u_layer2, v_uvs).r * 50; // 1 / .02
-        float rest = mod(intersection_count, 2.0);
-        if (rest > 0.5 && rest < 1.5)
+        float intersection_count = texture(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
+        float rest = mod(intersection_count + .01, 2.0);
+        if (rest > 1.0 && rest < 1.5)
         {
             result = u_error_color;
         }
