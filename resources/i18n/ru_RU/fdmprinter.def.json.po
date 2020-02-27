@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"PO-Revision-Date: 2020-02-21 15:14+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Russian <info@lionbridge.com>, Ruslan Popov <ruslan.popov@gmail.com>, Russian <info@bothof.nl>\n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: fdmprinter.def.json
@@ -413,12 +413,12 @@ msgstr "Определяет, использовать ли команды от�
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
-msgstr ""
+msgstr "Общий нагреватель экструдеров"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr ""
+msgstr "Указывает, используют ли для все экструдеры общий нагреватель или у каждого имеется отдельный."
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1937,22 +1937,22 @@ msgstr "Области оболочек уже указанного значен
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
-msgstr ""
+msgstr "Толщина опоры края оболочки"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness description"
 msgid "The thickness of the extra infill that supports skin edges."
-msgstr ""
+msgstr "Толщина дополнительного объема, который поддерживает края оболочки."
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers label"
 msgid "Skin Edge Support Layers"
-msgstr ""
+msgstr "Слои, которые поддерживают края оболочки"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
-msgstr ""
+msgstr "Количество слоев, которые поддерживают края оболочки."
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2147,12 +2147,12 @@ msgstr "Насколько быстро следует убирать матер
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature label"
 msgid "Break Preparation Temperature"
-msgstr ""
+msgstr "Температура подготовки к отламыванию"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature description"
 msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
-msgstr ""
+msgstr "Температура, используемая для выдавливания материала, должна быть примерно равна максимальной температуре при печати."
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
@@ -2187,62 +2187,62 @@ msgstr "Температура, при которой материал отло�
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
-msgstr ""
+msgstr "Скорость выдавливания заподлицо"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
-msgstr ""
+msgstr "Длина выдавливания заподлицо"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End Of Filament Purge Speed"
-msgstr ""
+msgstr "Скорость выдавливания заканчивающегося материала"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End Of Filament Purge Length"
-msgstr ""
+msgstr "Длина выдавливания заканчивающегося материала"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
 msgid "Maximum Park Duration"
-msgstr ""
+msgstr "Максимальная продолжительность парковки"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
-msgstr ""
+msgstr "Коэффициент движения без нагрузки"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Внутреннее значение Material Station"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -4321,12 +4321,12 @@ msgstr "Количество линий, используемых для печ�
 #: fdmprinter.def.json
 msgctxt "brim_gap label"
 msgid "Brim Distance"
-msgstr ""
+msgstr "Расстояние до каймы"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr ""
+msgstr "Горизонтальное расстояние между первой линией каймы и контуром первого слоя изделия. Небольшой зазор облегчит удаление каймы и позволит сохранить термические преимущества."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4946,7 +4946,7 @@ msgstr "Последовательная печать"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr ""
+msgstr "Печатать все модели послойно или ждать завершения одной модели, прежде чем переходить к следующей. Режим «один за раз» может использоваться, если а) активен только один экструдер и б) все модели разделены таким образом, что печатающая головка может двигаться между ними и все модели ниже, чем расстояние между соплом и осями X/Y. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5566,12 +5566,12 @@ msgstr "Вносит небольшое дрожание при печати в�
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only label"
 msgid "Fuzzy Skin Outside Only"
-msgstr ""
+msgstr "Только шершавая оболочка снаружи"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
-msgstr ""
+msgstr "Дрожание только контуров деталей, но не отверстий."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5975,12 +5975,12 @@ msgstr "Если поддержка области оболочки состав
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density label"
 msgid "Bridge Sparse Infill Max Density"
-msgstr ""
+msgstr "Максимальная плотность разреженного заполнения мостика"
 
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr ""
+msgstr "Максимальная плотность заполнения, считающегося разреженным. Оболочка поверх разреженного заполнения считается неподдерживаемой и, соответственно, может обрабатываться как оболочка мостика."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6150,7 +6150,7 @@ msgstr "Очистка сопла между слоями"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "Следует ли добавлять G-код очистки сопла между слоями (максимум один на слой). Включение этого параметра может повлиять на ход отката при смене слоя. Используйте параметры отката с очисткой для управления откатом на слоях, для которых используется скрипт очистки."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6160,7 +6160,7 @@ msgstr "Объем материала между очистками"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr ""
+msgstr "Максимальный объем материала, который можно выдавить перед очередной очисткой сопла. Если это значение меньше объема материала, требуемого для слоя, данная настройка в этом слое не действует (т. е. максимум одна очистка на слой)."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6215,7 +6215,7 @@ msgstr "Скорость, с которой нить будет втягиват
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Wipe Retraction Prime Speed"
-msgstr ""
+msgstr "Скорость заправки при откате с очисткой"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6235,12 +6235,12 @@ msgstr "Приостановка после отмены отката."
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop"
-msgstr ""
+msgstr "Поднятие оси Z при очистке"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "При очистке рабочий стол опускается для создания зазора между соплом и печатаемой деталью. Это предотвращает соударение сопла и печатаемой детали во время движений, снижая вероятность смещения печатаемой детали на рабочем столе."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"

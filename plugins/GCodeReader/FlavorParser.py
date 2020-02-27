@@ -169,6 +169,9 @@ class FlavorParser:
         # A threshold is set to avoid weird paths in the GCode
         if line_width > 1.2:
             return 0.35
+        # Prevent showing infinitely wide lines
+        if line_width < 0.0:
+            return 0.0
         return line_width
 
     def _gCode0(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
@@ -235,7 +238,7 @@ class FlavorParser:
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
-            self._extrusion_length_offset[self._extruder_number] += position.e[self._extruder_number] - params.e
+            self._extrusion_length_offset[self._extruder_number] = position.e[self._extruder_number] - params.e
             position.e[self._extruder_number] = params.e
             self._previous_extrusion_value = params.e
         else:
@@ -261,13 +264,13 @@ class FlavorParser:
                 try:
                     if item[0] == "X":
                         x = float(item[1:])
-                    if item[0] == "Y":
+                    elif item[0] == "Y":
                         y = float(item[1:])
-                    if item[0] == "Z":
+                    elif item[0] == "Z":
                         z = float(item[1:])
-                    if item[0] == "F":
+                    elif item[0] == "F":
                         f = float(item[1:]) / 60
-                    if item[0] == "E":
+                    elif item[0] == "E":
                         e = float(item[1:])
                 except ValueError:  # Improperly formatted g-code: Coordinates are not floats.
                     continue  # Skip the command then.

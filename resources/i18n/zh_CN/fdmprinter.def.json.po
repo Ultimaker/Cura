@@ -413,12 +413,12 @@ msgstr "是否使用固件收回命令 (G10/G11) 而不是使用 G1 命令中的
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater label"
 msgid "Extruders Share Heater"
-msgstr ""
+msgstr "挤出器共用加热器"
 
 #: fdmprinter.def.json
 msgctxt "machine_extruders_share_heater description"
 msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
-msgstr ""
+msgstr "挤出器是否共用一个加热器，而不是每个挤出器都有自己的加热器。"
 
 #: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
@@ -1937,22 +1937,22 @@ msgstr "如果皮肤区域宽度小于此值，则不会扩展。 这会避免�
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness label"
 msgid "Skin Edge Support Thickness"
-msgstr ""
+msgstr "皮肤边缘支撑厚度"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_thickness description"
 msgid "The thickness of the extra infill that supports skin edges."
-msgstr ""
+msgstr "支撑皮肤边缘的额外填充物的厚度。"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers label"
 msgid "Skin Edge Support Layers"
-msgstr ""
+msgstr "皮肤边缘支撑层数"
 
 #: fdmprinter.def.json
 msgctxt "skin_edge_support_layers description"
 msgid "The number of infill layers that supports skin edges."
-msgstr ""
+msgstr "支撑皮肤边缘的填充物的层数。"
 
 #: fdmprinter.def.json
 msgctxt "material label"
@@ -2147,12 +2147,12 @@ msgstr "耗材在回抽过程中恰好折断的回抽速率。"
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature label"
 msgid "Break Preparation Temperature"
-msgstr ""
+msgstr "断裂缓冲期温度"
 
 #: fdmprinter.def.json
 msgctxt "material_break_preparation_temperature description"
 msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
-msgstr ""
+msgstr "用于清除材料的温度，应大致等于可达到的最高打印温度。"
 
 #: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
@@ -2187,62 +2187,62 @@ msgstr "耗材在完全脱落时的温度。"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed label"
 msgid "Flush Purge Speed"
-msgstr ""
+msgstr "冲洗清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
 msgid "Flush Purge Length"
-msgstr ""
+msgstr "冲洗清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End Of Filament Purge Speed"
-msgstr ""
+msgstr "线末清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End Of Filament Purge Length"
-msgstr ""
+msgstr "线末清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
 msgid "Maximum Park Duration"
-msgstr ""
+msgstr "最长停放持续时间"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
 msgid "No Load Move Factor"
-msgstr ""
+msgstr "空载移动系数"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "Material Station internal value"
-msgstr ""
+msgstr "Material Station 内部值"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -4321,12 +4321,12 @@ msgstr "brim 所用走线数量。 更多 brim 走线可增强与打印平台的
 #: fdmprinter.def.json
 msgctxt "brim_gap label"
 msgid "Brim Distance"
-msgstr ""
+msgstr "边沿距离"
 
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr ""
+msgstr "第一条边沿线与打印件第一层轮廓之间的水平距离。较小的间隙可使边沿更容易去除，同时在散热方面仍有优势。"
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4946,7 +4946,7 @@ msgstr "打印序列"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr ""
+msgstr "是要一次一层地打印所有模型，还是要等待打印完一个模型后再继续打印下一个。如果 a) 仅启用了一个挤出器，并且 b) 分离所有模型的方式使得整个打印头可在这些模型间移动，并且所有模型都低于喷嘴与 X/Y 轴之间的距离，则可使用排队打印模式。 "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5566,12 +5566,12 @@ msgstr "在打印外墙时随机抖动，使表面具有粗糙和模糊的外观
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only label"
 msgid "Fuzzy Skin Outside Only"
-msgstr ""
+msgstr "仅外部模糊皮肤"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_outside_only description"
 msgid "Jitter only the parts' outlines and not the parts' holes."
-msgstr ""
+msgstr "仅抖动部件的轮廓，而不抖动部件的孔。"
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5975,12 +5975,12 @@ msgstr "如果受支撑的表面区域小于整个区域的这一百分比，则
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density label"
 msgid "Bridge Sparse Infill Max Density"
-msgstr ""
+msgstr "连桥稀疏填充物最大密度"
 
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr ""
+msgstr "填充物的最大密度被视为稀疏。稀疏填充物表面被视为不受支持，因此可被视为连桥表面。"
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6150,7 +6150,7 @@ msgstr "图层切换后擦拭喷嘴"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr ""
+msgstr "是否包括图层切换后擦拭喷嘴的 G-Code（每层最多 1 个）。启用此设置可能会影响图层变化时的回抽。请使用“擦拭回抽”设置来控制擦拭脚本将在其中工作的图层回抽。"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6160,7 +6160,7 @@ msgstr "擦拭之间的材料量"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr ""
+msgstr "在开始下一轮喷嘴擦拭之前可挤出的最大材料量。如果此值小于层中所需的材料量，则该设置在此层中无效，即每层仅限擦拭一次。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6215,7 +6215,7 @@ msgstr "擦拭回抽移动期间耗材回抽的速度。"
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
 msgid "Wipe Retraction Prime Speed"
-msgstr ""
+msgstr "擦拭回抽装填速度"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6235,12 +6235,12 @@ msgstr "在未回抽后暂停。"
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
 msgid "Wipe Z Hop"
-msgstr ""
+msgstr "擦拭 Z 抬升"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr ""
+msgstr "在擦拭时，构建板会降低以在喷嘴与打印件之间形成间隙。这样可防止喷嘴在行程中撞击打印件，降低从构建板上撞掉打印件的可能性。"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
