@@ -48,6 +48,10 @@ Item
                 fillMode: Image.PreserveAspectFit
                 source: details === null ? "" : (details.icon_url || "../../images/placeholder.svg")
                 mipmap: true
+                height: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
+                sourceSize.height: height
+                sourceSize.width: width
             }
         }
 

@@ -66,6 +66,8 @@ Item
             anchors.centerIn: parent
             width: UM.Theme.getSize("toolbox_thumbnail_small").width - UM.Theme.getSize("wide_margin").width
             height: UM.Theme.getSize("toolbox_thumbnail_small").height - UM.Theme.getSize("wide_margin").width
+            sourceSize.width: width
+            sourceSize.height: height
             fillMode: Image.PreserveAspectFit
             source: model.icon_url || "../../images/placeholder.svg"
             mipmap: true

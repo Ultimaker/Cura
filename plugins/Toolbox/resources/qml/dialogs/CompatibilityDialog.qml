@@ -71,6 +71,8 @@ UM.Dialog{
                                 source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
+                                sourceSize.height: height
+                                sourceSize.width: width
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }
@@ -114,6 +116,8 @@ UM.Dialog{
                                 source: model.icon_url || "../../images/placeholder.svg"
                                 height: lineHeight
                                 width: height
+                                sourceSize.height: height
+                                sourceSize.width: width
                                 mipmap: true
                                 fillMode: Image.PreserveAspectFit
                             }
