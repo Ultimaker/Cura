@@ -51,8 +51,9 @@ fragment =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = texture2D(u_layer2, v_uvs).r * 255.0;
-        if(mod(intersection_count, 2.0) >= 1.0)
+        float intersection_count = texture2D(u_layer2, v_uvs).r * 50; // 1 / .02
+        float rest = mod(intersection_count, 2.0);
+        if (rest > 0.5 && rest < 1.5)
         {
             vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
             result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);
@@ -126,8 +127,9 @@ fragment41core =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = texture(u_layer2, v_uvs).r * 255.0;
-        if(mod(intersection_count, 2.0) >= 1.0)
+        float intersection_count = texture(u_layer2, v_uvs).r * 50; // 1 / .02
+        float rest = mod(intersection_count, 2.0);
+        if (rest > 0.5 && rest < 1.5)
         {
             vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
             result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);

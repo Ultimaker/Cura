@@ -12,7 +12,7 @@ vertex =
     }
 
 fragment =
-    const lowp vec4 u_color = vec4(1.0 / 255.0, 0.0, 0.0, 1.0);
+    uniform vec4 u_color;
 
     void main()
     {
@@ -34,7 +34,8 @@ vertex41core =
 
 fragment41core =
     #version 410
-    const lowp vec4 u_color = vec4(1.0 / 255.0, 0.0, 0.0, 1.0);
+
+    uniform vec4 u_color;
 
     out vec4 frag_color;
 
@@ -44,6 +45,7 @@ fragment41core =
     }
 
 [defaults]
+u_color = [0.02, 0.02, 0.02, 1.0]
 
 [bindings]
 u_modelMatrix = model_matrix
