@@ -20,7 +20,7 @@ Column
     {
         id: profileImage
         fillMode: Image.PreserveAspectFit
-        source: "../../images/placeholder.svg"
+        source: "../../images/logobot.svg"
         anchors.horizontalCenter: parent.horizontalCenter
         width: Math.round(parent.width / 4)
     }
