@@ -325,7 +325,7 @@
 			"default_value": 1.2
 		},
 		"support_infill_sparse_thickness": {
-			"value": "0.2"
+			"value": "resolveOrValue('layer_height')"
 		},
 		"raft_surface_acceleration": {
 			"value": "250"
@@ -445,7 +445,7 @@
 			"default_value": 3
 		},
 		"infill_sparse_thickness": {
-			"value": "0.2"
+			"value": "resolveOrValue('layer_height')"
 		},
 		"support_initial_layer_line_distance": {
 			"value": "1.3333333333333333"
