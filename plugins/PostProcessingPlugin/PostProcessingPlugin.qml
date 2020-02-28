@@ -484,15 +484,36 @@ UM.Dialog
         onClicked: dialog.accept()
     }
 
-    Cura.SecondaryButton
+    Item
     {
         objectName: "postProcessingSaveAreaButton"
         visible: activeScriptsList.count > 0
         height: UM.Theme.getSize("action_button").height
         width: height
-        tooltip: catalog.i18nc("@info:tooltip", "Change active post-processing scripts")
-        onClicked: dialog.show()
-        iconSource: "postprocessing.svg"
-        fixedWidthMode: true
+
+        Cura.SecondaryButton
+        {
+            height: UM.Theme.getSize("action_button").height
+            tooltip: catalog.i18nc("@info:tooltip", "Change active post-processing scripts")
+            toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
+            onClicked: dialog.show()
+            iconSource: "postprocessing.svg"
+            fixedWidthMode: false
+        }
+
+        Cura.NotificationIcon
+        {
+            id: activeScriptCountIcon
+            visible: activeScriptsList.count > 0
+            anchors
+            {
+                top: parent.top
+                right: parent.right
+                rightMargin: (-0.5 * width) | 0
+                topMargin: (-0.5 * height) | 0
+            }
+
+            labelText: activeScriptsList.count
+        }
     }
 }
