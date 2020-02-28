@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "TinyBoy E16_L16_M16",
+    "name": "mago 3d printer",
     "inherits": "tinyboy",
     "metadata": {
         "visible": true,
@@ -10,10 +10,10 @@
         }
     },
     "overrides": {	
-        "machine_name": { "default_value": "TinyBoy E16" },
+        "machine_name": { "default_value": "mago 3d printer" },
         "machine_width":  { "default_value": 100 },
         "machine_depth":  { "default_value": 100 },
-        "machine_height": { "default_value": 165 },
+        "machine_height": { "default_value": 155 },
         "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
         },
