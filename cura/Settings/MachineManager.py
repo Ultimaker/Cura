@@ -320,7 +320,18 @@ class MachineManager(QObject):
             # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
             extruder_manager.activeExtruderChanged.emit()
 
+        # Validate if the machine has the correct variants
+        # It can happen that a variant is empty, even though the machine has variants. This will ensure that that
+        # that situation will be fixed (and not occur again, since it switches it out to the preferred variant instead!)
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        for extruder in self._global_container_stack.extruderList:
+            variant_name = self._global_container_stack.variant.getName()
+            variant_node = machine_node.variants.get(variant_name)
+            if variant_node is None:
+                Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
+                self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
         self.__emitChangedSignals()
+
 
     ##  Given a definition id, return the machine with this id.
     #   Optional: add a list of keys and values to filter the list of machines with the given definition id
