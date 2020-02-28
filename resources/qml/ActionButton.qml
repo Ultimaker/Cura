@@ -133,7 +133,18 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        visible: button.hovered && buttonTextMetrics.elidedText != buttonText.text
+        visible:
+        {
+            if (!button.hovered)
+            {
+                return false;
+            }
+            if (tooltipText == button.text)
+            {
+                return buttonTextMetrics.elidedText != buttonText.text;
+            }
+            return true;
+        }
     }
 
     BusyIndicator
