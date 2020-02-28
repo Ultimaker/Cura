@@ -347,9 +347,9 @@ class MachineManager(QObject):
                 return cast(GlobalStack, machine)
         return None
 
-    @pyqtSlot(str)
-    @pyqtSlot(str, str)
-    def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+    @pyqtSlot(str, result=bool)
+    @pyqtSlot(str, str, result = bool)
+    def addMachine(self, definition_id: str, name: Optional[str] = None) -> bool:
         Logger.log("i", "Trying to add a machine with the definition id [%s]", definition_id)
         if name is None:
             definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
@@ -364,6 +364,8 @@ class MachineManager(QObject):
             self.setActiveMachine(new_stack.getId())
         else:
             Logger.log("w", "Failed creating a new machine!")
+            return False
+        return True
 
     def _checkStacksHaveErrors(self) -> bool:
         time_start = time.time()
