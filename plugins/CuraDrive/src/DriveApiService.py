@@ -5,14 +5,19 @@ import base64
 import hashlib
 from datetime import datetime
 from tempfile import NamedTemporaryFile
-from typing import Any, Optional, List, Dict
+from typing import Any, Optional, List, Dict, Callable
 
 import requests
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal, signalemitter
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication
+from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
+
+from PyQt5.QtNetwork import QNetworkReply
 
 from .UploadBackupJob import UploadBackupJob
 from .Settings import Settings
@@ -34,33 +39,24 @@ class DriveApiService:
 
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
-    def getBackups(self) -> List[Dict[str, Any]]:
-        access_token = self._cura_api.account.accessToken
-        if not access_token:
-            Logger.log("w", "Could not get access token.")
-            return []
-        try:
-            backup_list_request = requests.get(self.BACKUP_URL, headers = {
-                "Authorization": "Bearer {}".format(access_token)
-            })
-        except requests.exceptions.ConnectionError:
-            Logger.logException("w", "Unable to connect with the server.")
-            return []
+    def getBackups(self, changed: Callable):
+        def callback(reply: QNetworkReply):
+            backup_list_response = HttpRequestManager.readJSON(reply)
+            if "data" not in backup_list_response:
+                Logger.log("w", "Could not get backups from remote, actual response body was: %s",
+                           str(backup_list_response))
+                changed([])  # empty list of backups
 
-        # HTTP status 300s mean redirection. 400s and 500s are errors.
-        # Technically 300s are not errors, but the use case here relies on "requests" to handle redirects automatically.
-        if backup_list_request.status_code >= 300:
-            Logger.log("w", "Could not get backups list from remote: %s", backup_list_request.text)
-            Message(catalog.i18nc("@info:backup_status", "There was an error listing your backups."), title = catalog.i18nc("@info:title", "Backup")).show()
-            return []
+            changed(backup_list_response["data"])
 
-        backup_list_response = backup_list_request.json()
-        if "data" not in backup_list_response:
-            Logger.log("w", "Could not get backups from remote, actual response body was: %s", str(backup_list_response))
-            return []
+        HttpRequestManager.getInstance().get(
+            self.BACKUP_URL,
+            callback=callback,
+            scope=self._scope
+        )
 
-        return backup_list_response["data"]
 
     def createBackup(self) -> None:
         self.creatingStateChanged.emit(is_creating = True)

@@ -133,7 +133,10 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(name = "refreshBackups")
     def refreshBackups(self) -> None:
-        self._backups = self._drive_api_service.getBackups()
+        self._drive_api_service.getBackups(self._backupsChangedCallback)
+
+    def _backupsChangedCallback(self, backups):
+        self.backups = backups
         self.backupsChanged.emit()
 
     @pyqtProperty(bool, notify = restoringStateChanged)
