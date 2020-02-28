@@ -494,7 +494,24 @@ UM.Dialog
         Cura.SecondaryButton
         {
             height: UM.Theme.getSize("action_button").height
-            tooltip: catalog.i18nc("@info:tooltip", "Change active post-processing scripts")
+            tooltip:
+            {
+                var tipText = catalog.i18nc("@info:tooltip", "Change active post-processing scripts.");
+                if (activeScriptsList.count > 0)
+                {
+                    tipText += "<br><br>" + catalog.i18ncp("@info:tooltip",
+                        "The following script is active:",
+                        "The following scripts are active:",
+                        activeScriptsList.count
+                    ) + "<ul>";
+                    for(var i = 0; i < activeScriptsList.count; i++)
+                    {
+                        tipText += "<li>" + manager.getScriptLabelByKey(manager.scriptList[i]) + "</li>";
+                    }
+                    tipText += "</ul>";
+                }
+                return tipText
+            }
             toolTipContentAlignment: Cura.ToolTip.ContentAlignment.AlignLeft
             onClicked: dialog.show()
             iconSource: "postprocessing.svg"
