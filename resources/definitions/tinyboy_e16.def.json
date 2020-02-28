@@ -9,6 +9,7 @@
             "0": "tinyboy_e10_extruder_0"
         }
     },
+	
     "overrides": {	
         "machine_name": { "default_value": "TinyBoy E16" },
         "machine_width":  { "default_value": 100 },
