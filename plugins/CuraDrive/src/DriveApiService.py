@@ -10,7 +10,6 @@ from typing import Any, Optional, List, Dict, Callable
 import requests
 
 from UM.Logger import Logger
-from UM.Message import Message
 from UM.Signal import Signal, signalemitter
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
@@ -40,10 +39,10 @@ class DriveApiService:
 
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
-        self._scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+        self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
         self._in_progress_backup = None
 
-    def getBackups(self, changed: Callable):
+    def getBackups(self, changed: Callable[[List], None]):
         def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
             if error is not None:
                 Logger.log("w", "Could not get backups: " + str(error))
@@ -59,8 +58,9 @@ class DriveApiService:
 
         HttpRequestManager.getInstance().get(
             self.BACKUP_URL,
-            callback=callback,
-            scope=self._scope
+            callback= callback,
+            error_callback = callback,
+            scope=self._jsonCloudScope
         )
 
 
@@ -110,7 +110,7 @@ class DriveApiService:
         )
 
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, backup = None):
-        if error is not None or reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) != 200:
+        if not DriveApiService._replyIndicatesSuccess(reply, error):
             Logger.log("w",
                        "Requesting backup failed, response code %s while trying to connect to %s",
                        reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
@@ -153,24 +153,28 @@ class DriveApiService:
             local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
 
-    def deleteBackup(self, backup_id: str) -> bool:
-        access_token = self._cura_api.account.accessToken
-        if not access_token:
-            Logger.log("w", "Could not get access token.")
-            return False
+    @staticmethod
+    def _replyIndicatesSuccess(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
+        """Returns whether reply status code indicates success and error is None"""
+        return error is None and 200 <= reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) < 300
 
-        try:
-            delete_backup = requests.delete("{}/{}".format(self.BACKUP_URL, backup_id), headers = {
-                "Authorization": "Bearer {}".format(access_token)
-            })
-        except requests.exceptions.ConnectionError:
-            Logger.logException("e", "Unable to connect with the server")
-            return False
+    def deleteBackup(self, backup_id: str, callable: Callable[[bool], None]):
 
-        if delete_backup.status_code >= 300:
-            Logger.log("w", "Could not delete backup: %s", delete_backup.text)
-            return False
-        return True
+        def finishedCallback(reply: QNetworkReply, ca=callable) -> None:
+            self._onDeleteRequestCompleted(reply, None, ca)
+
+        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, ca=callable) -> None:
+            self._onDeleteRequestCompleted(reply, error, ca)
+
+        HttpRequestManager.getInstance().delete(
+            url = "{}/{}".format(self.BACKUP_URL, backup_id),
+            callback = finishedCallback,
+            error_callback = errorCallback,
+            scope= self._jsonCloudScope
+        )
+
+    def _onDeleteRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
+        callable(DriveApiService._replyIndicatesSuccess(reply, error))
 
     #   Request a backup upload slot from the API.
     #   \param backup_metadata: A dict containing some meta data about the backup.

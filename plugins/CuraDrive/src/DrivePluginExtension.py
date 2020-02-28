@@ -161,5 +161,8 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(str, name = "deleteBackup")
     def deleteBackup(self, backup_id: str) -> None:
-        self._drive_api_service.deleteBackup(backup_id)
-        self.refreshBackups()
+        self._drive_api_service.deleteBackup(backup_id, self._backupDeletedCallback)
+
+    def _backupDeletedCallback(self, success: bool):
+        if success:
+            self.refreshBackups()
