@@ -2,13 +2,8 @@
     "version": 2,
     "name": "TinyBoy E16_L16_M16",
     "inherits": "tinyboy",
-    "metadata": {
-        "visible": true,
-		"machine_extruder_trains":
-        {
-            "0": "tinyboy_e10_extruder_0"
-        }
-    },
+    "metadata": { "visible": true },
+	
     "overrides": {	
         "machine_name": { "default_value": "TinyBoy E16" },
         "machine_width":  { "default_value": 100 },
@@ -22,3 +17,4 @@
         }
     }
 }
+

@@ -2,12 +2,11 @@
     "version": 2,
     "name": "TinyBoy RA20",
     "inherits": "tinyboy",
-    "metadata": {
+	"metadata": {
         "visible": true,
-		"machine_extruder_trains":
-        {
-            "0": "tinyboy_e10_extruder_0"
-        }
+        "platform": "tinyboy_ra20.obj",
+		"platform_texture": "tinyboy2.png",		
+		"platform_offset": [ 8, -70, -8 ]
     },
 
     "overrides": {	
@@ -25,3 +24,4 @@
         }
     }
 }
+
