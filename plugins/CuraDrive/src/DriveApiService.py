@@ -63,7 +63,6 @@ class DriveApiService:
             scope=self._jsonCloudScope
         )
 
-
     def createBackup(self) -> None:
         self.creatingStateChanged.emit(is_creating = True)
 
@@ -87,9 +86,9 @@ class DriveApiService:
         upload_backup_job.start()
 
     def _onUploadFinished(self, job: "UploadBackupJob") -> None:
-        if job.backup_upload_error_message != "":
+        if job.backup_upload_error_text != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
+            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_text)
         else:
             self.creatingStateChanged.emit(is_creating = False)
 
@@ -110,7 +109,7 @@ class DriveApiService:
         )
 
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, backup = None):
-        if not DriveApiService._replyIndicatesSuccess(reply, error):
+        if not HttpRequestManager.replyIndicatesSuccess(reply, error):
             Logger.log("w",
                        "Requesting backup failed, response code %s while trying to connect to %s",
                        reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
@@ -153,11 +152,6 @@ class DriveApiService:
             local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
 
-    @staticmethod
-    def _replyIndicatesSuccess(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
-        """Returns whether reply status code indicates success and error is None"""
-        return error is None and 200 <= reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) < 300
-
     def deleteBackup(self, backup_id: str, callable: Callable[[bool], None]):
 
         def finishedCallback(reply: QNetworkReply, ca=callable) -> None:
@@ -174,7 +168,7 @@ class DriveApiService:
         )
 
     def _onDeleteRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
-        callable(DriveApiService._replyIndicatesSuccess(reply, error))
+        callable(HttpRequestManager.replyIndicatesSuccess(reply, error))
 
     #   Request a backup upload slot from the API.
     #   \param backup_metadata: A dict containing some meta data about the backup.
