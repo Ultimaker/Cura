@@ -145,6 +145,7 @@ Button
             }
             return true;
         }
+        targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
     }
 
     BusyIndicator
