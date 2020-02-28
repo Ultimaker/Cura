@@ -1507,7 +1507,13 @@ class MachineManager(QObject):
             if quality_id == empty_quality_container.getId():
                 extruder.intent = empty_intent_container
                 continue
-            quality_node = container_tree.machines[definition_id].variants[variant_name].materials[material_base_file].qualities[quality_id]
+
+            # Yes, we can find this in a single line of code. This makes it easier to read and it has the benefit
+            # that it doesn't lump key errors together for the crashlogs
+            machine_node = container_tree.machines[definition_id]
+            variant_node = machine_node.variants[variant_name]
+            material_node = variant_node.materials[material_base_file]
+            quality_node = material_node.qualities[quality_id]
 
             for intent_node in quality_node.intents.values():
                 if intent_node.intent_category == intent_category:  # Found an intent with the correct category.
