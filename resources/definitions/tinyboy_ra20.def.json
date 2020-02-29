@@ -1,12 +1,19 @@
 {
     "version": 2,
     "name": "TinyBoy RA20",
-    "inherits": "tinyboy",
-	"metadata": {
+    "inherits": "fdmprinter",
+    "metadata": { 
         "visible": true,
+        "author": "Fred Chan",
+        "manufacturer": "TinyBoy / mago",
+        "category": "tinyboy",				
         "platform": "tinyboy_ra20.obj",
 		"platform_texture": "tinyboy2.png",		
-		"platform_offset": [ 8, -70, -8 ]
+		"platform_offset": [ 8, -70, -8 ],
+		"machine_extruder_trains":
+        {
+            "0": "tinyboy_extruder_0"
+        }
     },
 
     "overrides": {	

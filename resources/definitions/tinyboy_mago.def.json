@@ -1,8 +1,17 @@
 {
     "version": 2,
     "name": "mago 3d printer",
-    "inherits": "tinyboy",
-    "metadata": { "visible": true },
+    "inherits": "fdmprinter",
+    "metadata": { 
+		"visible": true,
+        "author": "Fred Chan",
+        "manufacturer": "TinyBoy / mago",
+        "category": "tinyboy",				
+		"machine_extruder_trains":
+        {
+            "0": "tinyboy_extruder_0"
+        }
+	},
 	
     "overrides": {	
         "machine_name": { "default_value": "mago 3d printer" },

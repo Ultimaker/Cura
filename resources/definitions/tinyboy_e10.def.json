@@ -1,20 +1,23 @@
 {
     "version": 2,
     "name": "TinyBoy E10_J10_L10_M10",
-    "inherits": "tinyboy",
-    "metadata": { "visible": true },
+    "inherits": "fdmprinter",
+    "metadata": { 
+		"visible": true,
+        "author": "Fred Chan",
+        "manufacturer": "TinyBoy / mago",
+        "category": "tinyboy",		
+		"machine_extruder_trains":
+        {
+            "0": "tinyboy_extruder_0"
+        }
+	},
 	
     "overrides": {	
         "machine_name": { "default_value": "TinyBoy E10" },
-        "machine_width": {
-            "default_value": 100
-        },
-        "machine_depth": {
-            "default_value": 100
-        },
-        "machine_height": {
-            "default_value": 105
-        },
+        "machine_width": { "default_value": 100 },
+        "machine_depth": { "default_value": 100 },
+        "machine_height": { "default_value": 105 },
         "machine_start_gcode": {
             "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
         },
