@@ -1,9 +1,8 @@
 {
     "version": 2,
     "name": "TinyBoy RA20",
-    "inherits": "fdmprinter",
+    "inherits": "tinyboy",
     "metadata": { 
-		"visible": true,
         "visible": true,
         "platform": "tinyboy_ra20.obj",
 		"platform_texture": "tinyboy2.png",		

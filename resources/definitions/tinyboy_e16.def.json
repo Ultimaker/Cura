@@ -1,7 +1,7 @@
 {
     "version": 2,
     "name": "TinyBoy E16_L16_M16",
-    "inherits": "fdmprinter",
+    "inherits": "tinyboy",
     "metadata": { 
 		"visible": true,
 		"machine_extruder_trains":
