@@ -1,9 +1,12 @@
 {
     "version": 2,
     "name": "TinyBoy E10_J10_L10_M10",
-    "inherits": "tinyboy",
+    "inherits": "fdmprinter",
     "metadata": { 
 		"visible": true,
+        "author": "Fred Chan",
+        "manufacturer": "TinyBoy / mago",
+        "category": "tinyboy",		
 		"machine_extruder_trains":
         {
             "0": "tinyboy_extruder_0"
