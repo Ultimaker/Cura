@@ -11,6 +11,8 @@
 		"has_materials": false,
         "has_machine_quality": true,
         "preferred_quality_type": "normal",		
+        "platform": "tinyboy_e10.stl",
+		"platform_offset": [ 23, -80, -23 ],
 		"machine_extruder_trains":
         {
             "0": "tinyboy_extruder_0"
