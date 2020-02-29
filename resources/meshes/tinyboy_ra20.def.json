@@ -1,0 +1,38 @@
+{
+    "version": 2,
+    "name": "TinyBoy RA20",
+    "inherits": "fdmprinter",
+    "metadata": { 
+        "visible": true,
+        "author": "Fred Chan",
+        "manufacturer": "TinyBoy / mago",
+        "category": "tinyboy",				
+        "file_formats": "text/x-gcode",
+        "platform": "tinyboy_ra20.obj",
+		"platform_texture": "tinyboy2.png",		
+		"platform_offset": [ 8, -70, -8 ],
+		"has_materials": false,
+        "has_machine_quality": true,
+        "preferred_quality_type": "normal",		
+		"machine_extruder_trains":
+        {
+            "0": "tinyboy_extruder_0"
+        }
+    },
+
+    "overrides": {	
+        "machine_name":   { "default_value": "TinyBoy RA20" },
+        "machine_width":  { "default_value": 120 },
+        "machine_depth":  { "default_value": 120 },
+        "machine_height": { "default_value": 205 },
+        "machine_heated_bed": { "default_value": true },
+
+        "machine_start_gcode": {
+            "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nG92 E80\nG1 E-80 F2000\nG28 X0 Y0\nM84"
+        }
+    }
+}
+
