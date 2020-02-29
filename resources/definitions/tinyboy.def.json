@@ -1,6 +1,6 @@
 {
-    "name": "TinyBoy",
     "version": 2,
+    "name": "TinyBoy",
     "inherits": "fdmprinter",
     "metadata": {
         "author": "Fred Chan",
@@ -13,7 +13,7 @@
         "preferred_quality_type": "normal",		
 		"machine_extruder_trains":
         {
-            "0": "tinyboy_e10_extruder_0"
+            "0": "tinyboy_extruder_0"
         }
     },
 	
@@ -29,68 +29,27 @@
                 [30, 34]
             ]
         },
-        "layer_height_0": {
-            "default_value": 0.2
-        },
-        "top_bottom_thickness": {
-            "default_value": 0.9
-        },
-        "top_bottom_pattern_0": {
-            "default_value": "concentric"
-        },
-        "infill_pattern": {
-            "value": "'triangles'"
-        },
-        "retraction_enable": {
-            "default_value": true
-        },
-        "retraction_amount": {
-            "default_value": 6
-        },
-        "retraction_speed": {
-            "default_value": 20
-        },
-        "cool_min_layer_time": {
-            "default_value": 10
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "skirt_line_count": {
-            "default_value": 4
-        },
-        "skirt_gap": {
-            "default_value": 5
+        "machine_center_is_zero": { "default_value": false },
+        "layer_height": { "default_value": 0.1 },
+        "layer_height_0": { "default_value": 0.15 },
+        "retraction_amount": { "default_value": 0.8 },
+        "retraction_speed": { "default_value": 35 },
+        "adhesion_type": { "default_value": "skirt" },
+        "machine_head_with_fans_polygon": { "default_value": [[-31,31],[34,31],[34,-40],[-31,-40]] },
+        "gantry_height": { "value": "28" },
+        "machine_max_feedrate_z": { "default_value": 12 },
+        "machine_max_feedrate_e": { "default_value": 120 },
+        "machine_max_acceleration_z": { "default_value": 500 },
+        "machine_acceleration": { "default_value": 1000 },
+        "machine_max_jerk_xy": { "default_value": 10 },
+        "machine_max_jerk_z": { "default_value": 0.2 },
+        "machine_max_jerk_e": { "default_value": 2.5 },
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode": {
+            "default_value": "G21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\nM104 S{material_print_temperature_layer_0} ; set extruder temp\nM140 S{material_bed_temperature_layer_0} ; set bed temp\nM190 S{material_bed_temperature_layer_0} ; wait for bed temp\nM109 S{material_print_temperature_layer_0} ; wait for extruder temp\nG28 W ; home all without mesh bed level\nG80 ; mesh bed leveling\nG92 E0.0 ; reset extruder distance position\nG1 Y-3.0 F1000.0 ; go outside print area\nG1 X60.0 E9.0 F1000.0 ; intro line\nG1 X100.0 E21.5 F1000.0 ; intro line\nG92 E0.0 ; reset extruder distance position"
         },
         "machine_end_gcode": {
             "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 X0 Y210; home X axis and push Y forward\nM84 ; disable motors"
-        },
-		"machine_center_is_zero": {
-			"default_value": false
-		},
-        "machine_heated_bed": {
-            "default_value": false
-        },
-        "gantry_height": {
-            "default_value": 30
-        },
-        "acceleration_enabled": {
-            "default_value": true
-        },
-        "acceleration_print": {
-            "default_value": 500
-        },
-        "acceleration_travel": {
-            "default_value": 500
-        },
-        "jerk_enabled": {
-            "default_value": true
-        },
-        "jerk_print": {
-            "default_value": 20
-        },
-        "jerk_travel": {
-            "default_value": 20
         }
     }
 }
