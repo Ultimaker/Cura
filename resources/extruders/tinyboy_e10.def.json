@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "TinyBoy E10_J10_L10_M10",
+    "inherits": "tinyboy",
+    "metadata": { "visible": true },
+	
+    "overrides": {	
+        "machine_name": { "default_value": "TinyBoy E10" },
+        "machine_width": {
+            "default_value": 100
+        },
+        "machine_depth": {
+            "default_value": 100
+        },
+        "machine_height": {
+            "default_value": 105
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ;Home\nG1 Z15.0 F2000 ;Move the platform"
+        },
+        "machine_end_gcode": {
+            "default_value": "M104 S0\nM140 S0\nG92 E80\nG1 E-80 F2000\nG28 X0 Y0\nM84"
+        }
+    }
+}
