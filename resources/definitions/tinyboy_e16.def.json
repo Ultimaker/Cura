@@ -8,6 +8,7 @@
         {
             "0": "tinyboy_extruder_0"
         }
+	},
 	
     "overrides": {	
         "machine_name": { "default_value": "TinyBoy E16" },
