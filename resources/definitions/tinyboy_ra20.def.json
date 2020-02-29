@@ -10,6 +10,8 @@
         "platform": "tinyboy_ra20.obj",
 		"platform_texture": "tinyboy2.png",		
 		"platform_offset": [ 8, -70, -8 ],
+		"has_materials": false,
+        "has_machine_quality": true,
 		"machine_extruder_trains":
         {
             "0": "tinyboy_extruder_0"

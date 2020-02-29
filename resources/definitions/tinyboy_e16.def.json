@@ -7,6 +7,8 @@
         "author": "Fred Chan",
         "manufacturer": "TinyBoy / mago",
         "category": "tinyboy",				
+		"has_materials": false,
+        "has_machine_quality": true,
 		"machine_extruder_trains":
         {
             "0": "tinyboy_extruder_0"
