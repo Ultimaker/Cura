@@ -285,14 +285,14 @@ class ChangeAtZ(Script):
                 "k1_Change_acceleration":
                 {
                     "label": "Change acceleration",
-                    "description": "Select if acceleration has to be changed",
+                    "description": "Select if you want to change max. acceleration. The setting will be overriden when you also use Cura profile acc. settings. Works only with layer number, not height.",
                     "type": "bool",
                     "default_value": false
                 },
                 "k2_acceleration":
                 {
                     "label": "Acceleration",
-                    "description": "Set acceleration string for example 'X1000 Y1000 Z100 E1000'",                    
+                    "description": "Set acceleration string, for example 'X1000 Y1000 Z100 E1000' is a good default, values in mm/s^2. Lower values increase quality/1st layer bonding, but print times get longer.",                    
                     "type": "str",
                     "default_value": "X1000 Y1000 Z100 E1000",
                     "enabled": "k1_Change_acceleration"
@@ -300,14 +300,14 @@ class ChangeAtZ(Script):
                 "k1_Change_jerk":
                 {
                     "label": "Change jerk",
-                    "description": "Select if jerk has to be changed",
+                    "description": "Select if you want to change max. jerk. The setting will be overriden when you also use Cura profile jerk settings. Works only with layer number, not height.",
                     "type": "bool",
                     "default_value": false
                 },
                 "k2_jerk":
                 {
                     "label": "Jerk",
-                    "description": "Set jerk string for example 'X5 Y5 Z5 E10'",                    
+                    "description": "Set jerk string, for example 'X10 Y10 Z0.4 E5' is a good default, values in mm/s. Lower values bring smoother, slower print velocity changes, thus increased quality/1st layer bonding, but print times get longer.",                    
                     "type": "str",
                     "default_value": "X10 Y10 Z0.4 E5",
                     "enabled": "k1_Change_jerk"
