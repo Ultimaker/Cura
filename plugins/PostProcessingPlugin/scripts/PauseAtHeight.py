@@ -25,7 +25,7 @@ class PauseAtHeight(Script):
                     "label": "Pause at",
                     "description": "Whether to pause at a certain height or at a certain layer.",
                     "type": "enum",
-                    "options": {"height": "Height", "layer_no": "Layer No."},
+                    "options": {"height": "Height", "layer_no": "Layer Number"},
                     "default_value": "height"
                 },
                 "pause_height":
@@ -48,6 +48,14 @@ class PauseAtHeight(Script):
                     "minimum_value": "0",
                     "minimum_value_warning": "1",
                     "enabled": "pause_at == 'layer_no'"
+                },
+                "pause_method":
+                {
+                    "label": "Method",
+                    "description": "The method or gcode command to use for pausing.",
+                    "type": "enum",
+                    "options": {"marlin": "Marlin (M0)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
+                    "default_value": "marlin"
                 },
                 "head_park_x":
                 {
@@ -154,6 +162,14 @@ class PauseAtHeight(Script):
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
+
+        pause_method = self.getSettingValueByKey("pause_method")
+        pause_command = {
+            "marlin": self.putValue(M = 0),
+            "bq": self.putValue(M = 25),
+            "reprap": self.putValue(M = 226),
+            "repetier": self.putValue("@pause")
+        }[pause_method]
 
         is_griffin = False
 
@@ -308,7 +324,7 @@ class PauseAtHeight(Script):
                     prepend_gcode += "M117 " + display_text + "\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
+                prepend_gcode += pause_command + " ; Do the actual pause\n"
 
                 if not is_griffin:
                     if control_temperatures:
