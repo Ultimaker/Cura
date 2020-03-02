@@ -3,11 +3,10 @@
 
 import base64
 import hashlib
+import json
 from datetime import datetime
 from tempfile import NamedTemporaryFile
 from typing import Any, Optional, List, Dict, Callable
-
-import requests
 
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
@@ -41,7 +40,9 @@ class DriveApiService:
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
         self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
-        self._in_progress_backup = None
+        self._current_backup_zip_file = None
+
+        self.creatingStateChanged.connect(self._creatingStateChanged)
 
     def getBackups(self, changed: Callable[[List], None]):
         def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
@@ -76,15 +77,8 @@ class DriveApiService:
         # Create an upload entry for the backup.
         timestamp = datetime.now().isoformat()
         backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
-        backup_upload_url = self._requestBackupUpload(backup_meta_data, len(backup_zip_file))
-        if not backup_upload_url:
-            self.creatingStateChanged.emit(is_creating = False, error_message ="Could not upload backup.")
-            return
-
-        # Upload the backup to storage.
-        upload_backup_job = UploadBackupJob(backup_upload_url, backup_zip_file)
-        upload_backup_job.finished.connect(self._onUploadFinished)
-        upload_backup_job.start()
+        self._requestBackupUpload(backup_meta_data, len(backup_zip_file))
+        self._current_backup_zip_file = backup_zip_file
 
     def _onUploadFinished(self, job: "UploadBackupJob") -> None:
         if job.backup_upload_error_message != "":
@@ -156,12 +150,12 @@ class DriveApiService:
             local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
 
-    def deleteBackup(self, backup_id: str, callable: Callable[[bool], None]):
+    def deleteBackup(self, backup_id: str, finishedCallable: Callable[[bool], None]):
 
-        def finishedCallback(reply: QNetworkReply, ca=callable) -> None:
+        def finishedCallback(reply: QNetworkReply, ca=finishedCallable) -> None:
             self._onDeleteRequestCompleted(reply, None, ca)
 
-        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, ca=callable) -> None:
+        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, ca=finishedCallable) -> None:
             self._onDeleteRequestCompleted(reply, error, ca)
 
         HttpRequestManager.getInstance().delete(
@@ -174,7 +168,7 @@ class DriveApiService:
     def _onDeleteRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
         callable(HttpRequestManager.replyIndicatesSuccess(reply, error))
 
-    def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> Optional[str]:
+    def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> None:
         """Request a backup upload slot from the API.
 
         :param backup_metadata: A dict containing some meta data about the backup.
@@ -182,27 +176,37 @@ class DriveApiService:
         :return: The upload URL for the actual backup file if successful, otherwise None.
         """
 
-        access_token = self._cura_api.account.accessToken
-        if not access_token:
-            Logger.log("w", "Could not get access token.")
-            return None
-        try:
-            backup_upload_request = requests.put(
-                self.BACKUP_URL,
-                json = {"data": {"backup_size": backup_size,
-                                 "metadata": backup_metadata
-                                 }
-                        },
-                headers = {
-                    "Authorization": "Bearer {}".format(access_token)
-                })
-        except requests.exceptions.ConnectionError:
-            Logger.logException("e", "Unable to connect with the server")
-            return None
+        payload = json.dumps({"data": {"backup_size": backup_size,
+                                       "metadata": backup_metadata
+                                       }
+                              }).encode()
 
-        # Any status code of 300 or above indicates an error.
-        if backup_upload_request.status_code >= 300:
-            Logger.log("w", "Could not request backup upload: %s", backup_upload_request.text)
-            return None
-        
-        return backup_upload_request.json()["data"]["upload_url"]
+        HttpRequestManager.getInstance().put(
+            self.BACKUP_URL,
+            data = payload,
+            callback = self._onBackupUploadSlotCompleted,
+            error_callback = self._onBackupUploadSlotCompleted,
+            scope = self._jsonCloudScope)
+
+    def _onBackupUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
+        if error is not None:
+            Logger.warning(str(error))
+            self.creatingStateChanged.emit(is_creating=False, error_message="Could not upload backup.")
+            return
+        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) >= 300:
+            Logger.warning("Could not request backup upload: %s", HttpRequestManager.readText(reply))
+            self.creatingStateChanged.emit(is_creating=False, error_message="Could not upload backup.")
+            return
+
+        backup_upload_url = HttpRequestManager.readJSON(reply)["data"]["upload_url"]
+
+        # Upload the backup to storage.
+        upload_backup_job = UploadBackupJob(backup_upload_url, self._current_backup_zip_file)
+        upload_backup_job.finished.connect(self._onUploadFinished)
+        upload_backup_job.start()
+
+    def _creatingStateChanged(self, is_creating: bool = False, error_message: str = None) -> None:
+        """Cleanup after a backup is not needed anymore"""
+
+        if not is_creating:
+            self._current_backup_zip_file = None
