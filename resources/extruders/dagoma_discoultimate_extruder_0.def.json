@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "dagoma_discoeasy200",
+        "machine": "dagoma_discoultimate",
         "position": "0"
     },
 
