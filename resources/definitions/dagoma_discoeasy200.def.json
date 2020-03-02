@@ -8,7 +8,7 @@
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "dagoma_discoeasy200.stl",
-        "platform_offset": [0, -19, -11],
+        "platform_offset": [0, -57.3, -11],
         "has_machine_quality": true,
         "has_materials": true,
         "preferred_material": "chromatik_pla",
