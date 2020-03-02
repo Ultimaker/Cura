@@ -87,9 +87,9 @@ class DriveApiService:
         upload_backup_job.start()
 
     def _onUploadFinished(self, job: "UploadBackupJob") -> None:
-        if job.backup_upload_error_text != "":
+        if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
-            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_text)
+            self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
         else:
             self.creatingStateChanged.emit(is_creating = False)
 
