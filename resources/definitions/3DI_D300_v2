@@ -7,6 +7,7 @@
         "author": "V27Jain",
         "manufacturer": "3Deometry Innovations",
         "file_formats": "text/x-gcode",
+        "platform": "3DI_D300_v2_platform.STL",
         "has_materials": true,
         "machine_extruder_trains":
         {
