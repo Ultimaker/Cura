@@ -320,7 +320,18 @@ class MachineManager(QObject):
             # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
             extruder_manager.activeExtruderChanged.emit()
 
+        # Validate if the machine has the correct variants
+        # It can happen that a variant is empty, even though the machine has variants. This will ensure that that
+        # that situation will be fixed (and not occur again, since it switches it out to the preferred variant instead!)
+        machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
+        for extruder in self._global_container_stack.extruderList:
+            variant_name = self._global_container_stack.variant.getName()
+            variant_node = machine_node.variants.get(variant_name)
+            if variant_node is None:
+                Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
+                self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
         self.__emitChangedSignals()
+
 
     ##  Given a definition id, return the machine with this id.
     #   Optional: add a list of keys and values to filter the list of machines with the given definition id
@@ -336,9 +347,9 @@ class MachineManager(QObject):
                 return cast(GlobalStack, machine)
         return None
 
-    @pyqtSlot(str)
-    @pyqtSlot(str, str)
-    def addMachine(self, definition_id: str, name: Optional[str] = None) -> None:
+    @pyqtSlot(str, result=bool)
+    @pyqtSlot(str, str, result = bool)
+    def addMachine(self, definition_id: str, name: Optional[str] = None) -> bool:
         Logger.log("i", "Trying to add a machine with the definition id [%s]", definition_id)
         if name is None:
             definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(id = definition_id)
@@ -353,6 +364,8 @@ class MachineManager(QObject):
             self.setActiveMachine(new_stack.getId())
         else:
             Logger.log("w", "Failed creating a new machine!")
+            return False
+        return True
 
     def _checkStacksHaveErrors(self) -> bool:
         time_start = time.time()
@@ -1507,7 +1520,13 @@ class MachineManager(QObject):
             if quality_id == empty_quality_container.getId():
                 extruder.intent = empty_intent_container
                 continue
-            quality_node = container_tree.machines[definition_id].variants[variant_name].materials[material_base_file].qualities[quality_id]
+
+            # Yes, we can find this in a single line of code. This makes it easier to read and it has the benefit
+            # that it doesn't lump key errors together for the crashlogs
+            machine_node = container_tree.machines[definition_id]
+            variant_node = machine_node.variants[variant_name]
+            material_node = variant_node.materials[material_base_file]
+            quality_node = material_node.qualities[quality_id]
 
             for intent_node in quality_node.intents.values():
                 if intent_node.intent_category == intent_category:  # Found an intent with the correct category.

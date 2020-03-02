@@ -73,6 +73,8 @@ class ModelChecker(QObject, Extension):
         # Check node material shrinkage and bounding box size
         for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
+            if node_extruder_position is None:
+                continue
 
             # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
             # has not done yet.

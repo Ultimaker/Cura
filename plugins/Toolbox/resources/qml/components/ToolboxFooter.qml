@@ -42,7 +42,7 @@ Item
             rightMargin: UM.Theme.getSize("wide_margin").width
         }
         height: UM.Theme.getSize("toolbox_footer_button").height
-        text: catalog.i18nc("@info:button", "Quit Cura")
+        text: catalog.i18nc("@info:button", "Quit Ultimaker Cura")
         onClicked: toolbox.restart()
     }
 
