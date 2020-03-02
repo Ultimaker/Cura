@@ -25,17 +25,18 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
-## The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling.
 @signalemitter
 class DriveApiService:
+    """The DriveApiService is responsible for interacting with the CuraDrive API and Cura's backup handling."""
+
     BACKUP_URL = "{}/backups".format(Settings.DRIVE_API_URL)
     DISK_WRITE_BUFFER_SIZE = 512 * 1024
 
-    # Emit signal when restoring backup started or finished.
     restoringStateChanged = Signal()
+    """Emits signal when restoring backup started or finished."""
 
-    # Emit signal when creating backup started or finished.
     creatingStateChanged = Signal()
+    """Emits signal when creating backup started or finished."""
 
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
@@ -142,12 +143,15 @@ class DriveApiService:
                                         error_message = catalog.i18nc("@info:backup_status",
                                                                          "There was an error trying to restore your backup."))
 
-    #   Verify the MD5 hash of a file.
-    #   \param file_path Full path to the file.
-    #   \param known_hash The known MD5 hash of the file.
-    #   \return: Success or not.
     @staticmethod
     def _verifyMd5Hash(file_path: str, known_hash: str) -> bool:
+        """Verify the MD5 hash of a file.
+
+        :param file_path: Full path to the file.
+        :param known_hash: The known MD5 hash of the file.
+        :return: Success or not.
+        """
+
         with open(file_path, "rb") as read_backup:
             local_md5_hash = base64.b64encode(hashlib.md5(read_backup.read()).digest(), altchars = b"_-").decode("utf-8")
             return known_hash == local_md5_hash
@@ -170,11 +174,14 @@ class DriveApiService:
     def _onDeleteRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
         callable(HttpRequestManager.replyIndicatesSuccess(reply, error))
 
-    #   Request a backup upload slot from the API.
-    #   \param backup_metadata: A dict containing some meta data about the backup.
-    #   \param backup_size The size of the backup file in bytes.
-    #   \return: The upload URL for the actual backup file if successful, otherwise None.
     def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> Optional[str]:
+        """Request a backup upload slot from the API.
+
+        :param backup_metadata: A dict containing some meta data about the backup.
+        :param backup_size: The size of the backup file in bytes.
+        :return: The upload URL for the actual backup file if successful, otherwise None.
+        """
+
         access_token = self._cura_api.account.accessToken
         if not access_token:
             Logger.log("w", "Could not get access token.")
