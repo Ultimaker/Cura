@@ -29,11 +29,13 @@ class UploadBackupJob(Job):
         self._message.show()
 
         HttpRequestManager.getInstance().put(
-            self._signed_upload_url, 
-            data = self._backup_zip
+            self._signed_upload_url,
+            data = self._backup_zip,
+            callback = self.uploadFinishedCallback,
+            error_callback = self.uploadFinishedCallback
         )
 
-    def uploadFinishedCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError):
+    def uploadFinishedCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError = None):
         self._message.hide()
 
         self.backup_upload_error_text = HttpRequestManager.readText(reply)
