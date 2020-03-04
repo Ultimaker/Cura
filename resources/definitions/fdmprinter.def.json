@@ -3040,6 +3040,19 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "speed_equalize_flow_width_factor":
+                {
+                    "label": "Flow Equalization Width Factor",
+                    "description": "Extrusion width based correction factor on the equalized flow. The target flow (in mm³/s) is reduced by the percentual difference in line width multiplied by this factor. A factor above zero means that thin lines are adjusted to be even faster than simple flow equalization would speed them up to. Conversely, wider lines are slowed down more. A positive value can help to compensate for the width depended back pressure the previous layer exterts on the line.",
+                    "type": "float",
+                    "unit": "mm³/s",
+                    "enabled": "speed_equalize_flow_enabled",
+                    "default_value": 1.1,
+                    "minimum_value_warning": "0.0",
+                    "maximum_value_warning": "3.0",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "speed_equalize_flow_max":
                 {
                     "label": "Maximum Speed for Flow Equalization",
