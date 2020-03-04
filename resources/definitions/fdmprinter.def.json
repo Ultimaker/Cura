@@ -3054,6 +3054,20 @@
                     "settable_per_mesh": false,
                     "settable_per_extruder": true
                 },
+                "speed_equalize_flow_min":
+                {
+                    "label": "Minimum Speed for Flow Equalization",
+                    "description": "Minimum print speed when adjusting the print speed in order to equalize flow.",
+                    "type": "float",
+                    "unit": "mm/s",
+                    "enabled": "speed_equalize_flow_enabled",
+                    "default_value": 5,
+                    "minimum_value": "0.1",
+                    "maximum_value": "speed_equalize_flow_max",
+                    "maximum_value_warning": "15",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true
+                },
                 "acceleration_enabled":
                 {
                     "label": "Enable Acceleration Control",
