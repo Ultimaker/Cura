@@ -1,15 +1,15 @@
 {
     "version": 2,
-    "name": "Extruder 1",
+    "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
         "machine": "dagoma_discoeasy200",
-        "position": "0"
+        "position": "1"
     },
 
     "overrides": {
         "extruder_nr": {
-            "default_value": 0
+            "default_value": 1
         },
         "machine_nozzle_size": {
             "default_value": 0.4
@@ -18,10 +18,10 @@
             "default_value": 1.75
         },
         "machine_extruder_start_code": {
-            "default_value": "\n;Start T0\nG92 E0\nG1 E-{retraction_amount} F10000\nG92 E0G1 E1.5 F3000\nG1 E-60 F10000\nG92 E0\n"         
+            "default_value": "\n;Start T1\nG92 E0\nG1 E-{retraction_amount} F10000\nG92 E0G1 E1.5 F3000\nG1 E-60 F10000\nG92 E0\n"         
         },
         "machine_extruder_end_code": {
-            "default_value": "\nG92 E0\nG1 E{retraction_amount} F3000\nG92 E0\nG1 E60 F3000\nG92 E0\nG1 E-{retraction_amount} F5000\n;End T0\n\n"
+            "default_value": "\nG92 E0\nG1 E{retraction_amount} F3000\nG92 E0\nG1 E60 F3000\nG92 E0\nG1 E-{retraction_amount} F5000\n;End T1\n\n"
         }
     }
 }
