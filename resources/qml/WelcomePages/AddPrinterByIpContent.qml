@@ -197,17 +197,20 @@ Item
                     renderType: Text.NativeRendering
 
                     visible: addPrinterByIpScreen.hasRequestInProgress || (addPrinterByIpScreen.hasRequestFinished && !addPrinterByIpScreen.isPrinterDiscovered)
+                    textFormat: Text.RichText
                     text:
                     {
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
-                            catalog.i18nc("@label", "Could not connect to device.")
+                            return catalog.i18nc("@label", "Could not connect to device.");
                         }
                         else
                         {
-                            catalog.i18nc("@label", "The printer at this address has not responded yet.")
+                            return catalog.i18nc("@label", "The printer at this address has not responded yet.") + "<br /><br /><a href=\"https://www.ultimaker.com/\">"
+                                + catalog.i18nc("@label", "Can't connect to your printer?") + "</a>";
                         }
                     }
+                    onLinkActivated: Qt.openUrlExternally(link)
                 }
 
                 Item
