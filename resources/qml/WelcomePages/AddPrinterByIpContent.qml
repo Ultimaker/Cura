@@ -159,6 +159,7 @@ Item
                     enabled: !addPrinterByIpScreen.hasRequestInProgress && !addPrinterByIpScreen.isPrinterDiscovered && (hostnameField.state != "invalid" && hostnameField.text != "")
                     onClicked:
                     {
+                        addPrinterByIpScreen.hasRequestFinished = false //In case it's pressed multiple times.
                         const address = hostnameField.text
                         if (!networkingUtil.isValidIP(address))
                         {
