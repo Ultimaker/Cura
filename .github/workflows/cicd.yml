@@ -18,3 +18,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Build and test
       run: docker/build.sh
+    - name: Check dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install safety
+        safety check
