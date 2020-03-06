@@ -149,7 +149,6 @@ Item
 
             onActivated:
             {
-                print(index)
                 if (index == 0){
                     setMeshType(infillMeshType)
                 } else {
