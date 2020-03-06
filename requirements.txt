@@ -5,3 +5,5 @@ shapely
 PyQt5==5.10
 trimesh
 zeroconf
+numpy-stl
+requests
