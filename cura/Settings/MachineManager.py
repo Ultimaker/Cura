@@ -1523,10 +1523,14 @@ class MachineManager(QObject):
 
             # Yes, we can find this in a single line of code. This makes it easier to read and it has the benefit
             # that it doesn't lump key errors together for the crashlogs
-            machine_node = container_tree.machines[definition_id]
-            variant_node = machine_node.variants[variant_name]
-            material_node = variant_node.materials[material_base_file]
-            quality_node = material_node.qualities[quality_id]
+            try:
+                machine_node = container_tree.machines[definition_id]
+                variant_node = machine_node.variants[variant_name]
+                material_node = variant_node.materials[material_base_file]
+                quality_node = material_node.qualities[quality_id]
+            except KeyError as e:
+                Logger.error("Can't set the intent category '{category}' since the profile '{profile}' in the stack is not supported according to the container tree.".format(category = intent_category, profile = e))
+                continue
 
             for intent_node in quality_node.intents.values():
                 if intent_node.intent_category == intent_category:  # Found an intent with the correct category.
