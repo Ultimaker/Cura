@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-02-07 14:19+0100\n"
-"PO-Revision-Date: 2020-02-20 17:30+0100\n"
+"PO-Revision-Date: 2020-03-06 20:42+0100\n"
 "Language: cs_CZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -452,8 +452,8 @@ msgid ""
 "<message>{1}</message>. Cannot import the machine. Models will be imported "
 "instead."
 msgstr ""
-"Projektový soubor <filename> {0} </filename> obsahuje neznámý typ zařízení "
-"<message> {1} </message>. Nelze importovat zařízení. Místo toho budou "
+"Projektový soubor <filename>{0}</filename> obsahuje neznámý typ zařízení "
+"<message>{1}</message>. Nelze importovat zařízení. Místo toho budou "
 "importovány modely."
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:500
@@ -813,7 +813,7 @@ msgstr "GCodeGzWriter nepodporuje textový mód."
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerJob.py:125
 msgctxt "@info"
 msgid "Could not access update information."
-msgstr "Could not access update information."
+msgstr "Nemohu načíst informace o aktualizaci."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
@@ -1020,12 +1020,12 @@ msgstr "Límec"
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:89
 msgctxt "@tooltip"
 msgid "Prime Tower"
-msgstr "Prime Tower"
+msgstr "Hlavní věž"
 
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:90
 msgctxt "@tooltip"
 msgid "Travel"
-msgstr "Cesta"
+msgstr "Pohyb"
 
 #: /home/ruben/Projects/Cura/cura/UI/PrintInformation.py:91
 msgctxt "@tooltip"
@@ -1091,7 +1091,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:48
 msgctxt "@label"
 msgid "Engineering"
-msgstr "Engineering"
+msgstr "Technika"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentTranslations.py:19
 #: /home/ruben/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:49
@@ -1347,7 +1347,7 @@ msgid ""
 "The file <filename>{0}</filename> already exists. Are you sure you want to "
 "overwrite it?"
 msgstr ""
-"Soubor <filename> {0} </filename> již existuje. Opravdu jej chcete přepsat?"
+"Soubor <filename>{0}</filename> již existuje. Opravdu jej chcete přepsat?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:430
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:433
@@ -1371,8 +1371,8 @@ msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid ""
 "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr ""
-"Nepodařilo se exportovat profil do <filename> {0} </filename>: <message> {1} "
-"</message>"
+"Nepodařilo se exportovat profil do <filename>{0}</filename>: <message>{1}</"
+"message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:143
 #, python-brace-format
@@ -1381,8 +1381,8 @@ msgid ""
 "Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
 "failure."
 msgstr ""
-"Export profilu do <filename> {0} </filename> se nezdařil: Zásuvný modul pro "
-"spiszápisovatele ohlásil selhání."
+"Export profilu do <filename>{0}</filename> se nezdařil: Zapisovací zásuvný "
+"modul ohlásil chybu."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:148
 #, python-brace-format
@@ -1399,7 +1399,7 @@ msgstr "Export úspěšný"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>: {1}"
-msgstr "Nepodařilo se importovat profil z <filename> {0} </filename>: {1}"
+msgstr "Nepodařilo se importovat profil z <filename>{0}</filename>: {1}"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:180
 #, python-brace-format
@@ -1415,13 +1415,13 @@ msgstr ""
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
 msgstr ""
-"V souboru <filename> {0} </filename> není k dispozici žádný vlastní profil"
+"V souboru <filename>{0}</filename> není k dispozici žádný vlastní profil"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:201
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "Import profilu z <filename> {0} </filename> se nezdařil:"
+msgstr "Import profilu z <filename>{0}</filename> se nezdařil:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:225
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:235
@@ -1431,14 +1431,14 @@ msgid ""
 "This profile <filename>{0}</filename> contains incorrect data, could not "
 "import it."
 msgstr ""
-"Tento profil <filename> {0} </filename> obsahuje nesprávná data, nemohl je "
+"Tento profil <filename>{0}</filename> obsahuje nesprávná data, nemohl je "
 "importovat."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:324
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
 msgid "Failed to import profile from <filename>{0}</filename>:"
-msgstr "Import profilu z <filename> {0} </filename> se nezdařil:"
+msgstr "Import profilu z <filename>{0}</filename> se nezdařil:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:327
 #, python-brace-format
@@ -3127,7 +3127,7 @@ msgstr "Vyp"
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:33
 msgctxt "@label"
 msgid "Experimental"
-msgstr "Experimentálí"
+msgstr "Experimentální"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/NoIntentIcon.qml:31
 msgctxt ""
@@ -4103,7 +4103,7 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:177
 msgctxt "@action:label"
 msgid "1mm Transmittance (%)"
-msgstr "1mm Transmittance (%)"
+msgstr "1mm propustnost (%)"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:195
 msgctxt "@info:tooltip"
@@ -4414,7 +4414,7 @@ msgstr "K instalaci nebo aktualizaci je vyžadováno <a href='%1'>přihlášení
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxDetailTileActions.qml:80
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Buy material spools</a>"
-msgstr "<a href='%1'> Koupit cívky materiálu </a>"
+msgstr "<a href='%1'>Koupit cívky materiálu</a>"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxBackColumn.qml:25
 msgctxt "@action:button"

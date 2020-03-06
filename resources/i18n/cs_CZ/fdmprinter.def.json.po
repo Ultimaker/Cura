@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Uranium json setting files\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-02-07 14:19+0000\n"
-"PO-Revision-Date: 2020-02-20 18:07+0100\n"
+"PO-Revision-Date: 2020-03-06 20:38+0100\n"
 "Language-Team: Denyk <www.github.com/DenyCZ>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3296,7 +3296,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled label"
 msgid "Equalize Filament Flow"
-msgstr "Vyrovnejte tok vlákna"
+msgstr "Vyrovnat tok vlákna"
 
 #: fdmprinter.def.json
 msgctxt "speed_equalize_flow_enabled description"
@@ -6826,7 +6826,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization label"
 msgid "Infill Travel Optimization"
-msgstr "Vyplňte optimalizaci cestování"
+msgstr "Optimalizace pohybu při tisku výplně"
 
 #: fdmprinter.def.json
 msgctxt "infill_enable_travel_optimization description"
@@ -7808,7 +7808,7 @@ msgstr ""
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
 msgid "Overhanging Wall Speed"
-msgstr "Převislá rychlost zdi"
+msgstr "Rychlost tisku převislé stěny"
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor description"
