@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -96,7 +96,7 @@ class ImageReader(MeshReader):
         texel_width = 1.0 / (width_minus_one) * scale_vector.x
         texel_height = 1.0 / (height_minus_one) * scale_vector.z
 
-        height_data = numpy.zeros((height, width), dtype=numpy.float32)
+        height_data = numpy.zeros((height, width), dtype = numpy.float32)
 
         for x in range(0, width):
             for y in range(0, height):
@@ -112,7 +112,7 @@ class ImageReader(MeshReader):
             height_data = 1 - height_data
 
         for _ in range(0, blur_iterations):
-            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode= "edge")
+            copy = numpy.pad(height_data, ((1, 1), (1, 1)), mode = "edge")
 
             height_data += copy[1:-1, 2:]
             height_data += copy[1:-1, :-2]
@@ -165,7 +165,7 @@ class ImageReader(MeshReader):
         offsetsz = numpy.array(offsetsz, numpy.float32).reshape(-1, 1) * texel_height
 
         # offsets for each texel quad
-        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype=numpy.float32), offsetsz], 1)
+        heightmap_vertex_offsets = numpy.concatenate([offsetsx, numpy.zeros((offsetsx.shape[0], offsetsx.shape[1]), dtype = numpy.float32), offsetsz], 1)
         heightmap_vertices += heightmap_vertex_offsets.repeat(6, 0).reshape(-1, 6, 3)
 
         # apply height data to y values
@@ -174,7 +174,7 @@ class ImageReader(MeshReader):
         heightmap_vertices[:, 2, 1] = heightmap_vertices[:, 3, 1] = height_data[1:, 1:].reshape(-1)
         heightmap_vertices[:, 4, 1] = height_data[:-1, 1:].reshape(-1)
 
-        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype=numpy.int32).reshape(-1, 3)
+        heightmap_indices = numpy.array(numpy.mgrid[0:heightmap_face_count * 3], dtype = numpy.int32).reshape(-1, 3)
 
         mesh._vertices[0:(heightmap_vertices.size // 3), :] = heightmap_vertices.reshape(-1, 3)
         mesh._indices[0:(heightmap_indices.size // 3), :] = heightmap_indices
@@ -223,7 +223,7 @@ class ImageReader(MeshReader):
             mesh.addFaceByPoints(geo_width, 0, y, geo_width, 0, ny, geo_width, he1, ny)
             mesh.addFaceByPoints(geo_width, he1, ny, geo_width, he0, y, geo_width, 0, y)
 
-        mesh.calculateNormals(fast=True)
+        mesh.calculateNormals(fast = True)
 
         scene_node.setMeshData(mesh.build())
 

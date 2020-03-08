@@ -44,6 +44,7 @@ class FirmwareUpdateCheckerJob(Job):
         try:
             # CURA-6698 Create an SSL context and use certifi CA certificates for verification.
             context = ssl.SSLContext(protocol = ssl.PROTOCOL_TLSv1_2)
+            context.verify_mode = ssl.CERT_REQUIRED
             context.load_verify_locations(cafile = certifi.where())
 
             request = urllib.request.Request(url, headers = self._headers)
