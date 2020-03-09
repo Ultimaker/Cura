@@ -5,13 +5,13 @@ from ..CloudApiModel import CloudApiModel
 from ..UltimakerCloudScope import UltimakerCloudScope
 
 
-class CloudPackageManager:
+class CloudApiClient:
     """Manages Cloud subscriptions
 
     When a package is added to a user's account, the user is 'subscribed' to that package.
     Whenever the user logs in on another instance of Cura, these subscriptions can be used to sync the user's plugins
 
-    Singleton: use CloudPackageManager.getInstance() instead of CloudPackageManager()
+    Singleton: use CloudApiClient.getInstance() instead of CloudApiClient()
     """
 
     __instance = None
@@ -19,7 +19,7 @@ class CloudPackageManager:
     @classmethod
     def getInstance(cls, app: CuraApplication):
         if not cls.__instance:
-            cls.__instance = CloudPackageManager(app)
+            cls.__instance = CloudApiClient(app)
         return cls.__instance
 
     def __init__(self, app: CuraApplication) -> None:

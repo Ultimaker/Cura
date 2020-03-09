@@ -133,7 +133,19 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        visible: button.hovered && buttonTextMetrics.elidedText != buttonText.text
+        visible:
+        {
+            if (!button.hovered)
+            {
+                return false;
+            }
+            if (tooltipText == button.text)
+            {
+                return buttonTextMetrics.elidedText != buttonText.text;
+            }
+            return true;
+        }
+        targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
     }
 
     BusyIndicator

@@ -114,7 +114,10 @@ class IntentModel(ListModel):
                 Logger.log("w", "Could not find the variant %s", active_variant_name)
                 continue
             active_variant_node = machine_node.variants[active_variant_name]
-            active_material_node = active_variant_node.materials[extruder.material.getMetaDataEntry("base_file")]
+            active_material_node = active_variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
+            if active_material_node is None:
+                Logger.log("w", "Could not find the material %s", extruder.material.getMetaDataEntry("base_file"))
+                continue
             nodes.add(active_material_node)
 
         return nodes

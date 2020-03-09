@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import json
 from typing import Optional
 
@@ -23,6 +26,7 @@ class CloudPackageChecker(QObject):
         self._application = application  # type: CuraApplication
         self._scope = UltimakerCloudScope(application)
         self._model = SubscribedPackagesModel()
+        self._message = None  # type: Optional[Message]
 
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
@@ -33,13 +37,16 @@ class CloudPackageChecker(QObject):
     def _onAppInitialized(self) -> None:
         self._package_manager = self._application.getPackageManager()
         # initial check
-        self._fetchUserSubscribedPackages()
+        self._onLoginStateChanged()
         # check again whenever the login state changes
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._fetchUserSubscribedPackages)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
 
-    def _fetchUserSubscribedPackages(self) -> None:
+    def _onLoginStateChanged(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserSubscribedPackages()
+        elif self._message is not None:
+            self._message.hide()
+            self._message = None
 
     def _getUserSubscribedPackages(self) -> None:
         Logger.debug("Requesting subscribed packages metadata from server.")
@@ -83,22 +90,24 @@ class CloudPackageChecker(QObject):
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
         if package_discrepancy:
             self._model.addDiscrepancies(package_discrepancy)
-            self._model.initialize(subscribed_packages_payload)
+            self._model.initialize(self._package_manager, subscribed_packages_payload)
             self._handlePackageDiscrepancies()
 
     def _handlePackageDiscrepancies(self) -> None:
         Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
-            "\nDo you want to sync material and software packages with your account?"),
-            title=self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
+            "Do you want to sync material and software packages with your account?"),
+            title = self._i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ),
+            lifetime = 0)
         sync_message.addAction("sync",
-                               name=self._i18n_catalog.i18nc("@action:button", "Sync"),
-                               icon="",
-                               description="Sync your Cloud subscribed packages to your local environment.",
-                               button_align=Message.ActionButtonAlignment.ALIGN_RIGHT)
+                               name = self._i18n_catalog.i18nc("@action:button", "Sync"),
+                               icon = "",
+                               description = "Sync your Cloud subscribed packages to your local environment.",
+                               button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         sync_message.actionTriggered.connect(self._onSyncButtonClicked)
         sync_message.show()
+        self._message = sync_message
 
     def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()

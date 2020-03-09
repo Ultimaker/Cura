@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import tempfile
 from typing import Dict, List, Any
 
@@ -81,11 +84,9 @@ class DownloadPresenter:
         return DownloadPresenter(self._app)
 
     def _createProgressMessage(self) -> Message:
-        return Message(i18n_catalog.i18nc(
-            "@info:generic",
-            "\nSyncing..."),
+        return Message(i18n_catalog.i18nc("@info:generic", "Syncing..."),
             lifetime = 0,
-            use_inactivity_timer=False,
+            use_inactivity_timer = False,
             progress = 0.0,
             title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
 
@@ -93,7 +94,7 @@ class DownloadPresenter:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
 
         try:
-            with tempfile.NamedTemporaryFile(mode ="wb+", suffix =".curapackage", delete = False) as temp_file:
+            with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
                     temp_file.write(bytes_read)

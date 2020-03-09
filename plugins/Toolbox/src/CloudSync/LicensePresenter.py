@@ -4,6 +4,7 @@ from typing import Dict, Optional, List, Any
 
 from PyQt5.QtCore import QObject, pyqtSlot
 
+from UM.Logger import Logger
 from UM.PackageManager import PackageManager
 from UM.Signal import Signal
 from cura.CuraApplication import CuraApplication
@@ -12,12 +13,19 @@ from UM.i18n import i18nCatalog
 from .LicenseModel import LicenseModel
 
 
-## Call present() to show a licenseDialog for a set of packages
-#  licenseAnswers emits a list of Dicts containing answers when the user has made a choice for all provided packages
 class LicensePresenter(QObject):
+    """Presents licenses for a set of packages for the user to accept or reject.
+
+    Call present() exactly once to show a licenseDialog for a set of packages
+    Before presenting another set of licenses, create a new instance using resetCopy().
+
+    licenseAnswers emits a list of Dicts containing answers when the user has made a choice for all provided packages.
+    """
 
     def __init__(self, app: CuraApplication) -> None:
         super().__init__()
+        self._presented = False
+        """Whether present() has been called and state is expected to be initialized"""
         self._catalog = i18nCatalog("cura")
         self._dialog = None  # type: Optional[QObject]
         self._package_manager = app.getPackageManager()  # type: PackageManager
@@ -39,6 +47,10 @@ class LicensePresenter(QObject):
     # \param plugin_path: Root directory of the Toolbox plugin
     # \param packages: Dict[package id, file path]
     def present(self, plugin_path: str, packages: Dict[str, Dict[str, str]]) -> None:
+        if self._presented:
+            Logger.error("{clazz} is single-use. Create a new {clazz} instead", clazz=self.__class__.__name__)
+            return
+
         path = os.path.join(plugin_path, self._compatibility_dialog_path)
 
         self._initState(packages)
@@ -56,6 +68,14 @@ class LicensePresenter(QObject):
             }
             self._dialog = self._app.createQmlComponent(path, context_properties)
         self._presentCurrentPackage()
+        self._presented = True
+
+    def resetCopy(self) -> "LicensePresenter":
+        """Clean up and return a new copy with the same settings such as app"""
+        if self._dialog:
+            self._dialog.close()
+        self.licenseAnswers.disconnectAll()
+        return LicensePresenter(self._app)
 
     @pyqtSlot()
     def onLicenseAccepted(self) -> None:

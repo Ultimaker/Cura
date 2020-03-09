@@ -16,6 +16,10 @@ Button
 
     property bool isValidMaterial:
     {
+        if (configuration === null)
+        {
+            return false
+        }
         var extruderConfigurations = configuration.extruderConfigurations
 
         for (var index in extruderConfigurations)
@@ -62,11 +66,11 @@ Button
             Repeater
             {
                 id: repeater
-                model: configuration.extruderConfigurations
+                model: configuration !== null ? configuration.extruderConfigurations: null
                 width: parent.width
                 delegate: PrintCoreConfiguration
                 {
-                    width: Math.round(parent.width / configuration.extruderConfigurations.length)
+                    width: Math.round(parent.width / (configuration !== null ? configuration.extruderConfigurations.length : 1))
                     printCoreConfiguration: modelData
                     visible: configurationItem.isValidMaterial
                 }
@@ -100,6 +104,11 @@ Button
                     id: unknownMaterialMessage
                     text:
                     {
+                        if (configuration === null)
+                        {
+                            return ""
+                        }
+
                         var extruderConfigurations = configuration.extruderConfigurations
                         var unknownMaterials = []
                         for (var index in extruderConfigurations)
@@ -187,14 +196,21 @@ Button
                 rightMargin: UM.Theme.getSize("wide_margin").width
             }
             height: childrenRect.height
-            visible: configuration.buildplateConfiguration != "" && false //Buildplate is disabled as long as we have no printers that properly support buildplate swapping (so we can't test).
+            visible: configuration !== null && configuration.buildplateConfiguration != "" && false //Buildplate is disabled as long as we have no printers that properly support buildplate swapping (so we can't test).
 
             // Show the type of buildplate. The first letter is capitalized
             Cura.IconWithText
             {
                 id: buildplateLabel
                 source: UM.Theme.getIcon("buildplate")
-                text: configuration.buildplateConfiguration.charAt(0).toUpperCase() + configuration.buildplateConfiguration.substr(1)
+                text:
+                {
+                    if (configuration === null)
+                    {
+                        return ""
+                    }
+                    return configuration.buildplateConfiguration.charAt(0).toUpperCase() + configuration.buildplateConfiguration.substr(1)
+                }
                 anchors.left: parent.left
             }
         }

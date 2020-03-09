@@ -30,22 +30,22 @@ Item
         borderColor: printJob && printJob.configurationChanges.length !== 0 ? UM.Theme.getColor("warning") : UM.Theme.getColor("monitor_card_border")
         headerItem: Row
         {
-            height: 48 * screenScaleFactor // TODO: Theme!
+            height: Math.round(48 * screenScaleFactor) // TODO: Theme!
             anchors.left: parent.left
-            anchors.leftMargin: 24 * screenScaleFactor // TODO: Theme!
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            anchors.leftMargin: Math.round(24 * screenScaleFactor) // TODO: Theme!
+            spacing: Math.round(18 * screenScaleFactor) // TODO: Theme!
 
             MonitorPrintJobPreview
             {
                 printJob: base.printJob
-                size: 32 * screenScaleFactor // TODO: Theme!
+                size: Math.round(32 * screenScaleFactor) // TODO: Theme!
                 anchors.verticalCenter: parent.verticalCenter
             }
 
             Item
             {
                 anchors.verticalCenter: parent.verticalCenter
-                height: 18 * screenScaleFactor // TODO: Theme!
+                height: Math.round(18 * screenScaleFactor) // TODO: Theme!
                 width: UM.Theme.getSize("monitor_column").width
                 Rectangle
                 {
@@ -74,7 +74,7 @@ Item
             Item
             {
                 anchors.verticalCenter: parent.verticalCenter
-                height: 18 * screenScaleFactor // TODO: Theme!
+                height: Math.round(18 * screenScaleFactor) // TODO: Theme!
                 width: UM.Theme.getSize("monitor_column").width
 
                 Rectangle
@@ -95,7 +95,7 @@ Item
                     visible: printJob
 
                     // FIXED-LINE-HEIGHT:
-                    height: 18 * screenScaleFactor // TODO: Theme!
+                    height: Math.round(18 * screenScaleFactor) // TODO: Theme!
                     verticalAlignment: Text.AlignVCenter
                     renderType: Text.NativeRendering
                 }
@@ -104,13 +104,13 @@ Item
             Item
             {
                 anchors.verticalCenter: parent.verticalCenter
-                height: 18 * screenScaleFactor // TODO: This should be childrenRect.height but QML throws warnings
+                height: Math.round(18 * screenScaleFactor) // TODO: This should be childrenRect.height but QML throws warnings
                 width: childrenRect.width
 
                 Rectangle
                 {
                     color: UM.Theme.getColor("monitor_skeleton_loading")
-                    width: 72 * screenScaleFactor // TODO: Theme!
+                    width: Math.round(72 * screenScaleFactor) // TODO: Theme!
                     height: parent.height
                     visible: !printJob
                     radius: 2 * screenScaleFactor // TODO: Theme!
@@ -124,21 +124,22 @@ Item
                     elide: Text.ElideRight
                     font: UM.Theme.getFont("medium") // 14pt, regular
                     text: {
-                        if (printJob !== null) {
+                        if (printJob !== null)
+                        {
                             if (printJob.assignedPrinter == null)
                             {
                                 if (printJob.state == "error")
                                 {
-                                    return catalog.i18nc("@label", "Unavailable printer")
+                                    return catalog.i18nc("@label", "Unavailable printer");
                                 }
-                                return catalog.i18nc("@label", "First available")
+                                return catalog.i18nc("@label", "First available");
                             }
-                            return printJob.assignedPrinter.name
+                            return printJob.assignedPrinter.name;
                         }
-                        return ""
+                        return "";
                     }
                     visible: printJob
-                    width: 120 * screenScaleFactor // TODO: Theme!
+                    width: Math.round(120 * screenScaleFactor) // TODO: Theme!
 
                     // FIXED-LINE-HEIGHT:
                     height: parent.height
@@ -152,11 +153,11 @@ Item
                     anchors
                     {
                         left: printerAssignmentLabel.right;
-                        leftMargin: 12 // TODO: Theme!
+                        leftMargin: Math.round(12 * screenScaleFactor) // TODO: Theme!
                         verticalCenter: parent.verticalCenter
                     }
                     height: childrenRect.height
-                    spacing: 6 // TODO: Theme!
+                    spacing: Math.round(6 * screenScaleFactor) // TODO: Theme!
                     visible: printJob
 
                     MonitorPrinterPill
@@ -171,10 +172,10 @@ Item
             anchors
             {
                 left: parent.left
-                leftMargin: 74 * screenScaleFactor // TODO: Theme!
+                leftMargin: Math.round(74 * screenScaleFactor) // TODO: Theme!
             }
-            height: 108 * screenScaleFactor // TODO: Theme!
-            spacing: 18 * screenScaleFactor // TODO: Theme!
+            height: Math.round(108 * screenScaleFactor) // TODO: Theme!
+            spacing: Math.round(18 * screenScaleFactor) // TODO: Theme!
 
             MonitorPrinterConfiguration
             {
@@ -182,7 +183,7 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 buildplate: catalog.i18nc("@label", "Glass")
                 configurations: base.printJob.configuration.extruderConfigurations
-                height: 72 * screenScaleFactor // TODO: Theme!
+                height: Math.round(72 * screenScaleFactor) // TODO: Theme!
             }
 
             Label {
@@ -193,7 +194,7 @@ Item
                 anchors.top: printerConfiguration.top
 
                 // FIXED-LINE-HEIGHT:
-                height: 18 * screenScaleFactor // TODO: Theme!
+                height: Math.round(18 * screenScaleFactor) // TODO: Theme!
                 verticalAlignment: Text.AlignVCenter
                 renderType: Text.NativeRendering
             }
@@ -206,21 +207,22 @@ Item
         anchors
         {
             right: parent.right
-            rightMargin: 8 * screenScaleFactor // TODO: Theme!
+            rightMargin: Math.round(8 * screenScaleFactor) // TODO: Theme!
             top: parent.top
-            topMargin: 8 * screenScaleFactor // TODO: Theme!
+            topMargin: Math.round(8 * screenScaleFactor) // TODO: Theme!
         }
-        width: 32 * screenScaleFactor // TODO: Theme!
-        height: 32 * screenScaleFactor // TODO: Theme!
+        width: Math.round(32 * screenScaleFactor) // TODO: Theme!
+        height: Math.round(32 * screenScaleFactor) // TODO: Theme!
         enabled: OutputDevice.supportsPrintJobActions
         onClicked: enabled ? contextMenu.switchPopupState() : {}
         visible:
         {
-            if (!printJob) {
-                return false
+            if (!printJob)
+            {
+                return false;
             }
-            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"]
-            return states.indexOf(printJob.state) !== -1
+            var states = ["queued", "error", "sent_to_printer", "pre_print", "printing", "pausing", "paused", "resuming"];
+            return states.indexOf(printJob.state) !== -1;
         }
     }
 
