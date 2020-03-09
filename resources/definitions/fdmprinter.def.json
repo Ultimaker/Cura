@@ -5988,7 +5988,7 @@
                     "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.05,
+                    "default_value": 0.025,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "0.3",
