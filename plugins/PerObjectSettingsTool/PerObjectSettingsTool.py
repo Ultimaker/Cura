@@ -97,7 +97,7 @@ class PerObjectSettingsTool(Tool):
 
         for property_key in ["top_bottom_thickness", "wall_thickness"]:
             if mesh_type == "infill_mesh":
-                if not settings.getInstance(property_key):
+                if settings.getInstance(property_key) is None:
                     definition = stack.getSettingDefinition(property_key)
                     new_instance = SettingInstance(definition, settings)
                     new_instance.setProperty("value", 0)
