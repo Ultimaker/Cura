@@ -71,7 +71,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         # Add all instances that are not added, but are in visibility list
         for item in visible:
-            if settings.getInstance(item) is not None:  # Setting was not added already.
+            if settings.getInstance(item) is None:  # Setting was not added already.
                 definition = self._stack.getSettingDefinition(item)
                 if definition:
                     new_instance = SettingInstance(definition, settings)
