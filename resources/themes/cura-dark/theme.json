@@ -193,21 +193,6 @@
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
 
-        "layerview_ghost": [31, 31, 31, 95],
-        "layerview_none": [255, 255, 255, 255],
-        "layerview_inset_0": [255, 0, 0, 255],
-        "layerview_inset_x": [0, 255, 0, 255],
-        "layerview_skin": [255, 255, 0, 255],
-        "layerview_support": [0, 255, 255, 255],
-        "layerview_skirt": [0, 255, 255, 255],
-        "layerview_infill": [255, 127, 0, 255],
-        "layerview_support_infill": [0, 255, 255, 255],
-        "layerview_move_combing": [0, 0, 255, 255],
-        "layerview_move_retraction": [128, 127, 255, 255],
-        "layerview_support_interface": [63, 127, 255, 255],
-        "layerview_prime_tower": [0, 255, 255, 255],
-        "layerview_nozzle": [181, 166, 66, 50],
-
         "material_compatibility_warning": [255, 255, 255, 255],
 
         "quality_slider_unavailable": [179, 179, 179, 255],
