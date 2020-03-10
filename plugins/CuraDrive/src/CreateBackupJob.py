@@ -36,10 +36,8 @@ class CreateBackupJob(Job):
         self._api_backup_url = api_backup_url
         self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
-
         self._backup_zip = None
-        self._upload_success = False
-        self._upload_success_available = threading.Event()
+        self._job_done = threading.Event()
         self.backup_upload_error_message = ""
 
     def run(self) -> None:
@@ -62,7 +60,7 @@ class CreateBackupJob(Job):
         backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
         self._requestUploadSlot(backup_meta_data, len(self._backup_zip))
 
-        self._upload_success_available.wait()
+        self._job_done.wait()
         upload_message.hide()
 
     def _requestUploadSlot(self, backup_metadata: Dict[str, Any], backup_size: int) -> None:
@@ -89,12 +87,12 @@ class CreateBackupJob(Job):
         if error is not None:
             Logger.warning(str(error))
             self.backup_upload_error_message = "Could not upload backup."
-            self._upload_success_available.set()
+            self._job_done.set()
             return
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) >= 300:
             Logger.warning("Could not request backup upload: %s", HttpRequestManager.readText(reply))
             self.backup_upload_error_message = "Could not upload backup."
-            self._upload_success_available.set()
+            self._job_done.set()
             return
 
         backup_upload_url = HttpRequestManager.readJSON(reply)["data"]["upload_url"]
@@ -119,4 +117,4 @@ class CreateBackupJob(Job):
             Message(catalog.i18nc("@info:backup_status", "There was an error while uploading your backup."),
                     title=self.MESSAGE_TITLE).show()
 
-        self._upload_success_available.set()
+        self._job_done.set()
