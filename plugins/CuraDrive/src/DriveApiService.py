@@ -3,8 +3,6 @@
 
 import base64
 import hashlib
-import json
-from datetime import datetime
 from tempfile import NamedTemporaryFile
 from typing import Any, Optional, List, Dict, Callable
 
@@ -17,7 +15,7 @@ from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
-from .UploadBackupJob import UploadBackupJob
+from .CreateBackupJob import CreateBackupJob
 from .Settings import Settings
 
 from UM.i18n import i18nCatalog
@@ -40,21 +38,20 @@ class DriveApiService:
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
         self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
-        self._current_backup_zip_file = None
-
-        self.creatingStateChanged.connect(self._creatingStateChanged)
 
     def getBackups(self, changed: Callable[[List], None]):
         def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
             if error is not None:
                 Logger.log("w", "Could not get backups: " + str(error))
                 changed([])
+                return
 
             backup_list_response = HttpRequestManager.readJSON(reply)
             if "data" not in backup_list_response:
                 Logger.log("w", "Could not get backups from remote, actual response body was: %s",
                            str(backup_list_response))
                 changed([])  # empty list of backups
+                return
 
             changed(backup_list_response["data"])
 
@@ -67,20 +64,11 @@ class DriveApiService:
 
     def createBackup(self) -> None:
         self.creatingStateChanged.emit(is_creating = True)
+        upload_backup_job = CreateBackupJob(self.BACKUP_URL)
+        upload_backup_job.finished.connect(self._onUploadFinished)
+        upload_backup_job.start()
 
-        # Create the backup.
-        backup_zip_file, backup_meta_data = self._cura_api.backups.createBackup()
-        if not backup_zip_file or not backup_meta_data:
-            self.creatingStateChanged.emit(is_creating = False, error_message ="Could not create backup.")
-            return
-
-        # Create an upload entry for the backup.
-        timestamp = datetime.now().isoformat()
-        backup_meta_data["description"] = "{}.backup.{}.cura.zip".format(timestamp, backup_meta_data["cura_release"])
-        self._requestBackupUpload(backup_meta_data, len(backup_zip_file))
-        self._current_backup_zip_file = backup_zip_file
-
-    def _onUploadFinished(self, job: "UploadBackupJob") -> None:
+    def _onUploadFinished(self, job: "CreateBackupJob") -> None:
         if job.backup_upload_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
             self.creatingStateChanged.emit(is_creating = False, error_message = job.backup_upload_error_message)
@@ -167,46 +155,3 @@ class DriveApiService:
 
     def _onDeleteRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
         callable(HttpRequestManager.replyIndicatesSuccess(reply, error))
-
-    def _requestBackupUpload(self, backup_metadata: Dict[str, Any], backup_size: int) -> None:
-        """Request a backup upload slot from the API.
-
-        :param backup_metadata: A dict containing some meta data about the backup.
-        :param backup_size: The size of the backup file in bytes.
-        :return: The upload URL for the actual backup file if successful, otherwise None.
-        """
-
-        payload = json.dumps({"data": {"backup_size": backup_size,
-                                       "metadata": backup_metadata
-                                       }
-                              }).encode()
-
-        HttpRequestManager.getInstance().put(
-            self.BACKUP_URL,
-            data = payload,
-            callback = self._onBackupUploadSlotCompleted,
-            error_callback = self._onBackupUploadSlotCompleted,
-            scope = self._jsonCloudScope)
-
-    def _onBackupUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
-        if error is not None:
-            Logger.warning(str(error))
-            self.creatingStateChanged.emit(is_creating=False, error_message="Could not upload backup.")
-            return
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) >= 300:
-            Logger.warning("Could not request backup upload: %s", HttpRequestManager.readText(reply))
-            self.creatingStateChanged.emit(is_creating=False, error_message="Could not upload backup.")
-            return
-
-        backup_upload_url = HttpRequestManager.readJSON(reply)["data"]["upload_url"]
-
-        # Upload the backup to storage.
-        upload_backup_job = UploadBackupJob(backup_upload_url, self._current_backup_zip_file)
-        upload_backup_job.finished.connect(self._onUploadFinished)
-        upload_backup_job.start()
-
-    def _creatingStateChanged(self, is_creating: bool = False, error_message: str = None) -> None:
-        """Cleanup after a backup is not needed anymore"""
-
-        if not is_creating:
-            self._current_backup_zip_file = None
