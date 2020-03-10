@@ -42,7 +42,7 @@ class RestoreBackupJob(Job):
             error_callback = self._onRestoreRequestCompleted
         )
 
-        self._job_done.wait()
+        self._job_done.wait()  # A job is considered finished when the run function completes
 
     def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
