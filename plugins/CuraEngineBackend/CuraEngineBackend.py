@@ -424,7 +424,7 @@ class CuraEngineBackend(QObject, Backend):
                 self._error_message = Message(catalog.i18nc("@info:status", "Please review settings and check if your models:"
                                                                             "\n- Fit within the build volume"
                                                                             "\n- Are assigned to an enabled extruder"
-                                                                            "\nr- Are not all set as modifier meshes"),
+                                                                            "\n- Are not all set as modifier meshes"),
                                               title = catalog.i18nc("@info:title", "Unable to slice"))
                 self._error_message.show()
                 self.setState(BackendState.Error)
