@@ -139,7 +139,7 @@ Item
                 id: infillOnlyComboBoxModel
 
                 Component.onCompleted: {
-                    append({ text: catalog.i18nc("@item:inlistbox", "Infill only") })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Infill mesh only") })
                     append({ text: catalog.i18nc("@item:inlistbox", "Cutting mesh") })
                 }
             }
