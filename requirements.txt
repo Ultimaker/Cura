@@ -1,4 +1,5 @@
 colorlog
+mypy==0.740
 PyQt5==5.10
 numpy==1.15.4
 scipy==1.2.0
