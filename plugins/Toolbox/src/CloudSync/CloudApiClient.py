@@ -2,8 +2,8 @@ from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from ..CloudApiModel import CloudApiModel
-from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 class CloudApiClient:

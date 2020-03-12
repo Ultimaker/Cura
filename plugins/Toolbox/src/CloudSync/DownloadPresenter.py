@@ -13,8 +13,8 @@ from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
-from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 ## Downloads a set of packages from the Ultimaker Cloud Marketplace

@@ -40,7 +40,7 @@ class RestoreBackupJob(Job):
         assert url is not None
 
         HttpRequestManager.getInstance().get(
-            url =url,
+            url = url,
             callback = self._onRestoreRequestCompleted,
             error_callback = self._onRestoreRequestCompleted
         )

@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
+from typing import List, Dict, Any
 from typing import Optional
 
 from PyQt5.QtCore import QObject
@@ -13,11 +14,9 @@ from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication, ApplicationMetadata
-from ..CloudApiModel import CloudApiModel
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
-from ..UltimakerCloudScope import UltimakerCloudScope
-
-from typing import List, Dict, Any
+from ..CloudApiModel import CloudApiModel
 
 
 class CloudPackageChecker(QObject):

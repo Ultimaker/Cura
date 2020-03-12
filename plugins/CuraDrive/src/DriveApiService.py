@@ -11,9 +11,9 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
-from plugins.CuraDrive.src.RestoreBackupJob import RestoreBackupJob
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .CreateBackupJob import CreateBackupJob
+from .RestoreBackupJob import RestoreBackupJob
 from .Settings import Settings
 
 catalog = i18nCatalog("cura")

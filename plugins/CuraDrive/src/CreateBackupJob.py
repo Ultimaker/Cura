@@ -14,7 +14,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
-from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 
 catalog = i18nCatalog("cura")
 

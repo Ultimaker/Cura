@@ -9,23 +9,20 @@ from typing import cast, Any, Dict, List, Set, TYPE_CHECKING, Tuple, Optional, U
 from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 
+from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
-from UM.Extension import Extension
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
-from UM.i18n import i18nCatalog
 from UM.Version import Version
-
+from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
-
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
-
-from .CloudApiModel import CloudApiModel
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .AuthorsModel import AuthorsModel
+from .CloudApiModel import CloudApiModel
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
-from .UltimakerCloudScope import UltimakerCloudScope
 
 if TYPE_CHECKING:
     from UM.TaskManagement.HttpRequestData import HttpRequestData
