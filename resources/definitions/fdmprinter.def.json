@@ -2098,7 +2098,7 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "type": "float",
-                    "value": "0",
+                    "value": "0 if infill_sparse_density > 0 else 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
