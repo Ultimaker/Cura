@@ -18,8 +18,8 @@ class UltimakerCloudScope(DefaultUserAgentScope):
         api = application.getCuraAPI()
         self._account = api.account  # type: Account
 
-    def request_hook(self, request: QNetworkRequest):
-        super().request_hook(request)
+    def requestHook(self, request: QNetworkRequest):
+        super().requestHook(request)
         token = self._account.accessToken
         if not self._account.isLoggedIn or token is None:
             Logger.warning("Cannot add authorization to Cloud Api request")
@@ -28,4 +28,4 @@ class UltimakerCloudScope(DefaultUserAgentScope):
         header_dict = {
             "Authorization": "Bearer {}".format(token)
         }
-        self.add_headers(request, header_dict)
+        self.addHeaders(request, header_dict)
