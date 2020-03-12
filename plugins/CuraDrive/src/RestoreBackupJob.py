@@ -34,7 +34,7 @@ class RestoreBackupJob(Job):
         self._backup = backup
         self.restore_backup_error_message = ""
 
-    def run(self):
+    def run(self) -> None:
 
         HttpRequestManager.getInstance().get(
             url = self._backup.get("download_url"),
@@ -44,7 +44,7 @@ class RestoreBackupJob(Job):
 
         self._job_done.wait()  # A job is considered finished when the run function completes
 
-    def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
+    def _onRestoreRequestCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if not HttpRequestManager.replyIndicatesSuccess(reply, error):
             Logger.warning("Requesting backup failed, response code %s while trying to connect to %s",
                            reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())

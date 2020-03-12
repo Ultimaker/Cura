@@ -1,18 +1,17 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import json
 import threading
+from datetime import datetime
 from typing import Any, Dict, Optional
 
 from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
-from datetime import datetime
 
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
-
 from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
 from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
@@ -24,6 +23,7 @@ class CreateBackupJob(Job):
     """Creates backup zip, requests upload url and uploads the backup file to cloud storage."""
 
     MESSAGE_TITLE = catalog.i18nc("@info:title", "Backups")
+    DEFAULT_UPLOAD_ERROR_MESSAGE = catalog.i18nc("@info:backup_status", "There was an error while uploading your backup.")
 
     def __init__(self, api_backup_url: str) -> None:
         """ Create a new backup Job. start the job by calling start()
@@ -34,11 +34,13 @@ class CreateBackupJob(Job):
         super().__init__()
 
         self._api_backup_url = api_backup_url
-        self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+        self._json_cloud_scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
-        self._backup_zip = None
+        self._backup_zip = None  # type: Optional[bytes]
         self._job_done = threading.Event()
+        """Set when the job completes. Does not indicate success."""
         self.backup_upload_error_message = ""
+        """After the job completes, an empty string indicates success. Othrerwise, the value is a translated message."""
 
     def run(self) -> None:
         upload_message = Message(catalog.i18nc("@info:backup_status", "Creating your backup..."), title = self.MESSAGE_TITLE, progress = -1)
@@ -48,7 +50,7 @@ class CreateBackupJob(Job):
         self._backup_zip, backup_meta_data = cura_api.backups.createBackup()
 
         if not self._backup_zip or not backup_meta_data:
-            self.backup_upload_error_message = "Could not create backup."
+            self.backup_upload_error_message = catalog.i18nc("@info:backup_status", "There was an error while creating your backup.")
             upload_message.hide()
             return
 
@@ -61,14 +63,17 @@ class CreateBackupJob(Job):
         self._requestUploadSlot(backup_meta_data, len(self._backup_zip))
 
         self._job_done.wait()
-        upload_message.hide()
+        if self.backup_upload_error_message == "":
+            upload_message.setText(catalog.i18nc("@info:backup_status", "Your backup has finished uploading."))
+        else:
+            # some error occurred. This error is presented to the user by DrivePluginExtension
+            upload_message.hide()
 
     def _requestUploadSlot(self, backup_metadata: Dict[str, Any], backup_size: int) -> None:
         """Request a backup upload slot from the API.
 
         :param backup_metadata: A dict containing some meta data about the backup.
         :param backup_size: The size of the backup file in bytes.
-        :return: The upload URL for the actual backup file if successful, otherwise None.
         """
 
         payload = json.dumps({"data": {"backup_size": backup_size,
@@ -81,17 +86,17 @@ class CreateBackupJob(Job):
             data = payload,
             callback = self._onUploadSlotCompleted,
             error_callback = self._onUploadSlotCompleted,
-            scope = self._jsonCloudScope)
+            scope = self._json_cloud_scope)
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         if error is not None:
             Logger.warning(str(error))
-            self.backup_upload_error_message = "Could not upload backup."
+            self.backup_upload_error_message = self.DEFAULT_UPLOAD_ERROR_MESSAGE
             self._job_done.set()
             return
         if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) >= 300:
             Logger.warning("Could not request backup upload: %s", HttpRequestManager.readText(reply))
-            self.backup_upload_error_message = "Could not upload backup."
+            self.backup_upload_error_message = self.DEFAULT_UPLOAD_ERROR_MESSAGE
             self._job_done.set()
             return
 
@@ -106,15 +111,8 @@ class CreateBackupJob(Job):
         )
 
     def _uploadFinishedCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError = None):
-        self.backup_upload_error_text = HttpRequestManager.readText(reply)
-
-        if HttpRequestManager.replyIndicatesSuccess(reply, error):
-            self._upload_success = True
-            Message(catalog.i18nc("@info:backup_status", "Your backup has finished uploading."), title = self.MESSAGE_TITLE).show()
-        else:
-            self.backup_upload_error_text = self.backup_upload_error_text
-            Logger.log("w", "Could not upload backup file: %s", self.backup_upload_error_text)
-            Message(catalog.i18nc("@info:backup_status", "There was an error while uploading your backup."),
-                    title=self.MESSAGE_TITLE).show()
+        if not HttpRequestManager.replyIndicatesSuccess(reply, error):
+            Logger.log("w", "Could not upload backup file: %s", HttpRequestManager.readText(reply))
+            self.backup_upload_error_message = self.DEFAULT_UPLOAD_ERROR_MESSAGE
 
         self._job_done.set()

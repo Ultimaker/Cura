@@ -1,25 +1,21 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-import base64
-import hashlib
-from tempfile import NamedTemporaryFile
 from typing import Any, Optional, List, Dict, Callable
+
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM.Logger import Logger
 from UM.Signal import Signal, signalemitter
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
+from UM.i18n import i18nCatalog
 from cura.CuraApplication import CuraApplication
 from plugins.CuraDrive.src.RestoreBackupJob import RestoreBackupJob
 from plugins.Toolbox.src.UltimakerCloudScope import UltimakerCloudScope
-
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
-
 from .CreateBackupJob import CreateBackupJob
 from .Settings import Settings
 
-from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
@@ -39,8 +35,8 @@ class DriveApiService:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
         self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
-    def getBackups(self, changed: Callable[[List], None]):
-        def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None):
+    def getBackups(self, changed: Callable[[List[Dict[str, Any]]], None]) -> None:
+        def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
             if error is not None:
                 Logger.log("w", "Could not get backups: " + str(error))
                 changed([])
@@ -80,7 +76,11 @@ class DriveApiService:
         download_url = backup.get("download_url")
         if not download_url:
             # If there is no download URL, we can't restore the backup.
-            return self._emitRestoreError()
+            Logger.warning("backup download_url is missing. Aborting backup.")
+            self.restoringStateChanged.emit(is_restoring = False,
+                                            error_message = catalog.i18nc("@info:backup_status",
+                                                                        "There was an error trying to restore your backup."))
+            return
 
         restore_backup_job = RestoreBackupJob(backup)
         restore_backup_job.finished.connect(self._onRestoreFinished)
