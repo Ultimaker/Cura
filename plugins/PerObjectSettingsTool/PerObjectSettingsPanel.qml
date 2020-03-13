@@ -49,18 +49,6 @@ Item
         visibility_handler.addSkipResetSetting(currentMeshType)
     }
 
-    function setOverhangsMeshType()
-    {
-        if (infillOnlyCheckbox.checked)
-        {
-            setMeshType(infillMeshType)
-        }
-        else
-        {
-            setMeshType(cuttingMeshType)
-        }
-    }
-
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
@@ -140,22 +128,39 @@ Item
             verticalAlignment: Text.AlignVCenter
         }
 
-        CheckBox
+
+        ComboBox
         {
-            id: infillOnlyCheckbox
+            id: infillOnlyComboBox
+            width: parent.width / 2 - UM.Theme.getSize("default_margin").width
 
-            text: catalog.i18nc("@action:checkbox", "Infill only");
+            model: ListModel
+            {
+                id: infillOnlyComboBoxModel
 
-            style: UM.Theme.styles.checkbox;
+                Component.onCompleted: {
+                    append({ text: catalog.i18nc("@item:inlistbox", "Infill mesh only") })
+                    append({ text: catalog.i18nc("@item:inlistbox", "Cutting mesh") })
+                }
+            }
 
             visible: currentMeshType === infillMeshType || currentMeshType === cuttingMeshType
-            onClicked: setOverhangsMeshType()
+
+
+            onActivated:
+            {
+                if (index == 0){
+                    setMeshType(infillMeshType)
+                } else {
+                    setMeshType(cuttingMeshType)
+                }
+            }
 
             Binding
             {
-                target: infillOnlyCheckbox
-                property: "checked"
-                value: currentMeshType === infillMeshType
+                target: infillOnlyComboBox
+                property: "currentIndex"
+                value: currentMeshType === infillMeshType ? 0 : 1
             }
         }
 
