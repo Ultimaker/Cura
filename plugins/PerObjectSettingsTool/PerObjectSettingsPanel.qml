@@ -159,7 +159,7 @@ Item
             }
         }
 
-        Column // Settings Dialog
+        Column // List of selected Settings to override for the selected object
         {
             // This is to ensure that the panel is first increasing in size up to 200 and then shows a scrollbar.
             // It kinda looks ugly otherwise (big panel, no content on it)
