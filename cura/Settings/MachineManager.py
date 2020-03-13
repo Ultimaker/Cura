@@ -325,7 +325,7 @@ class MachineManager(QObject):
         # that situation will be fixed (and not occur again, since it switches it out to the preferred variant instead!)
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for extruder in self._global_container_stack.extruderList:
-            variant_name = self._global_container_stack.variant.getName()
+            variant_name = extruder.variant.getName()
             variant_node = machine_node.variants.get(variant_name)
             if variant_node is None:
                 Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
