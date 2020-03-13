@@ -7,7 +7,7 @@
 DEFAULT_CURA_APP_NAME = "cura"
 DEFAULT_CURA_DISPLAY_NAME = "Ultimaker Cura"
 DEFAULT_CURA_VERSION = "master"
-DEFAULT_CURA_BUILD_TYPE = ""
+DEFAULT_CURA_BUILD_TYPE = "enterprise"
 DEFAULT_CURA_DEBUG_MODE = False
 
 # Each release has a fixed SDK version coupled with it. It doesn't make sense to make it configurable because, for
