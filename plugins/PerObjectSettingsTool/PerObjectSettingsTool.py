@@ -82,6 +82,7 @@ class PerObjectSettingsTool(Tool):
             selected_object.addDecorator(SettingOverrideDecorator())
             stack = selected_object.callDecoration("getStack")
 
+        settings_visibility_changed = False
         settings = stack.getTop()
         for property_key in ["infill_mesh", "cutting_mesh", "support_mesh", "anti_overhang_mesh"]:
             if property_key != mesh_type:
@@ -103,11 +104,14 @@ class PerObjectSettingsTool(Tool):
                     new_instance.setProperty("value", 0)
                     new_instance.resetState()  # Ensure that the state is not seen as a user state.
                     settings.addInstance(new_instance)
-                    visible = self.visibility_handler.getVisible()
-                    visible.add(property_key)
-                    self.visibility_handler.setVisible(visible)
+                    settings_visibility_changed = True
+
             elif old_mesh_type == "infill_mesh" and settings.getInstance(property_key) and settings.getProperty(property_key, "value") == 0:
                 settings.removeInstance(property_key)
+                settings_visibility_changed = True
+
+        if settings_visibility_changed:
+            self.visibility_handler.forceVisibilityChanged()
 
         self.propertyChanged.emit()
         return True
