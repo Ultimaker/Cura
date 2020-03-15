@@ -2447,7 +2447,7 @@
                 "material_flush_purge_speed":
                 {
                     "label": "Flush Purge Speed",
-                    "description": "Material Station internal value",
+                    "description": "How fast to prime the material after switching to a different material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
@@ -2455,23 +2455,23 @@
                 "material_flush_purge_length":
                 {
                     "label": "Flush Purge Length",
-                    "description": "Material Station internal value",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material.",
                     "type": "float",
                     "default_value": 60,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_speed":
                 {
-                    "label": "End Of Filament Purge Speed",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Speed",
+                    "description": "How fast to prime the material after replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_length":
                 {
-                    "label": "End Of Filament Purge Length",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Length",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 20,
                     "enabled": false
@@ -2479,7 +2479,7 @@
                 "material_maximum_park_duration":
                 {
                     "label": "Maximum Park Duration",
-                    "description": "Material Station internal value",
+                    "description": "How long the material can be kept out of dry storage safely.",
                     "type": "float",
                     "default_value": 300,
                     "enabled": false
@@ -2487,7 +2487,7 @@
                 "material_no_load_move_factor":
                 {
                     "label": "No Load Move Factor",
-                    "description": "Material Station internal value",
+                    "description": "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch.",
                     "type": "float",
                     "default_value": 0.940860215,
                     "enabled": false
