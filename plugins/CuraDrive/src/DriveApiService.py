@@ -86,20 +86,20 @@ class DriveApiService:
         restore_backup_job.finished.connect(self._onRestoreFinished)
         restore_backup_job.start()
 
-    def _onRestoreFinished(self, job: "RestoreBackupJob"):
+    def _onRestoreFinished(self, job: "RestoreBackupJob") -> None:
         if job.restore_backup_error_message != "":
             # If the job contains an error message we pass it along so the UI can display it.
             self.restoringStateChanged.emit(is_restoring=False)
         else:
             self.restoringStateChanged.emit(is_restoring = False, error_message = job.restore_backup_error_message)
 
-    def deleteBackup(self, backup_id: str, finishedCallable: Callable[[bool], None]):
+    def deleteBackup(self, backup_id: str, finished_callable: Callable[[bool], None]):
 
-        def finishedCallback(reply: QNetworkReply, ca=finishedCallable) -> None:
-            self._onDeleteRequestCompleted(reply, None, ca)
+        def finishedCallback(reply: QNetworkReply, ca: Callable[[bool], None] = finished_callable) -> None:
+            self._onDeleteRequestCompleted(reply, ca)
 
-        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, ca=finishedCallable) -> None:
-            self._onDeleteRequestCompleted(reply, error, ca)
+        def errorCallback(reply: QNetworkReply, error: QNetworkReply.NetworkError, ca: Callable[[bool], None] = finished_callable) -> None:
+            self._onDeleteRequestCompleted(reply, ca, error)
 
         HttpRequestManager.getInstance().delete(
             url = "{}/{}".format(self.BACKUP_URL, backup_id),
@@ -109,5 +109,5 @@ class DriveApiService:
         )
 
     @staticmethod
-    def _onDeleteRequestCompleted(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None, callable = None):
+    def _onDeleteRequestCompleted(reply: QNetworkReply, callable: Callable[[bool], None], error: Optional["QNetworkReply.NetworkError"] = None) -> None:
         callable(HttpRequestManager.replyIndicatesSuccess(reply, error))
