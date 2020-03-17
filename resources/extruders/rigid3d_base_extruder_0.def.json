@@ -3,7 +3,7 @@
     "name": "Extruder 1",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "rigid3d_zero2",
+        "machine": "rigid3d_base",
         "position": "0"
     },
 
