@@ -7,8 +7,6 @@
         "author": "Magicfirm",
         "manufacturer": "Magicfirm",
         "file_formats": "application/x3g",
-        "has_machine_quality": true,
-        "preferred_quality_type": "normal",
         "machine_x3g_variant": "z",
         "machine_extruder_trains":
         {
