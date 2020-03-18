@@ -5,7 +5,8 @@ import threading
 from datetime import datetime
 from typing import Any, Dict, Optional
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
+import sentry_sdk
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM.Job import Job
 from UM.Logger import Logger
@@ -89,13 +90,23 @@ class CreateBackupJob(Job):
             scope = self._json_cloud_scope)
 
     def _onUploadSlotCompleted(self, reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
-        if error is not None:
-            Logger.warning(str(error))
+        if HttpRequestManager.safeHttpStatus(reply) >= 300:
+            replyText = HttpRequestManager.readText(reply)
+            Logger.warning("Could not request backup upload: %s", replyText)
             self.backup_upload_error_message = self.DEFAULT_UPLOAD_ERROR_MESSAGE
+
+            if HttpRequestManager.safeHttpStatus(reply) == 400:
+                errors = json.loads(replyText)["errors"]
+                if "moreThanMaximum" in [error["code"] for error in errors if error["meta"] and error["meta"]["field_name"] == "backup_size"]:
+                    sentry_sdk.capture_message("backup failed: exceeded max size: {}".format(len(self._backup_zip)), level = "warning")
+                    self.backup_upload_error_message = catalog.i18nc("@error:file_size", "The backup exceeds the maximum file size.")
+                    from sentry_sdk import capture_message
+
             self._job_done.set()
             return
-        if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) >= 300:
-            Logger.warning("Could not request backup upload: %s", HttpRequestManager.readText(reply))
+
+        if error is not None:
+            Logger.warning("Could not request backup upload: %s", HttpRequestManager.qt_network_error_name(error))
             self.backup_upload_error_message = self.DEFAULT_UPLOAD_ERROR_MESSAGE
             self._job_done.set()
             return
