@@ -203,7 +203,8 @@ Item
                     {
                         if (addPrinterByIpScreen.hasRequestFinished)
                         {
-                            return catalog.i18nc("@label", "Could not connect to device.");
+                            return catalog.i18nc("@label", "Could not connect to device.") + "<br /><br /><a href=\"https://ultimaker.com/en/resources/52891-set-up-a-cloud-connection\">"
+                                + catalog.i18nc("@label", "Can't connect to your Ultimaker printer?") + "</a>";
                         }
                         else
                         {
