@@ -28,7 +28,11 @@ class TextManager(QObject):
 
     def _loadChangeLogText(self) -> str:
         # Load change log texts and organize them with a dict
-        file_path = Resources.getPath(Resources.Texts, "change_log.txt")
+        try:
+            file_path = Resources.getPath(Resources.Texts, "change_log.txt")
+        except FileNotFoundError:
+            # I have no idea how / when this happens, but we're getting crash reports about it.
+            return ""
         change_logs_dict = {}  # type: Dict[Version, Dict[str, List[str]]]
         with open(file_path, "r", encoding = "utf-8") as f:
             open_version = None  # type: Optional[Version]
