@@ -98,7 +98,11 @@ class CreateBackupJob(Job):
             if HttpRequestManager.safeHttpStatus(reply) == 400:
                 errors = json.loads(replyText)["errors"]
                 if "moreThanMaximum" in [error["code"] for error in errors if error["meta"] and error["meta"]["field_name"] == "backup_size"]:
-                    sentry_sdk.capture_message("backup failed: exceeded max size: {}".format(len(self._backup_zip)), level = "warning")
+                    if self._backup_zip is None:  # will never happen; keep mypy happy
+                        zip_error = "backup is None."
+                    else:
+                        zip_error = "{} exceeds max size.".format(str(len(self._backup_zip)))
+                    sentry_sdk.capture_message("backup failed: {}".format(zip_error), level ="warning")
                     self.backup_upload_error_message = catalog.i18nc("@error:file_size", "The backup exceeds the maximum file size.")
                     from sentry_sdk import capture_message
 
