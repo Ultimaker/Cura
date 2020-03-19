@@ -86,7 +86,7 @@ class ThreeMFReader(MeshReader):
 
     ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
     #   \returns Scene node.
-    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode) -> Optional[SceneNode]:
+    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         self._object_count += 1
         node_name = "Object %s" % self._object_count
 
@@ -104,6 +104,10 @@ class ThreeMFReader(MeshReader):
         vertices = numpy.resize(data, (int(data.size / 3), 3))
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
+        if file_name:
+            # The filename is used to give the user the option to reload the file if it is changed on disk
+            # It is only set for the root node of the 3mf file
+            mesh_builder.setFileName(file_name)
         mesh_data = mesh_builder.build()
 
         if len(mesh_data.getVertices()):
@@ -171,7 +175,7 @@ class ThreeMFReader(MeshReader):
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
-                um_node = self._convertSavitarNodeToUMNode(node)
+                um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
                 # compensate for original center position, if object(s) is/are not around its zero position
