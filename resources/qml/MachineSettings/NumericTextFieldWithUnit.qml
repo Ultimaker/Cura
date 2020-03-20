@@ -78,7 +78,7 @@ UM.TooltipArea
         id: textFieldWithUnit
         anchors.left: fieldLabel.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
+        verticalAlignment: Text.AlignVCenter
         width: numericTextFieldWithUnit.controlWidth
         height: numericTextFieldWithUnit.controlHeight
 
