@@ -142,6 +142,8 @@
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -152,6 +154,8 @@
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false

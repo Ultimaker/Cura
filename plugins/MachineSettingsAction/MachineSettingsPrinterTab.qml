@@ -72,6 +72,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                maximum: 2000000
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -86,6 +87,7 @@ Item
                 labelWidth: base.labelWidth
                 controlWidth: base.controlWidth
                 unitText: catalog.i18nc("@label", "mm")
+                maximum: 2000000
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
 
@@ -204,8 +206,8 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "min"
-                allowNegativeValue: true
-                allowPositiveValue: false
+                minimum: Number.NEGATIVE_INFINITY
+                maximum: 0
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -224,8 +226,8 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "min"
-                allowNegativeValue: true
-                allowPositiveValue: false
+                minimum: Number.NEGATIVE_INFINITY
+                maximum: 0
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -244,8 +246,6 @@ Item
 
                 axisName: "x"
                 axisMinOrMax: "max"
-                allowNegativeValue: false
-                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }
@@ -266,8 +266,6 @@ Item
 
                 axisName: "y"
                 axisMinOrMax: "max"
-                allowNegativeValue: false
-                allowPositiveValue: true
 
                 forceUpdateOnChangeFunction: forceUpdateFunction
             }

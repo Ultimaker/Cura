@@ -46,13 +46,6 @@ NumericTextFieldWithUnit
         return result
     }
 
-    valueValidator: DoubleValidator {
-        bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
-        top: allowPositiveValue ? Number.POSITIVE_INFINITY : 0
-        decimals: 6
-        notation: DoubleValidator.StandardNotation
-    }
-
     valueText: axisValue
 
     Connections
