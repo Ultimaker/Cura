@@ -90,7 +90,7 @@ class ThreeMFReader(MeshReader):
         self._object_count += 1
 
         node_name = savitar_node.getName()
-        if none_name == "":
+        if node_name == "":
             node_name = "Object %s" % self._object_count
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
