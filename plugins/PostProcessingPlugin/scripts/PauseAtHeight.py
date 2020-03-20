@@ -136,7 +136,7 @@ class PauseAtHeight(Script):
                     "unit": "°C",
                     "type": "int",
                     "default_value": 0,
-                    "enabled": "pause_method != \\\"griffin\\\""
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
                 "display_text":
                 {
@@ -405,7 +405,7 @@ class PauseAtHeight(Script):
                     if extrude_amount != 0:
                         prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "\n"
                         prepend_gcode += self.putValue("@info wait for cleaning nozzle from previous filament") + "\n"
-                        prepend_gcode += self.putValue("@pause  remove the waste filament from parking area and press continue printing") + "\n"
+                        prepend_gcode += self.putValue("@pause remove the waste filament from parking area and press continue printing") + "\n"
 
                     # and retract again, the properly primes the nozzle when changing filament.
                     if retraction_amount != 0:
