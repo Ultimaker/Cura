@@ -7,24 +7,32 @@
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
-        "platform": "discoeasy200.stl",
-        "platform_offset": [ 105, -59, 280],
+        "platform": "dagoma_discoeasy200.stl",
+        "platform_offset": [0, -57.3, -11],
         "has_machine_quality": true,
         "has_materials": true,
+        "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
-            "0": "dagoma_discoeasy200_extruder_0"
+            "0": "dagoma_discoeasy200_extruder_0",
+            "1": "dagoma_discoeasy200_extruder_1"
         }
     },
     "overrides": {
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "machine_extruders_share_heater": {
+            "default_value": true
+        },
         "machine_width": {
-            "default_value": 211
+            "default_value": 205
         },
         "machine_height": {
             "default_value": 205
         },
         "machine_depth": {
-            "default_value": 211
+            "default_value": 205
         },
         "machine_center_is_zero": {
             "default_value": false
@@ -66,6 +74,9 @@
         },
         "layer_height_0": {
             "default_value": 0.26
+        },
+        "top_bottom_thickness": {
+            "default_value": 1
         }
     }
 }

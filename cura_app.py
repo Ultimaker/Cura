@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+# Remove the working directory from sys.path.
+# This fixes a security issue where Cura could import Python packages from the
+# current working directory, and therefore be made to execute locally installed
+# code (e.g. in the user's home directory where AppImages by default run from).
+# See issue CURA-7081.
+import sys
+if "" in sys.path:
+    sys.path.remove("")
 
 import argparse
 import faulthandler
 import os
-import sys
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
@@ -51,13 +59,16 @@ if with_sentry_sdk:
     except IndexError:
         pass
 
+    # Errors to be ignored by Sentry
+    ignore_errors = [KeyboardInterrupt, MemoryError]
     sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
                     before_send = CrashHandler.sentryBeforeSend,
                     environment = sentry_env,
                     release = "cura%s" % ApplicationMetadata.CuraVersion,
                     default_integrations = False,
                     max_breadcrumbs = 300,
-                    server_name = "cura")
+                    server_name = "cura",
+                    ignore_errors = ignore_errors)
 
 if not known_args["debug"]:
     def get_cura_dir_path():

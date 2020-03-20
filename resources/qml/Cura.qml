@@ -560,8 +560,8 @@ UM.MainWindow
     MessageDialog
     {
         id: exitConfirmationDialog
-        title: catalog.i18nc("@title:window", "Closing Cura")
-        text: catalog.i18nc("@label", "Are you sure you want to exit Cura?")
+        title: catalog.i18nc("@title:window %1 is the application name", "Closing %1").arg(CuraApplication.applicationDisplayName)
+        text: catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName)
         icon: StandardIcon.Question
         modality: Qt.ApplicationModal
         standardButtons: StandardButton.Yes | StandardButton.No
@@ -573,7 +573,7 @@ UM.MainWindow
             if (!visible)
             {
                 // reset the text to default because other modules may change the message text.
-                text = catalog.i18nc("@label", "Are you sure you want to exit Cura?");
+                text = catalog.i18nc("@label %1 is the application name", "Are you sure you want to exit %1?").arg(CuraApplication.applicationDisplayName);
             }
         }
     }

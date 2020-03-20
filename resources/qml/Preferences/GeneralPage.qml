@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.1
@@ -12,7 +12,7 @@ import Cura 1.0 as Cura
 UM.PreferencesPage
 {
     //: General configuration page title
-    title: catalog.i18nc("@title:tab","General")
+    title: catalog.i18nc("@title:tab", "General")
     id: generalPreferencesPage
 
     function setDefaultLanguage(languageCode)
@@ -129,7 +129,7 @@ UM.PreferencesPage
             Label
             {
                 font.bold: true
-                text: catalog.i18nc("@label","Interface")
+                text: catalog.i18nc("@label", "Interface")
             }
 
             GridLayout
@@ -140,7 +140,7 @@ UM.PreferencesPage
                 Label
                 {
                     id: languageLabel
-                    text: catalog.i18nc("@label","Language:")
+                    text: "Language:" //Don't translate this, to make it easier to find the language drop-down if you can't read the current language.
                 }
 
                 ComboBox
@@ -152,6 +152,7 @@ UM.PreferencesPage
 
                         Component.onCompleted: {
                             append({ text: "English", code: "en_US" })
+                            append({ text: "Czech", code: "cs_CZ" })
                             append({ text: "Deutsch", code: "de_DE" })
                             append({ text: "Español", code: "es_ES" })
                             //Finnish is disabled for being incomplete: append({ text: "Suomi", code: "fi_FI" })
