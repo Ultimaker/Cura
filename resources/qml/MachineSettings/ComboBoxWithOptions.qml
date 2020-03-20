@@ -36,7 +36,7 @@ UM.TooltipArea
     property alias labelWidth: fieldLabel.width
     property alias optionModel: comboBox.model
 
-    property string tooltipText: propertyProvider.properties.description
+    property string tooltipText: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     // callback functions
     property var forceUpdateOnChangeFunction: dummy_func
