@@ -54,9 +54,9 @@ class PauseAtHeight(Script):
                     "label": "Method",
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
-                    "options": {"marlin": "Marlin (M0)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
+                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
                     "default_value": "marlin",
-                    "value": "\\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
+                    "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
                 },
                 "head_park_x":
                 {
@@ -64,7 +64,8 @@ class PauseAtHeight(Script):
                     "description": "What X location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 190,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "head_park_y":
                 {
@@ -72,7 +73,8 @@ class PauseAtHeight(Script):
                     "description": "What Y location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 190,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "retraction_amount":
                 {
@@ -80,7 +82,8 @@ class PauseAtHeight(Script):
                     "description": "How much filament must be retracted at pause.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "retraction_speed":
                 {
@@ -88,7 +91,8 @@ class PauseAtHeight(Script):
                     "description": "How fast to retract the filament.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 25
+                    "default_value": 25,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "extrude_amount":
                 {
@@ -96,7 +100,8 @@ class PauseAtHeight(Script):
                     "description": "How much filament should be extruded after pause. This is needed when doing a material change on Ultimaker2's to compensate for the retraction after the change. In that case 128+ is recommended.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "extrude_speed":
                 {
@@ -104,7 +109,8 @@ class PauseAtHeight(Script):
                     "description": "How fast to extrude the material after pause.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 3.3333
+                    "default_value": 3.3333,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "redo_layers":
                 {
@@ -120,7 +126,8 @@ class PauseAtHeight(Script):
                     "description": "Change the temperature during the pause.",
                     "unit": "°C",
                     "type": "int",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "display_text":
                 {
@@ -206,12 +213,11 @@ class PauseAtHeight(Script):
         pause_method = self.getSettingValueByKey("pause_method")
         pause_command = {
             "marlin": self.putValue(M = 0),
+            "griffin": self.putValue(M = 0),
             "bq": self.putValue(M = 25),
             "reprap": self.putValue(M = 226),
             "repetier": self.putValue("@pause")
         }[pause_method]
-
-        is_griffin = False
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
@@ -232,8 +238,6 @@ class PauseAtHeight(Script):
 
             # Scroll each line of instruction for each layer in the G-code
             for line in lines:
-                if ";FLAVOR:Griffin" in line:
-                    is_griffin = True
                 # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
@@ -336,7 +340,7 @@ class PauseAtHeight(Script):
                 else:
                     prepend_gcode += ";current layer: {layer}\n".format(layer = current_layer)
 
-                if not is_griffin:
+                if pause_method != "griffin":
                     # Retraction
                     prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
@@ -366,7 +370,7 @@ class PauseAtHeight(Script):
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"
 
-                if not is_griffin:
+                if pause_method != "griffin":
                     if control_temperatures:
                         # Set extruder resume temperature
                         prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"
