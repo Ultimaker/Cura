@@ -135,7 +135,7 @@ class DrivePluginExtension(QObject, Extension):
     def refreshBackups(self) -> None:
         self._drive_api_service.getBackups(self._backupsChangedCallback)
 
-    def _backupsChangedCallback(self, backups):
+    def _backupsChangedCallback(self, backups: List[Dict[str, Any]]) -> None:
         self._backups = backups
         self.backupsChanged.emit()
 
