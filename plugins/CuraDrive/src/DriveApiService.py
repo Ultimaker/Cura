@@ -33,7 +33,7 @@ class DriveApiService:
 
     def __init__(self) -> None:
         self._cura_api = CuraApplication.getInstance().getCuraAPI()
-        self._jsonCloudScope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
+        self._json_cloud_scope = JsonDecoratorScope(UltimakerCloudScope(CuraApplication.getInstance()))
 
     def getBackups(self, changed: Callable[[List[Dict[str, Any]]], None]) -> None:
         def callback(reply: QNetworkReply, error: Optional["QNetworkReply.NetworkError"] = None) -> None:
@@ -55,7 +55,7 @@ class DriveApiService:
             self.BACKUP_URL,
             callback= callback,
             error_callback = callback,
-            scope=self._jsonCloudScope
+            scope=self._json_cloud_scope
         )
 
     def createBackup(self) -> None:
@@ -105,7 +105,7 @@ class DriveApiService:
             url = "{}/{}".format(self.BACKUP_URL, backup_id),
             callback = finishedCallback,
             error_callback = errorCallback,
-            scope= self._jsonCloudScope
+            scope= self._json_cloud_scope
         )
 
     @staticmethod

@@ -11,7 +11,6 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
-from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
@@ -30,7 +29,7 @@ class DownloadPresenter:
         self.done = Signal()
 
         self._app = app
-        self._scope = JsonDecoratorScope(UltimakerCloudScope(app))
+        self._scope = UltimakerCloudScope(app)
 
         self._started = False
         self._progress_message = self._createProgressMessage()
