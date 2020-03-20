@@ -65,6 +65,7 @@ class CreateBackupJob(Job):
         self._job_done.wait()
         if self.backup_upload_error_message == "":
             upload_message.setText(catalog.i18nc("@info:backup_status", "Your backup has finished uploading."))
+            upload_message.setProgress(upload_message.getMaxProgress())
         else:
             # some error occurred. This error is presented to the user by DrivePluginExtension
             upload_message.hide()
