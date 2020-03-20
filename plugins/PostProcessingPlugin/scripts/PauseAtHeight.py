@@ -55,7 +55,8 @@ class PauseAtHeight(Script):
                     "description": "The method or gcode command to use for pausing.",
                     "type": "enum",
                     "options": {"marlin": "Marlin (M0)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
-                    "default_value": "marlin"
+                    "default_value": "marlin",
+                    "value": "\\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
                 },
                 "head_park_x":
                 {
@@ -127,9 +128,48 @@ class PauseAtHeight(Script):
                     "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
                     "type": "str",
                     "default_value": ""
+                },
+                "machine_name":
+                {
+                    "label": "Machine Type",
+                    "description": "The name of your 3D printer model. This setting is controlled by the script and will not be visible.",
+                    "default_value": "Unknown",
+                    "type": "str",
+                    "enabled": false
+                },
+                "machine_gcode_flavor":
+                {
+                    "label": "G-code flavor",
+                    "description": "The type of g-code to be generated. This setting is controlled by the script and will not be visible.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "RepRap (Marlin/Sprinter)": "Marlin",
+                        "RepRap (Volumetric)": "Marlin (Volumetric)",
+                        "RepRap (RepRap)": "RepRap",
+                        "UltiGCode": "Ultimaker 2",
+                        "Griffin": "Griffin",
+                        "Makerbot": "Makerbot",
+                        "BFB": "Bits from Bytes",
+                        "MACH3": "Mach3",
+                        "Repetier": "Repetier"
+                    },
+                    "default_value": "RepRap (Marlin/Sprinter)",
+                    "enabled": false
                 }
             }
         }"""
+
+    ##  Copy machine name and gcode flavor from global stack so we can use their value in the script stack
+    def initialize(self) -> None:
+        super().initialize()
+
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None or self._instance is None:
+            return
+
+        for key in ["machine_name", "machine_gcode_flavor"]:
+            self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
     ##  Get the X and Y values for a layer (will be used to get X and Y of the
     #   layer after the pause).
