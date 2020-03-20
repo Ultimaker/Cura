@@ -285,13 +285,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             serialized = archive.open(instance_container_file_name).read().decode("utf-8")
 
             # Qualities and variants don't have upgrades, so don't upgrade them
-            parser = ConfigParser(interpolation = None)
+            parser = ConfigParser(interpolation = None, comment_prefixes = ())
             parser.read_string(serialized)
             container_type = parser["metadata"]["type"]
             if container_type not in ("quality", "variant"):
                 serialized = InstanceContainer._updateSerialized(serialized, instance_container_file_name)
 
-            parser = ConfigParser(interpolation = None)
+            parser = ConfigParser(interpolation = None, comment_prefixes = ())
             parser.read_string(serialized)
             container_info = ContainerInfo(instance_container_file_name, serialized, parser)
             instance_container_info_dict[container_id] = container_info
