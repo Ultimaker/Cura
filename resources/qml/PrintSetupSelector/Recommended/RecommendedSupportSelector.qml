@@ -122,7 +122,7 @@ Item
                 }
             }
 
-            currentIndex: supportExtruderNr.properties.value
+            currentIndex: (supportExtruderNr.properties.value !== undefined) ? supportExtruderNr.properties.value : 0
 
             property string color: "#fff"
             Connections
