@@ -37,15 +37,13 @@ UM.TooltipArea
 
     property alias textField: textFieldWithUnit
     property alias valueText: textFieldWithUnit.text
-    property alias valueValidator: textFieldWithUnit.validator
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
 
     property string tooltipText: propertyProvider.properties.description
 
-    // whether negative value is allowed. This affects the validation of the input field.
-    property bool allowNegativeValue: false
-    // whether positive value is allowed. This affects the validation of the input field.
-    property bool allowPositiveValue: true
+    property real minimum: 0
+    property real maximum: Number.POSITIVE_INFINITY
+    property int decimals: 6
 
     // callback functions
     property var afterOnEditingFinishedFunction: dummy_func
@@ -78,7 +76,7 @@ UM.TooltipArea
         id: textFieldWithUnit
         anchors.left: fieldLabel.right
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
+        verticalAlignment: Text.AlignVCenter
         width: numericTextFieldWithUnit.controlWidth
         height: numericTextFieldWithUnit.controlHeight
 
@@ -158,10 +156,24 @@ UM.TooltipArea
         }
         validator: DoubleValidator
         {
-            bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
-            top: allowPositiveValue ? Number.POSITIVE_INFINITY : 0
-            decimals: 6
+            bottom: numericTextFieldWithUnit.minimum
+            top: numericTextFieldWithUnit.maximum
+            decimals: numericTextFieldWithUnit.decimals
             notation: DoubleValidator.StandardNotation
+        }
+
+        //Enforce actual minimum and maximum values.
+        //The DoubleValidator allows intermediate values, which essentially means that the maximum gets rounded up to the nearest power of 10.
+        //This is not accurate at all, so here if the value exceeds the maximum or the minimum we disallow it.
+        property string previousText
+        onTextChanged:
+        {
+            var value = Number(text);
+            if(value < numericTextFieldWithUnit.minimum || value > numericTextFieldWithUnit.maximum)
+            {
+                text = previousText;
+            }
+            previousText = text;
         }
 
         onEditingFinished: editingFinishedFunction()
