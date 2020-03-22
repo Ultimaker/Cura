@@ -48,19 +48,21 @@ class CuraSceneController(QObject):
         global_stack = Application.getInstance().getGlobalContainerStack()
         if global_stack:
             scene_has_support_meshes = self._sceneHasSupportMeshes()  # TODO: see if this can be cached
+
             if scene_has_support_meshes != global_stack.getProperty("support_meshes_present", "value"):
-                # adjust the setting without having the setting value in an InstanceContainer
+                # Adjust the setting without having the setting value in an InstanceContainer
                 setting_definitions = global_stack.definition.findDefinitions(key="support_meshes_present")
                 if setting_definitions:
-                    relations = setting_definitions[0].relations
+                    # Recreate the setting definition because the default_value is readonly
                     definition_dict = setting_definitions[0].serialize_to_dict()
-                    definition_dict["enabled"] = False
+                    definition_dict["enabled"] = False  # The enabled property has a value that would need to be evaluated
                     definition_dict["default_value"] = scene_has_support_meshes
+                    relations = setting_definitions[0].relations  # Relations are wiped when deserializing from a dict
                     setting_definitions[0].deserialize(definition_dict)
-                    setting_definitions[0]._relations = relations  # TODO: find a better way to restore relations
 
-                    # notify relations that the setting has changed
+                    # Restore relations and notify them that the setting has changed
                     for relation in relations:
+                        setting_definitions[0].relations.append(relation)
                         global_stack.propertyChanged.emit(relation.target.key, "enabled")
 
         max_build_plate = self._calcMaxBuildPlate()
