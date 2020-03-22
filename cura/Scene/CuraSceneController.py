@@ -13,8 +13,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Signal import Signal
-from UM.Settings.SettingFunction import SettingFunction
-from UM.Settings.ContainerRegistry import ContainerRegistry
+
 
 class CuraSceneController(QObject):
     activeBuildPlateChanged = Signal()
