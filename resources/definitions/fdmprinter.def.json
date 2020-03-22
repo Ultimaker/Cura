@@ -5008,7 +5008,7 @@
                 },
                 "support_meshes_present":
                 {
-                    "label": "Support Meshes Present",
+                    "label": "Scene Has Support Meshes",
                     "description": "There are support meshes present in the scene. This setting is controlled by Cura.",
                     "type": "bool",
                     "default_value": false,
