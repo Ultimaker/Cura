@@ -74,7 +74,7 @@ Item
                             property var modelText: model.text
                             property var extensionName: name
 
-                            sourceComponent: modelText == "" ? extensionsMenuSeparator : extensionsMenuItem
+                            sourceComponent: modelText.trim() == "" ? extensionsMenuSeparator : extensionsMenuItem
                         }
 
                         onObjectAdded: sub_menu.insertItem(index, object.item)
