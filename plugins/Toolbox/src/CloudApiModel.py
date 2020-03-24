@@ -1,6 +1,7 @@
 from typing import Union
 
-from cura import ApplicationMetadata, UltimakerCloudAuthentication
+from cura import ApplicationMetadata
+from cura.UltimakerCloud import UltimakerCloudAuthentication
 
 
 class CloudApiModel:

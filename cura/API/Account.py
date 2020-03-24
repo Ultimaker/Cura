@@ -4,12 +4,11 @@ from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
-from UM.i18n import i18nCatalog
 from UM.Message import Message
-from cura import UltimakerCloudAuthentication
-
+from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
+from cura.UltimakerCloud import UltimakerCloudAuthentication
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
