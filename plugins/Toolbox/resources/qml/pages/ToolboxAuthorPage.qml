@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 import "../components"
 
@@ -132,7 +132,7 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: UM.UrlUtil.openUrl(link, ["https", "http"])
                 renderType: Text.NativeRendering
             }
 
