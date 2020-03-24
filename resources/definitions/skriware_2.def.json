@@ -322,7 +322,7 @@
             "default_value": 2
         },
         "wall_thickness": {
-            "default_value": 1.2
+            "value": "1.2"
         },
         "support_infill_sparse_thickness": {
             "value": "resolveOrValue('layer_height')"
