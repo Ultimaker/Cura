@@ -75,7 +75,7 @@
                 "material_guid":
                 {
                     "label": "Material GUID",
-                    "description": "GUID of the material. This is set automatically. ",
+                    "description": "GUID of the material. This is set automatically.",
                     "default_value": "",
                     "type": "str",
                     "enabled": false
@@ -3642,7 +3642,7 @@
                 "retraction_enable":
                 {
                     "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -4438,7 +4438,7 @@
                 "support_xy_distance_overhang":
                 {
                     "label": "Minimum Support X/Y Distance",
-                    "description": "Distance of the support structure from the overhang in the X/Y directions. ",
+                    "description": "Distance of the support structure from the overhang in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -5882,7 +5882,7 @@
             "label": "Mesh Fixes",
             "type": "category",
             "icon": "category_fixes",
-            "description": "category_fixes",
+            "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
                 "meshfix_union_all":
@@ -6008,7 +6008,7 @@
             "label": "Special Modes",
             "type": "category",
             "icon": "category_blackmagic",
-            "description": "category_blackmagic",
+            "description": "Non-traditional ways to print your models.",
             "children":
             {
                 "print_sequence":
@@ -6181,7 +6181,7 @@
             "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
-            "description": "experimental!",
+            "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
                 "support_tree_enable":
