@@ -118,7 +118,7 @@ class AMFReader(MeshReader):
                     mesh.merge_vertices()
                     mesh.remove_unreferenced_vertices()
                     mesh.fix_normals()
-                    mesh_data = self._toMeshData(mesh)
+                    mesh_data = self._toMeshData(mesh, file_name)
 
                     new_node = CuraSceneNode()
                     new_node.setSelectable(True)
@@ -147,7 +147,13 @@ class AMFReader(MeshReader):
 
         return group_node
 
-    def _toMeshData(self, tri_node: trimesh.base.Trimesh) -> MeshData:
+    ##  Converts a Trimesh to Uranium's MeshData.
+    #   \param tri_node A Trimesh containing the contents of a file that was
+    #   just read.
+    #   \param file_name The full original filename used to watch for changes
+    #   \return Mesh data from the Trimesh in a way that Uranium can understand
+    #   it.
+    def _toMeshData(self, tri_node: trimesh.base.Trimesh, file_name: str = "") -> MeshData:
         tri_faces = tri_node.faces
         tri_vertices = tri_node.vertices
 
@@ -169,5 +175,5 @@ class AMFReader(MeshReader):
         indices = numpy.asarray(indices, dtype = numpy.int32)
         normals = calculateNormalsFromIndexedVertices(vertices, indices, face_count)
 
-        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals)
+        mesh_data = MeshData(vertices = vertices, indices = indices, normals = normals,file_name = file_name)
         return mesh_data

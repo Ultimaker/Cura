@@ -209,15 +209,15 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
-                Component.onCompleted:
+                text:
                 {
                     if (!extruderTemperature.properties.value)
                     {
-                        text = "";
+                        return "";
                     }
                     else
                     {
-                        text = extruderTemperature.properties.value;
+                        return extruderTemperature.properties.value;
                     }
                 }
             }

@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Provides a machine actions for updating firmware.",
-    "api": "7.0",
+    "api": "7.1",
     "i18n-catalog": "cura"
 }

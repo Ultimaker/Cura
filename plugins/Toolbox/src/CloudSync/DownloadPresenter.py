@@ -1,3 +1,6 @@
+# Copyright (c) 2020 Ultimaker B.V.
+# Cura is released under the terms of the LGPLv3 or higher.
+
 import tempfile
 from typing import Dict, List, Any
 
@@ -62,7 +65,8 @@ class DownloadPresenter:
                 "received": 0,
                 "total": 1,  # make sure this is not considered done yet. Also divByZero-safe
                 "file_written": None,
-                "request_data": request_data
+                "request_data": request_data,
+                "package_model": item
             }
 
         self._started = True
@@ -80,11 +84,9 @@ class DownloadPresenter:
         return DownloadPresenter(self._app)
 
     def _createProgressMessage(self) -> Message:
-        return Message(i18n_catalog.i18nc(
-            "@info:generic",
-            "\nSyncing..."),
+        return Message(i18n_catalog.i18nc("@info:generic", "Syncing..."),
             lifetime = 0,
-            use_inactivity_timer=False,
+            use_inactivity_timer = False,
             progress = 0.0,
             title = i18n_catalog.i18nc("@info:title", "Changes detected from your Ultimaker account", ))
 
@@ -92,7 +94,7 @@ class DownloadPresenter:
         self._progress[package_id]["received"] = self._progress[package_id]["total"]
 
         try:
-            with tempfile.NamedTemporaryFile(mode ="wb+", suffix =".curapackage", delete = False) as temp_file:
+            with tempfile.NamedTemporaryFile(mode = "wb+", suffix = ".curapackage", delete = False) as temp_file:
                 bytes_read = reply.read(self.DISK_WRITE_BUFFER_SIZE)
                 while bytes_read:
                     temp_file.write(bytes_read)
@@ -128,7 +130,14 @@ class DownloadPresenter:
             if not item["file_written"]:
                 return False
 
-        success_items = {package_id : value["file_written"] for package_id, value in self._progress.items()}
+        success_items = {
+            package_id:
+                {
+                    "package_path": value["file_written"],
+                    "icon_url": value["package_model"]["icon_url"]
+                }
+            for package_id, value in self._progress.items()
+        }
         error_items = [package_id for package_id in self._error]
 
         self._progress_message.hide()

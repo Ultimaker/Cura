@@ -1,13 +1,12 @@
 # Cura
-# Copyright (C) 2019 Ultimaker B.V.
+# Copyright (C) 2020 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.4\n"
+"Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-11-05 13:13+0000\n"
+"POT-Creation-Date: 2020-02-07 14:19+0000\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Dutch <info@lionbridge.com>, Dutch <info@bothof.nl>\n"
@@ -411,6 +410,16 @@ msgid "Whether to use firmware retract commands (G10/G11) instead of using the E
 msgstr "Hiermee bepaalt u of u voor het intrekken van materiaal firmwareopdrachten voor intrekken (G10/G11) gebruikt in plaats van de eigenschap E in G1-opdrachten."
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater label"
+msgid "Extruders Share Heater"
+msgstr "Extruders delen verwarming"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater description"
+msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
+msgstr "Hiermee bepaalt u of de extruders één verwarming delen in plaats van dat elke extruder zijn eigen verwarming heeft."
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "Verboden gebieden"
@@ -429,16 +438,6 @@ msgstr "Verboden gebieden voor de nozzle"
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
 msgstr "Een lijst polygonen met gebieden waarin de nozzle niet mag komen."
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon label"
-msgid "Machine Head Polygon"
-msgstr "Machinekoppolygoon"
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon description"
-msgid "A 2D silhouette of the print head (fan caps excluded)."
-msgstr "Een 2D-silouette van de printkop (exclusief ventilatorkappen)."
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
@@ -1038,8 +1037,7 @@ msgstr "Eerste onderste lagen"
 #: fdmprinter.def.json
 msgctxt "initial_bottom_layers description"
 msgid "The number of initial bottom layers, from the build-plate upwards. When calculated by the bottom thickness, this value is rounded to a whole number."
-msgstr "Het aantal initiële onderste lagen, vanaf de bouwplaat naar boven. Wanneer deze waarde wordt berekend aan de hand van de dikte van de bodem, wordt deze"
-" afgerond naar een geheel getal."
+msgstr "Het aantal initiële onderste lagen, vanaf de bouwplaat naar boven. Wanneer deze waarde wordt berekend aan de hand van de dikte van de bodem, wordt deze afgerond naar een geheel getal."
 
 #: fdmprinter.def.json
 msgctxt "top_bottom_pattern label"
@@ -1936,6 +1934,26 @@ msgid "Skin areas narrower than this are not expanded. This avoids expanding the
 msgstr "Skingebieden die smaller zijn dan deze waarde, worden niet uitgebreid. Dit voorkomt het uitbreiden van smalle skingebieden die worden gemaakt wanneer het modeloppervlak een nagenoeg verticale helling heeft."
 
 #: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness label"
+msgid "Skin Edge Support Thickness"
+msgstr "Dikte skinrandondersteuning"
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness description"
+msgid "The thickness of the extra infill that supports skin edges."
+msgstr "De dikte van de extra vulling die skinranden ondersteunt."
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers label"
+msgid "Skin Edge Support Layers"
+msgstr "Lagen skinrandondersteuning"
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers description"
+msgid "The number of infill layers that supports skin edges."
+msgstr "Het aantal opvullagen dat skinranden ondersteunt."
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "Materiaal"
@@ -2126,6 +2144,16 @@ msgid "How fast the filament needs to be retracted just before breaking it off i
 msgstr "Hoe snel het filament moet worden ingetrokken voordat het bij het intrekken afbreekt."
 
 #: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature label"
+msgid "Break Preparation Temperature"
+msgstr "Temperatuur voor voorbereiding van afbreken"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature description"
+msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
+msgstr "De temperatuur die wordt gebruikt om materiaal te zuiveren, moet ongeveer gelijk zijn aan de hoogst mogelijke printtemperatuur."
+
+#: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
 msgid "Break Retracted Position"
 msgstr "Intrekpositie voor afbreken"
@@ -2154,6 +2182,66 @@ msgstr "Temperatuur voor afbreken"
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
 msgstr "De temperatuur waarbij het filament wordt afgebroken om het recht af te breken."
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed label"
+msgid "Flush Purge Speed"
+msgstr "Afvoersnelheid flush"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length label"
+msgid "Flush Purge Length"
+msgstr "Afvoerduur flush"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed label"
+msgid "End Of Filament Purge Speed"
+msgstr "Afvoersnelheid einde van filament"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length label"
+msgid "End Of Filament Purge Length"
+msgstr "Afvoerduur einde van filament"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration label"
+msgid "Maximum Park Duration"
+msgstr "Maximale parkeerduur"
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor label"
+msgid "No Load Move Factor"
+msgstr "Verplaatsingsfactor zonder lading"
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor description"
+msgid "Material Station internal value"
+msgstr "Interne waarde materiaalstation"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2296,116 +2384,6 @@ msgid "Flow compensation for the first layer: the amount of material extruded on
 msgstr "Doorvoercompensatie voor de eerste laag: de hoeveelheid materiaal die voor de eerste laag wordt doorgevoerd, wordt vermenigvuldigd met deze waarde."
 
 #: fdmprinter.def.json
-msgctxt "retraction_enable label"
-msgid "Enable Retraction"
-msgstr "Intrekken Inschakelen"
-
-#: fdmprinter.def.json
-msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat. "
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change label"
-msgid "Retract at Layer Change"
-msgstr "Intrekken bij laagwisseling"
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change description"
-msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "Trek het filament in wanneer de nozzle naar de volgende laag beweegt."
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount label"
-msgid "Retraction Distance"
-msgstr "Intrekafstand"
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount description"
-msgid "The length of material retracted during a retraction move."
-msgstr "De lengte waarover het materiaal wordt ingetrokken tijdens een intrekbeweging."
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed label"
-msgid "Retraction Speed"
-msgstr "Intreksnelheid"
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed description"
-msgid "The speed at which the filament is retracted and primed during a retraction move."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken en geprimed."
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed label"
-msgid "Retraction Retract Speed"
-msgstr "Intreksnelheid (Intrekken)"
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed description"
-msgid "The speed at which the filament is retracted during a retraction move."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken."
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "Intreksnelheid (Primen)"
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed description"
-msgid "The speed at which the filament is primed during a retraction move."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt geprimed."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount label"
-msgid "Retraction Extra Prime Amount"
-msgstr "Extra Primehoeveelheid na Intrekken"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount description"
-msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "Tijdens een beweging kan materiaal verloren gaan, wat met deze optie kan worden gecompenseerd."
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel label"
-msgid "Retraction Minimum Travel"
-msgstr "Minimale Afstand voor Intrekken"
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel description"
-msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "De minimale bewegingsafstand voordat het filament kan worden ingetrokken. Hiermee vermindert u het aantal intrekkingen in een klein gebied."
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max label"
-msgid "Maximum Retraction Count"
-msgstr "Maximaal Aantal Intrekbewegingen"
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max description"
-msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "Deze instelling beperkt het aantal intrekbewegingen dat kan worden uitgevoerd binnen het gebied Minimaal afstandsgebied voor intrekken. Extra intrekbewegingen binnen dit gebied worden genegeerd. Hiermee voorkomt u dat hetzelfde stuk filament meerdere keren wordt ingetrokken en dus kan worden geplet en kan gaan haperen."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window label"
-msgid "Minimum Extrusion Distance Window"
-msgstr "Minimaal Afstandsgebied voor Intrekken"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window description"
-msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
-msgstr "Dit is het gebied waarop het maximaal aantal intrekbewegingen van toepassing is. Deze waarde moet ongeveer overeenkomen met de Intrekafstand, waarmee in feite het aantal intrekbewegingen op hetzelfde deel van het materiaal wordt beperkt."
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions label"
-msgid "Limit Support Retractions"
-msgstr "Supportintrekkingen beperken"
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."
-
-#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr "Stand-bytemperatuur"
@@ -2414,56 +2392,6 @@ msgstr "Stand-bytemperatuur"
 msgctxt "material_standby_temperature description"
 msgid "The temperature of the nozzle when another nozzle is currently used for printing."
 msgstr "De temperatuur van de nozzle op de momenten waarop een andere nozzle wordt gebruikt voor het printen."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount label"
-msgid "Nozzle Switch Retraction Distance"
-msgstr "Intrekafstand bij Wisselen Nozzles"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "De intrekafstand wanneer de extruders worden gewisseld. Als u deze optie instelt op 0, wordt er niet ingetrokken. Deze waarde dient doorgaans gelijk te zijn aan de lengte van de verwarmingszone."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds label"
-msgid "Nozzle Switch Retraction Speed"
-msgstr "Intreksnelheid bij Wisselen Nozzles"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds description"
-msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
-msgstr "De snelheid waarmee het filament wordt ingetrokken. Een hogere intreksnelheid werkt beter, maar bij een erg hoge intreksnelheid kan het filament gaan haperen."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed label"
-msgid "Nozzle Switch Retract Speed"
-msgstr "Intrekkingssnelheid bij Wisselen Nozzles"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed description"
-msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging tijdens het wisselen van de nozzles wordt ingetrokken."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed label"
-msgid "Nozzle Switch Prime Speed"
-msgstr "Primesnelheid bij Wisselen Nozzles"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed description"
-msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "De snelheid waarmee het filament tijdens een intrekbeweging na het wisselen van de nozzles wordt geprimed."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount label"
-msgid "Nozzle Switch Extra Prime Amount"
-msgstr "Extra primehoeveelheid na wisselen van nozzle"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount description"
-msgid "Extra material to prime after nozzle switching."
-msgstr "Extra primemateriaal na het wisselen van de nozzle."
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -3084,6 +3012,116 @@ msgstr "Beweging"
 msgctxt "travel description"
 msgid "travel"
 msgstr "beweging"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "Intrekken Inschakelen"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat. "
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change label"
+msgid "Retract at Layer Change"
+msgstr "Intrekken bij laagwisseling"
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change description"
+msgid "Retract the filament when the nozzle is moving to the next layer."
+msgstr "Trek het filament in wanneer de nozzle naar de volgende laag beweegt."
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "Intrekafstand"
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount description"
+msgid "The length of material retracted during a retraction move."
+msgstr "De lengte waarover het materiaal wordt ingetrokken tijdens een intrekbeweging."
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "Intreksnelheid"
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a retraction move."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken en geprimed."
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr "Intreksnelheid (Intrekken)"
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a retraction move."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt ingetrokken."
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "Intreksnelheid (Primen)"
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a retraction move."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging wordt geprimed."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount label"
+msgid "Retraction Extra Prime Amount"
+msgstr "Extra Primehoeveelheid na Intrekken"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a travel move, which can be compensated for here."
+msgstr "Tijdens een beweging kan materiaal verloren gaan, wat met deze optie kan worden gecompenseerd."
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "Minimale Afstand voor Intrekken"
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel description"
+msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
+msgstr "De minimale bewegingsafstand voordat het filament kan worden ingetrokken. Hiermee vermindert u het aantal intrekkingen in een klein gebied."
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max label"
+msgid "Maximum Retraction Count"
+msgstr "Maximaal Aantal Intrekbewegingen"
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max description"
+msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
+msgstr "Deze instelling beperkt het aantal intrekbewegingen dat kan worden uitgevoerd binnen het gebied Minimaal afstandsgebied voor intrekken. Extra intrekbewegingen binnen dit gebied worden genegeerd. Hiermee voorkomt u dat hetzelfde stuk filament meerdere keren wordt ingetrokken en dus kan worden geplet en kan gaan haperen."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window label"
+msgid "Minimum Extrusion Distance Window"
+msgstr "Minimaal Afstandsgebied voor Intrekken"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window description"
+msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
+msgstr "Dit is het gebied waarop het maximaal aantal intrekbewegingen van toepassing is. Deze waarde moet ongeveer overeenkomen met de Intrekafstand, waarmee in feite het aantal intrekbewegingen op hetzelfde deel van het materiaal wordt beperkt."
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr "Supportintrekkingen beperken"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr "Sla intrekking over tijdens bewegingen in een rechte lijn van support naar support. Deze instelling verkort de printtijd, maar kan leiden tot overmatige draadvorming in de supportstructuur."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -4280,6 +4318,17 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "Het aantal lijnen dat voor een brim wordt gebruikt. Meer lijnen zorgen voor betere hechting aan het platform, maar verkleinen uw effectieve printgebied."
 
 #: fdmprinter.def.json
+msgctxt "brim_gap label"
+msgid "Brim Distance"
+msgstr "Brimafstand"
+
+#: fdmprinter.def.json
+msgctxt "brim_gap description"
+msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
+msgstr "De horizontale afstand tussen de eerste brimlijn en de contour van de eerste laag van de print. Door een kleine tussenruimte is de brim gemakkelijker te"
+" verwijderen terwijl de thermische voordelen behouden blijven."
+
+#: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
 msgstr "Brim vervangt supportstructuur"
@@ -4710,6 +4759,56 @@ msgid "Distance of the ooze shield from the print, in the X/Y directions."
 msgstr "De afstand tussen het uitloopscherm en de print, in de X- en Y-richting."
 
 #: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount label"
+msgid "Nozzle Switch Retraction Distance"
+msgstr "Intrekafstand bij Wisselen Nozzles"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount description"
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "De intrekafstand wanneer de extruders worden gewisseld. Als u deze optie instelt op 0, wordt er niet ingetrokken. Deze waarde dient doorgaans gelijk te zijn aan de lengte van de verwarmingszone."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds label"
+msgid "Nozzle Switch Retraction Speed"
+msgstr "Intreksnelheid bij Wisselen Nozzles"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds description"
+msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
+msgstr "De snelheid waarmee het filament wordt ingetrokken. Een hogere intreksnelheid werkt beter, maar bij een erg hoge intreksnelheid kan het filament gaan haperen."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed label"
+msgid "Nozzle Switch Retract Speed"
+msgstr "Intrekkingssnelheid bij Wisselen Nozzles"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed description"
+msgid "The speed at which the filament is retracted during a nozzle switch retract."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging tijdens het wisselen van de nozzles wordt ingetrokken."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed label"
+msgid "Nozzle Switch Prime Speed"
+msgstr "Primesnelheid bij Wisselen Nozzles"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed description"
+msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
+msgstr "De snelheid waarmee het filament tijdens een intrekbeweging na het wisselen van de nozzles wordt geprimed."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr "Extra primehoeveelheid na wisselen van nozzle"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr "Extra primemateriaal na het wisselen van de nozzle."
+
+#: fdmprinter.def.json
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
 msgstr "Modelcorrecties"
@@ -4846,8 +4945,10 @@ msgstr "Printvolgorde"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "Met deze optie bepaalt u of u alle modellen tegelijk, laag voor laag print, of dat u een model volledig print voordat u verdergaat naar het volgende model. De modus voor het één voor één printen van modellen is alleen beschikbaar als alle modellen dusdanig van elkaar zijn gescheiden dat de printkop tussen alle modellen kan bewegen en alle modellen lager zijn dan de afstand tussen de nozzle en de X- en Y-as."
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+msgstr "Hiermee bepaalt u of alle modellen laag voor laag moeten worden geprint of dat eerst het ene model helemaal klaar moet zijn voordat aan het volgende wordt"
+" begonnen. Eén voor één printen is mogelijk als a) slechts één extruder is ingeschakeld en b) alle modellen zodanig zijn gescheiden dat de hele printkop"
+" ertussen kan bewegen en alle modellen lager zijn dan de afstand tussen de nozzle en de X/Y-assen. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5073,26 +5174,6 @@ msgstr "Resolutie bij botsingen van de boomsupportstructuur"
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
 msgstr "Resolutie voor het berekenen van botsingen om te voorkomen dat het model wordt geraakt. Als u deze optie op een lagere waarde instelt, creëert u nauwkeurigere bomen die minder vaak fouten vertonen, maar wordt de slicetijd aanzienlijk verlengd."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness label"
-msgid "Tree Support Wall Thickness"
-msgstr "Wanddikte boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness description"
-msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "Hiermee stelt u de wanddikte in voor de takken van de boomsupportstructuur. Het printen van dikkere wanden duurt langer, maar deze vallen minder snel om."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count label"
-msgid "Tree Support Wall Line Count"
-msgstr "Aantal wandlijnen boomsupportstructuur"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count description"
-msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "Hiermee stelt u het aantal wanden in voor de takken van de boomsupportstructuur. Het printen van dikkere wanden duurt langer, maar deze vallen minder snel om."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5485,6 +5566,16 @@ msgid "Randomly jitter while printing the outer wall, so that the surface has a 
 msgstr "Door willekeurig trillen tijdens het printen van de buitenwand wordt het oppervlak hiervan ruw en ongelijk."
 
 #: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only label"
+msgid "Fuzzy Skin Outside Only"
+msgstr "Alleen rafelig oppervlak buitenkant"
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only description"
+msgid "Jitter only the parts' outlines and not the parts' holes."
+msgstr "Trillen alleen voor de contouren van de onderdelen en niet voor de gaten van de onderdelen."
+
+#: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
 msgid "Fuzzy Skin Thickness"
 msgstr "Dikte Rafelig Oppervlak"
@@ -5532,8 +5623,7 @@ msgstr "Doorvoercompensatiefactor"
 #: fdmprinter.def.json
 msgctxt "flow_rate_extrusion_offset_factor description"
 msgid "How far to move the filament in order to compensate for changes in flow rate, as a percentage of how far the filament would move in one second of extrusion."
-msgstr "Hoe ver het filament moet worden verplaatst om veranderingen in de stroomsnelheid te compenseren, als een percentage van hoe ver het filament in één seconde"
-" extrusie zou bewegen."
+msgstr "Hoe ver het filament moet worden verplaatst om veranderingen in de stroomsnelheid te compenseren, als een percentage van hoe ver het filament in één seconde extrusie zou bewegen."
 
 #: fdmprinter.def.json
 msgctxt "wireframe_enabled label"
@@ -5832,8 +5922,7 @@ msgstr "Topografieformaat aanpasbare lagen"
 #: fdmprinter.def.json
 msgctxt "adaptive_layer_height_threshold description"
 msgid "Target horizontal distance between two adjacent layers. Reducing this setting causes thinner layers to be used to bring the edges of the layers closer together."
-msgstr "Horizontale doelafstand tussen twee aangrenzende lagen. Als u deze instelling verkleint, worden dunnere lagen gebruikt om de randen van de lagen dichter"
-" bij elkaar te brengen."
+msgstr "Horizontale doelafstand tussen twee aangrenzende lagen. Als u deze instelling verkleint, worden dunnere lagen gebruikt om de randen van de lagen dichter bij elkaar te brengen."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle label"
@@ -5843,8 +5932,7 @@ msgstr "Hoek Overhangende Wand"
 #: fdmprinter.def.json
 msgctxt "wall_overhang_angle description"
 msgid "Walls that overhang more than this angle will be printed using overhanging wall settings. When the value is 90, no walls will be treated as overhanging. Overhang that gets supported by support will not be treated as overhang either."
-msgstr "Wanden die overhangen in een hoek groter dan deze waarde, worden geprint met instellingen voor overhangende wanden. Wanneer de waarde 90 is, wordt een"
-" wand niet als een overhangende wand gezien. Een overhang die wordt ondersteund door ondersteuning wordt ook niet als overhang gezien."
+msgstr "Wanden die overhangen in een hoek groter dan deze waarde, worden geprint met instellingen voor overhangende wanden. Wanneer de waarde 90 is, wordt een wand niet als een overhangende wand gezien. Een overhang die wordt ondersteund door ondersteuning wordt ook niet als overhang gezien."
 
 #: fdmprinter.def.json
 msgctxt "wall_overhang_speed_factor label"
@@ -5885,6 +5973,17 @@ msgstr "Drempelwaarde voor brugskinsupport"
 msgctxt "bridge_skin_support_threshold description"
 msgid "If a skin region is supported for less than this percentage of its area, print it using the bridge settings. Otherwise it is printed using the normal skin settings."
 msgstr "Als voor een skinregio minder supportstructuur wordt geprint dan dit percentage van zijn oppervlakte, print u dit met de bruginstellingen. Anders wordt er geprint met de normale skininstellingen."
+
+#: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density label"
+msgid "Bridge Sparse Infill Max Density"
+msgstr "Maximale dichtheid van dunne vulling brugskin"
+
+#: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density description"
+msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+msgstr "Maximale dichtheid van de vulling die als dun wordt beschouwd. Skin boven dunne vulling wordt als niet-ondersteund beschouwd en kan dus als een brugskin"
+" worden behandeld."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6053,8 +6152,10 @@ msgstr "Nozzle afvegen tussen lagen"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
-msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze instelling kan het gedrag van het intrekken tijdens de laagwissel beïnvloeden. Gebruik de instelling voor intrekken bij afvegen om het intrekken te controleren bij lagen waarop afveegscript van toepassing is."
+msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze optie kan het gedrag van het intrekken"
+" bij de laagwissel beïnvloeden. Gebruik de instellingen voor Intrekken voor afvegen om het intrekken te regelen bij lagen waarbij het afveegscript actief"
+" is."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6063,8 +6164,9 @@ msgstr "Materiaalvolume tussen afvegen"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
-msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr "Maximale materiaalhoeveelheid die kan worden doorgevoerd voordat de nozzle opnieuw wordt afgeveegd."
+msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
+msgstr "Maximale materiaalhoeveelheid die kan worden geëxtrudeerd voordat de nozzle opnieuw wordt afgeveegd. Als deze waarde kleiner is dan het benodigde materiaalvolume"
+" in een laag, heeft de instelling geen effect op deze laag. Er wordt dan maar een keer per laag afgeveegd."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6118,8 +6220,8 @@ msgstr "De snelheid waarmee het filament tijdens een intrekbeweging voor afvegen
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "Intreksnelheid (primen)"
+msgid "Wipe Retraction Prime Speed"
+msgstr "Primesnelheid Intrekken voor afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6138,13 +6240,14 @@ msgstr "Pauzeren na het ongedaan maken van intrekken."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
-msgid "Wipe Z Hop When Retracted"
-msgstr "Z-sprong wanneer ingetrokken voor afvegen"
+msgid "Wipe Z Hop"
+msgstr "Z-sprong afvegen"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
-msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Tijdens het intrekken wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
+msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgstr "Tijdens het afvegen wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print"
+" raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6224,8 +6327,7 @@ msgstr "Klein kenmerksnelheid"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor description"
 msgid "Small features will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Kleine kernmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en"
-" nauwkeurigheid verbeteren."
+msgstr "Kleine kernmerken worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
 
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 label"
@@ -6235,8 +6337,7 @@ msgstr "Kleine kenmerken eerste laagsnelheid"
 #: fdmprinter.def.json
 msgctxt "small_feature_speed_factor_0 description"
 msgid "Small features on the first layer will be printed at this percentage of their normal print speed. Slower printing can help with adhesion and accuracy."
-msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan"
-" de hechting en nauwkeurigheid verbeteren."
+msgstr "Kleine kenmerken op de eerste laag worden geprint met een snelheid die gelijk is aan dit percentage van hun normale printsnelheid. Langzamer printen kan de hechting en nauwkeurigheid verbeteren."
 
 #: fdmprinter.def.json
 msgctxt "command_line_settings label"
@@ -6297,6 +6398,54 @@ msgstr "Matrix rasterrotatie"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit wordt geladen vanuit een bestand."
+
+#~ msgctxt "machine_head_polygon label"
+#~ msgid "Machine Head Polygon"
+#~ msgstr "Machinekoppolygoon"
+
+#~ msgctxt "machine_head_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps excluded)."
+#~ msgstr "Een 2D-silouette van de printkop (exclusief ventilatorkappen)."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+#~ msgstr "Met deze optie bepaalt u of u alle modellen tegelijk, laag voor laag print, of dat u een model volledig print voordat u verdergaat naar het volgende model. De modus voor het één voor één printen van modellen is alleen beschikbaar als alle modellen dusdanig van elkaar zijn gescheiden dat de printkop tussen alle modellen kan bewegen en alle modellen lager zijn dan de afstand tussen de nozzle en de X- en Y-as."
+
+#~ msgctxt "support_tree_wall_thickness label"
+#~ msgid "Tree Support Wall Thickness"
+#~ msgstr "Wanddikte boomsupportstructuur"
+
+#~ msgctxt "support_tree_wall_thickness description"
+#~ msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "Hiermee stelt u de wanddikte in voor de takken van de boomsupportstructuur. Het printen van dikkere wanden duurt langer, maar deze vallen minder snel om."
+
+#~ msgctxt "support_tree_wall_count label"
+#~ msgid "Tree Support Wall Line Count"
+#~ msgstr "Aantal wandlijnen boomsupportstructuur"
+
+#~ msgctxt "support_tree_wall_count description"
+#~ msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "Hiermee stelt u het aantal wanden in voor de takken van de boomsupportstructuur. Het printen van dikkere wanden duurt langer, maar deze vallen minder snel om."
+
+#~ msgctxt "clean_between_layers description"
+#~ msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+#~ msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze instelling kan het gedrag van het intrekken tijdens de laagwissel beïnvloeden. Gebruik de instelling voor intrekken bij afvegen om het intrekken te controleren bij lagen waarop afveegscript van toepassing is."
+
+#~ msgctxt "max_extrusion_before_wipe description"
+#~ msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+#~ msgstr "Maximale materiaalhoeveelheid die kan worden doorgevoerd voordat de nozzle opnieuw wordt afgeveegd."
+
+#~ msgctxt "wipe_retraction_prime_speed label"
+#~ msgid "Retraction Prime Speed"
+#~ msgstr "Intreksnelheid (primen)"
+
+#~ msgctxt "wipe_hop_enable label"
+#~ msgid "Wipe Z Hop When Retracted"
+#~ msgstr "Z-sprong wanneer ingetrokken voor afvegen"
+
+#~ msgctxt "wipe_hop_enable description"
+#~ msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+#~ msgstr "Tijdens het intrekken wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
 
 #~ msgctxt "minimum_interface_area description"
 #~ msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."

@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Upgrades configurations from Cura 2.7 to Cura 3.0.",
-    "api": "7.0",
+    "api": "7.1",
     "i18n-catalog": "cura"
 }

@@ -1,13 +1,18 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import threading
-from typing import Optional, Callable, Any, TYPE_CHECKING
+from typing import Any, Callable, Optional, TYPE_CHECKING
 
 from UM.Logger import Logger
 
-from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
-from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
+got_server_type = False
+try:
+    from cura.OAuth2.AuthorizationRequestServer import AuthorizationRequestServer
+    from cura.OAuth2.AuthorizationRequestHandler import AuthorizationRequestHandler
+    got_server_type = True
+except PermissionError:  # Bug in http.server: Can't access MIME types. This will prevent the user from logging in. See Sentry bug Cura-3Q.
+    Logger.error("Can't start a server due to a PermissionError when starting the http.server.")
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import AuthenticationResponse
@@ -36,7 +41,8 @@ class LocalAuthorizationServer:
 
     ##  Starts the local web server to handle the authorization callback.
     #   \param verification_code The verification code part of the OAuth2 client identification.
-    def start(self, verification_code: str) -> None:
+    #   \param state The unique state code (to ensure that the request we get back is really from the server.
+    def start(self, verification_code: str, state: str) -> None:
         if self._web_server:
             # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
             # We still inject the new verification code though.
@@ -49,14 +55,16 @@ class LocalAuthorizationServer:
         Logger.log("d", "Starting local web server to handle authorization callback on port %s", self._web_server_port)
 
         # Create the server and inject the callback and code.
-        self._web_server = AuthorizationRequestServer(("0.0.0.0", self._web_server_port), AuthorizationRequestHandler)
-        self._web_server.setAuthorizationHelpers(self._auth_helpers)
-        self._web_server.setAuthorizationCallback(self._auth_state_changed_callback)
-        self._web_server.setVerificationCode(verification_code)
+        if got_server_type:
+            self._web_server = AuthorizationRequestServer(("0.0.0.0", self._web_server_port), AuthorizationRequestHandler)
+            self._web_server.setAuthorizationHelpers(self._auth_helpers)
+            self._web_server.setAuthorizationCallback(self._auth_state_changed_callback)
+            self._web_server.setVerificationCode(verification_code)
+            self._web_server.setState(state)
 
-        # Start the server on a new thread.
-        self._web_server_thread = threading.Thread(None, self._web_server.serve_forever, daemon = self._daemon)
-        self._web_server_thread.start()
+            # Start the server on a new thread.
+            self._web_server_thread = threading.Thread(None, self._web_server.serve_forever, daemon = self._daemon)
+            self._web_server_thread.start()
 
     ##  Stops the web server if it was running. It also does some cleanup.
     def stop(self) -> None:

@@ -25,6 +25,8 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
         self.authorization_callback = None  # type: Optional[Callable[[AuthenticationResponse], None]]
         self.verification_code = None  # type: Optional[str]
 
+        self.state = None  # type: Optional[str]
+
     # CURA-6609: Some browser seems to issue a HEAD instead of GET request as the callback.
     def do_HEAD(self) -> None:
         self.do_GET()
@@ -58,7 +60,14 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     #   \return HTTP ResponseData containing a success page to show to the user.
     def _handleCallback(self, query: Dict[Any, List]) -> Tuple[ResponseData, Optional[AuthenticationResponse]]:
         code = self._queryGet(query, "code")
-        if code and self.authorization_helpers is not None and self.verification_code is not None:
+        state = self._queryGet(query, "state")
+        if state != self.state:
+            token_response = AuthenticationResponse(
+                success = False,
+                err_message=catalog.i18nc("@message",
+                                          "The provided state is not correct.")
+            )
+        elif code and self.authorization_helpers is not None and self.verification_code is not None:
             # If the code was returned we get the access token.
             token_response = self.authorization_helpers.getAccessTokenUsingAuthorizationCode(
                 code, self.verification_code)

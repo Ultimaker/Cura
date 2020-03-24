@@ -16,12 +16,12 @@ from UM.i18n import i18nCatalog
 from UM.Version import Version
 
 from cura import ApplicationMetadata
+
 from cura.CuraApplication import CuraApplication
 from cura.Machines.ContainerTree import ContainerTree
 
 from .CloudApiModel import CloudApiModel
 from .AuthorsModel import AuthorsModel
-from .CloudSync.CloudPackageManager import CloudPackageManager
 from .CloudSync.LicenseModel import LicenseModel
 from .PackagesModel import PackagesModel
 from .UltimakerCloudScope import UltimakerCloudScope
@@ -31,6 +31,13 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 i18n_catalog = i18nCatalog("cura")
+
+DEFAULT_MARKETPLACE_ROOT = "https://marketplace.ultimaker.com"  # type: str
+
+try:
+    from cura.CuraVersion import CuraMarketplaceRoot
+except ImportError:
+    CuraMarketplaceRoot = DEFAULT_MARKETPLACE_ROOT
 
 # todo Remove license and download dialog, use SyncOrchestrator instead
 
@@ -44,7 +51,6 @@ class Toolbox(QObject, Extension):
         self._sdk_version = ApplicationMetadata.CuraSDKVersion  # type: Union[str, int]
 
         # Network:
-        self._cloud_package_manager = CloudPackageManager(application)  # type: CloudPackageManager
         self._download_request_data = None  # type: Optional[HttpRequestData]
         self._download_progress = 0  # type: float
         self._is_downloading = False  # type: bool
@@ -147,17 +153,14 @@ class Toolbox(QObject, Extension):
 
         self._application.getHttpRequestManager().put(url, data = data.encode(), scope = self._scope)
 
-    @pyqtSlot(str)
-    def subscribe(self, package_id: str) -> None:
-        self._cloud_package_manager.subscribe(package_id)
-
     def getLicenseDialogPluginFileLocation(self) -> str:
         return self._license_dialog_plugin_file_location
 
-    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str) -> None:
+    def openLicenseDialog(self, plugin_name: str, license_content: str, plugin_file_location: str, icon_url: str) -> None:
         # Set page 1/1 when opening the dialog for a single package
         self._license_model.setCurrentPageIdx(0)
         self._license_model.setPageCount(1)
+        self._license_model.setIconUrl(icon_url)
 
         self._license_model.setPackageName(plugin_name)
         self._license_model.setLicenseText(license_content)
@@ -376,7 +379,6 @@ class Toolbox(QObject, Extension):
     def onLicenseAccepted(self):
         self.closeLicenseDialog.emit()
         package_id = self.install(self.getLicenseDialogPluginFileLocation())
-        self.subscribe(package_id)
 
 
     @pyqtSlot()
@@ -670,14 +672,16 @@ class Toolbox(QObject, Extension):
             return
 
         license_content = self._package_manager.getPackageLicense(file_path)
+        package_id = package_info["package_id"]
         if license_content is not None:
-            self.openLicenseDialog(package_info["package_id"], license_content, file_path)
+            # get the icon url for package_id, make sure the result is a string, never None
+            icon_url = next((x["icon_url"] for x in self.packagesModel.items if x["id"] == package_id), None) or ""
+            self.openLicenseDialog(package_info["display_name"], license_content, file_path, icon_url)
             return
 
-        package_id = self.install(file_path)
-        if package_id != package_info["package_id"]:
-            Logger.error("Installed package {} does not match {}".format(package_id, package_info["package_id"]))
-        self.subscribe(package_id)
+        installed_id = self.install(file_path)
+        if installed_id != package_id:
+            Logger.error("Installed package {} does not match {}".format(installed_id, package_id))
 
     # Getter & Setters for Properties:
     # --------------------------------------------------------------------------
@@ -699,14 +703,14 @@ class Toolbox(QObject, Extension):
     def isDownloading(self) -> bool:
         return self._is_downloading
 
-    def setActivePackage(self, package: Dict[str, Any]) -> None:
+    def setActivePackage(self, package: QObject) -> None:
         if self._active_package != package:
             self._active_package = package
             self.activePackageChanged.emit()
 
     ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
-    def activePackage(self) -> Optional[Dict[str, Any]]:
+    def activePackage(self) -> Optional[QObject]:
         return self._active_package
 
     def setViewCategory(self, category: str = "plugin") -> None:
@@ -769,6 +773,13 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:
         return self._materials_generic_model
+
+    @pyqtSlot(str, result = str)
+    def getWebMarketplaceUrl(self, page: str) -> str:
+        root = CuraMarketplaceRoot
+        if root == "":
+            root = DEFAULT_MARKETPLACE_ROOT
+        return root + "/app/cura/" + page
 
     # Filter Models:
     # --------------------------------------------------------------------------

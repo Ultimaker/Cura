@@ -127,8 +127,8 @@ Item
         icon: StandardIcon.Question
         onYes:
         {
-            CuraApplication.deleteAll();
-            Cura.Actions.resetProfile.trigger();
+            CuraApplication.resetWorkspace()
+            Cura.Actions.resetProfile.trigger()
             UM.Controller.setActiveStage("PrepareStage")
         }
     }
