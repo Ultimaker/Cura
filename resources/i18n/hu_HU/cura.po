@@ -3599,7 +3599,7 @@ msgstr "&Fájl"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:31
 msgctxt "@title:menu menubar:toplevel"
 msgid "&Edit"
-msgstr "&Szerkesztés"
+msgstr "S&zerkesztés"
 
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:48
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ViewMenu.qml:12
@@ -4424,7 +4424,7 @@ msgstr "Anyagok kezelése..."
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:195
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Update profile with current settings/overrides"
-msgstr "&Profil frissítése a jelenlegi beállításokkal/felülírásokkal"
+msgstr "Profil &frissítése a jelenlegi beállításokkal/felülírásokkal"
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:203
 msgctxt "@action:inmenu menubar:profile"
@@ -4434,7 +4434,7 @@ msgstr "&Jelenlegi változtatások eldobása"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:215
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&Profil létrehozása a jelenlegi beállításokkal/felülírásokkal..."
+msgstr "Profil &létrehozása a jelenlegi beállításokkal/felülírásokkal..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:221
 msgctxt "@action:inmenu menubar:profile"
