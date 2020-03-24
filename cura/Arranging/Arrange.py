@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional
 
@@ -30,7 +30,7 @@ LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points
 class Arrange:
     build_volume = None  # type: Optional[BuildVolume]
 
-    def __init__(self, x, y, offset_x, offset_y, scale= 0.5):
+    def __init__(self, x, y, offset_x, offset_y, scale = 0.5):
         self._scale = scale  # convert input coordinates to arrange coordinates
         world_x, world_y = int(x * self._scale), int(y * self._scale)
         self._shape = (world_y, world_x)
@@ -173,7 +173,10 @@ class Arrange:
     def bestSpot(self, shape_arr, start_prio = 0, step = 1):
         start_idx_list = numpy.where(self._priority_unique_values == start_prio)
         if start_idx_list:
-            start_idx = start_idx_list[0][0]
+            try:
+                start_idx = start_idx_list[0][0]
+            except IndexError:
+                start_idx = 0
         else:
             start_idx = 0
         for priority in self._priority_unique_values[start_idx::step]:

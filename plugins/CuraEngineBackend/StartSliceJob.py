@@ -422,13 +422,14 @@ class StartSliceJob(Job):
 
         # Pre-compute material material_bed_temp_prepend and material_print_temp_prepend
         start_gcode = settings["machine_start_gcode"]
+        # Remove all the comments from the start g-code
+        start_gcode = re.sub(r";.+?(\n|$)", "\n", start_gcode)
         bed_temperature_settings = ["material_bed_temperature", "material_bed_temperature_layer_0"]
         pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(bed_temperature_settings) # match {setting} as well as {setting, extruder_nr}
         settings["material_bed_temp_prepend"] = re.search(pattern, start_gcode) == None
         print_temperature_settings = ["material_print_temperature", "material_print_temperature_layer_0", "default_material_print_temperature", "material_initial_print_temperature", "material_final_print_temperature", "material_standby_temperature"]
         pattern = r"\{(%s)(,\s?\w+)?\}" % "|".join(print_temperature_settings) # match {setting} as well as {setting, extruder_nr}
         settings["material_print_temp_prepend"] = re.search(pattern, start_gcode) == None
-
         # Replace the setting tokens in start and end g-code.
         # Use values from the first used extruder by default so we get the expected temperatures
         initial_extruder_stack = CuraApplication.getInstance().getExtruderManager().getUsedExtruderStacks()[0]

@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -36,7 +36,7 @@ UM.TooltipArea
     property alias labelWidth: fieldLabel.width
     property alias optionModel: comboBox.model
 
-    property string tooltipText: propertyProvider.properties.description
+    property string tooltipText: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     // callback functions
     property var forceUpdateOnChangeFunction: dummy_func
@@ -71,14 +71,17 @@ UM.TooltipArea
         {
             clear()
             // Options come in as a string-representation of an OrderedDict
-            var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/)
-            if (options)
+            if(propertyProvider.properties.options)
             {
-                options = options[1].split("), (")
-                for (var i = 0; i < options.length; i++)
+                var options = propertyProvider.properties.options.match(/^OrderedDict\(\[\((.*)\)\]\)$/);
+                if(options)
                 {
-                    var option = options[i].substring(1, options[i].length - 1).split("', '")
-                    append({ text: option[1], value: option[0] })
+                    options = options[1].split("), (");
+                    for(var i = 0; i < options.length; i++)
+                    {
+                        var option = options[i].substring(1, options[i].length - 1).split("', '");
+                        append({ text: option[1], value: option[0] });
+                    }
                 }
             }
         }

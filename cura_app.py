@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+
+# Remove the working directory from sys.path.
+# This fixes a security issue where Cura could import Python packages from the
+# current working directory, and therefore be made to execute locally installed
+# code (e.g. in the user's home directory where AppImages by default run from).
+# See issue CURA-7081.
+import sys
+if "" in sys.path:
+    sys.path.remove("")
 
 import argparse
 import faulthandler
 import os
-import sys
 
 # Workaround for a race condition on certain systems where there
 # is a race condition between Arcus and PyQt. Importing Arcus
@@ -14,6 +22,8 @@ import sys
 # tries to create PyQt objects on a non-main thread.
 import Arcus  # @UnusedImport
 import Savitar  # @UnusedImport
+
+from PyQt5.QtNetwork import QSslConfiguration, QSslSocket
 
 from UM.Platform import Platform
 from cura import ApplicationMetadata
@@ -51,13 +61,16 @@ if with_sentry_sdk:
     except IndexError:
         pass
 
+    # Errors to be ignored by Sentry
+    ignore_errors = [KeyboardInterrupt, MemoryError]
     sentry_sdk.init("https://5034bf0054fb4b889f82896326e79b13@sentry.io/1821564",
                     before_send = CrashHandler.sentryBeforeSend,
                     environment = sentry_env,
                     release = "cura%s" % ApplicationMetadata.CuraVersion,
                     default_integrations = False,
                     max_breadcrumbs = 300,
-                    server_name = "cura")
+                    server_name = "cura",
+                    ignore_errors = ignore_errors)
 
 if not known_args["debug"]:
     def get_cura_dir_path():
@@ -170,9 +183,9 @@ def exceptHook(hook_type, value, traceback):
 # Set exception hook to use the crash dialog handler
 sys.excepthook = exceptHook
 # Enable dumping traceback for all threads
-if sys.stderr:
+if sys.stderr and not sys.stderr.closed:
     faulthandler.enable(file = sys.stderr, all_threads = True)
-elif sys.stdout:
+elif sys.stdout and not sys.stdout.closed:
     faulthandler.enable(file = sys.stdout, all_threads = True)
 
 from cura.CuraApplication import CuraApplication
@@ -208,6 +221,11 @@ if Platform.isLinux() and getattr(sys, "frozen", False):
     os.environ["LD_LIBRARY_PATH"] = ":".join(path_list)
     import trimesh.exchange.load
     os.environ["LD_LIBRARY_PATH"] = old_env
+
+if ApplicationMetadata.CuraDebugMode:
+    ssl_conf = QSslConfiguration.defaultConfiguration()
+    ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)
+    QSslConfiguration.setDefaultConfiguration(ssl_conf)
 
 app = CuraApplication()
 app.run()

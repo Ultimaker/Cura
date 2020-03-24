@@ -75,7 +75,7 @@
                 "material_guid":
                 {
                     "label": "Material GUID",
-                    "description": "GUID of the material. This is set automatically. ",
+                    "description": "GUID of the material. This is set automatically.",
                     "default_value": "",
                     "type": "str",
                     "enabled": false
@@ -142,6 +142,8 @@
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -152,6 +154,8 @@
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
+                    "minimum_value": "0.001",
+                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -1028,6 +1032,7 @@
                     "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
+                    "value": "wall_line_width_0 if magic_spiralize else 0.8",
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
@@ -1981,6 +1986,7 @@
                     "default_value": 1,
                     "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "minimum_value": "0",
+                    "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -1994,6 +2000,7 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2007,6 +2014,7 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
+                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2095,7 +2103,7 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "type": "float",
-                    "value": "0",
+                    "value": "0 if infill_sparse_density > 0 else 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2444,7 +2452,7 @@
                 "material_flush_purge_speed":
                 {
                     "label": "Flush Purge Speed",
-                    "description": "Material Station internal value",
+                    "description": "How fast to prime the material after switching to a different material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
@@ -2452,23 +2460,23 @@
                 "material_flush_purge_length":
                 {
                     "label": "Flush Purge Length",
-                    "description": "Material Station internal value",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material.",
                     "type": "float",
                     "default_value": 60,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_speed":
                 {
-                    "label": "End Of Filament Purge Speed",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Speed",
+                    "description": "How fast to prime the material after replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_length":
                 {
-                    "label": "End Of Filament Purge Length",
-                    "description": "Material Station internal value",
+                    "label": "End of Filament Purge Length",
+                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material.",
                     "type": "float",
                     "default_value": 20,
                     "enabled": false
@@ -2476,7 +2484,7 @@
                 "material_maximum_park_duration":
                 {
                     "label": "Maximum Park Duration",
-                    "description": "Material Station internal value",
+                    "description": "How long the material can be kept out of dry storage safely.",
                     "type": "float",
                     "default_value": 300,
                     "enabled": false
@@ -2484,7 +2492,7 @@
                 "material_no_load_move_factor":
                 {
                     "label": "No Load Move Factor",
-                    "description": "Material Station internal value",
+                    "description": "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch.",
                     "type": "float",
                     "default_value": 0.940860215,
                     "enabled": false
@@ -3635,7 +3643,7 @@
                 "retraction_enable":
                 {
                     "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -4431,7 +4439,7 @@
                 "support_xy_distance_overhang":
                 {
                     "label": "Minimum Support X/Y Distance",
-                    "description": "Distance of the support structure from the overhang in the X/Y directions. ",
+                    "description": "Distance of the support structure from the overhang in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -5875,7 +5883,7 @@
             "label": "Mesh Fixes",
             "type": "category",
             "icon": "category_fixes",
-            "description": "category_fixes",
+            "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
                 "meshfix_union_all":
@@ -6001,7 +6009,7 @@
             "label": "Special Modes",
             "type": "category",
             "icon": "category_blackmagic",
-            "description": "category_blackmagic",
+            "description": "Non-traditional ways to print your models.",
             "children":
             {
                 "print_sequence":
@@ -6174,7 +6182,7 @@
             "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
-            "description": "experimental!",
+            "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
                 "support_tree_enable":
