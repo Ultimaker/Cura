@@ -1,15 +1,13 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Cura
+# Copyright (C) 2020 Ultimaker B.V.
+# This file is distributed under the same license as the Cura package.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.3\n"
+"Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2019-10-12 14:17+0100\n"
-"PO-Revision-Date: 2019-10-12 14:17+0100\n"
+"PO-Revision-Date: 2020-03-24 09:36+0100\n"
 "Last-Translator: Nagy Attila <vokroot@gmail.com>\n"
 "Language-Team: ATI-SZOFT\n"
 "Language: hu_HU\n"
@@ -17,6 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: /home/ruben/Projects/Cura/plugins/MachineSettingsAction/MachineSettingsAction.py:28
 msgctxt "@action"
@@ -60,21 +59,17 @@ msgstr "3D-s modellsegéd"
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"<p>One or more 3D models may not print optimally due to the model size and "
-"material configuration:</p>\n"
+"<p>One or more 3D models may not print optimally due to the model size and material configuration:</p>\n"
 "<p>{model_names}</p>\n"
-"<p>Find out how to ensure the best possible print quality and reliability.</"
-"p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality "
-"guide</a></p>"
+"<p>Find out how to ensure the best possible print quality and reliability.</p>\n"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 msgstr ""
 "<p>Lehetséges, hogy egy vagy több 3D-s modellt nem lehet optimálisan kinyomtatni a modell mérete és az "
 "anyagkonfiguráció miatt:</p>\n"
 "<p>{model_names}</p>\n"
 "<p>Itt Megtudhatja, hogyan lehet a lehető legjobb nyomtatási minőséget és megbízhatóságot biztosítani.</"
 "p>\n"
-"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality "
-"guide</a></p>"
+"<p><a href=\"https://ultimaker.com/3D-model-assistant\">View print quality guide</a></p>"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.py:25
 msgctxt "@action"
@@ -104,31 +99,31 @@ msgstr "USB nyomtatás"
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:43
 msgctxt "@action:button Preceded by 'Ready to'."
 msgid "Print via USB"
-msgstr "Nyomtatás USB-ről."
+msgstr "Nyomtatás USB-ről"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:44
 msgctxt "@info:tooltip"
 msgid "Print via USB"
-msgstr "Nyomtatás USB-ről."
+msgstr "Nyomtatás USB-ről"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:80
 msgctxt "@info:status"
 msgid "Connected via USB"
-msgstr "Csatlakozás USB-n."
+msgstr "Csatlakozás USB-n"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:105
 msgctxt "@label"
-msgid ""
-"A USB print is in progress, closing Cura will stop this print. Are you sure?"
+msgid "A USB print is in progress, closing Cura will stop this print. Are you sure?"
 msgstr "USB nyomtatás folyamatban van, a Cura bezárása leállítja ezt a nyomtatást. Biztos vagy ebben?"
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"
 msgid ""
-"A print is still in progress. Cura cannot start another print via USB until "
-"the previous print has completed."
-msgstr "A nyomtatás még folyamatban van. A Cura nem indíthat új nyomtatást USB-n keresztül, "
-"amíg az előző nyomtatás be nem fejeződött."
+"A print is still in progress. Cura cannot start another print via USB until the previous print has "
+"completed."
+msgstr ""
+"A nyomtatás még folyamatban van. A Cura nem indíthat új nyomtatást USB-n keresztül, amíg az előző "
+"nyomtatás be nem fejeződött."
 
 #: /home/ruben/Projects/Cura/plugins/USBPrinting/USBPrinterOutputDevice.py:127
 msgctxt "@message"
@@ -315,11 +310,11 @@ msgstr "Nyomtatási hiba"
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"You are attempting to connect to {0} but it is not the host of a group. You "
-"can visit the web page to configure it as a group host."
+"You are attempting to connect to {0} but it is not the host of a group. You can visit the web page to "
+"configure it as a group host."
 msgstr ""
-"Megpróbált csatlakozni a (z) {0} -hez, de a gép nem része a csoportnak."
-"Látogasson el a weboldalra, és konfigurálhatja azt csoporttagnak."
+"Megpróbált csatlakozni a (z) {0} -hez, de a gép nem része a csoportnak.Látogasson el a weboldalra, és "
+"konfigurálhatja azt csoporttagnak."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/NotClusterHostMessage.py:30
 msgctxt "@info:title"
@@ -339,7 +334,7 @@ msgstr "Küldjön és felügyeljen nyomtatási feladatokat bárhonnan az Ultimak
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:33
 msgctxt "@info:status Ultimaker Cloud should not be translated."
 msgid "Connect to Ultimaker Cloud"
-msgstr "Csatlakozás az Ultimaker felhőhöz."
+msgstr "Csatlakozás az Ultimaker felhőhöz"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/CloudFlowMessage.py:36
 msgctxt "@action"
@@ -369,10 +364,11 @@ msgstr "Adatok elküldve"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:18
 msgctxt "@info:status"
 msgid ""
-"You are attempting to connect to a printer that is not running Ultimaker "
-"Connect. Please update the printer to the latest firmware."
-msgstr "Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az Ultimaker Connect."
-" Kérjük, frissítse a nyomtatón a firmware-t."
+"You are attempting to connect to a printer that is not running Ultimaker Connect. Please update the "
+"printer to the latest firmware."
+msgstr ""
+"Olyan nyomtatóval próbál csatlakozni, amelyen nem fut az Ultimaker Connect. Kérjük, frissítse a "
+"nyomtatón a firmware-t."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/LegacyDeviceNoLongerSupportedMessage.py:21
 msgctxt "@info:title"
@@ -382,12 +378,8 @@ msgstr "Frissítse a nyomtatót"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:24
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Cura has detected material profiles that were not yet installed on the host "
-"printer of group {0}."
-msgstr ""
-"A Cura olyan anyagprofilt észlel, amelyet még nem telepítettek "
-"a(z) {0} csoport gazdanyomtatójára."
+msgid "Cura has detected material profiles that were not yet installed on the host printer of group {0}."
+msgstr "A Cura olyan anyagprofilt észlel, amelyet még nem telepítettek a(z) {0} csoport gazdanyomtatójára."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/src/Messages/MaterialSyncMessage.py:26
 msgctxt "@info:title"
@@ -441,15 +433,13 @@ msgstr "Nem sikerült elérni a frissítési információkat."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:17
 #, python-brace-format
-msgctxt ""
-"@info Don't translate {machine_name}, since it gets replaced by a printer "
-"name!"
+msgctxt "@info Don't translate {machine_name}, since it gets replaced by a printer name!"
 msgid ""
-"New features are available for your {machine_name}! It is recommended to "
-"update the firmware on your printer."
+"New features are available for your {machine_name}! It is recommended to update the firmware on your "
+"printer."
 msgstr ""
-"Új funkciók érhetők el a (z) {machine_name} készülékken! "
-"Javasoljuk, hogy frissítse a nyomtató firmware-jét."
+"Új funkciók érhetők el a (z) {machine_name} készülékken! Javasoljuk, hogy frissítse a nyomtató firmware-"
+"jét."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdateChecker/FirmwareUpdateCheckerMessage.py:21
 #, python-format
@@ -560,11 +550,11 @@ msgstr "Tömörített COLLADA digitális eszközcsere"
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:331
 msgctxt "@info:status"
 msgid ""
-"Unable to slice with the current material as it is incompatible with the "
-"selected machine or configuration."
+"Unable to slice with the current material as it is incompatible with the selected machine or "
+"configuration."
 msgstr ""
-"Nem lehet szeletelni a jelenlegi alapanyaggal, mert nem kompatibilis "
-"a kiválasztott nyomtatóval, vagy a beállításaival."
+"Nem lehet szeletelni a jelenlegi alapanyaggal, mert nem kompatibilis a kiválasztott nyomtatóval, vagy a "
+"beállításaival."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:331
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:362
@@ -574,56 +564,45 @@ msgstr ""
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:413
 msgctxt "@info:title"
 msgid "Unable to slice"
-msgstr "Nem lehet szeletelni."
+msgstr "Nem lehet szeletelni"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:361
 #, python-brace-format
 msgctxt "@info:status"
-msgid ""
-"Unable to slice with the current settings. The following settings have "
-"errors: {0}"
-msgstr ""
-"Nem lehet szeletelni ezekkel a beállításokkal. Ezek a beállítások "
-"okoznak hibát: {0}"
+msgid "Unable to slice with the current settings. The following settings have errors: {0}"
+msgstr "Nem lehet szeletelni ezekkel a beállításokkal. Ezek a beállítások okoznak hibát: {0}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:385
 #, python-brace-format
 msgctxt "@info:status"
 msgid ""
-"Unable to slice due to some per-model settings. The following settings have "
-"errors on one or more models: {error_labels}"
+"Unable to slice due to some per-model settings. The following settings have errors on one or more "
+"models: {error_labels}"
 msgstr ""
-"Nem lehet szeletelni pár modell beállítás miatt. A következő beállítások"
-"okoznak hibát egy vagy több modellnél: {error_labels}" 
+"Nem lehet szeletelni pár modell beállítás miatt. A következő beállításokokoznak hibát egy vagy több "
+"modellnél: {error_labels}"
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:394
 msgctxt "@info:status"
-msgid ""
-"Unable to slice because the prime tower or prime position(s) are invalid."
-msgstr ""
-"Nem lehet szeletelni, mert az elsődleges torony, vagy az elsődleges pozíció érvénytelen."
+msgid "Unable to slice because the prime tower or prime position(s) are invalid."
+msgstr "Nem lehet szeletelni, mert az elsődleges torony, vagy az elsődleges pozíció érvénytelen."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:403
 #, python-format
 msgctxt "@info:status"
-msgid ""
-"Unable to slice because there are objects associated with disabled Extruder "
-"%s."
-msgstr "Nem lehet szeletelni, mert vannak olyan objektumok, "
-"amelyek a letiltott Extruderhez vannak társítva."
-"%s."
+msgid "Unable to slice because there are objects associated with disabled Extruder %s."
+msgstr ""
+"Nem lehet szeletelni, mert vannak olyan objektumok, amelyek a letiltott Extruderhez vannak társítva.%s."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/CuraEngineBackend.py:412
 msgctxt "@info:status"
 msgid ""
-"Nothing to slice because none of the models fit the build volume or are "
-"assigned to a disabled extruder. Please scale or rotate models to fit, or "
-"enable an extruder."
+"Nothing to slice because none of the models fit the build volume or are assigned to a disabled extruder. "
+"Please scale or rotate models to fit, or enable an extruder."
 msgstr ""
-"Nem lehet szeletelni, mert egyik modell sem érintkezik az alapsíkkal, "
-"vagy a modell letiltott extruderhez van hozzárendelve. "
-"Kérjük, méretezze vagy forgassa el a modelleket, hogy illeszkedjenek "
-"az alapsíkra, vagy engedélyezz egy extrudert."
+"Nem lehet szeletelni, mert egyik modell sem érintkezik az alapsíkkal, vagy a modell letiltott "
+"extruderhez van hozzárendelve. Kérjük, méretezze vagy forgassa el a modelleket, hogy illeszkedjenek az "
+"alapsíkra, vagy engedélyezz egy extrudert."
 
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/ruben/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -672,11 +651,11 @@ msgstr "Fúvóka"
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
 msgid ""
-"Project file <filename>{0}</filename> contains an unknown machine type "
-"<message>{1}</message>. Cannot import the machine. Models will be imported "
-"instead."
-msgstr "A projekt fájl <filename>{0}</filename> egy ismeretlen <message>{1}</message> géptípust tartalmaz."
-"Gépet nem lehet importálni. Importálj helyette modelleket." 
+"Project file <filename>{0}</filename> contains an unknown machine type <message>{1}</message>. Cannot "
+"import the machine. Models will be imported instead."
+msgstr ""
+"A projekt fájl <filename>{0}</filename> egy ismeretlen <message>{1}</message> géptípust tartalmaz.Gépet "
+"nem lehet importálni. Importálj helyette modelleket."
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/ThreeMFWorkspaceReader.py:482
 msgctxt "@info:title"
@@ -707,11 +686,11 @@ msgstr "G-kód részletek"
 #: /home/ruben/Projects/Cura/plugins/GCodeReader/FlavorParser.py:489
 msgctxt "@info:generic"
 msgid ""
-"Make sure the g-code is suitable for your printer and printer configuration "
-"before sending the file to it. The g-code representation may not be accurate."
+"Make sure the g-code is suitable for your printer and printer configuration before sending the file to "
+"it. The g-code representation may not be accurate."
 msgstr ""
-"Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállításaihoz, "
-"mielőtt elküldöd a fájlt. A G-kód ábrázolása nem biztos, hogy pontos."
+"Győződj meg róla, hogy a G-kód igazodik a nyomtatódhoz és beállításaihoz, mielőtt elküldöd a fájlt. A G-"
+"kód ábrázolása nem biztos, hogy pontos."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/DrivePluginExtension.py:64
 msgctxt "@item:inmenu"
@@ -823,11 +802,8 @@ msgstr "A fájl már létezik"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:124
 #, python-brace-format
 msgctxt "@label Don't translate the XML tag <filename>!"
-msgid ""
-"The file <filename>{0}</filename> already exists. Are you sure you want to "
-"overwrite it?"
-msgstr "A <filename>{0}</filename> fájl már létezik. Biztosan szeretnéd, "
-"hogy felülírjuk?"
+msgid "The file <filename>{0}</filename> already exists. Are you sure you want to overwrite it?"
+msgstr "A <filename>{0}</filename> fájl már létezik. Biztosan szeretnéd, hogy felülírjuk?"
 
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:427
 #: /home/ruben/Projects/Cura/cura/Settings/ContainerManager.py:430
@@ -837,10 +813,8 @@ msgstr "Érvénytelen fájl URL:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:924
 msgctxt "@info:message Followed by a list of settings."
-msgid ""
-"Settings have been changed to match the current availability of extruders:"
-msgstr "A beállításokat megváltoztattuk, hogy azok megfeleljenek az jelenleg "
-"elérhető extrudereknek:"
+msgid "Settings have been changed to match the current availability of extruders:"
+msgstr "A beállításokat megváltoztattuk, hogy azok megfeleljenek az jelenleg elérhető extrudereknek:"
 
 #: /home/ruben/Projects/Cura/cura/Settings/MachineManager.py:926
 msgctxt "@info:title"
@@ -855,18 +829,14 @@ msgstr "Extruder(ek) kikapcsolva"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:135
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
+msgid "Failed to export profile to <filename>{0}</filename>: <message>{1}</message>"
 msgstr "A profil exportálása nem sikerült <filename>{0}</filename>: <message>{1}</message>"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:142
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tag <filename>!"
-msgid ""
-"Failed to export profile to <filename>{0}</filename>: Writer plugin reported "
-"failure."
-msgstr "A profil exportálása nem sikerült <filename>{0}</filename>:"
-"Az író beépülő modul hibát jelez."
+msgid "Failed to export profile to <filename>{0}</filename>: Writer plugin reported failure."
+msgstr "A profil exportálása nem sikerült <filename>{0}</filename>:Az író beépülő modul hibát jelez."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:147
 #, python-brace-format
@@ -888,16 +858,14 @@ msgstr "Sikertelen profil importálás <filename>{0}</filename>: {1} -ból"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:179
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid ""
-"Can't import profile from <filename>{0}</filename> before a printer is added."
-msgstr "Nem importálható a profil <filename>{0}</filename> -ból, "
-"mielőtt hozzá nem adunk egy nyomtatót."
+msgid "Can't import profile from <filename>{0}</filename> before a printer is added."
+msgstr "Nem importálható a profil <filename>{0}</filename> -ból, mielőtt hozzá nem adunk egy nyomtatót."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:195
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
 msgid "No custom profile to import in file <filename>{0}</filename>"
-msgstr "Nincs egyéni profil a <filename>{0}</filename> fájlban, amelyet importálni lehetne."
+msgstr "Nincs egyéni profil a <filename>{0}</filename> fájlban, amelyet importálni lehetne"
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:199
 #, python-brace-format
@@ -909,11 +877,8 @@ msgstr "A profil importálása nem sikerült <filename>{0}</filename>:"
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:233
 #, python-brace-format
 msgctxt "@info:status Don't translate the XML tags <filename>!"
-msgid ""
-"This profile <filename>{0}</filename> contains incorrect data, could not "
-"import it."
-msgstr "Ez a <filename>{0}</filename> profil helytelen adatokat tartamaz, "
-"ezért nem importálható"
+msgid "This profile <filename>{0}</filename> contains incorrect data, could not import it."
+msgstr "Ez a <filename>{0}</filename> profil helytelen adatokat tartamaz, ezért nem importálható."
 
 #: /home/ruben/Projects/Cura/cura/Settings/CuraContainerRegistry.py:317
 #, python-brace-format
@@ -1090,10 +1055,8 @@ msgstr "Ismeretlen"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:116
 msgctxt "@label"
-msgid ""
-"The printer(s) below cannot be connected because they are part of a group"
-msgstr ""
-"Az alábbi nyomtató (k) nem csatlakoztathatók, mert egy csoporthoz tartoznak."
+msgid "The printer(s) below cannot be connected because they are part of a group"
+msgstr "Az alábbi nyomtató (k) nem csatlakoztathatók, mert egy csoporthoz tartoznak"
 
 #: /home/ruben/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:118
 msgctxt "@label"
@@ -1114,11 +1077,11 @@ msgstr "Egyedi"
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:90
 msgctxt "@info:status"
 msgid ""
-"The build volume height has been reduced due to the value of the \"Print "
-"Sequence\" setting to prevent the gantry from colliding with printed models."
+"The build volume height has been reduced due to the value of the \"Print Sequence\" setting to prevent "
+"the gantry from colliding with printed models."
 msgstr ""
-"Az nyomtatási szint csökken a \"Nyomtatási sorrend\" beállítása miatt, ez megakadályozza, "
-"hogy a mechanika beleütközzön a nyomtatott tárgyba."
+"Az nyomtatási szint csökken a \"Nyomtatási sorrend\" beállítása miatt, ez megakadályozza, hogy a "
+"mechanika beleütközzön a nyomtatott tárgyba."
 
 #: /home/ruben/Projects/Cura/cura/BuildVolume.py:92
 msgctxt "@info:title"
@@ -1133,14 +1096,15 @@ msgstr "Nem sikerült archívumot létrehozni a felhasználói adatkönyvtárbó
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:114
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup without having proper data or meta data."
-msgstr "Megpróbált visszaállítani egy Cura biztonsági másolatot anélkül, "
-"hogy megfelelő adatok vagy meta adatok lennének."
+msgstr ""
+"Megpróbált visszaállítani egy Cura biztonsági másolatot anélkül, hogy megfelelő adatok vagy meta adatok "
+"lennének."
 
 #: /home/ruben/Projects/Cura/cura/Backups/Backup.py:125
 msgctxt "@info:backup_failed"
 msgid "Tried to restore a Cura backup that is higher than the current version."
-msgstr "Egy olyan Cura biztonsági mentést próbált visszaállítani, amelyiknek "
-"a verziója magasabb a jelenlegitől."
+msgstr ""
+"Egy olyan Cura biztonsági mentést próbált visszaállítani, amelyiknek a verziója magasabb a jelenlegitől."
 
 #: /home/ruben/Projects/Cura/cura/OAuth2/AuthorizationHelpers.py:79
 msgctxt "@message"
@@ -1182,7 +1146,7 @@ msgstr "Tárgyak elhelyezése"
 #: /home/ruben/Projects/Cura/cura/Arranging/ArrangeObjectsAllBuildPlatesJob.py:149
 msgctxt "@info:status"
 msgid "Unable to find a location within the build volume for all objects"
-msgstr "Nincs elég hely az összes objektum építési térfogatához."
+msgstr "Nincs elég hely az összes objektum építési térfogatához"
 
 #: /home/ruben/Projects/Cura/cura/MultiplyObjectsJob.py:108
 msgctxt "@info:title"
@@ -1215,32 +1179,25 @@ msgstr "A Cura nem tud elindulni"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:89
 msgctxt "@label crash message"
 msgid ""
-"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right."
-"</p></b>\n"
-"                    <p>We encountered an unrecoverable error during start "
-"up. It was possibly caused by some incorrect configuration files. We suggest "
-"to backup and reset your configuration.</p>\n"
-"                    <p>Backups can be found in the configuration folder.</"
-"p>\n"
-"                    <p>Please send us this Crash Report to fix the problem.</"
-"p>\n"
+"<p><b>Oops, Ultimaker Cura has encountered something that doesn't seem right.</p></b>\n"
+"                    <p>We encountered an unrecoverable error during start up. It was possibly caused by "
+"some incorrect configuration files. We suggest to backup and reset your configuration.</p>\n"
+"                    <p>Backups can be found in the configuration folder.</p>\n"
+"                    <p>Please send us this Crash Report to fix the problem.</p>\n"
 "                "
 msgstr ""
-"<p><b>Hoppá, az Ultimaker Cura olyan dolgokkal találkozott, amelyek hibásnak tűnnek."
-"</p></b>\n"
-"                    <p>Az indítás során helyrehozhatatlan hibát tapasztaltunk"
-"Ezt valószínűleg néhány helytelen konfigurációs fájl okozta. Javasoljuk, "
-"hogy biztonsági másolatból állítsa vissza a konfigurációt.</p>\n"
-"                    <p>A biztonsági mentések a konfigurációs mappában találhatók.</"
-"p>\n"
-"                    <p>Kérjük, küldje el nekünk ezt a hibajelentést a probléma megoldásához.</"
-"p>\n"
+"<p><b>Hoppá, az Ultimaker Cura olyan dolgokkal találkozott, amelyek hibásnak tűnnek.</p></b>\n"
+"                    <p>Az indítás során helyrehozhatatlan hibát tapasztaltunkEzt valószínűleg néhány "
+"helytelen konfigurációs fájl okozta. Javasoljuk, hogy biztonsági másolatból állítsa vissza a "
+"konfigurációt.</p>\n"
+"                    <p>A biztonsági mentések a konfigurációs mappában találhatók.</p>\n"
+"                    <p>Kérjük, küldje el nekünk ezt a hibajelentést a probléma megoldásához.</p>\n"
 "                "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:98
 msgctxt "@action:button"
 msgid "Send crash report to Ultimaker"
-msgstr "Hibajelentés küldése az Ultimaker -nek."
+msgstr "Hibajelentés küldése az Ultimaker -nek"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:101
 msgctxt "@action:button"
@@ -1265,16 +1222,15 @@ msgstr "Összeomlás jelentés"
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:165
 msgctxt "@label crash message"
 msgid ""
-"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report "
-"to fix the problem</p></b>\n"
-"            <p>Please use the \"Send report\" button to post a bug report "
-"automatically to our servers</p>\n"
+"<p><b>A fatal error has occurred in Cura. Please send us this Crash Report to fix the problem</p></b>\n"
+"            <p>Please use the \"Send report\" button to post a bug report automatically to our servers</"
+"p>\n"
 "        "
 msgstr ""
-"<p><b>Végzetes hiba történt Cura-ban. Kérjük, küld el nekünk az összeomlás jelentését, "
-"hogy javítani tudjuk a hibát.</p></b>\n"
-"            <p>Kérjük használd a \"Jelentés küldés\" gombot a hibajelentés postázásához,  "
-"így az automatikusan a szerverünkre kerül.</p>\n"
+"<p><b>Végzetes hiba történt Cura-ban. Kérjük, küld el nekünk az összeomlás jelentését, hogy javítani "
+"tudjuk a hibát.</p></b>\n"
+"            <p>Kérjük használd a \"Jelentés küldés\" gombot a hibajelentés postázásához,  így az "
+"automatikusan a szerverünkre kerül.</p>\n"
 "        "
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:173
@@ -1347,12 +1303,10 @@ msgstr "Naplók"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:322
 msgctxt "@title:groupbox"
-msgid ""
-"User description (Note: Developers may not speak your language, please use "
-"English if possible)"
+msgid "User description (Note: Developers may not speak your language, please use English if possible)"
 msgstr ""
-"Felhasználói leírás (Megjegyzés: Lehet, hogy a fejlesztők nem beszélnek az Ön nyelvén,"
-"ezért kérjük, használja az Angol nyelvet, ha lehetséges.)"
+"Felhasználói leírás (Megjegyzés: Lehet, hogy a fejlesztők nem beszélnek az Ön nyelvén,ezért kérjük, "
+"használja az Angol nyelvet, ha lehetséges.)"
 
 #: /home/ruben/Projects/Cura/cura/CrashHandler.py:342
 msgctxt "@action:button"
@@ -1377,8 +1331,8 @@ msgstr "Interfészek betöltése..."
 #: /home/ruben/Projects/Cura/cura/CuraApplication.py:1134
 #, python-format
 msgctxt ""
-"@info 'width', 'depth' and 'height' are variable names that must NOT be "
-"translated; just translate the format of ##x##x## mm."
+"@info 'width', 'depth' and 'height' are variable names that must NOT be translated; just translate the "
+"format of ##x##x## mm."
 msgid "%(width).1f x %(depth).1f x %(height).1f mm"
 msgstr "%(width).1f x %(depth).1f x %(height).1f mm"
 
@@ -1563,8 +1517,7 @@ msgstr "Telepítve"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxErrorPage.qml:16
 msgctxt "@info"
-msgid ""
-"Could not connect to the Cura Package database. Please check your connection."
+msgid "Could not connect to the Cura Package database. Please check your connection."
 msgstr "Nem sikerült csatlakozni a Cura Package adatbázishoz. Kérjük, ellenőrizze a kapcsolatot."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/SmallRatingWidget.qml:27
@@ -1614,7 +1567,7 @@ msgstr "Letöltések"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:56
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
 msgid "<a href='%1'>Log in</a> is required to install or update"
-msgstr "<a href='%1'>Bejelentkezés</a> szükséges a telepítéshez vagy frissítéshez."
+msgstr "<a href='%1'>Bejelentkezés</a> szükséges a telepítéshez vagy frissítéshez"
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxDetailTileActions.qml:80
 msgctxt "@label:The string between <a href=> and </a> is the highlighted link"
@@ -1657,11 +1610,11 @@ msgstr "Eltávolítás jóváhagyása"
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:50
 msgctxt "@text:window"
 msgid ""
-"You are uninstalling materials and/or profiles that are still in use. "
-"Confirming will reset the following materials/profiles to their defaults."
+"You are uninstalling materials and/or profiles that are still in use. Confirming will reset the "
+"following materials/profiles to their defaults."
 msgstr ""
-"Távolítsd el a még használatban lévő anyagokat és / vagy profilokat."
-"A megerősítés visszaállítja az alapanyagokat / profilokat alapértelmezett értékükre."
+"Távolítsd el a még használatban lévő anyagokat és / vagy profilokat.A megerősítés visszaállítja az "
+"alapanyagokat / profilokat alapértelmezett értékükre."
 
 #: /home/ruben/Projects/Cura/plugins/Toolbox/resources/qml/ToolboxConfirmUninstallResetDialog.qml:51
 msgctxt "@text:window"
@@ -1835,12 +1788,9 @@ msgstr "Email"
 
 #: /home/ruben/Projects/Cura/plugins/ModelChecker/ModelChecker.qml:22
 msgctxt "@info:tooltip"
-msgid ""
-"Some things could be problematic in this print. Click to see tips for "
-"adjustment."
+msgid "Some things could be problematic in this print. Click to see tips for adjustment."
 msgstr ""
-"Néhány dolog problémát jelenthet ebben a nyomtatásban."
-"Kattintson ide a beállítási tippek megtekintéséhez."
+"Néhány dolog problémát jelenthet ebben a nyomtatásban.Kattintson ide a beállítási tippek megtekintéséhez."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:31
 msgctxt "@title"
@@ -1850,20 +1800,20 @@ msgstr "Firmware frissítés"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:39
 msgctxt "@label"
 msgid ""
-"Firmware is the piece of software running directly on your 3D printer. This "
-"firmware controls the step motors, regulates the temperature and ultimately "
-"makes your printer work."
-msgstr "A firmware egy szoftver, ami közvetlenül a nyomtatón fut. Ez vezérli a "
-"léptető motorokat, szabályozza a hőmérsékleteket, és az egész nyomtató működését."
+"Firmware is the piece of software running directly on your 3D printer. This firmware controls the step "
+"motors, regulates the temperature and ultimately makes your printer work."
+msgstr ""
+"A firmware egy szoftver, ami közvetlenül a nyomtatón fut. Ez vezérli a léptető motorokat, szabályozza a "
+"hőmérsékleteket, és az egész nyomtató működését."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:46
 msgctxt "@label"
 msgid ""
-"The firmware shipping with new printers works, but new versions tend to have "
-"more features and improvements."
-msgstr "A firmware a nyomtató része, így a használatba vételkor már a gépen található."
-"Azonban készülnek belőle újabb verziók, amik esetleges hibákat szüntetnek meg, illetve "
-"egyéb új funkciókat biztosíthatnak."
+"The firmware shipping with new printers works, but new versions tend to have more features and "
+"improvements."
+msgstr ""
+"A firmware a nyomtató része, így a használatba vételkor már a gépen található.Azonban készülnek belőle "
+"újabb verziók, amik esetleges hibákat szüntetnek meg, illetve egyéb új funkciókat biztosíthatnak."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:58
 msgctxt "@action:button"
@@ -1877,17 +1827,16 @@ msgstr "Egyedi firmware feltöltése"
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:83
 msgctxt "@label"
-msgid ""
-"Firmware can not be updated because there is no connection with the printer."
+msgid "Firmware can not be updated because there is no connection with the printer."
 msgstr "A firmware feltöltés nem lehetséges, mert nincs a nyomtatóval kapcsolat."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:91
 msgctxt "@label"
 msgid ""
-"Firmware can not be updated because the connection with the printer does not "
-"support upgrading firmware."
-msgstr "A firmware feltöltés nem lehetséges, mert ugyan a nyomtató kapcsolódik, "
-"de az nem támogatja a firmware frissítést."
+"Firmware can not be updated because the connection with the printer does not support upgrading firmware."
+msgstr ""
+"A firmware feltöltés nem lehetséges, mert ugyan a nyomtató kapcsolódik, de az nem támogatja a firmware "
+"frissítést."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:98
 msgctxt "@title:window"
@@ -1902,12 +1851,12 @@ msgstr "Firmware frissítés"
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:143
 msgctxt "@label"
 msgid "Updating firmware."
-msgstr "A firmware frissítése"
+msgstr "A firmware frissítése."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:145
 msgctxt "@label"
 msgid "Firmware update completed."
-msgstr "Firmware frissítés kész"
+msgstr "Firmware frissítés kész."
 
 #: /home/ruben/Projects/Cura/plugins/FirmwareUpdater/FirmwareUpdaterMachineAction.qml:147
 msgctxt "@label"
@@ -2026,7 +1975,7 @@ msgstr "Nyomtatások"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:131
 msgctxt "@label"
 msgid "Total print time"
-msgstr "teljes nyomtatási idő"
+msgstr "Teljes nyomtatási idő"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorQueue.qml:147
 msgctxt "@label"
@@ -2041,15 +1990,13 @@ msgstr "Csatlakozás hálózati nyomtatóhoz"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:57
 msgctxt "@label"
 msgid ""
-"To print directly to your printer over the network, please make sure your "
-"printer is connected to the network using a network cable or by connecting "
-"your printer to your WIFI network. If you don't connect Cura with your "
-"printer, you can still use a USB drive to transfer g-code files to your "
-"printer."
-msgstr "Ha hálózaton keresztül szeretnél közvetlenül nyomtatni, akkor "
-"győződj meg arról, hogy a nyomtató csatlakozik vezetékes, vagy vezeték nélküli "
-"hálózathoz. Ha nincs elérhető hálózat, akkor közvetlenül USB kapcsolaton "
-"keresztül is tudsz nyomtatni."
+"To print directly to your printer over the network, please make sure your printer is connected to the "
+"network using a network cable or by connecting your printer to your WIFI network. If you don't connect "
+"Cura with your printer, you can still use a USB drive to transfer g-code files to your printer."
+msgstr ""
+"Ha hálózaton keresztül szeretnél közvetlenül nyomtatni, akkor győződj meg arról, hogy a nyomtató "
+"csatlakozik vezetékes, vagy vezeték nélküli hálózathoz. Ha nincs elérhető hálózat, akkor közvetlenül USB "
+"kapcsolaton keresztül is tudsz nyomtatni."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:57
 msgctxt "@label"
@@ -2076,11 +2023,9 @@ msgstr "Frissít"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:176
 msgctxt "@label"
-msgid ""
-"If your printer is not listed, read the <a href='%1'>network printing "
-"troubleshooting guide</a>"
-msgstr "Ha a nyomtatód nincs a listában, olvasd el a <a href='%1'>hálózati nyomtatás "
-"hibaelhárítási útmutatót</a>"
+msgid "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>"
+msgstr ""
+"Ha a nyomtatód nincs a listában, olvasd el a <a href='%1'>hálózati nyomtatás hibaelhárítási útmutatót</a>"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/DiscoverUM3Action.qml:205
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:258
@@ -2258,7 +2203,7 @@ msgstr "Megszakít"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:143
 msgctxt "@label %1 is the name of a print job."
 msgid "Are you sure you want to move %1 to the top of the queue?"
-msgstr "Biztos, hogy a %1 a nyomtatási sor elejére akarod mozgatni? "
+msgstr "Biztos, hogy a %1 a nyomtatási sor elejére akarod mozgatni?"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorContextMenu.qml:144
 msgctxt "@window:title"
@@ -2299,16 +2244,13 @@ msgstr "Felülírás"
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:85
 msgctxt "@label"
 msgid "The assigned printer, %1, requires the following configuration change:"
-msgid_plural ""
-"The assigned printer, %1, requires the following configuration changes:"
+msgid_plural "The assigned printer, %1, requires the following configuration changes:"
 msgstr[0] "A hozzárendelt nyomtatóhoz, %1, a következő konfigurációs változtatás szükséges:"
 msgstr[1] "A hozzárendelt nyomtatóhoz, %1, a következő konfigurációs változtatások szükségesek:"
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:89
 msgctxt "@label"
-msgid ""
-"The printer %1 is assigned, but the job contains an unknown material "
-"configuration."
+msgid "The printer %1 is assigned, but the job contains an unknown material configuration."
 msgstr "A %1 nyomtató hozzá van rendelve a feladathoz, azonban az ismeretlen anyagot tartalmaz."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:99
@@ -2334,10 +2276,11 @@ msgstr "Változtasd meg a tálcát %1 -re (Ez nem felülbírálható)."
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:115
 msgctxt "@label"
 msgid ""
-"Override will use the specified settings with the existing printer "
-"configuration. This may result in a failed print."
-msgstr "A felülbírálás a megadott beállításokat fogja használni a meglévő "
-"nyomtató konfigurációval, azonban ez eredménytelen nyomtatáshoz vezethet."
+"Override will use the specified settings with the existing printer configuration. This may result in a "
+"failed print."
+msgstr ""
+"A felülbírálás a megadott beállításokat fogja használni a meglévő nyomtató konfigurációval, azonban ez "
+"eredménytelen nyomtatáshoz vezethet."
 
 #: /home/ruben/Projects/Cura/plugins/UM3NetworkPrinting/resources/qml/MonitorConfigOverrideDialog.qml:156
 msgctxt "@label"
@@ -2365,7 +2308,7 @@ msgstr "Csatlakoztasd a nyomtatót a hálózathoz."
 #: /home/ruben/Projects/Cura/plugins/MonitorStage/MonitorMain.qml:156
 msgctxt "@label link to technical assistance"
 msgid "View user manuals online"
-msgstr "Nézd meg az online felhasználói kézikönyvet."
+msgstr "Nézd meg az online felhasználói kézikönyvet"
 
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/ruben/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
@@ -2482,16 +2425,16 @@ msgstr "További információ a névtelen adatgyűjtésről"
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:74
 msgctxt "@text:window"
 msgid ""
-"Ultimaker Cura collects anonymous data in order to improve the print quality "
-"and user experience. Below is an example of all the data that is shared:"
-msgstr "Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség és "
-"a felhasználói élmény javítása érdekében. Az alábbiakban található egy példa "
-"az összes megosztott adatra: "
+"Ultimaker Cura collects anonymous data in order to improve the print quality and user experience. Below "
+"is an example of all the data that is shared:"
+msgstr ""
+"Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javítása "
+"érdekében. Az alábbiakban található egy példa az összes megosztott adatra:"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:109
 msgctxt "@text:window"
 msgid "I don't want to send anonymous data"
-msgstr "Nem szeretnék részt venni az adatgyűjtésben."
+msgstr "Nem szeretnék részt venni az adatgyűjtésben"
 
 #: /home/ruben/Projects/Cura/plugins/SliceInfoPlugin/MoreInfoWindow.qml:118
 msgctxt "@text:window"
@@ -2536,7 +2479,7 @@ msgstr "Szélesség (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:103
 msgctxt "@info:tooltip"
 msgid "The depth in millimeters on the build plate"
-msgstr "A mélység mm-ben a tárgyasztalon."
+msgstr "A mélység mm-ben a tárgyasztalon"
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:108
 msgctxt "@action:label"
@@ -2546,16 +2489,14 @@ msgstr "Mélység (mm)"
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:126
 msgctxt "@info:tooltip"
 msgid ""
-"For lithophanes dark pixels should correspond to thicker locations in order "
-"to block more light coming through. For height maps lighter pixels signify "
-"higher terrain, so lighter pixels should correspond to thicker locations in "
-"the generated 3D model."
-msgstr "A litofánok esetében a sötét képpontoknak a vastagabb helyek felelnek meg."
-"Ez azért van így, mert minél vastagabb a hely, annál kevesebb fényt enged át."
-"A magassági térképeknél a világosabb képpontok magasabb szintnek felelnek meg, "
-"tehát a generált 3D modellnél ezeket figyelembe kell venni."
-"Ez azt is jelenti, hogy általában a generált modell a tényleges kép negatívja kell, "
-"hogy legyen."
+"For lithophanes dark pixels should correspond to thicker locations in order to block more light coming "
+"through. For height maps lighter pixels signify higher terrain, so lighter pixels should correspond to "
+"thicker locations in the generated 3D model."
+msgstr ""
+"A litofánok esetében a sötét képpontoknak a vastagabb helyek felelnek meg.Ez azért van így, mert minél "
+"vastagabb a hely, annál kevesebb fényt enged át.A magassági térképeknél a világosabb képpontok magasabb "
+"szintnek felelnek meg, tehát a generált 3D modellnél ezeket figyelembe kell venni.Ez azt is jelenti, "
+"hogy általában a generált modell a tényleges kép negatívja kell, hogy legyen."
 
 #: /home/ruben/Projects/Cura/plugins/ImageReader/ConfigUI.qml:139
 msgctxt "@item:inlistbox"
@@ -2595,17 +2536,17 @@ msgstr "Támaszként nyomtassa"
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:83
 msgctxt "@label"
 msgid "Don't support overlap with other models"
-msgstr "Nem támogatott az egyéb modellekkel való átfedés."
+msgstr "Nem támogatott az egyéb modellekkel való átfedés"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:91
 msgctxt "@label"
 msgid "Modify settings for overlap with other models"
-msgstr "Módosítsa az egyéb modellekkel való átfedés beállítását."
+msgstr "Módosítsa az egyéb modellekkel való átfedés beállítását"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:99
 msgctxt "@label"
 msgid "Modify settings for infill of other models"
-msgstr "Módosítsa a többi modell kitöltés beállításait."
+msgstr "Módosítsa a többi modell kitöltés beállításait"
 
 #: /home/ruben/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:346
 msgctxt "@action:button"
@@ -2747,7 +2688,7 @@ msgstr "Mód"
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:352
 msgctxt "@action:label"
 msgid "Visible settings:"
-msgstr "Látható beállítások: "
+msgstr "Látható beállítások:"
 
 #: /home/ruben/Projects/Cura/plugins/3MFReader/WorkspaceDialog.qml:357
 msgctxt "@action:label"
@@ -2771,19 +2712,17 @@ msgstr "Biztonsági mentéseim"
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:38
 msgctxt "@empty_state"
-msgid ""
-"You don't have any backups currently. Use the 'Backup Now' button to create "
-"one."
-msgstr "Nincs egyetlen biztonsági mentésed sem. Használd a 'Biztonsági mentés' "
-"gombot, hogy létrehozz egyet."
+msgid "You don't have any backups currently. Use the 'Backup Now' button to create one."
+msgstr ""
+"Nincs egyetlen biztonsági mentésed sem. Használd a 'Biztonsági mentés' gombot, hogy létrehozz egyet."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/pages/BackupsPage.qml:60
 msgctxt "@backup_limit_info"
 msgid ""
-"During the preview phase, you'll be limited to 5 visible backups. Remove a "
-"backup to see older ones."
-msgstr "Az előnézeti szakaszban a látható biztonsági mentések száma 5 lehet."
-"Ha szeretné látni a régebbieket, távolítson el egyet a láthatóak közül."
+"During the preview phase, you'll be limited to 5 visible backups. Remove a backup to see older ones."
+msgstr ""
+"Az előnézeti szakaszban a látható biztonsági mentések száma 5 lehet.Ha szeretné látni a régebbieket, "
+"távolítson el egyet a láthatóak közül."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/pages/WelcomePage.qml:34
 msgctxt "@description"
@@ -2840,7 +2779,7 @@ msgstr "Biztonsági mentés törlés"
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:100
 msgctxt "@dialog:info"
 msgid "Are you sure you want to delete this backup? This cannot be undone."
-msgstr "Biztosan szeretnéd törölni a biztonsági mentést? Ez nem vonható vissza. "
+msgstr "Biztosan szeretnéd törölni a biztonsági mentést? Ez nem vonható vissza."
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:108
 msgctxt "@dialog:title"
@@ -2849,11 +2788,8 @@ msgstr "Helyreállítás biztonsági mentésből"
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListItem.qml:109
 msgctxt "@dialog:info"
-msgid ""
-"You will need to restart Cura before your backup is restored. Do you want to "
-"close Cura now?"
-msgstr "A biztonsági mentés helyreállítás előtt a Cura -t újra kell indítani."
-"Bezárjuk most a Cura-t?"
+msgid "You will need to restart Cura before your backup is restored. Do you want to close Cura now?"
+msgstr "A biztonsági mentés helyreállítás előtt a Cura -t újra kell indítani.Bezárjuk most a Cura-t?"
 
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListFooter.qml:22
 msgctxt "@button"
@@ -2873,8 +2809,7 @@ msgstr "Automatikus biztonsági mentés"
 #: /home/ruben/Projects/Cura/plugins/CuraDrive/src/qml/components/BackupListFooter.qml:44
 msgctxt "@checkbox:description"
 msgid "Automatically create a backup each day that Cura is started."
-msgstr "Automatikusan létrehoz egy biztonsági mentést minden egyes nap, "
-"mikor a Cura indítva van."
+msgstr "Automatikusan létrehoz egy biztonsági mentést minden egyes nap, mikor a Cura indítva van."
 
 #: /home/ruben/Projects/Cura/plugins/CuraPrintProfileCreator/components/ProfileCreatorMainSettingsSelector.qml:75
 msgctxt "@label"
@@ -2932,24 +2867,20 @@ msgstr "Tálca szintezés"
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:44
 msgctxt "@label"
 msgid ""
-"To make sure your prints will come out great, you can now adjust your "
-"buildplate. When you click 'Move to Next Position' the nozzle will move to "
-"the different positions that can be adjusted."
+"To make sure your prints will come out great, you can now adjust your buildplate. When you click 'Move "
+"to Next Position' the nozzle will move to the different positions that can be adjusted."
 msgstr ""
-"Azért, hogy nyomtattandó testek megfelelően letapadjanak,  "
-"lehetőség van beállítani a nyomtatótálcát. Ha rákattint a "
-"'Mozgás a következő pozícióba' gombra, a fej átmozgatható "
-"a különböző beállítási helyzetekbe."
+"Azért, hogy nyomtattandó testek megfelelően letapadjanak,  lehetőség van beállítani a nyomtatótálcát. Ha "
+"rákattint a 'Mozgás a következő pozícióba' gombra, a fej átmozgatható a különböző beállítási helyzetekbe."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:57
 msgctxt "@label"
 msgid ""
-"For every position; insert a piece of paper under the nozzle and adjust the "
-"print build plate height. The print build plate height is right when the "
-"paper is slightly gripped by the tip of the nozzle."
+"For every position; insert a piece of paper under the nozzle and adjust the print build plate height. "
+"The print build plate height is right when the paper is slightly gripped by the tip of the nozzle."
 msgstr ""
-"Minden helyzetben helyezzen be egy darab papírt (A4) a fúvóka alá, és állítsa be a fej magasságát."
-"A nyomtató tálca magassága akkor megfelelő, ha a papírt kissé megfogja a fúvóka vége."
+"Minden helyzetben helyezzen be egy darab papírt (A4) a fúvóka alá, és állítsa be a fej magasságát.A "
+"nyomtató tálca magassága akkor megfelelő, ha a papírt kissé megfogja a fúvóka vége."
 
 #: /home/ruben/Projects/Cura/plugins/UltimakerMachineActions/BedLevelMachineAction.qml:75
 msgctxt "@action:button"
@@ -2984,7 +2915,7 @@ msgstr "A nyomtató nem fogadja a parancsokat"
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:133
 msgctxt "@label:MonitorStatus"
 msgid "In maintenance. Please check the printer"
-msgstr "Karbantartás alatt. Ellenőrizze a nyomtatót!"
+msgstr "Karbantartás alatt. Ellenőrizze a nyomtatót"
 
 #: /home/ruben/Projects/Cura/resources/qml/MonitorButton.qml:144
 msgctxt "@label:MonitorStatus"
@@ -3034,11 +2965,11 @@ msgstr "Új átmérő megerősítése"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:101
 msgctxt "@label (%1 is a number)"
 msgid ""
-"The new filament diameter is set to %1 mm, which is not compatible with the "
-"current extruder. Do you wish to continue?"
+"The new filament diameter is set to %1 mm, which is not compatible with the current extruder. Do you "
+"wish to continue?"
 msgstr ""
-"Az új nyomtatószál átmérő %1 mm -re lett beállítva. Ez nem kompatibilis a "
-"jelenlegi extruderrel. Biztos, hogy így folytatod?"
+"Az új nyomtatószál átmérő %1 mm -re lett beállítva. Ez nem kompatibilis a jelenlegi extruderrel. Biztos, "
+"hogy így folytatod?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsView.qml:125
 msgctxt "@label"
@@ -3169,8 +3100,7 @@ msgstr "Alapanyag importálás"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:313
 msgctxt "@info:status Don't translate the XML tags <filename> or <message>!"
-msgid ""
-"Could not import material <filename>%1</filename>: <message>%2</message>"
+msgid "Could not import material <filename>%1</filename>: <message>%2</message>"
 msgstr "Nem sikerült importálni az alapanyagot <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:317
@@ -3186,8 +3116,7 @@ msgstr "Alapanyag export"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:347
 msgctxt "@info:status Don't translate the XML tags <filename> and <message>!"
-msgid ""
-"Failed to export material to <filename>%1</filename>: <message>%2</message>"
+msgid "Failed to export material to <filename>%1</filename>: <message>%2</message>"
 msgstr "Sikertelen alapanyag export <filename>%1</filename>: <message>%2</message>"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/Materials/MaterialsPage.qml:353
@@ -3258,8 +3187,7 @@ msgstr "Téma:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:277
 msgctxt "@label"
-msgid ""
-"You will need to restart the application for these changes to have effect."
+msgid "You will need to restart the application for these changes to have effect."
 msgstr "A módosítások érvénybe lépéséhez újra kell indítania az alkalmazást."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:294
@@ -3280,23 +3208,20 @@ msgstr "A nézetablak viselkedése"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:324
 msgctxt "@info:tooltip"
 msgid ""
-"Highlight unsupported areas of the model in red. Without support these areas "
-"will not print properly."
-msgstr "Jelölje meg pirossal azokat a területeket, amiket szükséges alátámasztani."
-"Ha ezeket a részeket nem támasztjuk alá, a nyomtatás nem lesz hibátlan."
+"Highlight unsupported areas of the model in red. Without support these areas will not print properly."
+msgstr ""
+"Jelölje meg pirossal azokat a területeket, amiket szükséges alátámasztani.Ha ezeket a részeket nem "
+"támasztjuk alá, a nyomtatás nem lesz hibátlan."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:333
 msgctxt "@option:check"
 msgid "Display overhang"
-msgstr "Túlnyúlás kijelzése "
+msgstr "Túlnyúlás kijelzése"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:341
 msgctxt "@info:tooltip"
-msgid ""
-"Moves the camera so the model is in the center of the view when a model is "
-"selected"
-msgstr "A kamerát úgy mozgatja, hogy a modell kiválasztásakor, az a nézet "
-"középpontjában legyen."
+msgid "Moves the camera so the model is in the center of the view when a model is selected"
+msgstr "A kamerát úgy mozgatja, hogy a modell kiválasztásakor, az a nézet középpontjában legyen"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:346
 msgctxt "@action:button"
@@ -3320,8 +3245,7 @@ msgstr "A nagyítás az egér mozgatásának irányában mozogjon?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:371
 msgctxt "@info:tooltip"
-msgid ""
-"Zooming towards the mouse is not supported in the orthographic perspective."
+msgid "Zooming towards the mouse is not supported in the orthographic perspective."
 msgstr "Az egér felé történő nagyítás ortográfiai szempontból nem támogatott."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:376
@@ -3331,8 +3255,7 @@ msgstr "Nagyítás az egér mozgás irányában"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:402
 msgctxt "@info:tooltip"
-msgid ""
-"Should models on the platform be moved so that they no longer intersect?"
+msgid "Should models on the platform be moved so that they no longer intersect?"
 msgstr "Az alapsíkon lévő modelleket elmozgassuk úgy, hogy ne keresztezzék egymást?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:407
@@ -3348,7 +3271,7 @@ msgstr "A modelleket mozgatni kell lefelé, hogy érintsék a tárgyasztalt?"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:421
 msgctxt "@option:check"
 msgid "Automatically drop models to the build plate"
-msgstr "Modellek automatikus tárgyasztalra illesztése."
+msgstr "Modellek automatikus tárgyasztalra illesztése"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:433
 msgctxt "@info:tooltip"
@@ -3406,11 +3329,11 @@ msgstr "Nagy modellek átméretezése"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:537
 msgctxt "@info:tooltip"
 msgid ""
-"An model may appear extremely small if its unit is for example in meters "
-"rather than millimeters. Should these models be scaled up?"
+"An model may appear extremely small if its unit is for example in meters rather than millimeters. Should "
+"these models be scaled up?"
 msgstr ""
-"Egy adott modell rendkívül kicsinek tűnhet, ha mértékegysége például méterben van, "
-"nem pedig milliméterben. Ezeket a modelleket átméretezzük?"
+"Egy adott modell rendkívül kicsinek tűnhet, ha mértékegysége például méterben van, nem pedig "
+"milliméterben. Ezeket a modelleket átméretezzük?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:542
 msgctxt "@option:check"
@@ -3429,9 +3352,7 @@ msgstr "Modell kiválasztása betöltés után"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:567
 msgctxt "@info:tooltip"
-msgid ""
-"Should a prefix based on the printer name be added to the print job name "
-"automatically?"
+msgid "Should a prefix based on the printer name be added to the print job name automatically?"
 msgstr "A nyomtató nevét, mint előtagot, hozzáadjuk a nyomtatási feladat nevéhez?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:572
@@ -3457,7 +3378,7 @@ msgstr "Alapértelmezett viselkedés a projektfájl megnyitásakor"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:604
 msgctxt "@window:text"
 msgid "Default behavior when opening a project file: "
-msgstr "Alapértelmezett viselkedés a projektfájl megnyitásakor:"
+msgstr "Alapértelmezett viselkedés a projektfájl megnyitásakor: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:618
 msgctxt "@option:openProject"
@@ -3477,13 +3398,13 @@ msgstr "Importálja a modelleket"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:656
 msgctxt "@info:tooltip"
 msgid ""
-"When you have made changes to a profile and switched to a different one, a "
-"dialog will be shown asking whether you want to keep your modifications or "
-"not, or you can choose a default behaviour and never show that dialog again."
+"When you have made changes to a profile and switched to a different one, a dialog will be shown asking "
+"whether you want to keep your modifications or not, or you can choose a default behaviour and never show "
+"that dialog again."
 msgstr ""
-"Ha módosított egy profilt, és váltott egy másikra, akkor megjelenik egy párbeszédpanel, "
-"amelyben megkérdezi, hogy meg kívánja-e tartani a módosításokat, vagy nem. "
-"Vagy választhat egy alapértelmezett viselkedést, és soha többé nem jeleníti meg ezt a párbeszédablakot."
+"Ha módosított egy profilt, és váltott egy másikra, akkor megjelenik egy párbeszédpanel, amelyben "
+"megkérdezi, hogy meg kívánja-e tartani a módosításokat, vagy nem. Vagy választhat egy alapértelmezett "
+"viselkedést, és soha többé nem jeleníti meg ezt a párbeszédablakot."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:665
 msgctxt "@label"
@@ -3492,11 +3413,8 @@ msgstr "Profilok"
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:670
 msgctxt "@window:text"
-msgid ""
-"Default behavior for changed setting values when switching to a different "
-"profile: "
-msgstr "Alapértelmezett viselkedés a megváltozott beállítási értékeknél, "
-"ha másik profilra vált:"
+msgid "Default behavior for changed setting values when switching to a different profile: "
+msgstr "Alapértelmezett viselkedés a megváltozott beállítási értékeknél, ha másik profilra vált: "
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:684
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:157
@@ -3532,11 +3450,11 @@ msgstr "Keressen frissítéseket az induláskor"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:742
 msgctxt "@info:tooltip"
 msgid ""
-"Should anonymous data about your print be sent to Ultimaker? Note, no "
-"models, IP addresses or other personally identifiable information is sent or "
-"stored."
-msgstr "Elküldjük a nyomtatott adatokat név nélkül az Ultimaker-nek?"
-"Semmilyen személyes infromáció, IP cím vagy azonosító nem kerül elküldésre."
+"Should anonymous data about your print be sent to Ultimaker? Note, no models, IP addresses or other "
+"personally identifiable information is sent or stored."
+msgstr ""
+"Elküldjük a nyomtatott adatokat név nélkül az Ultimaker-nek?Semmilyen személyes infromáció, IP cím vagy "
+"azonosító nem kerül elküldésre."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/GeneralPage.qml:747
 msgctxt "@option:check"
@@ -3651,10 +3569,11 @@ msgstr "A jelenlegi változások elvetése"
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:524
 msgctxt "@action:label"
 msgid ""
-"This profile uses the defaults specified by the printer, so it has no "
-"settings/overrides in the list below."
-msgstr "Ez a profil a nyomtató által megadott alapértelmezéseket használja, "
-"tehát az alábbi listában nincs egyetlen beállítás módosítás sem."
+"This profile uses the defaults specified by the printer, so it has no settings/overrides in the list "
+"below."
+msgstr ""
+"Ez a profil a nyomtató által megadott alapértelmezéseket használja, tehát az alábbi listában nincs "
+"egyetlen beállítás módosítás sem."
 
 #: /home/ruben/Projects/Cura/resources/qml/Preferences/ProfilesPage.qml:531
 msgctxt "@action:label"
@@ -3717,10 +3636,9 @@ msgstr "Új projekt"
 #: /home/ruben/Projects/Cura/resources/qml/MainWindow/ApplicationMenu.qml:125
 msgctxt "@info:question"
 msgid ""
-"Are you sure you want to start a new project? This will clear the build "
-"plate and any unsaved settings."
-msgstr "Biztos benne, hogy új projektet akar kezdeni? "
-"Ez törli az alapsíkot és az összes nem mentett beállítást."
+"Are you sure you want to start a new project? This will clear the build plate and any unsaved settings."
+msgstr ""
+"Biztos benne, hogy új projektet akar kezdeni? Ez törli az alapsíkot és az összes nem mentett beállítást."
 
 #: /home/ruben/Projects/Cura/resources/qml/JobSpecs.qml:88
 msgctxt "@text Print job name"
@@ -3766,21 +3684,20 @@ msgstr "Beállítások láthatóságának beállítása..."
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingCategory.qml:237
 msgctxt "@label"
 msgid ""
-"Some hidden settings use values different from their normal calculated "
-"value.\n"
+"Some hidden settings use values different from their normal calculated value.\n"
 "\n"
 "Click to make these settings visible."
-msgstr "Egyes beállítások eltérő értéken vannak a normál, kalkulált értékektől.\n"
+msgstr ""
+"Egyes beállítások eltérő értéken vannak a normál, kalkulált értékektől.\n"
 "\n"
 "Kattints, hogy ezek a beállítások láthatók legyenek."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:81
 msgctxt "@label"
-msgid ""
-"This setting is not used because all the settings that it influences are "
-"overridden."
-msgstr "Ezt a beállítást nem használjuk, mert minden ezen beállítással "
-"befolyásolt egyéb beállítás értéke felül van bírálva."
+msgid "This setting is not used because all the settings that it influences are overridden."
+msgstr ""
+"Ezt a beállítást nem használjuk, mert minden ezen beállítással befolyásolt egyéb beállítás értéke felül "
+"van bírálva."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:86
 msgctxt "@label Header for list of settings."
@@ -3795,15 +3712,16 @@ msgstr "Befolyásolja"
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:186
 msgctxt "@label"
 msgid ""
-"This setting is always shared between all extruders. Changing it here will "
-"change the value for all extruders."
-msgstr "Ezt a beállítást megoszta az összes extruder között. Az itt "
-"megváltoztatott értékek az összes extrudernél meg fognak változni."
+"This setting is always shared between all extruders. Changing it here will change the value for all "
+"extruders."
+msgstr ""
+"Ezt a beállítást megoszta az összes extruder között. Az itt megváltoztatott értékek az összes "
+"extrudernél meg fognak változni."
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:190
 msgctxt "@label"
 msgid "The value is resolved from per-extruder values "
-msgstr "Az értékek meghatározása az extruderek értékei alapján történik."
+msgstr "Az értékek meghatározása az extruderek értékei alapján történik "
 
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:228
 msgctxt "@label"
@@ -3819,13 +3737,11 @@ msgstr ""
 #: /home/ruben/Projects/Cura/resources/qml/Settings/SettingItem.qml:322
 msgctxt "@label"
 msgid ""
-"This setting is normally calculated, but it currently has an absolute value "
-"set.\n"
+"This setting is normally calculated, but it currently has an absolute value set.\n"
 "\n"
 "Click to restore the calculated value."
 msgstr ""
-"Ez az érték általában kalulálva van, de jelenleg abszolút értékre van beállítva "
-"\n"
+"Ez az érték általában kalulálva van, de jelenleg abszolút értékre van beállítva \n"
 "\n"
 "Kattintson, hogy visszaállítsuk a kalkulált értéket."
 
@@ -3846,10 +3762,9 @@ msgstr "Fokozatos kitöltés"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedInfillDensitySelector.qml:232
 msgctxt "@label"
-msgid ""
-"Gradual infill will gradually increase the amount of infill towards the top."
-msgstr "A fokozatos kitöltés folyamatosan növeli a kitöltés mennyiségét, "
-"ahogy közeledik a tárgy teteje felé."
+msgid "Gradual infill will gradually increase the amount of infill towards the top."
+msgstr ""
+"A fokozatos kitöltés folyamatosan növeli a kitöltés mennyiségét, ahogy közeledik a tárgy teteje felé."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:30
 msgctxt "@label"
@@ -3859,11 +3774,11 @@ msgstr "Támasz"
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedSupportSelector.qml:71
 msgctxt "@label"
 msgid ""
-"Generate structures to support parts of the model which have overhangs. "
-"Without these structures, such parts would collapse during printing."
-msgstr "A támasz létrehozása segíti a modell kinyúló részeinek hibátlan "
-"nyomatását. Támasz nélkül, ezek a részek összeomlanak, és nem lehetséges "
-"a hibátlan nyomtatás."
+"Generate structures to support parts of the model which have overhangs. Without these structures, such "
+"parts would collapse during printing."
+msgstr ""
+"A támasz létrehozása segíti a modell kinyúló részeinek hibátlan nyomatását. Támasz nélkül, ezek a részek "
+"összeomlanak, és nem lehetséges a hibátlan nyomtatás."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:29
 msgctxt "@label"
@@ -3873,11 +3788,11 @@ msgstr "Letapadás"
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedAdhesionSelector.qml:74
 msgctxt "@label"
 msgid ""
-"Enable printing a brim or raft. This will add a flat area around or under "
-"your object which is easy to cut off afterwards."
-msgstr "Engedélyezze a peremet, vagy az aláúsztatást. Ez létre fog hozni a "
-"test szélén illetve az alján egy olyan részt, ami segíti a letapadást, "
-"viszont nyomtatás után ezek könnyen eltávolíthatóak a testről."
+"Enable printing a brim or raft. This will add a flat area around or under your object which is easy to "
+"cut off afterwards."
+msgstr ""
+"Engedélyezze a peremet, vagy az aláúsztatást. Ez létre fog hozni a test szélén illetve az alján egy "
+"olyan részt, ami segíti a letapadást, viszont nyomtatás után ezek könnyen eltávolíthatóak a testről."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:175
 msgctxt "@label"
@@ -3886,27 +3801,28 @@ msgstr "Réteg magasság"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:206
 msgctxt "@tooltip"
-msgid ""
-"You have modified some profile settings. If you want to change these go to "
-"custom mode."
-msgstr "Megváltoztattál néhány profilbeállítást. Ha ezeket szeretnéd folyamatosan "
-"megtartani, akkor válaszd az 'Egyéni mód' -ot"
+msgid "You have modified some profile settings. If you want to change these go to custom mode."
+msgstr ""
+"Megváltoztattál néhány profilbeállítást. Ha ezeket szeretnéd folyamatosan megtartani, akkor válaszd az "
+"'Egyéni mód' -ot."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:355
 msgctxt "@tooltip"
 msgid ""
-"This quality profile is not available for your current material and nozzle "
-"configuration. Please change these to enable this quality profile."
-msgstr "Ez a minőségi profil nem áll rendelkezésre a jelenlegi anyag- és "
-"fúvóka-konfigurációhoz. Kérjük, módosítsa ezeket a minőségprofil engedélyezéséhez."
+"This quality profile is not available for your current material and nozzle configuration. Please change "
+"these to enable this quality profile."
+msgstr ""
+"Ez a minőségi profil nem áll rendelkezésre a jelenlegi anyag- és fúvóka-konfigurációhoz. Kérjük, "
+"módosítsa ezeket a minőségprofil engedélyezéséhez."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Recommended/RecommendedQualityProfileSelector.qml:449
 msgctxt "@tooltip"
 msgid ""
-"A custom profile is currently active. To enable the quality slider, choose a "
-"default quality profile in Custom tab"
-msgstr "Az egyéni profil jelenleg aktív. A minőségi csúszka engedélyezéséhez "
-"válassza az alapértelmezett minőségi profilt az Egyéni lapon."
+"A custom profile is currently active. To enable the quality slider, choose a default quality profile in "
+"Custom tab"
+msgstr ""
+"Az egyéni profil jelenleg aktív. A minőségi csúszka engedélyezéséhez válassza az alapértelmezett "
+"minőségi profilt az Egyéni lapon"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/PrintSetupSelectorHeader.qml:13
 msgctxt "@label:Should be short"
@@ -3926,12 +3842,11 @@ msgstr "Profil"
 #: /home/ruben/Projects/Cura/resources/qml/PrintSetupSelector/Custom/GlobalProfileSelector.qml:94
 msgctxt "@tooltip"
 msgid ""
-"Some setting/override values are different from the values stored in the "
-"profile.\n"
+"Some setting/override values are different from the values stored in the profile.\n"
 "\n"
 "Click to open the profile manager."
-msgstr "Néhány beállított vagy felülbírált érték eltérő, a profilban tárolt "
-"értéktől. \n"
+msgstr ""
+"Néhány beállított vagy felülbírált érték eltérő, a profilban tárolt értéktől. \n"
 "\n"
 "Kattints, hogy megnyisd a profil menedzsert."
 
@@ -3972,11 +3887,10 @@ msgstr "G-kód küldés"
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ManualPrinterControl.qml:365
 msgctxt "@tooltip of G-code command input"
-msgid ""
-"Send a custom G-code command to the connected printer. Press 'enter' to send "
-"the command."
-msgstr "Küldjön egy egyéni G-kód parancsot a csatlakoztatott nyomtatóra. "
-"A parancs elküldéséhez nyomja meg az 'enter' gombot."
+msgid "Send a custom G-code command to the connected printer. Press 'enter' to send the command."
+msgstr ""
+"Küldjön egy egyéni G-kód parancsot a csatlakoztatott nyomtatóra. A parancs elküldéséhez nyomja meg az "
+"'enter' gombot."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:41
 msgctxt "@label"
@@ -3986,11 +3900,11 @@ msgstr "Extruder"
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:71
 msgctxt "@tooltip"
 msgid ""
-"The target temperature of the hotend. The hotend will heat up or cool down "
-"towards this temperature. If this is 0, the hotend heating is turned off."
-msgstr "A nyomtatófej célhőmérséklete. A fűtőblokk hőmérséklete a beállított "
-"értékre fog melegedni, vagy éppen hűlni. Ha ez az érték 0, akkor a fejfűtés "
-"ki fog kapcsolni."
+"The target temperature of the hotend. The hotend will heat up or cool down towards this temperature. If "
+"this is 0, the hotend heating is turned off."
+msgstr ""
+"A nyomtatófej célhőmérséklete. A fűtőblokk hőmérséklete a beállított értékre fog melegedni, vagy éppen "
+"hűlni. Ha ez az érték 0, akkor a fejfűtés ki fog kapcsolni."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:103
 msgctxt "@tooltip"
@@ -4017,14 +3931,12 @@ msgstr "Előfűtés"
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:370
 msgctxt "@tooltip of pre-heat"
 msgid ""
-"Heat the hotend in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the hotend to heat "
-"up when you're ready to print."
-msgstr "A nyomtatófejet a nyomtatás előtt előre felmelegíti. Ez alatt az idő alatt "
-"tudod folytatni a nyomtatás beállítását, esetleg a szeletelést, s mire "
-"ezekkel a műveletekkel elkészülsz, a nyomtató már készen fog állni a nyomtatásra."
-"Így nem kell majd várnod a gép felmelegedésére."
-
+"Heat the hotend in advance before printing. You can continue adjusting your print while it is heating, "
+"and you won't have to wait for the hotend to heat up when you're ready to print."
+msgstr ""
+"A nyomtatófejet a nyomtatás előtt előre felmelegíti. Ez alatt az idő alatt tudod folytatni a nyomtatás "
+"beállítását, esetleg a szeletelést, s mire ezekkel a műveletekkel elkészülsz, a nyomtató már készen fog "
+"állni a nyomtatásra.Így nem kell majd várnod a gép felmelegedésére."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/ExtruderBox.qml:406
 msgctxt "@tooltip"
@@ -4054,11 +3966,11 @@ msgstr "Tárgyasztal"
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:56
 msgctxt "@tooltip"
 msgid ""
-"The target temperature of the heated bed. The bed will heat up or cool down "
-"towards this temperature. If this is 0, the bed heating is turned off."
-msgstr "A fűthető ágy beállítható célhőmérséklete. Ha beállítjuk ezt az értéket "
-"a tálca elkezd erre a hőmérsékletre melegedni, vagy éppen lehűlni. Ha az érték 0 "
-"a tálcafűtés kikapcsol."
+"The target temperature of the heated bed. The bed will heat up or cool down towards this temperature. If "
+"this is 0, the bed heating is turned off."
+msgstr ""
+"A fűthető ágy beállítható célhőmérséklete. Ha beállítjuk ezt az értéket a tálca elkezd erre a "
+"hőmérsékletre melegedni, vagy éppen lehűlni. Ha az érték 0 a tálcafűtés kikapcsol."
 
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:88
 msgctxt "@tooltip"
@@ -4073,14 +3985,12 @@ msgstr "A tálca előmelegítési hőmérséklete."
 #: /home/ruben/Projects/Cura/resources/qml/PrinterOutput/HeatedBedBox.qml:361
 msgctxt "@tooltip of pre-heat"
 msgid ""
-"Heat the bed in advance before printing. You can continue adjusting your "
-"print while it is heating, and you won't have to wait for the bed to heat up "
-"when you're ready to print."
+"Heat the bed in advance before printing. You can continue adjusting your print while it is heating, and "
+"you won't have to wait for the bed to heat up when you're ready to print."
 msgstr ""
-"A fűthető tálcát, a nyomtatás előtt előre felmelegíti. Ez alatt az idő alatt "
-"tudod folytatni a nyomtatás beállítását, esetleg a szeletelést, s mire "
-"ezekkel a műveletekkel elkészülsz, a nyomtató már készen fog állni a nyomtatásra."
-"Így nem kell majd várnod a gép felmelegedésére."
+"A fűthető tálcát, a nyomtatás előtt előre felmelegíti. Ez alatt az idő alatt tudod folytatni a nyomtatás "
+"beállítását, esetleg a szeletelést, s mire ezekkel a műveletekkel elkészülsz, a nyomtató már készen fog "
+"állni a nyomtatásra.Így nem kell majd várnod a gép felmelegedésére."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/MaterialMenu.qml:13
 msgctxt "@label:category menu label"
@@ -4233,8 +4143,7 @@ msgstr "Az elérhető konfigurációk betöltése a nyomtatóról..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationListView.qml:58
 msgctxt "@label"
-msgid ""
-"The configurations are not available because the printer is disconnected."
+msgid "The configurations are not available because the printer is disconnected."
 msgstr "A konfiguráció nem elérhető, mert nincs kapcsolat a a nyomtatóval."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/CustomConfiguration.qml:25
@@ -4265,10 +4174,11 @@ msgstr "Használj ragasztót a jobb tapadás érdekében, ennél az alapanyag ko
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:128
 msgctxt "@label"
 msgid ""
-"This configuration is not available because %1 is not recognized. Please "
-"visit %2 to download the correct material profile."
-msgstr "Ez a konfiguráció nem érhető el, mert a(z) %1 nem azonosítható. "
-"Kérjük, látogasson el a %2 webhelyre a megfelelő anyagprofil letöltéséhez."
+"This configuration is not available because %1 is not recognized. Please visit %2 to download the "
+"correct material profile."
+msgstr ""
+"Ez a konfiguráció nem érhető el, mert a(z) %1 nem azonosítható. Kérjük, látogasson el a %2 webhelyre a "
+"megfelelő anyagprofil letöltéséhez."
 
 #: /home/ruben/Projects/Cura/resources/qml/Menus/ConfigurationMenu/ConfigurationItem.qml:129
 msgctxt "@label"
@@ -4524,7 +4434,7 @@ msgstr "&Jelenlegi változtatások eldobása"
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:215
 msgctxt "@action:inmenu menubar:profile"
 msgid "&Create profile from current settings/overrides..."
-msgstr "&Profil létrehozása a jelenlegi beállításokkal/felülírásokkal"
+msgstr "&Profil létrehozása a jelenlegi beállításokkal/felülírásokkal..."
 
 #: /home/ruben/Projects/Cura/resources/qml/Actions.qml:221
 msgctxt "@action:inmenu menubar:profile"
@@ -4707,12 +4617,11 @@ msgstr "Fájl(ok) megnyitása"
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:707
 msgctxt "@text:window"
 msgid ""
-"We have found one or more G-Code files within the files you have selected. "
-"You can only open one G-Code file at a time. If you want to open a G-Code "
-"file, please just select only one."
-msgstr "A kiválasztott fájlok között több G-kód fájl is található."
-"Egyszerre csak egy G-kód fájlt nyithat meg, ezért csak egy ilyen "
-"fájlt válasszon ki."
+"We have found one or more G-Code files within the files you have selected. You can only open one G-Code "
+"file at a time. If you want to open a G-Code file, please just select only one."
+msgstr ""
+"A kiválasztott fájlok között több G-kód fájl is található.Egyszerre csak egy G-kód fájlt nyithat meg, "
+"ezért csak egy ilyen fájlt válasszon ki."
 
 #: /home/ruben/Projects/Cura/resources/qml/Cura.qml:810
 msgctxt "@title:window"
@@ -4741,7 +4650,8 @@ msgctxt "@text:window"
 msgid ""
 "You have customized some profile settings.\n"
 "Would you like to keep or discard those settings?"
-msgstr "Van néhány testreszabott beállításod a profilban. \n"
+msgstr ""
+"Van néhány testreszabott beállításod a profilban. \n"
 "Szeretnéd ezeket megtartani, vagy eldobod őket?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:110
@@ -4762,12 +4672,12 @@ msgstr "Testreszabott"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:158
 msgctxt "@option:discardOrKeep"
 msgid "Discard and never ask again"
-msgstr "Eldobás és ne kérdezze újra."
+msgstr "Eldobás és ne kérdezze újra"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:159
 msgctxt "@option:discardOrKeep"
 msgid "Keep and never ask again"
-msgstr "Megtartás és ne kérdezze újra."
+msgstr "Megtartás és ne kérdezze újra"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/DiscardOrKeepProfileChangesDialog.qml:196
 msgctxt "@action:button"
@@ -4804,8 +4714,9 @@ msgctxt "@info:credit"
 msgid ""
 "Cura is developed by Ultimaker B.V. in cooperation with the community.\n"
 "Cura proudly uses the following open source projects:"
-msgstr "A Cura-t az Ultimaker B.V fejlesztette ki a közösséggel együttműködésben. "
-"A Cura büszkén használja a következő nyílt forráskódú projekteket:"
+msgstr ""
+"A Cura-t az Ultimaker B.V fejlesztette ki a közösséggel együttműködésben. A Cura büszkén használja a "
+"következő nyílt forráskódú projekteket:"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:134
 msgctxt "@label"
@@ -4930,12 +4841,11 @@ msgstr "Linux kereszt-disztribúciós alkalmazás telepítése"
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:64
 msgctxt "@text:window"
 msgid ""
-"We have found one or more project file(s) within the files you have "
-"selected. You can open only one project file at a time. We suggest to only "
-"import models from those files. Would you like to proceed?"
-msgstr "Egy vagy több projekt fájlt találtunk a kiválasztott fájlokban."
-"Egyszerre csak egy projekt fájlt nyithat meg. Javasoljuk, hogy csak a modelleket "
-"importálja ezekből a fájlokból. Szeretné folytatni?"
+"We have found one or more project file(s) within the files you have selected. You can open only one "
+"project file at a time. We suggest to only import models from those files. Would you like to proceed?"
+msgstr ""
+"Egy vagy több projekt fájlt találtunk a kiválasztott fájlokban.Egyszerre csak egy projekt fájlt nyithat "
+"meg. Javasoljuk, hogy csak a modelleket importálja ezekből a fájlokból. Szeretné folytatni?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:99
 msgctxt "@action:button"
@@ -4984,12 +4894,8 @@ msgstr "Projekt fájl megnyitása"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:93
 msgctxt "@text:window"
-msgid ""
-"This is a Cura project file. Would you like to open it as a project or "
-"import the models from it?"
-msgstr ""
-"Ez egy Cura projekt fájl. Szeretné projektként megnyitni, vagy importálni "
-"a modelleket?"
+msgid "This is a Cura project file. Would you like to open it as a project or import the models from it?"
+msgstr "Ez egy Cura projekt fájl. Szeretné projektként megnyitni, vagy importálni a modelleket?"
 
 #: /home/ruben/Projects/Cura/resources/qml/Dialogs/AskOpenAsProjectOrModelsDialog.qml:103
 msgctxt "@text:window"
@@ -5053,11 +4959,8 @@ msgstr "Az ezen a címen található nyomtató még nem válaszolt."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:240
 msgctxt "@label"
-msgid ""
-"This printer cannot be added because it's an unknown printer or it's not the "
-"host of a group."
-msgstr "Ezt a nyomtatót nem lehet hozzáadni, "
-"mert ismeretlen a nyomtató vagy nem egy csoport tagja."
+msgid "This printer cannot be added because it's an unknown printer or it's not the host of a group."
+msgstr "Ezt a nyomtatót nem lehet hozzáadni, mert ismeretlen a nyomtató vagy nem egy csoport tagja."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:329
 msgctxt "@button"
@@ -5097,11 +5000,10 @@ msgstr "Segítsen nekünk az Ultimaker Cura fejlesztésében"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:57
 msgctxt "@text"
-msgid ""
-"Ultimaker Cura collects anonymous data to improve print quality and user "
-"experience, including:"
-msgstr "Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség "
-"és a felhasználói élmény javításának érdekében, ideértve:"
+msgid "Ultimaker Cura collects anonymous data to improve print quality and user experience, including:"
+msgstr ""
+"Az Ultimaker Cura névtelen adatokat gyűjt a nyomtatási minőség és a felhasználói élmény javításának "
+"érdekében, ideértve:"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:71
 msgctxt "@text"
@@ -5125,10 +5027,8 @@ msgstr "Nyomtatási beállítások"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:102
 msgctxt "@text"
-msgid ""
-"Data collected by Ultimaker Cura will not contain any personal information."
-msgstr "Az Ultimaker Cura által gyűjtött adatok nem tartalmaznak személyes "
-"információt."
+msgid "Data collected by Ultimaker Cura will not contain any personal information."
+msgstr "Az Ultimaker Cura által gyűjtött adatok nem tartalmaznak személyes információt."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/DataCollectionsContent.qml:103
 msgctxt "@text"
@@ -5183,14 +5083,12 @@ msgstr "Következő generációs 3D nyomtatási munkafolyamat"
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Send print jobs to Ultimaker printers outside your local network"
-msgstr "- Küldjön nyomtatási feladatokat az Ultimaker nyomtatóknak a helyi "
-"hálózaton kívülről."
+msgstr "- Küldjön nyomtatási feladatokat az Ultimaker nyomtatóknak a helyi hálózaton kívülről"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Store your Ultimaker Cura settings in the cloud for use anywhere"
-msgstr "- Tárolja az Ultimaker Cura beállításait a felhőben "
-"így azok bárhol használhatóak."
+msgstr "- Tárolja az Ultimaker Cura beállításait a felhőben így azok bárhol használhatóak"
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
@@ -5217,7 +5115,8 @@ msgctxt "@text"
 msgid ""
 "Please follow these steps to set up\n"
 "Ultimaker Cura. This will only take a few moments."
-msgstr "Kéjük, kövesd a következő lépéseket\n"
+msgstr ""
+"Kéjük, kövesd a következő lépéseket\n"
 "az Ultimaker Cura beállításához. Pár pillanat az egész."
 
 #: /home/ruben/Projects/Cura/resources/qml/WelcomePages/WelcomeContent.qml:58
@@ -5227,11 +5126,10 @@ msgstr "Kezdj hozzá"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "description"
-msgid ""
-"Provides a way to change machine settings (such as build volume, nozzle "
-"size, etc.)."
-msgstr "A géoi beállítások megváltoztatásának lehetőségét biztosítja."
-"(például a építési méret, fúvóka méret, stb.)"
+msgid "Provides a way to change machine settings (such as build volume, nozzle size, etc.)."
+msgstr ""
+"A géoi beállítások megváltoztatásának lehetőségét biztosítja.(például a építési méret, fúvóka méret, "
+"stb.)"
 
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
@@ -5280,11 +5178,10 @@ msgstr "G-kódot író"
 
 #: ModelChecker/plugin.json
 msgctxt "description"
-msgid ""
-"Checks models and print configuration for possible printing issues and give "
-"suggestions."
-msgstr "Ellenőrzi a modelleket és a nyomtatási konfigurációt a lehetséges "
-"nyomtatási problémákra vonatkozóan, és javaslatokat ad."
+msgid "Checks models and print configuration for possible printing issues and give suggestions."
+msgstr ""
+"Ellenőrzi a modelleket és a nyomtatási konfigurációt a lehetséges nyomtatási problémákra vonatkozóan, és "
+"javaslatokat ad."
 
 #: ModelChecker/plugin.json
 msgctxt "name"
@@ -5324,7 +5221,7 @@ msgstr "Profil simító"
 #: AMFReader/plugin.json
 msgctxt "description"
 msgid "Provides support for reading AMF files."
-msgstr "Támogatást nyújt az AMF fájlok olvasásához"
+msgstr "Támogatást nyújt az AMF fájlok olvasásához."
 
 #: AMFReader/plugin.json
 msgctxt "name"
@@ -5333,10 +5230,8 @@ msgstr "AMF Olvasó"
 
 #: USBPrinting/plugin.json
 msgctxt "description"
-msgid ""
-"Accepts G-Code and sends them to a printer. Plugin can also update firmware."
-msgstr "Elfogadja a G-kódot és elküldi őket egy nyomtatóra. "
-"A plugin a firmware-t is frissítheti."
+msgid "Accepts G-Code and sends them to a printer. Plugin can also update firmware."
+msgstr "Elfogadja a G-kódot és elküldi őket egy nyomtatóra. A plugin a firmware-t is frissítheti."
 
 #: USBPrinting/plugin.json
 msgctxt "name"
@@ -5381,7 +5276,7 @@ msgstr "Támogatás a cserélhető meghajtók üzem közbeni cseréjét és ír�
 #: RemovableDriveOutputDevice/plugin.json
 msgctxt "name"
 msgid "Removable Drive Output Device Plugin"
-msgstr "Cserélhető meghajtók kimeneti beépülője."
+msgstr "Cserélhető meghajtók kimeneti beépülője"
 
 #: UM3NetworkPrinting/plugin.json
 msgctxt "description"
@@ -5416,7 +5311,7 @@ msgstr "Frimrware frissítés ellenőrző"
 #: SimulationView/plugin.json
 msgctxt "description"
 msgid "Provides the Simulation view."
-msgstr "Szimulációs nézetet biztosít"
+msgstr "Szimulációs nézetet biztosít."
 
 #: SimulationView/plugin.json
 msgctxt "name"
@@ -5436,8 +5331,7 @@ msgstr "Tömörített G-kód olvasó"
 #: PostProcessingPlugin/plugin.json
 msgctxt "description"
 msgid "Extension that allows for user created scripts for post processing"
-msgstr "Bővítmény, amely lehetővé teszi a felhasználó által létrehozott "
-"szkriptek utófeldolgozást."
+msgstr "Bővítmény, amely lehetővé teszi a felhasználó által létrehozott szkriptek utófeldolgozást"
 
 #: PostProcessingPlugin/plugin.json
 msgctxt "name"
@@ -5446,8 +5340,7 @@ msgstr "Utólagos feldolgozás"
 
 #: SupportEraser/plugin.json
 msgctxt "description"
-msgid ""
-"Creates an eraser mesh to block the printing of support in certain places"
+msgid "Creates an eraser mesh to block the printing of support in certain places"
 msgstr "Törlő hálót hoz létre, hogy bizonyos helyeken blokkolja a támasz nyomtatását"
 
 #: SupportEraser/plugin.json
@@ -5727,11 +5620,10 @@ msgstr "Cura profil író"
 
 #: CuraPrintProfileCreator/plugin.json
 msgctxt "description"
-msgid ""
-"Allows material manufacturers to create new material and quality profiles "
-"using a drop-in UI."
-msgstr "Lehetővé teszi az anyaggyártók számára, hogy új anyag- és minőségi "
-"profilokat hozzanak létre egy beépülő felhasználói felület használatával."
+msgid "Allows material manufacturers to create new material and quality profiles using a drop-in UI."
+msgstr ""
+"Lehetővé teszi az anyaggyártók számára, hogy új anyag- és minőségi profilokat hozzanak létre egy beépülő "
+"felhasználói felület használatával."
 
 #: CuraPrintProfileCreator/plugin.json
 msgctxt "name"
@@ -5751,7 +5643,7 @@ msgstr "3MF író"
 #: PreviewStage/plugin.json
 msgctxt "description"
 msgid "Provides a preview stage in Cura."
-msgstr "Előnézet biztosítása a Cura -ban"
+msgstr "Előnézet biztosítása a Cura -ban."
 
 #: PreviewStage/plugin.json
 msgctxt "name"
@@ -5761,10 +5653,10 @@ msgstr "Előnézet"
 #: UltimakerMachineActions/plugin.json
 msgctxt "description"
 msgid ""
-"Provides machine actions for Ultimaker machines (such as bed leveling "
-"wizard, selecting upgrades, etc.)."
-msgstr "Gépi funkciók biztosítása az Ultimaker nyomtatók számára."
-"(pl.: ágyszintezés varázsló, frissítések kiválasztása.)"
+"Provides machine actions for Ultimaker machines (such as bed leveling wizard, selecting upgrades, etc.)."
+msgstr ""
+"Gépi funkciók biztosítása az Ultimaker nyomtatók számára.(pl.: ágyszintezés varázsló, frissítések "
+"kiválasztása.)"
 
 #: UltimakerMachineActions/plugin.json
 msgctxt "name"
