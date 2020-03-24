@@ -95,7 +95,7 @@
         "alternate_extra_perimeter": {"value": false },
         "filter_out_tiny_gaps":      {"value": true },
         "fill_outline_gaps":         {"value": true },
-        "z_seam_type":               {"value": "'back'"},
+        "z_seam_type":               {"value": "'shortest'"},
         "z_seam_x":                  {"value": "300"},
         "z_seam_y":                  {"value": "325"},
         "z_seam_corner":             {"value": "'z_seam_corner_inner'"},
@@ -136,7 +136,7 @@
         "speed_wall_x":            {"value": "speed_wall"},
         "speed_layer_0":           {"value": "(speed_print/5*4) if speed_print > 45 else speed_print"},
         "speed_topbottom":         {"value": "speed_layer_0"},
-        "speed_travel":            {"value": "150"},
+        "speed_travel":            {"value": "250"},
         "speed_travel_layer_0":    {"value": "speed_travel"},
         "speed_support_interface": {"value": "speed_topbottom"},
         "speed_z_hop":             {"value": 10},
@@ -157,7 +157,8 @@
         "cool_min_speed":                    {"value": "5"},
         "cool_lift_head":                    {"value": false},
 
-        "support_infill_rate":       {"value": 25},
+        "support_pattern":           {"value": "'grid'"},
+        "support_infill_rate":       {"value": 30},
         "support_z_distance":        {"value": 0},
         "support_xy_distance":       {"value": 0.4},
         "support_join_distance":     {"value": 10},
@@ -167,7 +168,7 @@
         "support_interface_height":  {"value": "layer_height * 3"},
         "support_bottom_height":     {"value": "layer_height"},
 
-        "adhesion_type":             {"value": "'skirt'"},
+        "adhesion_type":             {"value": "'brim'"},
         "skirt_gap":                 {"value": 1},
         "skirt_brim_minimal_length": {"value": 50},
 
@@ -182,7 +183,7 @@
         "meshfix_maximum_deviation":        {"value": 0.01 },
 
         "minimum_polygon_circumference":    {"value": 0.05 },
-        "coasting_enable":                  {"value": true},
+        "coasting_enable":                  {"value": false},
         "coasting_volume":                  {"value": 0.1},
         "coasting_min_volume":              {"value": 0.17},
         "coasting_speed":                   {"value": 90},
