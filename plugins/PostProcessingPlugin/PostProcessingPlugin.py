@@ -342,7 +342,7 @@ class PostProcessingPlugin(QObject, Extension):
             global_container_stack.propertyChanged.emit("post_processing_plugin", "value")
 
     @staticmethod
-    def _isScriptAllowed(file_path) -> bool:
+    def _isScriptAllowed(file_path: str) -> bool:
         """Checks whether the given file is allowed to be loaded"""
         if not ApplicationMetadata.IsEnterpriseVersion:
             # No signature needed
