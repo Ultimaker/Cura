@@ -348,7 +348,9 @@ class PostProcessingPlugin(QObject, Extension):
             # No signature needed
             return True
 
-        if os.path.split(file_path) == os.path.join(Resources.getStoragePath(Resources.Resources), "scripts"):
+        if os.path.split(file_path)[0] == os.path.join(
+                PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"),
+                "scripts"):
             # Bundled scripts are trusted.
             return True
 
