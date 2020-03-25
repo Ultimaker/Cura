@@ -1,5 +1,4 @@
 {
-    "id":                   "deltacomb_dc20flux_extruder_0",
     "version":              2,
     "name":                 "Extruder 3",
     "inherits":             "fdmextruder",
