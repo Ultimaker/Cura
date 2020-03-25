@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
+from typing import List, Dict, Any
 from typing import Optional
 
 from PyQt5.QtCore import QObject
@@ -11,12 +12,12 @@ from UM import i18nCatalog
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication, ApplicationMetadata
-from ..CloudApiModel import CloudApiModel
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
-from ..UltimakerCloudScope import UltimakerCloudScope
+from ..CloudApiModel import CloudApiModel
 
-from typing import List, Dict, Any
 
 class CloudPackageChecker(QObject):
     def __init__(self, application: CuraApplication) -> None:
@@ -24,7 +25,7 @@ class CloudPackageChecker(QObject):
 
         self.discrepancies = Signal()  # Emits SubscribedPackagesModel
         self._application = application  # type: CuraApplication
-        self._scope = UltimakerCloudScope(application)
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(application))
         self._model = SubscribedPackagesModel()
         self._message = None  # type: Optional[Message]
 

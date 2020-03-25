@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -15,7 +15,6 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
-    width: childrenRect.width
     height: childrenRect.height
     visible: CuraApplication.platformActivity
 

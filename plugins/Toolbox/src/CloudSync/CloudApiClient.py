@@ -1,8 +1,9 @@
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
+from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.CuraApplication import CuraApplication
+from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from ..CloudApiModel import CloudApiModel
-from ..UltimakerCloudScope import UltimakerCloudScope
 
 
 class CloudApiClient:
@@ -26,7 +27,7 @@ class CloudApiClient:
         if self.__instance is not None:
             raise RuntimeError("This is a Singleton. use getInstance()")
 
-        self._scope = UltimakerCloudScope(app)  # type: UltimakerCloudScope
+        self._scope = JsonDecoratorScope(UltimakerCloudScope(app))  # type: JsonDecoratorScope
 
         app.getPackageManager().packageInstalled.connect(self._onPackageInstalled)
 

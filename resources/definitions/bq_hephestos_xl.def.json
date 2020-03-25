@@ -48,7 +48,7 @@
             "default_value": 0.2
         },
         "wall_thickness": {
-            "default_value": 1
+            "value": "1"
         },
         "top_bottom_thickness": {
             "default_value": 1
