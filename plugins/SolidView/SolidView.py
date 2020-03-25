@@ -291,12 +291,10 @@ class SolidView(View):
                 "b": (np.uint8, 2, "blue"),
                 "a": (np.uint8, 3, "alpha")  # Never filled since QImage was reformatted to RGB888.
             }), np.recarray)
-            bad_pixel_count = np.sum(np.mod(array.r, 2)) # check number of pixels in the red channel with an odd intersection count
-
-            if bad_pixel_count > 10: # allow for 10 pixels to be erroneously marked as problematic
+            if np.any(np.mod(array.r, 2)):
                 self._next_xray_checking_time = time.time() + self._xray_warning_cooldown
                 self._xray_warning_message.show()
-                Logger.log("i", "Xray overlay found %d non-manifold pixels." % bad_pixel_count)
+                Logger.log("i", "X-Ray overlay found non-manifold pixels.")
 
     def _onDontAskMeAgain(self, checked: bool) -> None:
         CuraApplication.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
