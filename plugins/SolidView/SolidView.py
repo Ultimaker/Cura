@@ -267,10 +267,31 @@ class SolidView(View):
 
             xray_img = self._xray_pass.getOutput()
             xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
-            ptr = xray_img.bits()
-            ptr.setsize(xray_img.byteCount())
-            reds = np.array(ptr).reshape(xray_img.height(), xray_img.width(), 3)[:,:,0]  # Copies the data
-            bad_pixel_count = np.sum(np.mod(reds, 2)) # check number of pixels with an odd intersection count
+
+            # We can't just read the image since the pixels are aligned to internal memory positions.
+            # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3
+            # The byte count is a little higher sometimes. We need to check the data per line, but fast using Numpy.
+            # See https://stackoverflow.com/questions/5810970/get-raw-data-from-qimage for a description of the problem.
+            # We can't use that solution though, since it doesn't perform well in Python.
+            class QImageArrayView:
+                """
+                Class that ducktypes to be a Numpy ndarray.
+                """
+                def __init__(self, qimage):
+                    self.__array_interface__ = {
+                        "shape": (qimage.height(), qimage.width()),
+                        "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
+                        "data": (int(qimage.bits()), False),
+                        "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
+                        "version": 3
+                    }
+            array = np.asarray(QImageArrayView(xray_img)).view(np.dtype({
+                "r": (np.uint8, 0, "red"),
+                "g": (np.uint8, 1, "green"),
+                "b": (np.uint8, 2, "blue"),
+                "a": (np.uint8, 3, "alpha")  # Never filled since QImage was reformatted to RGB888.
+            }), np.recarray)
+            bad_pixel_count = np.sum(np.mod(array.r, 2)) # check number of pixels in the red channel with an odd intersection count
 
             if bad_pixel_count > 10: # allow for 10 pixels to be erroneously marked as problematic
                 self._next_xray_checking_time = time.time() + self._xray_warning_cooldown
