@@ -348,10 +348,11 @@ class PostProcessingPlugin(QObject, Extension):
             # No signature needed
             return True
 
-        dir_path = os.path.split(file_path)[0]
-        if dir_path == os.path.join(
-                PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin"),
-                "scripts"):
+        dir_path = os.path.split(file_path)[0]  # type: str
+        plugin_path = PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")
+        assert plugin_path is not None  # appease mypy
+        bundled_path = os.path.join(plugin_path, "scripts")
+        if dir_path == bundled_path:
             # Bundled scripts are trusted.
             return True
 
