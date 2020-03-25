@@ -36,8 +36,10 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
         # Make sure the timer is created on the main thread
         self._recompute_convex_hull_timer = None  # type: Optional[QTimer]
+        self._timer_scheduled_to_be_created = False
         from cura.CuraApplication import CuraApplication
         if CuraApplication.getInstance() is not None:
+            self._timer_scheduled_to_be_created = True
             CuraApplication.getInstance().callLater(self.createRecomputeConvexHullTimer)
 
         self._raft_thickness = 0.0
@@ -171,7 +173,12 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._recompute_convex_hull_timer is not None:
             self._recompute_convex_hull_timer.start()
         else:
-            self.recomputeConvexHull()
+            from cura.CuraApplication import CuraApplication
+            if not self._timer_scheduled_to_be_created:
+                # The timer is not created and we never scheduled it. Time to create it now!
+                CuraApplication.getInstance().callLater(self.createRecomputeConvexHullTimer)
+            # Now we know for sure that the timer has been scheduled for creation, so we can try this again.
+            CuraApplication.getInstance().callLater(self.recomputeConvexHullDelayed)
 
     def recomputeConvexHull(self) -> None:
         controller = Application.getInstance().getController()

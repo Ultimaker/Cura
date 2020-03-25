@@ -33,10 +33,10 @@ class Layer:
     def elementCount(self):
         return self._element_count
 
-    def setHeight(self, height):
+    def setHeight(self, height: float) -> None:
         self._height = height
 
-    def setThickness(self, thickness):
+    def setThickness(self, thickness: float) -> None:
         self._thickness = thickness
 
     def lineMeshVertexCount(self) -> int:

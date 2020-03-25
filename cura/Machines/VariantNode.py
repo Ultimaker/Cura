@@ -51,7 +51,7 @@ class VariantNode(ContainerNode):
         # Find all the materials for this variant's name.
         else:  # Printer has its own material profiles. Look for material profiles with this printer's definition.
             base_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = "fdmprinter")
-            printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant_name = None)
+            printer_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id)
             variant_specific_materials = container_registry.findInstanceContainersMetadata(type = "material", definition = self.machine.container_id, variant_name = self.variant_name)  # If empty_variant, this won't return anything.
             materials_per_base_file = {material["base_file"]: material for material in base_materials}
             materials_per_base_file.update({material["base_file"]: material for material in printer_specific_materials})  # Printer-specific profiles override global ones.

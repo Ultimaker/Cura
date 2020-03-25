@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
@@ -6,6 +6,7 @@ from io import StringIO
 import zipfile
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
@@ -25,6 +26,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer = application.getMeshFileHandler().getWriter("3MFWriter")
 
         if not mesh_writer:  # We need to have the 3mf mesh writer, otherwise we can't save the entire workspace
+            Logger.error("3MF Writer class is unavailable. Can't write workspace.")
             return False
 
         # Indicate that the 3mf mesh writer should not close the archive just yet (we still need to add stuff to it).
@@ -59,24 +61,42 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         preferences_string = StringIO()
         temp_preferences.writeToFile(preferences_string)
         preferences_file = zipfile.ZipInfo("Cura/preferences.cfg")
-        archive.writestr(preferences_file, preferences_string.getvalue())
+        try:
+            archive.writestr(preferences_file, preferences_string.getvalue())
 
-        # Save Cura version
-        version_file = zipfile.ZipInfo("Cura/version.ini")
-        version_config_parser = configparser.ConfigParser(interpolation = None)
-        version_config_parser.add_section("versions")
-        version_config_parser.set("versions", "cura_version", application.getVersion())
-        version_config_parser.set("versions", "build_type", application.getBuildType())
-        version_config_parser.set("versions", "is_debug_mode", str(application.getIsDebugMode()))
+            # Save Cura version
+            version_file = zipfile.ZipInfo("Cura/version.ini")
+            version_config_parser = configparser.ConfigParser(interpolation = None)
+            version_config_parser.add_section("versions")
+            version_config_parser.set("versions", "cura_version", application.getVersion())
+            version_config_parser.set("versions", "build_type", application.getBuildType())
+            version_config_parser.set("versions", "is_debug_mode", str(application.getIsDebugMode()))
 
-        version_file_string = StringIO()
-        version_config_parser.write(version_file_string)
-        archive.writestr(version_file, version_file_string.getvalue())
+            version_file_string = StringIO()
+            version_config_parser.write(version_file_string)
+            archive.writestr(version_file, version_file_string.getvalue())
 
-        # Close the archive & reset states.
-        archive.close()
+            self._writePluginMetadataToArchive(archive)
+
+            # Close the archive & reset states.
+            archive.close()
+        except PermissionError:
+            Logger.error("No permission to write workspace to this stream.")
+            return False
         mesh_writer.setStoreArchive(False)
         return True
+
+    @staticmethod
+    def _writePluginMetadataToArchive(archive: zipfile.ZipFile) -> None:
+        file_name_template = "%s/plugin_metadata.json"
+
+        for plugin_id, metadata in Application.getInstance().getWorkspaceMetadataStorage().getAllData().items():
+            file_name = file_name_template % plugin_id
+            file_in_archive = zipfile.ZipInfo(file_name)
+            # We have to set the compress type of each file as well (it doesn't keep the type of the entire archive)
+            file_in_archive.compress_type = zipfile.ZIP_DEFLATED
+            import json
+            archive.writestr(file_in_archive, json.dumps(metadata, separators = (", ", ": "), indent = 4, skipkeys = True))
 
     ##  Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
     #   \param container That follows the \type{ContainerInterface} to archive.

@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty, pyqtSignal, Qt
+from typing import Set
 
 import cura.CuraApplication
 from UM.Logger import Logger
@@ -23,7 +24,7 @@ class QualitySettingsModel(ListModel):
 
     GLOBAL_STACK_POSITION = -1
 
-    def __init__(self, parent = None):
+    def __init__(self, parent = None) -> None:
         super().__init__(parent = parent)
 
         self.addRoleName(self.KeyRole, "key")
@@ -38,7 +39,9 @@ class QualitySettingsModel(ListModel):
         self._application = cura.CuraApplication.CuraApplication.getInstance()
         self._application.getMachineManager().activeStackChanged.connect(self._update)
 
-        self._selected_position = self.GLOBAL_STACK_POSITION #Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
+        # Must be either GLOBAL_STACK_POSITION or an extruder position (0, 1, etc.)
+        self._selected_position = self.GLOBAL_STACK_POSITION
+
         self._selected_quality_item = None  # The selected quality in the quality management page
         self._i18n_catalog = None
 
@@ -47,14 +50,14 @@ class QualitySettingsModel(ListModel):
     selectedPositionChanged = pyqtSignal()
     selectedQualityItemChanged = pyqtSignal()
 
-    def setSelectedPosition(self, selected_position):
+    def setSelectedPosition(self, selected_position: int) -> None:
         if selected_position != self._selected_position:
             self._selected_position = selected_position
             self.selectedPositionChanged.emit()
             self._update()
 
     @pyqtProperty(int, fset = setSelectedPosition, notify = selectedPositionChanged)
-    def selectedPosition(self):
+    def selectedPosition(self) -> int:
         return self._selected_position
 
     def setSelectedQualityItem(self, selected_quality_item):
@@ -67,7 +70,7 @@ class QualitySettingsModel(ListModel):
     def selectedQualityItem(self):
         return self._selected_quality_item
 
-    def _update(self):
+    def _update(self) -> None:
         Logger.log("d", "Updating {model_class_name}.".format(model_class_name = self.__class__.__name__))
 
         if not self._selected_quality_item:
@@ -83,7 +86,7 @@ class QualitySettingsModel(ListModel):
         quality_changes_group = self._selected_quality_item["quality_changes_group"]
 
         quality_node = None
-        settings_keys = set()
+        settings_keys = set()  # type: Set[str]
         if quality_group:
             if self._selected_position == self.GLOBAL_STACK_POSITION:
                 quality_node = quality_group.node_for_global

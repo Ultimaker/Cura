@@ -26,7 +26,7 @@ class ContainerNode:
     ##  Gets the metadata of the container that this node represents.
     #   Getting the metadata from the container directly is about 10x as fast.
     #   \return The metadata of the container in this node.
-    def getMetadata(self):
+    def getMetadata(self) -> Dict[str, Any]:
         return ContainerRegistry.getInstance().findContainersMetadata(id = self.container_id)[0]
 
     ##  Get an entry from the metadata of the container that this node contains.

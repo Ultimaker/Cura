@@ -20,6 +20,8 @@ UM.Dialog{
     maximumHeight: minimumHeight
     margin: 0
 
+    property string actionButtonText: subscribedPackagesModel.hasIncompatiblePackages && !subscribedPackagesModel.hasCompatiblePackages ? catalog.i18nc("@button", "Dismiss") : catalog.i18nc("@button", "Next")
+
     Rectangle
     {
         id: root
@@ -48,19 +50,20 @@ UM.Dialog{
                 {
                     font: UM.Theme.getFont("default")
                     text: catalog.i18nc("@label", "The following packages will be added:")
+                    visible: subscribedPackagesModel.hasCompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item
                         {
                             width: parent.width
-                            property var lineHeight: 60
-                            visible: model.is_compatible == "True" ? true : false
+                            property int lineHeight: 60
+                            visible: model.is_compatible
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the compatible packages here
                             Image
                             {
@@ -73,7 +76,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -89,20 +92,21 @@ UM.Dialog{
                 Label
                 {
                     font: UM.Theme.getFont("default")
-                    text: catalog.i18nc("@label", "The following packages can not be installed because of incompatible Cura version:")
+                    text: catalog.i18nc("@label", "The following packages can not be installed because of an incompatible Cura version:")
+                    visible: subscribedPackagesModel.hasIncompatiblePackages
                     color: UM.Theme.getColor("text")
                     height: contentHeight + UM.Theme.getSize("default_margin").height
                 }
                 Repeater
                 {
-                    model: toolbox.subscribedPackagesModel
+                    model: subscribedPackagesModel
                     Component
                     {
                         Item
                         {
                             width: parent.width
-                            property var lineHeight: 60
-                            visible: model.is_compatible == "True" ? false : true
+                            property int lineHeight: 60
+                            visible: !model.is_compatible && !model.is_dismissed
                             height: visible ? (lineHeight + UM.Theme.getSize("default_margin").height) : 0 // We only show the incompatible packages here
                             Image
                             {
@@ -115,7 +119,7 @@ UM.Dialog{
                             }
                             Label
                             {
-                                text: model.name
+                                text: model.display_name
                                 font: UM.Theme.getFont("medium_bold")
                                 anchors.left: packageIcon.right
                                 anchors.leftMargin: UM.Theme.getSize("default_margin").width
@@ -130,13 +134,16 @@ UM.Dialog{
 
         } // End of ScrollView
 
-        Cura.ActionButton
+        Cura.PrimaryButton
         {
             id: nextButton
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: UM.Theme.getSize("default_margin").height
-            text: catalog.i18nc("@button", "Next")
+            text: actionButtonText
+            onClicked: accept()
+            leftPadding: UM.Theme.getSize("dialog_primary_button_padding").width
+            rightPadding: UM.Theme.getSize("dialog_primary_button_padding").width
         }
     }
 }

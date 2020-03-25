@@ -67,16 +67,21 @@ class PackagesModel(ListModel):
 
             links_dict = {}
             if "data" in package:
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package["data"]["links"] if "links" in package["data"] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
+
+                # This code never gets executed because the API response does not contain "supported_configs" in it
+                # It is so because 2y ago when this was created - it did contain it. But it was a prototype only
+                # and never got to production. As agreed with the team, it'll stay here for now, in case we decide to rework and use it
+                # The response payload has been changed. Please see:
+                # https://github.com/Ultimaker/Cura/compare/CURA-7072-temp?expand=1
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
                         has_configs = True
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
-
-                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
-                # to process.
-                link_list = package["data"]["links"] if "links" in package["data"] else []
-                links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""

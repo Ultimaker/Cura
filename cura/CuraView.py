@@ -26,6 +26,7 @@ class CuraView(View):
     def mainComponent(self) -> QUrl:
         return self.getDisplayComponent("main")
 
+
     @pyqtProperty(QUrl, constant = True)
     def stageMenuComponent(self) -> QUrl:
         url = self.getDisplayComponent("menu")

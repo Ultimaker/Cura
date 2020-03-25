@@ -149,7 +149,7 @@
 
         "main_background": [255, 255, 255, 255],
         "wide_lining": [245, 245, 245, 255],
-        "thick_lining": [127, 127, 127, 255],
+        "thick_lining": [180, 180, 180, 255],
         "lining": [192, 193, 194, 255],
         "viewport_overlay": [246, 246, 246, 255],
 
@@ -377,13 +377,13 @@
         "layerview_inset_0": [255, 0, 0, 255],
         "layerview_inset_x": [0, 255, 0, 255],
         "layerview_skin": [255, 255, 0, 255],
-        "layerview_support": [0, 255, 255, 255],
+        "layerview_support": [0, 255, 255, 127],
         "layerview_skirt": [0, 255, 255, 255],
         "layerview_infill": [255, 127, 0, 255],
-        "layerview_support_infill": [0, 255, 255, 255],
+        "layerview_support_infill": [0, 255, 255, 127],
         "layerview_move_combing": [0, 0, 255, 255],
         "layerview_move_retraction": [128, 127, 255, 255],
-        "layerview_support_interface": [63, 127, 255, 255],
+        "layerview_support_interface": [63, 127, 255, 127],
         "layerview_prime_tower": [0, 255, 255, 255],
         "layerview_nozzle": [181, 166, 66, 50],
 
@@ -520,6 +520,7 @@
         "action_button": [15.0, 2.5],
         "action_button_icon": [1.0, 1.0],
         "action_button_radius": [0.15, 0.15],
+        "dialog_primary_button_padding": [3.0, 0],
 
         "radio_button": [1.3, 1.3],
 

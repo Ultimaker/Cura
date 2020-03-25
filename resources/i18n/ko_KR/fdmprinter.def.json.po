@@ -1,14 +1,13 @@
 # Cura
-# Copyright (C) 2019 Ultimaker B.V.
+# Copyright (C) 2020 Ultimaker B.V.
 # This file is distributed under the same license as the Cura package.
-# Ruben Dulek <r.dulek@ultimaker.com>, 2019.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.4\n"
+"Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2019-11-05 13:13+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0200\n"
+"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"PO-Revision-Date: 2020-02-21 14:59+0100\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -16,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.3\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -412,6 +411,16 @@ msgid "Whether to use firmware retract commands (G10/G11) instead of using the E
 msgstr "재료를 리트렉션하는 G1 명령어에서 E 속성을 사용하는 대신 펌웨어 리트렉션 명령어(G10/G11)를 사용할 지 여부."
 
 #: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater label"
+msgid "Extruders Share Heater"
+msgstr "압출기의 히터 공유"
+
+#: fdmprinter.def.json
+msgctxt "machine_extruders_share_heater description"
+msgid "Whether the extruders share a single heater rather than each extruder having its own heater."
+msgstr "압출기가 자체 히터를 가지고 있지 않고 단일 히터를 공유하는지에 대한 여부."
+
+#: fdmprinter.def.json
 msgctxt "machine_disallowed_areas label"
 msgid "Disallowed Areas"
 msgstr "허용되지 않는 지역"
@@ -430,16 +439,6 @@ msgstr "노즐이 위치할 수 없는 구역"
 msgctxt "nozzle_disallowed_areas description"
 msgid "A list of polygons with areas the nozzle is not allowed to enter."
 msgstr "노즐이 위치할 수 없는 구역의 목록입니다."
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon label"
-msgid "Machine Head Polygon"
-msgstr "머신 헤드 폴리곤"
-
-#: fdmprinter.def.json
-msgctxt "machine_head_polygon description"
-msgid "A 2D silhouette of the print head (fan caps excluded)."
-msgstr "프린트 헤드의 2D 실루엣 (팬 캡 제외)."
 
 #: fdmprinter.def.json
 msgctxt "machine_head_with_fans_polygon label"
@@ -1936,6 +1935,26 @@ msgid "Skin areas narrower than this are not expanded. This avoids expanding the
 msgstr "이보다 좁은 스킨 영역은 확장되지 않습니다. 이렇게하면 모델 표면이 수직에 가까운 기울기를 가질 때 생성되는 좁은 스킨 영역을 확장하지 않아도됩니다."
 
 #: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness label"
+msgid "Skin Edge Support Thickness"
+msgstr "스킨 에지의 두께 지원"
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_thickness description"
+msgid "The thickness of the extra infill that supports skin edges."
+msgstr "스킨 에지를 지원하는 추가 내부채움의 두께."
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers label"
+msgid "Skin Edge Support Layers"
+msgstr "스킨 에지의 레이어 지원"
+
+#: fdmprinter.def.json
+msgctxt "skin_edge_support_layers description"
+msgid "The number of infill layers that supports skin edges."
+msgstr "스킨 에지를 지원하는 내부채움 레이어의 수."
+
+#: fdmprinter.def.json
 msgctxt "material label"
 msgid "Material"
 msgstr "재료"
@@ -2126,6 +2145,16 @@ msgid "How fast the filament needs to be retracted just before breaking it off i
 msgstr "리트랙션 시 파단되기 직전까지 필라멘트가 후퇴해야 하는 속도입니다."
 
 #: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature label"
+msgid "Break Preparation Temperature"
+msgstr "준비 온도 파단"
+
+#: fdmprinter.def.json
+msgctxt "material_break_preparation_temperature description"
+msgid "The temperature used to purge material, should be roughly equal to the highest possible printing temperature."
+msgstr "재료를 퍼지하는 데 사용하는 온도는 가능한 한 가장 높은 프린팅 온도와 대략 같아야 합니다."
+
+#: fdmprinter.def.json
 msgctxt "material_break_retracted_position label"
 msgid "Break Retracted Position"
 msgstr "파단 리트랙션 위치"
@@ -2154,6 +2183,66 @@ msgstr "파단 온도"
 msgctxt "material_break_temperature description"
 msgid "The temperature at which the filament is broken for a clean break."
 msgstr "필라멘트가 깔끔하게 파단되는 온도입니다."
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed label"
+msgid "Flush Purge Speed"
+msgstr "수평 퍼지 속도"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_speed description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length label"
+msgid "Flush Purge Length"
+msgstr "수평 퍼지 길이"
+
+#: fdmprinter.def.json
+msgctxt "material_flush_purge_length description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed label"
+msgid "End Of Filament Purge Speed"
+msgstr "필라멘트 끝의 퍼지 속도"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_speed description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length label"
+msgid "End Of Filament Purge Length"
+msgstr "필라멘트 끝의 퍼지 길이"
+
+#: fdmprinter.def.json
+msgctxt "material_end_of_filament_purge_length description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration label"
+msgid "Maximum Park Duration"
+msgstr "최대 파크 기간"
+
+#: fdmprinter.def.json
+msgctxt "material_maximum_park_duration description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor label"
+msgid "No Load Move Factor"
+msgstr "로드 이동 요인 없음"
+
+#: fdmprinter.def.json
+msgctxt "material_no_load_move_factor description"
+msgid "Material Station internal value"
+msgstr "Material Station의 내부 값"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -2296,116 +2385,6 @@ msgid "Flow compensation for the first layer: the amount of material extruded on
 msgstr "첫번째 레이어에 대한 압출량 보상: 압출 된 재료의 양에 이 값을 곱합니다."
 
 #: fdmprinter.def.json
-msgctxt "retraction_enable label"
-msgid "Enable Retraction"
-msgstr "리트렉션 활성화"
-
-#: fdmprinter.def.json
-msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "노즐이 프린팅되지 않은 영역 위로 움직일 때 필라멘트를 리트렉션합니다. "
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change label"
-msgid "Retract at Layer Change"
-msgstr "레이어 변경시 리트렉션"
-
-#: fdmprinter.def.json
-msgctxt "retract_at_layer_change description"
-msgid "Retract the filament when the nozzle is moving to the next layer."
-msgstr "노즐이 다음 층으로 이동할 때 필라멘트를 리트렉션 시킵니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount label"
-msgid "Retraction Distance"
-msgstr "리트렉션 거리"
-
-#: fdmprinter.def.json
-msgctxt "retraction_amount description"
-msgid "The length of material retracted during a retraction move."
-msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed label"
-msgid "Retraction Speed"
-msgstr "리트렉션 속도"
-
-#: fdmprinter.def.json
-msgctxt "retraction_speed description"
-msgid "The speed at which the filament is retracted and primed during a retraction move."
-msgstr "리트렉션 속도입니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed label"
-msgid "Retraction Retract Speed"
-msgstr "리트렉션 속도"
-
-#: fdmprinter.def.json
-msgctxt "retraction_retract_speed description"
-msgid "The speed at which the filament is retracted during a retraction move."
-msgstr "리트렉션 속도입니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "리트렉션 초기 속도"
-
-#: fdmprinter.def.json
-msgctxt "retraction_prime_speed description"
-msgid "The speed at which the filament is primed during a retraction move."
-msgstr "리트렉션 이동 중에 필라멘트가 프라이밍되는 속도입니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount label"
-msgid "Retraction Extra Prime Amount"
-msgstr "추가적인 리트렉션 정도"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extra_prime_amount description"
-msgid "Some material can ooze away during a travel move, which can be compensated for here."
-msgstr "이동중에 재료가 새어나올 수 있습니다. 이 재료는 여기에서 보상될 수 있습니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel label"
-msgid "Retraction Minimum Travel"
-msgstr "리트렉션 최소 이동"
-
-#: fdmprinter.def.json
-msgctxt "retraction_min_travel description"
-msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
-msgstr "리트렉션이 가능하기 위해 필요한 최소한의 이동 거리. 이것은 작은 영역에서 더 적은 리트렉션이 가능합니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max label"
-msgid "Maximum Retraction Count"
-msgstr "최대 리트렉션 수"
-
-#: fdmprinter.def.json
-msgctxt "retraction_count_max description"
-msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
-msgstr "이 설정은 최소 압출 거리에서 발생하는 리트렉션 수를 제한합니다. 이 거리내에서 더 이상의 리트렉션은 무시됩니다. 이렇게 하면 필라멘트를 평평하게하고 갈리는  문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 리트렉션하지 않습니다."
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window label"
-msgid "Minimum Extrusion Distance Window"
-msgstr "최소 압출 영역"
-
-#: fdmprinter.def.json
-msgctxt "retraction_extrusion_window description"
-msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
-msgstr "최대 리트렉션 횟수가 시행되는 영역 입니다. 이 값은 수축 거리와 거의 같아야 하므로 같은 수축 패치가 통과하는 횟수가 효과적으로 제한됩니다."
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions label"
-msgid "Limit Support Retractions"
-msgstr "지지대 후퇴 제한"
-
-#: fdmprinter.def.json
-msgctxt "limit_support_retractions description"
-msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
-msgstr "직선으로 지지대 사이를 이동하는 경우 리트랙션은 생략합니다. 이 설정을 사용하면 프린팅 시간은 절약할 수 있지만, 지지대 구조물 내에 스트링이 과도하게 증가할 수 있습니다."
-
-#: fdmprinter.def.json
 msgctxt "material_standby_temperature label"
 msgid "Standby Temperature"
 msgstr "대기 온도"
@@ -2414,56 +2393,6 @@ msgstr "대기 온도"
 msgctxt "material_standby_temperature description"
 msgid "The temperature of the nozzle when another nozzle is currently used for printing."
 msgstr "다른 노즐이 현재 프린팅에 사용될 경우 노즐 온도."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount label"
-msgid "Nozzle Switch Retraction Distance"
-msgstr "노즐 스위치 리트렉션 거리"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_amount description"
-msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
-msgstr "익스트루더 전환 시 리트렉션 양. 리트렉션이 전혀 없는 경우 0으로 설정하십시오. 이는 일반적으로 열 영역의 길이와 같아야 합니다."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds label"
-msgid "Nozzle Switch Retraction Speed"
-msgstr "노즐 스위치 리트렉션 속도"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speeds description"
-msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
-msgstr "필라멘트가 리트렉션 되는 속도입니다. 리트렉션 속도가 빠르면 좋지만 리트렉션 속도가 높으면 필라멘트가 갈릴 수 있습니다."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed label"
-msgid "Nozzle Switch Retract Speed"
-msgstr "노즐 스위치 후퇴 속도"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_retraction_speed description"
-msgid "The speed at which the filament is retracted during a nozzle switch retract."
-msgstr "노즐 스위치 리트렉션시 필라멘트가 리트렉션하는 속도."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed label"
-msgid "Nozzle Switch Prime Speed"
-msgstr "노즐 스위치 프라임 속도"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_prime_speed description"
-msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
-msgstr "노즐 스위치 리트렉션 후 필라멘트가 뒤로 밀리는 속도."
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount label"
-msgid "Nozzle Switch Extra Prime Amount"
-msgstr "노즐 스위치 엑스트라 프라임 양"
-
-#: fdmprinter.def.json
-msgctxt "switch_extruder_extra_prime_amount description"
-msgid "Extra material to prime after nozzle switching."
-msgstr "노즐 스위치 후 프라이밍하는 추가 소재의 양입니다."
 
 #: fdmprinter.def.json
 msgctxt "speed label"
@@ -3084,6 +3013,116 @@ msgstr "이동"
 msgctxt "travel description"
 msgid "travel"
 msgstr "이동"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable label"
+msgid "Enable Retraction"
+msgstr "리트렉션 활성화"
+
+#: fdmprinter.def.json
+msgctxt "retraction_enable description"
+msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+msgstr "노즐이 프린팅되지 않은 영역 위로 움직일 때 필라멘트를 리트렉션합니다. "
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change label"
+msgid "Retract at Layer Change"
+msgstr "레이어 변경시 리트렉션"
+
+#: fdmprinter.def.json
+msgctxt "retract_at_layer_change description"
+msgid "Retract the filament when the nozzle is moving to the next layer."
+msgstr "노즐이 다음 층으로 이동할 때 필라멘트를 리트렉션 시킵니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount label"
+msgid "Retraction Distance"
+msgstr "리트렉션 거리"
+
+#: fdmprinter.def.json
+msgctxt "retraction_amount description"
+msgid "The length of material retracted during a retraction move."
+msgstr "리트렉션 이동 중에 수축 된 재료의 길이입니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed label"
+msgid "Retraction Speed"
+msgstr "리트렉션 속도"
+
+#: fdmprinter.def.json
+msgctxt "retraction_speed description"
+msgid "The speed at which the filament is retracted and primed during a retraction move."
+msgstr "리트렉션 속도입니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed label"
+msgid "Retraction Retract Speed"
+msgstr "리트렉션 속도"
+
+#: fdmprinter.def.json
+msgctxt "retraction_retract_speed description"
+msgid "The speed at which the filament is retracted during a retraction move."
+msgstr "리트렉션 속도입니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed label"
+msgid "Retraction Prime Speed"
+msgstr "리트렉션 초기 속도"
+
+#: fdmprinter.def.json
+msgctxt "retraction_prime_speed description"
+msgid "The speed at which the filament is primed during a retraction move."
+msgstr "리트렉션 이동 중에 필라멘트가 프라이밍되는 속도입니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount label"
+msgid "Retraction Extra Prime Amount"
+msgstr "추가적인 리트렉션 정도"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extra_prime_amount description"
+msgid "Some material can ooze away during a travel move, which can be compensated for here."
+msgstr "이동중에 재료가 새어나올 수 있습니다. 이 재료는 여기에서 보상될 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel label"
+msgid "Retraction Minimum Travel"
+msgstr "리트렉션 최소 이동"
+
+#: fdmprinter.def.json
+msgctxt "retraction_min_travel description"
+msgid "The minimum distance of travel needed for a retraction to happen at all. This helps to get fewer retractions in a small area."
+msgstr "리트렉션이 가능하기 위해 필요한 최소한의 이동 거리. 이것은 작은 영역에서 더 적은 리트렉션이 가능합니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max label"
+msgid "Maximum Retraction Count"
+msgstr "최대 리트렉션 수"
+
+#: fdmprinter.def.json
+msgctxt "retraction_count_max description"
+msgid "This setting limits the number of retractions occurring within the minimum extrusion distance window. Further retractions within this window will be ignored. This avoids retracting repeatedly on the same piece of filament, as that can flatten the filament and cause grinding issues."
+msgstr "이 설정은 최소 압출 거리에서 발생하는 리트렉션 수를 제한합니다. 이 거리내에서 더 이상의 리트렉션은 무시됩니다. 이렇게 하면 필라멘트를 평평하게하고 갈리는  문제를 일으킬 수 있으므로 동일한 필라멘트에서 반복적으로 리트렉션하지 않습니다."
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window label"
+msgid "Minimum Extrusion Distance Window"
+msgstr "최소 압출 영역"
+
+#: fdmprinter.def.json
+msgctxt "retraction_extrusion_window description"
+msgid "The window in which the maximum retraction count is enforced. This value should be approximately the same as the retraction distance, so that effectively the number of times a retraction passes the same patch of material is limited."
+msgstr "최대 리트렉션 횟수가 시행되는 영역 입니다. 이 값은 수축 거리와 거의 같아야 하므로 같은 수축 패치가 통과하는 횟수가 효과적으로 제한됩니다."
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions label"
+msgid "Limit Support Retractions"
+msgstr "지지대 후퇴 제한"
+
+#: fdmprinter.def.json
+msgctxt "limit_support_retractions description"
+msgid "Omit retraction when moving from support to support in a straight line. Enabling this setting saves print time, but can lead to excessive stringing within the support structure."
+msgstr "직선으로 지지대 사이를 이동하는 경우 리트랙션은 생략합니다. 이 설정을 사용하면 프린팅 시간은 절약할 수 있지만, 지지대 구조물 내에 스트링이 과도하게 증가할 수 있습니다."
 
 #: fdmprinter.def.json
 msgctxt "retraction_combing label"
@@ -4280,6 +4319,16 @@ msgid "The number of lines used for a brim. More brim lines enhance adhesion to 
 msgstr "브림에 사용되는 선의 수입니다. 더 많은 브림 선이 빌드 플레이트에 대한 접착력을 향상 시키지만 유효 프린트 영역도 감소시킵니다."
 
 #: fdmprinter.def.json
+msgctxt "brim_gap label"
+msgid "Brim Distance"
+msgstr "브림 거리"
+
+#: fdmprinter.def.json
+msgctxt "brim_gap description"
+msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
+msgstr "첫 번째 브림 선과 첫 번째 레이어 프린팅의 윤곽 사이의 수평 거리 작은 간격은 브림을 제거하기 쉽도록 하면서 내열성의 이점을 제공할 수 있습니다."
+
+#: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
 msgid "Brim Replaces Support"
 msgstr "브림이 서포트 대체"
@@ -4710,6 +4759,56 @@ msgid "Distance of the ooze shield from the print, in the X/Y directions."
 msgstr "X/Y 방향으로 출력물에서 Ooze 쉴드까지의 거리."
 
 #: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount label"
+msgid "Nozzle Switch Retraction Distance"
+msgstr "노즐 스위치 리트렉션 거리"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_amount description"
+msgid "The amount of retraction when switching extruders. Set to 0 for no retraction at all. This should generally be the same as the length of the heat zone."
+msgstr "익스트루더 전환 시 리트렉션 양. 리트렉션이 전혀 없는 경우 0으로 설정하십시오. 이는 일반적으로 열 영역의 길이와 같아야 합니다."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds label"
+msgid "Nozzle Switch Retraction Speed"
+msgstr "노즐 스위치 리트렉션 속도"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speeds description"
+msgid "The speed at which the filament is retracted. A higher retraction speed works better, but a very high retraction speed can lead to filament grinding."
+msgstr "필라멘트가 리트렉션 되는 속도입니다. 리트렉션 속도가 빠르면 좋지만 리트렉션 속도가 높으면 필라멘트가 갈릴 수 있습니다."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed label"
+msgid "Nozzle Switch Retract Speed"
+msgstr "노즐 스위치 후퇴 속도"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_retraction_speed description"
+msgid "The speed at which the filament is retracted during a nozzle switch retract."
+msgstr "노즐 스위치 리트렉션시 필라멘트가 리트렉션하는 속도."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed label"
+msgid "Nozzle Switch Prime Speed"
+msgstr "노즐 스위치 프라임 속도"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_prime_speed description"
+msgid "The speed at which the filament is pushed back after a nozzle switch retraction."
+msgstr "노즐 스위치 리트렉션 후 필라멘트가 뒤로 밀리는 속도."
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount label"
+msgid "Nozzle Switch Extra Prime Amount"
+msgstr "노즐 스위치 엑스트라 프라임 양"
+
+#: fdmprinter.def.json
+msgctxt "switch_extruder_extra_prime_amount description"
+msgid "Extra material to prime after nozzle switching."
+msgstr "노즐 스위치 후 프라이밍하는 추가 소재의 양입니다."
+
+#: fdmprinter.def.json
 msgctxt "meshfix label"
 msgid "Mesh Fixes"
 msgstr "메쉬 수정"
@@ -4846,8 +4945,8 @@ msgstr "프린팅 순서"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
-msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
-msgstr "한 번에 한 레이어 씩 모든 모델을 프린팅할지 또는 한 모델이 완료 될 때까지 기다렸다가 다음 모델로 넘어갈 지 여부. 한 번에 한 가지 모드는 모든 모델이 분리되어 프린트 헤드가 중간에서 움직일 수 있고 모든 모델이 노즐과 X/Y 축 사이의 거리보다 낮은 경우에만 가능합니다."
+msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
+msgstr "모든 모델을 한 번에 한 레이어씩 프린팅할 것인지, 아니면 한 모델이 완료될 때까지 기다릴 것인지, 다음 단계로 넘어가기 전에 대한 여부 a) 한 번에 하나의 압출기만 활성화하고 b) 모든 모델은 전체 프린트 헤드가 이동할 수 있는 방식으로 분리되며 모든 모델은 노즐과 X/Y 축 사이의 거리보다 낮습니다. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5073,26 +5172,6 @@ msgstr "트리 서포트 충돌 정밀도"
 msgctxt "support_tree_collision_resolution description"
 msgid "Resolution to compute collisions with to avoid hitting the model. Setting this lower will produce more accurate trees that fail less often, but increases slicing time dramatically."
 msgstr "모델에 부딪히는 것을 피하기 위해 충돌을 계산하는 정밀도. 이 값을 낮게 설정하면 실패도가 낮은 더 정확한 트리를 생성하지만, 슬라이싱 시간이 현격하게 늘어납니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness label"
-msgid "Tree Support Wall Thickness"
-msgstr "트리 서포트 벽 두께"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_thickness description"
-msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "트리 서포트의 브랜치 벽의 두께. 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count label"
-msgid "Tree Support Wall Line Count"
-msgstr "트리 서포트 벽 라인 카운트"
-
-#: fdmprinter.def.json
-msgctxt "support_tree_wall_count description"
-msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
-msgstr "트리 서포트의 브랜치 벽의 개수. 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "slicing_tolerance label"
@@ -5483,6 +5562,16 @@ msgstr "퍼지 스킨"
 msgctxt "magic_fuzzy_skin_enabled description"
 msgid "Randomly jitter while printing the outer wall, so that the surface has a rough and fuzzy look."
 msgstr "외벽을 프린팅하는 동안 무작위로 지터가 발생하여 표면이 거칠고 흐릿해 보입니다."
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only label"
+msgid "Fuzzy Skin Outside Only"
+msgstr "부용 퍼지 스킨"
+
+#: fdmprinter.def.json
+msgctxt "magic_fuzzy_skin_outside_only description"
+msgid "Jitter only the parts' outlines and not the parts' holes."
+msgstr "부품의 윤곽만 지터하고 부품의 구멍은 지터하지 않습니다."
 
 #: fdmprinter.def.json
 msgctxt "magic_fuzzy_skin_thickness label"
@@ -5882,6 +5971,16 @@ msgid "If a skin region is supported for less than this percentage of its area, 
 msgstr "스킨 영역이 해당 영역의 비율 미만으로 생성되면 브릿지 설정을 사용하여 인쇄하십시오. 그렇지 않으면 일반 스킨 설정을 사용하여 인쇄됩니다."
 
 #: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density label"
+msgid "Bridge Sparse Infill Max Density"
+msgstr "브리지의 희박한 내부채움 최대 밀도"
+
+#: fdmprinter.def.json
+msgctxt "bridge_sparse_infill_max_density description"
+msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
+msgstr "희박하다고 여겨지는 내부채움의 최대 밀도 희박한 내부채움의 스킨은 지원되지 않는 것으로 간주되므로 브릿지 스킨으로 취급할 수 있습니다."
+
+#: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
 msgid "Bridge Wall Coasting"
 msgstr "브릿지 벽 코스팅(Coasting)"
@@ -6048,8 +6147,8 @@ msgstr "레이어 사이의 와이프 노즐"
 
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
-msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "레이어 사이에 노즐 와이프 G 코드를 포함할지 여부를 결정합니다. 이 설정을 활성화하면 레이어 변경 시 리트렉트 동작에 영향을 줄 수 있습니다. 와이프 스크립트가 작동하는 레이어에서 리트랙션을 제어하려면 와이프 리트렉션 설정을 사용하십시오."
+msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+msgstr "노즐 와이퍼 작동 G-코드를 레이어 사이에 포함할지 여부(레이어당 최대 1개) 이 설정을 활성화하면 레이어 변경 시 리트렉트 동작에 영향을 미칠 수 있습니다. 와이프 스크립트가 작동할 레이어의 감속을 제어하려면 와이프 리트랙션 설정을 사용하십시오."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6058,8 +6157,8 @@ msgstr "와이프 사이의 재료 볼륨"
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
-msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
-msgstr "다른 노즐 와이프를 시작하기 전에 압출할 수 있는 최대 재료입니다."
+msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
+msgstr "다른 노즐 와이프를 시작하기 전에 압출 성형할 수 있는 최대 재료입니다. 이 값이 레이어에 필요한 재료의 양보다 작으면 이 레이어에서는 아무런 효과가 없습니다. 즉, 레이어당 한번 와이프하는 것으로 제한됩니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6113,8 +6212,8 @@ msgstr "와이프 리트랙션 이동 중에 필라멘트가 리트렉트되는 
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed label"
-msgid "Retraction Prime Speed"
-msgstr "리트렉션 초기 속도"
+msgid "Wipe Retraction Prime Speed"
+msgstr "와이프 리트렉션 초기 속도"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_prime_speed description"
@@ -6133,13 +6232,13 @@ msgstr "리트랙트를 실행 취소한 후 일시 정지합니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable label"
-msgid "Wipe Z Hop When Retracted"
-msgstr "리트렉션했을 때의 와이프 Z 홉"
+msgid "Wipe Z Hop"
+msgstr "와이프 Z 홉"
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
-msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "리트렉션이 일어날 때마다 빌드 플레이트가 낮아져 노즐과 출력물 사이에 여유 공간이 생깁니다. 이동 중에 노즐이 인쇄물에 부딪치지 않도록 하여 인쇄물이 빌드 플레이트와 부딪힐 가능성을 줄여줍니다."
+msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+msgstr "와이프할 때, 노즐과 출력물 사이에 간격이 생기도록 빌드 플레이트를 내립니다. 이동 중에 노즐이 출력물에 부딪히는 것을 방지하여 제조판에서 출력물을 칠 가능성을 줄입니다."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6290,6 +6389,54 @@ msgstr "메쉬 회전 행렬"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "파일로부터 로드 하는 경유, 모델에 적용될 변환 행렬입니다."
+
+#~ msgctxt "machine_head_polygon label"
+#~ msgid "Machine Head Polygon"
+#~ msgstr "머신 헤드 폴리곤"
+
+#~ msgctxt "machine_head_polygon description"
+#~ msgid "A 2D silhouette of the print head (fan caps excluded)."
+#~ msgstr "프린트 헤드의 2D 실루엣 (팬 캡 제외)."
+
+#~ msgctxt "print_sequence description"
+#~ msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is only possible if all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes."
+#~ msgstr "한 번에 한 레이어 씩 모든 모델을 프린팅할지 또는 한 모델이 완료 될 때까지 기다렸다가 다음 모델로 넘어갈 지 여부. 한 번에 한 가지 모드는 모든 모델이 분리되어 프린트 헤드가 중간에서 움직일 수 있고 모든 모델이 노즐과 X/Y 축 사이의 거리보다 낮은 경우에만 가능합니다."
+
+#~ msgctxt "support_tree_wall_thickness label"
+#~ msgid "Tree Support Wall Thickness"
+#~ msgstr "트리 서포트 벽 두께"
+
+#~ msgctxt "support_tree_wall_thickness description"
+#~ msgid "The thickness of the walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "트리 서포트의 브랜치 벽의 두께. 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
+
+#~ msgctxt "support_tree_wall_count label"
+#~ msgid "Tree Support Wall Line Count"
+#~ msgstr "트리 서포트 벽 라인 카운트"
+
+#~ msgctxt "support_tree_wall_count description"
+#~ msgid "The number of walls of the branches of tree support. Thicker walls take longer to print but don't fall over as easily."
+#~ msgstr "트리 서포트의 브랜치 벽의 개수. 벽이 두꺼울수록 프린팅 시간이 오래 걸리지만 쉽게 넘어지지 않습니다."
+
+#~ msgctxt "clean_between_layers description"
+#~ msgid "Whether to include nozzle wipe G-Code between layers. Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
+#~ msgstr "레이어 사이에 노즐 와이프 G 코드를 포함할지 여부를 결정합니다. 이 설정을 활성화하면 레이어 변경 시 리트렉트 동작에 영향을 줄 수 있습니다. 와이프 스크립트가 작동하는 레이어에서 리트랙션을 제어하려면 와이프 리트렉션 설정을 사용하십시오."
+
+#~ msgctxt "max_extrusion_before_wipe description"
+#~ msgid "Maximum material, that can be extruded before another nozzle wipe is initiated."
+#~ msgstr "다른 노즐 와이프를 시작하기 전에 압출할 수 있는 최대 재료입니다."
+
+#~ msgctxt "wipe_retraction_prime_speed label"
+#~ msgid "Retraction Prime Speed"
+#~ msgstr "리트렉션 초기 속도"
+
+#~ msgctxt "wipe_hop_enable label"
+#~ msgid "Wipe Z Hop When Retracted"
+#~ msgstr "리트렉션했을 때의 와이프 Z 홉"
+
+#~ msgctxt "wipe_hop_enable description"
+#~ msgid "Whenever a retraction is done, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
+#~ msgstr "리트렉션이 일어날 때마다 빌드 플레이트가 낮아져 노즐과 출력물 사이에 여유 공간이 생깁니다. 이동 중에 노즐이 인쇄물에 부딪치지 않도록 하여 인쇄물이 빌드 플레이트와 부딪힐 가능성을 줄여줍니다."
 
 #~ msgctxt "minimum_interface_area description"
 #~ msgid "Minimum area size for support interface polygons. Polygons which have an area smaller than this value will not be generated."

@@ -58,7 +58,10 @@ class CuraStackBuilder:
         # Create ExtruderStacks
         extruder_dict = machine_definition.getMetaDataEntry("machine_extruder_trains")
         for position in extruder_dict:
-            cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
+            try:
+                cls.createExtruderStackWithDefaultSetup(new_global_stack, position)
+            except IndexError:
+                return None
 
         for new_extruder in new_global_stack.extruders.values():  # Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)

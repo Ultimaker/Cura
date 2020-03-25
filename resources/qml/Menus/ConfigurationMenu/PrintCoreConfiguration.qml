@@ -18,9 +18,9 @@ Item
     Cura.ExtruderIcon
     {
         id: icon
-        materialColor: printCoreConfiguration.material.color
+        materialColor: printCoreConfiguration !== null ? printCoreConfiguration.material.color : ""
         anchors.verticalCenter: parent.verticalCenter
-        extruderEnabled: printCoreConfiguration.material.brand !== "" && printCoreConfiguration.hotendID !== ""
+        extruderEnabled: printCoreConfiguration !== null && printCoreConfiguration.material.brand !== "" && printCoreConfiguration.hotendID !== ""
     }
 
     Column
@@ -35,7 +35,7 @@ Item
 
         Label
         {
-            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.brand : " " //Use space so that the height is still correct.
+            text: (printCoreConfiguration !== null && printCoreConfiguration.material.brand) ? printCoreConfiguration.material.brand : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")
@@ -44,7 +44,7 @@ Item
         }
         Label
         {
-            text: printCoreConfiguration.material.brand ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
+            text: (printCoreConfiguration !== null && printCoreConfiguration.material.brand) ? printCoreConfiguration.material.name : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("medium")
@@ -53,7 +53,7 @@ Item
         }
         Label
         {
-            text: printCoreConfiguration.hotendID ? printCoreConfiguration.hotendID : " " //Use space so that the height is still correct.
+            text: (printCoreConfiguration !== null && printCoreConfiguration.hotendID) ? printCoreConfiguration.hotendID : " " //Use space so that the height is still correct.
             renderType: Text.NativeRendering
             elide: Text.ElideRight
             font: UM.Theme.getFont("default")

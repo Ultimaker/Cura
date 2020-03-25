@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -35,22 +35,18 @@ NumericTextFieldWithUnit
     property string axisMinOrMax: "min"
     property var axisValue:
     {
-        var polygon = JSON.parse(propertyProvider.properties.value)
-        var item = (axisName == "x") ? 0 : 1
-        var result = polygon[0][item]
-        var func = (axisMinOrMax == "min") ? Math.min : Math.max
+        if(propertyProvider.properties.value === undefined) { //PropertyProvider not initialised yet or there is no global stack.
+            return 0;
+        }
+        var polygon = JSON.parse(propertyProvider.properties.value);
+        var item = (axisName == "x") ? 0 : 1;
+        var result = polygon[0][item];
+        var func = (axisMinOrMax == "min") ? Math.min : Math.max;
         for (var i = 1; i < polygon.length; i++)
         {
-            result = func(result, polygon[i][item])
+            result = func(result, polygon[i][item]);
         }
-        return result
-    }
-
-    valueValidator: DoubleValidator {
-        bottom: allowNegativeValue ? Number.NEGATIVE_INFINITY : 0
-        top: allowPositiveValue ? Number.POSITIVE_INFINITY : 0
-        decimals: 6
-        notation: DoubleValidator.StandardNotation
+        return result;
     }
 
     valueText: axisValue

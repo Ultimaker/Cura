@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -122,7 +122,7 @@ Item
                 }
             }
 
-            currentIndex: supportExtruderNr.properties.value
+            currentIndex: (supportExtruderNr.properties.value !== undefined) ? supportExtruderNr.properties.value : 0
 
             property string color: "#fff"
             Connections

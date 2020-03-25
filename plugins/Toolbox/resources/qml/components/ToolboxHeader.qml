@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Toolbox is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -51,36 +51,56 @@ Item
                 toolbox.viewPage = "overview"
             }
         }
-    }
 
-    ToolboxTabButton
-    {
-        id: installedTabButton
-        text: catalog.i18nc("@title:tab", "Installed")
-        active: toolbox.viewCategory == "installed"
-        enabled: !toolbox.isDownloading
-        anchors
+        ToolboxTabButton
         {
-            right: parent.right
-            rightMargin: UM.Theme.getSize("default_margin").width
+            id: installedTabButton
+            text: catalog.i18nc("@title:tab", "Installed")
+            active: toolbox.viewCategory == "installed"
+            enabled: !toolbox.isDownloading
+            onClicked: toolbox.viewCategory = "installed"
+            width: UM.Theme.getSize("toolbox_header_tab").width + marketplaceNotificationIcon.width - UM.Theme.getSize("default_margin").width
         }
-        onClicked: toolbox.viewCategory = "installed"
-        width: UM.Theme.getSize("toolbox_header_tab").width + marketplaceNotificationIcon.width - UM.Theme.getSize("default_margin").width
+
+
     }
 
     Cura.NotificationIcon
     {
         id: marketplaceNotificationIcon
-
         visible: CuraApplication.getPackageManager().packagesWithUpdate.length > 0
-
-        anchors.right: installedTabButton.right
-        anchors.verticalCenter: installedTabButton.verticalCenter
-
+        anchors.right: bar.right
         labelText:
         {
             const itemCount = CuraApplication.getPackageManager().packagesWithUpdate.length
             return itemCount > 9 ? "9+" : itemCount
+        }
+    }
+
+
+    UM.TooltipArea
+    {
+        id: webMarketplaceButtonTooltipArea
+        width: childrenRect.width
+        height: parent.height
+        text: catalog.i18nc("@info:tooltip", "Go to Web Marketplace")
+        anchors
+        {
+            right: parent.right
+            rightMargin: UM.Theme.getSize("default_margin").width
+            verticalCenter: parent.verticalCenter
+        }
+        onClicked: Qt.openUrlExternally(toolbox.getWebMarketplaceUrl("plugins"))
+        UM.RecolorImage
+        {
+            id: cloudMarketplaceButton
+            source: "../../images/shop.svg"
+            color: UM.Theme.getColor(webMarketplaceButtonTooltipArea.containsMouse ? "primary" : "text")
+            height: parent.height / 2
+            width: height
+            anchors.verticalCenter: parent.verticalCenter
+            sourceSize.width: width
+            sourceSize.height: height
         }
     }
 
