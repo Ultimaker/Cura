@@ -133,12 +133,6 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
-    def beginRendering(self):
-        scene = self.getController().getScene()
-        renderer = self.getRenderer()
-
-        self._checkSetup()
-
         if not CuraApplication.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
             self._xray_error_image = None
             self._xray_shader = None
@@ -182,6 +176,12 @@ class SolidView(View):
                 self._composite_pass.setLayerBindings(["default", "selection", "xray"])
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
+
+    def beginRendering(self):
+        scene = self.getController().getScene()
+        renderer = self.getRenderer()
+
+        self._checkSetup()
 
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack:
