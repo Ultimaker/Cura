@@ -66,7 +66,7 @@
         "retraction_amount" :              { "default_value": 3.5 },
         "retraction_speed" :               { "default_value": 70 },
         "retraction_combing" :             { "default_value": "noskin" },
-        "travel_avoid_distance":           { "default_value": 1, "value": "1" },
+        "travel_avoid_distance":           { "value": "1" },
 
         "top_bottom_thickness":            { "default_value": 0.8 },
         "roofing_layer_count":             { "value": "1" },
@@ -79,9 +79,9 @@
         "support_z_distance":              { "value": "layer_height * 2" },
         "support_bottom_distance":         { "value": "layer_height" },
         "support_use_towers" :             { "default_value": false },
-        "support_bottom_enable" :          { "default_value": false },
+        "support_bottom_enable" :          { "value": "0" },
 
-        "skirt_brim_speed":                { "default_value" : "speed_layer_0", "value": "speed_layer_0" },
+        "skirt_brim_speed":                { "value": "speed_layer_0" },
         "skirt_line_count":                { "default_value": 3 },
         "skirt_brim_minimal_length":       { "default_value": 150 },
         "brim_width":                      { "value": "3" },
