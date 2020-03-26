@@ -7,13 +7,7 @@
         "visible":                 true,
         "platform":                "deltacomb_dc20.stl",
         "quality_definition":      "deltacomb_base",
-        "preferred_variant_name":  "FBE 0.40mm",
-        "machine_extruder_trains": {
-            "0": "deltacomb_base_extruder_0",
-            "1": "deltacomb_base_extruder_1",
-            "2": "deltacomb_base_extruder_2",
-            "3": "deltacomb_base_extruder_3"
-	      }
+        "preferred_variant_name":  "FBE 0.40mm"
     },
 
     "overrides": {

@@ -23,6 +23,7 @@
         "machine_height":                     { "default_value": 250 },
         "machine_extruder_count":             { "default_value": 2, "maximum_value": "4" },
         "switch_extruder_retraction_amount":  { "value": "0" },
-        "prime_tower_min_volume":             { "value": "45" }
+        "prime_tower_min_volume":             { "value": "45" },
+        "prime_tower_enable":                 { "value": "1" }
     }
 }
