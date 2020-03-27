@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -7,6 +7,7 @@ from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
 from PyQt5.QtGui import QOpenGLContext, QImage
+from PyQt5.QtCore import QSize
 
 import numpy as np
 import time
@@ -54,6 +55,7 @@ class SolidView(View):
         self._xray_composite_shader = None
         self._composite_pass = None
         self._xray_error_image = None
+        self._xray_error_image_size = QSize(1,1)
 
         self._extruders_model = None
         self._theme = None
@@ -148,7 +150,9 @@ class SolidView(View):
                 self._xray_error_image = OpenGL.getInstance().createTexture()
                 texture_file = "xray_error.png"
                 try:
-                    self._xray_error_image.load(Resources.getPath(Resources.Images, texture_file))
+                    texture_image = QImage(Resources.getPath(Resources.Images, texture_file)).mirrored()
+                    self._xray_error_image.setImage(texture_image)
+                    self._xray_error_image_size = texture_image.size()
                 except FileNotFoundError:
                     Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
 
@@ -162,12 +166,13 @@ class SolidView(View):
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
                 self._xray_composite_shader.setTexture(3, self._xray_error_image)
 
+            renderer = self.getRenderer()
             if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
                 # Currently the RenderPass constructor requires a size > 0
                 # This should be fixed in RenderPass's constructor.
                 self._xray_pass = XRayPass.XRayPass(1, 1)
 
-                self.getRenderer().addRenderPass(self._xray_pass)
+                renderer.addRenderPass(self._xray_pass)
 
                 if not self._composite_pass:
                     self._composite_pass = self.getRenderer().getRenderPass("composite")
@@ -176,6 +181,9 @@ class SolidView(View):
                 self._composite_pass.setLayerBindings(["default", "selection", "xray"])
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
+
+            error_image_scale = [renderer.getViewportWidth() / self._xray_error_image_size.width(), renderer.getViewportHeight() / self._xray_error_image_size.height()]
+            self._xray_composite_shader.setUniformValue("u_xray_error_scale", error_image_scale)
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -266,7 +274,7 @@ class SolidView(View):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()
-            xray_img = xray_img.convertToFormat(QImage.Format.Format_RGB888)
+            xray_img = xray_img.convertToFormat(QImage.Format_RGB888)
 
             # We can't just read the image since the pixels are aligned to internal memory positions.
             # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3
