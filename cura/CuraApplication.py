@@ -242,6 +242,7 @@ class CuraApplication(QtApplication):
 
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
+        self._enable_save = True
 
         self._container_registry_class = CuraContainerRegistry
         # Redefined here in order to please the typing.
@@ -685,15 +686,20 @@ class CuraApplication(QtApplication):
             self._message_box_callback = None
             self._message_box_callback_arguments = []
 
+    def enableSave(self, enable: bool):
+        self._enable_save = enable
+
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self) -> None:
-        if not self.started:
+        if not self.started or not self._enable_save:
             # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
 
     def saveStack(self, stack):
+        if not self._enable_save:
+            return
         ContainerRegistry.getInstance().saveContainer(stack)
 
     @pyqtSlot(str, result = QUrl)
