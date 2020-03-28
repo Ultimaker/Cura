@@ -25,6 +25,7 @@ fragment =
     uniform sampler2D u_layer2; //X-ray pass.
     uniform sampler2D u_xray_error; //X-ray error image.
 
+    uniform vec2 u_xray_error_scale;
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
@@ -55,8 +56,7 @@ fragment =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
         {
-            vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_scale);
         }
 
         vec4 sum = vec4(0.0);
@@ -100,6 +100,7 @@ fragment41core =
     uniform sampler2D u_layer2; //X-ray pass.
     uniform sampler2D u_xray_error; //X-ray error image.
 
+    uniform vec2 u_xray_error_scale;
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
@@ -131,8 +132,7 @@ fragment41core =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
         {
-            vec2 scaling = textureSize(u_layer0, 0) / textureSize(u_xray_error, 0);
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * scaling);
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_scale);
         }
 
         vec4 sum = vec4(0.0);

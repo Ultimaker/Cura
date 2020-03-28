@@ -1,4 +1,4 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
@@ -91,16 +91,17 @@ class XRayView(CuraView):
 
             if not self._xray_error_image:
                 self._xray_error_image = OpenGL.getInstance().createTexture()
-                img = QImage(1, 1, QImage.Format_RGB888)
+                dummy_image = QImage(1, 1, QImage.Format_RGB888)
                 theme = Application.getInstance().getTheme()
-                img.setPixelColor(0, 0, theme.getColor("xray_error"))
-                self._xray_error_image.setImage(img)
+                dummy_image.setPixelColor(0, 0, theme.getColor("xray_error"))
+                self._xray_error_image.setImage(dummy_image)
 
             if not self._xray_composite_shader:
                 self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_xray_error_strength", 0.8)
+                self._xray_composite_shader.setUniformValue("u_xray_error_scale", [1, 1]) # irrelevant, because we don't use an actual texture
                 self._xray_composite_shader.setTexture(3, self._xray_error_image)
 
             if not self._composite_pass:
