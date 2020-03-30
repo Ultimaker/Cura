@@ -267,17 +267,6 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
-                "machine_nozzle_head_distance":
-                {
-                    "label": "Nozzle Length",
-                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
-                    "unit": "mm",
-                    "default_value": 3,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
-                },
                 "machine_nozzle_expansion_angle":
                 {
                     "label": "Nozzle Angle",
@@ -297,18 +286,6 @@
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
-                },
-                "machine_filament_park_distance":
-                {
-                    "label": "Filament Park Distance",
-                    "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
-                    "unit": "mm",
-                    "default_value": 16,
-                    "value": "machine_heat_zone_length",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
