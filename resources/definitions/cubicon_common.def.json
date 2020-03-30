@@ -46,7 +46,7 @@
         "max_skin_angle_for_expansion": { "default_value": 90 },
         "skin_angles": { "default_value": "[135,45]" },
         "coasting_volume": { "default_value": 0.032 },
-        "wall_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" },
         "cool_min_layer_time_fan_speed_max": { "default_value": 15 },
         "cool_min_layer_time": { "default_value": 15 },
         "support_interface_pattern": { "default_value": "zigzag" },

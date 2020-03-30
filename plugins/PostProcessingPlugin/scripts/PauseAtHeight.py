@@ -57,6 +57,17 @@ class PauseAtHeight(Script):
                     "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
                     "default_value": "marlin",
                     "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
+                },                    
+                "disarm_timeout":
+                {
+                    "label": "Disarm timeout",
+                    "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration.",
+                    "type": "int",
+                    "value": "0",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "1800",
+                    "unit": "s"
                 },
                 "head_park_x":
                 {
@@ -206,6 +217,7 @@ class PauseAtHeight(Script):
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
+        disarm_timeout = self.getSettingValueByKey("disarm_timeout")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
@@ -392,6 +404,10 @@ class PauseAtHeight(Script):
 
                 if display_text:
                     prepend_gcode += "M117 " + display_text + "\n"
+
+                # Set the disarm timeout
+                if disarm_timeout > 0:
+                    prepend_gcode += self.putValue(M = 18, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += pause_command + " ; Do the actual pause\n"

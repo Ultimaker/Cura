@@ -41,7 +41,7 @@
         "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode": { "default_value": "G21 ;metric values\nG28 ;home all\nG90 ;absolute positioning\nM107 ;start with the fan off\nG1 F2400 Z15.0 ;raise the nozzle 15mm\nM109 S{material_print_temperature} ;Set Extruder Temperature and Wait\nM190 S{material_bed_temperature}; Wait for bed temperature to reach target temp\nT0 ;Switch to Extruder 1\nG1 F3000 X5 Y10 Z0.2 ;move to prime start position\nG92 E0 ;reset extrusion distance\nG1 F600 X160 E15 ;prime nozzle in a line\nG1 F5000 X180 ;quick wipe\nG92 E0 ;reset extrusion distance" },
         "machine_end_gcode": { "default_value": "M104 S0  ;hotend off\nM140 S0  ;bed off\nG92 E0\nG1 F2000 E-100  ;retract filament 100mm\nG92 E0\nG1 F3000 X0 Y270  ;move bed for easy part removal\nM84  ;disable steppers" },
-        "wall_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" },
         "top_bottom_thickness": { "default_value": 1 }
     }
 }

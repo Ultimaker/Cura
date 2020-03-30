@@ -239,6 +239,8 @@ class ContainerManager(QObject):
         container_type = container_registry.getContainerForMimeType(mime_type)
         if not container_type:
             return {"status": "error", "message": "Could not find a container to handle the specified file."}
+        if not issubclass(container_type, InstanceContainer):
+            return {"status": "error", "message": "This is not a material container, but another type of file."}
 
         container_id = urllib.parse.unquote_plus(mime_type.stripExtension(os.path.basename(file_url)))
         container_id = container_registry.uniqueName(container_id)

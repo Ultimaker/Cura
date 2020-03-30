@@ -1,4 +1,4 @@
-// Copyright (c) 2019 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -39,7 +39,7 @@ UM.TooltipArea
     property alias valueText: textFieldWithUnit.text
     property alias editingFinishedFunction: textFieldWithUnit.editingFinishedFunction
 
-    property string tooltipText: propertyProvider.properties.description
+    property string tooltipText: propertyProvider.properties.description ? propertyProvider.properties.description : ""
 
     property real minimum: 0
     property real maximum: Number.POSITIVE_INFINITY

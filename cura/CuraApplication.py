@@ -7,71 +7,52 @@ import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
 
 import numpy
-
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
 from PyQt5.QtGui import QColor, QIcon
-from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtQml import qmlRegisterUncreatableType, qmlRegisterSingletonType, qmlRegisterType
+from PyQt5.QtWidgets import QMessageBox
 
-from UM.i18n import i18nCatalog
+import UM.Util
+import cura.Settings.cura_empty_instance_containers
 from UM.Application import Application
 from UM.Decorators import override
 from UM.FlameProfiler import pyqtSlot
 from UM.Logger import Logger
-from UM.Message import Message
-from UM.Platform import Platform
-from UM.PluginError import PluginNotFoundError
-from UM.Resources import Resources
-from UM.Preferences import Preferences
-from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
-import UM.Util
-from UM.View.SelectionPass import SelectionPass  # For typing.
-
 from UM.Math.AxisAlignedBox import AxisAlignedBox
 from UM.Math.Matrix import Matrix
 from UM.Math.Quaternion import Quaternion
 from UM.Math.Vector import Vector
-
 from UM.Mesh.ReadMeshJob import ReadMeshJob
-
+from UM.Message import Message
 from UM.Operations.AddSceneNodeOperation import AddSceneNodeOperation
 from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Operations.SetTransformOperation import SetTransformOperation
-
+from UM.Platform import Platform
+from UM.PluginError import PluginNotFoundError
+from UM.Preferences import Preferences
+from UM.Qt.QtApplication import QtApplication  # The class we're inheriting from.
+from UM.Resources import Resources
 from UM.Scene.Camera import Camera
 from UM.Scene.GroupDecorator import GroupDecorator
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Selection import Selection
 from UM.Scene.ToolHandle import ToolHandle
-
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 from UM.Settings.SettingDefinition import SettingDefinition, DefinitionPropertyType
 from UM.Settings.SettingFunction import SettingFunction
 from UM.Settings.Validator import Validator
-
+from UM.View.SelectionPass import SelectionPass  # For typing.
 from UM.Workspace.WorkspaceReader import WorkspaceReader
-
+from UM.i18n import i18nCatalog
+from cura import ApplicationMetadata
 from cura.API import CuraAPI
-
 from cura.Arranging.Arrange import Arrange
-from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
+from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
 from cura.Arranging.ShapeArray import ShapeArray
-
-from cura.Operations.SetParentOperation import SetParentOperation
-
-from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
-from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
-from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
-from cura.Scene.CuraSceneController import CuraSceneController
-from cura.Scene.CuraSceneNode import CuraSceneNode
-
-from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
-from cura.Scene import ZOffsetDecorator
 from cura.Machines.MachineErrorChecker import MachineErrorChecker
-
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
@@ -80,6 +61,8 @@ from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
 from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
 from cura.Machines.Models.GenericMaterialsModel import GenericMaterialsModel
 from cura.Machines.Models.GlobalStacksModel import GlobalStacksModel
+from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
+from cura.Machines.Models.IntentModel import IntentModel
 from cura.Machines.Models.MaterialBrandsModel import MaterialBrandsModel
 from cura.Machines.Models.MaterialManagementModel import MaterialManagementModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
@@ -89,51 +72,47 @@ from cura.Machines.Models.QualityProfilesDropDownMenuModel import QualityProfile
 from cura.Machines.Models.QualitySettingsModel import QualitySettingsModel
 from cura.Machines.Models.SettingVisibilityPresetsModel import SettingVisibilityPresetsModel
 from cura.Machines.Models.UserChangesModel import UserChangesModel
-from cura.Machines.Models.IntentModel import IntentModel
-from cura.Machines.Models.IntentCategoryModel import IntentCategoryModel
-
-from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+from cura.Operations.SetParentOperation import SetParentOperation
 from cura.PrinterOutput.NetworkMJPGImage import NetworkMJPGImage
-
-import cura.Settings.cura_empty_instance_containers
+from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
+from cura.Scene import ZOffsetDecorator
+from cura.Scene.BlockSlicingDecorator import BlockSlicingDecorator
+from cura.Scene.BuildPlateDecorator import BuildPlateDecorator
+from cura.Scene.ConvexHullDecorator import ConvexHullDecorator
+from cura.Scene.CuraSceneController import CuraSceneController
+from cura.Scene.CuraSceneNode import CuraSceneNode
+from cura.Scene.SliceableObjectDecorator import SliceableObjectDecorator
 from cura.Settings.ContainerManager import ContainerManager
 from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 from cura.Settings.CuraFormulaFunctions import CuraFormulaFunctions
 from cura.Settings.ExtruderManager import ExtruderManager
 from cura.Settings.ExtruderStack import ExtruderStack
+from cura.Settings.GlobalStack import GlobalStack
+from cura.Settings.IntentManager import IntentManager
 from cura.Settings.MachineManager import MachineManager
 from cura.Settings.MachineNameValidator import MachineNameValidator
-from cura.Settings.IntentManager import IntentManager
 from cura.Settings.MaterialSettingsVisibilityHandler import MaterialSettingsVisibilityHandler
 from cura.Settings.SettingInheritanceManager import SettingInheritanceManager
 from cura.Settings.SidebarCustomMenuItemsModel import SidebarCustomMenuItemsModel
 from cura.Settings.SimpleModeSettingsManager import SimpleModeSettingsManager
-
 from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
-
 from cura.UI import CuraSplashScreen, MachineActionManager, PrintInformation
+from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.MachineSettingsManager import MachineSettingsManager
 from cura.UI.ObjectsModel import ObjectsModel
-from cura.UI.TextManager import TextManager
-from cura.UI.AddPrinterPagesModel import AddPrinterPagesModel
 from cura.UI.RecommendedMode import RecommendedMode
+from cura.UI.TextManager import TextManager
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
-
+from cura.UltimakerCloud import UltimakerCloudAuthentication
 from cura.Utils.NetworkingUtil import NetworkingUtil
-
-from .SingleInstance import SingleInstance
-from .AutoSave import AutoSave
-from . import PlatformPhysics
 from . import BuildVolume
 from . import CameraAnimation
 from . import CuraActions
+from . import PlatformPhysics
 from . import PrintJobPreviewImageProvider
-
-from cura.TaskManagement.OnExitCallbackManager import OnExitCallbackManager
-
-from cura import ApplicationMetadata, UltimakerCloudAuthentication
-from cura.Settings.GlobalStack import GlobalStack
+from .AutoSave import AutoSave
+from .SingleInstance import SingleInstance
 
 if TYPE_CHECKING:
     from UM.Settings.EmptyInstanceContainer import EmptyInstanceContainer
@@ -263,6 +242,7 @@ class CuraApplication(QtApplication):
 
         # Backups
         self._auto_save = None  # type: Optional[AutoSave]
+        self._enable_save = True
 
         self._container_registry_class = CuraContainerRegistry
         # Redefined here in order to please the typing.
@@ -706,15 +686,20 @@ class CuraApplication(QtApplication):
             self._message_box_callback = None
             self._message_box_callback_arguments = []
 
+    def enableSave(self, enable: bool):
+        self._enable_save = enable
+
     # Cura has multiple locations where instance containers need to be saved, so we need to handle this differently.
     def saveSettings(self) -> None:
-        if not self.started:
+        if not self.started or not self._enable_save:
             # Do not do saving during application start or when data should not be saved on quit.
             return
         ContainerRegistry.getInstance().saveDirtyContainers()
         self.savePreferences()
 
     def saveStack(self, stack):
+        if not self._enable_save:
+            return
         ContainerRegistry.getInstance().saveContainer(stack)
 
     @pyqtSlot(str, result = QUrl)
