@@ -684,7 +684,10 @@ class MachineManager(QObject):
             if other_machine_stacks:
                 self.setActiveMachine(other_machine_stacks[0]["id"])
 
-        metadata = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)[0]
+        metadatas = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)
+        if not metadatas:
+            return  # machine_id doesn't exist. Nothing to remove.
+        metadata = metadatas[0]
         ExtruderManager.getInstance().removeMachineExtruders(machine_id)
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
