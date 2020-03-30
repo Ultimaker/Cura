@@ -267,6 +267,17 @@
                     "settable_per_meshgroup": false,
                     "settable_globally": false
                 },
+                "machine_nozzle_head_distance":
+                {
+                    "label": "Nozzle Length",
+                    "description": "The height difference between the tip of the nozzle and the lowest part of the print head.",
+                    "unit": "mm",
+                    "default_value": 3,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
                 "machine_nozzle_expansion_angle":
                 {
                     "label": "Nozzle Angle",

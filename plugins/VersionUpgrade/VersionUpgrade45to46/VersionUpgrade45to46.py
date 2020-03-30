@@ -8,7 +8,6 @@ from UM.VersionUpgrade import VersionUpgrade
 
 _removed_settings = {
     "machine_filament_park_distance",
-    "machine_nozzle_head_distance"
 }
 
 class VersionUpgrade45to46(VersionUpgrade):
