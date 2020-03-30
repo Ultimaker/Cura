@@ -22,7 +22,6 @@
         "machine_height": { "default_value": 615 },
         "machine_heated_bed": { "default_value": true },
         "material_bed_temp_wait": { "default_value": false },
-        "machine_filament_park_distance": { "value": "machine_heat_zone_length" },
         "machine_nozzle_heat_up_speed": { "default_value": 1.4 },
         "machine_nozzle_cool_down_speed": { "default_value": 0.8 },
         "machine_head_with_fans_polygon":
