@@ -53,8 +53,10 @@ UM.Dialog
                 id: icon
                 width: 30 * screenScaleFactor
                 height: width
+                sourceSize.width: width
+                sourceSize.height: height
                 fillMode: Image.PreserveAspectFit
-                source: licenseModel.iconUrl || "../../images/logobot.svg"
+                source: licenseModel.iconUrl || "../../images/placeholder.svg"
                 mipmap: true
             }
 
