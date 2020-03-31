@@ -52,11 +52,11 @@ fragment =
 
         result = layer0 * layer0.a + result * (1.0 - layer0.a);
 
-        float intersection_count = texture2D(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
+        float intersection_count = texture2D(u_layer2, v_uvs).r * 51.0; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
         float rest = mod(intersection_count + .01, 2.0);
-        if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
+        if (rest > 1.0 && rest < 1.5 && intersection_count < 49.0)
         {
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_scale);
+            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture2D(u_xray_error, v_uvs * u_xray_error_scale);
         }
 
         vec4 sum = vec4(0.0);
