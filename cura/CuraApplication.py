@@ -1382,13 +1382,14 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        for node in nodes:
+        for obj, node in enumerate(nodes):
             mesh_data = node.getMeshData()
 
             if mesh_data:
                 file_name = mesh_data.getFileName()
                 if file_name:
                     job = ReadMeshJob(file_name)
+                    job.object_to_be_reloaded = obj  # The object index to be loaded by this specific ReadMeshJob
                     job._node = node  # type: ignore
                     job.finished.connect(self._reloadMeshFinished)
                     if has_merged_nodes:
@@ -1575,10 +1576,15 @@ class CuraApplication(QtApplication):
     def _reloadMeshFinished(self, job):
         # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
         job_result = job.getResult()
+        object_to_be_reloaded = job.object_to_be_reloaded
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        mesh_data = job_result[0].getMeshData()
+        try:  # In case the object has disappeared after reloading, log a warning and keep the old mesh in the scene
+            mesh_data = job_result[object_to_be_reloaded].getMeshData()
+        except IndexError:
+            Logger.warning("Object at index {} no longer exists! Keeping the old version in the scene.".format(object_to_be_reloaded))
+            return
         if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
             return
