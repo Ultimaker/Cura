@@ -17,6 +17,7 @@ Item
     Label
     {
         text: catalog.i18nc("@info", "You will need to restart Cura before changes in packages have effect.")
+        wrapMode: Text.Wrap
         color: UM.Theme.getColor("text")
         height: UM.Theme.getSize("toolbox_footer_button").height
         verticalAlignment: Text.AlignVCenter
@@ -25,7 +26,7 @@ Item
             top: restartButton.top
             left: parent.left
             leftMargin: UM.Theme.getSize("wide_margin").width
-            right: restartButton.right
+            right: restartButton.left
             rightMargin: UM.Theme.getSize("default_margin").width
         }
         renderType: Text.NativeRendering
