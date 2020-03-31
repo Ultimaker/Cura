@@ -17,10 +17,10 @@ Item
     Label
     {
         text: catalog.i18nc("@info", "You will need to restart Cura before changes in packages have effect.")
-        wrapMode: Text.Wrap
         color: UM.Theme.getColor("text")
         height: UM.Theme.getSize("toolbox_footer_button").height
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.WordWrap
         anchors
         {
             top: restartButton.top
