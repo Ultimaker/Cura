@@ -86,8 +86,8 @@ UM.PreferencesPage
         prefixJobNameCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/jobname_prefix"))
         UM.Preferences.resetPreference("view/show_overhang");
         showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
-        UM.Preferences.resetPreference("view/show_xray_error");
-        showXrayErrorCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_xray_error"))
+        UM.Preferences.resetPreference("view/show_xray_warning");
+        showXrayErrorCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_xray_warning"))
         UM.Preferences.resetPreference("view/center_on_select");
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
