@@ -25,8 +25,6 @@ from UM.View.GL.OpenGL import OpenGL
 
 from UM.i18n import i18nCatalog
 
-from cura.CuraApplication import CuraApplication
-
 from cura.Settings.ExtruderManager import ExtruderManager
 
 from cura import XRayPass
@@ -69,14 +67,14 @@ class SolidView(View):
         self._next_xray_checking_time = time.time()
         self._xray_checking_update_time = 1.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
-        self._xray_warning_message = Message(catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces.")
-                                             , lifetime = 60 * 5 # leave message for 5 minutes
-                                             , title = catalog.i18nc("@info:title", "Model errors"),
-                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
-        self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
-        CuraApplication.getInstance().getPreferences().addPreference(self._show_xray_warning_preference, True)
+        self._xray_warning_message = Message(
+            catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
+            lifetime = 60 * 5, # leave message for 5 minutes
+            title = catalog.i18nc("@info:title", "Model errors"),
+        )
+        application.getPreferences().addPreference(self._show_xray_warning_preference, True)
 
-        Application.getInstance().engineCreatedSignal.connect(self._onGlobalContainerChanged)
+        application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
@@ -135,7 +133,7 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
-        if not CuraApplication.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+        if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
             self._xray_error_image = None
             self._xray_shader = None
             self._xray_composite_shader = None
@@ -270,7 +268,7 @@ class SolidView(View):
     def endRendering(self):
         # check whether the xray overlay is showing badness
         if time.time() > self._next_xray_checking_time\
-                and CuraApplication.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
             self._next_xray_checking_time = time.time() + self._xray_checking_update_time
 
             xray_img = self._xray_pass.getOutput()
@@ -304,9 +302,6 @@ class SolidView(View):
                 self._xray_warning_message.show()
                 Logger.log("i", "X-Ray overlay found non-manifold pixels.")
 
-    def _onDontAskMeAgain(self, checked: bool) -> None:
-        CuraApplication.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
-
     def event(self, event):
         if event.type == Event.ViewActivateEvent:
             # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
@@ -323,7 +318,7 @@ class SolidView(View):
             if Platform.isOSX():
                 if QOpenGLContext.currentContext() is None:
                     Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
-                    CuraApplication.getInstance().callLater(lambda e = event: self.event(e))
+                    Application.getInstance().callLater(lambda e = event: self.event(e))
                     return
 
 
