@@ -67,11 +67,11 @@ class SolidView(View):
         self._next_xray_checking_time = time.time()
         self._xray_checking_update_time = 1.0 # seconds
         self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
-        self._xray_warning_message = Message(catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces.")
-                                             , lifetime = 60 * 5 # leave message for 5 minutes
-                                             , title = catalog.i18nc("@info:title", "Model errors"),
-                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
-        self._xray_warning_message.optionToggled.connect(self._onDontAskMeAgain)
+        self._xray_warning_message = Message(
+            catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
+            lifetime = 60 * 5, # leave message for 5 minutes
+            title = catalog.i18nc("@info:title", "Model errors"),
+        )
         application.getPreferences().addPreference(self._show_xray_warning_preference, True)
 
         application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
@@ -133,44 +133,55 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
-        if not self._xray_error_image:
-            self._xray_error_image = OpenGL.getInstance().createTexture()
-            texture_file = "xray_error.png"
-            try:
-                texture_image = QImage(Resources.getPath(Resources.Images, texture_file)).mirrored()
-                self._xray_error_image.setImage(texture_image)
-                self._xray_error_image_size = texture_image.size()
-            except FileNotFoundError:
-                Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
+        if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+            self._xray_error_image = None
+            self._xray_shader = None
+            self._xray_composite_shader = None
+            if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._old_layer_bindings = None
+                self._old_composite_shader = None
+                self._xray_warning_message.hide()
+        else:
+            if not self._xray_error_image:
+                self._xray_error_image = OpenGL.getInstance().createTexture()
+                texture_file = "xray_error.png"
+                try:
+                    texture_image = QImage(Resources.getPath(Resources.Images, texture_file)).mirrored()
+                    self._xray_error_image.setImage(texture_image)
+                    self._xray_error_image_size = texture_image.size()
+                except FileNotFoundError:
+                    Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
 
-        if not self._xray_shader:
-            self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
+            if not self._xray_shader:
+                self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
-        if not self._xray_composite_shader:
-            self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
-            theme = Application.getInstance().getTheme()
-            self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-            self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
-            self._xray_composite_shader.setTexture(3, self._xray_error_image)
+            if not self._xray_composite_shader:
+                self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
+                theme = Application.getInstance().getTheme()
+                self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._xray_composite_shader.setTexture(3, self._xray_error_image)
 
-        renderer = self.getRenderer()
-        if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
-            # Currently the RenderPass constructor requires a size > 0
-            # This should be fixed in RenderPass's constructor.
-            self._xray_pass = XRayPass.XRayPass(1, 1)
+            renderer = self.getRenderer()
+            if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
+                # Currently the RenderPass constructor requires a size > 0
+                # This should be fixed in RenderPass's constructor.
+                self._xray_pass = XRayPass.XRayPass(1, 1)
 
-            renderer.addRenderPass(self._xray_pass)
+                renderer.addRenderPass(self._xray_pass)
 
-            if not self._composite_pass:
-                self._composite_pass = self.getRenderer().getRenderPass("composite")
+                if not self._composite_pass:
+                    self._composite_pass = self.getRenderer().getRenderPass("composite")
 
-            self._old_layer_bindings = self._composite_pass.getLayerBindings()
-            self._composite_pass.setLayerBindings(["default", "selection", "xray"])
-            self._old_composite_shader = self._composite_pass.getCompositeShader()
-            self._composite_pass.setCompositeShader(self._xray_composite_shader)
+                self._old_layer_bindings = self._composite_pass.getLayerBindings()
+                self._composite_pass.setLayerBindings(["default", "selection", "xray"])
+                self._old_composite_shader = self._composite_pass.getCompositeShader()
+                self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
-        error_image_scale = [renderer.getViewportWidth() / self._xray_error_image_size.width(), renderer.getViewportHeight() / self._xray_error_image_size.height()]
-        self._xray_composite_shader.setUniformValue("u_xray_error_scale", error_image_scale)
+            error_image_scale = [renderer.getViewportWidth() / self._xray_error_image_size.width(), renderer.getViewportHeight() / self._xray_error_image_size.height()]
+            self._xray_composite_shader.setUniformValue("u_xray_error_scale", error_image_scale)
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -290,9 +301,6 @@ class SolidView(View):
                 self._next_xray_checking_time = time.time() + self._xray_warning_cooldown
                 self._xray_warning_message.show()
                 Logger.log("i", "X-Ray overlay found non-manifold pixels.")
-
-    def _onDontAskMeAgain(self, checked: bool) -> None:
-        Application.getInstance().getPreferences().setValue(self._show_xray_warning_preference, not checked)
 
     def event(self, event):
         if event.type == Event.ViewActivateEvent:
