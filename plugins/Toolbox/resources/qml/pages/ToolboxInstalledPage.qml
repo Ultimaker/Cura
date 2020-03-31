@@ -20,7 +20,6 @@ ScrollView
         width: page.width
         spacing: UM.Theme.getSize("default_margin").height
         padding: UM.Theme.getSize("wide_margin").width
-        visible: toolbox.pluginsInstalledModel.items.length > 0
         height: childrenRect.height + 2 * UM.Theme.getSize("wide_margin").height
 
         Label
@@ -35,6 +34,7 @@ ScrollView
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            visible: toolbox.pluginsInstalledModel.count > 0
         }
 
         Rectangle
@@ -50,6 +50,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: toolbox.pluginsInstalledModel.count > 0
             Column
             {
                 anchors
@@ -80,6 +81,7 @@ ScrollView
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            visible: toolbox.materialsInstalledModel.count > 0
         }
 
         Rectangle
@@ -95,6 +97,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: toolbox.materialsInstalledModel.count > 0
             Column
             {
                 anchors
@@ -108,7 +111,7 @@ ScrollView
                 {
                     id: installedMaterialsList
                     model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled }
+                    delegate: ToolboxInstalledTile { }
                 }
             }
         }
@@ -152,8 +155,8 @@ ScrollView
                 Repeater
                 {
                     id: bundledPluginsList
-                    model: toolbox.pluginsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
+                    model: toolbox.pluginsBundledModel
+                    delegate: ToolboxInstalledTile { }
                 }
             }
         }
@@ -197,8 +200,8 @@ ScrollView
                 Repeater
                 {
                     id: bundledMaterialsList
-                    model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
+                    model: toolbox.materialsBundledModel
+                    delegate: ToolboxInstalledTile {}
                 }
             }
         }
