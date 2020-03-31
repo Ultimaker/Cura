@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 11,
+        "setting_version": 12,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -297,18 +297,6 @@
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
-                },
-                "machine_filament_park_distance":
-                {
-                    "label": "Filament Park Distance",
-                    "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
-                    "unit": "mm",
-                    "default_value": 16,
-                    "value": "machine_heat_zone_length",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
