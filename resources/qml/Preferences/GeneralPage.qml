@@ -88,8 +88,6 @@ UM.PreferencesPage
         showOverhangCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_overhang"))
         UM.Preferences.resetPreference("view/show_xray_warning");
         showXrayErrorCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_warning"))
-        UM.Preferences.resetPreference("view/show_xray_warning_message");
-        showXrayErrorMessageCheckbox.checked = boolCheck(UM.Preferences.getValue("view/show_warning_message"))
         UM.Preferences.resetPreference("view/center_on_select");
         centerOnSelectCheckbox.checked = boolCheck(UM.Preferences.getValue("view/center_on_select"))
         UM.Preferences.resetPreference("view/invert_zoom");
@@ -355,24 +353,6 @@ UM.PreferencesPage
 
                     checked: boolCheck(UM.Preferences.getValue("view/show_xray_warning"))
                     onClicked: UM.Preferences.setValue("view/show_xray_warning",  checked)
-
-                    text: catalog.i18nc("@option:check", "Display model errors");
-                }
-            }
-
-            UM.TooltipArea
-            {
-                width: childrenRect.width;
-                height: childrenRect.height;
-
-                text: catalog.i18nc("@info:tooltip", "Highlight missing or extraneous surfaces of the model using warning signs. The toolpaths will often be missing parts of the intended geometry.")
-
-                CheckBox
-                {
-                    id: showXrayErrorMessageCheckbox
-
-                    checked: boolCheck(UM.Preferences.getValue("view/show_xray_warning_message"))
-                    onClicked: UM.Preferences.setValue("view/show_xray_warning_message",  checked)
 
                     text: catalog.i18nc("@option:check", "Display model errors");
                 }
