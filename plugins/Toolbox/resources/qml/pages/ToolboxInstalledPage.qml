@@ -50,6 +50,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: false  // Will become true if any children are 'repeaterized', see below.
             Column
             {
                 anchors
@@ -63,7 +64,7 @@ ScrollView
                 {
                     id: pluginList
                     model: toolbox.pluginsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled }
+                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled; onVisibleChanged: { installedPlugins.visible = true } }
                 }
             }
         }
@@ -95,6 +96,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: false  // Will become true if any children are 'repeaterized', see below.
             Column
             {
                 anchors
@@ -108,7 +110,7 @@ ScrollView
                 {
                     id: installedMaterialsList
                     model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled }
+                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled; onVisibleChanged: { installedMaterialsList.visible = true } }
                 }
             }
         }
@@ -140,6 +142,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: false  // Will become true if any children are 'repeaterized', see below.
             Column
             {
                 anchors
@@ -153,7 +156,7 @@ ScrollView
                 {
                     id: bundledPluginsList
                     model: toolbox.pluginsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
+                    delegate: ToolboxInstalledTile { visible: model.is_bundled; onVisibleChanged: { bundledPlugins.visible = true }  }
                 }
             }
         }
@@ -185,6 +188,7 @@ ScrollView
             height: childrenRect.height + UM.Theme.getSize("default_margin").width
             border.color: UM.Theme.getColor("lining")
             border.width: UM.Theme.getSize("default_lining").width
+            visible: false  // Will become true if any children are 'repeaterized', see below.
             Column
             {
                 anchors
@@ -198,7 +202,7 @@ ScrollView
                 {
                     id: bundledMaterialsList
                     model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
+                    delegate: ToolboxInstalledTile { visible: model.is_bundled; onVisibleChanged: { bundledMaterials.visible = true }  }
                 }
             }
         }
