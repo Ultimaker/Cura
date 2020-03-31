@@ -31,7 +31,7 @@ ScrollView
                 right: parent.right
                 margins: parent.padding
             }
-            text: catalog.i18nc("@title:tab", "Plugins")
+            text: catalog.i18nc("@title:tab", "Installed Plugins")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("large")
             renderType: Text.NativeRendering
@@ -61,9 +61,9 @@ ScrollView
                 }
                 Repeater
                 {
-                    id: materialList
+                    id: pluginList
                     model: toolbox.pluginsInstalledModel
-                    delegate: ToolboxInstalledTile {}
+                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled }
                 }
             }
         }
@@ -76,7 +76,52 @@ ScrollView
                 right: parent.right
                 margins: parent.padding
             }
-            text: catalog.i18nc("@title:tab", "Materials")
+            text: catalog.i18nc("@title:tab", "Bundled Plugins")
+            color: UM.Theme.getColor("text_medium")
+            font: UM.Theme.getFont("large")
+            renderType: Text.NativeRendering
+        }
+
+        Rectangle
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
+            id: bundledPlugins
+            color: "transparent"
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
+            border.color: UM.Theme.getColor("lining")
+            border.width: UM.Theme.getSize("default_lining").width
+            Column
+            {
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    margins: UM.Theme.getSize("default_margin").width
+                }
+                Repeater
+                {
+                    id: bundledPluginsList
+                    model: toolbox.pluginsInstalledModel
+                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
+                }
+            }
+        }
+
+        Label
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
+            text: catalog.i18nc("@title:tab", "Installed Materials")
             color: UM.Theme.getColor("text_medium")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
@@ -106,9 +151,54 @@ ScrollView
                 }
                 Repeater
                 {
-                    id: pluginList
+                    id: installedMaterialsList
                     model: toolbox.materialsInstalledModel
-                    delegate: ToolboxInstalledTile {}
+                    delegate: ToolboxInstalledTile { visible: ! model.is_bundled }
+                }
+            }
+        }
+
+        Label
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
+            text: catalog.i18nc("@title:tab", "Bundled Materials")
+            color: UM.Theme.getColor("text_medium")
+            font: UM.Theme.getFont("medium")
+            renderType: Text.NativeRendering
+        }
+
+        Rectangle
+        {
+            anchors
+            {
+                left: parent.left
+                right: parent.right
+                margins: parent.padding
+            }
+            id: bundledMaterials
+            color: "transparent"
+            height: childrenRect.height + UM.Theme.getSize("default_margin").width
+            border.color: UM.Theme.getColor("lining")
+            border.width: UM.Theme.getSize("default_lining").width
+            Column
+            {
+                anchors
+                {
+                    top: parent.top
+                    right: parent.right
+                    left: parent.left
+                    margins: UM.Theme.getSize("default_margin").width
+                }
+                Repeater
+                {
+                    id: bundledMaterialsList
+                    model: toolbox.materialsInstalledModel
+                    delegate: ToolboxInstalledTile { visible: model.is_bundled }
                 }
             }
         }
