@@ -1574,7 +1574,6 @@ class CuraApplication(QtApplication):
     fileCompleted = pyqtSignal(str)
 
     def _reloadMeshFinished(self, job):
-        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
         job_result = job.getResult()
         object_to_be_reloaded = job.object_to_be_reloaded
         if len(job_result) == 0:
