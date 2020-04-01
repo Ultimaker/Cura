@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
+import re
 import sys
 import time
 from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
@@ -1382,22 +1383,62 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        for obj, node in enumerate(nodes):
+        objects_in_filename = {}
+        for node in nodes:
             mesh_data = node.getMeshData()
-
             if mesh_data:
                 file_name = mesh_data.getFileName()
                 if file_name:
-                    job = ReadMeshJob(file_name)
-                    job.object_to_be_reloaded = obj  # The object index to be loaded by this specific ReadMeshJob
-                    job._node = node  # type: ignore
-                    job.finished.connect(self._reloadMeshFinished)
-                    if has_merged_nodes:
-                        job.finished.connect(self.updateOriginOfMergedMeshes)
-
-                    job.start()
+                    if file_name not in objects_in_filename:
+                        objects_in_filename[file_name] = []
+                    if file_name in objects_in_filename:
+                        objects_in_filename[file_name].append(node)
                 else:
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
+
+        for file_name, nodes in objects_in_filename.items():
+            for object_index, node in enumerate(nodes):
+                job = ReadMeshJob(file_name)
+                job.object_to_be_reloaded = self._getObjectIndexInFile(file_name, node.getName())  # The object index in file to be loaded by this specific job
+                job._node = node  # type: ignore
+                job.finished.connect(self._reloadMeshFinished)
+                if has_merged_nodes:
+                    job.finished.connect(self.updateOriginOfMergedMeshes)
+
+                job.start()
+
+    @staticmethod
+    def _getObjectIndexInFile(file_name: str, node_name: str) -> int:
+        """
+        This function extracts the index of the object inside a file. This is achieved by looking into the name
+        of the node. There are two possibilities:
+         * The node is named as filename.ext, filename.ext(1), filename.ext(2), etc, which maps to indices 0, 1, 2, ...
+         * The node is named as Object 1, Object 2, Object 3 etc, which maps to indices 0, 1, 2 ...
+
+        :param file_name: The name of the file where the node has been retrieved from
+        :param node_name: The name of the node as presented in the Scene
+        :return: The index of the node inside the file_name
+        """
+        file_name = file_name.split("/")[-1]  # Keep only the filename, without the path
+        node_int_index = 0
+        if file_name in node_name:
+            # if the file_name exists inside the node_name, remove it along with all parenthesis and spaces
+            node_str_index = re.sub(r'[() ]', '', node_name.replace(file_name, ""))
+            try:
+                node_int_index = int(node_str_index)
+            except ValueError:
+                Logger.warning("Object '{}' has an incorrect index '{}'.".format(node_name, node_str_index))
+                return 0
+        elif "Object " in node_name:
+            # if the nodes are named as Object 1, Object 2, etc, remove 'Object ' and keep only the number
+            node_str_index = node_name.replace("Object ", "")
+            try:
+                node_int_index = int(node_str_index) - 1
+            except ValueError:
+                Logger.warning("Object '{}' has an incorrect index '{}'.".format(node_name, node_str_index))
+                return 0
+        return node_int_index
+
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
