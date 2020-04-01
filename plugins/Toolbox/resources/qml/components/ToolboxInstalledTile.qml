@@ -17,7 +17,8 @@ Item
         color: UM.Theme.getColor("lining")
         width: parent.width
         height: Math.floor(UM.Theme.getSize("default_lining").height)
-        anchors.bottom: parent.bottom
+        anchors.bottom: parent.top
+        visible: index != 0
     }
     Row
     {
