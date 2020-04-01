@@ -1424,6 +1424,8 @@ class CuraApplication(QtApplication):
         if file_name in node_name:
             # if the file_name exists inside the node_name, remove it along with all parenthesis and spaces
             node_str_index = re.sub(r'[() ]', '', node_name.replace(file_name, ""))
+            if node_str_index == "":
+                node_str_index = "0"
             try:
                 node_int_index = int(node_str_index)
             except ValueError:
