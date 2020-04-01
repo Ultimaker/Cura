@@ -49,6 +49,8 @@ Item
             {
                 text: model.name
                 width: parent.width
+                maximumLineCount: 1
+                elide: Text.ElideRight
                 wrapMode: Text.WordWrap
                 font: UM.Theme.getFont("large_bold")
                 color: pluginInfo.color
