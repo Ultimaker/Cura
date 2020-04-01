@@ -764,7 +764,7 @@ class Toolbox(QObject, Extension):
     def pluginsInstalledModel(self) -> PackagesModel:
         return self._plugins_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def pluginsBundledModel(self) -> PackagesModel:
         return self._plugins_bundled_model
 
@@ -780,7 +780,7 @@ class Toolbox(QObject, Extension):
     def materialsInstalledModel(self) -> PackagesModel:
         return self._materials_installed_model
 
-    @pyqtProperty(QObject, constant=True)
+    @pyqtProperty(QObject, constant = True)
     def materialsBundledModel(self) -> PackagesModel:
         return self._materials_bundled_model
 
