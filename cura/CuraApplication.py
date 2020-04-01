@@ -5,7 +5,7 @@ import os
 import re
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
+from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
@@ -1383,7 +1383,7 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        objects_in_filename = {}
+        objects_in_filename = {}  # type: Dict[str, List[CuraSceneNode]]
         for node in nodes:
             mesh_data = node.getMeshData()
             if mesh_data:
