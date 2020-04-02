@@ -92,13 +92,21 @@ class ImageReaderUI(QObject):
     def onOkButtonClicked(self):
         self._cancelled = False
         self._ui_view.close()
-        self._ui_lock.release()
+        try:
+            self._ui_lock.release()
+        except RuntimeError:
+            # We don't really care if it was held or not. Just make sure it's not held now
+            pass
 
     @pyqtSlot()
     def onCancelButtonClicked(self):
         self._cancelled = True
         self._ui_view.close()
-        self._ui_lock.release()
+        try:
+            self._ui_lock.release()
+        except RuntimeError:
+            # We don't really care if it was held or not. Just make sure it's not held now
+            pass
 
     @pyqtSlot(str)
     def onWidthChanged(self, value):
