@@ -49,6 +49,15 @@ Button
     height: UM.Theme.getSize("action_button").height
     hoverEnabled: true
 
+    Component.onCompleted: {
+        if(fixedWidthMode){
+            buttonText.width = width - leftPadding - rightPadding
+        } else {
+            buttonText.width = (maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined
+        }
+    }
+
+
     contentItem: Row
     {
         spacing: UM.Theme.getSize("narrow_margin").width
@@ -84,9 +93,9 @@ Button
             font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
+            // width is set by parent because it depends on button.fixedWidthMode
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
