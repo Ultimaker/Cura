@@ -85,7 +85,7 @@
         "infill_before_walls": { "value": true },
         "infill_overlap": { "value": 30.0 },
         "skin_overlap": { "value": 10.0 },
-        "infill_wipe_dist": { "value": 1.0 },
+        "infill_wipe_dist": { "value": 0 },
         "wall_0_wipe_dist": { "value": 0.2 },
 
         "fill_perimeter_gaps": { "value": "'everywhere'" },

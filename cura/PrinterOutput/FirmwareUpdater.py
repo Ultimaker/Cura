@@ -33,6 +33,10 @@ class FirmwareUpdater(QObject):
         else:
             self._firmware_file = firmware_file
 
+        if self._firmware_file == "":
+            self._setFirmwareUpdateState(FirmwareUpdateState.firmware_not_found_error)
+            return
+        
         self._setFirmwareUpdateState(FirmwareUpdateState.updating)
 
         self._update_firmware_thread.start()
