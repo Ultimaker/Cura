@@ -49,15 +49,6 @@ Button
     height: UM.Theme.getSize("action_button").height
     hoverEnabled: true
 
-    Component.onCompleted: {
-        if(fixedWidthMode){
-            buttonText.width = width - leftPadding - rightPadding
-        } else {
-            buttonText.width = (maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined
-        }
-    }
-
-
     contentItem: Row
     {
         spacing: UM.Theme.getSize("narrow_margin").width
@@ -93,12 +84,22 @@ Button
             font: UM.Theme.getFont("medium")
             visible: text != ""
             renderType: Text.NativeRendering
-            // width is set by parent because it depends on button.fixedWidthMode
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+
+            Binding
+            {
+                // When settting width directly, an unjust binding loop warning would be triggered,
+                // because button.width is part of this expression.
+                // Using parent.width is fine in fixedWidthMode.
+                target: buttonText
+                property: "width"
+                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
+                                             : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
+            }
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.
