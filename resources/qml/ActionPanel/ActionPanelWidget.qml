@@ -15,6 +15,7 @@ import Cura 1.0 as Cura
 Item
 {
     id: base
+    width: actionPanelWidget.width + additionalComponents.width
     height: childrenRect.height
     visible: CuraApplication.platformActivity
 
