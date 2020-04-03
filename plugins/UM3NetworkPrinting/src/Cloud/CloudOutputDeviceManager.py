@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Dict, List, Optional
+
 from PyQt5.QtCore import QTimer
 
 from UM import i18nCatalog
@@ -11,7 +12,6 @@ from cura.API import Account
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
-
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
@@ -100,15 +100,13 @@ class CloudOutputDeviceManager:
 
     def _onDeviceDiscovered(self, cluster_data: CloudClusterResponse) -> None:
         device = CloudOutputDevice(self._api, cluster_data)
-        CuraApplication.getInstance().getDiscoveredPrintersModel().addDiscoveredPrinter(
-            ip_address=device.key,
-            key=device.getId(),
-            name=device.getName(),
-            create_callback=self._createMachineFromDiscoveredDevice,
-            machine_type=device.printerType,
-            device=device
-        )
         self._remote_clusters[device.getId()] = device
+
+        # Create a machine if we don't already have it. Do not make it the active machine.
+        meta_data = {self.META_CLUSTER_ID: device.key}
+        if CuraApplication.getInstance().getMachineManager().getMachine(device.printerType, meta_data) is None:
+            self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
+
         self.discoveredDevicesChanged.emit()
         self._connectToActiveMachine()
 
@@ -134,19 +132,22 @@ class CloudOutputDeviceManager:
             output_device_manager.removeOutputDevice(device.key)
         self.discoveredDevicesChanged.emit()
 
-    def _createMachineFromDiscoveredDevice(self, key: str) -> None:
+    def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> None:
         device = self._remote_clusters[key]
         if not device:
             return
 
-        # Create a new machine and activate it.
+        # Create a new machine.
         # We do not use use MachineManager.addMachine here because we need to set the cluster ID before activating it.
         new_machine = CuraStackBuilder.createMachine(device.name, device.printerType)
         if not new_machine:
             Logger.log("e", "Failed creating a new machine")
             return
         new_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
-        CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+
+        if activate:
+            CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
+
         self._connectToOutputDevice(device, new_machine)
 
     ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
