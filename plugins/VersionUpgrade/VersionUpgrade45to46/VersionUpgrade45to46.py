@@ -18,10 +18,16 @@ class VersionUpgrade45to46(VersionUpgrade):
         setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
         return format_version * 1000000 + setting_version
 
-    ##  Upgrades Preferences to have the new version number.
-    #
-    #   This renames the renamed settings in the list of visible settings.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades preferences to have the new version number.
+
+        This removes any settings that were removed in the new Cura version.
+        :param serialized: The original contents of the preferences file.
+        :param filename: The file name of the preferences file.
+        :return: A list of new file names, and a list of the new contents for
+        those files.
+        """
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -39,11 +45,16 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades instance containers to have the new version
-    #   number.
-    #
-    #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades instance containers to have the new version number.
+
+        This removes any settings that were removed in the new Cura version.
+        :param serialized: The original contents of the instance container.
+        :param filename: The original file name of the instance container.
+        :return: A list of new file names, and a list of the new contents for
+        those files.
+        """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
@@ -59,8 +70,14 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades stacks to have the new version number.
+        :param serialized: The original contents of the stack.
+        :param filename: The original file name of the stack.
+        :return: A list of new file names, and a list of the new contents for
+        those files.
+        """
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
