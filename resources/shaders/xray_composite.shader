@@ -56,7 +56,7 @@ fragment =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49.0)
         {
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture2D(u_xray_error, v_uvs * u_xray_error_scale);
+            result = mix(result, texture2D(u_xray_error, v_uvs * u_xray_error_scale), u_xray_error_strength);
         }
 
         vec4 sum = vec4(0.0);
@@ -132,7 +132,7 @@ fragment41core =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
         {
-            result = result * (1.0 - u_xray_error_strength) + u_xray_error_strength * texture(u_xray_error, v_uvs * u_xray_error_scale);
+            result = mix(result, texture(u_xray_error, v_uvs * u_xray_error_scale), u_xray_error_strength);
         }
 
         vec4 sum = vec4(0.0);
