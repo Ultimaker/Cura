@@ -50,7 +50,7 @@ fragment =
         vec4 result = u_background_color;
         vec4 layer0 = texture2D(u_layer0, v_uvs);
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
+        result = mix(result, layer0, layer0.a);
 
         float intersection_count = texture2D(u_layer2, v_uvs).r * 51.0; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
         float rest = mod(intersection_count + .01, 2.0);
@@ -126,7 +126,7 @@ fragment41core =
         vec4 result = u_background_color;
         vec4 layer0 = texture(u_layer0, v_uvs);
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
+        result = mix(result, layer0, layer0.a);
 
         float intersection_count = texture(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
         float rest = mod(intersection_count + .01, 2.0);
