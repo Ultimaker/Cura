@@ -1397,50 +1397,14 @@ class CuraApplication(QtApplication):
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
 
         for file_name, nodes in objects_in_filename.items():
-            for object_index, node in enumerate(nodes):
+            for node in nodes:
                 job = ReadMeshJob(file_name)
-                job.object_to_be_reloaded = self._getObjectIndexInFile(file_name, node.getName())  # The object index in file to be loaded by this specific job
                 job._node = node  # type: ignore
                 job.finished.connect(self._reloadMeshFinished)
                 if has_merged_nodes:
                     job.finished.connect(self.updateOriginOfMergedMeshes)
 
                 job.start()
-
-    @staticmethod
-    def _getObjectIndexInFile(file_name: str, node_name: str) -> int:
-        """
-        This function extracts the index of the object inside a file. This is achieved by looking into the name
-        of the node. There are two possibilities:
-         * The node is named as filename.ext, filename.ext(1), filename.ext(2), etc, which maps to indices 0, 1, 2, ...
-         * The node is named as Object 1, Object 2, Object 3 etc, which maps to indices 0, 1, 2 ...
-
-        :param file_name: The name of the file where the node has been retrieved from
-        :param node_name: The name of the node as presented in the Scene
-        :return: The index of the node inside the file_name
-        """
-        file_name = file_name.split("/")[-1]  # Keep only the filename, without the path
-        node_int_index = 0
-        if file_name in node_name:
-            # if the file_name exists inside the node_name, remove it along with all parenthesis and spaces
-            node_str_index = re.sub(r'[() ]', '', node_name.replace(file_name, ""))
-            if node_str_index == "":
-                node_str_index = "0"
-            try:
-                node_int_index = int(node_str_index)
-            except ValueError:
-                Logger.warning("Object '{}' has an incorrect index '{}'.".format(node_name, node_str_index))
-                return 0
-        elif "Object " in node_name:
-            # if the nodes are named as Object 1, Object 2, etc, remove 'Object ' and keep only the number
-            node_str_index = node_name.replace("Object ", "")
-            try:
-                node_int_index = int(node_str_index) - 1
-            except ValueError:
-                Logger.warning("Object '{}' has an incorrect index '{}'.".format(node_name, node_str_index))
-                return 0
-        return node_int_index
-
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1616,16 +1580,29 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
     fileCompleted = pyqtSignal(str)
 
-    def _reloadMeshFinished(self, job):
-        job_result = job.getResult()
-        object_to_be_reloaded = job.object_to_be_reloaded
+    def _reloadMeshFinished(self, job: ReadMeshJob) -> None:
+        """
+        Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
+        scene from its source file. The function gets all the nodes that exist in the file through the job result, and
+        then finds the scene node that it wants to refresh by its object id. Each job refreshes only one node.
+
+        :param job: The ReadMeshJob running in the background that reads all the meshes in a file
+        :return: None
+        """
+        job_result = job.getResult()  # nodes that exist inside the file read by this job
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        try:  # In case the object has disappeared after reloading, log a warning and keep the old mesh in the scene
-            mesh_data = job_result[object_to_be_reloaded].getMeshData()
-        except IndexError:
-            Logger.warning("Object at index {} no longer exists! Keeping the old version in the scene.".format(object_to_be_reloaded))
+        object_found = False
+        mesh_data = None
+        # Find the node to be refreshed based on its id
+        for job_result_node in job_result:
+            if job_result_node.getId() == job._node.getId():
+                mesh_data = job_result_node.getMeshData()
+                object_found = True
+                break
+        if not object_found:
+            Logger.warning("The object with id {} no longer exists! Keeping the old version in the scene.".format(job_result_node.getId()))
             return
         if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
