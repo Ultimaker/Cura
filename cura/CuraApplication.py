@@ -1580,7 +1580,7 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
     fileCompleted = pyqtSignal(str)
 
-    def _reloadMeshFinished(self, job: ReadMeshJob) -> None:
+    def _reloadMeshFinished(self, job) -> None:
         """
         Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
         scene from its source file. The function gets all the nodes that exist in the file through the job result, and
