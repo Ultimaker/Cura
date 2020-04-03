@@ -1,3 +1,63 @@
+[4.6.0]
+
+THANK YOU to all Ultimaker Cura users helping in the fight against COVID-19 – with 3D printing, volunteering, or just by staying home. Want to get involved? Find out more at https://ultimaker.com/in/cura/covid-19
+
+* New Intent profiles.
+In version 4.4 we introduced Intent profiles for the Ultimaker S3 and Ultimaker S5 which allow you to start prints at the click of a button without a lot of configuration steps. Due to popular demand, version 4.6 expands the range of Engineering Intent profiles to include more of the Ultimaker material portfolio: PC, Nylon, CPE, and CPE+. These work with 0.4 print cores.
+
+* Show active post processing scripts.
+fieldOfview has contributed an ease of use improvement to the post processing plugin. The number of enabled post processing scripts will now display as a badge notification over the post processing scripts icon. A tooltip gives extra information about which scripts are enabled for quick and easy inspection, so there's no need to open the post processing dialog.
+
+* Hole Horizontal Expansion.
+smartavionics has contributed a new setting that applies an offset to all holes on each layer, allowing you to manually enlarge or contract holes to compensate for horizontal expansion.
+
+* Per-model settings.
+The "Infill only" checkbox has been changed to a dropdown selection: “Infill mesh only” or “Cutting mesh”.
+
+* Transparent support rendering.
+In preview mode with ‘Line type’ selected, support material will render with transparency so you can easily see what’s being supported.
+
+* No stair stepping for PVA profiles.
+Stair stepping is intended to reduce the adhesion between support and the model, where the support rests on the model, and to reduce scarring. As PVA doesn't suffer from scarring or adhesion issues due to its water-solubility, this value has been set to 0 for PVA profiles. A known issue with the stair stepping algorithm causes support to disappear sometimes, so doing this reduces the chance of that happening when PVA is used.
+
+* Separators in extensions menu.
+fieldOfview has contributed a method for plugin authors to add separators between menu items in the “Extensions” submenu. The method is backwards-compatible so changes don’t have to be made in Cura and Uranium together.
+
+* Ultimaker account sign in prompt.
+Added clearer text to the sign in popup and first use flow to highlight the benefits of using an Ultimaker account with Cura.
+
+* Updated installer.
+Small fixes have been made to the installer. To keep up with the times, we’ve also updated the images to display an Ultimaker S3 instead of an Ultimaker 3.
+
+* Infill mesh ordering.
+When you have three objects overlapping each other and you set two of them to "Modify settings for infill of other models", then the setting "Infill Mesh Order" determines which of the two infill meshes gets priority where they overlap. This was broken for cutting meshes, so BagelOrb contributed a fix.
+
+* Backups storage size.
+We’ve put a hard limit on backup file size in this release to prevent other files being stored there.
+
+* 3MF gcode comments removed.
+Fixed a bug where comments were removed from Start/End G-codes when opening from a 3MF.
+
+* Print monitor preheat fields.
+Values in the print monitor preheat fields were broken in previous versions, they have now been fixed by fieldOfview.
+
+* Stepper motor disarming during pause at height.
+Some printers (like the Ultimaker S5) have a very heavy build platform. When the pause at height script was enabled, it would disarm the Z stepper motor at pause height. The weight of the build platform would cause the Z axis to lower by gravity and lose the Z position. ilyko96 has contributed a fix to the pause at height script so that the Z stepper motor now remains armed during a pause, locking the build plate in position.
+
+* Flying Bear printers.
+oducceu has contributed a machine definition for the Flying Bear Ghost 4S Printer.
+
+* Magicfirm printers.
+jeffkyjin has contributed machine definitions for MBot Grid II+, MBot Grid II+ (dual), MBot Grid IV+ and MBot Grid IV+ (dual).
+
+* HMS434.
+Updates to the HMS434 machine definition have been contributed by maukcc.
+
+* FabX Pro.
+hussainsail2002 has contributed machine definitions for FabX Pro and print profiles for REDD materials.
+
+* Disclaimer: Third-party machine definitions are accepted as contributed, and are not tested or maintained in any way by the Cura development team.
+
 [4.5.0]
 * Ultimaker Marketplace sync.
 Plugins and print profiles downloaded from the Ultimaker Marketplace will now become associated with your Ultimaker account when logged in. If changes are detected in your installation after logging in, an option to sync a list of available packages will become available. You can also add packages to your installation using the web-based Ultimaker Marketplace.
@@ -108,52 +168,52 @@ A new speed optimization for reading setting values from profiles.
  - Fixed a problem where custom profiles were disappearing when loading a project without a nozzle profile.
 
 [4.4.0]
-*Intent profiles. 
-What’s the intent of your print? A rapid prototype? A visual prototype? An end-use part with specific holes sizes? Intent profiles accelerate the CAD-CAM workflow by preconfiguring all the right settings in Ultimaker Cura for each of these use cases. Simply select a profile that matches the intent of your design, slice, and you’re ready to print immediately, without the need to adjust the typical settings. For now, there are three Intent profiles: 
-*‘Draft’ 
-Intended for initial prototypes and concept validation, and will print your design in the shortest time possible. 
+*Intent profiles.
+What’s the intent of your print? A rapid prototype? A visual prototype? An end-use part with specific holes sizes? Intent profiles accelerate the CAD-CAM workflow by preconfiguring all the right settings in Ultimaker Cura for each of these use cases. Simply select a profile that matches the intent of your design, slice, and you’re ready to print immediately, without the need to adjust the typical settings. For now, there are three Intent profiles:
+*‘Draft’
+Intended for initial prototypes and concept validation, and will print your design in the shortest time possible.
 *‘Engineering’
-Intended for high-dimensional accuracy, to print functional prototypes and mechanical end-use parts. 
+Intended for high-dimensional accuracy, to print functional prototypes and mechanical end-use parts.
 *‘Visual’
-Intended for visual prototypes and prints that need excellent aesthetic quality. 
-For now, these profiles work for the Ultimaker S5 and Ultimaker S3 with Ultimaker PLA, Tough PLA, and ABS materials, and include PVA and Breakaway combinations. More profiles will follow over time. 
+Intended for visual prototypes and prints that need excellent aesthetic quality.
+For now, these profiles work for the Ultimaker S5 and Ultimaker S3 with Ultimaker PLA, Tough PLA, and ABS materials, and include PVA and Breakaway combinations. More profiles will follow over time.
 
-*Per-model settings. 
-Per-model settings are a set of very powerful features for users who need to tweak specific settings in specific parts of the model. In previous releases these were buried in the interface somewhat, so this release has made them more discoverable with clear icons in the toolbar, so everyone can discover them. The per-model settings can now be accessed both when working from the recommended and the custom print settings mode. 
+*Per-model settings.
+Per-model settings are a set of very powerful features for users who need to tweak specific settings in specific parts of the model. In previous releases these were buried in the interface somewhat, so this release has made them more discoverable with clear icons in the toolbar, so everyone can discover them. The per-model settings can now be accessed both when working from the recommended and the custom print settings mode.
 
-*Specify network printer. 
-When connected to an Ultimaker Connect group of multiple printers, Ultimaker Cura once again shows a pop-up to select a designated printer for your printjob. This functionality had been disabled in the last version to ensure reliability when printing remotely. 
+*Specify network printer.
+When connected to an Ultimaker Connect group of multiple printers, Ultimaker Cura once again shows a pop-up to select a designated printer for your printjob. This functionality had been disabled in the last version to ensure reliability when printing remotely.
 
-*Performance improvements. 
-Various tweaks under the hood for a snappier, more responsive interface. This improvement is most noticeable when switching extruders, print profiles, hovering over tooltips and when scrolling through the print settings list. 
+*Performance improvements.
+Various tweaks under the hood for a snappier, more responsive interface. This improvement is most noticeable when switching extruders, print profiles, hovering over tooltips and when scrolling through the print settings list.
 
-*SDK version increment. 
-The changes made in version 4.4 (mainly for intents but also other things) are so thorough that we needed to do a major increment of the SDK version. Contributors – please update your packages! 
+*SDK version increment.
+The changes made in version 4.4 (mainly for intents but also other things) are so thorough that we needed to do a major increment of the SDK version. Contributors – please update your packages!
 
-*Pause at height message. 
-A setting has been added to the pause at height script that displays a custom message on screen. This can be used to give instructions to operators to perform an action during the pause, e.g. ‘Place 626 bearings in slots now’. 
+*Pause at height message.
+A setting has been added to the pause at height script that displays a custom message on screen. This can be used to give instructions to operators to perform an action during the pause, e.g. ‘Place 626 bearings in slots now’.
 
-*Restore window preference. 
-https://github.com/fieldOfView has contributed a new preference around restoring the previous window position/size to the last used position/size on start up. This would be a workaround for those setups where starting Ultimaker Cura on a secondary screen will prevent it from working. 
+*Restore window preference.
+https://github.com/fieldOfView has contributed a new preference around restoring the previous window position/size to the last used position/size on start up. This would be a workaround for those setups where starting Ultimaker Cura on a secondary screen will prevent it from working.
 
-*Group Linux instances. 
-https://github.com/MatthewCroughan has contributed a fix so that multiple instances of Ultimaker Cura get grouped in one application group in Gnome (the Linux front-end). It adds a bit of metadata to the .desktop file so that the windows can be grouped. 
+*Group Linux instances.
+https://github.com/MatthewCroughan has contributed a fix so that multiple instances of Ultimaker Cura get grouped in one application group in Gnome (the Linux front-end). It adds a bit of metadata to the .desktop file so that the windows can be grouped.
 
-* Known bugs 
-Cura not starting on Windows 10. Some users started reporting that Ultimaker Cura 4.3 and higher did not start properly, fur unknown reasons. We have implemented some code to get a better understanding of the issue, but we have not been able to fix it just yet.  
-As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker Cura 4.4”. Right click Cura.exe and select ‘properties’. Click the ‘compatibility’ tab and select “Run This Program in Compatibility Mode For: Windows 8”. If this does not fix your issue, please contact your service provider. 
+* Known bugs
+Cura not starting on Windows 10. Some users started reporting that Ultimaker Cura 4.3 and higher did not start properly, fur unknown reasons. We have implemented some code to get a better understanding of the issue, but we have not been able to fix it just yet.
+As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker Cura 4.4”. Right click Cura.exe and select ‘properties’. Click the ‘compatibility’ tab and select “Run This Program in Compatibility Mode For: Windows 8”. If this does not fix your issue, please contact your service provider.
 
-* Minor improvements 
- - Reweighting stages.   
+* Minor improvements
+ - Reweighting stages.
  - Small plug-in system improvements
  - Add RetractContinue post-processing script by https://github.com/thopiekar
  - Add DisplayRemainingTimeOnLCD post-processing script by https://github.com/iLyngklip
- - Thickness of the very bottom layer 
+ - Thickness of the very bottom layer
 
-* Updated third party printers 
- - Strateo3D. https://github.com/KOUBeMT has updated the machine profile for Strateo3D. 
- - Key3D Tyro. https://github.com/DragonJe has created a definition, extruder, and profiles for the Key3D Tyro. 
- - Prusa i3 MK3/MK3S printer. https://github.com/samirabaza has contributed the latest definition for Prusa i3 MK3/MK3s made by Prusa Research with a minor modification to fit in Prusa folder under "add printer". 
+* Updated third party printers
+ - Strateo3D. https://github.com/KOUBeMT has updated the machine profile for Strateo3D.
+ - Key3D Tyro. https://github.com/DragonJe has created a definition, extruder, and profiles for the Key3D Tyro.
+ - Prusa i3 MK3/MK3S printer. https://github.com/samirabaza has contributed the latest definition for Prusa i3 MK3/MK3s made by Prusa Research with a minor modification to fit in Prusa folder under "add printer".
  - Hellbot printer. https://github.com/F-Fischer has contributed a machine profile for the Hellbot printer.
  - HMS434 update by https://github.com/maukcc
  - Add CR-10 MAX and Ender-5 plus by https://github.com/trouch
@@ -165,14 +225,14 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
  - Fix Normals after Mirror Operation
  - Crash when loading PJ with creality
  - Per-object setting stacks checked for errors even if they are empty by https://github.com/smartavionics
- - getAngleLeft gives wrong results when lines are colinear  
+ - getAngleLeft gives wrong results when lines are colinear
  - Lots of qml warnings regarding MaterialsTypeSelection.qml
  - PR: Avoid unwanted travel with ironing by https://github.com/smartavionics
  - PR: Remove all travel moves < 5um by https://github.com/smartavionics
  - AMF files are mirrored
  - Changes to Material diameter do not get applied
  - Long string of text on profile names goes through borders
- - CURA 4.3 - Crash when connecting networked Ultimaker S5 
+ - CURA 4.3 - Crash when connecting networked Ultimaker S5
  - Layer slider falls behind action panel, on low resolution displays only by https://github.com/AMI3
  - Deleting profiles will not update the size of the drop-down menu
  - Create / Update / Discard options are enabled when they should be greyed out
@@ -187,144 +247,144 @@ As a quick fix: Go to the install path, by default “C:\Program Files\Ultimaker
  - Invalid firmware for UM2 update continues forever
  - Infill inset too much with connected lines and thicker infill by https://github.com/smartavionics
  - Reworked line polygon crossings by https://github.com/smartavionics
- 
+
 
 [4.3.0]
-*Ultimaker S3. 
-This release includes a new profile for our latest S-line of 3D printers: the Ultimaker S3. Eagle-eyed beta testers may have noticed this extra printer profile in the beta release, too. Well done to those who spotted it. Learn more about the Ultimaker S3 by reading the blog on Ultimaker.com. 
+*Ultimaker S3.
+This release includes a new profile for our latest S-line of 3D printers: the Ultimaker S3. Eagle-eyed beta testers may have noticed this extra printer profile in the beta release, too. Well done to those who spotted it. Learn more about the Ultimaker S3 by reading the blog on Ultimaker.com.
 
-*Even more 3D file formats. 
-This version is compatible with even more 3D file formats out-of-the-box, so you can integrate CAD software, 3D scanning software, and 3D modeling software into your workflow with ease. Natively open Collada, GLTF, OpenCTM, and PLY formats, to name a few. And don’t forget, downloading plugins from the Ultimaker Marketplace brings in support for many more. 
+*Even more 3D file formats.
+This version is compatible with even more 3D file formats out-of-the-box, so you can integrate CAD software, 3D scanning software, and 3D modeling software into your workflow with ease. Natively open Collada, GLTF, OpenCTM, and PLY formats, to name a few. And don’t forget, downloading plugins from the Ultimaker Marketplace brings in support for many more.
 
-*Align faces to the build plate. 
-Orienting your models with the rotation tool or the lay flat tool can be a hassle with complex geometries. This new time-saving feature lets you select a face of your model to rest on the build plate, so you can get the orientation you need quickly and easily. Please note this is disabled in compatibility mode (and if your machine is running OpenGL 3.2 or lower). 
+*Align faces to the build plate.
+Orienting your models with the rotation tool or the lay flat tool can be a hassle with complex geometries. This new time-saving feature lets you select a face of your model to rest on the build plate, so you can get the orientation you need quickly and easily. Please note this is disabled in compatibility mode (and if your machine is running OpenGL 3.2 or lower).
 
-*Support infill/interface line directions. 
-Improve reliability with more precise control over certain aspects of your print. Choose the angle that support-infill and interfaces print at, thanks to a contribution from vgribinchuck. Input a set of angles you want lines generated at, and these will be placed sequentially throughout your 3D print. 
+*Support infill/interface line directions.
+Improve reliability with more precise control over certain aspects of your print. Choose the angle that support-infill and interfaces print at, thanks to a contribution from vgribinchuck. Input a set of angles you want lines generated at, and these will be placed sequentially throughout your 3D print.
 
-*Randomize infill start. 
-Randomize which infill line is printed first. This distributes strength across the model, preventing one segment becoming the weakest link, at the cost of an additional travel move. 
+*Randomize infill start.
+Randomize which infill line is printed first. This distributes strength across the model, preventing one segment becoming the weakest link, at the cost of an additional travel move.
 
-*Print small features slower. 
-Smartavionics has contributed a setting which recognizes small perimeters and reduces print speed in order to boost the reliability and accuracy of small printed features. This is especially useful for small perimeters such as printed holes, as they tend to get ripped away from the build plate easily due to their low contact area. 
+*Print small features slower.
+Smartavionics has contributed a setting which recognizes small perimeters and reduces print speed in order to boost the reliability and accuracy of small printed features. This is especially useful for small perimeters such as printed holes, as they tend to get ripped away from the build plate easily due to their low contact area.
 
-*Easy selector for Z seam positions. 
-Z seams are now easier to position on your model, thanks to a contribution by trouch. A drop down selection box has been added to custom mode, giving you a list of presets to place the z seam on your model. 
+*Easy selector for Z seam positions.
+Z seams are now easier to position on your model, thanks to a contribution by trouch. A drop down selection box has been added to custom mode, giving you a list of presets to place the z seam on your model.
 
-*Colorblind assist theme. 
-Nubnubbud has added a new theme for colorblind users which makes more distinction between colors, such as the yellow/green line colors in the layer view. 
+*Colorblind assist theme.
+Nubnubbud has added a new theme for colorblind users which makes more distinction between colors, such as the yellow/green line colors in the layer view.
 
-*DisplayFilenameAndLayerOnLCD script. 
-Some improvements for this post processing script from the community. N95JPL has contributed updates to offer a wider range of optional information. Adecastilho has contributed updates so that the layer count is displayed before the filename to prevent the layer number getting truncated in the event of long filename, as well as an option to start layer count at either 0 or 1. The ':' in the display string has also been removed as it is a GCODE command that splits the line into two different commands. 
+*DisplayFilenameAndLayerOnLCD script.
+Some improvements for this post processing script from the community. N95JPL has contributed updates to offer a wider range of optional information. Adecastilho has contributed updates so that the layer count is displayed before the filename to prevent the layer number getting truncated in the event of long filename, as well as an option to start layer count at either 0 or 1. The ':' in the display string has also been removed as it is a GCODE command that splits the line into two different commands.
 
-*Peripheral information for output devices. 
-Architectural changes in Ultimaker Cura to allow display information about peripherals in the printer output device, so that I can use it to later on show that information in the Monitor stage plugin. 
+*Peripheral information for output devices.
+Architectural changes in Ultimaker Cura to allow display information about peripherals in the printer output device, so that I can use it to later on show that information in the Monitor stage plugin.
 
-*Quality changes on import. 
-Users can now import profiles that have been created on a different machine other than the active one. 
+*Quality changes on import.
+Users can now import profiles that have been created on a different machine other than the active one.
 
-*Remove prime after coasting. 
-Reduce the visibility of the z seam when printing with coasting by preventing nozzle priming. 
+*Remove prime after coasting.
+Reduce the visibility of the z seam when printing with coasting by preventing nozzle priming.
 
-*Map Material Station slot data. 
+*Map Material Station slot data.
 The available configurations drop down will display information about a Ultimaker S5 Material Station if connected. Read more about the Ultimaker S5 Material Station on ultimaker.com
 
-*Manage Printer link. 
+*Manage Printer link.
 Added a “Manage Printer” link in the monitor tab which takes you to Ultimaker Connect.
 
 *Improvement in code quality.
 Improved code quality resulting in improved stability.
 
 * Bug fixes
-- Uninstall in silent mode. Fixed an issue where a dialog displays when uninstalling in silent mode. 
-- Build Interface if Support is Present. In some cases, support could be pushed away by large support XY distance, but interfaces could be left on overhangs which leads to situation when interface is generated without support. This has been fixed. 
-- Install in silent mode. The bundled Arduino driver is signed by a certificate that's not trusted on Windows by default, so there was no way to suppress the prompt or to have the installer skip driver installation. This has been fixed. 
-- 3MF project printer connection not included. When loading a project file that was saved while a network connection was active, the network connection is not re-established. This has been fixed. 
-- Thin Walls broken. Fixed an error with thin walls being broken. 
-- Tray icon remaining. Fixed a bug where the tray icon would remain after closing the application. 
-- Marketplace text. Fixed an issue where Marketplace text is blurry on some screens 
-- Unsupported profile imports. Fixed an issue where exported profiles could not be reimported. 
-- Loading file message. Added visual feedback when loading files such as STLs 
-- Loading GCODE on disabled extruders. Fixed an issue where GCODE imported using multi-extrusion fails to load if an extruder is disabled. 
-- Support brim with concentric support pattern. Fixed an issue where support would be in mid-air. 
-- Reduced cloud logging. Logging has been reduced for cloud connections on unstable connections. 
-- Application menu extruder menu. Fixed an issue where changing the extruder via the application menu didn’t work. 
-- Tool handles move when rotating. Fixed an issue where rotate tool handles would change location when rotating. 
-- F5 reload. Fixed an issue where F5 doesn't reload GCODE. 
-- Application not starting before the splash screen. Fixed an issue where the application wouldn’t start before the splash window. 
-- Qt 5.13 crashes. Fixed an issue where the ShaderEffect crashes using Qt 5.13 
-- Can’t select other materials in print setting tab. Fixed an issue where other materials couldn’t be selected using the print settings tab. 
-- Drop down to buildplate after resize. Models don’t drop down to the build plate if they are scaled down from ‘too large to fit’. 
-- Unsupported quality profiles. Fixed unsupported quality profiles appearing for 0.25 + 0.8 print core combinations. 
-- 'Arrange all models' for groups. Fixed an issue where arrange all models hangs for grouped models. 
-- Update Checker not working. Fixed this so that updates are visible if using a legacy version. 
-- Missing support brim. Fixed an issue where support brim was missing if platform adhesion set to ‘None’. 
-- Multiply non-normal mesh doesn't work. Fixed instances where processes stopped and messages would hang. 
-- Settings not updating in GUI with inheritance. Fixed settings not updating GUI with inheritance. 
-- Prevent 'generic'-part in name of specific materials. Introduced checks for ‘generic’ material types to help material categorization. 
-- Hide temperature settings. The "Default Print Temperature" setting is currently editable, but editing this setting can cause problems with temperatures later especially when you have it in your custom profile. We decided to hide this setting so users can no longer edit it in the later releases to avoid confusion. The "Default Build Plate Temperature" has also been hidden because it causes a similar issue. 
-- Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume. 
-- Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg. 
-- Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle. 
+- Uninstall in silent mode. Fixed an issue where a dialog displays when uninstalling in silent mode.
+- Build Interface if Support is Present. In some cases, support could be pushed away by large support XY distance, but interfaces could be left on overhangs which leads to situation when interface is generated without support. This has been fixed.
+- Install in silent mode. The bundled Arduino driver is signed by a certificate that's not trusted on Windows by default, so there was no way to suppress the prompt or to have the installer skip driver installation. This has been fixed.
+- 3MF project printer connection not included. When loading a project file that was saved while a network connection was active, the network connection is not re-established. This has been fixed.
+- Thin Walls broken. Fixed an error with thin walls being broken.
+- Tray icon remaining. Fixed a bug where the tray icon would remain after closing the application.
+- Marketplace text. Fixed an issue where Marketplace text is blurry on some screens
+- Unsupported profile imports. Fixed an issue where exported profiles could not be reimported.
+- Loading file message. Added visual feedback when loading files such as STLs
+- Loading GCODE on disabled extruders. Fixed an issue where GCODE imported using multi-extrusion fails to load if an extruder is disabled.
+- Support brim with concentric support pattern. Fixed an issue where support would be in mid-air.
+- Reduced cloud logging. Logging has been reduced for cloud connections on unstable connections.
+- Application menu extruder menu. Fixed an issue where changing the extruder via the application menu didn’t work.
+- Tool handles move when rotating. Fixed an issue where rotate tool handles would change location when rotating.
+- F5 reload. Fixed an issue where F5 doesn't reload GCODE.
+- Application not starting before the splash screen. Fixed an issue where the application wouldn’t start before the splash window.
+- Qt 5.13 crashes. Fixed an issue where the ShaderEffect crashes using Qt 5.13
+- Can’t select other materials in print setting tab. Fixed an issue where other materials couldn’t be selected using the print settings tab.
+- Drop down to buildplate after resize. Models don’t drop down to the build plate if they are scaled down from ‘too large to fit’.
+- Unsupported quality profiles. Fixed unsupported quality profiles appearing for 0.25 + 0.8 print core combinations.
+- 'Arrange all models' for groups. Fixed an issue where arrange all models hangs for grouped models.
+- Update Checker not working. Fixed this so that updates are visible if using a legacy version.
+- Missing support brim. Fixed an issue where support brim was missing if platform adhesion set to ‘None’.
+- Multiply non-normal mesh doesn't work. Fixed instances where processes stopped and messages would hang.
+- Settings not updating in GUI with inheritance. Fixed settings not updating GUI with inheritance.
+- Prevent 'generic'-part in name of specific materials. Introduced checks for ‘generic’ material types to help material categorization.
+- Hide temperature settings. The "Default Print Temperature" setting is currently editable, but editing this setting can cause problems with temperatures later especially when you have it in your custom profile. We decided to hide this setting so users can no longer edit it in the later releases to avoid confusion. The "Default Build Plate Temperature" has also been hidden because it causes a similar issue.
+- Add machine_heated_build_volume. Introduced a new machine_heated_build_volume machine-setting, which is set it to false by default, and only set it to true for the Ultimaker S5. Users can alter their own definition if they do have a heated build volume.
+- Z-hops on first layer. First move other start GCODE not z-hopped. Contributed by sailorgreg.
+- Preserve extruder-only moves in post stretch script. Contributed by sgtnoodle.
 - “Print via Cloud” is no longer possible without an Internet connection
-- Monitor tab no longer sometimes shows incorrect printer name or type  
-- Long print job names are no longer overlapping other text in the monitor tab 
-- “Connected to Cloud” pop-up now only displays when the currently selected printer is connected to Ultimaker cloud. 
-- Monitor tab is no longer greyed out when idle. 
+- Monitor tab no longer sometimes shows incorrect printer name or type
+- Long print job names are no longer overlapping other text in the monitor tab
+- “Connected to Cloud” pop-up now only displays when the currently selected printer is connected to Ultimaker cloud.
+- Monitor tab is no longer greyed out when idle.
 
-*Third-party printer definitions 
-New machine definitions added for: 
-- IMADE3D Jellybox. Contributed by filipgoc for IMADE3D Jellybox printers, which adds JellyBOX 2 printer and revises settings of JellyBOX Original. 
-- Vertex Nano. Contributed by velbn 
-- Felix Pro 2. Contributed by pnks 
-- JGAurora A35. Contributed by pinchies. 
-- eMotionTech Strateo3D. Contributed by KOUBeMT. 
-- NWA3D A31. Contributed by DragonJe. 
+*Third-party printer definitions
+New machine definitions added for:
+- IMADE3D Jellybox. Contributed by filipgoc for IMADE3D Jellybox printers, which adds JellyBOX 2 printer and revises settings of JellyBOX Original.
+- Vertex Nano. Contributed by velbn
+- Felix Pro 2. Contributed by pnks
+- JGAurora A35. Contributed by pinchies.
+- eMotionTech Strateo3D. Contributed by KOUBeMT.
+- NWA3D A31. Contributed by DragonJe.
 
 [4.2.0]
-*Orthographic view. 
+*Orthographic view.
 When preparing prints, professional users wanted more control over the 3D view type, so this version introduces an orthographic view, which is the same view type used by most professional CAD software packages. Find the orthographic view in View > Camera view > Orthographic, and compare the dimensions of your model to your CAD design with ease.
 
-*Object list. 
+*Object list.
 Easily identify corresponding filenames and models with this new popup list. Click a model in the viewport and its filename will highlight, or click a filename in the list and the corresponding model will highlight. The open or hidden state of the list will persist between sessions. How convenient.
 
-*Print previews. 
+*Print previews.
 Some improvements have been made to print previews displayed in the monitor tab, Ultimaker Connect, or the Ultimaker S5 interface. In some instances, previews were clipped at the bottom or side, and sometimes models outside of the build plate area were visible. This is all fixed now.
 
-*AMF file compatibility. 
+*AMF file compatibility.
 Ultimaker Cura now supports AMF (Additive manufacturing file format) files out-of-the-box, thanks to an AMF file reader contributed by fieldOfView.
 
-*Slice button delay. 
+*Slice button delay.
 After clicking ‘Slice’, a lack of response could lead to frustrated buttonclicking. This version changes the button text to read ‘Processing’ during any pre-slicing delay.
 
-*Layer view line type. 
-The line type color scheme in the layer view has been tweaked with new colors for infill and support interfaces so that they can be distinguished better. 
+*Layer view line type.
+The line type color scheme in the layer view has been tweaked with new colors for infill and support interfaces so that they can be distinguished better.
 
-*Nozzle switch prime distance. 
+*Nozzle switch prime distance.
 Certain materials “ooze” more than others during retraction and long moves. Vgribinchuk has contributed a new setting that lets you finetune the restart distance, so that the full extrusion width is achieved when resuming a print.
 
-*Smart Z seam. 
+*Smart Z seam.
 A new option to increase the aesthetic quality of your prints has been added to custom mode, under Z seam settings. Smart Z seam works by analyzing your model’s geometry and automatically choosing when to hide or expose the seam, so that visible seams on outer walls are kept to a minimum.
 
-*Separate Z axis movements. 
+*Separate Z axis movements.
 Z axis movement handling has been improved to reduce the chance of print head collisions with prints.
 
-*Flow per feature. 
+*Flow per feature.
 You can now adjust material flow for specific features of your print, such as walls, infill, support, prime towers, and adhesion. This allows line spacing to be controlled separately from flow settings.
 
-*Merge infill lines. 
+*Merge infill lines.
 We did some finetuning of the CuraEngine to improve print quality by filling thin infill areas more precisely and efficiently, and reducing movements that caused excessive gantry vibration.
 
-*Z hop speed. 
+*Z hop speed.
 The Z hop speed for printers with no specific speed value would default to ‘299792458000’ (light speed!) The new Z hop speed setting ensures that all Z hops are performed at a more sensible speed, which you can control.
 
-*Support tower diameter. 
+*Support tower diameter.
 The ‘Minimum diameter’ setting for support towers has been renamed to ‘Maximum Tower-Supported Diameter’, which is more accurate and more specific because it mentions towers.
 
-*Square prime towers. 
+*Square prime towers.
 Circular prime towers are now the default option. Square prime towers have been eradicated forever.
 
-*Third-party printer order. 
+*Third-party printer order.
 The ‘add printer’ menu now includes third-party printers that are ordered by manufacturer, so that specific machines can be found easily. Printer definitions. New machine definitions added for:
 - Anet A6 contributed by markbernard
 - Stereotech ST320 and START contributed by frylock34
@@ -332,7 +392,7 @@ The ‘add printer’ menu now includes third-party printers that are ordered by
 - FL Sun QQ contributed by curso007
 - GeeTech A30 contributed by curso007
 
-*Creawsome mod. 
+*Creawsome mod.
 This version has pulled the Creawsome mod, made by trouch, which adds a lot of print profiles for Creality printers. It includes definitions for Creality CR10 Mini, CR10s, CR10s Pro, CR20, CR20 Pro, Ender 2, Ender 4 and Ender 5, and updates the definitions for CR10, CR10s4, CR10s5 and Ender3. The CRX is untouched. Pull requests are now submitted that merge the mod into mainline Cura.
 
 * Bug fixes
