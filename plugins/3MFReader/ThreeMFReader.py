@@ -52,7 +52,6 @@ class ThreeMFReader(MeshReader):
         self._root = None
         self._base_name = ""
         self._unit = None
-        self._object_count = 0  # Used to name objects as there is no node name yet.
 
     def _createMatrixFromTransformationString(self, transformation: str) -> Matrix:
         if transformation == "":
@@ -86,15 +85,21 @@ class ThreeMFReader(MeshReader):
 
     ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
     #   \returns Scene node.
-    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode) -> Optional[SceneNode]:
-        self._object_count += 1
-        node_name = "Object %s" % self._object_count
+    def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+        node_name = savitar_node.getName()
+        node_id = savitar_node.getId()
+        if node_name == "":
+            if file_name != "":
+                node_name = os.path.basename(file_name)
+            else:
+                node_name = "Object {}".format(node_id)
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
         um_node = CuraSceneNode() # This adds a SettingOverrideDecorator
         um_node.addDecorator(BuildPlateDecorator(active_build_plate))
         um_node.setName(node_name)
+        um_node.setId(node_id)
         transformation = self._createMatrixFromTransformationString(savitar_node.getTransformation())
         um_node.setTransformation(transformation)
         mesh_builder = MeshBuilder()
@@ -104,6 +109,10 @@ class ThreeMFReader(MeshReader):
         vertices = numpy.resize(data, (int(data.size / 3), 3))
         mesh_builder.setVertices(vertices)
         mesh_builder.calculateNormals(fast=True)
+        if file_name:
+            # The filename is used to give the user the option to reload the file if it is changed on disk
+            # It is only set for the root node of the 3mf file
+            mesh_builder.setFileName(file_name)
         mesh_data = mesh_builder.build()
 
         if len(mesh_data.getVertices()):
@@ -162,7 +171,6 @@ class ThreeMFReader(MeshReader):
 
     def _read(self, file_name: str) -> Union[SceneNode, List[SceneNode]]:
         result = []
-        self._object_count = 0  # Used to name objects as there is no node name yet.
         # The base object of 3mf is a zipped archive.
         try:
             archive = zipfile.ZipFile(file_name, "r")
@@ -171,7 +179,7 @@ class ThreeMFReader(MeshReader):
             scene_3mf = parser.parse(archive.open("3D/3dmodel.model").read())
             self._unit = scene_3mf.getUnit()
             for node in scene_3mf.getSceneNodes():
-                um_node = self._convertSavitarNodeToUMNode(node)
+                um_node = self._convertSavitarNodeToUMNode(node, file_name)
                 if um_node is None:
                     continue
                 # compensate for original center position, if object(s) is/are not around its zero position

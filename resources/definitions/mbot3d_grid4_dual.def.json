@@ -1,0 +1,60 @@
+{
+    "version": 2,
+    "name": "MBot3D Grid 4 Dual",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "author": "Magicfirm",
+        "manufacturer": "Magicfirm",
+        "category": "Other",
+        "visible": true,
+        "file_formats": "text/x-gcode",
+        "platform_offset": [
+            0,
+            0,
+            0
+        ],
+        "has_materials": true,
+		"machine_extruder_trains": {
+            "0": "mbot3d_grid4_extruder_left",
+            "1": "mbot3d_grid4_extruder_right"
+        }
+    },
+    "overrides": {
+        "machine_name": {
+            "default_value": "MBot3D Grid 4 Dual"
+        },
+        "machine_width": {
+            "default_value": 210
+        },
+        "machine_depth": {
+            "default_value": 210
+        },
+        "machine_height": {
+            "default_value": 190
+        },
+        "machine_heated_bed": {
+            "default_value": true
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },        
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_extruder_count": {
+            "default_value": 2
+        },
+        "material_flow": {
+            "default_value": 100
+        },
+        "adhesion_type": {
+            "default_value": "skirt"
+        },     
+        "machine_start_gcode": {
+           "default_value": ";---------- START GCODE ----------\nG21 ; set units to millimeters\nG28 ; home all axes\nG29 ;Autolevel bed\nG1 Z10 F400\nG1 X145 Z10 F2400\nG92 E0\nG1 X145 Z0.5 F400\nG1 X120 Z0.5 E20 F360\nG92 E0.0\n;----------END START GCODE ----------\n"
+        },
+        "machine_end_gcode": {
+           "default_value": "M104 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 Z190 F900\nG28 X Y  ;home X Y axes\nM84 ; disable motors"
+        }
+    }
+}

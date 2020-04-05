@@ -3,6 +3,7 @@ from PyQt5.QtQuick import QQuickImageProvider
 from PyQt5.QtCore import QSize
 
 from UM.Application import Application
+from typing import Tuple
 
 
 class PrintJobPreviewImageProvider(QQuickImageProvider):
@@ -10,7 +11,7 @@ class PrintJobPreviewImageProvider(QQuickImageProvider):
         super().__init__(QQuickImageProvider.Image)
 
     ##  Request a new image.
-    def requestImage(self, id: str, size: QSize) -> QImage:
+    def requestImage(self, id: str, size: QSize) -> Tuple[QImage, QSize]:
         # The id will have an uuid and an increment separated by a slash. As we don't care about the value of the
         # increment, we need to strip that first.
         uuid = id[id.find("/") + 1:]
@@ -22,6 +23,6 @@ class PrintJobPreviewImageProvider(QQuickImageProvider):
                 if print_job.key == uuid:
                     if print_job.getPreviewImage():
                         return print_job.getPreviewImage(), QSize(15, 15)
-                    else:
-                        return QImage(), QSize(15, 15)
-        return QImage(), QSize(15,15)
+
+                    return QImage(), QSize(15, 15)
+        return QImage(), QSize(15, 15)

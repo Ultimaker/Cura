@@ -35,7 +35,7 @@ class GCodeStep():
     Class to store the current value of each G_Code parameter
     for any G-Code step
     """
-    def __init__(self, step, in_relative_movement: bool = False):
+    def __init__(self, step, in_relative_movement: bool = False) -> None:
         self.step = step
         self.step_x = 0
         self.step_y = 0

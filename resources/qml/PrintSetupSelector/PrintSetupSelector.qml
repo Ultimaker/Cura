@@ -13,7 +13,7 @@ Cura.ExpandableComponent
 
     dragPreferencesNamePrefix: "view/settings"
 
-    property bool preSlicedData: PrintInformation.preSliced
+    property bool preSlicedData: PrintInformation !== null && PrintInformation.preSliced
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentHeaderTitle: catalog.i18nc("@label", "Print settings")

@@ -28,7 +28,7 @@
         "machine_center_is_zero": { "default_value": false },
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.2 },
-        "wall_thickness": { "default_value": 1.2 },
+        "wall_thickness": { "value": "1.2" },
         "top_bottom_thickness": { "default_value": 1.2 },
         "infill_sparse_density": { "default_value": 20 },
         "speed_print": { "default_value": 60 },

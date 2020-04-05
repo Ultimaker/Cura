@@ -7,10 +7,11 @@
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
-        "platform": "neva.stl",
-        "platform_offset": [ 0, 0, 0],
+        "platform": "dagoma_magis.stl",
+        "platform_offset": [0, -28, -35],
         "has_machine_quality": true,
         "has_materials": true,
+        "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
             "0": "dagoma_magis_extruder_0"
@@ -69,6 +70,9 @@
         },
         "layer_height_0": {
             "default_value": 0.26
+        },
+        "top_bottom_thickness": {
+            "default_value": 1
         }
     }
 }

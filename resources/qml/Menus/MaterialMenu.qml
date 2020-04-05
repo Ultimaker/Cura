@@ -1,5 +1,5 @@
-// Copyright (c) 2018 Ultimaker B.V.
-// Cura is released under the terms of the LGPLv3 or higher.
+//Copyright (c) 2020 Ultimaker B.V.
+//Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
 import QtQuick.Controls 1.4
@@ -23,9 +23,9 @@ Menu
         var activeMachine = Cura.MachineManager.activeMachine
         return (activeMachine === null) ? null : activeMachine.extruderList[extruderIndex]
     }
-    property bool isActiveExtruderEnabled: activeExtruder === null ? false : activeExtruder.isEnabled
+    property bool isActiveExtruderEnabled: (activeExtruder === null || activeExtruder === undefined) ? false : activeExtruder.isEnabled
 
-    property string activeMaterialId: activeExtruder === null ? false : activeExtruder.material.id
+    property string activeMaterialId: (activeExtruder === null || activeExtruder === undefined) ? false : activeExtruder.material.id
 
     property bool updateModels: true
     Cura.FavoriteMaterialsModel
@@ -156,5 +156,12 @@ Menu
     MenuItem
     {
         action: Cura.Actions.manageMaterials
+    }
+
+    MenuSeparator {}
+
+    MenuItem
+    {
+        action: Cura.Actions.marketplaceMaterials
     }
 }

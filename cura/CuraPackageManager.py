@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import List, Tuple
+from typing import List, Tuple, TYPE_CHECKING, Optional
 
 from cura.CuraApplication import CuraApplication #To find some resource types.
 from cura.Settings.GlobalStack import GlobalStack
@@ -9,12 +9,16 @@ from cura.Settings.GlobalStack import GlobalStack
 from UM.PackageManager import PackageManager #The class we're extending.
 from UM.Resources import Resources #To find storage paths for some resource types.
 
+if TYPE_CHECKING:
+    from UM.Qt.QtApplication import QtApplication
+    from PyQt5.QtCore import QObject
+
 
 class CuraPackageManager(PackageManager):
-    def __init__(self, application, parent = None):
+    def __init__(self, application: "QtApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(application, parent)
 
-    def initialize(self):
+    def initialize(self) -> None:
         self._installation_dirs_dict["materials"] = Resources.getStoragePath(CuraApplication.ResourceTypes.MaterialInstanceContainer)
         self._installation_dirs_dict["qualities"] = Resources.getStoragePath(CuraApplication.ResourceTypes.QualityInstanceContainer)
 

@@ -1,6 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from time import time
+import os
 from typing import List, Optional, cast
 
 from PyQt5.QtCore import QObject, QUrl, pyqtProperty, pyqtSignal, pyqtSlot
@@ -191,8 +192,9 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     def _onPrintJobCreated(self, job: ExportFileJob) -> None:
         output = job.getOutput()
         self._tool_path = output  # store the tool path to prevent re-uploading when printing the same file again
+        file_name = job.getFileName()
         request = CloudPrintJobUploadRequest(
-            job_name=job.getFileName(),
+            job_name=os.path.splitext(file_name)[0],
             file_size=len(output),
             content_type=job.getMimeType(),
         )

@@ -49,6 +49,17 @@ class PauseAtHeight(Script):
                     "minimum_value_warning": "1",
                     "enabled": "pause_at == 'layer_no'"
                 },
+                "disarm_timeout":
+                {
+                    "label": "Disarm timeout",
+                    "description": "After this time steppers are going to disarm (meaning that they can easily lose their positions). Set this to 0 if you don't want to set any duration.",
+                    "type": "int",
+                    "value": "0",
+                    "minimum_value": "0",
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "1800",
+                    "unit": "s"
+                },
                 "head_park_x":
                 {
                     "label": "Park Print Head X",
@@ -141,6 +152,7 @@ class PauseAtHeight(Script):
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
+        disarm_timeout = self.getSettingValueByKey("disarm_timeout")
         retraction_amount = self.getSettingValueByKey("retraction_amount")
         retraction_speed = self.getSettingValueByKey("retraction_speed")
         extrude_amount = self.getSettingValueByKey("extrude_amount")
@@ -306,6 +318,10 @@ class PauseAtHeight(Script):
 
                 if display_text:
                     prepend_gcode += "M117 " + display_text + "\n"
+
+                # Set the disarm timeout
+                if disarm_timeout > 0:
+                    prepend_gcode += self.putValue(M = 18, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
                 # Wait till the user continues printing
                 prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"

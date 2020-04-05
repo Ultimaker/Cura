@@ -115,9 +115,10 @@ class AuthorizationHelpers:
         )
 
     @staticmethod
-    ##  Generate a 16-character verification code.
-    #   \param code_length: How long should the code be?
-    def generateVerificationCode(code_length: int = 16) -> str:
+    ##  Generate a verification code of arbitrary length.
+    #   \param code_length: How long should the code be? This should never be lower than 16, but it's probably better to
+    #   leave it at 32
+    def generateVerificationCode(code_length: int = 32) -> str:
         return "".join(random.choice("0123456789ABCDEF") for i in range(code_length))
 
     @staticmethod

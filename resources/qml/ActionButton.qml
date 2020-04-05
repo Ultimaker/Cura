@@ -86,10 +86,20 @@ Button
             renderType: Text.NativeRendering
             height: parent.height
             anchors.verticalCenter: parent.verticalCenter
-            width: fixedWidthMode ? button.width - button.leftPadding - button.rightPadding : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+
+            Binding
+            {
+                // When settting width directly, an unjust binding loop warning would be triggered,
+                // because button.width is part of this expression.
+                // Using parent.width is fine in fixedWidthMode.
+                target: buttonText
+                property: "width"
+                value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
+                                             : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
+            }
         }
 
         //Right side icon. Only displayed if isIconOnRightSide.
@@ -133,7 +143,19 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        visible: button.hovered && buttonTextMetrics.elidedText != buttonText.text
+        visible:
+        {
+            if (!button.hovered)
+            {
+                return false;
+            }
+            if (tooltipText == button.text)
+            {
+                return buttonTextMetrics.elidedText != buttonText.text;
+            }
+            return true;
+        }
+        targetPoint: Qt.point(parent.x, Math.round(parent.y + parent.height / 2))
     }
 
     BusyIndicator

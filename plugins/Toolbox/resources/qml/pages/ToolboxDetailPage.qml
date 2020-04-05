@@ -4,7 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
-import UM 1.1 as UM
+import UM 1.5 as UM
 
 import Cura 1.1 as Cura
 
@@ -46,8 +46,12 @@ Item
             {
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
-                source: details === null ? "" : (details.icon_url || "../../images/logobot.svg")
+                source: details === null ? "" : (details.icon_url || "../../images/placeholder.svg")
                 mipmap: true
+                height: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
+                width: UM.Theme.getSize("toolbox_thumbnail_large").height - 4 * UM.Theme.getSize("default_margin").height
+                sourceSize.height: height
+                sourceSize.width: width
             }
         }
 
@@ -217,7 +221,7 @@ Item
                 font: UM.Theme.getFont("default")
                 color: UM.Theme.getColor("text")
                 linkColor: UM.Theme.getColor("text_link")
-                onLinkActivated: Qt.openUrlExternally(link)
+                onLinkActivated: UM.UrlUtil.openUrl(link, ["http", "https"])
                 renderType: Text.NativeRendering
             }
             Label
