@@ -3,7 +3,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-		"machine": "uni",
+		"machine": "uni_base",
         "position": "1"
     },
 
