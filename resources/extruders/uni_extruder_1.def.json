@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "name": "Extruder 1",
+    "inherits": "fdmextruder",
+    "metadata": {
+		"machine": "uni",
+        "position": "0"
+    },
+
+    "overrides": {
+        "extruder_nr": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_offset_x": { "default_value": 0.0 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "machine_extruder_start_code": 
+           {
+            "default_value": "T0                             ;switch to extruder 1\n;G92 E0                      ;reset extruder distance\n;G1 F2000 E93           ;load filament\n;G92 E0                      ;reset extruder distance\n;M104 S{material_print_temperature}\n;"
+           },
+        "machine_extruder_end_code":
+           {
+            "default_value": "G92 E0                       ;reset extruder distance\n;G1 F800 E-5               ;short retract\n;G1 F2400 X5 Y5         ;move near prime tower\n;G1 F2000 E-93           ;long retract for filament removal\n;G92 E0                       ;reset extruder distance\n;G90                            ;absolute coordinate\n;"
+           }
+    }
+}
