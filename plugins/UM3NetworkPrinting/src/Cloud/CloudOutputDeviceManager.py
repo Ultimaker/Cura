@@ -7,6 +7,7 @@ from PyQt5.QtCore import QTimer
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
+from UM.Message import Message
 from UM.Signal import Signal
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
@@ -87,28 +88,59 @@ class CloudOutputDeviceManager:
 
     ## Callback for when the request for getting the clusters is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
+        new_clusters = []
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
         for device_id, cluster_data in online_clusters.items():
             if device_id not in self._remote_clusters:
-                self._onDeviceDiscovered(cluster_data)
+                new_clusters.append(cluster_data)
             else:
                 self._onDiscoveredDeviceUpdated(cluster_data)
+
+        self._onDevicesDiscovered(new_clusters)
 
         removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
         for device_id in removed_device_keys:
             self._onDiscoveredDeviceRemoved(device_id)
 
-    def _onDeviceDiscovered(self, cluster_data: CloudClusterResponse) -> None:
-        device = CloudOutputDevice(self._api, cluster_data)
-        self._remote_clusters[device.getId()] = device
+        if new_clusters or removed_device_keys:
+            self.discoveredDevicesChanged.emit()
+        if removed_device_keys:
+            # If the removed device was active we should connect to the new active device
+            self._connectToActiveMachine()
 
-        # Create a machine if we don't already have it. Do not make it the active machine.
-        meta_data = {self.META_CLUSTER_ID: device.key}
-        if CuraApplication.getInstance().getMachineManager().getMachine(device.printerType, meta_data) is None:
+    def _onDevicesDiscovered(self, clusters: [CloudClusterResponse]) -> None:
+        new_devices = []
+        for cluster_data in clusters:
+            device = CloudOutputDevice(self._api, cluster_data)
+            # Create a machine if we don't already have it. Do not make it the active machine.
+            meta_data = {self.META_CLUSTER_ID: device.key}
+            if CuraApplication.getInstance().getMachineManager().getMachine(device.printerType, meta_data) is None:
+                new_devices.append(device)
+
+        if not new_devices:
+            return
+
+        message = Message(
+            title = self.I18N_CATALOG.i18ncp("info:status", "New cloud printer detected", "New cloud printers detected", len(new_devices)),
+            progress = 0,
+            lifetime = 0
+        )
+        message.show()
+
+        for idx, device in enumerate(new_devices):
+            message.setText(self.I18N_CATALOG.i18nc("info:status", "Adding printer '{}' from your account", device.name))
+            message.setProgress((idx / len(new_devices)) * 100)
+            CuraApplication.getInstance().processEvents()
+            self._remote_clusters[device.getId()] = device
             self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
 
-        self.discoveredDevicesChanged.emit()
-        self._connectToActiveMachine()
+        message.setProgress(100)
+        message.setText(self.I18N_CATALOG.i18ncp(
+            "info:status",
+            "{} cloud printer added from your account",
+            "{} cloud printers added from your account",
+            len(new_devices)
+        ))
 
     def _onDiscoveredDeviceUpdated(self, cluster_data: CloudClusterResponse) -> None:
         device = self._remote_clusters.get(cluster_data.cluster_id)
@@ -130,7 +162,6 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key in output_device_manager.getOutputDeviceIds():
             output_device_manager.removeOutputDevice(device.key)
-        self.discoveredDevicesChanged.emit()
 
     def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> None:
         device = self._remote_clusters[key]
