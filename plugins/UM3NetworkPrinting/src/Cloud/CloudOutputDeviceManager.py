@@ -1,6 +1,6 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+import os
 from typing import Dict, List, Optional
 
 from PyQt5.QtCore import QTimer
@@ -127,6 +127,11 @@ class CloudOutputDeviceManager:
         if not new_devices:
             return
 
+        image_path = os.path.join(
+            CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
+            "resources", "svg", "cloud-flow-completed.svg"
+        )
+
         message = Message(
             title = self.I18N_CATALOG.i18ncp(
                 "info:status",
@@ -135,7 +140,8 @@ class CloudOutputDeviceManager:
                 len(new_devices)
             ),
             progress = 0,
-            lifetime = 0
+            lifetime = 0,
+            image_source = image_path
         )
         message.show()
 
