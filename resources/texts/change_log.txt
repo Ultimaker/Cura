@@ -42,7 +42,7 @@ Fixed a bug where comments were removed from Start/End G-codes when opening from
 Values in the print monitor preheat fields were broken in previous versions, they have now been fixed by fieldOfview.
 
 * Stepper motor disarming during pause at height.
-Some printers automatically disable their steppers after a pause after a certain time. Now it's possible to set that in the pause at height script instead of relying on default behavior of the firmware.
+Some printers (like the Ultimaker S5) have a very heavy build platform. When the pause at height script was enabled, it would disarm the Z stepper motor at pause height. The weight of the build platform would cause the Z axis to lower by gravity and lose the Z position. ilyko96 has contributed a fix to the pause at height script so that the Z stepper motor now remains armed during a pause, locking the build plate in position.
 
 * Flying Bear printers.
 oducceu has contributed a machine definition for the Flying Bear Ghost 4S Printer.

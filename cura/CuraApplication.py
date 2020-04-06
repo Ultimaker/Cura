@@ -2,10 +2,9 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
-import re
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
+from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
 
 import numpy
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
@@ -1383,28 +1382,21 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
-        objects_in_filename = {}  # type: Dict[str, List[CuraSceneNode]]
         for node in nodes:
             mesh_data = node.getMeshData()
+
             if mesh_data:
                 file_name = mesh_data.getFileName()
                 if file_name:
-                    if file_name not in objects_in_filename:
-                        objects_in_filename[file_name] = []
-                    if file_name in objects_in_filename:
-                        objects_in_filename[file_name].append(node)
+                    job = ReadMeshJob(file_name)
+                    job._node = node  # type: ignore
+                    job.finished.connect(self._reloadMeshFinished)
+                    if has_merged_nodes:
+                        job.finished.connect(self.updateOriginOfMergedMeshes)
+
+                    job.start()
                 else:
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
-
-        for file_name, nodes in objects_in_filename.items():
-            for node in nodes:
-                job = ReadMeshJob(file_name)
-                job._node = node  # type: ignore
-                job.finished.connect(self._reloadMeshFinished)
-                if has_merged_nodes:
-                    job.finished.connect(self.updateOriginOfMergedMeshes)
-
-                job.start()
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1580,30 +1572,13 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
     fileCompleted = pyqtSignal(str)
 
-    def _reloadMeshFinished(self, job) -> None:
-        """
-        Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
-        scene from its source file. The function gets all the nodes that exist in the file through the job result, and
-        then finds the scene node that it wants to refresh by its object id. Each job refreshes only one node.
-
-        :param job: The ReadMeshJob running in the background that reads all the meshes in a file
-        :return: None
-        """
-        job_result = job.getResult()  # nodes that exist inside the file read by this job
+    def _reloadMeshFinished(self, job):
+        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
+        job_result = job.getResult()
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        object_found = False
-        mesh_data = None
-        # Find the node to be refreshed based on its id
-        for job_result_node in job_result:
-            if job_result_node.getId() == job._node.getId():
-                mesh_data = job_result_node.getMeshData()
-                object_found = True
-                break
-        if not object_found:
-            Logger.warning("The object with id {} no longer exists! Keeping the old version in the scene.".format(job_result_node.getId()))
-            return
+        mesh_data = job_result[0].getMeshData()
         if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
             return
