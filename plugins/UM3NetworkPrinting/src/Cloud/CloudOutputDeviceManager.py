@@ -199,8 +199,9 @@ class CloudOutputDeviceManager:
 
         self._connectToOutputDevice(device, new_machine)
 
-    ##  Callback for when the active machine was changed by the user or a new remote cluster was found.
     def _connectToActiveMachine(self) -> None:
+        """Callback for when the active machine was changed by the user"""
+
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
         if not active_machine:
             return
