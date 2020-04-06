@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-04-06 16:33+0000\n"
 "PO-Revision-Date: 2019-09-23 14:15+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
@@ -83,11 +83,10 @@ msgctxt "material_guid label"
 msgid "Material GUID"
 msgstr "マテリアルGUID"
 
-# msgstr "マテリアルGUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "マテリアルのGUID。これは自動的に設定されます。 "
+msgid "GUID of the material. This is set automatically."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -315,16 +314,6 @@ msgstr "ノズル加熱長さ"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "ノズルからの熱がフィラメントに伝達される距離。"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "フィラメント留め位置"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "エクストルーダーが使用していない時、フィラメントを留めている場所からノズルまでの距離。"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -1306,6 +1295,16 @@ msgid "Amount of offset applied to all polygons in the first layer. A negative v
 msgstr "最初のレイヤーのポリゴンに適用されるオフセットの値。マイナスの値はelephant's footと呼ばれる第一層が潰れるを現象を軽減させます。"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Zシーム合わせ"
@@ -2271,8 +2270,8 @@ msgstr "フラッシュパージ速度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "How fast to prime the material after switching to a different material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2281,28 +2280,28 @@ msgstr "フラッシュパージ長さ"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
-msgstr "フィラメント端パージ速度"
+msgid "End of Filament Purge Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
-msgstr "フィラメント端パージ長さ"
+msgid "End of Filament Purge Length"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2311,8 +2310,8 @@ msgstr "最大留め期間"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2321,8 +2320,8 @@ msgstr "無負荷移動係数"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Material Station内部値"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3110,8 +3109,8 @@ msgstr "引き戻し有効"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "ノズルが印刷しないで良い領域を移動する際にフィラメントを引き戻す。 "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3809,8 +3808,8 @@ msgstr "最小サポートX/Y距離"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "X/Y方向におけるオーバーハングからサポートまでの距離。 "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4936,8 +4935,8 @@ msgstr "メッシュ修正"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "カテゴリー_メッシュ修正"
+msgid "Make the meshes more suited for 3D printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -5056,8 +5055,8 @@ msgstr "特別モード"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "カテゴリー_ブラックマジック"
+msgid "Non-traditional ways to print your models."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5067,8 +5066,7 @@ msgstr "印刷頻度"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "すべてのモデルをレイヤーごとに印刷するか、1つのモデルがプリント完了するのを待ち次のモデルに移動するかどうか。a）エクストルーダーが1つだけ有効であり、b）プリントヘッド全体がモデル間を通ることができるようにすべてのモデルが離れていて、すべてのモデルがノズルとX/Y軸間の距離よりも小さい場合、1つずつ印刷する事ができます。"
-" "
+msgstr "すべてのモデルをレイヤーごとに印刷するか、1つのモデルがプリント完了するのを待ち次のモデルに移動するかどうか。a）エクストルーダーが1つだけ有効であり、b）プリントヘッド全体がモデル間を通ることができるようにすべてのモデルが離れていて、すべてのモデルがノズルとX/Y軸間の距離よりも小さい場合、1つずつ印刷する事ができます。 "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5237,8 +5235,8 @@ msgstr "実験"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "実験的！"
+msgid "Features that haven't completely been fleshed out yet."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
@@ -6533,6 +6531,71 @@ msgstr "メッシュ回転マトリックス"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "ファイルから読み込むときに、モデルに適用するトランスフォーメーションマトリックス。"
+
+# msgstr "マテリアルGUID"
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "マテリアルのGUID。これは自動的に設定されます。 "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "フィラメント留め位置"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "エクストルーダーが使用していない時、フィラメントを留めている場所からノズルまでの距離。"
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "フィラメント端パージ速度"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "フィラメント端パージ長さ"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station内部値"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "ノズルが印刷しないで良い領域を移動する際にフィラメントを引き戻す。 "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "X/Y方向におけるオーバーハングからサポートまでの距離。 "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "カテゴリー_メッシュ修正"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "カテゴリー_ブラックマジック"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "実験的！"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"

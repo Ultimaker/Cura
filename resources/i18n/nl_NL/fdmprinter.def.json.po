@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Cura 4.5\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-04-06 16:33+0000\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Dutch <info@lionbridge.com>, Dutch <info@bothof.nl>\n"
@@ -81,8 +81,8 @@ msgstr "Materiaal-GUID"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "GUID van het materiaal. Deze optie wordt automatisch ingesteld. "
+msgid "GUID of the material. This is set automatically."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -293,16 +293,6 @@ msgstr "Lengte verwarmingszone"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "De afstand tussen de punt van de nozzle waarin de warmte uit de nozzle wordt overgedragen aan het filament."
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "Parkeerafstand filament"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "De afstand vanaf de punt van de nozzle waar het filament moet worden geparkeerd wanneer een extruder niet meer wordt gebruikt."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -1260,6 +1250,16 @@ msgid "Amount of offset applied to all polygons in the first layer. A negative v
 msgstr "De mate van offset die wordt toegepast op alle polygonen in de eerste laag. Met negatieve waarden compenseert u het samenpersen van de eerste laag, ook wel 'olifantenpoot' genoemd."
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr ""
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr ""
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Uitlijning Z-naad"
@@ -2190,8 +2190,8 @@ msgstr "Afvoersnelheid flush"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "How fast to prime the material after switching to a different material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2200,28 +2200,28 @@ msgstr "Afvoerduur flush"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
-msgstr "Afvoersnelheid einde van filament"
+msgid "End of Filament Purge Speed"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
-msgstr "Afvoerduur einde van filament"
+msgid "End of Filament Purge Length"
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2230,8 +2230,8 @@ msgstr "Maximale parkeerduur"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2240,8 +2240,8 @@ msgstr "Verplaatsingsfactor zonder lading"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Interne waarde materiaalstation"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3020,8 +3020,8 @@ msgstr "Intrekken Inschakelen"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat. "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3715,8 +3715,8 @@ msgstr "Minimale X-/Y-afstand Supportstructuur"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "Afstand tussen de supportstructuur en de overhang in de X- en Y-richting. "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4325,8 +4325,7 @@ msgstr "Brimafstand"
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr "De horizontale afstand tussen de eerste brimlijn en de contour van de eerste laag van de print. Door een kleine tussenruimte is de brim gemakkelijker te"
-" verwijderen terwijl de thermische voordelen behouden blijven."
+msgstr "De horizontale afstand tussen de eerste brimlijn en de contour van de eerste laag van de print. Door een kleine tussenruimte is de brim gemakkelijker te verwijderen terwijl de thermische voordelen behouden blijven."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4815,8 +4814,8 @@ msgstr "Modelcorrecties"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "category_fixes"
+msgid "Make the meshes more suited for 3D printing."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +4934,8 @@ msgstr "Speciale Modi"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "category_blackmagic"
+msgid "Non-traditional ways to print your models."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -4946,9 +4945,7 @@ msgstr "Printvolgorde"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "Hiermee bepaalt u of alle modellen laag voor laag moeten worden geprint of dat eerst het ene model helemaal klaar moet zijn voordat aan het volgende wordt"
-" begonnen. Eén voor één printen is mogelijk als a) slechts één extruder is ingeschakeld en b) alle modellen zodanig zijn gescheiden dat de hele printkop"
-" ertussen kan bewegen en alle modellen lager zijn dan de afstand tussen de nozzle en de X/Y-assen. "
+msgstr "Hiermee bepaalt u of alle modellen laag voor laag moeten worden geprint of dat eerst het ene model helemaal klaar moet zijn voordat aan het volgende wordt begonnen. Eén voor één printen is mogelijk als a) slechts één extruder is ingeschakeld en b) alle modellen zodanig zijn gescheiden dat de hele printkop ertussen kan bewegen en alle modellen lager zijn dan de afstand tussen de nozzle en de X/Y-assen. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5112,8 +5109,8 @@ msgstr "Experimenteel"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "experimenteel!"
+msgid "Features that haven't completely been fleshed out yet."
+msgstr ""
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
@@ -5982,8 +5979,7 @@ msgstr "Maximale dichtheid van dunne vulling brugskin"
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "Maximale dichtheid van de vulling die als dun wordt beschouwd. Skin boven dunne vulling wordt als niet-ondersteund beschouwd en kan dus als een brugskin"
-" worden behandeld."
+msgstr "Maximale dichtheid van de vulling die als dun wordt beschouwd. Skin boven dunne vulling wordt als niet-ondersteund beschouwd en kan dus als een brugskin worden behandeld."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6153,9 +6149,7 @@ msgstr "Nozzle afvegen tussen lagen"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze optie kan het gedrag van het intrekken"
-" bij de laagwissel beïnvloeden. Gebruik de instellingen voor Intrekken voor afvegen om het intrekken te regelen bij lagen waarbij het afveegscript actief"
-" is."
+msgstr "Hiermee bepaalt u of u het afvegen van de nozzle tussen lagen wilt opnemen in de G-code. Het inschakelen van deze optie kan het gedrag van het intrekken bij de laagwissel beïnvloeden. Gebruik de instellingen voor Intrekken voor afvegen om het intrekken te regelen bij lagen waarbij het afveegscript actief is."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6165,8 +6159,7 @@ msgstr "Materiaalvolume tussen afvegen"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr "Maximale materiaalhoeveelheid die kan worden geëxtrudeerd voordat de nozzle opnieuw wordt afgeveegd. Als deze waarde kleiner is dan het benodigde materiaalvolume"
-" in een laag, heeft de instelling geen effect op deze laag. Er wordt dan maar een keer per laag afgeveegd."
+msgstr "Maximale materiaalhoeveelheid die kan worden geëxtrudeerd voordat de nozzle opnieuw wordt afgeveegd. Als deze waarde kleiner is dan het benodigde materiaalvolume in een laag, heeft de instelling geen effect op deze laag. Er wordt dan maar een keer per laag afgeveegd."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6246,8 +6239,7 @@ msgstr "Z-sprong afvegen"
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Tijdens het afvegen wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print"
-" raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
+msgstr "Tijdens het afvegen wordt het platform omlaag gebracht om ruimte te creëren tussen de nozzle en de print. Hiermee wordt voorkomen dat de nozzle de print raakt tijdens een beweging en wordt de kans verkleind dat de print van het platform wordt gestoten."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6398,6 +6390,70 @@ msgstr "Matrix rasterrotatie"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Omzettingsmatrix die moet worden toegepast op het model wanneer dit wordt geladen vanuit een bestand."
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "GUID van het materiaal. Deze optie wordt automatisch ingesteld. "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "Parkeerafstand filament"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "De afstand vanaf de punt van de nozzle waar het filament moet worden geparkeerd wanneer een extruder niet meer wordt gebruikt."
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "Afvoersnelheid einde van filament"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "Afvoerduur einde van filament"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Interne waarde materiaalstation"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat. "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "Afstand tussen de supportstructuur en de overhang in de X- en Y-richting. "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "category_fixes"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "category_blackmagic"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "experimenteel!"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"
