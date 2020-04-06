@@ -109,6 +109,13 @@ class CloudOutputDeviceManager:
             self._connectToActiveMachine()
 
     def _onDevicesDiscovered(self, clusters: [CloudClusterResponse]) -> None:
+        """**Synchronously** create machines for discovered devices
+
+        Any new machines are made available to the user.
+        May take a long time to complete. As this code needs access to the Application
+        and blocks the GIL, creating a Job for this would not make sense.
+        Shows a Message informing the user of progress.
+        """
         new_devices = []
         for cluster_data in clusters:
             device = CloudOutputDevice(self._api, cluster_data)
@@ -121,26 +128,37 @@ class CloudOutputDeviceManager:
             return
 
         message = Message(
-            title = self.I18N_CATALOG.i18ncp("info:status", "New cloud printer detected", "New cloud printers detected", len(new_devices)),
+            title = self.I18N_CATALOG.i18ncp(
+                "info:status",
+                "New cloud printer detected from your Ultimaker account",
+                "New cloud printers detected from your Ultimaker account",
+                len(new_devices)
+            ),
             progress = 0,
             lifetime = 0
         )
         message.show()
 
         for idx, device in enumerate(new_devices):
-            message.setText(self.I18N_CATALOG.i18nc("info:status", "Adding printer '{}' from your account", device.name))
-            message.setProgress((idx / len(new_devices)) * 100)
+            message_text = self.I18N_CATALOG.i18nc(
+                "info:status", "Adding printer {} ({}) from your account",
+                device.name,
+                device.printerTypeName
+            )
+            message.setText(message_text)
+            if len(new_devices) > 1:
+                message.setProgress((idx / len(new_devices)) * 100)
             CuraApplication.getInstance().processEvents()
             self._remote_clusters[device.getId()] = device
             self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
 
-        message.setProgress(100)
-        message.setText(self.I18N_CATALOG.i18ncp(
+        message.setProgress(None)
+        message_text = self.I18N_CATALOG.i18nc(
             "info:status",
-            "{} cloud printer added from your account",
-            "{} cloud printers added from your account",
-            len(new_devices)
-        ))
+            "Cloud printers added from your account:\n{}",
+            "\n".join(["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices])
+        )
+        message.setText(message_text)
 
     def _onDiscoveredDeviceUpdated(self, cluster_data: CloudClusterResponse) -> None:
         device = self._remote_clusters.get(cluster_data.cluster_id)
