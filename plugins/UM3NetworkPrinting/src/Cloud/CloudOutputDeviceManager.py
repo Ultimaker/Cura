@@ -135,8 +135,8 @@ class CloudOutputDeviceManager:
         message = Message(
             title = self.I18N_CATALOG.i18ncp(
                 "info:status",
-                "New cloud printer detected from your Ultimaker account",
-                "New cloud printers detected from your Ultimaker account",
+                "New printer detected from your Ultimaker account",
+                "New printers detected from your Ultimaker account",
                 len(new_devices)
             ),
             progress = 0,
