@@ -108,7 +108,7 @@ class CloudOutputDeviceManager:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
 
-    def _onDevicesDiscovered(self, clusters: [CloudClusterResponse]) -> None:
+    def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
 
         Any new machines are made available to the user.
