@@ -127,6 +127,8 @@ class CloudOutputDeviceManager:
         if not new_devices:
             return
 
+        new_devices.sort(key = lambda x: x.name.lower())
+
         image_path = os.path.join(
             CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
             "resources", "svg", "cloud-flow-completed.svg"
@@ -159,10 +161,20 @@ class CloudOutputDeviceManager:
             self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
 
         message.setProgress(None)
+
+        max_disp_devices = 3
+        if len(new_devices) > max_disp_devices:
+            num_hidden = len(new_devices) - max_disp_devices + 1
+            device_name_list = ["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
+            device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "- and {} others", num_hidden))
+            device_names = "\n".join(device_name_list)
+        else:
+            device_names = "\n".join(["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices])
+
         message_text = self.I18N_CATALOG.i18nc(
             "info:status",
             "Cloud printers added from your account:\n{}",
-            "\n".join(["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices])
+            device_names
         )
         message.setText(message_text)
 
