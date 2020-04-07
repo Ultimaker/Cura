@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import configparser
+import copy  # To split up files.
 from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
@@ -31,6 +32,53 @@ class VersionUpgrade46to47(VersionUpgrade):
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
+
+    def upgradeDefinitionChanges(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """
+        Upgrades definition changes files to the new version number.
+
+        This applies all of the changes that are applied in other instance
+        containers as well.
+
+        In the case of Deltacomb printers, it splits the 2 extruder definition
+        changes into 4.
+        :param serialized: The original contents of the instance container.
+        :param filename: The original file name of the instance container.
+        :return: A list of new file names, and a list of the new contents for
+        those files.
+        """
+        parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
+        parser.read_string(serialized)
+        results = [(parser, filename)]
+
+        if "general" in parser and "definition" in parser["general"]:
+            if parser["general"]["definition"] == "deltacomb_extruder_0":
+                parser["general"]["definition"] = "deltacomb_base_extruder_0"
+            elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
+                third_extruder_changes = copy.copy(parser)
+                fourth_extruder_changes = copy.copy(parser)
+
+                parser["general"]["definition"] = "deltacomb_base_extruder_1"
+                third_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_2"
+                fourth_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_3"
+                results.append((third_extruder_changes, filename + "_e2_upgrade"))  # Hopefully not already taken.
+                results.append((fourth_extruder_changes, filename + "_e3_upgrade"))  # Hopefully not already taken.
+            elif parser["general"]["definition"] == "deltacomb":  # Global stack.
+                parser["general"]["definition"] = "deltacomb_dc20"
+
+        # Now go upgrade with the generic instance container method.
+        final_serialised = []
+        final_filenames = []
+        for result_parser, result_filename in results:
+            result_ss = io.StringIO()
+            result_parser.write(result_ss)
+            result_serialised = result_ss.getvalue()
+            # The upgrade function itself might also return multiple files, so we need to append all of those into the final list.
+            this_filenames_upgraded, this_serialised_upgraded = self.upgradeInstanceContainer(result_serialised, result_filename)
+            final_serialised += this_serialised_upgraded
+            final_filenames += this_filenames_upgraded
+
+        return final_filenames, final_serialised
 
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
