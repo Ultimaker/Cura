@@ -41,6 +41,13 @@ fragment =
 
     float kernel[9];
 
+    vec3 shiftHue(vec3 color, float hue)
+    {
+        const vec3 k = vec3(0.57735, 0.57735, 0.57735);
+        float cosAngle = cos(hue);
+        return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
+    }
+
     void main()
     {
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
@@ -50,13 +57,18 @@ fragment =
         vec4 result = u_background_color;
         vec4 layer0 = texture2D(u_layer0, v_uvs);
 
+        float hue_shift = (layer0.a - 0.333) * 6.2831853;
+        if (layer0.a > 0.5)
+        {
+            layer0.a = 1.0;
+        }
         result = mix(result, layer0, layer0.a);
 
         float intersection_count = texture2D(u_layer2, v_uvs).r * 51.0; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49.0)
         {
-            result = mix(result, texture2D(u_xray_error, v_uvs * u_xray_error_scale), u_xray_error_strength);
+            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
         }
 
         vec4 sum = vec4(0.0);
@@ -117,6 +129,13 @@ fragment41core =
 
     float kernel[9];
 
+    vec3 shiftHue(vec3 color, float hue)
+    {
+        const vec3 k = vec3(0.57735, 0.57735, 0.57735);
+        float cosAngle = cos(hue);
+        return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
+    }
+
     void main()
     {
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
@@ -126,13 +145,18 @@ fragment41core =
         vec4 result = u_background_color;
         vec4 layer0 = texture(u_layer0, v_uvs);
 
+        float hue_shift = (layer0.a - 0.333) * 6.2831853;
+        if (layer0.a > 0.5)
+        {
+            layer0.a = 1.0;
+        }
         result = mix(result, layer0, layer0.a);
 
         float intersection_count = texture(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
         {
-            result = mix(result, texture(u_xray_error, v_uvs * u_xray_error_scale), u_xray_error_strength);
+            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
         }
 
         vec4 sum = vec4(0.0);

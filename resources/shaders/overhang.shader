@@ -38,9 +38,13 @@ fragment =
     varying highp vec3 f_vertex;
     varying highp vec3 f_normal;
 
+    float round(float f)
+    {
+        return sign(f) * floor(abs(f) + 0.5);
+    }
+
     void main()
     {
-
         mediump vec4 finalColor = vec4(0.0);
 
         // Ambient Component
@@ -62,8 +66,10 @@ fragment =
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
 
+        vec3 grid = vec3(f_vertex.x - round(f_vertex.x), f_vertex.y - round(f_vertex.y), f_vertex.z - round(f_vertex.z));
+        finalColor.a = dot(grid, grid) < 0.245 ? 0.667 : 1.0;
+
         gl_FragColor = finalColor;
-        gl_FragColor.a = 1.0;
     }
 
 vertex41core =
@@ -111,7 +117,6 @@ fragment41core =
 
     void main()
     {
-
         mediump vec4 finalColor = vec4(0.0);
 
         // Ambient Component
@@ -134,7 +139,9 @@ fragment41core =
         finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         frag_color = finalColor;
-        frag_color.a = 1.0;
+
+        vec3 grid = f_vertex - round(f_vertex);
+        frag_color.a = dot(grid, grid) < 0.245 ? 0.667 : 1.0;
     }
 
 [defaults]
