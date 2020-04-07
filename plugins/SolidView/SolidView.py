@@ -52,8 +52,6 @@ class SolidView(View):
         self._xray_pass = None
         self._xray_composite_shader = None
         self._composite_pass = None
-        self._xray_error_image = None
-        self._xray_error_image_size = QSize(1,1)
 
         self._extruders_model = None
         self._theme = None
@@ -134,7 +132,6 @@ class SolidView(View):
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
 
         if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
-            self._xray_error_image = None
             self._xray_shader = None
             self._xray_composite_shader = None
             if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
@@ -144,16 +141,6 @@ class SolidView(View):
                 self._old_composite_shader = None
                 self._xray_warning_message.hide()
         else:
-            if not self._xray_error_image:
-                self._xray_error_image = OpenGL.getInstance().createTexture()
-                texture_file = "xray_error.png"
-                try:
-                    texture_image = QImage(Resources.getPath(Resources.Images, texture_file)).mirrored()
-                    self._xray_error_image.setImage(texture_image)
-                    self._xray_error_image_size = texture_image.size()
-                except FileNotFoundError:
-                    Logger.log("w", "Unable to find xray error texture image [%s]", texture_file)
-
             if not self._xray_shader:
                 self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
@@ -162,7 +149,6 @@ class SolidView(View):
                 theme = Application.getInstance().getTheme()
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
-                self._xray_composite_shader.setTexture(3, self._xray_error_image)
 
             renderer = self.getRenderer()
             if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
@@ -179,9 +165,6 @@ class SolidView(View):
                 self._composite_pass.setLayerBindings(["default", "selection", "xray"])
                 self._old_composite_shader = self._composite_pass.getCompositeShader()
                 self._composite_pass.setCompositeShader(self._xray_composite_shader)
-
-            error_image_scale = [renderer.getViewportWidth() / self._xray_error_image_size.width(), renderer.getViewportHeight() / self._xray_error_image_size.height()]
-            self._xray_composite_shader.setUniformValue("u_xray_error_scale", error_image_scale)
 
     def beginRendering(self):
         scene = self.getController().getScene()

@@ -23,9 +23,7 @@ fragment =
     uniform sampler2D u_layer0; //Default pass.
     uniform sampler2D u_layer1; //Selection pass.
     uniform sampler2D u_layer2; //X-ray pass.
-    uniform sampler2D u_xray_error; //X-ray error image.
 
-    uniform vec2 u_xray_error_scale;
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
@@ -117,9 +115,7 @@ fragment41core =
     uniform sampler2D u_layer0; //Default pass.
     uniform sampler2D u_layer1; //Selection pass.
     uniform sampler2D u_layer2; //X-ray pass.
-    uniform sampler2D u_xray_error; //X-ray error image.
 
-    uniform vec2 u_xray_error_scale;
     uniform vec2 u_offset[9];
 
     uniform float u_outline_strength;
@@ -197,11 +193,9 @@ fragment41core =
 u_layer0 = 0
 u_layer1 = 1
 u_layer2 = 2
-u_xray_error = 3
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
-u_xray_error_strength = 0.4
 
 [bindings]
 
