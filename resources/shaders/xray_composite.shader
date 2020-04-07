@@ -43,6 +43,13 @@ fragment =
 
     vec3 shiftHue(vec3 color, float hue)
     {
+        // Make sure colors are distinct when grey-scale is used too:
+        if ((max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b)) < 0.1)
+        {
+            color = vec3(1.0, 0.0, 0.0);
+        }
+
+        // The actual hue shift:
         const vec3 k = vec3(0.57735, 0.57735, 0.57735);
         float cosAngle = cos(hue);
         return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
@@ -131,6 +138,13 @@ fragment41core =
 
     vec3 shiftHue(vec3 color, float hue)
     {
+        // Make sure colors are distinct when grey-scale is used too:
+        if ((max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b)) < 0.1)
+        {
+            color = vec3(1.0, 0.0, 0.0);
+        }
+
+        // The actual hue shift:
         const vec3 k = vec3(0.57735, 0.57735, 0.57735);
         float cosAngle = cos(hue);
         return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
