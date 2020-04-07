@@ -194,7 +194,6 @@ class CloudOutputDeviceManager:
         if not device:
             return
         device.close()
-        CuraApplication.getInstance().getDiscoveredPrintersModel().removeDiscoveredPrinter(device.key)
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key in output_device_manager.getOutputDeviceIds():
             output_device_manager.removeOutputDevice(device.key)
