@@ -3,6 +3,7 @@
 
 import os.path
 
+from UM.Resources import Resources
 from UM.Application import Application
 from UM.PluginRegistry import PluginRegistry
 
@@ -23,7 +24,7 @@ class XRayPass(RenderPass):
 
     def render(self):
         if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
+            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
 
         batch = RenderBatch(self._shader, type = RenderBatch.RenderType.NoType, backface_cull = False, blend_mode = RenderBatch.BlendMode.Additive)
         for node in DepthFirstIterator(self._scene.getRoot()):

@@ -28,8 +28,8 @@ fragment =
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_error_color;
     uniform vec4 u_background_color;
+    uniform float u_xray_error_strength;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -38,6 +38,20 @@ fragment =
     varying vec2 v_uvs;
 
     float kernel[9];
+
+    vec3 shiftHue(vec3 color, float hue)
+    {
+        // Make sure colors are distinct when grey-scale is used too:
+        if ((max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b)) < 0.1)
+        {
+            color = vec3(1.0, 0.0, 0.0);
+        }
+
+        // The actual hue shift:
+        const vec3 k = vec3(0.57735, 0.57735, 0.57735);
+        float cosAngle = cos(hue);
+        return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
+    }
 
     void main()
     {
@@ -48,12 +62,18 @@ fragment =
         vec4 result = u_background_color;
         vec4 layer0 = texture2D(u_layer0, v_uvs);
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
-
-        float intersection_count = (texture2D(u_layer2, v_uvs).r * 255.0) / 5.0;
-        if(mod(intersection_count, 2.0) == 1.0)
+        float hue_shift = (layer0.a - 0.333) * 6.2831853;
+        if (layer0.a > 0.5)
         {
-            result = u_error_color;
+            layer0.a = 1.0;
+        }
+        result = mix(result, layer0, layer0.a);
+
+        float intersection_count = texture2D(u_layer2, v_uvs).r * 51.0; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
+        float rest = mod(intersection_count + .01, 2.0);
+        if (rest > 1.0 && rest < 1.5 && intersection_count < 49.0)
+        {
+            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
         }
 
         vec4 sum = vec4(0.0);
@@ -70,8 +90,10 @@ fragment =
         }
         else
         {
-            gl_FragColor = mix(result, vec4(abs(sum.a)) * u_outline_color, abs(sum.a));
+            gl_FragColor = mix(result, u_outline_color, abs(sum.a));
         }
+
+        gl_FragColor.a = gl_FragColor.a > 0.5 ? 1.0 : 0.0;
     }
 
 vertex41core =
@@ -98,8 +120,8 @@ fragment41core =
 
     uniform float u_outline_strength;
     uniform vec4 u_outline_color;
-    uniform vec4 u_error_color;
     uniform vec4 u_background_color;
+    uniform float u_xray_error_strength;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -110,6 +132,20 @@ fragment41core =
 
     float kernel[9];
 
+    vec3 shiftHue(vec3 color, float hue)
+    {
+        // Make sure colors are distinct when grey-scale is used too:
+        if ((max(max(color.r, color.g), color.b) - min(min(color.r, color.g), color.b)) < 0.1)
+        {
+            color = vec3(1.0, 0.0, 0.0);
+        }
+
+        // The actual hue shift:
+        const vec3 k = vec3(0.57735, 0.57735, 0.57735);
+        float cosAngle = cos(hue);
+        return vec3(color * cosAngle + cross(k, color) * sin(hue) + k * dot(k, color) * (1.0 - cosAngle));
+    }
+
     void main()
     {
         kernel[0] = 0.0; kernel[1] = 1.0; kernel[2] = 0.0;
@@ -119,12 +155,18 @@ fragment41core =
         vec4 result = u_background_color;
         vec4 layer0 = texture(u_layer0, v_uvs);
 
-        result = layer0 * layer0.a + result * (1.0 - layer0.a);
-
-        float intersection_count = (texture(u_layer2, v_uvs).r * 255.0) / 5.0;
-        if(mod(intersection_count, 2.0) == 1.0)
+        float hue_shift = (layer0.a - 0.333) * 6.2831853;
+        if (layer0.a > 0.5)
         {
-            result = u_error_color;
+            layer0.a = 1.0;
+        }
+        result = mix(result, layer0, layer0.a);
+
+        float intersection_count = texture(u_layer2, v_uvs).r * 51; // (1 / .02) + 1 (+1 magically fixes issues with high intersection count models)
+        float rest = mod(intersection_count + .01, 2.0);
+        if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
+        {
+            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
         }
 
         vec4 sum = vec4(0.0);
@@ -141,8 +183,10 @@ fragment41core =
         }
         else
         {
-            frag_color = mix(result, vec4(abs(sum.a)) * u_outline_color, abs(sum.a));
+            frag_color = mix(result, u_outline_color, abs(sum.a));
         }
+
+        frag_color.a = frag_color.a > 0.5 ? 1.0 : 0.0;
     }
 
 [defaults]
@@ -152,7 +196,6 @@ u_layer2 = 2
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
-u_error_color = [1.0, 0.0, 0.0, 1.0]
 
 [bindings]
 
