@@ -248,6 +248,8 @@ class ExtruderManager(QObject):
                 extruder_nr = int(global_stack.getProperty(extruder_nr_feature_name, "value"))
                 if extruder_nr == -1:
                     continue
+                if str(extruder_nr) not in self.extruderIds:
+                    extruder_nr = int(self._application.getMachineManager().defaultExtruderPosition)
                 used_extruder_stack_ids.add(self.extruderIds[str(extruder_nr)])
 
         # Check support extruders
