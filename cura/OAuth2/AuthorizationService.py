@@ -7,19 +7,17 @@ from typing import Optional, TYPE_CHECKING
 from urllib.parse import urlencode
 
 import requests.exceptions
-
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-
-from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
+from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
+from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
 
-from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
@@ -166,11 +164,18 @@ class AuthorizationService:
             "code_challenge_method": "S512"
         })
 
+        # Start a local web server to receive the callback URL on.
+        try:
+            self._server.start(verification_code, state)
+        except OSError:
+            Logger.logException("w", "Unable to create authorization request server")
+            Message(i18n_catalog.i18nc("@info", "Unable to start local OAUTH2 server. Check if another login atempt is still active."),
+                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+            return
+
         # Open the authorization page in a new browser window.
         QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
-        # Start a local web server to receive the callback URL on.
-        self._server.start(verification_code, state)
 
     ##  Callback method for the authentication flow.
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
