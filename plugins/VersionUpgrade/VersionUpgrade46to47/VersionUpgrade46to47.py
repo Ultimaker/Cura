@@ -157,7 +157,7 @@ class VersionUpgrade46to47(VersionUpgrade):
         parser["metadata"]["setting_version"] = "13"
 
         if "containers" in parser and "7" in parser["containers"]:
-            if parser["containers"]["7"] == "deltacomb_extruder_0" or parser["containers"]["7"] == "deltacomb_extruder_1":
+            if parser["containers"]["7"] == "deltacomb_extruder_0" or parser["containers"]["7"] == "deltacomb_extruder_1":  # Extruder stack.
                 if "5" in parser["containers"]:
                     parser["containers"]["5"] = renamed_nozzles.get(parser["containers"]["5"], default = parser["containers"]["5"])
                     if "3" in parser["containers"] and "4" in parser["containers"] and parser["containers"]["3"] == "empty_quality":
@@ -183,6 +183,9 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder4["containers"]["7"] = "deltacomb_base_extruder_3"
                     result_parsers.append(extruder4)
                     result_filenames.append(filename[:-len(".extruder.cfg")] + "_e3_upgrade.extruder.cfg")
+            elif parser["containers"]["7"] == "deltacomb":  # Global stack.
+                parser["containers"]["7"] = "deltacomb_dc20"
+                parser["containers"]["3"] = "deltacomb_global_C"
 
         result_serialized = []
         for result_parser in result_parsers:
