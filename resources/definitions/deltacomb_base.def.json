@@ -22,7 +22,7 @@
             "1": "deltacomb_base_extruder_1",
             "2": "deltacomb_base_extruder_2",
             "3": "deltacomb_base_extruder_3"
-	    }
+        }
     },
 
     "overrides": {
