@@ -1254,7 +1254,11 @@ class MachineManager(QObject):
             return
         Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Get the definition id corresponding to this machine name
-        machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
+        definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(name=machine_name)
+        if not definitions:
+            Logger.log("e", "Unable to switch printer type since it could not be found!")
+            return
+        machine_definition_id = definitions[0].getId()
         # Try to find a machine with the same network key
         metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id")}
         new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
