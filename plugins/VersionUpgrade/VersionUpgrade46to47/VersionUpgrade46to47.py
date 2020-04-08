@@ -55,15 +55,15 @@ class VersionUpgrade46to47(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    def upgradeDefinitionChanges(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+    def upgradeExtruderInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
-        Upgrades definition changes files to the new version number.
+        Upgrades per-extruder instance containers to the new version number.
 
         This applies all of the changes that are applied in other instance
         containers as well.
 
-        In the case of Deltacomb printers, it splits the 2 extruder definition
-        changes into 4.
+        In the case of Deltacomb printers, it splits the 2 extruders into 4 and
+        changes the definition.
         :param serialized: The original contents of the instance container.
         :param filename: The original file name of the instance container.
         :return: A list of new file names, and a list of the new contents for
@@ -170,14 +170,16 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder3 = copy.copy(parser)
                     extruder3["metadata"]["position"] = "2"
                     extruder3["containers"]["0"] += "_e2_upgrade"
+                    extruder3["containers"]["1"] += "_e2_upgrade"
                     extruder3["containers"]["6"] += "_e2_upgrade"
                     extruder3["containers"]["7"] = "deltacomb_base_extuder_2"
                     result_parsers.append(extruder3)
                     result_filenames.append(filename[:-len(".extruder.cfg")] + "_e2_upgrade.extruder.cfg")
                     extruder4 = copy.copy(parser)
                     extruder4["metadata"]["position"] = "3"
-                    extruder4["containers"]["0"] += ".inst.cfg_e3_upgrade"
-                    extruder4["containers"]["6"] += ".inst.cfg_e3_upgrade"
+                    extruder4["containers"]["0"] += "_e3_upgrade"
+                    extruder4["containers"]["1"] += "_e3_upgrade"
+                    extruder4["containers"]["6"] += "_e3_upgrade"
                     extruder4["containers"]["7"] = "deltacomb_base_extruder_3"
                     result_parsers.append(extruder4)
                     result_filenames.append(filename[:-len(".extruder.cfg")] + "_e3_upgrade.extruder.cfg")
