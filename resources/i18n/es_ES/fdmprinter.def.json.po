@@ -2056,7 +2056,7 @@ msgstr "La temperatura utilizada para la placa de impresión caliente. Si el val
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
-msgstr "Temperatura de la capa de impresión en la capa inicial"
+msgstr "Temperatura de la placa de impresión en la capa inicial"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
