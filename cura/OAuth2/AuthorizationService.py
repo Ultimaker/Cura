@@ -166,11 +166,18 @@ class AuthorizationService:
             "code_challenge_method": "S512"
         })
 
+        # Start a local web server to receive the callback URL on.
+        try:
+            self._server.start(verification_code, state)
+        except OSError:
+            Logger.logException("w", "Unable to create authorization request server")
+            Message(i18n_catalog.i18nc("@info", "Unable to start local OAUTH2 server. Check if another login atempt is still active."),
+                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+            return
+
         # Open the authorization page in a new browser window.
         QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
 
-        # Start a local web server to receive the callback URL on.
-        self._server.start(verification_code, state)
 
     ##  Callback method for the authentication flow.
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:
