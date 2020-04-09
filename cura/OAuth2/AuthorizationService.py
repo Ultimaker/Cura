@@ -169,7 +169,7 @@ class AuthorizationService:
             self._server.start(verification_code, state)
         except OSError:
             Logger.logException("w", "Unable to create authorization request server")
-            Message(i18n_catalog.i18nc("@info", "Unable to start local OAUTH2 server. Check if another login atempt is still active."),
+            Message(i18n_catalog.i18nc("@info", "Unable to start a new sign in process. Check if another sign in attempt is still active."),
                     title=i18n_catalog.i18nc("@info:title", "Warning")).show()
             return
 
