@@ -181,7 +181,7 @@ class PlatformPhysics:
 
         if tool.getPluginId() == "TranslateTool":
             for node in Selection.getAllSelectedObjects():
-                if node.getBoundingBox().bottom < 0:
+                if node.getBoundingBox() and node.getBoundingBox().bottom < 0:
                     if not node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
                         node.addDecorator(ZOffsetDecorator.ZOffsetDecorator())
 
