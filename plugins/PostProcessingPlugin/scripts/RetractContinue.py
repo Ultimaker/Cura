@@ -42,6 +42,7 @@ class RetractContinue(Script):
                         continue
                     new_e = self.getValue(line, "E")
                     if new_e >= current_e:  # Not a retraction.
+                        current_e = new_e
                         continue
                     # A retracted travel move may consist of multiple commands, due to combing.
                     # This continues retracting over all of these moves and only unretracts at the end.
