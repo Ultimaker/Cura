@@ -170,10 +170,10 @@ class VersionUpgrade46to47(VersionUpgrade):
                     parser["containers"]["5"] = renamed_nozzles.get(parser["containers"]["5"], parser["containers"]["5"])
                     if "3" in parser["containers"] and "4" in parser["containers"] and parser["containers"]["3"] == "empty_quality":
                         parser["containers"]["3"] = default_qualities_per_nozzle_and_material[parser["containers"]["5"]].get(parser["containers"]["4"], "empty_quality")
-                if parser["containers"]["7"] == "deltacomb_extruder_1":
-                    parser["containers"]["7"] = "deltacomb_base_extruder_1"
-                else:
+                if parser["containers"]["7"] == "deltacomb_extruder_0":
                     parser["containers"]["7"] = "deltacomb_base_extruder_0"
+                else:
+                    parser["containers"]["7"] = "deltacomb_base_extruder_1"
                     # Copy this extruder to extruder 3 and 4.
                     extruder3 = copy.deepcopy(parser)
                     extruder3["metadata"]["position"] = "2"
