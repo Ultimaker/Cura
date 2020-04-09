@@ -178,7 +178,8 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder3 = copy.deepcopy(parser)
                     extruder3["metadata"]["position"] = "2"
                     extruder3["containers"]["0"] += "_e2_upgrade"
-                    extruder3["containers"]["1"] += "_e2_upgrade"
+                    if extruder3["containers"]["1"] != "empty_quality_changes":
+                        extruder3["containers"]["1"] += "_e2_upgrade"
                     extruder3["containers"]["6"] += "_e2_upgrade"
                     extruder3["containers"]["7"] = "deltacomb_base_extuder_2"
                     result_parsers.append(extruder3)
@@ -186,7 +187,8 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder4 = copy.deepcopy(parser)
                     extruder4["metadata"]["position"] = "3"
                     extruder4["containers"]["0"] += "_e3_upgrade"
-                    extruder4["containers"]["1"] += "_e3_upgrade"
+                    if extruder4["containers"]["1"] != "empty_quality_changes":
+                        extruder4["containers"]["1"] += "_e3_upgrade"
                     extruder4["containers"]["6"] += "_e3_upgrade"
                     extruder4["containers"]["7"] = "deltacomb_base_extruder_3"
                     result_parsers.append(extruder4)
