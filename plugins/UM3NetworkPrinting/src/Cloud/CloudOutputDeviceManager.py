@@ -120,8 +120,11 @@ class CloudOutputDeviceManager:
         for cluster_data in clusters:
             device = CloudOutputDevice(self._api, cluster_data)
             # Create a machine if we don't already have it. Do not make it the active machine.
-            meta_data = {self.META_CLUSTER_ID: device.key}
-            if CuraApplication.getInstance().getMachineManager().getMachine(device.printerType, meta_data) is None:
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+
+            # We only need to add it if it wasn't already added by "local" network or by cloud.
+            if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
+                    and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
                 new_devices.append(device)
 
         if not new_devices:
