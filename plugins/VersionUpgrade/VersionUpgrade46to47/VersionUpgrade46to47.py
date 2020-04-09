@@ -156,8 +156,7 @@ class VersionUpgrade46to47(VersionUpgrade):
         """
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
-        result_parsers = [parser]
-        result_filenames = [filename]
+        results = [(parser, filename)]
 
         # Update version number.
         if "metadata" not in parser:
@@ -176,31 +175,35 @@ class VersionUpgrade46to47(VersionUpgrade):
                     parser["containers"]["7"] = "deltacomb_base_extruder_1"
                     # Copy this extruder to extruder 3 and 4.
                     extruder3 = copy.deepcopy(parser)
+                    extruder4 = copy.deepcopy(parser)
+
+                    extruder3["general"]["id"] += "_e2_upgrade"
                     extruder3["metadata"]["position"] = "2"
                     extruder3["containers"]["0"] += "_e2_upgrade"
                     if extruder3["containers"]["1"] != "empty_quality_changes":
                         extruder3["containers"]["1"] += "_e2_upgrade"
                     extruder3["containers"]["6"] += "_e2_upgrade"
                     extruder3["containers"]["7"] = "deltacomb_base_extruder_2"
-                    result_parsers.append(extruder3)
-                    result_filenames.append(filename + "_e2_upgrade")
-                    extruder4 = copy.deepcopy(parser)
+                    results.append((extruder3, filename + "_e2_upgrade"))
+
+                    extruder4["general"]["id"] += "_e3_upgrade"
                     extruder4["metadata"]["position"] = "3"
                     extruder4["containers"]["0"] += "_e3_upgrade"
                     if extruder4["containers"]["1"] != "empty_quality_changes":
                         extruder4["containers"]["1"] += "_e3_upgrade"
                     extruder4["containers"]["6"] += "_e3_upgrade"
                     extruder4["containers"]["7"] = "deltacomb_base_extruder_3"
-                    result_parsers.append(extruder4)
-                    result_filenames.append(filename + "_e3_upgrade")
+                    results.append((extruder4, filename + "_e3_upgrade"))
             elif parser["containers"]["7"] == "deltacomb":  # Global stack.
                 parser["containers"]["7"] = "deltacomb_dc20"
                 parser["containers"]["3"] = "deltacomb_global_C"
 
         result_serialized = []
-        for result_parser in result_parsers:
+        result_filenames = []
+        for result_parser, result_filename in results:
             result_ss = io.StringIO()
             result_parser.write(result_ss)
             result_serialized.append(result_ss.getvalue())
+            result_filenames.append(result_filename)
 
         return result_filenames, result_serialized
