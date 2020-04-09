@@ -77,8 +77,8 @@ class VersionUpgrade46to47(VersionUpgrade):
             if parser["general"]["definition"] == "deltacomb_extruder_0":
                 parser["general"]["definition"] = "deltacomb_base_extruder_0"
             elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
-                third_extruder_changes = copy.copy(parser)
-                fourth_extruder_changes = copy.copy(parser)
+                third_extruder_changes = copy.deepcopy(parser)
+                fourth_extruder_changes = copy.deepcopy(parser)
 
                 parser["general"]["definition"] = "deltacomb_base_extruder_1"
                 third_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_2"
@@ -167,7 +167,7 @@ class VersionUpgrade46to47(VersionUpgrade):
                 else:
                     parser["containers"]["7"] = "deltacomb_base_extruder_0"
                     # Copy this extruder to extruder 3 and 4.
-                    extruder3 = copy.copy(parser)
+                    extruder3 = copy.deepcopy(parser)
                     extruder3["metadata"]["position"] = "2"
                     extruder3["containers"]["0"] += "_e2_upgrade"
                     extruder3["containers"]["1"] += "_e2_upgrade"
@@ -175,7 +175,7 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder3["containers"]["7"] = "deltacomb_base_extuder_2"
                     result_parsers.append(extruder3)
                     result_filenames.append(filename[:-len(".extruder.cfg")] + "_e2_upgrade.extruder.cfg")
-                    extruder4 = copy.copy(parser)
+                    extruder4 = copy.deepcopy(parser)
                     extruder4["metadata"]["position"] = "3"
                     extruder4["containers"]["0"] += "_e3_upgrade"
                     extruder4["containers"]["1"] += "_e3_upgrade"
