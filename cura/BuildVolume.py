@@ -274,7 +274,9 @@ class BuildVolume(SceneNode):
                     if not self._global_container_stack.extruderList[int(extruder_position)].isEnabled:
                         node.setOutsideBuildArea(True)
                         continue
-                except IndexError:
+                except IndexError:  # Happens when the extruder list is too short. We're not done building the printer in memory yet.
+                    continue
+                except TypeError:  # Happens when extruder_position is None. This object has no extruder decoration.
                     continue
 
                 node.setOutsideBuildArea(False)
