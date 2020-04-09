@@ -83,8 +83,8 @@ class VersionUpgrade46to47(VersionUpgrade):
                 parser["general"]["definition"] = "deltacomb_base_extruder_1"
                 third_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_2"
                 fourth_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_3"
-                results.append((third_extruder_changes, filename[:-len(".inst.cfg")] + "_e2_upgrade.inst.cfg"))  # Hopefully not already taken.
-                results.append((fourth_extruder_changes, filename[:-len(".inst.cfg")] + "_e3_upgrade.inst.cfg"))  # Hopefully not already taken.
+                results.append((third_extruder_changes, filename + "_e2_upgrade"))  # Hopefully not already taken.
+                results.append((fourth_extruder_changes, filename + "_e3_upgrade"))  # Hopefully not already taken.
             elif parser["general"]["definition"] == "deltacomb":  # Global stack.
                 parser["general"]["definition"] = "deltacomb_dc20"
 
@@ -174,7 +174,7 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder3["containers"]["6"] += "_e2_upgrade"
                     extruder3["containers"]["7"] = "deltacomb_base_extuder_2"
                     result_parsers.append(extruder3)
-                    result_filenames.append(filename[:-len(".extruder.cfg")] + "_e2_upgrade.extruder.cfg")
+                    result_filenames.append(filename + "_e2_upgrade")
                     extruder4 = copy.deepcopy(parser)
                     extruder4["metadata"]["position"] = "3"
                     extruder4["containers"]["0"] += "_e3_upgrade"
@@ -182,7 +182,7 @@ class VersionUpgrade46to47(VersionUpgrade):
                     extruder4["containers"]["6"] += "_e3_upgrade"
                     extruder4["containers"]["7"] = "deltacomb_base_extruder_3"
                     result_parsers.append(extruder4)
-                    result_filenames.append(filename[:-len(".extruder.cfg")] + "_e3_upgrade.extruder.cfg")
+                    result_filenames.append(filename + "_e3_upgrade")
             elif parser["containers"]["7"] == "deltacomb":  # Global stack.
                 parser["containers"]["7"] = "deltacomb_dc20"
                 parser["containers"]["3"] = "deltacomb_global_C"
