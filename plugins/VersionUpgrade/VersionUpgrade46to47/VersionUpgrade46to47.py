@@ -181,7 +181,7 @@ class VersionUpgrade46to47(VersionUpgrade):
                     if extruder3["containers"]["1"] != "empty_quality_changes":
                         extruder3["containers"]["1"] += "_e2_upgrade"
                     extruder3["containers"]["6"] += "_e2_upgrade"
-                    extruder3["containers"]["7"] = "deltacomb_base_extuder_2"
+                    extruder3["containers"]["7"] = "deltacomb_base_extruder_2"
                     result_parsers.append(extruder3)
                     result_filenames.append(filename + "_e2_upgrade")
                     extruder4 = copy.deepcopy(parser)
