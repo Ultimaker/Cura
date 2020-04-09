@@ -77,16 +77,24 @@ class VersionUpgrade46to47(VersionUpgrade):
             if parser["general"]["definition"] == "deltacomb_extruder_0":
                 parser["general"]["definition"] = "deltacomb_base_extruder_0"
             elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
-                third_extruder_changes = copy.deepcopy(parser)
-                fourth_extruder_changes = copy.deepcopy(parser)
+                parser_e2 = copy.deepcopy(parser)
+                parser_e3 = copy.deepcopy(parser)
 
                 parser["general"]["definition"] = "deltacomb_base_extruder_1"
-                third_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_2"
-                fourth_extruder_changes["general"]["definition"] = "deltacomb_base_extruder_3"
-                results.append((third_extruder_changes, filename + "_e2_upgrade"))  # Hopefully not already taken.
-                results.append((fourth_extruder_changes, filename + "_e3_upgrade"))  # Hopefully not already taken.
-            elif parser["general"]["definition"] == "deltacomb":  # Global stack.
+                parser_e2["general"]["definition"] = "deltacomb_base_extruder_2"
+                parser_e3["general"]["definition"] = "deltacomb_base_extruder_3"
+                results.append((parser_e2, filename + "_e2_upgrade"))  # Hopefully not already taken.
+                results.append((parser_e3, filename + "_e3_upgrade"))
+            elif parser["general"]["definition"] == "deltacomb":  # On the global stack OR the per-extruder user container.
                 parser["general"]["definition"] = "deltacomb_dc20"
+
+                if "metadata" in parser and "extruder" in parser["metadata"]:  # Per-extruder user container.
+                    parser_e2 = copy.deepcopy(parser)
+                    parser_e3 = copy.deepcopy(parser)
+                    parser_e2["metadata"]["extruder"] += "_e2_upgrade"
+                    parser_e3["metadata"]["extruder"] += "_e3_upgrade"
+                    results.append((parser_e2, filename + "_e2_upgrade"))
+                    results.append((parser_e3, filename + "_e3_upgrade"))
 
         # Now go upgrade with the generic instance container method.
         final_serialised = []
