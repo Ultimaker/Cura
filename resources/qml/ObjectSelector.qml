@@ -120,6 +120,7 @@ Item
                 }
                 text: model.name
                 width: listView.width
+                property bool outsideBuildArea: model.outside_build_area
             }
         }
     }

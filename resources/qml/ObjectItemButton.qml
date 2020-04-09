@@ -35,6 +35,7 @@ Button
             text: objectItemButton.text
             font: UM.Theme.getFont("default")
             color: UM.Theme.getColor("text_scene")
+            opacity: (outsideBuildArea) ? 0.5 : 1.0
             visible: text != ""
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
