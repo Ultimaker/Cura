@@ -13,7 +13,7 @@
             "1": "deltacomb_dc30flux_extruder_1",
             "2": "deltacomb_dc30flux_extruder_2",
             "3": "deltacomb_dc30flux_extruder_3"
-	      }
+          }
     },
 
     "overrides": {

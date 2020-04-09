@@ -12,9 +12,9 @@
         "has_machine_quality":             true,
         "has_materials":                   true,
         "has_variants":                    true,
-        "variants_name":                   "Head",        
+        "variants_name":                   "Head",
         
-        "preferred_quality_type":          "fast",
+        "preferred_quality_type":          "d",
         "preferred_material":              "generic_pla",
         
         "machine_extruder_trains": {
