@@ -41,7 +41,7 @@ class RetractContinue(Script):
                     if not self.getValue(line, "E"):  # Either None or 0: Not a retraction then.
                         continue
                     new_e = self.getValue(line, "E")
-                    if new_e >= current_e:  # Not a retraction.
+                    if new_e - current_e >= -0.0001:  # Not a retraction. Account for floating point rounding errors.
                         current_e = new_e
                         continue
                     # A retracted travel move may consist of multiple commands, due to combing.
