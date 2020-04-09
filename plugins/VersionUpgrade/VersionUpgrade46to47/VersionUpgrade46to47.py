@@ -97,18 +97,18 @@ class VersionUpgrade46to47(VersionUpgrade):
                     results.append((parser_e3, filename + "_e3_upgrade"))
 
         # Now go upgrade with the generic instance container method.
-        final_serialised = []
-        final_filenames = []
+        final_serialized = []  # type: List[str]
+        final_filenames = []  # type: List[str]
         for result_parser, result_filename in results:
             result_ss = io.StringIO()
             result_parser.write(result_ss)
-            result_serialised = result_ss.getvalue()
+            result_serialized = result_ss.getvalue()
             # The upgrade function itself might also return multiple files, so we need to append all of those into the final list.
-            this_filenames_upgraded, this_serialised_upgraded = self.upgradeInstanceContainer(result_serialised, result_filename)
-            final_serialised += this_serialised_upgraded
+            this_filenames_upgraded, this_serialized_upgraded = self.upgradeInstanceContainer(result_serialized, result_filename)
+            final_serialized += this_serialized_upgraded
             final_filenames += this_filenames_upgraded
 
-        return final_filenames, final_serialised
+        return final_filenames, final_serialized
 
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
