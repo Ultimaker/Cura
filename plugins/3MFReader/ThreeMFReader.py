@@ -88,7 +88,10 @@ class ThreeMFReader(MeshReader):
     #   \returns Scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         self._object_count += 1
-        node_name = "Object %s" % self._object_count
+
+        node_name = savitar_node.getName()
+        if node_name == "":
+            node_name = "Object %s" % self._object_count
 
         active_build_plate = CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 

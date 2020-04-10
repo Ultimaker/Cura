@@ -10,6 +10,8 @@ from UM.Logger import Logger
 from UM.Preferences import Preferences
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Workspace.WorkspaceWriter import WorkspaceWriter
+from UM.i18n import i18nCatalog
+catalog = i18nCatalog("cura")
 
 from cura.Utils.Threading import call_on_qt_thread
 
@@ -26,6 +28,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
         mesh_writer = application.getMeshFileHandler().getWriter("3MFWriter")
 
         if not mesh_writer:  # We need to have the 3mf mesh writer, otherwise we can't save the entire workspace
+            self.setInformation(catalog.i18nc("@error:zip", "3MF Writer plug-in is corrupt."))
             Logger.error("3MF Writer class is unavailable. Can't write workspace.")
             return False
 
@@ -39,18 +42,23 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
 
         global_stack = machine_manager.activeMachine
 
-        # Add global container stack data to the archive.
-        self._writeContainerToArchive(global_stack, archive)
+        try:
+            # Add global container stack data to the archive.
+            self._writeContainerToArchive(global_stack, archive)
 
-        # Also write all containers in the stack to the file
-        for container in global_stack.getContainers():
-            self._writeContainerToArchive(container, archive)
-
-        # Check if the machine has extruders and save all that data as well.
-        for extruder_stack in global_stack.extruders.values():
-            self._writeContainerToArchive(extruder_stack, archive)
-            for container in extruder_stack.getContainers():
+            # Also write all containers in the stack to the file
+            for container in global_stack.getContainers():
                 self._writeContainerToArchive(container, archive)
+
+            # Check if the machine has extruders and save all that data as well.
+            for extruder_stack in global_stack.extruders.values():
+                self._writeContainerToArchive(extruder_stack, archive)
+                for container in extruder_stack.getContainers():
+                    self._writeContainerToArchive(container, archive)
+        except PermissionError:
+            self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
+            Logger.error("No permission to write workspace to this stream.")
+            return False
 
         # Write preferences to archive
         original_preferences = Application.getInstance().getPreferences() #Copy only the preferences that we use to the workspace.
@@ -81,6 +89,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             # Close the archive & reset states.
             archive.close()
         except PermissionError:
+            self.setInformation(catalog.i18nc("@error:zip", "No permission to write the workspace here."))
             Logger.error("No permission to write workspace to this stream.")
             return False
         mesh_writer.setStoreArchive(False)

@@ -1,23 +1,24 @@
 # Copyright (c) 2018 Jaime van Kessel, Ultimaker B.V.
 # The PostProcessingPlugin is released under the terms of the AGPLv3 or higher.
 
-from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
-from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
-
-from UM.PluginRegistry import PluginRegistry
-from UM.Resources import Resources
-from UM.Application import Application
-from UM.Extension import Extension
-from UM.Logger import Logger
-
 import configparser  # The script lists are stored in metadata as serialised config files.
+import importlib.util
 import io  # To allow configparser to write to a string.
 import os.path
 import pkgutil
 import sys
-import importlib.util
+from typing import Dict, Type, TYPE_CHECKING, List, Optional, cast
 
+from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal, pyqtSlot
+
+from UM.Application import Application
+from UM.Extension import Extension
+from UM.Logger import Logger
+from UM.PluginRegistry import PluginRegistry
+from UM.Resources import Resources
+from UM.Trust import Trust
 from UM.i18n import i18nCatalog
+from cura import ApplicationMetadata
 from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
@@ -161,7 +162,13 @@ class PostProcessingPlugin(QObject, Extension):
             # Iterate over all scripts.
             if script_name not in sys.modules:
                 try:
-                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name, os.path.join(path, script_name + ".py"))
+                    file_path = os.path.join(path, script_name + ".py")
+                    if not self._isScriptAllowed(file_path):
+                        Logger.warning("Skipped loading post-processing script {}: not trusted".format(file_path))
+                        continue
+
+                    spec = importlib.util.spec_from_file_location(__name__ + "." + script_name,
+                                                                  file_path)
                     loaded_script = importlib.util.module_from_spec(spec)
                     if spec.loader is None:
                         continue
@@ -333,5 +340,27 @@ class PostProcessingPlugin(QObject, Extension):
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is not None:
             global_container_stack.propertyChanged.emit("post_processing_plugin", "value")
+
+    @staticmethod
+    def _isScriptAllowed(file_path: str) -> bool:
+        """Checks whether the given file is allowed to be loaded"""
+        if not ApplicationMetadata.IsEnterpriseVersion:
+            # No signature needed
+            return True
+
+        dir_path = os.path.split(file_path)[0]  # type: str
+        plugin_path = PluginRegistry.getInstance().getPluginPath("PostProcessingPlugin")
+        assert plugin_path is not None  # appease mypy
+        bundled_path = os.path.join(plugin_path, "scripts")
+        if dir_path == bundled_path:
+            # Bundled scripts are trusted.
+            return True
+
+        trust_instance = Trust.getInstanceOrNone()
+        if trust_instance is not None and Trust.signatureFileExistsFor(file_path):
+            if trust_instance.signedFileCheck(file_path):
+                return True
+
+        return False  # Default verdict should be False, being the most secure fallback
 
 
