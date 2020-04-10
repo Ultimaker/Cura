@@ -299,7 +299,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         new_print_jobs = []
 
         # Check which print jobs need to be created or updated.
-        for index, print_job_data in enumerate(remote_jobs):
+        for print_job_data in remote_jobs:
             print_job = next(
                 iter(print_job for print_job in self._print_jobs if print_job.key == print_job_data.uuid), None)
             if not print_job:
