@@ -25,7 +25,7 @@
       "value": "5.333333333333333"
     },
     "support_roof_pattern": {
-      "default_value": "concentric"
+      "value": "concentric"
     },
     "spaghetti_infill_stepped": {
       "default_value": true
@@ -34,13 +34,10 @@
       "default_value": 90
     },
     "wipe_retraction_speed": {
-      "default_value": 30
+      "value": "30"
     },
     "jerk_travel_layer_0": {
       "value": "10"
-    },
-    "support_bottom_stair_step_width": {
-      "default_value": 5.0
     },
     "wipe_repeat_count": {
       "default_value": 5
@@ -60,8 +57,11 @@
     "meshfix_maximum_travel_resolution": {
       "value": "0.8"
     },
-    "wireframe_printspeed_flat": {
-      "default_value": 5
+    "support_bottom_stair_step_height": {
+      "default_value": 0.3
+    },
+    "wall_min_flow": {
+      "default_value": 0
     },
     "wireframe_roof_drag_along": {
       "default_value": 0.8
@@ -69,14 +69,17 @@
     "infill_angles": {
       "default_value": "[ ]"
     },
-    "support_extruder_nr": {
-      "default_value": 0
+    "bottom_skin_expand_distance": {
+      "value": "0.8"
     },
-    "jerk_support_roof": {
-      "value": "5"
+    "support_skip_some_zags": {
+      "default_value": true
     },
     "material": {
       "default_value": 0
+    },
+    "machine_feeder_wheel_diameter": {
+      "default_value": 10.0
     },
     "material_break_preparation_retracted_position": {
       "default_value": -16
@@ -91,19 +94,16 @@
       "default_value": 1.25
     },
     "speed_layer_0": {
-      "default_value": 10.0
+      "value": "10.0"
     },
     "infill_pattern": {
-      "default_value": "grid"
+      "value": "grid"
     },
     "xy_offset": {
       "default_value": -0.16
     },
-    "small_feature_speed_factor_0": {
-      "default_value": 50
-    },
-    "support_tower_diameter": {
-      "default_value": 3.0
+    "bridge_fan_speed_3": {
+      "default_value": 0
     },
     "machine_max_feedrate_x": {
       "default_value": 299792458000
@@ -124,13 +124,16 @@
       "default_value": "normal"
     },
     "support_bottom_density": {
-      "default_value": 100
+      "value": "100"
+    },
+    "acceleration_travel_layer_0": {
+      "value": "400"
     },
     "raft_speed": {
       "value": "60"
     },
     "material_final_print_temperature": {
-      "default_value": 195
+      "value": "195"
     },
     "material_print_temp_wait": {
       "default_value": true
@@ -144,11 +147,11 @@
     "cross_support_density_image": {
       "default_value": ""
     },
-    "bridge_skin_density_2": {
-      "default_value": 75
+    "material_flow_dependent_temperature": {
+      "default_value": false
     },
-    "acceleration_support": {
-      "value": "400"
+    "raft_interface_thickness": {
+      "value": "0.2"
     },
     "support_use_towers": {
       "default_value": false
@@ -175,16 +178,16 @@
       "default_value": 120
     },
     "bridge_wall_speed": {
-      "default_value": 10.0
+      "value": "10.0"
     },
     "acceleration_wall": {
       "value": "400"
     },
-    "machine_max_feedrate_y": {
-      "default_value": 299792458000
+    "machine_heat_zone_length": {
+      "default_value": 16
     },
     "travel_avoid_distance": {
-      "default_value": 0.625
+      "value": "0.625"
     },
     "brim_outside_only": {
       "default_value": true
@@ -205,16 +208,16 @@
       "value": "5"
     },
     "infill_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "wipe_hop_enable": {
-      "default_value": false
+      "value": "False"
     },
-    "jerk_wall_x": {
-      "value": "10"
+    "acceleration_enabled": {
+      "default_value": true
     },
     "support_roof_enable": {
-      "default_value": false
+      "value": "False"
     },
     "speed_roofing": {
       "value": "20"
@@ -222,8 +225,8 @@
     "z_seam_type": {
       "default_value": "sharpest_corner"
     },
-    "material_print_temperature": {
-      "value": "195"
+    "prime_tower_wipe_enabled": {
+      "default_value": true
     },
     "small_hole_max_size": {
       "default_value": 0
@@ -237,8 +240,8 @@
     "mold_width": {
       "default_value": 5
     },
-    "infill_line_distance": {
-      "value": "5.333333333333333"
+    "wireframe_printspeed_flat": {
+      "value": "5"
     },
     "extruders_enabled_count": {
       "value": "2"
@@ -249,47 +252,44 @@
     "wipe_brush_pos_x": {
       "default_value": 100
     },
-    "support_bottom_enable": {
-      "default_value": false
+    "wireframe_nozzle_clearance": {
+      "default_value": 1
     },
     "support_infill_extruder_nr": {
-      "default_value": 0
+      "value": "0"
     },
     "acceleration_skirt_brim": {
       "value": "250"
     },
     "speed_support_infill": {
-      "default_value": 80
+      "value": "80"
     },
     "skirt_brim_speed": {
-      "default_value": 10.0
+      "value": "10.0"
     },
     "acceleration_support_roof": {
       "value": "250"
     },
     "initial_bottom_layers": {
-      "default_value": 3
+      "value": "3"
     },
-    "raft_base_speed": {
-      "value": "60"
+    "min_infill_area": {
+      "default_value": 1
     },
     "material_print_temp_prepend": {
       "default_value": true
     },
-    "bottom_skin_expand_distance": {
-      "value": "0.8"
+    "speed_wall_x": {
+      "value": "20"
     },
     "speed": {
       "default_value": 0
     },
-    "support_tree_branch_distance": {
-      "default_value": 1
+    "skin_angles": {
+      "default_value": "[ ]"
     },
-    "wipe_retraction_extra_prime_amount": {
-      "default_value": 0
-    },
-    "wipe_hop_amount": {
-      "default_value": 1
+    "machine_minimum_feedrate": {
+      "default_value": 0.0
     },
     "min_skin_width_for_expansion": {
       "value": "0.671279704941824"
@@ -297,29 +297,23 @@
     "machine_max_acceleration_e": {
       "default_value": 10000
     },
-    "jerk_layer_0": {
-      "value": "10"
-    },
     "carve_multiple_volumes": {
-      "default_value": true
+      "value": "True"
     },
     "prime_tower_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
-    "material_flow_temp_graph": {
-      "default_value": "[[3.5,200],[7.0,240]]"
+    "top_bottom_pattern": {
+      "default_value": "lines"
     },
     "platform_adhesion": {
       "default_value": 0
     },
-    "acceleration_wall_x": {
-      "value": "400"
-    },
     "infill_support_angle": {
       "default_value": 40
     },
-    "support_skip_some_zags": {
-      "default_value": true
+    "jerk_support_roof": {
+      "value": "5"
     },
     "ironing_only_highest_layer": {
       "default_value": false
@@ -327,62 +321,53 @@
     "support_bottom_material_flow": {
       "value": "99"
     },
-    "wireframe_roof_inset": {
-      "default_value": 3
+    "ironing_line_spacing": {
+      "default_value": 0.1
     },
-    "material_flow_dependent_temperature": {
-      "default_value": false
+    "bridge_skin_density_2": {
+      "default_value": 75
     },
     "support_conical_min_width": {
       "default_value": 5.0
     },
-    "machine_heat_zone_length": {
-      "default_value": 16
+    "machine_max_feedrate_y": {
+      "default_value": 299792458000
     },
-    "ooze_shield_dist": {
-      "default_value": 4
-    },
-    "infill_enable_travel_optimization": {
-      "default_value": false
-    },
-    "ironing_line_spacing": {
-      "default_value": 0.1
+    "gradual_support_infill_step_height": {
+      "default_value": 1
     },
     "infill_overlap": {
-      "default_value": 0
+      "value": "0"
     },
-    "fill_outline_gaps": {
-      "default_value": true
+    "raft_surface_fan_speed": {
+      "value": "80"
     },
     "retraction_combing": {
       "default_value": "infill"
     },
     "speed_support_interface": {
-      "default_value": 33.333333333333336
+      "value": "33.333333333333336"
     },
     "wall_x_extruder_nr": {
-      "default_value": "-1"
+      "value": "-1"
     },
     "cool_fan_full_layer": {
       "value": "1"
     },
-    "infill_support_enabled": {
+    "wireframe_enabled": {
       "default_value": false
     },
     "bottom_layers": {
       "value": "3"
     },
-    "wireframe_enabled": {
-      "default_value": false
-    },
     "support_bottom_extruder_nr": {
-      "default_value": 0
+      "value": "0"
     },
     "spaghetti_flow": {
       "default_value": 20
     },
     "speed_wall_0": {
-      "default_value": 20
+      "value": "20"
     },
     "machine_end_gcode": {
       "default_value": "M59\nG92 E0\nG1 E-10 F300\nM104 T0 S0\nM104 T1 S0\nM140 S0\nG28 X0 Y0\nM84\nM106 S0\nM107"
@@ -447,7 +432,7 @@
       "default_value": 0
     },
     "support_bottom_angles": {
-      "default_value": "[ ]"
+      "value": "[ ]"
     },
     "raft_surface_thickness": {
       "value": "0.2"
@@ -459,13 +444,16 @@
       "default_value": true
     },
     "meshfix_union_all": {
-      "default_value": true
+      "value": "True"
     },
     "speed_support_roof": {
-      "default_value": 33.333333333333336
+      "value": "33.333333333333336"
     },
     "machine_max_jerk_z": {
       "default_value": 0.4
+    },
+    "bridge_skin_material_flow": {
+      "default_value": 60
     },
     "support_roof_height": {
       "value": "0.4"
@@ -518,14 +506,14 @@
     "machine_max_acceleration_y": {
       "default_value": 9000
     },
-    "speed_z_hop": {
-      "default_value": 10
+    "machine_start_gcode": {
+      "default_value": "G90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM420 S1 Z0.6 ;enable bed levelling\nG1 Z10 F250 ;move the platform down 10mm\nM107 ;fan off\nM42 P11 S255 ;turn on front fan\nM140 S{material_bed_temperature}\nM104 T0 S{material_print_temperature, 0}\nM104 T1 S{material_print_temperature, 1}\nG1 F2500 Y260 X0\nM190 S{material_bed_temperature}\nM109 T0 S{material_print_temperature, 0}\nM109 T1 S{material_print_temperature, 1}\nM60 ;enable E-FADE Algorithm\nM62 A ;filament sensor off\nG92 E0 ;zero the extruded length\nT1\nG92 E0;zero the extruded length\nG1 F300 Z0.3\nG1 F1200 X20\nG1 F1200 X180 E21 ;extrude 21 mm of feed stock\nG1 F1200 E15 ;retracting 6 mm\nG1 F2000 E21\nG1 F2000 E11\nG1 F300 Z1.5\nG92 E0 ;zero the extruded length again\nT0\nG92 E0 ;zero the extruded length\nG1 F1200 Y258\nG1 F300 Z0.3\nG1 F1200 X40 E21 ;extrude 21 mm of feed stock\nG1 F1200 E15 ;retracting 6 mm\nG1 F2000 E21\nG1 F2000 E11\nG1 Z1.5\nM61 A ;filament sensor reset\nM63 A ;filament sensor on\nG92 E0 ;zero the extruded length again\nM58 ;end of Start G-Code and signal retract management\nT{initial_extruder_nr}"
     },
     "machine_max_feedrate_z": {
       "default_value": 299792458000
     },
     "support_bottom_pattern": {
-      "default_value": "concentric"
+      "value": "concentric"
     },
     "material_flow": {
       "default_value": 99
@@ -533,8 +521,8 @@
     "alternate_carve_order": {
       "default_value": true
     },
-    "build_volume_temperature": {
-      "default_value": 28
+    "gantry_height": {
+      "value": "210"
     },
     "infill_before_walls": {
       "default_value": false
@@ -555,7 +543,7 @@
       "default_value": 2.0
     },
     "minimum_bottom_area": {
-      "default_value": 1.0
+      "value": "1.0"
     },
     "conical_overhang_enabled": {
       "default_value": false
@@ -566,20 +554,17 @@
     "raft_interface_speed": {
       "value": "60"
     },
-    "anti_overhang_mesh": {
-      "default_value": false
-    },
     "support_roof_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "support_offset": {
       "default_value": 0.2
     },
-    "meshfix_union_all_remove_holes": {
+    "machine_heated_build_volume": {
       "default_value": false
     },
     "roofing_pattern": {
-      "default_value": "lines"
+      "value": "lines"
     },
     "raft_margin": {
       "default_value": 4
@@ -587,11 +572,11 @@
     "travel_avoid_other_parts": {
       "default_value": true
     },
-    "wireframe_drag_along": {
-      "default_value": 0.6
+    "support_infill_rate": {
+      "value": "20"
     },
-    "support_line_width": {
-      "default_value": 0.4
+    "layer_start_y": {
+      "default_value": 0.0
     },
     "support_interface_enable": {
       "default_value": false
@@ -609,10 +594,13 @@
       "default_value": 2
     },
     "infill_mesh_order": {
-      "default_value": 0
+      "value": "0"
+    },
+    "material_flow_temp_graph": {
+      "default_value": "[[3.5,200],[7.0,240]]"
     },
     "wireframe_printspeed_down": {
-      "default_value": 5
+      "value": "5"
     },
     "remove_empty_first_layers": {
       "default_value": false
@@ -624,16 +612,16 @@
       "default_value": 0
     },
     "skin_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "brim_line_count": {
-      "default_value": 17
+      "value": "17"
     },
     "layer_height": {
       "default_value": 0.2
     },
-    "skin_preshrink": {
-      "value": "0.8"
+    "cool_lift_head": {
+      "default_value": true
     },
     "cool_min_layer_time": {
       "default_value": 5
@@ -641,8 +629,11 @@
     "machine_gcode_flavor": {
       "default_value": "RepRap (Marlin/Sprinter)"
     },
+    "skirt_gap": {
+      "default_value": 3
+    },
     "adhesion_extruder_nr": {
-      "default_value": 0
+      "value": "0"
     },
     "z_seam_y": {
       "value": "180"
@@ -650,20 +641,17 @@
     "material_crystallinity": {
       "default_value": false
     },
-    "meshfix_maximum_deviation": {
-      "default_value": 0.0025
-    },
     "support_bottom_height": {
-      "default_value": 1
+      "value": "1"
     },
     "material_guid": {
       "default_value": "0ff92885-617b-4144-a03c-9989872454bc"
     },
-    "support_tree_branch_diameter": {
-      "default_value": 2
+    "line_width": {
+      "value": "0.4"
     },
-    "machine_minimum_feedrate": {
-      "default_value": 0.0
+    "wipe_hop_amount": {
+      "value": "1"
     },
     "material_no_load_move_factor": {
       "default_value": 0.940860215
@@ -672,7 +660,7 @@
       "default_value": "z_overrides_xy"
     },
     "support_interface_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "skin_overlap_mm": {
       "value": "0.06"
@@ -684,10 +672,7 @@
       "default_value": 1
     },
     "wireframe_flow_flat": {
-      "default_value": 100
-    },
-    "wall_min_flow": {
-      "default_value": 0
+      "value": "100"
     },
     "raft_airgap": {
       "default_value": 0.2
@@ -695,23 +680,23 @@
     "machine_acceleration": {
       "default_value": 4000
     },
-    "skirt_gap": {
-      "default_value": 3
+    "small_feature_speed_factor": {
+      "default_value": 50
     },
     "support_roof_line_distance": {
       "value": "0.5714285714285714"
     },
     "sub_div_rad_add": {
-      "default_value": 0.4
+      "value": "0.4"
     },
-    "support_xy_distance": {
-      "default_value": 0.6
+    "jerk_support_interface": {
+      "value": "5"
     },
     "wall_overhang_angle": {
       "default_value": 90
     },
     "machine_nozzle_temp_enabled": {
-      "default_value": true
+      "value": "True"
     },
     "retraction_hop_only_when_collides": {
       "default_value": false
@@ -725,17 +710,20 @@
     "bridge_settings_enabled": {
       "default_value": false
     },
-    "wireframe_printspeed_up": {
-      "default_value": 5
+    "speed_travel": {
+      "value": "120"
     },
     "raft_base_line_width": {
       "value": "0.4"
+    },
+    "material_anti_ooze_retracted_position": {
+      "default_value": -4
     },
     "command_line_settings": {
       "default_value": 0
     },
     "connect_infill_polygons": {
-      "default_value": false
+      "value": "False"
     },
     "support_interface_material_flow": {
       "value": "99"
@@ -758,14 +746,14 @@
     "extruder_prime_pos_x": {
       "default_value": 0
     },
-    "speed_travel_layer_0": {
-      "value": "120"
+    "top_layers": {
+      "value": "4"
     },
     "bridge_fan_speed_2": {
       "default_value": 0
     },
     "bottom_thickness": {
-      "default_value": 0.8
+      "value": "0.8"
     },
     "infill_material_flow": {
       "value": "99"
@@ -774,7 +762,7 @@
       "default_value": 100
     },
     "wall_0_inset": {
-      "default_value": 0
+      "value": "0"
     },
     "roofing_material_flow": {
       "value": "99"
@@ -783,19 +771,19 @@
       "default_value": false
     },
     "bridge_skin_speed": {
-      "default_value": 15.0
+      "value": "15.0"
     },
-    "machine_use_extruder_offset_to_offset_coords": {
-      "default_value": true
+    "support_infill_sparse_thickness": {
+      "value": "resolveOrValue('layer_height')"
     },
     "jerk_support": {
       "value": "10"
     },
-    "dual": {
+    "blackmagic": {
       "default_value": 0
     },
-    "top_layers": {
-      "value": "4"
+    "support_initial_layer_line_distance": {
+      "value": "2"
     },
     "retraction_count_max": {
       "default_value": 30
@@ -806,8 +794,8 @@
     "raft_acceleration": {
       "value": "400"
     },
-    "jerk_print": {
-      "default_value": 10
+    "acceleration_support_infill": {
+      "value": "400"
     },
     "retraction_prime_speed": {
       "value": "60"
@@ -816,7 +804,7 @@
       "value": "10"
     },
     "cool_fan_speed_max": {
-      "default_value": 100.0
+      "value": "100.0"
     },
     "alternate_extra_perimeter": {
       "default_value": false
@@ -827,11 +815,11 @@
     "support_pattern": {
       "default_value": "zigzag"
     },
-    "material_end_of_filament_purge_speed": {
-      "default_value": 0.5
+    "wipe_retraction_extra_prime_amount": {
+      "value": "0"
     },
-    "speed_print_layer_0": {
-      "default_value": 10.0
+    "extruder_nr": {
+      "value": "0"
     },
     "bridge_sparse_infill_max_density": {
       "default_value": 0
@@ -842,13 +830,19 @@
     "clean_between_layers": {
       "default_value": false
     },
-    "machine_nozzle_id": {
-      "default_value": "unknown"
+    "z_seam_corner": {
+      "default_value": "z_seam_corner_weighted"
     },
-    "acceleration_print_layer_0": {
-      "value": "400"
+    "prime_tower_min_volume": {
+      "default_value": 4
+    },
+    "top_thickness": {
+      "value": "0.8"
     },
     "travel_compensate_overlapping_walls_enabled": {
+      "default_value": false
+    },
+    "draft_shield_enabled": {
       "default_value": false
     },
     "retraction_speed": {
@@ -869,14 +863,14 @@
     "infill_wipe_dist": {
       "value": "0"
     },
-    "speed_topbottom": {
-      "default_value": 30
+    "machine_disallowed_areas": {
+      "default_value": []
     },
-    "wipe_retraction_prime_speed": {
-      "value": "30"
+    "bridge_fan_speed": {
+      "default_value": 100
     },
-    "roofing_angles": {
-      "default_value": "[ ]"
+    "cool_fan_speed_min": {
+      "value": "100.0"
     },
     "print_sequence": {
       "default_value": "all_at_once"
@@ -890,8 +884,8 @@
     "spaghetti_infill_extra_volume": {
       "default_value": 0
     },
-    "blackmagic": {
-      "default_value": 0
+    "jerk_print": {
+      "default_value": 10
     },
     "meshfix_maximum_resolution": {
       "default_value": 0.5
@@ -903,7 +897,7 @@
       "default_value": 5
     },
     "raft_surface_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "top_skin_expand_distance": {
       "value": "0.8"
@@ -912,7 +906,7 @@
       "default_value": 40
     },
     "speed_infill": {
-      "default_value": 80
+      "value": "80"
     },
     "machine_max_jerk_e": {
       "default_value": 5.0
@@ -929,50 +923,53 @@
     "nozzle_disallowed_areas": {
       "default_value": []
     },
+    "meshfix_union_all_remove_holes": {
+      "default_value": false
+    },
     "wall_line_width_x": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "magic_fuzzy_skin_outside_only": {
       "default_value": false
+    },
+    "support_conical_angle": {
+      "default_value": 30
     },
     "acceleration_topbottom": {
       "value": "400"
     },
     "machine_firmware_retract": {
-      "default_value": false
+      "value": "False"
     },
-    "acceleration_enabled": {
-      "default_value": true
+    "jerk_wall_x": {
+      "value": "10"
     },
-    "support_conical_enabled": {
-      "default_value": false
+    "raft_interface_jerk": {
+      "value": "10"
     },
     "wireframe_top_jump": {
       "default_value": 0.6
     },
     "retraction_hop_after_extruder_switch_height": {
-      "default_value": 1
+      "value": "1"
     },
     "minimum_roof_area": {
-      "default_value": 1.0
+      "value": "1.0"
     },
-    "speed_wall_x": {
-      "default_value": 20
-    },
-    "cool_fan_speed": {
-      "default_value": 100.0
+    "wall_overhang_speed_factor": {
+      "default_value": 100
     },
     "small_feature_max_length": {
-      "default_value": 0.0
+      "value": "0.0"
     },
     "flow_rate_max_extrusion_offset": {
       "default_value": 0
     },
-    "minimum_polygon_circumference": {
-      "default_value": 1.0
+    "infill_support_enabled": {
+      "default_value": false
     },
-    "retraction_retract_speed": {
-      "value": "30"
+    "wireframe_roof_inset": {
+      "value": "3"
     },
     "support_interface_offset": {
       "default_value": 0.0
@@ -993,31 +990,31 @@
       "default_value": 60
     },
     "roofing_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "machine_steps_per_mm_x": {
       "default_value": 50
     },
-    "gantry_height": {
-      "value": "210"
+    "build_volume_temperature": {
+      "default_value": 28
     },
     "retraction_min_travel": {
       "value": "1"
     },
-    "support_bottom_offset": {
-      "default_value": 0.0
+    "acceleration_roofing": {
+      "value": "400"
     },
     "xy_offset_layer_0": {
       "value": "-0.16"
     },
-    "layer_start_y": {
-      "default_value": 0.0
+    "support_line_width": {
+      "value": "0.4"
     },
     "machine_show_variants": {
       "default_value": false
     },
-    "line_width": {
-      "default_value": 0.4
+    "support_tree_branch_diameter": {
+      "default_value": 2
     },
     "acceleration_wall_0": {
       "value": "400"
@@ -1027,6 +1024,9 @@
     },
     "mold_enabled": {
       "default_value": false
+    },
+    "infill_multiplier": {
+      "default_value": 1
     },
     "cool_min_speed": {
       "default_value": 5
@@ -1040,14 +1040,14 @@
     "machine_shape": {
       "default_value": "rectangular"
     },
-    "support_initial_layer_line_distance": {
-      "value": "2"
+    "jerk_layer_0": {
+      "value": "10"
     },
     "wall_line_width_0": {
-      "default_value": 0.4
+      "value": "0.4"
     },
-    "prime_tower_min_volume": {
-      "default_value": 4
+    "machine_nozzle_id": {
+      "default_value": "unknown"
     },
     "raft_interface_acceleration": {
       "value": "400"
@@ -1055,8 +1055,11 @@
     "machine_endstop_positive_direction_z": {
       "default_value": true
     },
-    "machine_disallowed_areas": {
-      "default_value": []
+    "speed_topbottom": {
+      "value": "30"
+    },
+    "minimum_polygon_circumference": {
+      "default_value": 1.0
     },
     "machine_settings": {
       "default_value": 0
@@ -1065,16 +1068,13 @@
       "value": "0.2"
     },
     "wipe_retraction_enable": {
-      "default_value": true
+      "value": "True"
     },
-    "support_infill_sparse_thickness": {
-      "value": "resolveOrValue('layer_height')"
+    "machine_use_extruder_offset_to_offset_coords": {
+      "default_value": true
     },
     "roofing_layer_count": {
       "value": "1"
-    },
-    "speed_equalize_flow_enabled": {
-      "default_value": false
     },
     "support_bottom_distance": {
       "value": "0.2"
@@ -1082,17 +1082,20 @@
     "material_flush_purge_length": {
       "default_value": 60
     },
+    "wall_0_wipe_dist": {
+      "value": "0"
+    },
     "material_bed_temperature_layer_0": {
       "value": "50"
+    },
+    "fill_outline_gaps": {
+      "default_value": true
     },
     "support_interface_density": {
       "default_value": 100
     },
     "material_break_speed": {
       "default_value": 25
-    },
-    "wireframe_flow": {
-      "default_value": 100
     },
     "material_break_preparation_speed": {
       "default_value": 2
@@ -1101,7 +1104,7 @@
       "default_value": 0.8
     },
     "travel_compensate_overlapping_walls_x_enabled": {
-      "default_value": false
+      "value": "False"
     },
     "outer_inset_first": {
       "default_value": false
@@ -1109,11 +1112,11 @@
     "material_print_temperature_layer_0": {
       "value": "195"
     },
-    "machine_filament_park_distance": {
-      "default_value": 16
+    "retraction_retract_speed": {
+      "value": "30"
     },
-    "infill_sparse_thickness": {
-      "value": "0.2"
+    "max_extrusion_before_wipe": {
+      "default_value": 10
     },
     "material_extrusion_cool_down_speed": {
       "default_value": 0.7
@@ -1127,8 +1130,8 @@
     "ironing_pattern": {
       "default_value": "zigzag"
     },
-    "support_type": {
-      "default_value": "everywhere"
+    "layer_start_x": {
+      "default_value": 0.0
     },
     "skirt_line_count": {
       "default_value": 2
@@ -1140,16 +1143,13 @@
       "default_value": false
     },
     "speed_support_bottom": {
-      "default_value": 33.333333333333336
+      "value": "33.333333333333336"
     },
     "raft_base_fan_speed": {
       "value": "0"
     },
-    "draft_shield_enabled": {
-      "default_value": false
-    },
-    "wall_overhang_speed_factor": {
-      "default_value": 100
+    "wireframe_printspeed_up": {
+      "value": "5"
     },
     "smooth_spiralized_contours": {
       "default_value": true
@@ -1163,11 +1163,11 @@
     "speed_equalize_flow_max": {
       "default_value": 40
     },
-    "acceleration_support_infill": {
-      "value": "400"
+    "machine_min_cool_heat_time_window": {
+      "default_value": 50.0
     },
-    "support_bottom_stair_step_height": {
-      "default_value": 0.3
+    "ooze_shield_dist": {
+      "default_value": 4
     },
     "wipe_pause": {
       "default_value": 0
@@ -1179,19 +1179,19 @@
       "value": "10"
     },
     "magic_fuzzy_skin_point_dist": {
-      "default_value": 0.8
+      "value": "0.8"
     },
     "raft_base_acceleration": {
       "value": "400"
     },
-    "support_roof_extruder_nr": {
-      "default_value": 0
+    "anti_overhang_mesh": {
+      "default_value": false
     },
-    "machine_start_gcode": {
-      "default_value": "G90 ;absolute positioning\nM82 ;set extruder to absolute mode\nM420 S1 Z0.6 ;enable bed levelling\nG1 Z10 F250 ;move the platform down 10mm\nM107 ;fan off\nM42 P11 S255 ;turn on front fan\nM140 S{material_bed_temperature}\nM104 T0 S{material_print_temperature, 0}\nM104 T1 S{material_print_temperature, 1}\nG1 F2500 Y260 X0\nM190 S{material_bed_temperature}\nM109 T0 S{material_print_temperature, 0}\nM109 T1 S{material_print_temperature, 1}\nM60 ;enable E-FADE Algorithm\nM62 A ;filament sensor off\nG92 E0 ;zero the extruded length\nT1\nG92 E0;zero the extruded length\nG1 F300 Z0.3\nG1 F1200 X20\nG1 F1200 X180 E21 ;extrude 21 mm of feed stock\nG1 F1200 E15 ;retracting 6 mm\nG1 F2000 E21\nG1 F2000 E11\nG1 F300 Z1.5\nG92 E0 ;zero the extruded length again\nT0\nG92 E0 ;zero the extruded length\nG1 F1200 Y258\nG1 F300 Z0.3\nG1 F1200 X40 E21 ;extrude 21 mm of feed stock\nG1 F1200 E15 ;retracting 6 mm\nG1 F2000 E21\nG1 F2000 E11\nG1 Z1.5\nM61 A ;filament sensor reset\nM63 A ;filament sensor on\nG92 E0 ;zero the extruded length again\nM58 ;end of Start G-Code and signal retract management\nT{initial_extruder_nr}"
+    "speed_z_hop": {
+      "default_value": 10
     },
-    "infill_multiplier": {
-      "default_value": 1
+    "acceleration_wall_x": {
+      "value": "400"
     },
     "machine_height": {
       "default_value": 210
@@ -1200,19 +1200,19 @@
       "value": "10"
     },
     "machine_nozzle_offset_y": {
-      "default_value": 0
+      "value": "0"
     },
     "support_roof_density": {
       "value": "70"
     },
     "wall_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
     "zig_zaggify_support": {
-      "default_value": false
+      "value": "False"
     },
-    "support_infill_rate": {
-      "value": "20"
+    "adaptive_layer_height_threshold": {
+      "default_value": 0.2
     },
     "material_bed_temp_prepend": {
       "default_value": true
@@ -1220,11 +1220,11 @@
     "support_material_flow": {
       "value": "98"
     },
-    "raft_interface_jerk": {
-      "value": "10"
+    "speed_wall": {
+      "value": "20"
     },
     "machine_nozzle_offset_x": {
-      "default_value": 0
+      "value": "0"
     },
     "machine_max_acceleration_x": {
       "default_value": 9000
@@ -1245,25 +1245,25 @@
       "default_value": ""
     },
     "skin_edge_support_layers": {
-      "default_value": 0
+      "value": "0"
     },
     "support_interface_extruder_nr": {
-      "default_value": 0
+      "value": "0"
     },
-    "support_tree_branch_diameter_angle": {
-      "default_value": 5
+    "support_bottom_enable": {
+      "value": "False"
     },
     "machine_depth": {
       "default_value": 260
     },
-    "skin_angles": {
-      "default_value": "[ ]"
+    "support_tree_branch_distance": {
+      "default_value": 1
     },
     "wipe_move_distance": {
       "default_value": 20
     },
     "support_wall_count": {
-      "default_value": 1
+      "value": "1"
     },
     "jerk_wall": {
       "value": "10"
@@ -1280,8 +1280,8 @@
     "jerk_skirt_brim": {
       "value": "5"
     },
-    "extruder_nr": {
-      "default_value": 0
+    "speed_print_layer_0": {
+      "value": "10.0"
     },
     "brim_replaces_support": {
       "default_value": true
@@ -1298,8 +1298,11 @@
     "z_seam_relative": {
       "default_value": false
     },
-    "prime_tower_wipe_enabled": {
-      "default_value": true
+    "support_roof_extruder_nr": {
+      "value": "0"
+    },
+    "material_print_temperature": {
+      "value": "195"
     },
     "acceleration_print": {
       "default_value": 400
@@ -1307,14 +1310,14 @@
     "wireframe_flat_delay": {
       "default_value": 0.1
     },
-    "layer_start_x": {
-      "default_value": 0.0
+    "support_type": {
+      "default_value": "everywhere"
     },
     "support_bottom_line_width": {
-      "default_value": 0.4
+      "value": "0.4"
     },
-    "max_extrusion_before_wipe": {
-      "default_value": 10
+    "meshfix_maximum_deviation": {
+      "default_value": 0.005
     },
     "machine_nozzle_size": {
       "default_value": 0.4
@@ -1322,11 +1325,8 @@
     "material_break_temperature": {
       "default_value": 50
     },
-    "top_skin_preshrink": {
-      "value": "0.8"
-    },
-    "jerk_support_interface": {
-      "value": "5"
+    "support_xy_distance": {
+      "default_value": 0.6
     },
     "raft_surface_speed": {
       "value": "60"
@@ -1334,11 +1334,8 @@
     "support_tree_collision_resolution": {
       "value": "0.2"
     },
-    "material_anti_ooze_retracted_position": {
-      "default_value": -4
-    },
-    "machine_name": {
-      "default_value": "Unknown"
+    "speed_equalize_flow_enabled": {
+      "default_value": false
     },
     "machine_nozzle_cool_down_speed": {
       "default_value": 2.0
@@ -1347,13 +1344,16 @@
       "default_value": 1.0
     },
     "travel_compensate_overlapping_walls_0_enabled": {
-      "default_value": false
+      "value": "False"
     },
     "draft_shield_height_limitation": {
       "default_value": "full"
     },
+    "infill_line_distance": {
+      "value": "5.333333333333333"
+    },
     "wall_0_extruder_nr": {
-      "default_value": "-1"
+      "value": "-1"
     },
     "retraction_hop": {
       "default_value": 1
@@ -1370,9 +1370,6 @@
     "support_enable": {
       "default_value": true
     },
-    "cool_lift_head": {
-      "default_value": true
-    },
     "retraction_extra_prime_amount": {
       "default_value": 0
     },
@@ -1386,10 +1383,10 @@
       "default_value": 30
     },
     "wireframe_height": {
-      "default_value": 3
+      "value": "3"
     },
-    "top_thickness": {
-      "default_value": 0.8
+    "acceleration_print_layer_0": {
+      "value": "400"
     },
     "raft_surface_jerk": {
       "value": "10"
@@ -1415,29 +1412,26 @@
     "bridge_skin_density": {
       "default_value": 100
     },
-    "speed_ironing": {
-      "default_value": 20.0
+    "machine_filament_park_distance": {
+      "value": "16"
     },
-    "bridge_fan_speed_3": {
-      "default_value": 0
-    },
-    "machine_feeder_wheel_diameter": {
-      "default_value": 10.0
+    "machine_name": {
+      "default_value": "Unknown"
     },
     "wireframe_strategy": {
       "default_value": "compensate"
     },
-    "gradual_support_infill_step_height": {
-      "default_value": 1
+    "top_skin_preshrink": {
+      "value": "0.8"
     },
     "coasting_min_volume": {
       "default_value": 0.8
     },
+    "prime_tower_enable": {
+      "default_value": false
+    },
     "raft_interface_fan_speed": {
       "value": "40"
-    },
-    "wireframe_nozzle_clearance": {
-      "default_value": 1
     },
     "machine_buildplate_type": {
       "default_value": "glass"
@@ -1446,7 +1440,7 @@
       "value": "1"
     },
     "bridge_skin_speed_3": {
-      "default_value": 15.0
+      "value": "15.0"
     },
     "bridge_skin_density_3": {
       "default_value": 80
@@ -1455,18 +1449,12 @@
       "default_value": 100
     },
     "acceleration_ironing": {
-      "default_value": 250
+      "value": "250"
     },
-    "z_seam_corner": {
-      "default_value": "z_seam_corner_weighted"
+    "support_bottom_stair_step_width": {
+      "default_value": 5.0
     },
     "bridge_skin_support_threshold": {
-      "default_value": 50
-    },
-    "machine_max_acceleration_z": {
-      "default_value": 100
-    },
-    "bridge_wall_material_flow": {
       "default_value": 50
     },
     "spaghetti_max_infill_angle": {
@@ -1475,17 +1463,23 @@
     "ironing_enabled": {
       "default_value": false
     },
-    "coasting_volume": {
-      "default_value": 0.064
-    },
-    "machine_endstop_positive_direction_y": {
+    "prime_tower_brim_enable": {
       "default_value": false
     },
-    "speed_wall": {
-      "default_value": 20
+    "support_fan_enable": {
+      "default_value": false
     },
-    "machine_min_cool_heat_time_window": {
-      "default_value": 50.0
+    "support_conical_enabled": {
+      "default_value": false
+    },
+    "fill_perimeter_gaps": {
+      "default_value": "everywhere"
+    },
+    "wall_extruder_nr": {
+      "default_value": "-1"
+    },
+    "acceleration_support": {
+      "value": "400"
     },
     "wall_x_material_flow": {
       "value": "99"
@@ -1493,23 +1487,29 @@
     "adhesion_type": {
       "default_value": "raft"
     },
+    "infill_sparse_thickness": {
+      "value": "0.2"
+    },
     "wipe_hop_speed": {
-      "default_value": 10
+      "value": "10"
     },
     "extruder_prime_pos_z": {
       "default_value": 0
     },
     "wipe_retraction_amount": {
-      "default_value": 3
+      "value": "3"
+    },
+    "support_tree_branch_diameter_angle": {
+      "default_value": 5
     },
     "support_roof_offset": {
-      "default_value": 0.0
+      "value": "0.0"
     },
     "machine_extruders_share_heater": {
       "default_value": false
     },
-    "bridge_skin_material_flow": {
-      "default_value": 60
+    "small_feature_speed_factor_0": {
+      "value": "50"
     },
     "material_surface_energy": {
       "default_value": 100
@@ -1517,20 +1517,17 @@
     "jerk_roofing": {
       "value": "10"
     },
-    "machine_heated_build_volume": {
+    "speed_travel_layer_0": {
+      "value": "120"
+    },
+    "infill_enable_travel_optimization": {
       "default_value": false
     },
-    "raft_surface_fan_speed": {
-      "value": "80"
-    },
-    "min_infill_area": {
-      "default_value": 1
-    },
-    "prime_tower_brim_enable": {
-      "default_value": false
+    "raft_base_speed": {
+      "value": "60"
     },
     "skin_edge_support_thickness": {
-      "default_value": 0
+      "value": "0"
     },
     "acceleration_travel": {
       "value": "400"
@@ -1547,8 +1544,8 @@
     "retraction_hop_after_extruder_switch": {
       "default_value": true
     },
-    "bridge_fan_speed": {
-      "default_value": 100
+    "wipe_retraction_prime_speed": {
+      "value": "30"
     },
     "adaptive_layer_height_enabled": {
       "default_value": false
@@ -1557,7 +1554,7 @@
       "default_value": false
     },
     "roofing_extruder_nr": {
-      "default_value": "-1"
+      "value": "-1"
     },
     "cool_fan_speed_0": {
       "default_value": 100
@@ -1569,13 +1566,13 @@
       "value": "250"
     },
     "zig_zaggify_infill": {
-      "default_value": false
+      "value": "False"
     },
     "speed_prime_tower": {
-      "default_value": 20
+      "value": "20"
     },
     "infill_overlap_mm": {
-      "default_value": 0.0
+      "value": "0.0"
     },
     "gradual_infill_steps": {
       "default_value": 0
@@ -1589,8 +1586,8 @@
     "mesh_position_x": {
       "default_value": 0
     },
-    "cool_fan_speed_min": {
-      "default_value": 100.0
+    "roofing_angles": {
+      "value": "[ ]"
     },
     "wireframe_up_half_speed": {
       "default_value": 0.3
@@ -1601,50 +1598,50 @@
     "adaptive_layer_height_variation_step": {
       "default_value": 0.01
     },
-    "wireframe_flow_connection": {
-      "default_value": 100
+    "skin_preshrink": {
+      "value": "0.8"
     },
     "raft_base_thickness": {
-      "default_value": 0.2
+      "value": "0.2"
     },
-    "material_end_of_filament_purge_length": {
-      "default_value": 20
+    "support_extruder_nr": {
+      "value": "0"
     },
     "mesh_position_z": {
       "default_value": 0
     },
     "draft_shield_height": {
-      "default_value": 10
+      "value": "10"
     },
     "support_roof_angles": {
-      "default_value": "[ ]"
+      "value": "[ ]"
     },
-    "speed_travel": {
-      "value": "120"
+    "wireframe_drag_along": {
+      "default_value": 0.6
     },
-    "material_diameter": {
-      "default_value": 1.75
+    "material_end_of_filament_purge_speed": {
+      "default_value": 0.5
     },
     "wireframe_fall_down": {
       "default_value": 0.5
     },
     "support_bottom_line_distance": {
-      "default_value": 0.4
+      "value": "0.4"
     },
-    "wall_0_wipe_dist": {
+    "dual": {
       "default_value": 0
     },
-    "max_skin_angle_for_expansion": {
+    "conical_overhang_angle": {
       "default_value": 50
     },
     "speed_support": {
-      "default_value": 50
+      "value": "50"
     },
     "speed_print": {
       "default_value": 20
     },
     "switch_extruder_retraction_amount": {
-      "default_value": 16
+      "value": "16"
     },
     "support_tower_roof_angle": {
       "default_value": 65
@@ -1661,14 +1658,11 @@
     "travel_retract_before_outer_wall": {
       "default_value": true
     },
-    "raft_interface_thickness": {
-      "value": "0.2"
-    },
     "prime_tower_flow": {
       "value": "99"
     },
-    "skin_material_flow": {
-      "value": "99"
+    "ooze_shield_enabled": {
+      "default_value": false
     },
     "bottom_skin_preshrink": {
       "value": "0.8"
@@ -1679,23 +1673,23 @@
     "material_flow_layer_0": {
       "default_value": 100
     },
+    "material_end_of_filament_purge_length": {
+      "default_value": 20
+    },
     "support_tree_angle": {
       "default_value": 40
     },
-    "support_conical_angle": {
-      "default_value": 30
+    "wireframe_flow": {
+      "default_value": 100
     },
-    "fill_perimeter_gaps": {
-      "default_value": "everywhere"
+    "machine_max_acceleration_z": {
+      "default_value": 100
     },
     "relative_extrusion": {
-      "default_value": false
+      "value": "False"
     },
-    "acceleration_roofing": {
-      "value": "400"
-    },
-    "adaptive_layer_height_threshold": {
-      "default_value": 0.2
+    "speed_ironing": {
+      "value": "20.0"
     },
     "machine_nozzle_heat_up_speed": {
       "default_value": 2.0
@@ -1706,23 +1700,23 @@
     "support_interface_angles": {
       "default_value": "[ ]"
     },
-    "skin_outline_count": {
-      "default_value": 0
+    "material_diameter": {
+      "default_value": 1.75
     },
     "retract_at_layer_change": {
       "default_value": true
     },
     "acceleration_infill": {
-      "default_value": 500
+      "value": "500"
     },
     "layer_0_z_overlap": {
       "value": "0.1"
     },
     "support_extruder_nr_layer_0": {
-      "default_value": 0
+      "value": "0"
     },
-    "small_feature_speed_factor": {
-      "default_value": 50
+    "support_bottom_offset": {
+      "value": "0.0"
     },
     "bridge_skin_speed_2": {
       "value": "15"
@@ -1733,11 +1727,11 @@
     "acceleration_support_bottom": {
       "value": "250"
     },
-    "wall_extruder_nr": {
-      "default_value": "-1"
+    "support_tower_diameter": {
+      "default_value": 3.0
     },
-    "prime_tower_enable": {
-      "default_value": false
+    "coasting_volume": {
+      "default_value": 0.064
     },
     "material_maximum_park_duration": {
       "default_value": 300
@@ -1745,17 +1739,20 @@
     "support_interface_height": {
       "default_value": 1
     },
-    "support_fan_enable": {
+    "machine_endstop_positive_direction_y": {
       "default_value": false
     },
     "wireframe_printspeed_bottom": {
-      "default_value": 5
+      "value": "5"
     },
     "wireframe_bottom_delay": {
       "default_value": 0
     },
     "machine_steps_per_mm_y": {
       "default_value": 50
+    },
+    "raft_surface_line_spacing": {
+      "value": "0.4"
     },
     "center_object": {
       "default_value": false
@@ -1769,17 +1766,17 @@
     "material_bed_temperature": {
       "value": "50"
     },
-    "conical_overhang_angle": {
+    "max_skin_angle_for_expansion": {
       "default_value": 50
     },
-    "top_bottom_pattern": {
-      "default_value": "lines"
+    "cool_fan_speed": {
+      "value": "100.0"
     },
     "meshfix_extensive_stitching": {
       "default_value": false
     },
-    "ooze_shield_enabled": {
-      "default_value": false
+    "skin_material_flow": {
+      "value": "99"
     },
     "extruder_prime_pos_y": {
       "default_value": 0
@@ -1787,17 +1784,20 @@
     "infill": {
       "default_value": 0
     },
+    "skin_outline_count": {
+      "default_value": 0
+    },
     "material_break_preparation_temperature": {
-      "default_value": 195
+      "value": "195"
     },
     "support_skip_zag_per_mm": {
       "default_value": 10
     },
-    "raft_surface_line_spacing": {
-      "default_value": 0.4
+    "wireframe_flow_connection": {
+      "value": "100"
     },
-    "acceleration_travel_layer_0": {
-      "value": "400"
+    "bridge_wall_material_flow": {
+      "default_value": 50
     }
   }
 }
