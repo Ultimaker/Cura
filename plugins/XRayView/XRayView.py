@@ -90,6 +90,7 @@ class XRayView(CuraView):
 
             if not self._xray_composite_shader:
                 self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
+                theme = Application.getInstance().getTheme()
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
 
