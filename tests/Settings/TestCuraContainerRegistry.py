@@ -5,7 +5,6 @@ import os #To find the directory with test files and find the test files.
 import pytest #To parameterize tests.
 import unittest.mock #To mock and monkeypatch stuff.
 
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.ReaderWriters.ProfileReader import NoProfileException
 from cura.Settings.ExtruderStack import ExtruderStack #Testing for returning the correct types of stacks.
 from cura.Settings.GlobalStack import GlobalStack #Testing for returning the correct types of stacks.

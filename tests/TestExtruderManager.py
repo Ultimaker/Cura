@@ -1,5 +1,5 @@
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 
 def createMockedExtruder(extruder_id):

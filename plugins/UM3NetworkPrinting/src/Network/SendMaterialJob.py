@@ -6,7 +6,6 @@ from PyQt5.QtNetwork import QNetworkReply, QNetworkRequest
 
 from UM.Job import Job
 from UM.Logger import Logger
-from UM.Settings import ContainerRegistry
 from cura.CuraApplication import CuraApplication
 
 from ..Models.Http.ClusterMaterial import ClusterMaterial
