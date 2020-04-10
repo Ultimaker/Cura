@@ -170,7 +170,7 @@ class ColorMix(Script):
         modelNumber = 0
         for active_layer in data:
             modified_gcode = ""
-            lineIndex = 0;
+            lineIndex = 0
             lines = active_layer.split("\n")
             for line in lines:
                 #dont leave blanks 
