@@ -16,18 +16,17 @@ from collections import namedtuple
 import numpy
 import copy
 
-
 ##  Return object for  bestSpot
 LocationSuggestion = namedtuple("LocationSuggestion", ["x", "y", "penalty_points", "priority"])
 
 
-##  The Arrange classed is used together with ShapeArray. Use it to find
-#   good locations for objects that you try to put on a build place.
-#   Different priority schemes can be defined so it alters the behavior while using
-#   the same logic.
-#
-#   Note: Make sure the scale is the same between ShapeArray objects and the Arrange instance.
 class Arrange:
+    """
+    The Arrange classed is used together with ShapeArray. Use it to find good locations for objects that you try to put
+    on a build place. Different priority schemes can be defined so it alters the behavior while using the same logic.
+
+    Note: Make sure the scale is the same between ShapeArray objects and the Arrange instance.
+    """
     build_volume = None  # type: Optional[BuildVolume]
 
     def __init__(self, x, y, offset_x, offset_y, scale = 0.5):
@@ -42,14 +41,21 @@ class Arrange:
         self._last_priority = 0
         self._is_empty = True
 
-    ##  Helper to create an Arranger instance
-    #
-    #   Either fill in scene_root and create will find all sliceable nodes by itself,
-    #   or use fixed_nodes to provide the nodes yourself.
-    #   \param scene_root   Root for finding all scene nodes
-    #   \param fixed_nodes  Scene nodes to be placed
     @classmethod
     def create(cls, scene_root = None, fixed_nodes = None, scale = 0.5, x = 350, y = 250, min_offset = 8):
+        """
+        Helper to create an Arranger instance
+
+        Either fill in scene_root and create will find all sliceable nodes by itself, or use fixed_nodes to provide the
+        nodes yourself.
+        :param scene_root: Root for finding all scene nodes
+        :param fixed_nodes: Scene nodes to be placed
+        :param scale:
+        :param x:
+        :param y:
+        :param min_offset:
+        :return:
+        """
         arranger = Arrange(x, y, x // 2, y // 2, scale = scale)
         arranger.centerFirst()
 
@@ -88,12 +94,15 @@ class Arrange:
     def resetLastPriority(self):
         self._last_priority = 0
 
-    ##  Find placement for a node (using offset shape) and place it (using hull shape)
-    #   return the nodes that should be placed
-    #   \param node
-    #   \param offset_shape_arr ShapeArray with offset, for placing the shape
-    #   \param hull_shape_arr ShapeArray without offset, used to find location
     def findNodePlacement(self, node: SceneNode, offset_shape_arr: ShapeArray, hull_shape_arr: ShapeArray, step = 1):
+        """
+        Find placement for a node (using offset shape) and place it (using hull shape)
+        :param node:
+        :param offset_shape_arr: hapeArray with offset, for placing the shape
+        :param hull_shape_arr: ShapeArray without offset, used to find location
+        :param step:
+        :return: the nodes that should be placed
+        """
         best_spot = self.bestSpot(
             hull_shape_arr, start_prio = self._last_priority, step = step)
         x, y = best_spot.x, best_spot.y
@@ -119,29 +128,35 @@ class Arrange:
             node.setPosition(Vector(200, center_y, 100))
         return found_spot
 
-    ##  Fill priority, center is best. Lower value is better
-    #   This is a strategy for the arranger.
     def centerFirst(self):
+        """
+        Fill priority, center is best. Lower value is better.
+        :return:
+        """
         # Square distance: creates a more round shape
         self._priority = numpy.fromfunction(
             lambda j, i: (self._offset_x - i) ** 2 + (self._offset_y - j) ** 2, self._shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
-    ##  Fill priority, back is best. Lower value is better
-    #   This is a strategy for the arranger.
     def backFirst(self):
+        """
+        Fill priority, back is best. Lower value is better
+        :return:
+        """
         self._priority = numpy.fromfunction(
             lambda j, i: 10 * j + abs(self._offset_x - i), self._shape, dtype=numpy.int32)
         self._priority_unique_values = numpy.unique(self._priority)
         self._priority_unique_values.sort()
 
-    ##  Return the amount of "penalty points" for polygon, which is the sum of priority
-    #   None if occupied
-    #   \param x x-coordinate to check shape
-    #   \param y y-coordinate
-    #   \param shape_arr the ShapeArray object to place
     def checkShape(self, x, y, shape_arr):
+        """
+        Return the amount of "penalty points" for polygon, which is the sum of priority
+        :param x: x-coordinate to check shape
+        :param y:
+        :param shape_arr: the ShapeArray object to place
+        :return: None if occupied
+        """
         x = int(self._scale * x)
         y = int(self._scale * y)
         offset_x = x + self._offset_x + shape_arr.offset_x
@@ -165,12 +180,14 @@ class Arrange:
             offset_x:offset_x + shape_arr.arr.shape[1]]
         return numpy.sum(prio_slice[numpy.where(shape_arr.arr == 1)])
 
-    ##  Find "best" spot for ShapeArray
-    #   Return namedtuple with properties x, y, penalty_points, priority.
-    #   \param shape_arr ShapeArray
-    #   \param start_prio Start with this priority value (and skip the ones before)
-    #   \param step Slicing value, higher = more skips = faster but less accurate
     def bestSpot(self, shape_arr, start_prio = 0, step = 1):
+        """
+        Find "best" spot for ShapeArray
+        :param shape_arr:
+        :param start_prio: Start with this priority value (and skip the ones before)
+        :param step: Slicing value, higher = more skips = faster but less accurate
+        :return: namedtuple with properties x, y, penalty_points, priority.
+        """
         start_idx_list = numpy.where(self._priority_unique_values == start_prio)
         if start_idx_list:
             try:
@@ -192,13 +209,16 @@ class Arrange:
                     return LocationSuggestion(x = projected_x, y = projected_y, penalty_points = penalty_points, priority = priority)
         return LocationSuggestion(x = None, y = None, penalty_points = None, priority = priority)  # No suitable location found :-(
 
-    ##  Place the object.
-    #   Marks the locations in self._occupied and self._priority
-    #   \param x x-coordinate
-    #   \param y y-coordinate
-    #   \param shape_arr ShapeArray object
-    #   \param update_empty updates the _is_empty, used when adding disallowed areas
     def place(self, x, y, shape_arr, update_empty = True):
+        """
+        Place the object.
+        Marks the locations in self._occupied and self._priority
+        :param x:
+        :param y:
+        :param shape_arr:
+        :param update_empty: updates the _is_empty, used when adding disallowed areas
+        :return:
+        """
         x = int(self._scale * x)
         y = int(self._scale * y)
         offset_x = x + self._offset_x + shape_arr.offset_x
