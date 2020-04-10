@@ -121,6 +121,8 @@ Item
                 text: model.name
                 width: listView.width
                 property bool outsideBuildArea: model.outside_build_area
+                property int perObjectSettingsCount: model.per_object_settings_count
+                property string meshType: model.mesh_type
             }
         }
     }

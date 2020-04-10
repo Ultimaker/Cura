@@ -14,7 +14,7 @@ Button
     width: parent.width
     height: UM.Theme.getSize("action_button").height
     leftPadding: UM.Theme.getSize("thin_margin").width
-    rightPadding: UM.Theme.getSize("thin_margin").width
+    rightPadding: UM.Theme.getSize("default_lining").width
     checkable: true
     hoverEnabled: true
 
@@ -29,7 +29,7 @@ Button
             anchors
             {
                 left: parent.left
-                right: parent.right
+                right: perObjectSettingsInfo.left
                 verticalCenter: parent.verticalCenter
             }
             text: objectItemButton.text
@@ -40,6 +40,75 @@ Button
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             elide: Text.ElideRight
+        }
+
+        Button
+        {
+            id: perObjectSettingsInfo
+
+            anchors
+            {
+                right: parent.right
+                rightMargin: 0
+            }
+            width: childrenRect.width
+            height: parent.height
+            padding: 0
+            leftPadding: UM.Theme.getSize("thin_margin").width
+
+            onClicked:
+            {
+                Cura.SceneController.changeSelection(index)
+                UM.Controller.setActiveTool("PerObjectSettingsTool")
+            }
+
+            contentItem: Item
+            {
+                height: parent.height
+                width: childrenRect.width
+
+                Cura.NotificationIcon
+                {
+                    id: perObjectSettingsCountLabel
+                    anchors
+                    {
+                        right: parent.right
+                        rightMargin: 0
+                    }
+                    visible: perObjectSettingsCount > 0
+                    color: UM.Theme.getColor("text_scene")
+                    labelText: perObjectSettingsCount.toString()
+                }
+
+                UM.RecolorImage
+                {
+                    anchors
+                    {
+                        right: perObjectSettingsCountLabel.left
+                        rightMargin: UM.Theme.getSize("narrow_margin").width
+                    }
+
+                    width: parent.height
+                    height: parent.height
+                    color: UM.Theme.getColor("text_scene")
+                    visible: meshType != ""
+                    source:
+                    {
+                        switch (meshType) {
+                            case "support_mesh":
+                                return UM.Theme.getIcon("pos_print_as_support")
+                            case "cutting_mesh":
+                            case "infill_mesh":
+                                return UM.Theme.getIcon("pos_modify_overlaps")
+                            case "anti_overhang_mesh":
+                                return UM.Theme.getIcon("pos_modify_dont_support_overlap")
+                        }
+                        return "";
+                    }
+                }
+            }
+
+            background: Item {}
         }
     }
 

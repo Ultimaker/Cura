@@ -38,6 +38,8 @@ class ObjectsModel(ListModel):
     OutsideAreaRole = Qt.UserRole + 3
     BuilplateNumberRole = Qt.UserRole + 4
     NodeRole = Qt.UserRole + 5
+    PerObjectSettingsCountRole = Qt.UserRole + 6
+    MeshTypeRole = Qt.UserRole + 7
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -46,6 +48,8 @@ class ObjectsModel(ListModel):
         self.addRoleName(self.SelectedRole, "selected")
         self.addRoleName(self.OutsideAreaRole, "outside_build_area")
         self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
+        self.addRoleName(self.PerObjectSettingsCountRole, "per_object_settings_count")
+        self.addRoleName(self.MeshTypeRole, "mesh_type")
         self.addRoleName(self.NodeRole, "node")
 
         Application.getInstance().getController().getScene().sceneChanged.connect(self._updateSceneDelayed)
@@ -172,11 +176,26 @@ class ObjectsModel(ListModel):
 
             node_build_plate_number = node.callDecoration("getBuildPlateNumber")
 
+            node_mesh_type = ""
+            per_object_settings_count = 0
+
+            per_object_stack = node.callDecoration("getStack")
+            if per_object_stack:
+                per_object_settings_count = per_object_stack.getTop().getNumInstances()
+
+                for mesh_type in ["anti_overhang_mesh", "infill_mesh", "cutting_mesh", "support_mesh"]:
+                    if per_object_stack.getProperty(mesh_type, "value"):
+                        node_mesh_type = mesh_type
+                        per_object_settings_count -= 1 # do not count this mesh type setting
+                        break
+
             nodes.append({
                 "name": node.getName(),
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
+                "per_object_settings_count": per_object_settings_count,
+                "mesh_type": node_mesh_type,
                 "node": node
             })
 
