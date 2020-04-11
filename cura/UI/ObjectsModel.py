@@ -192,8 +192,8 @@ class ObjectsModel(ListModel):
                         break
 
             extruder_number = int(node.callDecoration("getActiveExtruderPosition"))
-            if node_mesh_type == "anti_overhang_mesh":
-                # for anti overhang meshes, the extruder nr is irrelevant
+            if node_mesh_type == "anti_overhang_mesh" or node.callDecoration("isGroup"):
+                # for anti overhang meshes and groups the extruder nr is irrelevant
                 extruder_number = -1
 
             nodes.append({
