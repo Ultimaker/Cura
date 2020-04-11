@@ -87,6 +87,17 @@ Item
 
         anchors.bottom: parent.bottom
 
+        property var extrudersModel: CuraApplication.getExtrudersModel()
+        UM.SettingPropertyProvider
+        {
+            id: machineExtruderCount
+
+            containerStack: Cura.MachineManager.activeMachine
+            key: "machine_extruder_count"
+            watchedProperties: [ "value" ]
+            storeIndex: 0
+        }
+
         ListView
         {
             id: listView
@@ -123,6 +134,16 @@ Item
                 property bool outsideBuildArea: model.outside_build_area
                 property int perObjectSettingsCount: model.per_object_settings_count
                 property string meshType: model.mesh_type
+                property int extruderNumber: model.extruder_number
+                property string extruderColor:
+                {
+                    if (model.extruder_number == -1)
+                    {
+                        return "";
+                    }
+                    return contents.extrudersModel.getItem(model.extruder_number).color;
+                }
+                property bool showExtruderSwatches: machineExtruderCount.properties.value > 1
             }
         }
     }

@@ -23,13 +23,26 @@ Button
         width: objectItemButton.width - objectItemButton.leftPadding
         height: UM.Theme.getSize("action_button").height
 
+        UM.RecolorImage
+        {
+            id: swatch
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            width: height
+            height: parent.height - UM.Theme.getSize("narrow_margin").height
+            source: UM.Theme.getIcon("extruder_button")
+            color: extruderColor
+            visible: showExtruderSwatches && extruderColor != ""
+        }
+
         Label
         {
             id: buttonText
             anchors
             {
-                left: parent.left
-                right: perObjectSettingsInfo.left
+                left: showExtruderSwatches ? swatch.right : parent.left
+                leftMargin: showExtruderSwatches ? UM.Theme.getSize("narrow_margin").width : 0
+                right: perObjectSettingsInfo.visible ? perObjectSettingsInfo.left : parent.right
                 verticalCenter: parent.verticalCenter
             }
             text: objectItemButton.text

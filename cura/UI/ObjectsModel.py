@@ -40,6 +40,7 @@ class ObjectsModel(ListModel):
     NodeRole = Qt.UserRole + 5
     PerObjectSettingsCountRole = Qt.UserRole + 6
     MeshTypeRole = Qt.UserRole + 7
+    ExtruderNumberRole = Qt.UserRole + 8
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -48,6 +49,7 @@ class ObjectsModel(ListModel):
         self.addRoleName(self.SelectedRole, "selected")
         self.addRoleName(self.OutsideAreaRole, "outside_build_area")
         self.addRoleName(self.BuilplateNumberRole, "buildplate_number")
+        self.addRoleName(self.ExtruderNumberRole, "extruder_number")
         self.addRoleName(self.PerObjectSettingsCountRole, "per_object_settings_count")
         self.addRoleName(self.MeshTypeRole, "mesh_type")
         self.addRoleName(self.NodeRole, "node")
@@ -189,11 +191,17 @@ class ObjectsModel(ListModel):
                         per_object_settings_count -= 1 # do not count this mesh type setting
                         break
 
+            extruder_number = int(node.callDecoration("getActiveExtruderPosition"))
+            if node_mesh_type == "anti_overhang_mesh":
+                # for anti overhang meshes, the extruder nr is irrelevant
+                extruder_number = -1
+
             nodes.append({
                 "name": node.getName(),
                 "selected": Selection.isSelected(node),
                 "outside_build_area": is_outside_build_area,
                 "buildplate_number": node_build_plate_number,
+                "extruder_number": extruder_number,
                 "per_object_settings_count": per_object_settings_count,
                 "mesh_type": node_mesh_type,
                 "node": node
