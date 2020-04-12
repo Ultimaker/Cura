@@ -68,6 +68,7 @@ Button
             height: parent.height
             padding: 0
             leftPadding: UM.Theme.getSize("thin_margin").width
+            visible: meshType != "" || perObjectSettingsCount > 0
 
             onClicked:
             {
