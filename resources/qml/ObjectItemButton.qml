@@ -14,7 +14,7 @@ Button
     width: parent.width
     height: UM.Theme.getSize("action_button").height
     leftPadding: UM.Theme.getSize("thin_margin").width
-    rightPadding: UM.Theme.getSize("default_lining").width
+    rightPadding: perObjectSettingsInfo.visible ? UM.Theme.getSize("default_lining").width : UM.Theme.getSize("thin_margin").width
     checkable: true
     hoverEnabled: true
 
@@ -87,10 +87,44 @@ Button
                 UM.Controller.setActiveTool("PerObjectSettingsTool")
             }
 
+            property string tooltipText:
+            {
+                var result = "";
+                if (!visible)
+                {
+                    return result;
+                }
+                if (meshType != "")
+                {
+                    result += "<br>";
+                    switch (meshType) {
+                        case "support_mesh":
+                            result += catalog.i18nc("@label", "Is printed as support.");
+                            break;
+                        case "cutting_mesh":
+                            result += catalog.i18nc("@label", "Other models overlapping with this model are modified.");
+                            break;
+                        case "infill_mesh":
+                            result += catalog.i18nc("@label", "Infill overlapping with this model is modified.");
+                            break;
+                        case "anti_overhang_mesh":
+                            result += catalog.i18nc("@label", "Overlaps with this model are not supported.");
+                            break;
+                    }
+                }
+                if (perObjectSettingsCount != "")
+                {
+                    result += "<br>" + catalog.i18ncp(
+                        "@label", "Overrides %1 setting.", "Overrides %1 settings.", perObjectSettingsCount
+                    ).arg(perObjectSettingsCount);
+                }
+                return result;
+            }
+
             contentItem: Item
             {
                 height: parent.height
-                width: childrenRect.width
+                width: meshTypeIcon.width + perObjectSettingsCountLabel.width + UM.Theme.getSize("narrow_margin").width
 
                 Cura.NotificationIcon
                 {
@@ -107,6 +141,7 @@ Button
 
                 UM.RecolorImage
                 {
+                    id: meshTypeIcon
                     anchors
                     {
                         right: perObjectSettingsCountLabel.left
@@ -121,12 +156,12 @@ Button
                     {
                         switch (meshType) {
                             case "support_mesh":
-                                return UM.Theme.getIcon("pos_print_as_support")
+                                return UM.Theme.getIcon("pos_print_as_support");
                             case "cutting_mesh":
                             case "infill_mesh":
-                                return UM.Theme.getIcon("pos_modify_overlaps")
+                                return UM.Theme.getIcon("pos_modify_overlaps");
                             case "anti_overhang_mesh":
-                                return UM.Theme.getIcon("pos_modify_dont_support_overlap")
+                                return UM.Theme.getIcon("pos_modify_dont_support_overlap");
                         }
                         return "";
                     }
@@ -149,8 +184,13 @@ Button
     Cura.ToolTip
     {
         id: tooltip
-        tooltipText: objectItemButton.text
-        visible: objectItemButton.hovered && buttonTextMetrics.elidedText != buttonText.text
+        tooltipText: objectItemButton.text + perObjectSettingsInfo.tooltipText
+        visible: objectItemButton.hovered && (buttonTextMetrics.elidedText != buttonText.text || perObjectSettingsInfo.visible)
     }
 
+    UM.I18nCatalog
+    {
+        id: catalog
+        name: "cura"
+    }
 }
