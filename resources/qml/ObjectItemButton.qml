@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.10
@@ -17,6 +17,17 @@ Button
     rightPadding: UM.Theme.getSize("default_lining").width
     checkable: true
     hoverEnabled: true
+
+    onClicked: Cura.SceneController.changeSelection(index)
+
+    background: Rectangle
+    {
+        id: backgroundRect
+        color: objectItemButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
+        radius: UM.Theme.getSize("action_button_radius").width
+        border.width: UM.Theme.getSize("default_lining").width
+        border.color: objectItemButton.checked ? UM.Theme.getColor("primary") : "transparent"
+    }
 
     contentItem: Item
     {
@@ -126,15 +137,6 @@ Button
         }
     }
 
-    background: Rectangle
-    {
-        id: backgroundRect
-        color: objectItemButton.hovered ? UM.Theme.getColor("action_button_hovered") : "transparent"
-        radius: UM.Theme.getSize("action_button_radius").width
-        border.width: UM.Theme.getSize("default_lining").width
-        border.color: objectItemButton.checked ? UM.Theme.getColor("primary") : "transparent"
-    }
-
     TextMetrics
     {
         id: buttonTextMetrics
@@ -151,5 +153,4 @@ Button
         visible: objectItemButton.hovered && buttonTextMetrics.elidedText != buttonText.text
     }
 
-    onClicked: Cura.SceneController.changeSelection(index)
 }
