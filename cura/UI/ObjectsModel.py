@@ -191,7 +191,11 @@ class ObjectsModel(ListModel):
                         per_object_settings_count -= 1 # do not count this mesh type setting
                         break
 
-            extruder_number = int(node.callDecoration("getActiveExtruderPosition"))
+            extruder_position = node.callDecoration("getActiveExtruderPosition")
+            if extruder_position is None:
+                extruder_number = -1
+            else:
+                extruder_number = int(extruder_position)
             if node_mesh_type == "anti_overhang_mesh" or node.callDecoration("isGroup"):
                 # for anti overhang meshes and groups the extruder nr is irrelevant
                 extruder_number = -1
