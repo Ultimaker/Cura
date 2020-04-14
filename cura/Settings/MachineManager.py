@@ -333,7 +333,7 @@ class MachineManager(QObject):
                 self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
                 variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
 
-            material_node = variant_node.materials.get(extruder.material.getId())
+            material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
             if material_node is None:
                 Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
                 self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material)
