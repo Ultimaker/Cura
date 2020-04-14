@@ -1798,7 +1798,7 @@ class CuraApplication(QtApplication):
                         # If a model is to small then it will not contain any points
                         if offset_shape_arr is None and hull_shape_arr is None:
                             Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
-                                    title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
+                                    title = self._i18n_catalog.i18nc("@info:title", "Warning")).show()
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher
