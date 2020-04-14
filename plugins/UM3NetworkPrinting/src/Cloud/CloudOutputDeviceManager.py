@@ -18,10 +18,12 @@ from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 
 
-## The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
-#  Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
-#  API spec is available on https://api.ultimaker.com/docs/connect/spec/.
 class CloudOutputDeviceManager:
+    """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
+    
+    Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
+    API spec is available on https://api.ultimaker.com/docs/connect/spec/.
+    """
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
     META_NETWORK_KEY = "um_network_key"
@@ -45,14 +47,16 @@ class CloudOutputDeviceManager:
         # Create a timer to update the remote cluster list
         self._update_timer = QTimer()
         self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
-        self._update_timer.setSingleShot(False)
+        # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
+        self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Ensure we don't start twice.
         self._running = False
 
-    ## Starts running the cloud output device manager, thus periodically requesting cloud data.
     def start(self):
+        """Starts running the cloud output device manager, thus periodically requesting cloud data."""
+
         if self._running:
             return
         if not self._account.isLoggedIn:
@@ -62,8 +66,9 @@ class CloudOutputDeviceManager:
             self._update_timer.start()
         self._getRemoteClusters()
 
-    ## Stops running the cloud output device manager.
     def stop(self):
+        """Stops running the cloud output device manager."""
+
         if not self._running:
             return
         self._running = False
@@ -71,23 +76,27 @@ class CloudOutputDeviceManager:
             self._update_timer.stop()
         self._onGetRemoteClustersFinished([])  # Make sure we remove all cloud output devices.
 
-    ## Force refreshing connections.
     def refreshConnections(self) -> None:
+        """Force refreshing connections."""
+
         self._connectToActiveMachine()
 
-    ## Called when the uses logs in or out
     def _onLoginStateChanged(self, is_logged_in: bool) -> None:
+        """Called when the uses logs in or out"""
+
         if is_logged_in:
             self.start()
         else:
             self.stop()
 
-    ## Gets all remote clusters from the API.
     def _getRemoteClusters(self) -> None:
+        """Gets all remote clusters from the API."""
+
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
-    ## Callback for when the request for getting the clusters is finished.
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
+        """Callback for when the request for getting the clusters is finished."""
+
         new_clusters = []
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
         for device_id, cluster_data in online_clusters.items():
@@ -107,6 +116,8 @@ class CloudOutputDeviceManager:
         if removed_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
+        # Schedule a new update
+        self._update_timer.start()
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
@@ -240,8 +251,9 @@ class CloudOutputDeviceManager:
                 # Remove device if it is not meant for the active machine.
                 output_device_manager.removeOutputDevice(device.key)
 
-    ## Connects to an output device and makes sure it is registered in the output device manager.
     def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
+        """Connects to an output device and makes sure it is registered in the output device manager."""
+
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         machine.setMetaDataEntry("group_name", device.name)
