@@ -5,7 +5,6 @@ import copy
 import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
-import sys
 from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
@@ -18,7 +17,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from cura.CuraApplication import CuraApplication
-from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 
 try:

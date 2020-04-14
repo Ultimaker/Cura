@@ -9,7 +9,7 @@ from UM.Version import Version
 
 import urllib.request
 from urllib.error import URLError
-from typing import Dict, Optional
+from typing import Dict
 import ssl
 
 import certifi

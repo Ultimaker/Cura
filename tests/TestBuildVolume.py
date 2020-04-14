@@ -1,5 +1,4 @@
 from unittest.mock import MagicMock, patch
-from UM.Math.AxisAlignedBox import AxisAlignedBox
 import pytest
 
 from UM.Math.Polygon import Polygon

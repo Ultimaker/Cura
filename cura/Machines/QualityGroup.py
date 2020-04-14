@@ -3,8 +3,6 @@
 
 from typing import Dict, Optional, List, Set
 
-from PyQt5.QtCore import QObject, pyqtSlot
-
 from UM.Logger import Logger
 from UM.Util import parseBool
 

@@ -3,7 +3,6 @@
 
 from unittest.mock import patch, MagicMock
 import pytest
-from UM.Settings.DefinitionContainer import DefinitionContainer
 from cura.Machines.ContainerTree import ContainerTree
 from cura.Settings.GlobalStack import GlobalStack
 

@@ -72,8 +72,6 @@ class DiscoveredPrinter(QObject):
     # Human readable machine type string
     @pyqtProperty(str, notify = machineTypeChanged)
     def readableMachineType(self) -> str:
-        from cura.CuraApplication import CuraApplication
-        machine_manager = CuraApplication.getInstance().getMachineManager()
         # In NetworkOutputDevice, when it updates a printer information, it updates the machine type using the field
         # "machine_variant", and for some reason, it's not the machine type ID/codename/... but a human-readable string
         # like "Ultimaker 3". The code below handles this case.
