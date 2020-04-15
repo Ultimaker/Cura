@@ -26,9 +26,14 @@
     },
     "overrides": {
         "machine_name": { "default_value": "Tronxy Base Printer" },
-        "machine_start_gcode": { "default_value": "M201 X500.00 Y500.00 Z100.00 E5000.00 ;Setup machine max acceleration\nM203 X500.00 Y500.00 Z10.00 E50.00 ;Setup machine max feedrate\nM204 P500.00 R1000.00 T500.00 ;Setup Print/Retract/Travel acceleration\nM205 X8.00 Y8.00 Z0.40 E5.00 ;Setup Jerk\nM220 S100 ;Reset Feedrate\nM221 S100 ;Reset Flowrate\n\nG28 ;Home\n\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\nG1 X10.1 Y20 Z0.28 F5000.0 ;Move to start position\nG1 X10.1 Y200.0 Z0.28 F1500.0 E15 ;Draw the first line\nG1 X10.4 Y200.0 Z0.28 F5000.0 ;Move to side a little\nG1 X10.4 Y20 Z0.28 F1500.0 E30 ;Draw the second line\nG92 E0 ;Reset Extruder\nG1 Z2.0 F3000 ;Move Z Axis up\n" },
-        "machine_end_gcode": { "default_value": "G91 ;Relative positioning\nG1 E-2 F2700 ;Retract a bit\nG1 E-2 Z0.2 F2400 ;Retract and raise Z\nG1 X5 Y5 F3000 ;Wipe out\nG1 Z10 ;Raise Z more\nG90 ;Absolute positionning\n\nG1 X0 Y{machine_depth} ;Present print\nM106 S0 ;Turn-off fan\nM104 S0 ;Turn-off hotend\nM140 S0 ;Turn-off bed\n\nM84 X Y E ;Disable all steppers but Z\n" },
-
+        "top_thickness":{ "default_value": 5 },
+        "bottom_layers":{ "default_value": 4 },
+        "gantry_height": { "default_value": 0 },
+        "machine_nozzle_size": { "default_value": 0.4},
+        "material_diameter": { "default_value": 1.75 },
+		"machine_start_gcode":{ "default_value":"G21\nG90\nM82\nM107 T0\nM140 S{material_bed_temperature}\nM104 S{material_print_temperature} T0\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG28\nG92 E0\nG1 Z15.0 F{speed_travel}\nG0 E3 F200\nG92 E0\n"},
+        "machine_end_gcode":{"default_value":"M107 T0\nM104 S0\nM104 S0 T1\nM140 S0\nG92 E0\nG91\nG1 E-1 F300 \nG1 Z+0.5 E-5 X-20 Y-20 F9000\nG28 X0 Y0\nM84 ;steppers off\nG90 ;absolute positioning\n"},
+        "machine_head_with_fans_polygon": { "default_value": [[ 0, 0 ],[ 0, 0 ],[ 0, 0 ],[ 0, 0 ]]},        
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
         "machine_max_feedrate_z": { "value": 10 },
@@ -46,7 +51,6 @@
 
         "machine_heated_bed": { "default_value": true },
 
-        "material_diameter": { "default_value": 1.75 },
 
         "acceleration_print": { "value": 500 },
         "acceleration_travel": { "value": 500 },

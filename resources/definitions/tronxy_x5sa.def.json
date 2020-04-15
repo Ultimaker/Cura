@@ -13,13 +13,14 @@
         "machine_width": { "default_value": 330 },
         "machine_depth": { "default_value": 330 },
         "machine_height": { "default_value": 400 },
-        "machine_head_with_fans_polygon": { "default_value": [
-                [-26, 34],
-                [-26, -32],
-                [32, -32],
-                [32, 34]
+        "machine_head_with_fans_polygon":
+            { "default_value": [
+                [-50, 34],
+                [-50, -38],
+                [28, 34],
+                [28, -38]
             ]
-        },
+            },
         "gantry_height": { "value": 25 },
         "machine_nozzle_size": { "default_value": 0.4},
         "material_diameter": { "default_value": 1.75 },

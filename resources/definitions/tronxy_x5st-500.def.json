@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Tronxy x5st",
+    "name": "Tronxy x5st-500",
     "inherits": "tronxy_base",
     "metadata": {
         "quality_definition": "tronxy_base",
@@ -13,13 +13,14 @@
         "machine_width": { "default_value": 500 },
         "machine_depth": { "default_value": 500 },
         "machine_height": { "default_value": 600 },
-        "machine_head_with_fans_polygon": { "default_value": [
-                [-26, 34],
-                [-26, -32],
-                [32, -32],
-                [32, 34]
+        "machine_head_with_fans_polygon": 
+            { "default_value": [
+                [-32, 34], 
+                [-32, -32], 
+                [28, 34], 
+                [28, -32]
             ]
-        },
+            },
         "gantry_height": { "value": 25 },
         "machine_nozzle_size": { "default_value": 0.4},
         "material_diameter": { "default_value": 1.75 },

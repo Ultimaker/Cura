@@ -1,17 +1,18 @@
 {
     "version": 2,
-    "name": "Tronxy XY2 Pro",
+    "name": "Tronxy x5sa",
     "inherits": "tronxy_base",
     "metadata": {
         "quality_definition": "tronxy_base",
-        "file_formats": "text/x-chitu-g-code;text/x-gcode", 
+        "file_formats": "text/x-chitu-g-code,text/x-gcode",
+        "platform": "ChiTu.stl", 
         "visible": true
     },
     "overrides": {
-        "machine_name": { "default_value": "tronxy xy2 pro" },
-        "machine_width": { "default_value": 255 },
-        "machine_depth": { "default_value": 255 },
-        "machine_height": { "default_value": 250 },
+        "machine_name": { "default_value": "tronxy x5sa" },
+        "machine_width": { "default_value": 330 },
+        "machine_depth": { "default_value": 330 },
+        "machine_height": { "default_value": 400 },
         "machine_head_with_fans_polygon": 
             { "default_value": [
                 [-50, 34],
