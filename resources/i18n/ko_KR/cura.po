@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-04-06 16:33+0200\n"
-"PO-Revision-Date: 2020-02-21 14:56+0100\n"
+"PO-Revision-Date: 2020-04-15 17:46+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Korean <info@lionbridge.com>, Jinbum Kim <Jinbuhm.Kim@gmail.com>, Korean <info@bothof.nl>\n"
 "Language: ko_KR\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:85
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:104
@@ -848,7 +848,11 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr "설정을 검토하고 모델이 다음 사항에 해당하는지 확인하십시오.\n- 출력 사이즈 내에 맞춤화됨\n- 활성화된 익스트루더로 할당됨\n- 수정자 메쉬로 전체 설정되지 않음"
+msgstr ""
+"설정을 검토하고 모델이 다음 사항에 해당하는지 확인하십시오.\n"
+"- 출력 사이즈 내에 맞춤화됨\n"
+"- 활성화된 익스트루더로 할당됨\n"
+"- 수정자 메쉬로 전체 설정되지 않음"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -2964,7 +2968,10 @@ msgid ""
 "- Customize your experience with more print profiles and plugins\n"
 "- Stay flexible by syncing your setup and loading it anywhere\n"
 "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr "- 보다 많은 프린트 프로파일과 플러그인으로 자신에게 맞게 환경 조정\n- 어디서든지 유연하게 설정을 동기화하고 로딩\n- Ultimaker 프린터에서 원격 워크플로로 효율성 증대"
+msgstr ""
+"- 보다 많은 프린트 프로파일과 플러그인으로 자신에게 맞게 환경 조정\n"
+"- 어디서든지 유연하게 설정을 동기화하고 로딩\n"
+"- Ultimaker 프린터에서 원격 워크플로로 효율성 증대"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4783,7 +4790,7 @@ msgstr "이 설정은 항상 모든 익스트루더 사이에 공유됩니다. �
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr "이 설정은 충돌하는 압출기별 값으로 결정됩니다."
+msgstr "이 설정은 충돌하는 압출기별 값으로 결정됩니다:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"

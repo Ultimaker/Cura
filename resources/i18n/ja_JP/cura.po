@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-04-06 16:33+0200\n"
-"PO-Revision-Date: 2020-02-21 14:49+0100\n"
+"PO-Revision-Date: 2020-04-15 17:46+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Japanese <info@lionbridge.com>, Japanese <info@bothof.nl>\n"
 "Language: ja_JP\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/DiscoveredPrintersModel.py:85
 #: /home/trin/Gedeeld/Projects/Cura/cura/Machines/Models/IntentCategoryModel.py:104
@@ -848,7 +848,11 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr "設定を見直し、モデルが次の状態かどうかを確認してください。\n- 造形サイズに合っている\n- 有効なエクストルーダーに割り当てられている\n- すべてが修飾子メッシュとして設定されているわけではない"
+msgstr ""
+"設定を見直し、モデルが次の状態かどうかを確認してください。\n"
+"- 造形サイズに合っている\n"
+"- 有効なエクストルーダーに割り当てられている\n"
+"- すべてが修飾子メッシュとして設定されているわけではない"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -2128,7 +2132,7 @@ msgstr "処理したアクティブなスクリプトを変更します。"
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] "次のスクリプトがアクティブです。"
+msgstr[0] "次のスクリプトがアクティブです:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
@@ -2969,7 +2973,10 @@ msgid ""
 "- Customize your experience with more print profiles and plugins\n"
 "- Stay flexible by syncing your setup and loading it anywhere\n"
 "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr "- より多くのプリントプロファイルとプラグインを使用して作業をカスタマイズする\n- 設定を同期させ、どこにでも読み込めるようにすることで柔軟性を保つ\n- Ultimakerプリンターのリモートワークフローを活用して効率を高める"
+msgstr ""
+"- より多くのプリントプロファイルとプラグインを使用して作業をカスタマイズする\n"
+"- 設定を同期させ、どこにでも読み込めるようにすることで柔軟性を保つ\n"
+"- Ultimakerプリンターのリモートワークフローを活用して効率を高める"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -4788,7 +4795,7 @@ msgstr "この設定は常に全てのエクストルーダーに共有されて
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr "この設定はエクストルーダー固有の競合する値から取得します。"
+msgstr "この設定はエクストルーダー固有の競合する値から取得します:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
