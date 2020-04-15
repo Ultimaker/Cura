@@ -83,8 +83,14 @@ class ThreeMFReader(MeshReader):
     ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
     #   \returns Scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
-        node_name = savitar_node.getName()
-        node_id = savitar_node.getId()
+        try:
+            node_name = savitar_node.getName()
+            node_id = savitar_node.getId()
+        except AttributeError:
+            Logger.log("e", "Outdated version of libSavitar detected! Please update to the newest version!")
+            node_name = ""
+            node_id = ""
+
         if node_name == "":
             if file_name != "":
                 node_name = os.path.basename(file_name)
