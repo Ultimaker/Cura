@@ -55,11 +55,13 @@ def destination_uranium() -> str:
         import UM
     except ImportError:
         relative_path = os.path.join(__file__, "..", "..", "..", "Uranium", "resources", "i18n", "uranium.pot")
-        print(os.path.abspath(relative_path))
-        if os.path.exists(relative_path):
-            return os.path.abspath(relative_path)
+        absolute_path = os.path.abspath(relative_path)
+        if os.path.exists(absolute_path):
+            absolute_path = os.path.abspath(os.path.join(absolute_path, ".."))
+            print("Uranium is at:", absolute_path)
+            return absolute_path
         else:
-            raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder.")
+            raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder. Looked for: " + absolute_path)
     return os.path.abspath(os.path.join(UM.__file__, "..", "..", "resources", "i18n"))
 
 ##  Merges translations from the source file into the destination file if they
