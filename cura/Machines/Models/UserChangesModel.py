@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -7,6 +7,7 @@ from collections import OrderedDict
 from PyQt5.QtCore import pyqtSlot, Qt
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.i18n import i18nCatalog
 from UM.Settings.SettingFunction import SettingFunction
@@ -83,14 +84,18 @@ class UserChangesModel(ListModel):
 
                 # Find the category of the instance by moving up until we find a category.
                 category = user_changes.getInstance(setting_key).definition
-                while category.type != "category":
+                while category is not None and category.type != "category":
                     category = category.parent
 
                 # Handle translation (and fallback if we weren't able to find any translation files.
-                if self._i18n_catalog:
-                    category_label = self._i18n_catalog.i18nc(category.key + " label", category.label)
-                else:
-                    category_label = category.label
+                if category is not None:
+                    if self._i18n_catalog:
+                        category_label = self._i18n_catalog.i18nc(category.key + " label", category.label)
+                    else:
+                        category_label = category.label
+                else:  # Setting is not in any category. Shouldn't happen, but it do. See https://sentry.io/share/issue/d735884370154166bc846904d9b812ff/
+                    Logger.error("Setting {key} is not in any setting category.".format(key = setting_key))
+                    category_label = ""
 
                 if self._i18n_catalog:
                     label = self._i18n_catalog.i18nc(setting_key + " label", stack.getProperty(setting_key, "label"))

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import numpy
@@ -1086,14 +1086,19 @@ class BuildVolume(SceneNode):
 
     def _calculateMoveFromWallRadius(self, used_extruders):
         move_from_wall_radius = 0  # Moves that start from outer wall.
-        all_values = [move_from_wall_radius]
-        all_values.extend(self._getSettingFromAllExtruders("infill_wipe_dist"))
-        move_from_wall_radius = max(all_values)
-        avoid_enabled_per_extruder = [stack.getProperty("travel_avoid_other_parts", "value") for stack in used_extruders]
-        travel_avoid_distance_per_extruder = [stack.getProperty("travel_avoid_distance", "value") for stack in used_extruders]
-        for avoid_other_parts_enabled, avoid_distance in zip(avoid_enabled_per_extruder, travel_avoid_distance_per_extruder):  # For each extruder (or just global).
-            if avoid_other_parts_enabled:
-                move_from_wall_radius = max(move_from_wall_radius, avoid_distance)
+
+        for stack in used_extruders:
+            if stack.getProperty("travel_avoid_other_parts", "value"):
+                move_from_wall_radius = max(move_from_wall_radius, stack.getProperty("travel_avoid_distance", "value"))
+
+            infill_wipe_distance = stack.getProperty("infill_wipe_dist", "value")
+            num_walls = stack.getProperty("wall_line_count", "value")
+            if num_walls >= 1:  # Infill wipes start from the infill, so subtract the total wall thickness from this.
+                infill_wipe_distance -= stack.getProperty("wall_line_width_0", "value")
+                if num_walls >= 2:
+                    infill_wipe_distance -= stack.getProperty("wall_line_width_x", "value") * (num_walls - 1)
+            move_from_wall_radius = max(move_from_wall_radius, infill_wipe_distance)
+
         return move_from_wall_radius
 
     ##  Calculate the disallowed radius around the edge.
@@ -1133,7 +1138,7 @@ class BuildVolume(SceneNode):
     _prime_settings = ["extruder_prime_pos_x", "extruder_prime_pos_y", "prime_blob_enable"]
     _tower_settings = ["prime_tower_enable", "prime_tower_size", "prime_tower_position_x", "prime_tower_position_y", "prime_tower_brim_enable"]
     _ooze_shield_settings = ["ooze_shield_enabled", "ooze_shield_dist"]
-    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports"]
+    _distance_settings = ["infill_wipe_dist", "travel_avoid_distance", "support_offset", "support_enable", "travel_avoid_other_parts", "travel_avoid_supports", "wall_line_count", "wall_line_width_0", "wall_line_width_x"]
     _extruder_settings = ["support_enable", "support_bottom_enable", "support_roof_enable", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "brim_line_count", "adhesion_extruder_nr", "adhesion_type"] #Settings that can affect which extruders are used.
     _limit_to_extruder_settings = ["wall_extruder_nr", "wall_0_extruder_nr", "wall_x_extruder_nr", "top_bottom_extruder_nr", "infill_extruder_nr", "support_infill_extruder_nr", "support_extruder_nr_layer_0", "support_bottom_extruder_nr", "support_roof_extruder_nr", "adhesion_extruder_nr"]
     _disallowed_area_settings = _skirt_settings + _prime_settings + _tower_settings + _ooze_shield_settings + _distance_settings + _extruder_settings

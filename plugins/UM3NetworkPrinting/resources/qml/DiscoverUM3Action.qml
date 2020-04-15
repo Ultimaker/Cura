@@ -173,7 +173,7 @@ Cura.MachineAction
                     anchors.right: parent.right
                     wrapMode: Text.WordWrap
                     renderType: Text.NativeRendering
-                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://ultimaker.com/en/troubleshooting");
+                    text: catalog.i18nc("@label", "If your printer is not listed, read the <a href='%1'>network printing troubleshooting guide</a>").arg("https://support.ultimaker.com/hc/en-us/articles/360012795419");
                     onLinkActivated: Qt.openUrlExternally(link)
                 }
 
