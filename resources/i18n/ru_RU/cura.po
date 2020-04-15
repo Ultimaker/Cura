@@ -2130,9 +2130,9 @@ msgstr "Измените активные скрипты пост-обработ
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
+msgstr[0] "Активны следующие скрипты:"
+msgstr[1] "Активны следующие скрипты:"
+msgstr[2] "Активны следующие скрипты:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49

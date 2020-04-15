@@ -2123,7 +2123,7 @@ msgstr "활성 사후 처리 스크립트를 변경하십시오."
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
+msgstr[0] "다음 스크립트들이 활성화됩니다:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49

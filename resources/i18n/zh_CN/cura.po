@@ -2125,7 +2125,7 @@ msgstr "更改处于活动状态的后期处理脚本。"
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
+msgstr[0] "以下脚本处于活动状态："
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49

@@ -2128,8 +2128,8 @@ msgstr "Modificare gli script di post-elaborazione attivi."
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "È attivo il seguente script:"
+msgstr[1] "Sono attivi i seguenti script:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49

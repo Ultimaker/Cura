@@ -2127,8 +2127,8 @@ msgstr "Aktive Nachbearbeitungsskripts ändern."
 msgctxt "@info:tooltip"
 msgid "The following script is active:"
 msgid_plural "The following scripts are active:"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Das folgende Skript ist aktiv:"
+msgstr[1] "Die folgenden Skripte sind aktiv:"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:20
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:49
