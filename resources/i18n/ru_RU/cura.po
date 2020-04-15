@@ -729,13 +729,13 @@ msgstr "Файл 3MF"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
-msgstr ""
+msgstr "Подключаемый модуль для записи 3MF поврежден."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
-msgstr ""
+msgstr "Права на запись рабочей среды отсутствуют."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:181
 msgctxt "@error:zip"
@@ -770,12 +770,12 @@ msgstr "При заливке вашей резервной копии возн�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:47
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
-msgstr ""
+msgstr "Создание резервной копии..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:54
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
-msgstr ""
+msgstr "При создании резервной копии возникла ошибка."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:58
 msgctxt "@info:backup_status"
@@ -790,7 +790,7 @@ msgstr "Заливка вашей резервной копии завершен
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:107
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
-msgstr ""
+msgstr "Размер файла резервной копии превышает максимально допустимый."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DriveApiService.py:82
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
@@ -848,7 +848,8 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr ""
+msgstr "Проверьте настройки и убедитесь в том, что ваши модели:\n- соответствуют допустимой области печати;\n- назначены активированному экструдеру;\n- не заданы"
+" как объекты-модификаторы."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -1154,7 +1155,7 @@ msgstr "Создание объема без печати элементов п�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:101
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "Хотите синхронизировать пакеты материалов и программного обеспечения со своей учетной записью?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:102
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:91
@@ -1170,7 +1171,7 @@ msgstr "Синхронизация"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:87
 msgctxt "@info:generic"
 msgid "Syncing..."
-msgstr ""
+msgstr "Синхронизация..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
@@ -2072,12 +2073,12 @@ msgstr "Не поддерживать перекрытия"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:142
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
-msgstr ""
+msgstr "Заполнение объекта"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:143
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
-msgstr ""
+msgstr "Ограничивающий объект"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:373
 msgctxt "@action:button"
@@ -2123,7 +2124,7 @@ msgstr "Параметры"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:499
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
-msgstr ""
+msgstr "Измените активные скрипты пост-обработки."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:503
 msgctxt "@info:tooltip"
@@ -2152,7 +2153,7 @@ msgstr "Тип линии"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:115
 msgctxt "@label:listbox"
 msgid "Speed"
-msgstr ""
+msgstr "Скорость"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:119
 msgctxt "@label:listbox"
@@ -2358,7 +2359,7 @@ msgstr "Вам потребуется перезапустить Cura для а�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxFooter.qml:46
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
-msgstr ""
+msgstr "Выйти из %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:30
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:34
@@ -2966,7 +2967,7 @@ msgstr "Войти"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "Ваш ключ к дистанционной 3D-печати"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:51
 msgctxt "@text"
@@ -2974,7 +2975,8 @@ msgid ""
 "- Customize your experience with more print profiles and plugins\n"
 "- Stay flexible by syncing your setup and loading it anywhere\n"
 "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- Новые профили печати и подключаемые модули позволяют вам печатать именно то, что вы хотите.\n- Функция синхронизации настроек и их загрузки из любого"
+" места расширяет ваши возможности.\n- Удаленная работа на принтерах Ultimaker обеспечивает повышение эффективности ваших процессов."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -3332,13 +3334,13 @@ msgstr "Профили"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:563
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
-msgstr ""
+msgstr "Закрытие %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:564
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:576
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
-msgstr ""
+msgstr "Вы уверены, что хотите выйти из %1?"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:614
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
@@ -3374,7 +3376,7 @@ msgstr "Что нового"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
-msgstr ""
+msgstr "О программе %1"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -4807,7 +4809,7 @@ msgstr "Данная настройка всегда используется с
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr ""
+msgstr "Эта настройка получена из конфликтующих значений экструдера:"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
@@ -4960,7 +4962,7 @@ msgstr "Не удалось подключиться к устройству."
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
-msgstr ""
+msgstr "Не удается подключиться к принтеру Ultimaker?"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:211
 msgctxt "@label"
@@ -4985,27 +4987,27 @@ msgstr "Подключить"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:36
 msgctxt "@label"
 msgid "Ultimaker Account"
-msgstr ""
+msgstr "Учетная запись Ultimaker"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:77
 msgctxt "@text"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "Ваш ключ к дистанционной 3D-печати"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Customize your experience with more print profiles and plugins"
-msgstr ""
+msgstr "- Новые профили печати и подключаемые модули позволяют вам печатать именно то, что вы хотите."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Stay flexible by syncing your setup and loading it anywhere"
-msgstr ""
+msgstr "- Функция синхронизации настроек и их загрузки из любого места расширяет ваши возможности."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
 msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- Удаленная работа на принтерах Ultimaker обеспечивает повышение эффективности ваших процессов."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:119
 msgctxt "@button"
@@ -5274,7 +5276,7 @@ msgstr "Предоставляет возможность изменения п�
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings Action"
-msgstr ""
+msgstr "Параметры принтера действие"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5609,12 +5611,12 @@ msgstr "Обновление версии 4.4 до 4.5"
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr ""
+msgstr "Обновляет конфигурации Cura 4.5 до Cura 4.6."
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
-msgstr ""
+msgstr "Обновление версии 4.5 до 4.6"
 
 #: X3DReader/plugin.json
 msgctxt "description"

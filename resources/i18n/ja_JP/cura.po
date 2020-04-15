@@ -729,13 +729,13 @@ msgstr "3MF ファイル"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
-msgstr ""
+msgstr "3MFリーダーのプラグインが破損しています。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
-msgstr ""
+msgstr "この作業スペースに書き込む権限がありません。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:181
 msgctxt "@error:zip"
@@ -770,12 +770,12 @@ msgstr "バックアップのアップロード中にエラーが発生しまし
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:47
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
-msgstr ""
+msgstr "バックアップを作成しています..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:54
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
-msgstr ""
+msgstr "バックアップの作成中にエラーが発生しました。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:58
 msgctxt "@info:backup_status"
@@ -790,7 +790,7 @@ msgstr "バックアップのアップロードを完了しました。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:107
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
-msgstr ""
+msgstr "バックアップが最大ファイルサイズを超えています。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DriveApiService.py:82
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
@@ -848,7 +848,7 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr ""
+msgstr "設定を見直し、モデルが次の状態かどうかを確認してください。\n- 造形サイズに合っている\n- 有効なエクストルーダーに割り当てられている\n- すべてが修飾子メッシュとして設定されているわけではない"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -1154,7 +1154,7 @@ msgstr "サポートが印刷されないボリュームを作成します。"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:101
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "材料パッケージとソフトウェアパッケージをアカウントと同期しますか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:102
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:91
@@ -1170,7 +1170,7 @@ msgstr "同期"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:87
 msgctxt "@info:generic"
 msgid "Syncing..."
-msgstr ""
+msgstr "同期中..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
@@ -2071,12 +2071,12 @@ msgstr "オーバーラップをサポートしない"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:142
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
-msgstr ""
+msgstr "インフィルメッシュのみ"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:143
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
-msgstr ""
+msgstr "メッシュ切断"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:373
 msgctxt "@action:button"
@@ -2122,7 +2122,7 @@ msgstr "設定"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:499
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
-msgstr ""
+msgstr "処理したアクティブなスクリプトを変更します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:503
 msgctxt "@info:tooltip"
@@ -2149,7 +2149,7 @@ msgstr "ラインタイプ"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:115
 msgctxt "@label:listbox"
 msgid "Speed"
-msgstr ""
+msgstr "スピード"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:119
 msgctxt "@label:listbox"
@@ -2355,7 +2355,7 @@ msgstr "パッケージへの変更を有効にするためにCuraを再起動�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxFooter.qml:46
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
-msgstr ""
+msgstr "%1を終了する"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:30
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:34
@@ -2961,7 +2961,7 @@ msgstr "サインイン"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "3Dプリンティング活用の鍵"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:51
 msgctxt "@text"
@@ -2969,7 +2969,7 @@ msgid ""
 "- Customize your experience with more print profiles and plugins\n"
 "- Stay flexible by syncing your setup and loading it anywhere\n"
 "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- より多くのプリントプロファイルとプラグインを使用して作業をカスタマイズする\n- 設定を同期させ、どこにでも読み込めるようにすることで柔軟性を保つ\n- Ultimakerプリンターのリモートワークフローを活用して効率を高める"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -3324,13 +3324,13 @@ msgstr "プロファイル"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:563
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
-msgstr ""
+msgstr "%1を閉じています"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:564
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:576
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
-msgstr ""
+msgstr "%1を終了しますか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:614
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
@@ -3366,7 +3366,7 @@ msgstr "新情報"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
-msgstr ""
+msgstr "%1について"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -4788,7 +4788,7 @@ msgstr "この設定は常に全てのエクストルーダーに共有されて
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr ""
+msgstr "この設定はエクストルーダー固有の競合する値から取得します。"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
@@ -4939,7 +4939,7 @@ msgstr "デバイスに接続できません。"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
-msgstr ""
+msgstr "Ultimakerプリンターに接続できませんか？"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:211
 msgctxt "@label"
@@ -4964,27 +4964,27 @@ msgstr "接続"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:36
 msgctxt "@label"
 msgid "Ultimaker Account"
-msgstr ""
+msgstr "Ultimakerアカウント"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:77
 msgctxt "@text"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "3Dプリンティング活用の鍵"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Customize your experience with more print profiles and plugins"
-msgstr ""
+msgstr "- より多くの成果物プロファイルとプラグインを使用して作業をカスタマイズする"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Stay flexible by syncing your setup and loading it anywhere"
-msgstr ""
+msgstr "- 設定を同期させ、どこにでも読み込めるようにすることで柔軟性を保つ"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
 msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- Ultimakerプリンターのリモートワークフローを活用して効率を高める"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:119
 msgctxt "@button"
@@ -5253,7 +5253,7 @@ msgstr "プリンターの設定を変更（印刷ボリューム、ノズルサ
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings Action"
-msgstr ""
+msgstr "プリンターの設定アクション"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5588,12 +5588,12 @@ msgstr "4.4から4.5にバージョンアップグレート"
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr ""
+msgstr "Cura 4.5からCura 4.6に設定をアップグレードします。"
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
-msgstr ""
+msgstr "バージョン4.5から4.6へのアップグレード"
 
 #: X3DReader/plugin.json
 msgctxt "description"

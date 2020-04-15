@@ -729,13 +729,13 @@ msgstr "3MF 파일"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:31
 msgctxt "@error:zip"
 msgid "3MF Writer plug-in is corrupt."
-msgstr ""
+msgstr "3MF 기록기 플러그인이 손상되었습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:59
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWorkspaceWriter.py:92
 msgctxt "@error:zip"
 msgid "No permission to write the workspace here."
-msgstr ""
+msgstr "여기서 작업 환경을 작성할 권한이 없습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/3MFWriter/ThreeMFWriter.py:181
 msgctxt "@error:zip"
@@ -770,12 +770,12 @@ msgstr "백업을 업로드하는 도중 오류가 있었습니다."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:47
 msgctxt "@info:backup_status"
 msgid "Creating your backup..."
-msgstr ""
+msgstr "백업 생성 중..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:54
 msgctxt "@info:backup_status"
 msgid "There was an error while creating your backup."
-msgstr ""
+msgstr "백업을 생성하는 도중 오류가 있었습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:58
 msgctxt "@info:backup_status"
@@ -790,7 +790,7 @@ msgstr "백업이 업로드를 완료했습니다."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/CreateBackupJob.py:107
 msgctxt "@error:file_size"
 msgid "The backup exceeds the maximum file size."
-msgstr ""
+msgstr "백업이 최대 파일 크기를 초과했습니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/DriveApiService.py:82
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraDrive/src/RestoreBackupJob.py:23
@@ -848,7 +848,7 @@ msgid ""
 "- Fit within the build volume\n"
 "- Are assigned to an enabled extruder\n"
 "- Are not all set as modifier meshes"
-msgstr ""
+msgstr "설정을 검토하고 모델이 다음 사항에 해당하는지 확인하십시오.\n- 출력 사이즈 내에 맞춤화됨\n- 활성화된 익스트루더로 할당됨\n- 수정자 메쉬로 전체 설정되지 않음"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:50
 #: /home/trin/Gedeeld/Projects/Cura/plugins/CuraEngineBackend/ProcessSlicedLayersJob.py:256
@@ -1154,7 +1154,7 @@ msgstr "서포트가 프린팅되지 않는 볼륨을 만듭니다."
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:101
 msgctxt "@info:generic"
 msgid "Do you want to sync material and software packages with your account?"
-msgstr ""
+msgstr "귀하의 계정으로 재료와 소프트웨어 패키지를 동기화하시겠습니까?"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/CloudPackageChecker.py:102
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:91
@@ -1170,7 +1170,7 @@ msgstr "동기화"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/DownloadPresenter.py:87
 msgctxt "@info:generic"
 msgid "Syncing..."
-msgstr ""
+msgstr "동기화 중..."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/src/CloudSync/LicenseModel.py:9
 msgctxt "@button"
@@ -2066,12 +2066,12 @@ msgstr "오버랩 지원 안함"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:142
 msgctxt "@item:inlistbox"
 msgid "Infill mesh only"
-msgstr ""
+msgstr "매쉬 내부채움 전용"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:143
 msgctxt "@item:inlistbox"
 msgid "Cutting mesh"
-msgstr ""
+msgstr "커팅 메쉬"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PerObjectSettingsTool/PerObjectSettingsPanel.qml:373
 msgctxt "@action:button"
@@ -2117,7 +2117,7 @@ msgstr "설정"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:499
 msgctxt "@info:tooltip"
 msgid "Change active post-processing scripts."
-msgstr ""
+msgstr "활성 사후 처리 스크립트를 변경하십시오."
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/PostProcessingPlugin/PostProcessingPlugin.qml:503
 msgctxt "@info:tooltip"
@@ -2144,7 +2144,7 @@ msgstr "라인 유형"
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:115
 msgctxt "@label:listbox"
 msgid "Speed"
-msgstr ""
+msgstr "속도"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/SimulationView/SimulationViewMenuComponent.qml:119
 msgctxt "@label:listbox"
@@ -2350,7 +2350,7 @@ msgstr "패키지의 변경 사항이 적용되기 전에 Cura를 다시 시작�
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxFooter.qml:46
 msgctxt "@info:button, %1 is the application name"
 msgid "Quit %1"
-msgstr ""
+msgstr "%1 종료"
 
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/components/ToolboxHeader.qml:30
 #: /home/trin/Gedeeld/Projects/Cura/plugins/Toolbox/resources/qml/pages/ToolboxInstalledPage.qml:34
@@ -2956,7 +2956,7 @@ msgstr "로그인"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:40
 msgctxt "@label"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "연결된 3D 프린팅의 핵심"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:51
 msgctxt "@text"
@@ -2964,7 +2964,7 @@ msgid ""
 "- Customize your experience with more print profiles and plugins\n"
 "- Stay flexible by syncing your setup and loading it anywhere\n"
 "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- 보다 많은 프린트 프로파일과 플러그인으로 자신에게 맞게 환경 조정\n- 어디서든지 유연하게 설정을 동기화하고 로딩\n- Ultimaker 프린터에서 원격 워크플로로 효율성 증대"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Account/GeneralOperations.qml:78
 msgctxt "@button"
@@ -3316,13 +3316,13 @@ msgstr "프로파일"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:563
 msgctxt "@title:window %1 is the application name"
 msgid "Closing %1"
-msgstr ""
+msgstr "%1 닫기"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:564
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:576
 msgctxt "@label %1 is the application name"
 msgid "Are you sure you want to exit %1?"
-msgstr ""
+msgstr "%1을(를) 정말로 종료하시겠습니까?"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Cura.qml:614
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/OpenFilesIncludingProjectsDialog.qml:19
@@ -3358,7 +3358,7 @@ msgstr "새로운 기능"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:15
 msgctxt "@title:window The argument is the application name."
 msgid "About %1"
-msgstr ""
+msgstr "%1 정보"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Dialogs/AboutDialog.qml:57
 msgctxt "@label"
@@ -4783,7 +4783,7 @@ msgstr "이 설정은 항상 모든 익스트루더 사이에 공유됩니다. �
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:191
 msgctxt "@label"
 msgid "This setting is resolved from conflicting extruder-specific values:"
-msgstr ""
+msgstr "이 설정은 충돌하는 압출기별 값으로 결정됩니다."
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/Settings/SettingItem.qml:230
 msgctxt "@label"
@@ -4936,7 +4936,7 @@ msgstr "장치에 연결할 수 없습니다."
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:212
 msgctxt "@label"
 msgid "Can't connect to your Ultimaker printer?"
-msgstr ""
+msgstr "Ultimaker 프린터로 연결할 수 없습니까?"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/AddPrinterByIpContent.qml:211
 msgctxt "@label"
@@ -4961,27 +4961,27 @@ msgstr "연결"
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:36
 msgctxt "@label"
 msgid "Ultimaker Account"
-msgstr ""
+msgstr "Ultimaker 계정"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:77
 msgctxt "@text"
 msgid "Your key to connected 3D printing"
-msgstr ""
+msgstr "연결된 3D 프린팅의 핵심"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:94
 msgctxt "@text"
 msgid "- Customize your experience with more print profiles and plugins"
-msgstr ""
+msgstr "- 보다 많은 프린트 프로파일과 플러그인으로 자신에게 맞게 환경 조정"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:97
 msgctxt "@text"
 msgid "- Stay flexible by syncing your setup and loading it anywhere"
-msgstr ""
+msgstr "- 어디서든지 유연하게 설정을 동기화하고 로딩"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:100
 msgctxt "@text"
 msgid "- Increase efficiency with a remote workflow on Ultimaker printers"
-msgstr ""
+msgstr "- Ultimaker 프린터에서 원격 워크플로로 효율성 증대"
 
 #: /home/trin/Gedeeld/Projects/Cura/resources/qml/WelcomePages/CloudContent.qml:119
 msgctxt "@button"
@@ -5248,7 +5248,7 @@ msgstr "기계 설정 (예 : 빌드 볼륨, 노즐 크기 등)을 변경하는 �
 #: MachineSettingsAction/plugin.json
 msgctxt "name"
 msgid "Machine Settings Action"
-msgstr ""
+msgstr "컴퓨터 설정 작업"
 
 #: MonitorStage/plugin.json
 msgctxt "description"
@@ -5583,12 +5583,12 @@ msgstr "4.4에서 4.5로 버전 업그레이드"
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "description"
 msgid "Upgrades configurations from Cura 4.5 to Cura 4.6."
-msgstr ""
+msgstr "Cura 4.5에서 Cura 4.6으로 구성을 업그레이드합니다."
 
 #: VersionUpgrade/VersionUpgrade45to46/plugin.json
 msgctxt "name"
 msgid "Version Upgrade 4.5 to 4.6"
-msgstr ""
+msgstr "4.5에서 4.6으로 버전 업그레이드"
 
 #: X3DReader/plugin.json
 msgctxt "description"
