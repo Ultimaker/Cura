@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from typing import List, Optional, Union, Dict, Any
 
@@ -44,6 +44,7 @@ class ClusterPrintJobStatus(BaseModel):
     #  \param compatible_machine_families: Family names of machines suitable for this print job
     #  \param impediments_to_printing: A list of reasons that prevent this job from being printed on the associated
     #       printer
+    #  \param preview_url: URL to the preview image (same as wou;d've been included in the ufp).
     def __init__(self, created_at: str, force: bool, machine_variant: str, name: str, started: bool, status: str,
                  time_total: int, uuid: str,
                  configuration: List[Union[Dict[str, Any], ClusterPrintCoreConfiguration]],
@@ -57,6 +58,7 @@ class ClusterPrintJobStatus(BaseModel):
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  compatible_machine_families: List[str] = None,
                  impediments_to_printing: List[Union[Dict[str, Any], ClusterPrintJobImpediment]] = None,
+                 preview_url = None,
                  **kwargs) -> None:
         self.assigned_to = assigned_to
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
@@ -76,6 +78,7 @@ class ClusterPrintJobStatus(BaseModel):
         self.uuid = uuid
         self.deleted_at = deleted_at
         self.printed_on_uuid = printed_on_uuid
+        self.preview_url = preview_url
 
         self.configuration_changes_required = self.parseModels(ClusterPrintJobConfigurationChange,
                                                                configuration_changes_required) \
