@@ -45,9 +45,8 @@ class CloudPackageChecker(QObject):
     def _onLoginStateChanged(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
             self._getUserSubscribedPackages()
-        elif self._message is not None:
-            self._message.hide()
-            self._message = None
+        else:
+            self._hideSyncMessage()
 
     def _getUserSubscribedPackages(self) -> None:
         Logger.debug("Requesting subscribed packages metadata from server.")
@@ -90,12 +89,18 @@ class CloudPackageChecker(QObject):
         # We check if there are packages installed in Web Marketplace but not in Cura marketplace
         package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
         if package_discrepancy:
+            Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
-            self._handlePackageDiscrepancies()
+            self._showSyncMessage()
 
-    def _handlePackageDiscrepancies(self) -> None:
-        Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
+    def _showSyncMessage(self) -> None:
+        """Show the message if it is not already shown"""
+
+        if self._message is not None:
+            self._message.show()
+            return
+
         sync_message = Message(self._i18n_catalog.i18nc(
             "@info:generic",
             "Do you want to sync material and software packages with your account?"),
@@ -110,6 +115,14 @@ class CloudPackageChecker(QObject):
         sync_message.show()
         self._message = sync_message
 
+    def _hideSyncMessage(self) -> None:
+        """Hide the message if it is showing"""
+
+        if self._message is not None:
+            self._message.hide()
+            self._message = None
+
     def _onSyncButtonClicked(self, sync_message: Message, sync_message_action: str) -> None:
         sync_message.hide()
+        self._hideSyncMessage()  # Should be the same message, but also sets _message to None
         self.discrepancies.emit(self._model)
