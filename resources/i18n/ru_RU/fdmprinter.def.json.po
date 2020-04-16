@@ -83,7 +83,7 @@ msgstr "GUID материала"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "Идентификатор материала, устанавливается автоматически."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1253,12 +1253,12 @@ msgstr "Сумма смещений, применяемая ко всем пол
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "Горизонтальное расширение отверстия"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "Смещение, применяемое ко всем отверстиям в каждом слое. Положительные значения увеличивают размер отверстий; отрицательные значения уменьшают размер отверстий."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2192,7 +2192,7 @@ msgstr "Скорость выдавливания заподлицо"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "Скорость подачи материала после переключения на другой материал."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2202,27 +2202,28 @@ msgstr "Длина выдавливания заподлицо"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "Объем материала, используемый для выдавливания предыдущего материала из сопла (измеряется длиной нити) при переключении на другой материал."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "Скорость выдавливания заканчивающегося материала"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Скорость подачи материала после замены пустой катушки на новую катушку с тем же материалом."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "Длина выдавливания заканчивающегося материала"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Объем материала, используемый для выдавливания предыдущего материала из сопла (измеряется длиной нити) при замене пустой катушки на новую катушку с тем"
+" же материалом."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2232,7 +2233,7 @@ msgstr "Максимальная продолжительность парков
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "Срок хранения материала вне сухого хранилища."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2242,7 +2243,7 @@ msgstr "Коэффициент движения без нагрузки"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "Коэффициент сжатия материала между питателем и камерой сопла, позволяющий определить, как далеко требуется продвинуть материал для переключения нити."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3022,7 +3023,7 @@ msgstr "Разрешить откат"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Откат нити при движении сопла вне зоны печати."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3717,7 +3718,7 @@ msgstr "Минимальный X/Y зазор поддержки"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "Зазор между структурами поддержек и нависанием по осям X/Y."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4816,7 +4817,7 @@ msgstr "Ремонт объектов"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "Сделайте объекты более подходящими для 3D-печати."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4936,7 +4937,7 @@ msgstr "Специальные режимы"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "Нетрадиционные способы печати моделей."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5111,7 +5112,7 @@ msgstr "Экспериментальное"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "Функции, еще не раскрытые до конца."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"

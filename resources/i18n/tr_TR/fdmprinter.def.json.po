@@ -7,14 +7,14 @@ msgstr ""
 "Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
 "POT-Creation-Date: 2020-04-06 16:33+0000\n"
-"PO-Revision-Date: 2019-07-29 15:51+0100\n"
+"PO-Revision-Date: 2020-04-15 17:50+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Turkish <info@lionbridge.com>, Turkish <info@bothof.nl>\n"
 "Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.4\n"
 
 #: fdmprinter.def.json
 msgctxt "machine_settings label"
@@ -58,7 +58,7 @@ msgid ""
 "."
 msgstr ""
 " \n"
-" ile ayrılan, başlangıçta yürütülecek G-code komutları"
+" ile ayrılan, başlangıçta yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "machine_end_gcode label"
@@ -72,7 +72,7 @@ msgid ""
 "."
 msgstr ""
 " \n"
-" ile ayrılan, bitişte yürütülecek G-code komutları"
+" ile ayrılan, bitişte yürütülecek G-code komutları."
 
 #: fdmprinter.def.json
 msgctxt "material_guid label"
@@ -82,7 +82,7 @@ msgstr "GUID malzeme"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "Malzemedeki GUID Otomatik olarak ayarlanır."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1252,12 +1252,12 @@ msgstr "İlk katmandaki tüm poligonlara uygulanan ofset miktarı. Negatif bir d
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "Delik Yatay Büyüme"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "Her bir katmandaki tüm deliklere uygulanan ofset miktarıdır. Pozitif değerler deliklerin boyutunu artırırken, negatif değerler deliklerin boyutunu düşürür."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2191,7 +2191,7 @@ msgstr "Temizleme Hızı"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "Farklı bir malzemeye geçildikten sonra malzemenin kullanıma hazır hale getirileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2201,27 +2201,27 @@ msgstr "Temizleme Uzunluğu"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "Farklı bir malzemeye geçilirken nozülün önceki malzemeden temizlenmesi için kullanılacak malzeme (filament parçası) miktarıdır."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "Filament Temizliği Bitiş Hızı"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Boş bir makara aynı malzemeden yeni bir makara ile değiştirildikten sonra malzemenin kullanıma hazır hale getirileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "Filament Temizliği Bitiş Uzunluğu"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Boş bir makara aynı malzemeden yeni bir makara ile değiştirilirken nozülün önceki malzemeden temizlenmesi için kullanılacak malzeme (filament parçası) miktarıdır."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2231,7 +2231,7 @@ msgstr "Maksimum Durma Süresi"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "Malzemenin kuru olmadığı durumda güvenli şekilde saklanabileceği süredir."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2241,7 +2241,7 @@ msgstr "Yük Taşıma Çarpanı Yok"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "Besleme ünitesi ile nozül haznesi arasına sıkıştırılacak filamenti belirten faktördür ve filament değişimi için malzemenin ne kadar hareket ettirileceğini belirlemek için kullanılır."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3021,7 +3021,7 @@ msgstr "Geri Çekmeyi Etkinleştir"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Nozül yazdırılamayan alana doğru hareket ettiğinde filamanı geri çeker."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3716,7 +3716,7 @@ msgstr "Minimum Destek X/Y Mesafesi"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "Destek yapısının X/Y yönlerindeki çıkıntıya mesafesi."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4815,7 +4815,7 @@ msgstr "Ağ Onarımları"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "Kafesleri 3D baskı için daha uygun hale getirir."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,7 +4935,7 @@ msgstr "Özel Modlar"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "Modellerinizi yazdırmanın geleneksel olmayan yollarıdır."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5110,7 +5110,7 @@ msgstr "Deneysel"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "Henüz tamamen detaylandırılmamış özelliklerdir."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"

@@ -82,7 +82,7 @@ msgstr "Materiaal-GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "GUID van het materiaal. Deze optie wordt automatisch ingesteld."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1252,12 +1252,12 @@ msgstr "De mate van offset die wordt toegepast op alle polygonen in de eerste la
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "Horizontale uitbreiding gaten"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "De offset die wordt toegepast op alle gaten in elke laag. Met positieve waarden worden de gaten groter, met negatieve waarden worden de gaten kleiner."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2191,7 +2191,7 @@ msgstr "Afvoersnelheid flush"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "Hoe snel het materiaal moet worden geprimed na het overschakelen op een ander materiaal."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2201,27 +2201,28 @@ msgstr "Afvoerduur flush"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "Hoeveel materiaal moet worden gebruikt om het vorige materiaal uit de nozzle te verwijderen (in lengte filament) bij het overschakelen op een ander materiaal."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "Afvoersnelheid einde van filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Hoe snel het materiaal moet worden geprimed na het vervangen van een lege spoel door een nieuwe spoel van hetzelfde materiaal."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "Afvoerduur einde van filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "Hoeveel materiaal moet worden gebruikt om het vorige materiaal uit de nozzle te verwijderen (in lengte filament) bij het vervangen van een lege spoel door"
+" een nieuwe spoel van hetzelfde materiaal."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2231,7 +2232,7 @@ msgstr "Maximale parkeerduur"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "Hoe lang het materiaal veilig buiten een droge opslagplaats kan worden bewaard."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2241,7 +2242,8 @@ msgstr "Verplaatsingsfactor zonder lading"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "Een factor die aangeeft hoeveel het filament wordt samengedrukt tussen de feeder en de nozzlekamer, om te bepalen hoe ver het materiaal moet worden verplaatst"
+" voor het verwisselen van filament."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3021,7 +3023,7 @@ msgstr "Intrekken Inschakelen"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Hiermee wordt het filament ingetrokken wanneer de nozzle over een niet-printbaar gebied gaat."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3716,7 +3718,7 @@ msgstr "Minimale X-/Y-afstand Supportstructuur"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "Afstand tussen de supportstructuur en de overhang in de X- en Y-richting."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4815,7 +4817,7 @@ msgstr "Modelcorrecties"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "Maak de rasters beter geschikt voor 3D-printen."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,7 +4937,7 @@ msgstr "Speciale Modi"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "Niet-traditionele manieren om uw modellen te printen."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5110,7 +5112,7 @@ msgstr "Experimenteel"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "Functies die nog niet volledig zijn uitgewerkt."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
