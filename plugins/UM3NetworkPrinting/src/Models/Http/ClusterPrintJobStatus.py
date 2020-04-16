@@ -58,7 +58,7 @@ class ClusterPrintJobStatus(BaseModel):
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  compatible_machine_families: List[str] = None,
                  impediments_to_printing: List[Union[Dict[str, Any], ClusterPrintJobImpediment]] = None,
-                 preview_url = None,
+                 preview_url: Optional[str] = None,
                  **kwargs) -> None:
         self.assigned_to = assigned_to
         self.configuration = self.parseModels(ClusterPrintCoreConfiguration, configuration)
