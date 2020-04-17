@@ -86,7 +86,7 @@
         "initial_layer_line_width_factor": {"value": 110 },
 
         "wall_thickness":            {"value": "(line_width * 3) if infill_sparse_density < 95 else line_width" },
-        "roofing_layer_count":       {"value": "1" },
+        "roofing_layer_count":       {"value": "0" },
         "top_bottom_thickness":      {"value": "(layer_height_0 + (layer_height * (top_layers - 1)))" },
         "top_layers":                {"value": "4 if infill_sparse_density < 95 else 1" },
         "bottom_layers":             {"value": "(top_layers)" },
