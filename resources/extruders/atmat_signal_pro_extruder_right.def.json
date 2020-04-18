@@ -3,7 +3,7 @@
     "name": "Extruder 2",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "atmat_atmat_signal_pro_base",
+        "machine": "atmat_signal_pro_base",
         "position": "1"
     },
 

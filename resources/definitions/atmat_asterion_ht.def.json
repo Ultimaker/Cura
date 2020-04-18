@@ -1,12 +1,12 @@
 {
     "name": "Asterion HT",
     "version": 2,
-    "inherits": "atmat_atmat_signal_pro_base",
+    "inherits": "atmat_signal_pro_base",
     "metadata":
     {
         "visible": true,
         "platform": "atmat_asterion_platform.stl",
-        "quality_definition": "atmat_atmat_signal_pro_base"
+        "quality_definition": "atmat_signal_pro_base"
     },
     "overrides":
     {
