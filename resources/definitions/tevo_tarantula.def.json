@@ -8,7 +8,7 @@
         "author": "TheAssassin",
         "manufacturer": "Tevo",
         "file_formats": "text/x-gcode",
-        "platform": "prusai3_platform.stl",
+        "platform": "prusai3_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "tevo_tarantula_extruder_0"

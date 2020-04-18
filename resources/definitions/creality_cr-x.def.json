@@ -8,7 +8,7 @@
         "manufacturer": "Creality3D",
         "category": "Other",
         "file_formats": "text/x-gcode",
-        "platform": "cr-x.stl",
+        "platform": "cr-x.3mf",
         "has_variants": false,
         "has_machine_quality": false,
         "preferred_quality_type": "draft",

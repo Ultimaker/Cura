@@ -14,7 +14,7 @@
             0
         ],
         "supports_usb_connection": false,
-        "platform": "skriware_2_platform.stl",
+        "platform": "skriware_2_platform.3mf",
         "machine_extruder_trains": {
             "0": "skriware_2_extruder_0",
             "1": "skriware_2_extruder_1"

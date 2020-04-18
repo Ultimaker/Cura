@@ -7,7 +7,7 @@
         "author": "Simon Cor",
         "manufacturer": "German RepRap",
         "file_formats": "text/x-gcode",
-        "platform": "grr_neo_platform.stl",
+        "platform": "grr_neo_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "grr_neo_extruder_0"
