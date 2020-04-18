@@ -1,0 +1,20 @@
+{
+    "name": "Asterion HT",
+    "version": 2,
+    "inherits": "atmat_atmat_signal_pro_base",
+    "metadata":
+    {
+        "visible": true,
+        "platform": "atmat_asterion_platform.stl",
+        "quality_definition": "atmat_atmat_signal_pro_base"
+    },
+    "overrides":
+    {
+        "machine_name":                 { "default_value": "Asterion HT" },
+        "machine_width":                { "default_value": 500 },
+        "machine_depth":                { "default_value": 500 },
+        "machine_height":               { "default_value": 600 },
+        "material_print_temperature":   { "maximum_value_warning": 500 }
+		
+    }
+}
