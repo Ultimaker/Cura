@@ -719,9 +719,6 @@ class ChangeAtZProcessor:
                 if len(line) == 0:
                     continue
 
-                if "Z10.8" in line:
-                    derp = True
-
                 # update our layer number if applicable
                 self.processLayerNumber(line)
 
