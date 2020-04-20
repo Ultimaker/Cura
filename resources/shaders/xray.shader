@@ -12,7 +12,14 @@ vertex =
     }
 
 fragment =
-    uniform lowp vec4 u_color;
+    #ifdef GL_ES
+        #ifdef GL_FRAGMENT_PRECISION_HIGH
+            precision highp float;
+        #else
+            precision mediump float;
+        #endif // GL_FRAGMENT_PRECISION_HIGH
+    #endif // GL_ES
+    uniform vec4 u_color;
 
     void main()
     {
@@ -34,7 +41,8 @@ vertex41core =
 
 fragment41core =
     #version 410
-    uniform lowp vec4 u_color;
+
+    uniform vec4 u_color;
 
     out vec4 frag_color;
 

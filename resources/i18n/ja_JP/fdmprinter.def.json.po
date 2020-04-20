@@ -86,7 +86,7 @@ msgstr "マテリアルGUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "マテリアルのGUID。これは自動的に設定されます。"
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1297,12 +1297,12 @@ msgstr "最初のレイヤーのポリゴンに適用されるオフセットの
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "穴の水平展開"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "各穴のすべてのポリゴンに適用されるオフセットの量。正の値は穴のサイズを大きくします。負の値は穴のサイズを小さくします。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2271,7 +2271,7 @@ msgstr "フラッシュパージ速度"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "材料を切り替えた後に、材料の下準備をする速度。"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2281,27 +2281,27 @@ msgstr "フラッシュパージ長さ"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "材料を切り替えたときに、ノズルから前の材料をパージするために使用する材料の量（フィラメントの長さ）。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "フィラメントパージ速度の後"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "空のスプールを同じ材料の新しいスプールに交換した後に、材料の下準備をする速度。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "フィラメントパージ長さの後"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "空のスプールを同じ材料の新しいスプールに交換したときに、ノズルから前の材料をパージするために使用する材料の量（フィラメントの長さ）。"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2311,7 +2311,7 @@ msgstr "最大留め期間"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "材料を乾燥保管容器の外に置くことができる期間。"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2321,7 +2321,7 @@ msgstr "無負荷移動係数"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "フィーダーとノズルチャンバーの間でフィラメントが圧縮される量を示す係数。フィラメントスイッチの材料を移動する距離を決めるために使用されます。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3110,7 +3110,7 @@ msgstr "引き戻し有効"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "ノズルが印刷しないで良い領域を移動する際にフィラメントを引き戻す。"
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3809,7 +3809,7 @@ msgstr "最小サポートX/Y距離"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "X/Y方向におけるオーバーハングからサポートまでの距離。"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4936,7 +4936,7 @@ msgstr "メッシュ修正"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "3Dプリンティングにさらに適したメッシュを作成します。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -5056,7 +5056,7 @@ msgstr "特別モード"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "これまでにないモデルの印刷方法です。"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5236,7 +5236,7 @@ msgstr "実験"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "これからもっと充実させていく機能です。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"

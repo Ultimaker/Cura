@@ -112,7 +112,10 @@ class ImageReaderUI(QObject):
     def onWidthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._width = float(value.replace(",", "."))
+                try:
+                    self._width = float(value.replace(",", "."))
+                except ValueError:  # Can happen with incomplete numbers, such as "-".
+                    self._width = 0
             else:
                 self._width = 0
 
@@ -125,7 +128,10 @@ class ImageReaderUI(QObject):
     def onDepthChanged(self, value):
         if self._ui_view and not self._disable_size_callbacks:
             if len(value) > 0:
-                self._depth = float(value.replace(",", "."))
+                try:
+                    self._depth = float(value.replace(",", "."))
+                except ValueError:  # Can happen with incomplete numbers, such as "-".
+                    self._depth = 0
             else:
                 self._depth = 0
 
@@ -136,15 +142,21 @@ class ImageReaderUI(QObject):
 
     @pyqtSlot(str)
     def onBaseHeightChanged(self, value):
-        if (len(value) > 0):
-            self.base_height = float(value.replace(",", "."))
+        if len(value) > 0:
+            try:
+                self.base_height = float(value.replace(",", "."))
+            except ValueError:  # Can happen with incomplete numbers, such as "-".
+                self.base_height = 0
         else:
             self.base_height = 0
 
     @pyqtSlot(str)
     def onPeakHeightChanged(self, value):
-        if (len(value) > 0):
-            self.peak_height = float(value.replace(",", "."))
+        if len(value) > 0:
+            try:
+                self.peak_height = float(value.replace(",", "."))
+            except ValueError:  # Can happen with incomplete numbers, such as "-".
+                self._width = 0
         else:
             self.peak_height = 0
 

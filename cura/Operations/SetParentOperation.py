@@ -5,7 +5,6 @@ from typing import Optional
 from UM.Scene.SceneNode import SceneNode
 from UM.Operations import Operation
 
-from UM.Math.Vector import Vector
 
 
 ##  An operation that parents a scene node to another scene node.

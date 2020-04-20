@@ -82,7 +82,7 @@ msgstr "GUID del material"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "GUID del material. Este valor se define de forma automática."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1252,12 +1252,13 @@ msgstr "Cantidad de desplazamiento aplicado a todos los polígonos de la primera
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "Expansión horizontal de orificios"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "Cantidad de desplazamiento aplicado a todos los orificios en cada capa. Los valores positivos aumentan el tamaño de los orificios y los valores negativos"
+" reducen el tamaño de los mismos."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2056,7 +2057,7 @@ msgstr "La temperatura utilizada para la placa de impresión caliente. Si el val
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 label"
 msgid "Build Plate Temperature Initial Layer"
-msgstr "Temperatura de la capa de impresión en la capa inicial"
+msgstr "Temperatura de la placa de impresión en la capa inicial"
 
 #: fdmprinter.def.json
 msgctxt "material_bed_temperature_layer_0 description"
@@ -2191,7 +2192,7 @@ msgstr "Velocidad de purga de descarga"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "La velocidad de cebado del material después de cambiar a otro material."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2201,27 +2202,28 @@ msgstr "Longitud de purga de descarga"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "La cantidad de material que se va a utilizar para purgar el material que había antes en la tobera (en longitud del filamento) cuando se cambia a otro material."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "Velocidad de purga del extremo del filamento"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "La velocidad de cebado del material después de sustituir una bobina vacía por una bobina nueva del mismo material."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "Longitud de purga del extremo del filamento"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "La cantidad de material que se va a utilizará para purgar el material que había antes en la tobera (en longitud del filamento) al sustituir una bobina"
+" vacía por una bobina nueva del mismo material."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2231,7 +2233,7 @@ msgstr "Duración máxima de estacionamiento"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "La cantidad de tiempo que el material puede mantenerse seco de forma segura."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2241,7 +2243,8 @@ msgstr "Factor de desplazamiento sin carga"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "Un factor que indica cuánto se comprime el filamento entre el alimentador y la cámara de la boquilla. Se utiliza para determinar cuán lejos debe avanzar"
+" el material para cambiar el filamento."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3021,7 +3024,7 @@ msgstr "Habilitar la retracción"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "Retrae el filamento cuando la tobera se mueve sobre un área no impresa."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3716,7 +3719,7 @@ msgstr "Distancia X/Y mínima del soporte"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "Distancia de la estructura de soporte desde el voladizo en las direcciones X/Y."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4815,7 +4818,7 @@ msgstr "Correcciones de malla"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "Consiga las mallas más adecuadas para la impresión 3D."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,7 +4938,7 @@ msgstr "Modos especiales"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "Formas no tradicionales de imprimir sus modelos."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5110,7 +5113,7 @@ msgstr "Experimental"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "Características que aún no se han desarrollado por completo."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"

@@ -23,16 +23,13 @@ class BQ_PauseAtHeight(Script):
         }"""
 
     def execute(self, data):
-        x = 0.
-        y = 0.
-        current_z = 0.
         pause_z = self.getSettingValueByKey("pause_height")
         for layer in data: 
             lines = layer.split("\n")
             for line in lines:
                 if self.getValue(line, 'G') == 1 or self.getValue(line, 'G') == 0:
                     current_z = self.getValue(line, 'Z')
-                    if current_z != None:
+                    if current_z is not None:
                         if current_z >= pause_z:
                             prepend_gcode = ";TYPE:CUSTOM\n"
                             prepend_gcode += "; -- Pause at height (%.2f mm) --\n" % pause_z

@@ -5,7 +5,6 @@ from cura.UI import PrintInformation
 from cura.Settings.MachineManager import MachineManager
 
 from unittest.mock import MagicMock, patch
-from UM.Application import Application
 from UM.MimeTypeDatabase import MimeTypeDatabase, MimeType
 
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
 from time import time
@@ -299,7 +299,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
         new_print_jobs = []
 
         # Check which print jobs need to be created or updated.
-        for index, print_job_data in enumerate(remote_jobs):
+        for print_job_data in remote_jobs:
             print_job = next(
                 iter(print_job for print_job in self._print_jobs if print_job.key == print_job_data.uuid), None)
             if not print_job:
@@ -330,6 +330,8 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
             self._updateAssignedPrinter(model, remote_job.printer_uuid)
         if remote_job.assigned_to:
             self._updateAssignedPrinter(model, remote_job.assigned_to)
+        if remote_job.preview_url:
+            model.loadPreviewImageFromUrl(remote_job.preview_url)
         return model
 
     ## Updates the printer assignment for the given print job model.

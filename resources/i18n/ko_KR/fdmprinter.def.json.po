@@ -83,7 +83,7 @@ msgstr "재료 GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "재료의 GUID. 자동으로 설정됩니다."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1253,12 +1253,12 @@ msgstr "첫 번째 레이어의 모든 다각형에 적용된 오프셋의 양�
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "구멍 수평 확장"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "각 레이어의 모든 구멍에 적용된 오프셋의 양. 양수 값은 구멍 크기를 증가시키며, 음수 값은 구멍 크기를 줄입니다."
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2192,7 +2192,7 @@ msgstr "수평 퍼지 속도"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "다른 재료로 전환 후 재료를 압출하는 속도."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2202,27 +2202,27 @@ msgstr "수평 퍼지 길이"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "다른 재료로 전환할 때 (필라멘트를 지나며) 노즐에서 이전 재료를 퍼지하기 위해 사용하는 재료 양."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "필라멘트 끝의 퍼지 속도"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "빈 스풀을 동일한 재료의 새로운 스풀로 교체한 후 재료를 압출하는 속도."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "필라멘트 끝의 퍼지 길이"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "빈 스풀을 동일한 재료의 새로운 스풀로 교체할 때 (필라멘트를 지나며) 노즐에서 이전 재료를 퍼지하기 위해 사용하는 재료 양."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2232,7 +2232,7 @@ msgstr "최대 파크 기간"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "재료를 안전하게 건식 보관함에 보관할 수 있는 기간."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2242,7 +2242,7 @@ msgstr "로드 이동 요인 없음"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "피더와 노즐 챔버 사이에 필라멘트가 압축되는 양을 나타내는 요소, 필라멘트 전환을 위해 재료를 움직이는 범위를 결정하는 데 사용됨."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3022,7 +3022,7 @@ msgstr "리트렉션 활성화"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "노즐이 프린팅되지 않은 영역 위로 움직일 때 필라멘트를 리트렉션합니다."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3717,7 +3717,7 @@ msgstr "최소 서포트 X/Y 거리"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "X/Y 방향에서 오버행으로부터 서포트까지의 거리."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4816,7 +4816,7 @@ msgstr "메쉬 수정"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "메쉬를 3D 프린팅에 보다 맞춤화시킵니다."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4936,7 +4936,7 @@ msgstr "특수 모드"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "모델을 프린팅하는 새로운 방법들."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5111,7 +5111,7 @@ msgstr "실험적인"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "아직 구체화되지 않은 기능들."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
