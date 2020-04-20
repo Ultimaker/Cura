@@ -33,7 +33,7 @@ Item
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Ultimaker Account")
+        text: catalog.i18nc("@label", "Sign in to Ultimaker Cloud")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
@@ -46,7 +46,7 @@ Item
         anchors
         {
             top: titleLabel.bottom
-            bottom: finishButton.top
+            bottom: nextButton.top
             left: parent.left
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
@@ -74,7 +74,7 @@ Item
                 id: highlightTextLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "Your key to connected 3D printing")
+                text: catalog.i18nc("@text", "The next generation 3D printing workflow")
                 textFormat: Text.RichText
                 color: UM.Theme.getColor("primary")
                 font: UM.Theme.getFont("medium")
@@ -91,13 +91,13 @@ Item
                     var full_text = ""
                     var t = ""
 
-                    t = catalog.i18nc("@text", "- Customize your experience with more print profiles and plugins")
+                    t = catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside of your local network")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Stay flexible by syncing your setup and loading it anywhere")
+                    t = catalog.i18nc("@text", "- Store your Ultimaker Cura settings in the cloud to use anywhere")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Increase efficiency with a remote workflow on Ultimaker printers")
+                    t = catalog.i18nc("@text", "- Get exclusive access to material profiles from leading brands")
                     full_text += "<p>" + t + "</p>"
 
                     return full_text
@@ -107,35 +107,47 @@ Item
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
+
+            // "Sign in" and "Create an account" exist inside the column
+            Cura.PrimaryButton
+            {
+                id: signInButton
+                height: createAccountButton.height
+                width: createAccountButton.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: catalog.i18nc("@button", "Sign in")
+                onClicked: Cura.API.account.login()
+                // Content Item is used in order to align the text inside the button. Without it, when resizing the
+                // button, the text will be aligned on the left
+                contentItem: Text {
+                    text: signInButton.text
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("primary_text")
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Cura.SecondaryButton
+            {
+                id: createAccountButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: catalog.i18nc("@button","Create an account")
+                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
+            }
         }
+
+
     }
 
-    // Bottom buttons go here
-    Cura.PrimaryButton
-    {
-        id: finishButton
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Finish")
-        onClicked: base.showNextPage()
-    }
-
-    Cura.SecondaryButton
-    {
-        id: createAccountButton
-        anchors.left: parent.left
-        anchors.verticalCenter: finishButton.verticalCenter
-        text: catalog.i18nc("@button", "Create an account")
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
-    }
-
+    // The "Next" button exists on the bottom right
     Label
     {
-        id: signInButton
-        anchors.left: createAccountButton.right
-        anchors.verticalCenter: finishButton.verticalCenter
+        id: nextButton
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@button", "Sign in")
+        text: catalog.i18nc("@button", "Skip")
         color: UM.Theme.getColor("secondary_button_text")
         font: UM.Theme.getFont("medium")
         renderType: Text.NativeRendering
@@ -144,7 +156,7 @@ Item
         {
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: Cura.API.account.login()
+            onClicked: base.showNextPage()
             onEntered: parent.font.underline = true
             onExited: parent.font.underline = false
         }
