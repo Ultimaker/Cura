@@ -243,6 +243,9 @@ class WelcomePagesModel(ListModel):
                           {"id": "data_collections",
                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
                            },
+                          {"id": "cloud",
+                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                           },
                           {"id": "add_network_or_local_printer",
                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
                            "next_page_id": "machine_actions",
@@ -253,11 +256,7 @@ class WelcomePagesModel(ListModel):
                            },
                           {"id": "machine_actions",
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
-                           "next_page_id": "cloud",
                            "should_show_function": self.shouldShowMachineActions,
-                           },
-                          {"id": "cloud",
-                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
                            },
                           ]
 
