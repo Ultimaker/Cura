@@ -48,7 +48,7 @@ Some printers automatically disable their steppers after a pause after a certain
 During the beta period we caught a critical bug where logging in to an Ultimaker account with two instances of Cura would crash the second instance. It crashes because while the web page is open, Cura opens a web server in the local host. The web page redirects to that web server when you've logged in, so that it knows that the log-in was successful and what the credentials are. Both instances try to create a web server on the same port, which is impossible.
 
 * "Changes detected from your Ultimaker account" message.
-We fixed a bug on MacOS where the "Changes detected from your Ultimaker account" message kept showing over and over again.
+We fixed a bug on MacOS where duplicate "Changes detected from your Ultimaker account" popups would appear at a single time.
 
 * Crashes when inactive.
 Some people reported experiencing crashes when the computer had been inactive for a long time, or when the laptop got suspended or went to sleep. This has been fixed.
