@@ -3,6 +3,6 @@
     "author": "Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Provides support for writing Ultimaker Format Packages.",
-    "api": "7.1",
+    "api": "7.2.0",
     "i18n-catalog": "cura"
 }
