@@ -4,8 +4,9 @@
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
-        "author": "Cataldo URSO",
+        "author": "Cataldo URSO & Eddy Emck ",
         "manufacturer": "FLSUN",
+		"platform": "FLSUN_QQS.stl",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "preferred_quality_type": "draft",
