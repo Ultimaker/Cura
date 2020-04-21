@@ -286,25 +286,6 @@ class SolidView(View):
                 Logger.log("i", "X-Ray overlay found non-manifold pixels.")
 
     def event(self, event):
-        if event.type == Event.ViewActivateEvent:
-            # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
-            # This can happen when you do the following steps:
-            #   1. Start Cura
-            #   2. Load a model
-            #   3. Switch to Custom mode
-            #   4. Select the model and click on the per-object tool icon
-            #   5. Switch view to Layer view or X-Ray
-            #   6. Cura will very likely crash
-            # It seems to be a timing issue that the currentContext can somehow be empty, but I have no clue why.
-            # This fix tries to reschedule the view changing event call on the Qt thread again if the current OpenGL
-            # context is None.
-            if Platform.isOSX():
-                if QOpenGLContext.currentContext() is None:
-                    Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
-                    Application.getInstance().callLater(lambda e = event: self.event(e))
-                    return
-
-
         if event.type == Event.ViewDeactivateEvent:
             if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
                 self.getRenderer().removeRenderPass(self._xray_pass)
