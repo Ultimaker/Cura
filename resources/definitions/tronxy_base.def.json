@@ -26,7 +26,7 @@
     "overrides": {
         "machine_name": { "default_value": "Tronxy Base Printer" },
         "machine_nozzle_size": { "default_value": 0.4},
-        "material_diameter": { "default_value": 1.75 },
+        "material_diameter": { "default_value": 1.75 }, 
         "machine_start_gcode":{ "default_value":"G21\nG90\nM82\nM107 T0\nM140 S{material_bed_temperature}\nM104 S{material_print_temperature} T0\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG28\nG92 E0\nG1 Z15.0 F{speed_travel}\nG0 E3 F200\nG92 E0\n"},
         "machine_end_gcode":{"default_value":"M107 T0\nM104 S0\nM104 S0 T1\nM140 S0\nG92 E0\nG91\nG1 E-1 F300 \nG1 Z+0.5 E-5 X-20 Y-20 F9000\nG28 X0 Y0\nM84 ;steppers off\nG90 ;absolute positioning\n"},
         "machine_head_with_fans_polygon": { "default_value": [[ 0, 0 ],[ 0, 0 ],[ 0, 0 ],[ 0, 0 ]]},        
