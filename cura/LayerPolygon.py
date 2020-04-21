@@ -26,14 +26,17 @@ class LayerPolygon:
 
     __jump_map = numpy.logical_or(numpy.logical_or(numpy.arange(__number_of_types) == NoneType, numpy.arange(__number_of_types) == MoveCombingType), numpy.arange(__number_of_types) == MoveRetractionType)
 
-    ##  LayerPolygon, used in ProcessSlicedLayersJob
-    #   \param extruder The position of the extruder
-    #   \param line_types array with line_types
-    #   \param data new_points
-    #   \param line_widths array with line widths
-    #   \param line_thicknesses: array with type as index and thickness as value
-    #   \param line_feedrates array with line feedrates
     def __init__(self, extruder: int, line_types: numpy.ndarray, data: numpy.ndarray, line_widths: numpy.ndarray, line_thicknesses: numpy.ndarray, line_feedrates: numpy.ndarray) -> None:
+        """LayerPolygon, used in ProcessSlicedLayersJob
+
+        :param extruder: The position of the extruder
+        :param line_types: array with line_types
+        :param data: new_points
+        :param line_widths: array with line widths
+        :param line_thicknesses: array with type as index and thickness as value
+        :param line_feedrates: array with line feedrates
+        """
+
         self._extruder = extruder
         self._types = line_types
         for i in range(len(self._types)):
@@ -83,19 +86,22 @@ class LayerPolygon:
         self._vertex_begin = 0
         self._vertex_end = numpy.sum( self._build_cache_needed_points )
 
-    ##  Set all the arrays provided by the function caller, representing the LayerPolygon
-    #   The arrays are either by vertex or by indices.
-    #
-    #   \param vertex_offset : determines where to start and end filling the arrays
-    #   \param index_offset : determines where to start and end filling the arrays
-    #   \param vertices : vertex numpy array to be filled
-    #   \param colors : vertex numpy array to be filled
-    #   \param line_dimensions : vertex numpy array to be filled
-    #   \param feedrates : vertex numpy array to be filled
-    #   \param extruders : vertex numpy array to be filled
-    #   \param line_types : vertex numpy array to be filled
-    #   \param indices : index numpy array to be filled
     def build(self, vertex_offset: int, index_offset: int, vertices: numpy.ndarray, colors: numpy.ndarray, line_dimensions: numpy.ndarray, feedrates: numpy.ndarray, extruders: numpy.ndarray, line_types: numpy.ndarray, indices: numpy.ndarray) -> None:
+        """Set all the arrays provided by the function caller, representing the LayerPolygon
+        
+        The arrays are either by vertex or by indices.
+        
+        :param vertex_offset: : determines where to start and end filling the arrays
+        :param index_offset: : determines where to start and end filling the arrays
+        :param vertices: : vertex numpy array to be filled
+        :param colors: : vertex numpy array to be filled
+        :param line_dimensions: : vertex numpy array to be filled
+        :param feedrates: : vertex numpy array to be filled
+        :param extruders: : vertex numpy array to be filled
+        :param line_types: : vertex numpy array to be filled
+        :param indices: : index numpy array to be filled
+        """
+
         if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:
             self.buildCache()
 
@@ -202,8 +208,12 @@ class LayerPolygon:
     def jumpCount(self):
         return self._jump_count
 
-    # Calculate normals for the entire polygon using numpy.
     def getNormals(self) -> numpy.ndarray:
+        """Calculate normals for the entire polygon using numpy.
+
+        :return: normals for the entire polygon
+        """
+
         normals = numpy.copy(self._data)
         normals[:, 1] = 0.0 # We are only interested in 2D normals
 
@@ -229,9 +239,10 @@ class LayerPolygon:
 
     __color_map = None  # type: numpy.ndarray
 
-    ##  Gets the instance of the VersionUpgradeManager, or creates one.
     @classmethod
     def getColorMap(cls) -> numpy.ndarray:
+        """Gets the instance of the VersionUpgradeManager, or creates one."""
+
         if cls.__color_map is None:
             theme = cast(Theme, QtApplication.getInstance().getTheme())
             cls.__color_map = numpy.array([

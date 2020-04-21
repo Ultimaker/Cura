@@ -30,11 +30,17 @@ class Snapshot:
 
         return min_x, max_x, min_y, max_y
 
-    ##  Return a QImage of the scene
-    #   Uses PreviewPass that leaves out some elements
-    #   Aspect ratio assumes a square
     @staticmethod
     def snapshot(width = 300, height = 300):
+        """Return a QImage of the scene
+
+        Uses PreviewPass that leaves out some elements Aspect ratio assumes a square
+
+        :param width: width of the aspect ratio default 300
+        :param height: height of the aspect ratio default 300
+        :return: None when there is no model on the build plate otherwise it will return an image
+        """
+
         scene = Application.getInstance().getController().getScene()
         active_camera = scene.getActiveCamera()
         render_width, render_height = active_camera.getWindowSize()

@@ -150,8 +150,9 @@ class CrashHandler:
             self._sendCrashReport()
         os._exit(1)
 
-    ##  Backup the current resource directories and create clean ones.
     def _backupAndStartClean(self):
+        """Backup the current resource directories and create clean ones."""
+
         Resources.factoryReset()
         self.early_crash_dialog.close()
 
@@ -162,8 +163,9 @@ class CrashHandler:
     def _showDetailedReport(self):
         self.dialog.exec_()
 
-    ##  Creates a modal dialog.
     def _createDialog(self):
+        """Creates a modal dialog."""
+
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))

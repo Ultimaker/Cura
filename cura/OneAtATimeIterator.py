@@ -7,18 +7,21 @@ from UM.Scene.Iterator import Iterator
 from UM.Scene.SceneNode import SceneNode
 from functools import cmp_to_key
 
-## Iterator that returns a list of nodes in the order that they need to be printed
-#  If there is no solution an empty list is returned.
-#  Take note that the list of nodes can have children (that may or may not contain mesh data)
 class OneAtATimeIterator(Iterator.Iterator):
+    """Iterator that returns a list of nodes in the order that they need to be printed
+    
+    If there is no solution an empty list is returned.
+    Take note that the list of nodes can have children (that may or may not contain mesh data)
+    """
+
     def __init__(self, scene_node) -> None:
         super().__init__(scene_node) # Call super to make multiple inheritance work.
         self._hit_map = [[]]  # type: List[List[bool]]  # For each node, which other nodes this hits. A grid of booleans on which nodes hit which.
         self._original_node_list = []  # type: List[SceneNode]  # The nodes that need to be checked for collisions.
 
-    ##  Fills the ``_node_stack`` with a list of scene nodes that need to be
-    #   printed in order.
     def _fillStack(self) -> None:
+        """Fills the ``_node_stack`` with a list of scene nodes that need to be printed in order. """
+
         node_list = []
         for node in self._scene_node.getChildren():
             if not issubclass(type(node), SceneNode):
@@ -75,10 +78,14 @@ class OneAtATimeIterator(Iterator.Iterator):
                 return True
         return False
 
-    ##  Check for a node whether it hits any of the other nodes.
-    #   \param node The node to check whether it collides with the other nodes.
-    #   \param other_nodes The nodes to check for collisions.
     def _checkBlockMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
+        """Check for a node whether it hits any of the other nodes.
+        
+        :param node: The node to check whether it collides with the other nodes.
+        :param other_nodes: The nodes to check for collisions.
+        :return: returns collision between nodes
+        """
+
         node_index = self._original_node_list.index(node)
         for other_node in other_nodes:
             other_node_index = self._original_node_list.index(other_node)
@@ -86,14 +93,26 @@ class OneAtATimeIterator(Iterator.Iterator):
                 return True
         return False
 
-    ##  Calculate score simply sums the number of other objects it 'blocks'
     def _calculateScore(self, a: SceneNode, b: SceneNode) -> int:
+        """Calculate score simply sums the number of other objects it 'blocks'
+
+        :param a: node
+        :param b: node
+        :return: sum of the number of other objects
+        """
+
         score_a = sum(self._hit_map[self._original_node_list.index(a)])
         score_b = sum(self._hit_map[self._original_node_list.index(b)])
         return score_a - score_b
 
-    ##  Checks if A can be printed before B
     def _checkHit(self, a: SceneNode, b: SceneNode) -> bool:
+        """Checks if a can be printed before b
+
+        :param a: node
+        :param b: node
+        :return: true if a can be printed before b
+        """
+
         if a == b:
             return False
 
@@ -116,12 +135,14 @@ class OneAtATimeIterator(Iterator.Iterator):
             return False
 
 
-##  Internal object used to keep track of a possible order in which to print objects.
 class _ObjectOrder:
-    ##  Creates the _ObjectOrder instance.
-    #   \param order List of indices in which to print objects, ordered by printing
-    #   order.
-    #   \param todo: List of indices which are not yet inserted into the order list.
+    """Internal object used to keep track of a possible order in which to print objects."""
+
     def __init__(self, order: List[SceneNode], todo: List[SceneNode]) -> None:
+        """Creates the _ObjectOrder instance.
+        
+        :param order: List of indices in which to print objects, ordered by printing order.
+        :param todo: List of indices which are not yet inserted into the order list.
+        """
         self.order = order
         self.todo = todo
