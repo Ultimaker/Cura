@@ -33,7 +33,7 @@ Item
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
         horizontalAlignment: Text.AlignHCenter
-        text: catalog.i18nc("@label", "Sign in to Ultimaker Cloud")
+        text: catalog.i18nc("@label", "Ultimaker Account")
         color: UM.Theme.getColor("primary_button")
         font: UM.Theme.getFont("huge")
         renderType: Text.NativeRendering
@@ -74,7 +74,7 @@ Item
                 id: highlightTextLabel
                 anchors.horizontalCenter: parent.horizontalCenter
                 horizontalAlignment: Text.AlignHCenter
-                text: catalog.i18nc("@text", "The next generation 3D printing workflow")
+                text: catalog.i18nc("@text", "Your key to connected 3D printing")
                 textFormat: Text.RichText
                 color: UM.Theme.getColor("primary")
                 font: UM.Theme.getFont("medium")
@@ -91,13 +91,13 @@ Item
                     var full_text = ""
                     var t = ""
 
-                    t = catalog.i18nc("@text", "- Send print jobs to Ultimaker printers outside of your local network")
+                    t = catalog.i18nc("@text", "- Customize your experience with more print profiles and plugins")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Store your Ultimaker Cura settings in the cloud to use anywhere")
+                    t = catalog.i18nc("@text", "- Stay flexible by syncing your setup and loading it anywhere")
                     full_text += "<p>" + t + "</p>"
 
-                    t = catalog.i18nc("@text", "- Get exclusive access to material profiles from leading brands")
+                    t = catalog.i18nc("@text", "- Increase efficiency with a remote workflow on Ultimaker printers")
                     full_text += "<p>" + t + "</p>"
 
                     return full_text
@@ -132,7 +132,7 @@ Item
             {
                 id: createAccountButton
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: catalog.i18nc("@button","Create an account")
+                text: catalog.i18nc("@button","Create account")
                 onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
             }
         }
