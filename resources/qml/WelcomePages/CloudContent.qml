@@ -46,7 +46,7 @@ Item
         anchors
         {
             top: titleLabel.bottom
-            bottom: nextButton.top
+            bottom: skipButton.top
             left: parent.left
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
@@ -140,10 +140,10 @@ Item
 
     }
 
-    // The "Next" button exists on the bottom right
+    // The "Skip" button exists on the bottom right
     Label
     {
-        id: nextButton
+        id: skipButton
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
