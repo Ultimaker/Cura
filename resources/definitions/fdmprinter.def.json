@@ -7,7 +7,7 @@
         "author": "Ultimaker",
         "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 13,
+        "setting_version": 11,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -75,7 +75,7 @@
                 "material_guid":
                 {
                     "label": "Material GUID",
-                    "description": "GUID of the material. This is set automatically.",
+                    "description": "GUID of the material. This is set automatically. ",
                     "default_value": "",
                     "type": "str",
                     "enabled": false
@@ -142,8 +142,6 @@
                     "description": "The width (X-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "minimum_value": "0.001",
-                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -154,8 +152,6 @@
                     "description": "The depth (Y-direction) of the printable area.",
                     "default_value": 100,
                     "type": "float",
-                    "minimum_value": "0.001",
-                    "maximum_value": "2000000",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
@@ -297,6 +293,18 @@
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
+                    "type": "float",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": true,
+                    "settable_per_meshgroup": false
+                },
+                "machine_filament_park_distance":
+                {
+                    "label": "Filament Park Distance",
+                    "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
+                    "unit": "mm",
+                    "default_value": 16,
+                    "value": "machine_heat_zone_length",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1020,7 +1028,6 @@
                     "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
-                    "value": "wall_line_width_0 if magic_spiralize else 0.8",
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
@@ -1382,19 +1389,7 @@
                     "limit_to_extruder": "wall_0_extruder_nr",
                     "settable_per_mesh": true
                 },
-                "hole_xy_offset":
-                {
-                    "label": "Hole Horizontal Expansion",
-                    "description": "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes.",
-                    "unit": "mm",
-                    "type": "float",
-                    "minimum_value_warning": "-1",
-                    "maximum_value_warning": "1",
-                    "default_value": 0,
-                    "limit_to_extruder": "wall_0_extruder_nr",
-                    "settable_per_mesh": true
-                },
-               "z_seam_type":
+                "z_seam_type":
                 {
                     "label": "Z Seam Alignment",
                     "description": "Starting point of each path in a layer. When paths in consecutive layers start at the same point a vertical seam may show on the print. When aligning these near a user specified location, the seam is easiest to remove. When placed randomly the inaccuracies at the paths' start will be less noticeable. When taking the shortest path the print will be quicker.",
@@ -1974,7 +1969,6 @@
                     "default_value": 1,
                     "value": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "minimum_value": "0",
-                    "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                     "enabled": "top_layers > 0 or bottom_layers > 0",
                     "limit_to_extruder": "top_bottom_extruder_nr",
                     "settable_per_mesh": true,
@@ -1988,7 +1982,6 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
-                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2002,7 +1995,6 @@
                             "type": "float",
                             "default_value": 1,
                             "value": "skin_preshrink",
-                            "maximum_value_warning": "wall_line_width_0 + (wall_line_count - 1) * wall_line_width_x",
                             "minimum_value": "0",
                             "enabled": "top_layers > 0 or bottom_layers > 0",
                             "limit_to_extruder": "top_bottom_extruder_nr",
@@ -2091,7 +2083,7 @@
                     "minimum_value": "0",
                     "maximum_value": "machine_height",
                     "type": "float",
-                    "value": "0 if infill_sparse_density > 0 else 0",
+                    "value": "0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "enabled": "infill_sparse_density > 0",
                     "settable_per_mesh": true,
@@ -2440,7 +2432,7 @@
                 "material_flush_purge_speed":
                 {
                     "label": "Flush Purge Speed",
-                    "description": "How fast to prime the material after switching to a different material.",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
@@ -2448,23 +2440,23 @@
                 "material_flush_purge_length":
                 {
                     "label": "Flush Purge Length",
-                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material.",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 60,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_speed":
                 {
-                    "label": "End of Filament Purge Speed",
-                    "description": "How fast to prime the material after replacing an empty spool with a fresh spool of the same material.",
+                    "label": "End Of Filament Purge Speed",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 0.5,
                     "enabled": false
                 },
                 "material_end_of_filament_purge_length":
                 {
-                    "label": "End of Filament Purge Length",
-                    "description": "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material.",
+                    "label": "End Of Filament Purge Length",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 20,
                     "enabled": false
@@ -2472,7 +2464,7 @@
                 "material_maximum_park_duration":
                 {
                     "label": "Maximum Park Duration",
-                    "description": "How long the material can be kept out of dry storage safely.",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 300,
                     "enabled": false
@@ -2480,7 +2472,7 @@
                 "material_no_load_move_factor":
                 {
                     "label": "No Load Move Factor",
-                    "description": "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch.",
+                    "description": "Material Station internal value",
                     "type": "float",
                     "default_value": 0.940860215,
                     "enabled": false
@@ -3631,7 +3623,7 @@
                 "retraction_enable":
                 {
                     "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -4427,7 +4419,7 @@
                 "support_xy_distance_overhang":
                 {
                     "label": "Minimum Support X/Y Distance",
-                    "description": "Distance of the support structure from the overhang in the X/Y directions.",
+                    "description": "Distance of the support structure from the overhang in the X/Y directions. ",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -4603,7 +4595,7 @@
                             "type": "float",
                             "default_value": 1,
                             "minimum_value": "0",
-                            "minimum_value_warning": "support_top_distance + layer_height",
+                            "minimum_value_warning": "0.2 + layer_height",
                             "maximum_value_warning": "10",
                             "value": "extruderValue(support_roof_extruder_nr, 'support_interface_height')",
                             "limit_to_extruder": "support_roof_extruder_nr",
@@ -4619,7 +4611,7 @@
                             "default_value": 1,
                             "value": "extruderValue(support_bottom_extruder_nr, 'support_interface_height')",
                             "minimum_value": "0",
-                            "minimum_value_warning": "min(support_bottom_distance + layer_height, support_bottom_stair_step_height)",
+                            "minimum_value_warning": "min(0.2 + layer_height, support_bottom_stair_step_height)",
                             "maximum_value_warning": "10",
                             "limit_to_extruder": "support_bottom_extruder_nr",
                             "enabled": "support_bottom_enable and (support_enable or support_tree_enable)",
@@ -5871,7 +5863,7 @@
             "label": "Mesh Fixes",
             "type": "category",
             "icon": "category_fixes",
-            "description": "Make the meshes more suited for 3D printing.",
+            "description": "category_fixes",
             "children":
             {
                 "meshfix_union_all":
@@ -5984,7 +5976,7 @@
                     "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.025,
+                    "default_value": 0.05,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "0.3",
@@ -5997,13 +5989,13 @@
             "label": "Special Modes",
             "type": "category",
             "icon": "category_blackmagic",
-            "description": "Non-traditional ways to print your models.",
+            "description": "category_blackmagic",
             "children":
             {
                 "print_sequence":
                 {
                     "label": "Print Sequence",
-                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
+                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. ",
                     "type": "enum",
                     "options":
                     {
@@ -6170,7 +6162,7 @@
             "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
-            "description": "Features that haven't completely been fleshed out yet.",
+            "description": "experimental!",
             "children":
             {
                 "support_tree_enable":
