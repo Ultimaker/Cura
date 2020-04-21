@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Tronxy x5sa",
+    "name": "Tronxy X5SA",
     "inherits": "tronxy_base",
     "metadata": {
         "quality_definition": "tronxy_base",

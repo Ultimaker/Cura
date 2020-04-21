@@ -11,7 +11,7 @@
         "machine_name": { "default_value": "tronxy xy2 pro" },
         "machine_width": { "default_value": 255 },
         "machine_depth": { "default_value": 255 },
-        "machine_height": { "default_value": 250 },
+        "machine_height": { "default_value": 260 },
         "machine_head_with_fans_polygon": 
             { "default_value": [
                 [-50, 34],

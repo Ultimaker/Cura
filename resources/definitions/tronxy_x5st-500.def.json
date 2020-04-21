@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "Tronxy x5st-500",
+    "name": "Tronxy X5ST-500",
     "inherits": "tronxy_base",
     "metadata": {
         "quality_definition": "tronxy_base",
@@ -9,7 +9,7 @@
         "visible": true
     },
     "overrides": {
-        "machine_name": { "default_value": "tronxy x5st" },
+        "machine_name": { "default_value": "tronxy x5st-500" },
         "machine_width": { "default_value": 500 },
         "machine_depth": { "default_value": 500 },
         "machine_height": { "default_value": 600 },

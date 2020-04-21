@@ -8,7 +8,7 @@
         "visible": true
     },
     "overrides": {
-        "machine_name": { "default_value": "tronxy D01" },
+        "machine_name": { "default_value": "tronxy d01" },
         "machine_width": { "default_value": 220 },
         "machine_depth": { "default_value": 220 },
         "machine_height": { "default_value": 220 },
