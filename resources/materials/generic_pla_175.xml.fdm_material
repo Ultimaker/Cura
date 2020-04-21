@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Generic PLA 1.75mm profile. The data in this file may not be correct for your specific machine.
+-->
+<fdmmaterial xmlns="http://www.ultimaker.com/material" version="1.3">
+    <metadata>
+        <name>
+            <brand>Generic</brand>
+            <material>PLA</material>
+            <color>Generic</color>
+        </name>
+        <GUID>0ff92885-617b-4144-a03c-9989872454bc</GUID>
+        <version>7</version>
+        <color_code>#ffc924</color_code>
+        <description>Fast, safe and reliable printing. PLA is ideal for the fast and reliable printing of parts and prototypes with a great surface quality.</description>
+        <adhesion_info>Print on bare glass. Use tape for cold build plates.</adhesion_info>
+    </metadata>
+    <properties>
+        <density>1.24</density>
+        <diameter>1.75</diameter>
+    </properties>
+    <settings>
+        <setting key="print temperature">200</setting>
+        <setting key="heated bed temperature">60</setting>
+        <setting key="standby temperature">175</setting>
+        <setting key="adhesion tendency">0</setting>
+        <setting key="surface energy">100</setting>
+        <setting key="build volume temperature">28</setting>
+
+        <machine>
+            <machine_identifier manufacturer="Cartesio bv" product="cartesio" />
+            <setting key="print cooling">40.0</setting>
+            <setting key="standby temperature">160</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="heated bed temperature">43</setting>
+            <setting key="print temperature">190</setting>
+            <hotend id="0.25mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.4mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.0</setting>
+            </hotend>
+            <hotend id="0.8mm thermoplastic extruder">
+                <setting key="hardware compatible">yes</setting>
+                <setting key="retraction amount">1.5</setting>
+            </hotend>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Kati Hal ARGE" product="alya3dp" />
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">180</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">1.5</setting>
+            <setting key="print temperature">200</setting>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Kati Hal ARGE" product="alyanx3dp" />
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">180</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">1.5</setting>
+            <setting key="print temperature">200</setting>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="Kati Hal ARGE" product="kupido" />
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">180</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">0.8</setting>
+            <setting key="print temperature">200</setting>
+        </machine>
+
+        <machine>
+            <machine_identifier manufacturer="CreawsomeMod" product="creality_base" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10s" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10spro" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10s4" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10s5" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr10mini" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr20" />
+            <machine_identifier manufacturer="Creality3D" product="creality_cr20pro" />
+            <machine_identifier manufacturer="Creality3D" product="creality_ender2" />
+            <machine_identifier manufacturer="Creality3D" product="creality_ender3" />
+            <machine_identifier manufacturer="Creality3D" product="creality_ender4" />
+            <machine_identifier manufacturer="Creality3D" product="creality_ender5" />
+            <setting key="print cooling">100</setting>
+            <setting key="standby temperature">180</setting>
+            <setting key="retraction speed">45</setting>
+            <setting key="retraction amount">5</setting>
+            <setting key="print temperature">200</setting>
+            <setting key="heated bed temperature">50</setting>
+		</machine>
+		
+		<machine>
+			<machine_identifier manufacturer="Tronxy" product="tronxy_base" />
+			<machine_identifier manufacturer="Tronxy" product="tronxy_x5sa_330" />
+			<machine_identifier manufacturer="Tronxy" product="tronxy_x5sa_400" />
+			<machine_identifier manufacturer="Tronxy" product="tronxy_x5sa_500" />
+			<machine_identifier manufacturer="Tronxy" product="tronxy_d01" />
+			<machine_identifier manufacturer="Tronxy" product="tronxy_xy2" />
+            <setting key="print cooling">75</setting>
+            <setting key="standby temperature">180</setting>
+            <setting key="retraction speed">40</setting>
+            <setting key="retraction amount">5</setting>
+            <setting key="print temperature">190</setting>
+            <setting key="heated bed temperature">50</setting>
+        </machine>
+        <machine>
+            <machine_identifier manufacturer="IMADE3D" product="IMADE3D JellyBOX"/>
+
+            <setting key="print temperature">210</setting>
+            <setting key="heated bed temperature">55</setting>
+
+            <hotend id="0.4 mm" />
+        </machine>
+
+    </settings>
+</fdmmaterial>
