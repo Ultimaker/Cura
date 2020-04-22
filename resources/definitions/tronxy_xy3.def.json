@@ -9,7 +9,7 @@
         "platform": "tronxy.stl"
     },
     "overrides": {
-        "machine_name": { "default_value": "Tronxy XY-2" },
+        "machine_name": { "default_value": "Tronxy XY-3" },
         "machine_width": { "default_value": 310 },
         "machine_depth": { "default_value": 310 },
         "machine_height": { "default_value": 330 },
