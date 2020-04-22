@@ -1,12 +1,10 @@
 {
-    "id": "predator",
 	"version": 2,
     "name": "Anycubic Predator",
 	"inherits": "fdmprinter",
     "metadata": {
         "author": "ksihota",
         "manufacturer": "Anycubic",
-		"category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "predator_platform.obj",
 		"platform_texture": "predator_image.png",
@@ -36,7 +34,7 @@
 			"default_value": "M104 S0 ;extruder heater off \nM140 S0 ;heated bed heater off \nG91 ;relative positioning \nG92 E0 ;zero the extruded length \nG1 E-2 F300 ;retract the filament a bit before lifting the nozzle, to release some of the pressure \nG92 E0 ;zero the extruded length \n;M107 ;fan off \nG1 Z+0.5 E-5 ;move Z up a bit and retract filament even more \n;G1 X0.0 Y0.0 Z455.0 F4500 \nG28 ;Home all axes (max endstops) \nG90 ;absolute positioning \n;M109 S60 ; wait for extruder temp to drop to 60 \n;M84 ;steppers off \n;M81 ;turn off printer"
 		},
 		"gantry_height": {
-            "default_value": 455
+            "value": 455
         },
         "machine_width": { "default_value": 370 },
         "machine_depth": { "default_value": 370 },

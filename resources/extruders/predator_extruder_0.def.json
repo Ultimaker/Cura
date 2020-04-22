@@ -1,5 +1,4 @@
 {
-    "id": "predator_extruder_0",
     "version": 2,
     "name": "Extruder 0",
     "inherits": "fdmextruder",
