@@ -180,7 +180,10 @@ class CloudOutputDeviceManager:
                 message.setProgress((idx / len(new_devices)) * 100)
             CuraApplication.getInstance().processEvents()
             self._remote_clusters[device.getId()] = device
-            self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
+
+            # If there is no active machine, activate the first available cloud printer
+            activate = not CuraApplication.getInstance().getMachineManager().activeMachine
+            self._createMachineFromDiscoveredDevice(device.getId(), activate = activate)
 
         message.setProgress(None)
 
