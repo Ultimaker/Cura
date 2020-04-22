@@ -68,11 +68,9 @@ fragment =
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
 
-        if(u_renderError > 0.5)
-        {
-            vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
-            finalColor.a = dot(grid, grid) < 0.245 ? 0.667 : 1.0;
-        }
+        vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
+        finalColor.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
+
         gl_FragColor = finalColor;
     }
 
@@ -144,11 +142,8 @@ fragment41core =
         finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         frag_color = finalColor;
-        if(u_renderError > 0.5)
-        {
-            vec3 grid = f_vertex - round(f_vertex);
-            frag_color.a = dot(grid, grid) < 0.245 ? 0.667 : 1.0;
-        }
+        vec3 grid = f_vertex - round(f_vertex);
+        frag_color.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
     }
 
 [defaults]
