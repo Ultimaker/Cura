@@ -16,15 +16,6 @@ Column
     height: childrenRect.height
     anchors.centerIn: parent
 
-    Image
-    {
-        id: profileImage
-        fillMode: Image.PreserveAspectFit
-        source: "../../images/logobot.svg"
-        anchors.horizontalCenter: parent.horizontalCenter
-        width: Math.round(parent.width / 4)
-    }
-
     Label
     {
         id: welcomeTextLabel
