@@ -104,9 +104,9 @@ class CloudOutputDeviceManager:
         # found, the welcome screen will close. This way we avoid prompting the user to add printers if he/she already
         # has cloud printers
         welcome_pages_model = CuraApplication.getInstance().getWelcomePagesModel()
-        cloud_page_idx = welcome_pages_model.getPageIndexById("cloud")
-        if welcome_pages_model.currentPageIndex == cloud_page_idx and online_clusters:
-            CuraApplication.getWelcomePagesModel().atEnd()
+        cloud_page_idx = welcome_pages_model.getPageIndexById("cloud") + 1
+        if welcome_pages_model.currentPageIndex == cloud_page_idx and len(online_clusters) > 0:
+            welcome_pages_model.atEnd()
         for device_id, cluster_data in online_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
