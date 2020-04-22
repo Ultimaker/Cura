@@ -19,16 +19,16 @@
               [[-200, -197.5], [-200, -200], [200, -200], [200, -197.5]]
         ]},
         "machine_head_with_fans_polygon": { "default_value": [
-                [-26, 34],
-                [-26, -32],
-                [32, -32],
-                [32, 34]
+                [-48, 45],
+                [-48, -30],
+                [27, -30],
+                [27, 45]
             ]
         },
         "machine_start_gcode": {
             "default_value": "; X5SA Start Code\nG21\nG90\nM82\nM107 T0\nM140 S{material_bed_temperature}\nM104 S{material_print_temperature} T0\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG28\nG92 E0\nG1 Z2.0 F3000 ; Move Z Axis up little to preventscratching of Heat Bed\nG1 X1 Y20 Z0.3 F3600.0 ; Move to start position\nG1 X1 Y370.0 Z0.3 F1500.0 E25 ; Draw the first line\nG1 X1.6 Y370.0 Z0.3 F3600.0 ; Move to side a little\nG1 X1.6 Y20 Z0.3 F1500.0 E50 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F3600.0 ; Move over to prevent blob squish"
         },
 
-        "gantry_height": { "value": 25 }
+        "gantry_height": { "value": 40 }
     }
 }
