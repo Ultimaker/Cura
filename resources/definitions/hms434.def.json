@@ -23,6 +23,7 @@
  "leapfrog_abs_natural", "leapfrog_epla_natural","leapfrog_pva_natural",
  "octofiber_pla",
  "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla",
+ "redd_abs", "redd_asa", "redd_hips", "redd_nylon", "redd_petg", "redd_pla", "redd_tpe",
  "verbatim_bvoh_175",
  "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_PLA_Glitter", "Vertex_Delta_PLA_Mat", "Vertex_Delta_PLA_Satin", "Vertex_Delta_PLA_Wood", "Vertex_Delta_TPU",
  "tizyx_abs", "tizyx_flex", "tizyx_petg", "tizyx_pla", "tizyx_pla_bois", "tizyx_pva",
