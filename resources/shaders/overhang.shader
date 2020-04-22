@@ -70,7 +70,7 @@ fragment =
 
         if(u_renderError > 0.5)
         {
-            vec3 grid = vec3(f_vertex.x - round(f_vertex.x), f_vertex.y - round(f_vertex.y), f_vertex.z - round(f_vertex.z));
+            vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
             finalColor.a = dot(grid, grid) < 0.245 ? 0.667 : 1.0;
         }
         gl_FragColor = finalColor;
