@@ -25,6 +25,9 @@ class AddPrinterPagesModel(WelcomePagesModel):
                             "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
                             "should_show_function": self.shouldShowMachineActions,
                             })
+        self._pages.append({"id": "add_cloud_printers",
+                            "page_url": self._getBuiltinWelcomePagePath("AddCloudPrintersView.qml"),
+                            })
         self.setItems(self._pages)
 
 
