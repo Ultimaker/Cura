@@ -3,6 +3,6 @@
     "author": "fieldOfView, Ultimaker B.V.",
     "version": "1.0.1",
     "description": "Provides a way to change machine settings (such as build volume, nozzle size, etc.).",
-    "api": "7.1",
+    "api": "7.2.0",
     "i18n-catalog": "cura"
 }
