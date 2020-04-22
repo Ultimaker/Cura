@@ -236,23 +236,11 @@ _variant_translations_materials = {
     }
 } # type: Dict[str, Dict[str, str]]
 
+
 ##  Converts configuration from Cura 2.1's file formats to Cura 2.2's.
 #
 #   It converts the machine instances and profiles.
 class VersionUpgrade21to22(VersionUpgrade):
-    ##  Gets the version number from a config file.
-    #
-    #   In all config files that concern this version upgrade, the version
-    #   number is stored in general/version, so get the data from that key.
-    #
-    #   \param serialised The contents of a config file.
-    #   \return The version number of that config file.
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
 
     ##  Gets the fallback quality to use for a specific machine-variant-material
     #   combination.
