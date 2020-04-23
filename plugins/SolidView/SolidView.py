@@ -267,13 +267,23 @@ class SolidView(View):
                 Class that ducktypes to be a Numpy ndarray.
                 """
                 def __init__(self, qimage):
-                    self.__array_interface__ = {
-                        "shape": (qimage.height(), qimage.width()),
-                        "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
-                        "data": (int(qimage.bits()), False),
-                        "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
-                        "version": 3
-                    }
+                    bits_pointer = qimage.bits()
+                    if bits_pointer is None:  # If this happens before there is a window.
+                        self.__array_interface__ = {
+                            "shape": (0, 0),
+                            "typestr": "|u4",
+                            "data": (0, False),
+                            "strides": (1, 3),
+                            "version": 3
+                        }
+                    else:
+                        self.__array_interface__ = {
+                            "shape": (qimage.height(), qimage.width()),
+                            "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
+                            "data": (int(bits_pointer), False),
+                            "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
+                            "version": 3
+                        }
             array = np.asarray(QImageArrayView(xray_img)).view(np.dtype({
                 "r": (np.uint8, 0, "red"),
                 "g": (np.uint8, 1, "green"),
