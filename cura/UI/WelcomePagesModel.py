@@ -243,6 +243,10 @@ class WelcomePagesModel(ListModel):
                           {"id": "data_collections",
                            "page_url": self._getBuiltinWelcomePagePath("DataCollectionsContent.qml"),
                            },
+                          {"id": "cloud",
+                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
+                           "should_show_function": self.shouldShowCloudPage,
+                           },
                           {"id": "add_network_or_local_printer",
                            "page_url": self._getBuiltinWelcomePagePath("AddNetworkOrLocalPrinterContent.qml"),
                            "next_page_id": "machine_actions",
@@ -253,11 +257,7 @@ class WelcomePagesModel(ListModel):
                            },
                           {"id": "machine_actions",
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
-                           "next_page_id": "cloud",
                            "should_show_function": self.shouldShowMachineActions,
-                           },
-                          {"id": "cloud",
-                           "page_url": self._getBuiltinWelcomePagePath("CloudContent.qml"),
                            },
                           ]
 
@@ -286,6 +286,17 @@ class WelcomePagesModel(ListModel):
         definition_id = global_stack.definition.getId()
         first_start_actions = self._application.getMachineActionManager().getFirstStartActions(definition_id)
         return len([action for action in first_start_actions if action.needsUserInteraction()]) > 0
+
+    def shouldShowCloudPage(self) -> bool:
+        """
+        The cloud page should be shown only if the user is not logged in
+
+        :return: True if the user is not logged in, False if he/she is
+        """
+        # Import CuraApplication locally or else it fails
+        from cura.CuraApplication import CuraApplication
+        api = CuraApplication.getInstance().getCuraAPI()
+        return not api.account.isLoggedIn
 
     def addPage(self) -> None:
         pass
