@@ -142,6 +142,10 @@ Item
                 // Create a network printer
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
                 CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
+
+                // If we have created a machine, end the wizard (since this is the last page)
+                base.endWizard()
+
             }
             else
             {
