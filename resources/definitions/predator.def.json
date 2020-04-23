@@ -7,7 +7,7 @@
         "manufacturer": "Anycubic",
         "file_formats": "text/x-gcode",
         "platform": "predator_platform.stl",
-		"platform_texture": "predator_image.png",
+		"platform_texture": "anycubic_predator.png",
         "supports_usb_connection": true,
         "visible": true,
 		"platform_offset": [0, 0, 0],
