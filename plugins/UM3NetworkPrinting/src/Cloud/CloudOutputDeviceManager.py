@@ -137,6 +137,8 @@ class CloudOutputDeviceManager:
             if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
                     and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
                 new_devices.append(device)
+            elif device.getId() not in self._remote_clusters:
+                self._remote_clusters[device.getId()] = device
 
         if not new_devices:
             return

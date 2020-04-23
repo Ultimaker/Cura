@@ -52,7 +52,6 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
         super().__init__(device_id=device_id, address=address, properties=properties, connection_type=connection_type,
                          parent=parent)
-
         # Trigger the printersChanged signal when the private signal is triggered.
         self.printersChanged.connect(self._clusterPrintersChanged)
 
