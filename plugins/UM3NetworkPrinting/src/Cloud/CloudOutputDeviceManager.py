@@ -128,6 +128,7 @@ class CloudOutputDeviceManager:
         Shows a Message informing the user of progress.
         """
         new_devices = []
+        remote_clusters_added = False
         for cluster_data in clusters:
             device = CloudOutputDevice(self._api, cluster_data)
             # Create a machine if we don't already have it. Do not make it the active machine.
@@ -139,8 +140,11 @@ class CloudOutputDeviceManager:
                 new_devices.append(device)
             elif device.getId() not in self._remote_clusters:
                 self._remote_clusters[device.getId()] = device
+                remote_clusters_added = True
 
         if not new_devices:
+            if remote_clusters_added:
+                self._connectToActiveMachine()
             return
 
         new_devices.sort(key = lambda x: x.name.lower())
