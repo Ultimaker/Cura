@@ -15,14 +15,18 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property bool isLoggedIn: Cura.API.account.isLoggedIn
+    property bool newCloudPrintersDetected: Cura.API.account.newCloudPrintersDetected
 
-    onIsLoggedInChanged:
+    onNewCloudPrintersDetectedChanged:
     {
-        if(isLoggedIn)
+        // When the user signs in successfully, it will be checked whether he/she has cloud printers connected to
+        // the account. If he/she does, then the welcome wizard can close. If not, then proceed to the next page (if any)
+        if(newCloudPrintersDetected)
         {
-            // If the user created an account or logged in by pressing any button on this page, all the actions that
-            // need / can be done by this page are completed, so we can just go to the next (if any).
+            base.endWizard()
+        }
+        else
+        {
             base.showNextPage()
         }
     }
