@@ -102,8 +102,6 @@ class CloudOutputDeviceManager:
         for device_id, cluster_data in online_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
-            else:
-                self._onDiscoveredDeviceUpdated(cluster_data)
 
         self._onDevicesDiscovered(new_clusters)
 
@@ -197,17 +195,6 @@ class CloudOutputDeviceManager:
             device_names
         )
         message.setText(message_text)
-
-    def _onDiscoveredDeviceUpdated(self, cluster_data: CloudClusterResponse) -> None:
-        device = self._remote_clusters.get(cluster_data.cluster_id)
-        if not device:
-            return
-        CuraApplication.getInstance().getDiscoveredPrintersModel().updateDiscoveredPrinter(
-            ip_address=device.key,
-            name=cluster_data.friendly_name,
-            machine_type=device.printerType
-        )
-        self.discoveredDevicesChanged.emit()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
