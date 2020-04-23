@@ -99,13 +99,16 @@ class CloudOutputDeviceManager:
 
         new_clusters = []
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
+
         for device_id, cluster_data in online_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
-            else:
-                self._onDiscoveredDeviceUpdated(cluster_data)
 
         self._onDevicesDiscovered(new_clusters)
+
+        # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
+        self._account._new_cloud_printers_detected = len(new_clusters) > 0
+        self._account.cloudPrintersDetectedChanged.emit(len(new_clusters) > 0)
 
         removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
         for device_id in removed_device_keys:
@@ -128,6 +131,7 @@ class CloudOutputDeviceManager:
         Shows a Message informing the user of progress.
         """
         new_devices = []
+        remote_clusters_added = False
         for cluster_data in clusters:
             device = CloudOutputDevice(self._api, cluster_data)
             # Create a machine if we don't already have it. Do not make it the active machine.
@@ -137,8 +141,13 @@ class CloudOutputDeviceManager:
             if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
                     and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
                 new_devices.append(device)
+            elif device.getId() not in self._remote_clusters:
+                self._remote_clusters[device.getId()] = device
+                remote_clusters_added = True
 
         if not new_devices:
+            if remote_clusters_added:
+                self._connectToActiveMachine()
             return
 
         new_devices.sort(key = lambda x: x.name.lower())
@@ -172,7 +181,10 @@ class CloudOutputDeviceManager:
                 message.setProgress((idx / len(new_devices)) * 100)
             CuraApplication.getInstance().processEvents()
             self._remote_clusters[device.getId()] = device
-            self._createMachineFromDiscoveredDevice(device.getId(), activate = False)
+
+            # If there is no active machine, activate the first available cloud printer
+            activate = not CuraApplication.getInstance().getMachineManager().activeMachine
+            self._createMachineFromDiscoveredDevice(device.getId(), activate = activate)
 
         message.setProgress(None)
 
@@ -191,17 +203,6 @@ class CloudOutputDeviceManager:
             device_names
         )
         message.setText(message_text)
-
-    def _onDiscoveredDeviceUpdated(self, cluster_data: CloudClusterResponse) -> None:
-        device = self._remote_clusters.get(cluster_data.cluster_id)
-        if not device:
-            return
-        CuraApplication.getInstance().getDiscoveredPrintersModel().updateDiscoveredPrinter(
-            ip_address=device.key,
-            name=cluster_data.friendly_name,
-            machine_type=device.printerType
-        )
-        self.discoveredDevicesChanged.emit()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
