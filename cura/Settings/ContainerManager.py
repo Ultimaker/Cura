@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -206,8 +206,11 @@ class ContainerManager(QObject):
         if contents is None:
             return {"status": "error", "message": "Serialization returned None. Unable to write to file"}
 
-        with SaveFile(file_url, "w") as f:
-            f.write(contents)
+        try:
+            with SaveFile(file_url, "w") as f:
+                f.write(contents)
+        except OSError:
+            return {"status": "error", "message": "Unable to write to this location.", "path": file_url}
 
         return {"status": "success", "message": "Successfully exported container", "path": file_url}
 

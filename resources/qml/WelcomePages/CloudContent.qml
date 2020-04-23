@@ -15,14 +15,18 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property bool isLoggedIn: Cura.API.account.isLoggedIn
+    property bool newCloudPrintersDetected: Cura.API.account.newCloudPrintersDetected
 
-    onIsLoggedInChanged:
+    onNewCloudPrintersDetectedChanged:
     {
-        if(isLoggedIn)
+        // When the user signs in successfully, it will be checked whether he/she has cloud printers connected to
+        // the account. If he/she does, then the welcome wizard can close. If not, then proceed to the next page (if any)
+        if(newCloudPrintersDetected)
         {
-            // If the user created an account or logged in by pressing any button on this page, all the actions that
-            // need / can be done by this page are completed, so we can just go to the next (if any).
+            base.endWizard()
+        }
+        else
+        {
             base.showNextPage()
         }
     }
@@ -46,7 +50,7 @@ Item
         anchors
         {
             top: titleLabel.bottom
-            bottom: finishButton.top
+            bottom: skipButton.top
             left: parent.left
             right: parent.right
             topMargin: UM.Theme.getSize("default_margin").height
@@ -107,35 +111,47 @@ Item
                 color: UM.Theme.getColor("text")
                 renderType: Text.NativeRendering
             }
+
+            // "Sign in" and "Create an account" exist inside the column
+            Cura.PrimaryButton
+            {
+                id: signInButton
+                height: createAccountButton.height
+                width: createAccountButton.width
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: catalog.i18nc("@button", "Sign in")
+                onClicked: Cura.API.account.login()
+                // Content Item is used in order to align the text inside the button. Without it, when resizing the
+                // button, the text will be aligned on the left
+                contentItem: Text {
+                    text: signInButton.text
+                    font: UM.Theme.getFont("medium")
+                    color: UM.Theme.getColor("primary_text")
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+            }
+
+            Cura.SecondaryButton
+            {
+                id: createAccountButton
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: catalog.i18nc("@button","Create account")
+                onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
+            }
         }
+
+
     }
 
-    // Bottom buttons go here
-    Cura.PrimaryButton
-    {
-        id: finishButton
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        text: catalog.i18nc("@button", "Finish")
-        onClicked: base.showNextPage()
-    }
-
-    Cura.SecondaryButton
-    {
-        id: createAccountButton
-        anchors.left: parent.left
-        anchors.verticalCenter: finishButton.verticalCenter
-        text: catalog.i18nc("@button", "Create an account")
-        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl + "/app/create")
-    }
-
+    // The "Skip" button exists on the bottom right
     Label
     {
-        id: signInButton
-        anchors.left: createAccountButton.right
-        anchors.verticalCenter: finishButton.verticalCenter
+        id: skipButton
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
         anchors.leftMargin: UM.Theme.getSize("default_margin").width
-        text: catalog.i18nc("@button", "Sign in")
+        text: catalog.i18nc("@button", "Skip")
         color: UM.Theme.getColor("secondary_button_text")
         font: UM.Theme.getFont("medium")
         renderType: Text.NativeRendering
@@ -144,7 +160,7 @@ Item
         {
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: Cura.API.account.login()
+            onClicked: base.showNextPage()
             onEntered: parent.font.underline = true
             onExited: parent.font.underline = false
         }
