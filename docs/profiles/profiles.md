@@ -6,6 +6,7 @@ Index
 ----
 The following pages describe the profile and setting system of Cura:
 * [Container Stacks](container_stacks.md): Which profiles can be swapped out and how they are ordered when evaluating a setting.
+* [Setting Properties](setting_properties.md): What properties can each setting have?
 
 Glossary
 ----
@@ -25,3 +26,4 @@ The terminology for these profiles is not always obvious. Here is a glossary of 
 * **Variant profile:** A profile containing some overrides that allow the user to select variants of the definition. As of this writing this is only used for the nozzles.
 * **Quality level:** A measure of quality where the user can select from, for instance "normal", "fast", "high". When selecting a quality level, Cura will select a matching quality profile for each extruder.
 * **Quality type:** Alternative name for *quality level*. This name is used in the code more often, but this documentation prefers the term "quality level".
+* **Inheritance function:** A function through which the `value` of a setting is calculated. This may depend on other settings.
