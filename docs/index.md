@@ -13,3 +13,8 @@ There are some caveats though. These are *not* within the scope of this document
 * The slicing process is not documented here. Refer to CuraEngine for that.
 
 This documentation will touch on the inner workings of Uranium as well though, due to the nature of the architecture.
+
+Index
+----
+The following chapters are available in this documentation:
+* [Repositories](repositories.md)
