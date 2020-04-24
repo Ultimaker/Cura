@@ -17,4 +17,5 @@ This documentation will touch on the inner workings of Uranium as well though, d
 Index
 ----
 The following chapters are available in this documentation:
-* [Repositories](repositories.md)
+* [Repositories](repositories.md): An overview of the repositories that together make up the Cura application.
+* [Profiles](profiles/profiles.md): About the profile system of Cura.
