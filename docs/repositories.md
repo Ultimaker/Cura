@@ -13,3 +13,9 @@ There are also a number of repositories under our control that are not integral 
 * To make the build system a bit simpler, some parts are pre-compiled in [cura-binary-data](https://github.com/Ultimaker/cura-binary-data). This holds things like the machine-readable translation files and the Marlin builds for firmware updates, which would require considerable tooling to build automatically.
 * There are automated GUI tests in [Cura-squish-tests](https://github.com/Ultimaker/Cura-squish-tests).
 * Material profiles are stored in [fdm_materials](https://github.com/Ultimaker/fdm_materials). This is separated out and combined in our build process, so that the firmware for Ultimaker's printers can use the same set of profiles too.
+
+Interplay
+----
+At a very high level, Cura's repositories interconnect as follows:
+
+![Overview of interplay between repositories](resources/repositories.svg)
