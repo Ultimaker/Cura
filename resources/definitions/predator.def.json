@@ -25,7 +25,7 @@
     },
 
     "overrides": {
-........"machine_start_gcode":
+        "machine_start_gcode":
         {
             "default_value": "G21 ;metric values \nG90 ;absolute positioning \nM82 ;set extruder to absolute mode \nM107 ;start with the fan off \nG28 ;Home \nG1 Z15.0 F1000;short move \nG92 E0 ;zero the extruded length \nG1 F200 E3 ;extrude 3mm of feed stock adjust so I don't have to remove any filament \nG92 E0 ;zero the extruded length again \nG1 F4000 ;move to bed \n;Put printing message on LCD screen \nM117 Printing... \n;G5; this is in order to resume on Power failure (only works on SD prints)"
         },
