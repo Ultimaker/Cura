@@ -18,4 +18,4 @@ Index
 ----
 The following chapters are available in this documentation:
 * [Repositories](repositories.md): An overview of the repositories that together make up the Cura application.
-* [Profiles](profiles/profiles.md): About the profile system of Cura.
+* [Profiles](profiles/profiles.md): About the setting and profile system of Cura.
