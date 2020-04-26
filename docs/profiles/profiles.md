@@ -7,6 +7,7 @@ Index
 The following pages describe the profile and setting system of Cura:
 * [Container Stacks](container_stacks.md): Which profiles can be swapped out and how they are ordered when evaluating a setting.
 * [Setting Properties](setting_properties.md): What properties can each setting have?
+* [Getting a Setting Value](getting_a_setting_value.md): How Cura arrives at a value for a certain setting.
 
 Glossary
 ----
