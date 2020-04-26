@@ -27,3 +27,9 @@ If a setting is evaluated from a particular extruder stack, it normally gets eva
 If the `limit_to_extruder` property evaluates to a positive number, instead of getting the setting from the object's extruder it will be obtained from the extruder written in the `limit_to_extruder` property. So even if an object is set to be printed with extruder 0, if the infill extruder is set to extruder 1 any infill setting will be obtained from extruder 1. If `limit_to_extruder` is negative (in particular -1, which is the default), then the setting will be obtained from the object's own extruder.
 
 This property is communicated to CuraEngine separately. CuraEngine makes sure that the setting is evaluated from the correct extruder. Refer to the [CuraEngine](#CuraEngine) chapter to see how this works.
+
+Evaluating a Stack
+----
+After the resolve and limit to extruder properties have been checked, the setting value needs to be evaluated from an extruder stack.
+
+This is explained in more detail in the [Container Stacks](container_stacks.md) documentation. In brief, Cura will check the highest container in the extruder stack first to see whether that container overrides the setting. If it does, it returns that as the setting value. Otherwise, it checks the second container on the stack to see if that one overrides it. If it does it returns that value, and otherwise it checks the third container, and so on. If a setting is not overridden by any container in the extruder stack, it continues downward in the global stack. If it is also not overridden there, it eventually arrives at the definition in the bottom of the global stack, where all settings must have a value.
