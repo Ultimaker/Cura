@@ -42,6 +42,21 @@ Definition containers have an inheritance structure. For instance, the `ultimake
 
 But even in `fdmprinter`, not all settings have a `value` property. It is not a required property. If the setting doesn't have a `value` property, the `default_value` property is returned, which is a required property. The distinction between `value` and `default_value` is made in order to allow CuraEngine to load a definition file as well when running from the command line (a debugging technique for CuraEngine). It then won't have all of the correct setting values but it at least doesn't need to evaluate all of the Python expressions and you'll be able to make some debugging slices.
 
+Evaluating a Value Property
+----
+The `value` property may contain a formula, which is an arbitrary Python expression that will be executed by Cura to arrive at a setting value. All containers may set the `value` property. Instance containers can only set the `value`, while definitions can set all properties.
+
+While the value could be any sort of formula, some functions of Python are restricted for security reasons. Since Cura 4.6, profiles are no longer a "trusted" resource and are therefore subject to heavy restrictions. It can use Python's built in mathematical functions and list functions as well as a few basic other ones, but things like writing to a file are prohibited.
+
+There are also a few extra things that can be used in these expressions:
+* Any setting key can be used as a variable that contains the setting's value.
+* As explained before, `extruderValues(key)` is a function that returns a list of setting values for a particular setting for all used extruders.
+* The function `extruderValue(extruder, key)` will evaluate a particular setting for a particular extruder.
+* The function `resolveOrValue(key)` will perform the full setting evaluation as described in this document for the current context (so if this setting is being evaluated for the second extruder it would perform it as if coming from the second extruder).
+* The function `defaultExtruderPosition()` will get the first extruder that is not disabled. For instance, if a printer has three extruders but the first is disabled, this would return `1` to indicate the second extruder (0-indexed).
+* The function `valueFromContainer(key, index)` will get a setting value from the global stack, but skip the first few containers in that stack. It will skip until it reaches a particular index in the container stack.
+* The function `valueFromExtruderContainer(key, index)` will get a setting value from the current extruder stack, but skip the first few containers in that stack. It will skip until it reaches a particular index in the container stack.
+
 CuraEngine
 ----
 When starting a slice, Cura will send the scene to CuraEngine and with each model send over the per-object settings that belong to it. It also sends all setting values over, as evaluated from each extruder and from the global stack, and sends the `limit_to_extruder` property along as well. CuraEngine stores this and then starts its slicing process. CuraEngine also has a hierarchical structure for its settings with fallbacks. This is explained in detail in [the documentation of CuraEngine](https://github.com/Ultimaker/CuraEngine/blob/master/docs/settings.md) and shortly again here.
