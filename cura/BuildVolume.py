@@ -885,7 +885,7 @@ class BuildVolume(SceneNode):
         
         It computes different disallowed areas depending on the offset of the extruder. The resulting dictionary will
          therefore have an entry for each extruder that is used.
-        
+
         :param border_size: The size with which to offset the disallowed areas due to skirt, brim, travel avoid distance
          , etc.
         :param used_extruders: The extruder stacks to generate disallowed areas for.
@@ -1117,8 +1117,8 @@ class BuildVolume(SceneNode):
     def getEdgeDisallowedSize(self):
         """Calculate the disallowed radius around the edge.
         
-        This disallowed radius is to allow for space around the models that is not part of the collision radius, such as
-         bed adhesion (skirt/brim/raft) and travel avoid distance.
+        This disallowed radius is to allow for space around the models that is not part of the collision radius,
+        such as bed adhesion (skirt/brim/raft) and travel avoid distance.
         """
 
         if not self._global_container_stack or not self._global_container_stack.extruderList:

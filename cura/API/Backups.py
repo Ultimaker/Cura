@@ -20,7 +20,7 @@ class Backups:
        from cura.API import CuraAPI
        api = CuraAPI()
        api.backups.createBackup()
-       api.backups.restoreBackup(my_zip_file, {"cura_release": "3.1"})``
+       api.backups.restoreBackup(my_zip_file, {"cura_release": "3.1"})
     """
 
     def __init__(self, application: "CuraApplication") -> None:

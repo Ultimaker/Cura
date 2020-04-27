@@ -440,8 +440,7 @@ class CuraApplication(QtApplication):
 
     def __setLatestResouceVersionsForVersionUpgrade(self):
         """Initializes the version upgrade manager with by providing the paths for each resource type and the latest
-        versions.
-        """
+        versions. """
 
         self._version_upgrade_manager.setCurrentVersions(
             {
@@ -645,7 +644,7 @@ class CuraApplication(QtApplication):
 
     showMessageBox = pyqtSignal(str,str, str, str, int, int,
                                 arguments = ["title", "text", "informativeText", "detailedText","buttons", "icon"])
-    """ A reusable dialogbox"""
+    """A reusable dialogbox"""
 
     def messageBox(self, title, text,
                    informativeText = "",
@@ -1873,7 +1872,7 @@ class CuraApplication(QtApplication):
 
     @pyqtSlot(str, result=bool)
     def checkIsValidProjectFile(self, file_url):
-        """ Checks if the given file URL is a valid project file. """
+        """Checks if the given file URL is a valid project file. """
 
         file_path = QUrl(file_url).toLocalFile()
         workspace_reader = self.getWorkspaceFileHandler().getReaderForFile(file_path)

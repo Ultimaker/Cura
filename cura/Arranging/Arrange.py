@@ -99,7 +99,7 @@ class Arrange:
         self._last_priority = 0
 
     def findNodePlacement(self, node: SceneNode, offset_shape_arr: ShapeArray, hull_shape_arr: ShapeArray, step = 1) -> bool:
-        """ Find placement for a node (using offset shape) and place it (using hull shape)
+        """Find placement for a node (using offset shape) and place it (using hull shape)
 
         :param node: The node to be placed
         :param offset_shape_arr: shape array with offset, for placing the shape
@@ -134,7 +134,7 @@ class Arrange:
         return found_spot
 
     def centerFirst(self):
-        """ Fill priority, center is best. Lower value is better. """
+        """Fill priority, center is best. Lower value is better. """
 
         # Square distance: creates a more round shape
         self._priority = numpy.fromfunction(
@@ -143,7 +143,7 @@ class Arrange:
         self._priority_unique_values.sort()
 
     def backFirst(self):
-        """ Fill priority, back is best. Lower value is better """
+        """Fill priority, back is best. Lower value is better """
 
         self._priority = numpy.fromfunction(
             lambda j, i: 10 * j + abs(self._offset_x - i), self._shape, dtype=numpy.int32)
@@ -151,7 +151,7 @@ class Arrange:
         self._priority_unique_values.sort()
 
     def checkShape(self, x, y, shape_arr) -> Optional[numpy.ndarray]:
-        """ Return the amount of "penalty points" for polygon, which is the sum of priority
+        """Return the amount of "penalty points" for polygon, which is the sum of priority
 
         :param x: x-coordinate to check shape
         :param y: y-coordinate to check shape
@@ -183,7 +183,7 @@ class Arrange:
         return numpy.sum(prio_slice[numpy.where(shape_arr.arr == 1)])
 
     def bestSpot(self, shape_arr, start_prio = 0, step = 1) -> LocationSuggestion:
-        """ Find "best" spot for ShapeArray
+        """Find "best" spot for ShapeArray
 
         :param shape_arr: shape array
         :param start_prio: Start with this priority value (and skip the ones before)
@@ -213,7 +213,7 @@ class Arrange:
         return LocationSuggestion(x = None, y = None, penalty_points = None, priority = priority)  # No suitable location found :-(
 
     def place(self, x, y, shape_arr, update_empty = True):
-        """ Place the object.
+        """Place the object.
 
         Marks the locations in self._occupied and self._priority
 

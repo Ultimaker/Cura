@@ -26,7 +26,7 @@ class Settings:
        "actions": my_menu_actions,
        "menu_item": MyPluginAction(self)
        }
-       api.interface.settings.addContextMenuItem(data)``
+       api.interface.settings.addContextMenuItem(data)
     """
 
     def __init__(self, application: "CuraApplication") -> None:

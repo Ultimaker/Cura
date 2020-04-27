@@ -46,8 +46,8 @@ class LayerDataBuilder(MeshBuilder):
     def build(self, material_color_map, line_type_brightness = 1.0):
         """Return the layer data as :py:class:`cura.LayerData.LayerData`.
         
-        :param material_color_map:: [r, g, b, a] for each extruder row.
-        :param line_type_brightness:: compatibility layer view uses line type brightness of 0.5
+        :param material_color_map: [r, g, b, a] for each extruder row.
+        :param line_type_brightness: compatibility layer view uses line type brightness of 0.5
         """
 
         vertex_count = 0

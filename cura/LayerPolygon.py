@@ -91,15 +91,15 @@ class LayerPolygon:
         
         The arrays are either by vertex or by indices.
         
-        :param vertex_offset: : determines where to start and end filling the arrays
-        :param index_offset: : determines where to start and end filling the arrays
-        :param vertices: : vertex numpy array to be filled
-        :param colors: : vertex numpy array to be filled
-        :param line_dimensions: : vertex numpy array to be filled
-        :param feedrates: : vertex numpy array to be filled
-        :param extruders: : vertex numpy array to be filled
-        :param line_types: : vertex numpy array to be filled
-        :param indices: : index numpy array to be filled
+        :param vertex_offset: determines where to start and end filling the arrays
+        :param index_offset: determines where to start and end filling the arrays
+        :param vertices: vertex numpy array to be filled
+        :param colors: vertex numpy array to be filled
+        :param line_dimensions: vertex numpy array to be filled
+        :param feedrates: vertex numpy array to be filled
+        :param extruders: vertex numpy array to be filled
+        :param line_types: vertex numpy array to be filled
+        :param indices: index numpy array to be filled
         """
 
         if self._build_cache_line_mesh_mask is None or self._build_cache_needed_points is None:

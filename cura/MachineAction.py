@@ -74,7 +74,7 @@ class MachineAction(QObject, PluginObject):
     def _reset(self) -> None:
         """Protected implementation of reset.
         
-        :py:meth:`cura.MachineAction.MachineAction.reset`
+        See also :py:meth:`cura.MachineAction.MachineAction.reset`
         """
 
         pass

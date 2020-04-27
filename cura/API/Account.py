@@ -27,7 +27,7 @@ class Account(QObject):
       api = CuraAPI()
       api.account.login()
       api.account.logout()
-      api.account.userProfile    Who is logged in``
+      api.account.userProfile    # Who is logged in
     """
 
     loginStateChanged = pyqtSignal(bool)
