@@ -5,8 +5,7 @@
     "metadata": { 
 		"visible": true,
         "author": "Fred Chan",
-        "manufacturer": "TinyBoy / mago",
-        "category": "tinyboy",		
+        "manufacturer": "TinyBoy",
         "file_formats": "text/x-gcode",
 		"has_materials": false,
         "has_machine_quality": true,
