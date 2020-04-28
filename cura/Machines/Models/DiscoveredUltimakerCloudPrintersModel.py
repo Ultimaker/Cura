@@ -1,6 +1,6 @@
 from typing import Optional, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSlot, Qt
+from PyQt5.QtCore import QObject, pyqtSlot, Qt, pyqtSignal, pyqtProperty
 
 from UM.Qt.ListModel import ListModel
 
@@ -14,6 +14,8 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
     DeviceTypeRole = Qt.UserRole + 3
     DeviceFirmwareVersionRole = Qt.UserRole + 4
 
+    cloudPrintersDetectedChanged = pyqtSignal()
+
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
@@ -23,6 +25,7 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self.addRoleName(self.DeviceFirmwareVersionRole, "firmware_version")
 
         self._discovered_ultimaker_cloud_printers_list = []
+        self._new_cloud_printers_detected = False
         self._application = application
 
     def addDiscoveredUltimakerCloudPrinters(self, new_devices) -> None:
@@ -35,10 +38,16 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
             })
         self._update()
 
+        # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
+        self._new_cloud_printers_detected = len(new_devices) > 0
+        self.cloudPrintersDetectedChanged.emit()
+
     @pyqtSlot()
     def clear(self):
         self._discovered_ultimaker_cloud_printers_list = []
         self._update()
+        self._new_cloud_printers_detected = False
+        self.cloudPrintersDetectedChanged.emit()
 
     def _update(self):
         items = []
@@ -51,3 +60,7 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
 
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
+
+    @pyqtProperty(bool, notify = cloudPrintersDetectedChanged)
+    def newCloudPrintersDetected(self) -> bool:
+        return self._new_cloud_printers_detected

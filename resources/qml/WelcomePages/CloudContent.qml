@@ -15,7 +15,7 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property bool newCloudPrintersDetected: Cura.API.account.newCloudPrintersDetected
+    property bool newCloudPrintersDetected: CuraApplication.getDiscoveredUltimakerCloudPrintersModel().newCloudPrintersDetected
 
     onNewCloudPrintersDetectedChanged:
     {

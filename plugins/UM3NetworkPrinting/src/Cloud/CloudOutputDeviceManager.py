@@ -106,10 +106,6 @@ class CloudOutputDeviceManager:
 
         self._onDevicesDiscovered(new_clusters)
 
-        # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
-        self._account._new_cloud_printers_detected = len(new_clusters) > 0
-        self._account.cloudPrintersDetectedChanged.emit(len(new_clusters) > 0)
-
         removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
         for device_id in removed_device_keys:
             self._onDiscoveredDeviceRemoved(device_id)
