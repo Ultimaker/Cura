@@ -9,8 +9,8 @@
         "file_formats": "text/x-gcode",
         "first_start_actions": ["MachineSettingsAction"],
         "machine_extruder_trains": {
-            "0": "uni_extruder_1",
-            "1": "uni_extruder_2"
+            "0": "uni_extruder_1st",
+            "1": "uni_extruder_2nd"
         },
         "has_materials": true,
         "preferred_material": "generic_abs_175",
