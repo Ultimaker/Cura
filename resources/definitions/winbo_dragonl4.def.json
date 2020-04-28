@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Winbo",
         "manufacturer": "Winbo Smart Tech Co., Ltd.",
-        "category": "Other",
         "visible": true,
         "file_formats": "text/x-gcode",
         "supports_usb_connection": false,

@@ -5,7 +5,6 @@
     "metadata": {
         "author": "MPMD Facebook Group",
         "manufacturer": "Monoprice",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "mp_mini_delta_platform.stl",    
         "supports_usb_connection": true,

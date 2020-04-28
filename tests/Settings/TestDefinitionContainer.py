@@ -45,6 +45,18 @@ def test_definitionIds(file_path):
     definition_id = os.path.basename(file_path).split(".")[0]
     assert " " not in definition_id  # Definition IDs are not allowed to have spaces.
 
+@pytest.mark.parametrize("file_path", definition_filepaths)
+def test_noCategory(file_path):
+    """
+    Categories for definition files have been deprecated. Test that they are not
+    present.
+    :param file_path: The path of the machine definition to test.
+    """
+    with open(file_path, encoding = "utf-8") as f:
+        json = f.read()
+        metadata = DefinitionContainer.deserializeMetadata(json, "test_container_id")
+        assert "category" not in metadata[0]
+
 ##  Tests all definition containers
 @pytest.mark.parametrize("file_path", machine_filepaths)
 def test_validateMachineDefinitionContainer(file_path, definition_container):
@@ -58,7 +70,6 @@ def test_validateMachineDefinitionContainer(file_path, definition_container):
     mocked_vum.updateFilesData = lambda ct, v, fdl, fnl: FilesDataUpdateResult(ct, v, fdl, fnl)
     with patch("UM.VersionUpgradeManager.VersionUpgradeManager.getInstance", MagicMock(return_value = mocked_vum)):
         assertIsDefinitionValid(definition_container, file_path)
-
 
 def assertIsDefinitionValid(definition_container, file_path):
     with open(file_path, encoding = "utf-8") as data:
