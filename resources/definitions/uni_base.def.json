@@ -195,7 +195,7 @@
         "travel_avoid_other_parts":          {"value": "False"},
         "cool_min_layer_time_fan_speed_max": {"value": "20"},
         "cool_fan_full_at_height":           {"value": "layer_height*2"},
-        "cool_min_layer_time":               {"value": "15"},
+        "cool_min_layer_time":               {"value": "5"},
         "cool_min_speed":                    {"value": "15"},
         "cool_lift_head":                    {"value": "True"},
         "support_enable":                    {"value": "True"},
