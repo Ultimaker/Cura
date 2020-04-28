@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Ultimaker",
         "manufacturer": "Ultimaker B.V.",
-        "category": "Ultimaker",
         "visible": true,
         "file_formats": "application/x-ufp;text/x-gcode",
         "platform": "ultimaker_s3_platform.obj",

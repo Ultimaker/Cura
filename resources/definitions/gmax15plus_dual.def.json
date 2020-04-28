@@ -6,7 +6,6 @@
         "visible": true,
         "author": "GTL_180109",
         "manufacturer": "gCreate",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "gmax_1-5_xt-plus_s3d_full model_150707.stl",
         "has_variants": true,

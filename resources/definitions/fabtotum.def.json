@@ -6,7 +6,6 @@
         "visible": true,
         "author": "FABtotum",
         "manufacturer": "FABtotum",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "fabtotum_platform.stl",
         "has_machine_quality": true,

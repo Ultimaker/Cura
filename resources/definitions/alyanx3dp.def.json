@@ -7,7 +7,6 @@
         "visible": true,
         "author": "ALYA",
         "manufacturer": "Kati Hal ARGE",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "alya_nx_platform.stl",
         "platform_offset": [-104, 0, 93 ],

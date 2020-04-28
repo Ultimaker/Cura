@@ -6,7 +6,6 @@
     {
         "visible": true,
         "author": "Alexander Rössler",
-        "category": "Other",
         "manufacturer": "TheCoolTool",
         "file_formats": "text/x-ngc;text/x-gcode",
         "platform": "uni_print_3d_platform.stl",

@@ -7,7 +7,6 @@
         "author":                          "Gabriele Rossetti",
         "visible":                         true,
         "manufacturer":                    "Deltacomb 3D",
-        "category":                        "Other",
         "file_formats":                    "text/x-gcode",
         "icon":                            "icon_ultimaker2",
         "platform":                        "deltacomb.stl",

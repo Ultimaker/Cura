@@ -6,7 +6,6 @@
         {
             "author": "M.K",
             "manufacturer": "eMotionTech",
-            "category": "Other",
             "visible": true,
             "file_formats": "text/x-gcode",
             "has_machine_quality": true,

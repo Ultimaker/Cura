@@ -157,8 +157,9 @@ Item
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
                 CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
 
-                // If we have created a machine, go to the last page, which is the "cloud" page.
-                base.goToPage("cloud")
+                // If we have created a machine, end the wizard (since this is the last page)
+                base.endWizard()
+
             }
             else
             {
