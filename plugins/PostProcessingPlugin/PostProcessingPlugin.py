@@ -158,12 +158,11 @@ class PostProcessingPlugin(QObject, Extension):
     def loadScripts(self, path: str) -> None:
 
         if ApplicationMetadata.IsEnterpriseVersion:
-            # Delete all __pycache__ not in installation folder, as it presents a security risk.
-            # Also it prevents this very strange scenario:
+            # Delete all __pycache__ not in installation folder, as it may present a security risk.
+            # It prevents this very strange scenario (should already be prevented on enterprise because signed-fault):
             #  - Copy an existing script from the postprocessing-script folder to the appdata scripts folder.
             #  - Also copy the entire __pycache__ folder from the first to the last location.
-            #  - Leave the __pycache__ as is, but write maliscous code just before the class begins.
-            #    It's important to edit the script _after_ the pycache folder has been copied!
+            #  - Leave the __pycache__ as is, but write malicious code just before the class begins.
             #  - It'll execute, despite that the script has not been signed.
             # It's not known if these reproduction steps are minimal, but it does at least happen in this case.
             install_prefix = os.path.abspath(CuraApplication.getInstance().getInstallPrefix())
