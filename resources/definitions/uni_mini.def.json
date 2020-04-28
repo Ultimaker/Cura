@@ -11,8 +11,8 @@
                  },
     "overrides": {
                   "machine_name":   {"default_value": "uni_mini"},
-                  "machine_width":  {"default_value": 170},
-				  "machine_depth":  {"default_value": 170},
+                  "machine_width":  {"default_value": 180},
+				  "machine_depth":  {"default_value": 180},
                   "machine_height": {"default_value": 175}
                  }
 }

@@ -160,10 +160,10 @@
         "machine_center_is_zero":            {"default_value": false},
         "machine_gcode_flavor":              {"default_value": "RepRap (Marlin/Sprinter)"},
         "machine_head_with_fans_polygon":    {"default_value": [
-                                                             [-5,5],
-                                                             [-5,-5],
-                                                             [5,-5],
-                                                             [5,5]
+                                                             [-10,10],
+                                                             [-10,-10],
+                                                             [10,-10],
+                                                             [10,10]
                                                             ]
                                              },
         "gantry_height":                     {"value": 55},
