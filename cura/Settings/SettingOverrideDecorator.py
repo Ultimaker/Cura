@@ -94,6 +94,12 @@ class SettingOverrideDecorator(SceneNodeDecorator):
     #
     #   \return An extruder's position, or None if no position info is available.
     def getActiveExtruderPosition(self):
+        # for support_meshes, always use the support_extruder
+        if self.getStack().getProperty("support_mesh", "value"):
+            global_container_stack = Application.getInstance().getGlobalContainerStack()
+            if global_container_stack:
+                return str(global_container_stack.getProperty("support_extruder_nr", "value"))
+
         containers = ContainerRegistry.getInstance().findContainers(id = self.getActiveExtruder())
         if containers:
             container_stack = containers[0]
