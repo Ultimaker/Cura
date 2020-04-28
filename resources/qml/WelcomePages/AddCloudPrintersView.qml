@@ -172,6 +172,7 @@ Item
             discoveredCloudPrintersModel.clear()
             base.showPreviousPage()
         }
+        visible: discoveredCloudPrintersModel.count == 0
     }
 
     Cura.PrimaryButton
