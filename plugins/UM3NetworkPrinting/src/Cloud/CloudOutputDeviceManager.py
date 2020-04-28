@@ -146,7 +146,7 @@ class CloudOutputDeviceManager:
                 self._remote_clusters[device.getId()] = device
                 remote_clusters_added = True
 
-        CuraApplication.getInstance().getDiscoveredUltimakerCloudPrintersModel().addDiscoveredUltimakerCloudPrinter(new_devices)
+        CuraApplication.getInstance().getDiscoveredUltimakerCloudPrintersModel().addDiscoveredUltimakerCloudPrinters(new_devices)
 
         if not new_devices:
             if remote_clusters_added:

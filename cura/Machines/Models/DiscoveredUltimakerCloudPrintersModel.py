@@ -27,7 +27,7 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self._discovered_ultimaker_cloud_printers_list = []
         self._application = application
 
-    def addDiscoveredUltimakerCloudPrinter(self, new_devices) -> None:
+    def addDiscoveredUltimakerCloudPrinters(self, new_devices) -> None:
         for device in new_devices:
             self._discovered_ultimaker_cloud_printers_list.append({
                 "ip_address": device.key,
@@ -39,7 +39,7 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self._update()
 
     @pyqtSlot()
-    def clearDiscoveredUltimakerCloudPrinters(self):
+    def clear(self):
         self._discovered_ultimaker_cloud_printers_list = []
         self._update()
 

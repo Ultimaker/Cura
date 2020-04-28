@@ -202,7 +202,10 @@ Item
             anchors.verticalCenter: parent.verticalCenter
             text: catalog.i18nc("@label", "Add cloud printer")
             height: UM.Theme.getSize("message_action_button").height
-            onClicked: base.addCloudPrinterButtonClicked()
+            onClicked: {
+                CuraApplication.getDiscoveredUltimakerCloudPrintersModel().clear()
+                base.addCloudPrinterButtonClicked()
+            }
         }
 
         Item

@@ -169,7 +169,7 @@ Item
         text: catalog.i18nc("@button", "Add printer manually")
         onClicked:
         {
-            discoveredCloudPrintersModel.clearDiscoveredUltimakerCloudPrinters()
+            discoveredCloudPrintersModel.clear()
             base.showPreviousPage()
         }
     }
@@ -182,7 +182,7 @@ Item
         text: catalog.i18nc("@button", "Finish")
         onClicked:
         {
-            addCloudPrinterScreen.discoveredCloudPrintersModel.clearDiscoveredUltimakerCloudPrinters()
+            discoveredCloudPrintersModel.clear()
             base.showNextPage()
         }
 
