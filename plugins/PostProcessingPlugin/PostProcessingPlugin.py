@@ -16,7 +16,7 @@ from UM.Extension import Extension
 from UM.Logger import Logger
 from UM.PluginRegistry import PluginRegistry
 from UM.Resources import Resources
-from UM.Trust import Trust
+from UM.Trust import Trust, TrustBasics
 from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
 from cura.CuraApplication import CuraApplication
@@ -156,6 +156,24 @@ class PostProcessingPlugin(QObject, Extension):
     #   This should probably only be done on init.
     #   \param path Path to check for scripts.
     def loadScripts(self, path: str) -> None:
+
+        if ApplicationMetadata.IsEnterpriseVersion:
+            # Delete all __pycache__ not in installation folder, as it presents a security risk.
+            # Also it prevents this very strange scenario:
+            #  - Copy an existing script from the postprocessing-script folder to the appdata scripts folder.
+            #  - Also copy the entire __pycache__ folder from the first to the last location.
+            #  - Leave the __pycache__ as is, but write maliscous code just before the class begins.
+            #    It's important to edit the script _after_ the pycache folder has been copied!
+            #  - It'll execute, despite that the script has not been signed.
+            # It's not known if these reproduction steps are minimal, but it does at least happen in this case.
+            install_prefix = os.path.abspath(CuraApplication.getInstance().getInstallPrefix())
+            try:
+                is_in_installation_path = os.path.commonpath([install_prefix, path]).startswith(install_prefix)
+            except ValueError:
+                is_in_installation_path = False
+            if not is_in_installation_path:
+                TrustBasics.removeCached(path)
+
         ## Load all scripts in the scripts folders
         scripts = pkgutil.iter_modules(path = [path])
         for loader, script_name, ispkg in scripts:
