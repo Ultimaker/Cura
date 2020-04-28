@@ -1,4 +1,4 @@
-from typing import Optional, TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING, List, Dict
 
 from PyQt5.QtCore import QObject, pyqtSlot, Qt, pyqtSignal, pyqtProperty
 
@@ -24,9 +24,9 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self.addRoleName(self.DeviceTypeRole, "machine_type")
         self.addRoleName(self.DeviceFirmwareVersionRole, "firmware_version")
 
-        self._discovered_ultimaker_cloud_printers_list = []
-        self._new_cloud_printers_detected = False
-        self._application = application
+        self._discovered_ultimaker_cloud_printers_list = []  # type: List[Dict[str, str]]
+        self._new_cloud_printers_detected = False  # type: bool
+        self._application = application  # type: CuraApplication
 
     def addDiscoveredUltimakerCloudPrinters(self, new_devices) -> None:
         for device in new_devices:
@@ -43,13 +43,13 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self.cloudPrintersDetectedChanged.emit()
 
     @pyqtSlot()
-    def clear(self):
+    def clear(self) -> None:
         self._discovered_ultimaker_cloud_printers_list = []
         self._update()
         self._new_cloud_printers_detected = False
         self.cloudPrintersDetectedChanged.emit()
 
-    def _update(self):
+    def _update(self) -> None:
         items = []
 
         for cloud_printer in self._discovered_ultimaker_cloud_printers_list:
