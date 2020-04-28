@@ -9,16 +9,14 @@ if TYPE_CHECKING:
 
 
 class DiscoveredUltimakerCloudPrintersModel(ListModel):
-    IpAddressRole = Qt.UserRole + 1
-    DeviceKeyRole = Qt.UserRole + 2
-    DeviceNameRole = Qt.UserRole + 3
-    DeviceTypeRole = Qt.UserRole + 4
-    DeviceFirmwareVersionRole = Qt.UserRole + 5
+    DeviceKeyRole = Qt.UserRole + 1
+    DeviceNameRole = Qt.UserRole + 2
+    DeviceTypeRole = Qt.UserRole + 3
+    DeviceFirmwareVersionRole = Qt.UserRole + 4
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
-        self.addRoleName(self.IpAddressRole, "ip_address")
         self.addRoleName(self.DeviceKeyRole, "key")
         self.addRoleName(self.DeviceNameRole, "name")
         self.addRoleName(self.DeviceTypeRole, "machine_type")
@@ -30,7 +28,6 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
     def addDiscoveredUltimakerCloudPrinters(self, new_devices) -> None:
         for device in new_devices:
             self._discovered_ultimaker_cloud_printers_list.append({
-                "ip_address": device.key,
                 "key": device.getId(),
                 "name": device.name,
                 "machine_type": device.printerTypeName,
