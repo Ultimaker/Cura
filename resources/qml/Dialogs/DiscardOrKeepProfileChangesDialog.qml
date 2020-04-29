@@ -113,14 +113,14 @@ UM.Dialog
             TableViewColumn
             {
                 role: "original_value"
-                title: catalog.i18nc("@title:column", "Default")
+                title: Cura.MachineManager.activeQualityDisplayNameMap["main"]
                 width: (tableView.width * 0.3) | 0
                 delegate: defaultDelegate
             }
             TableViewColumn
             {
                 role: "user_value"
-                title: catalog.i18nc("@title:column", "Customized")
+                title: catalog.i18nc("@title:column", "Current changes")
                 width: (tableView.width * 0.3) | 0
             }
             section.property: "category"
@@ -192,7 +192,7 @@ UM.Dialog
         Button
         {
             id: discardButton
-            text: catalog.i18nc("@action:button", "Discard");
+            text: catalog.i18nc("@action:button", "Discard changes");
             anchors.right: parent.right
             onClicked:
             {
@@ -205,7 +205,7 @@ UM.Dialog
         Button
         {
             id: keepButton
-            text: catalog.i18nc("@action:button", "Keep");
+            text: catalog.i18nc("@action:button", "Keep changes");
             anchors.right: discardButton.left
             anchors.rightMargin: UM.Theme.getSize("default_margin").width
             onClicked:
