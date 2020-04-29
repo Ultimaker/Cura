@@ -1,3 +1,13 @@
+[4.6.1]
+
+Patch release to fix some bugs that emerged with 4.6.0.
+
+* Z seam placement.
+Changes to the Simplify() algorithm in 4.6.0 caused Z seam placement issues, which resulted in less-than-perfect results. This has been fixed.
+
+* Ender 3 Pro nozzles missing.
+A lot of issue reports came in about nozzles missing for this machine definition, so we made a fix to stop this happening.
+
 [4.6.0]
 
 THANK YOU to all Ultimaker Cura users helping in the fight against COVID-19 – with 3D printing, volunteering, or just by staying home. Want to get involved? Find out more at https://ultimaker.com/in/cura/covid-19
