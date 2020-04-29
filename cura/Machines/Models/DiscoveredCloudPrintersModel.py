@@ -25,7 +25,6 @@ class DiscoveredCloudPrintersModel(ListModel):
         self.addRoleName(self.DeviceFirmwareVersionRole, "firmware_version")
 
         self._discovered_ultimaker_cloud_printers_list = []  # type: List[Dict[str, str]]
-        self._new_cloud_printers_detected = False  # type: bool
         self._application = application  # type: CuraApplication
 
     def addDiscoveredCloudPrinters(self, new_devices: List[Dict[str, str]]) -> None:
@@ -33,14 +32,12 @@ class DiscoveredCloudPrintersModel(ListModel):
         self._update()
 
         # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
-        self._new_cloud_printers_detected = len(new_devices) > 0
         self.cloudPrintersDetectedChanged.emit(len(new_devices) > 0)
 
     @pyqtSlot()
     def clear(self) -> None:
         self._discovered_ultimaker_cloud_printers_list = []
         self._update()
-        self._new_cloud_printers_detected = False
         self.cloudPrintersDetectedChanged.emit(False)
 
     def _update(self) -> None:
@@ -54,7 +51,3 @@ class DiscoveredCloudPrintersModel(ListModel):
 
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
-
-    @pyqtProperty(bool, notify = cloudPrintersDetectedChanged)
-    def newCloudPrintersDetected(self) -> bool:
-        return self._new_cloud_printers_detected
