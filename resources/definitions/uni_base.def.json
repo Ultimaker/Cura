@@ -154,7 +154,7 @@
         "machine_width":                     {"default_value": 270},
         "machine_depth":                     {"default_value": 220},
         "machine_height":                    {"default_value": 250},
-        "machine_extruder_count":            {"value": 1}, 
+        "machine_extruder_count":            {"value": 2}, 
         "machine_buildplate_type":           {"value": "glass"},
         "machine_heated_bed":                {"default_value": true},
         "machine_center_is_zero":            {"default_value": false},
