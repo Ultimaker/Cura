@@ -30,10 +30,10 @@ Item
         anchors
         {
             top: parent.top
-            bottom: finishButton.top
             left: parent.left
             leftMargin: UM.Theme.getSize("default_margin").width
             right: parent.right
+            bottom: finishButton.top
             bottomMargin: UM.Theme.getSize("default_margin").height
         }
 
@@ -105,6 +105,7 @@ Item
                 left: parent.left
                 leftMargin: UM.Theme.getSize("default_margin").width
                 right: parent.right
+                bottom: parent.bottom
             }
 
             Column
