@@ -738,7 +738,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
-        result = dict()
+        result = dict()  # type: Dict[str, Dict[str, Any]]
         try:
             archive = zipfile.ZipFile(file_name, "r")
         except zipfile.BadZipFile:
