@@ -30,6 +30,7 @@ fragment =
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
+    uniform float u_flat_error_color_mix;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -73,7 +74,7 @@ fragment =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49.0)
         {
-            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
+            result = mix(vec4(shiftHue(layer0.rgb, hue_shift), result.a), vec4(1.,0.,0.,1.), u_flat_error_color_mix);
         }
 
         vec4 sum = vec4(0.0);
@@ -122,6 +123,7 @@ fragment41core =
     uniform vec4 u_outline_color;
     uniform vec4 u_background_color;
     uniform float u_xray_error_strength;
+    uniform float u_flat_error_color_mix;
 
     const vec3 x_axis = vec3(1.0, 0.0, 0.0);
     const vec3 y_axis = vec3(0.0, 1.0, 0.0);
@@ -166,7 +168,7 @@ fragment41core =
         float rest = mod(intersection_count + .01, 2.0);
         if (rest > 1.0 && rest < 1.5 && intersection_count < 49)
         {
-            result = vec4(shiftHue(layer0.rgb, hue_shift), result.a);
+            result = mix(vec4(shiftHue(layer0.rgb, hue_shift), result.a), vec4(1.,0.,0.,1.), u_flat_error_color_mix);
         }
 
         vec4 sum = vec4(0.0);
@@ -196,6 +198,7 @@ u_layer2 = 2
 u_background_color = [0.965, 0.965, 0.965, 1.0]
 u_outline_strength = 1.0
 u_outline_color = [0.05, 0.66, 0.89, 1.0]
+u_flat_error_color_mix = 0.5
 
 [bindings]
 
