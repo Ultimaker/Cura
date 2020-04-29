@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
 
 
-class DiscoveredUltimakerCloudPrintersModel(ListModel):
+class DiscoveredCloudPrintersModel(ListModel):
     DeviceKeyRole = Qt.UserRole + 1
     DeviceNameRole = Qt.UserRole + 2
     DeviceTypeRole = Qt.UserRole + 3
@@ -28,14 +28,8 @@ class DiscoveredUltimakerCloudPrintersModel(ListModel):
         self._new_cloud_printers_detected = False  # type: bool
         self._application = application  # type: CuraApplication
 
-    def addDiscoveredUltimakerCloudPrinters(self, new_devices: List[Optional[Dict[str, str]]]) -> None:
-        for device in new_devices:
-            self._discovered_ultimaker_cloud_printers_list.append({
-                "key": device.getId(),
-                "name": device.name,
-                "machine_type": device.printerTypeName,
-                "firmware_version": device.firmwareVersion
-            })
+    def addDiscoveredCloudPrinters(self, new_devices: List[Dict[str, str]]) -> None:
+        self._discovered_ultimaker_cloud_printers_list.extend(new_devices)
         self._update()
 
         # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.

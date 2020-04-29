@@ -203,7 +203,7 @@ Item
             text: catalog.i18nc("@label", "Add cloud printer")
             height: UM.Theme.getSize("message_action_button").height
             onClicked: {
-                CuraApplication.getDiscoveredUltimakerCloudPrintersModel().clear()
+                CuraApplication.getDiscoveredCloudPrintersModel().clear()
                 base.addCloudPrinterButtonClicked()
             }
         }

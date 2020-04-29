@@ -17,7 +17,7 @@ Item
 
     signal cloudPrintersDetected(bool newCloudPrintersDetected)
 
-    Component.onCompleted: CuraApplication.getDiscoveredUltimakerCloudPrintersModel().cloudPrintersDetectedChanged.connect(cloudPrintersDetected)
+    Component.onCompleted: CuraApplication.getDiscoveredCloudPrintersModel().cloudPrintersDetectedChanged.connect(cloudPrintersDetected)
 
     onCloudPrintersDetected:
     {

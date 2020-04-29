@@ -20,7 +20,7 @@ Item
     UM.I18nCatalog { id: catalog; name: "cura" }
 
     property bool searchingForCloudPrinters: true
-    property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredUltimakerCloudPrintersModel()
+    property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredCloudPrintersModel()
 
     Rectangle
     {
