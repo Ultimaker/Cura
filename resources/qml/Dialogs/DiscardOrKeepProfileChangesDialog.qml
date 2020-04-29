@@ -54,7 +54,7 @@ UM.Dialog
 
         Label
         {
-            text: catalog.i18nc("@text:window", "You have customized some profile settings.\nWould you like to keep or discard those settings?")
+            text: catalog.i18nc("@text:window, %1 is a profile name", "You have customized some profile settings.\nWould you like to Keep these changed settings after switching profiles?\nAlternatively, you can Discard the changes to load the defaults from '%1'.").arg(Cura.MachineManager.activeQualityDisplayNameMap["main"])
             anchors.margins: UM.Theme.getSize("default_margin").width
             wrapMode: Text.WordWrap
         }
