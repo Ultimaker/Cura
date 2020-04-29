@@ -27,7 +27,7 @@ class DiscoveredCloudPrintersModel(ListModel):
         self.addRoleName(self.DeviceTypeRole, "machine_type")
         self.addRoleName(self.DeviceFirmwareVersionRole, "firmware_version")
 
-        self._discovered_ultimaker_cloud_printers_list = []  # type: List[Dict[str, str]]
+        self._discovered_cloud_printers_list = []  # type: List[Dict[str, str]]
         self._application = application  # type: CuraApplication
 
     def addDiscoveredCloudPrinters(self, new_devices: List[Dict[str, str]]) -> None:
@@ -43,7 +43,7 @@ class DiscoveredCloudPrintersModel(ListModel):
         }
         :return: None
         """
-        self._discovered_ultimaker_cloud_printers_list.extend(new_devices)
+        self._discovered_cloud_printers_list.extend(new_devices)
         self._update()
 
         # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
@@ -56,7 +56,7 @@ class DiscoveredCloudPrintersModel(ListModel):
 
         :return: None
         """
-        self._discovered_ultimaker_cloud_printers_list = []
+        self._discovered_cloud_printers_list = []
         self._update()
         self.cloudPrintersDetectedChanged.emit(False)
 
@@ -66,6 +66,6 @@ class DiscoveredCloudPrintersModel(ListModel):
 
         :return: None
         """
-        items = self._discovered_ultimaker_cloud_printers_list[:]
+        items = self._discovered_cloud_printers_list[:]
         items.sort(key = lambda k: k["name"])
         self.setItems(items)
