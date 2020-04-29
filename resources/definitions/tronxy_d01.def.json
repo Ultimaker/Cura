@@ -1,7 +1,7 @@
 {
     "name": "Tronxy D01",
     "version": 2,
-    "inherits": "tronxy_base",
+    "inherits": "tronxy_x",
     "metadata": {
 	    "has_machine_quality": true,
         "visible": true,
