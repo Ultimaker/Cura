@@ -22,6 +22,7 @@ Item
     property bool searchingForCloudPrinters: true
     property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredCloudPrintersModel()
 
+    // The area where either the discoveredCloudPrintersScrollView or the busyIndicator will be displayed
     Rectangle
     {
         id: cloudPrintersContent
