@@ -29,11 +29,12 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser["metadata"]["setting_version"] = "12"
 
         # Remove deleted settings from the visible settings list.
-        visible_settings = set(parser["general"]["visible_settings"].split(";"))
-        for removed in _removed_settings:
-            if removed in visible_settings:
-                visible_settings.remove(removed)
-        parser["general"]["visible_settings"] = ";".join(visible_settings)
+        if "general" in parser and "visible_settings" in parser["general"]:
+            visible_settings = set(parser["general"]["visible_settings"].split(";"))
+            for removed in _removed_settings:
+                if removed in visible_settings:
+                    visible_settings.remove(removed)
+            parser["general"]["visible_settings"] = ";".join(visible_settings)
 
         result = io.StringIO()
         parser.write(result)

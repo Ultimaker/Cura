@@ -86,7 +86,7 @@ class ModelChecker(QObject, Extension):
 
             if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
-                if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
+                if bbox is not None and (bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z):
                     warning_nodes.append(node)
 
         self._caution_message.setText(catalog.i18nc(
