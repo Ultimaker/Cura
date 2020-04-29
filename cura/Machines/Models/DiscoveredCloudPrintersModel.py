@@ -41,13 +41,6 @@ class DiscoveredCloudPrintersModel(ListModel):
         self.cloudPrintersDetectedChanged.emit(False)
 
     def _update(self) -> None:
-        items = []
-
-        for cloud_printer in self._discovered_ultimaker_cloud_printers_list:
-            items.append(cloud_printer)
-
-        # Execute all filters.
-        filtered_items = list(items)
-
-        filtered_items.sort(key = lambda k: k["name"])
-        self.setItems(filtered_items)
+        items = self._discovered_ultimaker_cloud_printers_list[:]
+        items.sort(key = lambda k: k["name"])
+        self.setItems(items)
