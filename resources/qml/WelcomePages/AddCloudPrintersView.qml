@@ -19,8 +19,6 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    id: addCloudPrinterScreen
-
     property bool searchingForCloudPrinters: true
     property var discoveredCloudPrintersModel: CuraApplication.getDiscoveredUltimakerCloudPrintersModel()
 
@@ -75,7 +73,7 @@ Item
                 font: UM.Theme.getFont("large")
                 renderType: Text.NativeRendering
             }
-            visible: addCloudPrinterScreen.discoveredCloudPrintersModel.count == 0
+            visible: discoveredCloudPrintersModel.count == 0
         }
 
         // Label displayed when a new cloud printer is discovered
@@ -87,7 +85,7 @@ Item
             font: UM.Theme.getFont("medium")
             text: catalog.i18nc("@label", "The following printers in your account have been added in Cura:")
             height: contentHeight + 2 * UM.Theme.getSize("default_margin").height
-            visible: addCloudPrinterScreen.discoveredCloudPrintersModel.count > 0
+            visible: discoveredCloudPrintersModel.count > 0
         }
 
         // The scrollView that contains the list of newly discovered Ultimaker Cloud printers. Visible only when
@@ -117,7 +115,7 @@ Item
                 Repeater
                 {
                     id: discoveredCloudPrintersRepeater
-                    model: addCloudPrinterScreen.discoveredCloudPrintersModel
+                    model: discoveredCloudPrintersModel
                     delegate: Item
                         {
                             width: discoveredCloudPrintersScrollView.width
