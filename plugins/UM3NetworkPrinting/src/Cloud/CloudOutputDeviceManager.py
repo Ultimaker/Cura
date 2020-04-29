@@ -226,10 +226,10 @@ class CloudOutputDeviceManager:
             return
         new_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
 
+        self._setOutputDeviceMetadata(device, new_machine)
+
         if activate:
             CuraApplication.getInstance().getMachineManager().setActiveMachine(new_machine.getId())
-
-        self._connectToOutputDevice(device, new_machine)
 
     def _connectToActiveMachine(self) -> None:
         """Callback for when the active machine was changed by the user"""
@@ -252,13 +252,16 @@ class CloudOutputDeviceManager:
                 # Remove device if it is not meant for the active machine.
                 output_device_manager.removeOutputDevice(device.key)
 
-    def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
-        """Connects to an output device and makes sure it is registered in the output device manager."""
-
+    def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         machine.setMetaDataEntry("group_name", device.name)
         machine.addConfiguredConnectionType(device.connectionType.value)
+
+    def _connectToOutputDevice(self, device: CloudOutputDevice, machine: GlobalStack) -> None:
+        """Connects to an output device and makes sure it is registered in the output device manager."""
+
+        self._setOutputDeviceMetadata(device, machine)
 
         if not device.isConnected():
             device.connect()
