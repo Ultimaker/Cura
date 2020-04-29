@@ -15,9 +15,11 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property bool newCloudPrintersDetected: CuraApplication.getDiscoveredUltimakerCloudPrintersModel().newCloudPrintersDetected
+    signal cloudPrintersDetected(bool newCloudPrintersDetected)
 
-    onNewCloudPrintersDetectedChanged:
+    Component.onCompleted: CuraApplication.getDiscoveredUltimakerCloudPrintersModel().cloudPrintersDetectedChanged.connect(cloudPrintersDetected)
+
+    onCloudPrintersDetected:
     {
         // When the user signs in successfully, it will be checked whether he/she has cloud printers connected to
         // the account. If he/she does, then the welcome wizard can close. If not, then proceed to the next page (if any)
