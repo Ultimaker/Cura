@@ -32,10 +32,10 @@
         "machine_max_feedrate_z": { "value": 10 },
         "machine_max_feedrate_e": { "value": 50 },
 
-        "machine_max_acceleration_x": { "value": 100 },
-        "machine_max_acceleration_y": { "value": 100 },
-        "machine_max_acceleration_z": { "value": 100 },
-        "machine_max_acceleration_e": { "value": 100 },
+        "machine_max_acceleration_x": { "value": 120 },
+        "machine_max_acceleration_y": { "value": 120 },
+        "machine_max_acceleration_z": { "value": 120 },
+        "machine_max_acceleration_e": { "value": 120 },
         "machine_acceleration": { "value": 100 },
 
         "machine_max_jerk_xy": { "value": 20 },
@@ -46,8 +46,8 @@
 
         "material_diameter": { "default_value": 1.75 },
 
-        "acceleration_print": { "value": 100 },
-        "acceleration_travel": { "value": 100 },
+        "acceleration_print": { "value": "machine_acceleration" },
+        "acceleration_travel": { "value": "machine_acceleration" },
         "acceleration_travel_layer_0": { "value": "acceleration_travel" },
         "acceleration_roofing": { "enabled": "acceleration_enabled and roofing_layer_count > 0 and top_layers > 0" },
 

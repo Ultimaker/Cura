@@ -20,10 +20,19 @@
                 [27, 45]
             ]
         },
-        "machine_start_gcode": {
-            "default_value": "; XY-3 Start Code\nG21\nG90\nM82\nM107 T0\nM140 S{material_bed_temperature}\nM104 S{material_print_temperature} T0\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG28\nG92 E0\nG1 Z2.0 F3000 ; Move Z Axis up little to preventscratching of Heat Bed\nG1 X1 Y20 Z0.3 F3600.0 ; Move to start position\nG1 X1 Y280.0 Z0.3 F1500.0 E25 ; Draw the first line\nG1 X1.6 Y280.0 Z0.3 F3600.0 ; Move to side a little\nG1 X1.6 Y20 Z0.3 F1500.0 E50 ; Draw the second line\nG92 E0 ; Reset Extruder\nG1 Z2.0 F3000 ; Move Z Axis up little to prevent scratching of Heat Bed\nG1 X5 Y20 Z0.3 F3600.0 ; Move over to prevent blob squish"
-        },
-
-        "gantry_height": { "value": 30 }
+        "gantry_height": { "value": 30 },
+		
+        "machine_start_gcode": { "default_value": "; XY-2 Start Code\nG21\nG90\nM82\nM107 T0\nM140 S{material_bed_temperature}\nM104 S{material_print_temperature} T0\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature} T0\nG28\nG92 E0\n"},
+        "machine_end_gcode": { "default_value": "G91\nG1 E-2 F3000\nG1 E-2 Z0.2 F1200\nG1 X5 Y5 F3600\nG1 Z10\nG90\nG1 X0 Y{machine_depth}\nM106 S0\nM104 S0\nM140 S0\n\nM84 X Y E\n" },
+		
+        "machine_max_feedrate_x": { "value": 100 },
+        "machine_max_feedrate_y": { "value": 100 },
+        "machine_max_feedrate_z": { "value": 20 },
+        "machine_max_feedrate_e": { "value": 120 },
+        "machine_max_acceleration_x": { "value": 150 },
+        "machine_max_acceleration_y": { "value": 150 },
+        "machine_max_acceleration_z": { "value": 150 },
+        "machine_max_acceleration_e": { "value": 150 },
+        "machine_acceleration": { "value": 80 }
     }
 }
