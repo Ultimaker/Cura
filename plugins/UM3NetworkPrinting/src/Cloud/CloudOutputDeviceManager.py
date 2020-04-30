@@ -224,7 +224,6 @@ class CloudOutputDeviceManager:
         if not new_machine:
             Logger.log("e", "Failed creating a new machine")
             return
-        new_machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
 
         self._setOutputDeviceMetadata(device, new_machine)
 
