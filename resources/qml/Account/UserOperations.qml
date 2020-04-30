@@ -45,6 +45,15 @@ Column
             source: UM.Theme.getIcon("update")
             color: palette.text
 
+            RotationAnimator
+            {
+                from: 0;
+                to: 360;
+                duration: 1500
+                loops: Animation.Infinite
+                running: false
+            }
+
         }
 
         Label
