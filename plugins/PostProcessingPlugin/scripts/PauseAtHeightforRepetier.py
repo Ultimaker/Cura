@@ -67,21 +67,6 @@ class PauseAtHeightforRepetier(Script):
                     "unit": "layers",
                     "type": "int",
                     "default_value": 0
-                },
-                ,
-                "custom_gcode_before_pause":
-                {
-                    "label": "GCODE Before Pause",
-                    "description": "Any custom GCODE to run before the pause, for example, M300 S300 P1000 to beep.",
-                    "type": "str",
-                    "default_value": ""
-                },
-                "custom_gcode_after_pause":
-                {
-                    "label": "GCODE After Pause",
-                    "description": "Any custom GCODE to run after the pause, for example, M300 S300 P1000 to beep.",
-                    "type": "str",
-                    "default_value": ""
                 }
             }
         }"""
@@ -99,9 +84,6 @@ class PauseAtHeightforRepetier(Script):
         move_Z = self.getSettingValueByKey("head_move_Z")
         layers_started = False
         redo_layers = self.getSettingValueByKey("redo_layers")
-        gcode_before = self.getSettingValueByKey("custom_gcode_before_pause")
-        gcode_after = self.getSettingValueByKey("custom_gcode_after_pause")
-
         for layer in data:
             lines = layer.split("\n")
             for line in lines:
@@ -150,17 +132,8 @@ class PauseAtHeightforRepetier(Script):
 
                             #Disable the E steppers
                             prepend_gcode += "M84 E0\n"
-
-                            # Set a custom GCODE section before pause
-                            if gcode_before:
-                                prepend_gcode += gcode_before + "\n"
-
                             #Wait till the user continues printing
                             prepend_gcode += "@pause now change filament and press continue printing ;Do the actual pause\n"
-
-                            # Set a custom GCODE section before pause
-                            if gcode_after:
-                                prepend_gcode += gcode_after + "\n"
 
                             #Push the filament back,
                             if retraction_amount != 0:

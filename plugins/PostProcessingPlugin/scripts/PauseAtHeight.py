@@ -130,20 +130,6 @@ class PauseAtHeight(Script):
                     "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
                     "type": "str",
                     "default_value": ""
-                },
-                "custom_gcode_before_pause":
-                {
-                    "label": "GCODE Before Pause",
-                    "description": "Any custom GCODE to run before the pause, for example, M300 S440 P200 to beep.",
-                    "type": "str",
-                    "default_value": ""
-                },
-                "custom_gcode_after_pause":
-                {
-                    "label": "GCODE After Pause",
-                    "description": "Any custom GCODE to run after the pause, for example, M300 S440 P200 to beep.",
-                    "type": "str",
-                    "default_value": ""
                 }
             }
         }"""
@@ -180,8 +166,6 @@ class PauseAtHeight(Script):
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
-        gcode_before = self.getSettingValueByKey("custom_gcode_before_pause")
-        gcode_after = self.getSettingValueByKey("custom_gcode_after_pause")
 
         is_griffin = False
 
@@ -339,16 +323,8 @@ class PauseAtHeight(Script):
                 if disarm_timeout > 0:
                     prepend_gcode += self.putValue(M = 18, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
-                # Set a custom GCODE section before pause
-                if gcode_before:
-                    prepend_gcode += gcode_before + "\n"
-
                 # Wait till the user continues printing
                 prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
-
-                # Set a custom GCODE section before pause
-                if gcode_after:
-                    prepend_gcode += gcode_after + "\n"
 
                 if not is_griffin:
                     if control_temperatures:
