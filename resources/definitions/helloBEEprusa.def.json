@@ -6,7 +6,7 @@
         "visible": true,
         "author": "BEEVERYCREATIVE",
         "manufacturer": "BEEVERYCREATIVE",
-        "platform": "BEEVERYCREATIVE-helloBEEprusa.stl",
+        "platform": "BEEVERYCREATIVE-helloBEEprusa.3mf",
         "platform_offset": [-226, -75, -196],
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":

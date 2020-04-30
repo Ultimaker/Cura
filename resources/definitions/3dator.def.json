@@ -8,7 +8,7 @@
         "manufacturer": "3Dator GmbH",
         "file_formats": "text/x-gcode",
         "supports_usb_connection": true,
-        "platform": "3dator_platform.stl",
+        "platform": "3dator_platform.3mf",
         "machine_extruder_trains":
         {
             "0": "3dator_extruder_0"

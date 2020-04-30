@@ -18,7 +18,7 @@
     },
     "metadata": {
         "quality_definition": "creality_base",
-        "platform": "creality_cr10spro.stl",
+        "platform": "creality_cr10spro.3mf",
         "platform_offset": [ -150, 0, 150]
     }
 }
