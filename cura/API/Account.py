@@ -4,6 +4,7 @@ from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
+from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -127,6 +128,12 @@ class Account(QObject):
         if not user_profile:
             return None
         return user_profile.__dict__
+
+    @pyqtSlot()
+    def sync(self) -> None:
+        """Checks for new cloud printers"""
+
+        Logger.info("Starting account sync")
 
     @pyqtSlot()
     def logout(self) -> None:
