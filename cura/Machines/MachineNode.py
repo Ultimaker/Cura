@@ -171,6 +171,10 @@ class MachineNode(ContainerNode):
                 if variant_name not in self.variants:
                     self.variants[variant_name] = VariantNode(variant["id"], machine = self)
                     self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
+                else:
+                    # Force reloading the materials if the variant already exists or else materals won't be loaded
+                    # when the G-Code flavor changes --> CURA-7354
+                    self.variants[variant_name]._loadAll()
             if not self.variants:
                 self.variants["empty"] = VariantNode("empty_variant", machine = self)
 

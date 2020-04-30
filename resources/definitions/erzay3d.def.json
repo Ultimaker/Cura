@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Alexander Kirsanov",
         "manufacturer": "Robokinetika",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {

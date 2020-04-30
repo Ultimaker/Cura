@@ -6,7 +6,6 @@
         "visible": true,
         "author": "uBuild-3D",
         "manufacturer": "uBuild-3D",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "preferred_quality_type": "draft",

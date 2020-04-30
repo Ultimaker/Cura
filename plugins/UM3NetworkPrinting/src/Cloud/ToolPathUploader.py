@@ -125,7 +125,10 @@ class ToolPathUploader:
         if self._retries < self.MAX_RETRIES and status_code in self.RETRY_HTTP_CODES:
             self._retries += 1
             Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, reply.url().toString())
-            self._uploadChunk()
+            try:
+                self._uploadChunk()
+            except ValueError:  # Asynchronously it could have completed in the meanwhile.
+                pass
             return
 
         # Http codes that are not to be retried are assumed to be errors.

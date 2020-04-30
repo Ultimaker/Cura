@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Builder SZ",
         "manufacturer": "Builder",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "platform": "builder_premium_platform.3mf",
         "platform_offset": [-126, -36, 117],

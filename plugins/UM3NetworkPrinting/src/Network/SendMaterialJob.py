@@ -92,9 +92,13 @@ class SendMaterialJob(Job):
         parts = []
 
         # Add the material file.
-        with open(file_path, "rb") as f:
-            parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
-                                                    .format(file_name = file_name), f.read()))
+        try:
+            with open(file_path, "rb") as f:
+                parts.append(self.device.createFormPart("name=\"file\"; filename=\"{file_name}\""
+                                                        .format(file_name = file_name), f.read()))
+        except FileNotFoundError:
+            Logger.error("Unable to send material {material_id}, since it has been deleted in the meanwhile.".format(material_id = material_id))
+            return
 
         # Add the material signature file if needed.
         signature_file_path = "{}.sig".format(file_path)
