@@ -136,10 +136,9 @@ class Account(QObject):
         return user_profile.__dict__
 
     def _onIsSyncingChanged(self, active: bool):
-        Logger.info("active: {}", active)
         if not active:
             # finished
-            self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
             self.lastSyncDateTimeChanged.emit()
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
