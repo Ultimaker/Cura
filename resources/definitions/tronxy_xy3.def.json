@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "tronxy_x",
     "metadata": {
-	    "quality_definition": "tronxy_x",
+        "quality_definition": "tronxy_x",
         "visible": true,
         "author": "AdderMk2",
         "platform": "tronxy.stl"
