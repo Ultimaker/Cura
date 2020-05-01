@@ -101,6 +101,17 @@ Column
         }
     }
 
+     Label
+    {
+        id: lastSyncLabel
+        anchors.horizontalCenter: parent.horizontalCenter
+        horizontalAlignment: Text.AlignHCenter
+        renderType: Text.NativeRendering
+        text: catalog.i18nc("@label The argument is a timestamp", "Last update: %1").arg(Cura.API.account.lastSyncDateTime)
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text_medium")
+    }
+
     Cura.SecondaryButton
     {
         id: accountButton

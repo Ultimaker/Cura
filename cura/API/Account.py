@@ -1,5 +1,6 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
+from datetime import datetime
 from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
@@ -33,6 +34,7 @@ class Account(QObject):
     cloudPrintersDetectedChanged = pyqtSignal(bool)
     isSyncingChanged = pyqtSignal(bool)
     manualSyncRequested = pyqtSignal()
+    lastSyncDateTimeChanged = pyqtSignal()
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -41,6 +43,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
+        self._last_sync_str = "-"
 
         self._callback_port = 32118
         self._oauth_root = UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
@@ -66,6 +69,7 @@ class Account(QObject):
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
+        self.isSyncingChanged.connect(self._onIsSyncingChanged)
 
     def _onAccessTokenChanged(self):
         self.accessTokenChanged.emit()
@@ -130,6 +134,17 @@ class Account(QObject):
         if not user_profile:
             return None
         return user_profile.__dict__
+
+    def _onIsSyncingChanged(self, active: bool):
+        Logger.info("active: {}", active)
+        if not active:
+            # finished
+            self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+            self.lastSyncDateTimeChanged.emit()
+
+    @pyqtProperty(str, notify=lastSyncDateTimeChanged)
+    def lastSyncDateTime(self) -> str:
+        return self._last_sync_str
 
     @pyqtSlot()
     def sync(self) -> None:
