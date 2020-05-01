@@ -37,22 +37,48 @@ Column
         spacing: UM.Theme.getSize("narrow_margin").height
 
 
+
         UM.RecolorImage
         {
+            id: updateImage
             width: 20 * screenScaleFactor
             height: width
 
             source: UM.Theme.getIcon("update")
             color: palette.text
 
+            signal syncingChanged(bool newSyncing)
+            property double animationDuration: 1500
+
+
             RotationAnimator
             {
-                from: 0;
+                id: updateAnimator
+                target: updateImage
                 to: 360;
-                duration: 1500
-                loops: Animation.Infinite
-                running: false
             }
+
+            onSyncingChanged:
+            {
+                if(newSyncing)
+                {
+                    // start infinite rotation loop
+                    updateAnimator.from = 0
+                    updateAnimator.duration = animationDuration
+                    updateAnimator.loops = Animation.Infinite
+                    updateAnimator.start()
+                } else {
+                    // complete current rotation
+                    updateAnimator.stop()
+                    updateAnimator.from = updateImage.rotation
+                    updateAnimator.duration = ((360 - updateImage.rotation) / 360) * animationDuration
+                    updateAnimator.loops = 1
+                    updateAnimator.start()
+                }
+            }
+
+            Component.onCompleted: Cura.API.account.isSyncingChanged.connect(syncingChanged) //todo connect to pyqtsignal or a pyqtproperty?
+
 
         }
 
