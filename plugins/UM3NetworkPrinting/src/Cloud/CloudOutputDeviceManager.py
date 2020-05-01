@@ -54,6 +54,8 @@ class CloudOutputDeviceManager:
         # Ensure we don't start twice.
         self._running = False
 
+        self._syncing = False
+
     def start(self):
         """Starts running the cloud output device manager, thus periodically requesting cloud data."""
 
@@ -65,6 +67,8 @@ class CloudOutputDeviceManager:
         if not self._update_timer.isActive():
             self._update_timer.start()
         self._getRemoteClusters()
+
+        self._account.manualSyncRequested.connect(self._getRemoteClusters)
 
     def stop(self):
         """Stops running the cloud output device manager."""
@@ -92,6 +96,14 @@ class CloudOutputDeviceManager:
     def _getRemoteClusters(self) -> None:
         """Gets all remote clusters from the API."""
 
+        if self._syncing:
+            return
+
+        if self._update_timer.isActive():
+            self._update_timer.stop()
+
+        self._syncing = True
+        self._account.isSyncingChanged.emit(True)
         self._api.getClusters(self._onGetRemoteClustersFinished)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
@@ -119,6 +131,9 @@ class CloudOutputDeviceManager:
         if removed_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
+
+        self._syncing = False
+        self._account.isSyncingChanged.emit(False)
         # Schedule a new update
         self._update_timer.start()
 

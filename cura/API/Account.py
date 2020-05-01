@@ -31,6 +31,8 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
     cloudPrintersDetectedChanged = pyqtSignal(bool)
+    isSyncingChanged = pyqtSignal(bool)
+    manualSyncRequested = pyqtSignal()
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -133,7 +135,7 @@ class Account(QObject):
     def sync(self) -> None:
         """Checks for new cloud printers"""
 
-        Logger.info("Starting account sync")
+        self.manualSyncRequested.emit()
 
     @pyqtSlot()
     def logout(self) -> None:
