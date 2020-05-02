@@ -14,9 +14,8 @@
                 [32, 34]
             ]
         },
-
-        "gantry_height": { "value": 25 }
-
+        "gantry_height": { "value": 25 },
+        "retraction_amount": {"default_value": 2.0}
     },
     "metadata": {
         "quality_definition": "adimlab_base",
