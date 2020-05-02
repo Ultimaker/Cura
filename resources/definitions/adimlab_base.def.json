@@ -10,7 +10,7 @@
         "first_start_actions": ["MachineSettingsAction"],
 
         "machine_extruder_trains": {
-            "0": "creality_base_extruder_0"
+            "0": "adimlab_base_extruder_0"
         },
 
         "has_materials": true,
