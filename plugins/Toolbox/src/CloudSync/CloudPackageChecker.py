@@ -13,6 +13,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
+from cura.API import Account
 from cura.CuraApplication import CuraApplication, ApplicationMetadata
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
@@ -53,7 +54,7 @@ class CloudPackageChecker(QObject):
             self._hideSyncMessage()
 
     def _getUserSubscribedPackages(self) -> None:
-        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, "syncing")
+        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SYNCING)
         Logger.debug("Requesting subscribed packages metadata from server.")
         url = CloudApiModel.api_url_user_packages
         self._application.getHttpRequestManager().get(url,

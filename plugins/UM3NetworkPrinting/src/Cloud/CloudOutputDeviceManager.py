@@ -104,7 +104,7 @@ class CloudOutputDeviceManager:
             self._update_timer.stop()
 
         self._syncing = True
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, "syncing")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SYNCING)
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:

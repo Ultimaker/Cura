@@ -1,6 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
+from enum import Enum
 from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
@@ -28,6 +29,14 @@ i18n_catalog = i18nCatalog("cura")
 #       api.account.userProfile # Who is logged in``
 #
 class Account(QObject):
+
+    class SyncState(Enum):
+        """Caution: values used in qml (eg. UserOperations.qml)"""
+
+        SYNCING = "syncing",
+        SUCCESS = "success",
+        ERROR = "error"
+
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
@@ -36,8 +45,6 @@ class Account(QObject):
     lastSyncDateTimeChanged = pyqtSignal()
     syncStateChanged = pyqtSignal(str)
 
-    SYNC_STATES = ["syncing", "success", "error"]
-
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
         self._application = application
@@ -45,7 +52,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
-        self._sync_state = "idle"
+        self._sync_state = self.SyncState.SUCCESS
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -67,7 +74,7 @@ class Account(QObject):
         self._authorization_service = AuthorizationService(self._oauth_settings)
 
         self._sync_clients = {}
-        """contains entries "client_name" : "state["success"|"error|"syncing"]"""
+        """contains entries "client_name" : "SyncState"""
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
@@ -76,32 +83,29 @@ class Account(QObject):
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
 
-    def setSyncState(self, service_name: str, state: str) -> None:
+    def setSyncState(self, service_name: str, state: SyncState) -> None:
         """ Can be used to register and update account sync states
 
-        Example: `setSyncState("packages", "syncing")`
+        Example: `setSyncState("packages", Account.SyncState.SYNCING)`
         :param service_name: A unique name for your service, such as `plugins` or `backups`
         :param state: One of Account.SYNC_STATES
         """
 
         prev_state = self._sync_state
 
-        if state not in Account.SYNC_STATES:
-            raise AttributeError("Invalid state parameter: {}".format(state))
-
         self._sync_clients[service_name] = state
 
-        if any(val == "syncing" for val in self._sync_clients.values()):
-            self._sync_state = "syncing"
-        elif any(val == "error" for val in self._sync_clients.values()):
-            self._sync_state = "error"
+        if any(val == self.SyncState.SYNCING for val in self._sync_clients.values()):
+            self._sync_state = self.SyncState.SYNCING
+        elif any(val == self.SyncState.ERROR for val in self._sync_clients.values()):
+            self._sync_state = self.SyncState.ERROR
         else:
-            self._sync_state = "success"
+            self._sync_state = self.SyncState.SUCCESS
 
         if self._sync_state != prev_state:
-            self.syncStateChanged.emit(self._sync_state)
+            self.syncStateChanged.emit(self._sync_state.value[0])
 
-            if self._sync_state == "success":
+            if self._sync_state == self.SyncState.SUCCESS:
                 self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.lastSyncDateTimeChanged.emit()
 
