@@ -53,12 +53,13 @@ class VersionUpgrade460to462(VersionUpgrade):
             # Maximum Deviation's effect was corrected. Previously the deviation
             # ended up being only half of what the user had entered. This was
             # fixed in Cura 4.7 so there we need to halve the deviation that the
-            # user had entered.
+            # user had entered. This halving was accidentally merged into 4.6 and had to be reverted
+            # back in 4.6.2.
             if "meshfix_maximum_deviation" in parser["values"]:
                 maximum_deviation = parser["values"]["meshfix_maximum_deviation"]
                 if maximum_deviation.startswith("="):
                     maximum_deviation = maximum_deviation[1:]
-                maximum_deviation = "=(" + maximum_deviation + ") / 2"
+                maximum_deviation = "=(" + maximum_deviation + ") * 2"
                 parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
         result = io.StringIO()
