@@ -32,10 +32,11 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
     cloudPrintersDetectedChanged = pyqtSignal(bool)
-    isSyncingChanged = pyqtSignal(str)
     manualSyncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
     syncStateChanged = pyqtSignal()
+
+    SYNC_STATES = ["syncing", "success", "error"]
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -65,13 +66,44 @@ class Account(QObject):
 
         self._authorization_service = AuthorizationService(self._oauth_settings)
 
+        self._sync_clients = {}
+        """contains entries "client_name" : "state["success"|"error|"syncing"]"""
+
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
-        self.isSyncingChanged.connect(self._onIsSyncingChanged)
+
+    def setSyncState(self, service_name: str, state: str) -> None:
+        """ Can be used to register and update account sync states
+
+        Example: `setSyncState("packages", "syncing")`
+        :param service_name: A unique name for your service, such as `plugins` or `backups`
+        :param state: One of Account.SYNC_STATES
+        """
+
+        prev_state = self._sync_state
+
+        if state not in Account.SYNC_STATES:
+            raise AttributeError("Invalid state parameter: {}".format(state))
+
+        self._sync_clients[service_name] = state
+
+        if any(val == "syncing" for val in self._sync_clients.values()):
+            self._sync_state = "syncing"
+        elif any(val == "error" for val in self._sync_clients.values()):
+            self._sync_state = "error"
+        else:
+            self._sync_state = "success"
+
+        if self._sync_state != prev_state:
+            self.syncStateChanged.emit()
+
+            if self._sync_state == "success":
+                self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
+                self.lastSyncDateTimeChanged.emit()
 
     def _onAccessTokenChanged(self):
         self.accessTokenChanged.emit()
@@ -136,14 +168,6 @@ class Account(QObject):
         if not user_profile:
             return None
         return user_profile.__dict__
-
-    def _onIsSyncingChanged(self, newState: str):
-        if newState == "success":
-            self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
-            self.lastSyncDateTimeChanged.emit()
-
-        self._sync_state = newState
-        self.syncStateChanged.emit()
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
     def lastSyncDateTime(self) -> str:

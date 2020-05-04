@@ -27,6 +27,7 @@ class CloudOutputDeviceManager:
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
     META_NETWORK_KEY = "um_network_key"
+    SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
 
     # The interval with which the remote clusters are checked
     CHECK_CLUSTER_INTERVAL = 30.0  # seconds
@@ -103,7 +104,7 @@ class CloudOutputDeviceManager:
             self._update_timer.stop()
 
         self._syncing = True
-        self._account.isSyncingChanged.emit("syncing")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, "syncing")
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
@@ -133,13 +134,13 @@ class CloudOutputDeviceManager:
             self._connectToActiveMachine()
 
         self._syncing = False
-        self._account.isSyncingChanged.emit("success")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, "success")
         # Schedule a new update
         self._update_timer.start()
 
     def _onGetRemoteClusterFailed(self):
         self._syncing = False
-        self._account.isSyncingChanged.emit("error")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, "error")
         # Schedule a new update
         self._update_timer.start()
 
