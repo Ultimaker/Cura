@@ -29,79 +29,23 @@ Column
         color: UM.Theme.getColor("text")
     }
 
-    Row
-    {
-        width: childrenRect.width
-        height: childrenRect.height
-        anchors.horizontalCenter: parent.horizontalCenter
-        spacing: UM.Theme.getSize("narrow_margin").height
-
-
-
-        UM.RecolorImage
-        {
-            id: updateImage
-            width: 20 * screenScaleFactor
-            height: width
-
-            source: UM.Theme.getIcon("update")
-            color: palette.text
-
-            signal syncingChanged(bool newSyncing)
-            property double animationDuration: 1500
-
-
-            RotationAnimator
-            {
-                id: updateAnimator
-                target: updateImage
-                to: 360;
-            }
-
-            onSyncingChanged:
-            {
-                if(newSyncing)
-                {
-                    // start infinite rotation loop
-                    updateAnimator.from = 0
-                    updateAnimator.duration = animationDuration
-                    updateAnimator.loops = Animation.Infinite
-                    updateAnimator.start()
-                } else {
-                    // complete current rotation
-                    updateAnimator.stop()
-                    updateAnimator.from = updateImage.rotation
-                    updateAnimator.duration = ((360 - updateImage.rotation) / 360) * animationDuration
-                    updateAnimator.loops = 1
-                    updateAnimator.start()
-                }
-            }
-
-            Component.onCompleted: Cura.API.account.isSyncingChanged.connect(syncingChanged) //todo connect to pyqtsignal or a pyqtproperty?
-
-
-        }
-
-        Label
-        {
-            id: accountSyncButton
-            text: catalog.i18nc("@button", "Check for account updates")
-            color: UM.Theme.getColor("secondary_button_text")
-            font: UM.Theme.getFont("medium")
-            renderType: Text.NativeRendering
-
-            MouseArea
-            {
-                anchors.fill: parent
-                onClicked: Cura.API.account.sync()
-                hoverEnabled: true
-                onEntered: accountSyncButton.font.underline = true
-                onExited: accountSyncButton.font.underline = false
-            }
-        }
+    SyncStateIdle {
+        visible: Cura.API.account.syncState == "idle"
     }
 
-     Label
+    SyncStateSyncing {
+        visible: Cura.API.account.syncState == "syncing"
+    }
+
+    SyncStateSuccess {
+        visible: Cura.API.account.syncState == "success"
+    }
+
+    SyncStateError {
+        visible: Cura.API.account.syncState == "error"
+    }
+
+    Label
     {
         id: lastSyncLabel
         anchors.horizontalCenter: parent.horizontalCenter

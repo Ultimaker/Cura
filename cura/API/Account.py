@@ -35,6 +35,7 @@ class Account(QObject):
     isSyncingChanged = pyqtSignal(bool)
     manualSyncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
+    syncStateChanged = pyqtSignal()
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -43,6 +44,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
+        self._sync_state = "idle"
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -136,14 +138,23 @@ class Account(QObject):
         return user_profile.__dict__
 
     def _onIsSyncingChanged(self, active: bool):
-        if not active:
+        if active:
+            self._sync_state = "syncing"
+        else:
             # finished
+            self._sync_state = "success"
             self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
             self.lastSyncDateTimeChanged.emit()
+
+        self.syncStateChanged.emit()
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
     def lastSyncDateTime(self) -> str:
         return self._last_sync_str
+
+    @pyqtProperty(str, notify=syncStateChanged)
+    def syncState(self) -> str:
+        return self._sync_state
 
     @pyqtSlot()
     def sync(self) -> None:
