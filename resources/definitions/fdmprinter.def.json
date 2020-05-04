@@ -1274,6 +1274,15 @@
                     "enabled": "wall_0_extruder_nr == wall_x_extruder_nr",
                     "settable_per_mesh": true
                 },
+                "alternate_wall_direction":
+                {
+                    "label": "Alternate Wall Direction",
+                    "description": "Alternate the direction in which the walls get printed between clockwise and counter-clockwise. The outer and inner walls are alternated and the alternation is flipped each layer. Enable this to reduce torsion warping.",
+                    "type": "bool",
+                    "default_value": false,
+                    "enabled": "wall_line_count > 0",
+                    "settable_per_mesh": true
+                },
                 "alternate_extra_perimeter":
                 {
                     "label": "Alternate Extra Wall",
