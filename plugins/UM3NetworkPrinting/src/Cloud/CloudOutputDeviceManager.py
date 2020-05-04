@@ -103,8 +103,8 @@ class CloudOutputDeviceManager:
             self._update_timer.stop()
 
         self._syncing = True
-        self._account.isSyncingChanged.emit(True)
-        self._api.getClusters(self._onGetRemoteClustersFinished)
+        self._account.isSyncingChanged.emit("syncing")
+        self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
         """Callback for when the request for getting the clusters is finished."""
@@ -133,7 +133,13 @@ class CloudOutputDeviceManager:
             self._connectToActiveMachine()
 
         self._syncing = False
-        self._account.isSyncingChanged.emit(False)
+        self._account.isSyncingChanged.emit("success")
+        # Schedule a new update
+        self._update_timer.start()
+
+    def _onGetRemoteClusterFailed(self):
+        self._syncing = False
+        self._account.isSyncingChanged.emit("error")
         # Schedule a new update
         self._update_timer.start()
 

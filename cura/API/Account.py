@@ -32,7 +32,7 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
     cloudPrintersDetectedChanged = pyqtSignal(bool)
-    isSyncingChanged = pyqtSignal(bool)
+    isSyncingChanged = pyqtSignal(str)
     manualSyncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
     syncStateChanged = pyqtSignal()
@@ -137,15 +137,12 @@ class Account(QObject):
             return None
         return user_profile.__dict__
 
-    def _onIsSyncingChanged(self, active: bool):
-        if active:
-            self._sync_state = "syncing"
-        else:
-            # finished
-            self._sync_state = "success"
+    def _onIsSyncingChanged(self, newState: str):
+        if newState == "success":
             self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
             self.lastSyncDateTimeChanged.emit()
 
+        self._sync_state = newState
         self.syncStateChanged.emit()
 
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
