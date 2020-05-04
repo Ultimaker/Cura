@@ -3,12 +3,12 @@
 
 from typing import Any, Dict, TYPE_CHECKING
 
-from . import VersionUpgrade46to47
+from . import VersionUpgrade460to462
 
 if TYPE_CHECKING:
     from UM.Application import Application
 
-upgrade = VersionUpgrade46to47.VersionUpgrade46to47()
+upgrade = VersionUpgrade460to462.VersionUpgrade460to462()
 
 def getMetaData() -> Dict[str, Any]:
     return {

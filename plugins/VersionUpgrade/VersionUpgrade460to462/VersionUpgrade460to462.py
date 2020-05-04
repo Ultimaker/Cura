@@ -6,7 +6,7 @@ from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
-class VersionUpgrade46to47(VersionUpgrade):
+class VersionUpgrade460to462(VersionUpgrade):
     def getCfgVersion(self, serialised: str) -> int:
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialised)
