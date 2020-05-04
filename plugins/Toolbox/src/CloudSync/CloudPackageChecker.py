@@ -35,7 +35,7 @@ class CloudPackageChecker(QObject):
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
-        self._last_check_packages = []
+        self._last_check_packages = []  # type: List[str]
         """Result from a previous check within the same user session. 
         Used to prevent duplicate notifications"""
 
