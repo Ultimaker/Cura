@@ -128,7 +128,7 @@
     },
     "overrides": {
         "machine_name":                      {"default_value": "UNI Base Printer"},
-        "machine_start_gcode":               {"default_value": ";Sliced at: {day} {date} {time}\nG21\nG90\nM82\nM220 S100\nM221 S100\nG28\nM190 S{material_bed_temperature}\nM109 S{material_print_temperature}\nG1 F600 Z15\nG92 E0\nG1 F300 E10\nM117 Printing...\n;\n"},
+        "machine_start_gcode":               {"default_value": ";Sliced at: {day} {date} {time}\nG21\nG90\nM82\nM220 S100\nM221 S100\nG28\nM190 S{material_bed_temperature_layer_0}\nM109 S{material_print_temperature_layer_0}\nG1 F600 Z15\nG92 E0\nG1 F300 E10\nM117 Printing...\n;\n"},
         "machine_end_gcode":                 {"default_value": "G91\nG1 E-1 F600\nG1 Z+1 E-3 X-20 Y-20 F4800\nM104 S0\nM106 S0\nM140 S0\nM220 S100\nM221 S100\nG28\nG90\nM84\n;\n"},
         "machine_heated_bed":                {"default_value": true},
         "material_diameter":                 {"default_value": 1.75},
