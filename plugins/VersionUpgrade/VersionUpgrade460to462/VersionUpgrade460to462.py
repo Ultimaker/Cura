@@ -26,7 +26,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         result = io.StringIO()
         parser.write(result)
@@ -47,7 +47,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         if "values" in parser:
             # Maximum Deviation's effect was corrected. Previously the deviation
@@ -79,7 +79,7 @@ class VersionUpgrade460to462(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         result = io.StringIO()
         parser.write(result)
