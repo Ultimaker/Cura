@@ -34,7 +34,7 @@ class Account(QObject):
     cloudPrintersDetectedChanged = pyqtSignal(bool)
     manualSyncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
-    syncStateChanged = pyqtSignal()
+    syncStateChanged = pyqtSignal(str)
 
     SYNC_STATES = ["syncing", "success", "error"]
 
@@ -99,7 +99,7 @@ class Account(QObject):
             self._sync_state = "success"
 
         if self._sync_state != prev_state:
-            self.syncStateChanged.emit()
+            self.syncStateChanged.emit(self._sync_state)
 
             if self._sync_state == "success":
                 self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
