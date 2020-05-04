@@ -32,7 +32,7 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         # Remove deleted settings from the visible settings list.
         visible_settings = set(parser["general"]["visible_settings"].split(";"))
@@ -59,12 +59,19 @@ class VersionUpgrade45to46(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         if "values" in parser:
             for removed in _removed_settings:
                 if removed in parser["values"]:
                     del parser["values"][removed]
+
+            if "meshfix_maximum_deviation" in parser["values"]:
+                maximum_deviation = parser["values"]["meshfix_maximum_deviation"]
+                if maximum_deviation.startswith("="):
+                    maximum_deviation = maximum_deviation[1:]
+                maximum_deviation = "=(" + maximum_deviation + ") / 2"
+                parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
         result = io.StringIO()
         parser.write(result)
@@ -84,7 +91,7 @@ class VersionUpgrade45to46(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "12"
+        parser["metadata"]["setting_version"] = "13"
 
         result = io.StringIO()
         parser.write(result)
