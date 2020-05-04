@@ -73,8 +73,8 @@ class Account(QObject):
 
         self._authorization_service = AuthorizationService(self._oauth_settings)
 
-        self._sync_clients = {}
-        """contains entries "client_name" : "SyncState"""
+        self._sync_services = {}  # type: Dict[str, Account.SyncState]
+        """contains entries "service_name" : SyncState"""
 
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
@@ -93,11 +93,11 @@ class Account(QObject):
 
         prev_state = self._sync_state
 
-        self._sync_clients[service_name] = state
+        self._sync_services[service_name] = state
 
-        if any(val == self.SyncState.SYNCING for val in self._sync_clients.values()):
+        if any(val == self.SyncState.SYNCING for val in self._sync_services.values()):
             self._sync_state = self.SyncState.SYNCING
-        elif any(val == self.SyncState.ERROR for val in self._sync_clients.values()):
+        elif any(val == self.SyncState.ERROR for val in self._sync_services.values()):
             self._sync_state = self.SyncState.ERROR
         else:
             self._sync_state = self.SyncState.SUCCESS
