@@ -3,7 +3,7 @@
     "version": 2,
     "inherits": "adimlab_base",
     "overrides": {
-        "machine_name": { "default_value": "Creality CR-10" },
+        "machine_name": { "default_value": "ADIMLab Gantry" },
         "machine_width": { "default_value": 310 },
         "machine_depth": { "default_value": 310 },
         "machine_height": { "default_value": 410 },
