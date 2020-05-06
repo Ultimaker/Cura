@@ -573,6 +573,7 @@
 
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
+        "welcome_wizard_window": [46.0, 45],
         "modal_window_minimum": [60.0, 45],
         "license_window_minimum": [45, 45],
         "wizard_progress": [10.0, 0.0],
