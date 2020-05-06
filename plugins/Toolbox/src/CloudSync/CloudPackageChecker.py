@@ -75,8 +75,8 @@ class CloudPackageChecker(QObject):
             Logger.log("w", "Received invalid JSON for user subscribed packages from the Web Marketplace")
 
     def _handleCompatibilityData(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
-        user_subscribed_packages = [plugin["package_id"] for plugin in subscribed_packages_payload]
-        user_installed_packages = self._package_manager.getUserInstalledPackages()
+        user_subscribed_packages = {plugin["package_id"] for plugin in subscribed_packages_payload}
+        user_installed_packages = self._package_manager.getAllInstalledPackageIDs()
 
         # We need to re-evaluate the dismissed packages
         # (i.e. some package might got updated to the correct SDK version in the meantime,
