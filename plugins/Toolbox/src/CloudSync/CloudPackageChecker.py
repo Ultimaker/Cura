@@ -36,6 +36,9 @@ class CloudPackageChecker(QObject):
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
+        self._last_check_packages = []  # type: List[str]
+        """Result from a previous check within the same user session. 
+        Used to prevent duplicate notifications"""
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -44,8 +47,13 @@ class CloudPackageChecker(QObject):
         # initial check
         self._getPackagesIfLoggedIn()
 
-        self._application.getCuraAPI().account.loginStateChanged.connect(self._getPackagesIfLoggedIn)
-        self._application.getCuraAPI().account.manualSyncRequested.connect(self._getPackagesIfLoggedIn)
+        self._application.getCuraAPI().account.loginStateChanged.connect(self._onLoginStateChanged)
+        self._application.getCuraAPI().account.syncRequested.connect(self._getPackagesIfLoggedIn)
+
+    def _onLoginStateChanged(self) -> None:
+        # reset session
+        self._last_check_packages = []
+        self._getPackagesIfLoggedIn()
 
     def _getPackagesIfLoggedIn(self) -> None:
         if self._application.getCuraAPI().account.isLoggedIn:
@@ -88,6 +96,10 @@ class CloudPackageChecker(QObject):
         user_subscribed_packages = [plugin["package_id"] for plugin in subscribed_packages_payload]
         user_installed_packages = self._package_manager.getUserInstalledPackages()
 
+        if user_subscribed_packages == self._last_check_packages:
+            # nothing new here
+            return
+
         # We need to re-evaluate the dismissed packages
         # (i.e. some package might got updated to the correct SDK version in the meantime,
         # hence remove them from the Dismissed Incompatible list)
@@ -103,6 +115,7 @@ class CloudPackageChecker(QObject):
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
             self._showSyncMessage()
+            self._last_check_packages = user_subscribed_packages
 
     def _showSyncMessage(self) -> None:
         """Show the message if it is not already shown"""

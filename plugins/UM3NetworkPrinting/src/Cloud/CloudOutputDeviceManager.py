@@ -29,9 +29,6 @@ class CloudOutputDeviceManager:
     META_NETWORK_KEY = "um_network_key"
     SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
 
-    # The interval with which the remote clusters are checked
-    CHECK_CLUSTER_INTERVAL = 30.0  # seconds
-
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
 
@@ -44,13 +41,6 @@ class CloudOutputDeviceManager:
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
         self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
-
-        # Create a timer to update the remote cluster list
-        self._update_timer = QTimer()
-        self._update_timer.setInterval(int(self.CHECK_CLUSTER_INTERVAL * 1000))
-        # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
-        self._update_timer.setSingleShot(True)
-        self._update_timer.timeout.connect(self._getRemoteClusters)
 
         # Ensure we don't start twice.
         self._running = False
@@ -65,11 +55,9 @@ class CloudOutputDeviceManager:
         if not self._account.isLoggedIn:
             return
         self._running = True
-        if not self._update_timer.isActive():
-            self._update_timer.start()
         self._getRemoteClusters()
 
-        self._account.manualSyncRequested.connect(self._getRemoteClusters)
+        self._account.syncRequested.connect(self._getRemoteClusters)
 
     def stop(self):
         """Stops running the cloud output device manager."""
@@ -77,8 +65,6 @@ class CloudOutputDeviceManager:
         if not self._running:
             return
         self._running = False
-        if self._update_timer.isActive():
-            self._update_timer.stop()
         self._onGetRemoteClustersFinished([])  # Make sure we remove all cloud output devices.
 
     def refreshConnections(self) -> None:
@@ -100,8 +86,7 @@ class CloudOutputDeviceManager:
         if self._syncing:
             return
 
-        if self._update_timer.isActive():
-            self._update_timer.stop()
+        Logger.info("Syncing cloud printer clusters")
 
         self._syncing = True
         self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SYNCING)
@@ -135,14 +120,10 @@ class CloudOutputDeviceManager:
 
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SUCCESS)
-        # Schedule a new update
-        self._update_timer.start()
 
     def _onGetRemoteClusterFailed(self):
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.ERROR)
-        # Schedule a new update
-        self._update_timer.start()
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices

@@ -4,7 +4,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Optional, Dict, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -28,6 +28,8 @@ i18n_catalog = i18nCatalog("cura")
 #       api.account.userProfile # Who is logged in``
 #
 class Account(QObject):
+    # The interval with which the remote clusters are checked
+    SYNC_INTERVAL = 30.0  # seconds
 
     class SyncState(Enum):
         """Caution: values used in qml (eg. SyncState.qml)"""
@@ -40,7 +42,7 @@ class Account(QObject):
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
     cloudPrintersDetectedChanged = pyqtSignal(bool)
-    manualSyncRequested = pyqtSignal()
+    syncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
     syncStateChanged = pyqtSignal(str)
 
@@ -72,6 +74,13 @@ class Account(QObject):
 
         self._authorization_service = AuthorizationService(self._oauth_settings)
 
+        # Create a timer for automatic account sync
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(int(self.SYNC_INTERVAL * 1000))
+        # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self.syncRequested)
+
         self._sync_services = {}  # type: Dict[str, Account.SyncState]
         """contains entries "service_name" : SyncState"""
 
@@ -83,9 +92,9 @@ class Account(QObject):
         self._authorization_service.loadAuthDataFromPreferences()
 
     def setSyncState(self, service_name: str, state: SyncState) -> None:
-        """ Can be used to register and update account sync states
+        """ Can be used to register sync services and update account sync states
 
-        Example: `setSyncState("packages", Account.SyncState.SYNCING)`
+        Example: `setSyncState("PluginSyncService", Account.SyncState.SYNCING)`
         :param service_name: A unique name for your service, such as `plugins` or `backups`
         :param state: One of Account.SYNC_STATES
         """
@@ -107,6 +116,11 @@ class Account(QObject):
             if self._sync_state == self.SyncState.SUCCESS:
                 self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.lastSyncDateTimeChanged.emit()
+
+            if self._sync_state != "syncing":
+                # schedule new auto update after syncing completed (for whatever reason)
+                if not self._update_timer.isActive():
+                    self._update_timer.start()
 
     def _onAccessTokenChanged(self):
         self.accessTokenChanged.emit()
@@ -180,7 +194,7 @@ class Account(QObject):
     def sync(self) -> None:
         """Checks for new cloud printers"""
 
-        self.manualSyncRequested.emit()
+        self.syncRequested.emit()
 
     @pyqtSlot()
     def logout(self) -> None:
