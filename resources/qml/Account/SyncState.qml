@@ -78,4 +78,33 @@ Row // sync state icon + message
             }
         }
     }
+
+    signal syncStateChanged(string newState)
+
+    onSyncStateChanged: {
+        if(newState == "syncing"){
+            syncRow.iconSource = UM.Theme.getIcon("update")
+            syncRow.labelText = catalog.i18nc("@label", "Checking...")
+        } else if (newState == "success") {
+            syncRow.iconSource = UM.Theme.getIcon("checked")
+            syncRow.labelText = catalog.i18nc("@label", "You are up to date")
+        } else if (newState == "error") {
+            syncRow.iconSource = UM.Theme.getIcon("warning-light")
+            syncRow.labelText = catalog.i18nc("@label", "Something went wrong...")
+        } else {
+            print("Error: unexpected sync state: " + newState)
+        }
+
+        if(newState == "syncing"){
+            syncRow.animateIconRotation = true
+            syncRow.syncButtonVisible = false
+        } else {
+            syncRow.animateIconRotation = false
+            syncRow.syncButtonVisible = true
+        }
+    }
+
+    Component.onCompleted: Cura.API.account.syncStateChanged.connect(syncStateChanged)
+
+
 }
