@@ -96,7 +96,7 @@ class Account(QObject):
 
         Example: `setSyncState("PluginSyncService", Account.SyncState.SYNCING)`
         :param service_name: A unique name for your service, such as `plugins` or `backups`
-        :param state: One of Account.SYNC_STATES
+        :param state: One of Account.SyncState
         """
 
         prev_state = self._sync_state
@@ -117,7 +117,7 @@ class Account(QObject):
                 self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.lastSyncDateTimeChanged.emit()
 
-            if self._sync_state != "syncing":
+            if self._sync_state != self.SyncState.SYNCING:
                 # schedule new auto update after syncing completed (for whatever reason)
                 if not self._update_timer.isActive():
                     self._update_timer.start()
