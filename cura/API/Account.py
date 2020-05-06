@@ -29,7 +29,6 @@ class Account(QObject):
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
-    cloudPrintersDetectedChanged = pyqtSignal(bool)
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -75,10 +74,6 @@ class Account(QObject):
     @pyqtProperty(bool, notify=loginStateChanged)
     def isLoggedIn(self) -> bool:
         return self._logged_in
-
-    @pyqtProperty(bool, notify=cloudPrintersDetectedChanged)
-    def newCloudPrintersDetected(self) -> bool:
-        return self._new_cloud_printers_detected
 
     def _onLoginStateChanged(self, logged_in: bool = False, error_message: Optional[str] = None) -> None:
         if error_message:
