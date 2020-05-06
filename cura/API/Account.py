@@ -6,7 +6,6 @@ from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
-from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -31,7 +30,7 @@ i18n_catalog = i18nCatalog("cura")
 class Account(QObject):
 
     class SyncState(Enum):
-        """Caution: values used in qml (eg. UserOperations.qml)"""
+        """Caution: values used in qml (eg. SyncState.qml)"""
 
         SYNCING = "syncing",
         SUCCESS = "success",
@@ -176,10 +175,6 @@ class Account(QObject):
     @pyqtProperty(str, notify=lastSyncDateTimeChanged)
     def lastSyncDateTime(self) -> str:
         return self._last_sync_str
-
-    @pyqtProperty(str, notify=syncStateChanged)
-    def syncState(self) -> str:
-        return self._sync_state
 
     @pyqtSlot()
     def sync(self) -> None:
