@@ -134,13 +134,13 @@ class CloudOutputDeviceManager:
             self._connectToActiveMachine()
 
         self._syncing = False
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, "success")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SUCCESS)
         # Schedule a new update
         self._update_timer.start()
 
     def _onGetRemoteClusterFailed(self):
         self._syncing = False
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, "error")
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.ERROR)
         # Schedule a new update
         self._update_timer.start()
 
