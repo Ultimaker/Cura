@@ -157,7 +157,7 @@ fragment41core =
 u_active_extruder = 0.0
 u_shade_factor = 0.60
 u_layer_view_type = 0
-u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+u_extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
 
 u_show_travel_moves = 0
 u_show_helpers = 1
