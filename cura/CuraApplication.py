@@ -304,7 +304,9 @@ class CuraApplication(QtApplication):
 
         super().initialize()
 
-        self._checkEarlyPreferences()
+        self._preferences.addPreference("cura/single_instance", False)
+        self._use_single_instance = self._preferences.getValue("cura/single_instance")
+
         self.__sendCommandToSingleInstance()
         self._initializeSettingDefinitions()
         self._initializeSettingFunctions()
@@ -314,20 +316,6 @@ class CuraApplication(QtApplication):
 
         self._machine_action_manager = MachineActionManager.MachineActionManager(self)
         self._machine_action_manager.initialize()
-
-    def _checkEarlyPreferences(self) -> None:
-        # Check for specific preferences early in the bootstrap process, without spinning up the full Preference singleton yet
-        if self._use_single_instance:
-            return
-
-        preferences_file = Resources.getPath(Resources.Preferences, "{}.cfg".format(self.getApplicationName()))
-        if not os.path.exists(preferences_file):
-            return
-
-        with open(preferences_file) as preferences:
-            if "single_instance = True" in preferences.read():
-                Logger.log("i", "Preference to use a single instance detected")
-                self._use_single_instance = True
 
     def __sendCommandToSingleInstance(self):
         self._single_instance = SingleInstance(self, self._files_to_open)
@@ -523,7 +511,7 @@ class CuraApplication(QtApplication):
         preferences.setValue("metadata/setting_version", self.SettingVersion) #Don't make it equal to the default so that the setting version always gets written to the file.
 
         preferences.addPreference("cura/active_mode", "simple")
-        preferences.addPreference("cura/single_instance", False)
+
         preferences.addPreference("cura/categories_expanded", "")
         preferences.addPreference("cura/jobname_prefix", True)
         preferences.addPreference("cura/select_models_on_load", False)
