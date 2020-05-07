@@ -152,7 +152,7 @@ geometry41core =
         float size_x;
         float size_y;
 
-        if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0]/4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
+        if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0] / 4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
             return;
         }
         // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
