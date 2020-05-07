@@ -317,6 +317,8 @@ class SimulationView(CuraView):
             self.currentLayerNumChanged.emit()
 
     def getExtruderOpacities(self) -> Matrix:
+        # NOTE: Extruder opacities are stored in a matrix for (minor) performance reasons (w.r.t. OpenGL/shaders).
+        # If more than 16 extruders are called for, this should be converted to a sampler1d.
         return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
