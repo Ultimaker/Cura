@@ -64,7 +64,7 @@
         "machine_max_feedrate_x": { "value": 500 },
         "machine_max_feedrate_y": { "value": 500 },
         "machine_max_feedrate_z": { "value": 5 },
-        "machine_max_feedrate_e": { "value": 25 },
+        "machine_max_feedrate_e": { "value": 30 },
 
         "machine_max_acceleration_x": { "value": 500 },
         "machine_max_acceleration_y": { "value": 500 },
@@ -84,6 +84,7 @@
         "jerk_enabled": { "value": false },
 
         "speed_print": { "value": 50.0 },
+        "speed_z_hop": { "value": "machine_max_feedrate_z" },
 
         "optimize_wall_printing_order": { "value": "True" },
         "material_initial_print_temperature": { "value": "material_print_temperature" },
