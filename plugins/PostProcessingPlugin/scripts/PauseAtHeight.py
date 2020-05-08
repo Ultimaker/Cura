@@ -134,9 +134,8 @@ class PauseAtHeight(Script):
             }
         }"""
 
-    ##  Get the X and Y values for a layer (will be used to get X and Y of the
-    #   layer after the pause).
     def getNextXY(self, layer: str) -> Tuple[float, float]:
+        """Get the X and Y values for a layer (will be used to get X and Y of the layer after the pause)."""
         lines = layer.split("\n")
         for line in lines:
             if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
@@ -145,10 +144,12 @@ class PauseAtHeight(Script):
                 return x, y
         return 0, 0
 
-    ##  Inserts the pause commands.
-    #   \param data: List of layers.
-    #   \return New list of layers.
     def execute(self, data: List[str]) -> List[str]:
+        """Inserts the pause commands.
+        
+        :param data: List of layers.
+        :return: New list of layers.
+        """
         pause_at = self.getSettingValueByKey("pause_at")
         pause_height = self.getSettingValueByKey("pause_height")
         pause_layer = self.getSettingValueByKey("pause_layer")
