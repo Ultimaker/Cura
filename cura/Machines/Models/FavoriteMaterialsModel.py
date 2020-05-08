@@ -4,16 +4,17 @@
 from cura.Machines.Models.BaseMaterialsModel import BaseMaterialsModel
 import cura.CuraApplication  # To listen to changes to the preferences.
 
-##  Model that shows the list of favorite materials.
 class FavoriteMaterialsModel(BaseMaterialsModel):
+    """Model that shows the list of favorite materials."""
+
     def __init__(self, parent = None):
         super().__init__(parent)
         cura.CuraApplication.CuraApplication.getInstance().getPreferences().preferenceChanged.connect(self._onFavoritesChanged)
         self._onChanged()
 
-    ##  Triggered when any preference changes, but only handles it when the list
-    #   of favourites is changed.
     def _onFavoritesChanged(self, preference_key: str) -> None:
+        """Triggered when any preference changes, but only handles it when the list of favourites is changed. """
+
         if preference_key != "cura/favorite_materials":
             return
         self._onChanged()

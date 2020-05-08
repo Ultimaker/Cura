@@ -42,8 +42,9 @@ class GlobalStacksModel(ListModel):
         CuraContainerRegistry.getInstance().containerRemoved.connect(self._onContainerChanged)
         self._updateDelayed()
 
-    ##  Handler for container added/removed events from registry
     def _onContainerChanged(self, container) -> None:
+        """Handler for container added/removed events from registry"""
+
         # We only need to update when the added / removed container GlobalStack
         if isinstance(container, GlobalStack):
             self._updateDelayed()

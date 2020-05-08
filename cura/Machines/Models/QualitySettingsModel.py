@@ -10,10 +10,9 @@ from UM.Qt.ListModel import ListModel
 from UM.Settings.ContainerRegistry import ContainerRegistry
 
 
-#
-# This model is used to show details settings of the selected quality in the quality management page.
-#
 class QualitySettingsModel(ListModel):
+    """This model is used to show details settings of the selected quality in the quality management page."""
+
     KeyRole = Qt.UserRole + 1
     LabelRole = Qt.UserRole + 2
     UnitRole = Qt.UserRole + 3
