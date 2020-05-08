@@ -6,8 +6,7 @@ from typing import Tuple, List
 import io
 from UM.VersionUpgrade import VersionUpgrade
 
-
-class VersionUpgrade46to47(VersionUpgrade):
+class VersionUpgrade460to462(VersionUpgrade):
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """
         Upgrades preferences to have the new version number.
@@ -20,7 +19,7 @@ class VersionUpgrade46to47(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         result = io.StringIO()
         parser.write(result)
@@ -41,18 +40,19 @@ class VersionUpgrade46to47(VersionUpgrade):
         parser.read_string(serialized)
 
         # Update version number.
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         if "values" in parser:
             # Maximum Deviation's effect was corrected. Previously the deviation
             # ended up being only half of what the user had entered. This was
             # fixed in Cura 4.7 so there we need to halve the deviation that the
-            # user had entered.
+            # user had entered. This halving was accidentally merged into 4.6 and had to be reverted
+            # back in 4.6.2.
             if "meshfix_maximum_deviation" in parser["values"]:
                 maximum_deviation = parser["values"]["meshfix_maximum_deviation"]
                 if maximum_deviation.startswith("="):
                     maximum_deviation = maximum_deviation[1:]
-                maximum_deviation = "=(" + maximum_deviation + ") / 2"
+                maximum_deviation = "=(" + maximum_deviation + ") * 2"
                 parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
         result = io.StringIO()
@@ -73,7 +73,7 @@ class VersionUpgrade46to47(VersionUpgrade):
         # Update version number.
         if "metadata" not in parser:
             parser["metadata"] = {}
-        parser["metadata"]["setting_version"] = "13"
+        parser["metadata"]["setting_version"] = "14"
 
         result = io.StringIO()
         parser.write(result)

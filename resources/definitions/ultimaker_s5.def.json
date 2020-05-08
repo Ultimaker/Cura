@@ -157,7 +157,7 @@
         "wall_line_width_x": { "value": "round(line_width * 0.3 / 0.35, 2)" },
         "wall_thickness": { "value": "1" },
         "meshfix_maximum_resolution": { "value": "(speed_wall_0 + speed_wall_x) / 60" },
-        "meshfix_maximum_deviation": { "value": "layer_height / 4" },
+        "meshfix_maximum_deviation": { "value": "layer_height / 2" },
         "optimize_wall_printing_order": { "value": "True" },
         "retraction_combing": { "default_value": "all" },
         "initial_layer_line_width_factor": { "value": "120" },

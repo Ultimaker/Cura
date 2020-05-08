@@ -172,7 +172,7 @@
 
         "meshfix_maximum_resolution":       {"value": 0.01 },
         "meshfix_maximum_travel_resolution":{"value": 0.1 },
-        "meshfix_maximum_deviation":        {"value": 0.005 },
+        "meshfix_maximum_deviation":        {"value": 0.01 },
 
         "minimum_polygon_circumference":    {"value": 0.05 },
         "coasting_enable":                  {"value": false},

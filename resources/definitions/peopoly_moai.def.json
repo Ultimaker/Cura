@@ -171,7 +171,7 @@
             "value": "0.1"
         },
         "meshfix_maximum_deviation": {
-            "value": "0.0015"
+            "value": "0.003"
         },
         "skin_outline_count": {
             "value": 0
