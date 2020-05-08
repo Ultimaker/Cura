@@ -12,40 +12,48 @@ catalog = i18nCatalog("cura")
 
 from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
-##  A class that reads profile data from g-code files.
-#
-#   It reads the profile data from g-code files and stores it in a new profile.
-#   This class currently does not process the rest of the g-code in any way.
 class GCodeProfileReader(ProfileReader):
-    ##  The file format version of the serialized g-code.
-    #
-    #   It can only read settings with the same version as the version it was
-    #   written with. If the file format is changed in a way that breaks reverse
-    #   compatibility, increment this version number!
-    version = 3
+    """A class that reads profile data from g-code files.
+    
+    It reads the profile data from g-code files and stores it in a new profile.
+    This class currently does not process the rest of the g-code in any way.
+    """
 
-    ##  Dictionary that defines how characters are escaped when embedded in
-    #   g-code.
-    #
-    #   Note that the keys of this dictionary are regex strings. The values are
-    #   not.
+    version = 3
+    """The file format version of the serialized g-code.
+    
+    It can only read settings with the same version as the version it was
+    written with. If the file format is changed in a way that breaks reverse
+    compatibility, increment this version number!
+    """
+
     escape_characters = {
         re.escape("\\\\"): "\\", #The escape character.
         re.escape("\\n"): "\n",  #Newlines. They break off the comment.
         re.escape("\\r"): "\r"   #Carriage return. Windows users may need this for visualisation in their editors.
     }
+    """Dictionary that defines how characters are escaped when embedded in
 
-    ##  Initialises the g-code reader as a profile reader.
+    g-code.
+
+    Note that the keys of this dictionary are regex strings. The values are
+    not.
+    """
+
     def __init__(self):
+        """Initialises the g-code reader as a profile reader."""
+
         super().__init__()
 
-    ##  Reads a g-code file, loading the profile from it.
-    #
-    #   \param file_name The name of the file to read the profile from.
-    #   \return The profile that was in the specified file, if any. If the
-    #   specified file was no g-code or contained no parsable profile, \code
-    #   None \endcode is returned.
     def read(self, file_name):
+        """Reads a g-code file, loading the profile from it.
+        
+        :param file_name: The name of the file to read the profile from.
+        :return: The profile that was in the specified file, if any. If the
+            specified file was no g-code or contained no parsable profile,
+            None  is returned.
+        """
+
         if file_name.split(".")[-1] != "gcode":
             return None
 
@@ -94,22 +102,28 @@ class GCodeProfileReader(ProfileReader):
             profiles.append(readQualityProfileFromString(profile_string))
         return profiles
 
-##  Unescape a string which has been escaped for use in a gcode comment.
-#
-#   \param string The string to unescape.
-#   \return \type{str} The unscaped string.
-def unescapeGcodeComment(string):
+
+def unescapeGcodeComment(string: str) -> str:
+    """Unescape a string which has been escaped for use in a gcode comment.
+    
+    :param string: The string to unescape.
+    :return: The unescaped string.
+    """
+
     # Un-escape the serialized profile.
     pattern = re.compile("|".join(GCodeProfileReader.escape_characters.keys()))
 
     # Perform the replacement with a regular expression.
     return pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], string)
 
-##  Read in a profile from a serialized string.
-#
-#   \param profile_string The profile data in serialized form.
-#   \return \type{Profile} the resulting Profile object or None if it could not be read.
-def readQualityProfileFromString(profile_string):
+
+def readQualityProfileFromString(profile_string) -> InstanceContainer:
+    """Read in a profile from a serialized string.
+    
+    :param profile_string: The profile data in serialized form.
+    :return: The resulting Profile object or None if it could not be read.
+    """
+
     # Create an empty profile - the id and name will be changed by the ContainerRegistry
     profile = InstanceContainer("")
     try:
