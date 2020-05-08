@@ -18,10 +18,12 @@ from .FirmwareUpdateCheckerMessage import FirmwareUpdateCheckerMessage
 i18n_catalog = i18nCatalog("cura")
 
 
-## This Extension checks for new versions of the firmware based on the latest checked version number.
-#  The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
-#  to change it to work for other applications.
 class FirmwareUpdateChecker(Extension):
+    """This Extension checks for new versions of the firmware based on the latest checked version number.
+    
+    The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
+    to change it to work for other applications.
+    """
 
     def __init__(self) -> None:
         super().__init__()
@@ -35,8 +37,9 @@ class FirmwareUpdateChecker(Extension):
         self._check_job = None
         self._checked_printer_names = set()  # type: Set[str]
 
-    ##  Callback for the message that is spawned when there is a new version.
     def _onActionTriggered(self, message, action):
+        """Callback for the message that is spawned when there is a new version."""
+
         if action == FirmwareUpdateCheckerMessage.STR_ACTION_DOWNLOAD:
             machine_id = message.getMachineId()
             download_url = message.getDownloadUrl()
@@ -57,13 +60,15 @@ class FirmwareUpdateChecker(Extension):
     def _onJobFinished(self, *args, **kwargs):
         self._check_job = None
 
-    ##  Connect with software.ultimaker.com, load latest.version and check version info.
-    #   If the version info is different from the current version, spawn a message to
-    #   allow the user to download it.
-    #
-    #   \param silent type(boolean) Suppresses messages other than "new version found" messages.
-    #                               This is used when checking for a new firmware version at startup.
     def checkFirmwareVersion(self, container = None, silent = False):
+        """Connect with software.ultimaker.com, load latest.version and check version info.
+        
+        If the version info is different from the current version, spawn a message to
+        allow the user to download it.
+        
+        :param silent: type(boolean) Suppresses messages other than "new version found" messages.
+            This is used when checking for a new firmware version at startup.
+        """
         container_name = container.definition.getName()
         if container_name in self._checked_printer_names:
             return

@@ -21,8 +21,9 @@ from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 
-##  This job checks if there is an update available on the provided URL.
 class FirmwareUpdateCheckerJob(Job):
+    """This job checks if there is an update available on the provided URL."""
+
     STRING_ZERO_VERSION = "0.0.0"
     STRING_EPSILON_VERSION = "0.0.1"
     ZERO_VERSION = Version(STRING_ZERO_VERSION)
