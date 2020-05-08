@@ -11,7 +11,7 @@ def collecAllPlatformMeshes():
     result = []
     for root, directories, filenames in os.walk(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "meshes"))):
         for filename in filenames:
-            if os.path.basename(filename) not in __exclude_filenames:
+            if filename not in __exclude_filenames:
                 result.append(os.path.join(root, filename))
     return result
 
