@@ -10,6 +10,7 @@ from UM.Logger import Logger  # To log errors talking to the API.
 from UM.Message import Message
 from UM.Signal import Signal
 from cura.API import Account
+from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
@@ -89,7 +90,7 @@ class CloudOutputDeviceManager:
         Logger.info("Syncing cloud printer clusters")
 
         self._syncing = True
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SYNCING)
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
@@ -119,11 +120,11 @@ class CloudOutputDeviceManager:
             self._connectToActiveMachine()
 
         self._syncing = False
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SUCCESS)
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
     def _onGetRemoteClusterFailed(self):
         self._syncing = False
-        self._account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.ERROR)
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices

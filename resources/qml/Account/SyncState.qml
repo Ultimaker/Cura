@@ -82,20 +82,20 @@ Row // sync state icon + message
     signal syncStateChanged(string newState)
 
     onSyncStateChanged: {
-        if(newState == "syncing"){
+        if(newState == Cura.AccountSyncState.SYNCING){
             syncRow.iconSource = UM.Theme.getIcon("update")
             syncRow.labelText = catalog.i18nc("@label", "Checking...")
-        } else if (newState == "success") {
+        } else if (newState == Cura.AccountSyncState.SUCCESS) {
             syncRow.iconSource = UM.Theme.getIcon("checked")
             syncRow.labelText = catalog.i18nc("@label", "You are up to date")
-        } else if (newState == "error") {
-            syncRow.iconSource = UM.Theme.getIcon("warning-light")
+        } else if (newState == Cura.AccountSyncState.ERROR) {
+            syncRow.iconSource = UM.Theme.getIcon("warning_light")
             syncRow.labelText = catalog.i18nc("@label", "Something went wrong...")
         } else {
             print("Error: unexpected sync state: " + newState)
         }
 
-        if(newState == "syncing"){
+        if(newState == Cura.AccountSyncState.SYNCING){
             syncRow.animateIconRotation = true
             syncRow.syncButtonVisible = false
         } else {

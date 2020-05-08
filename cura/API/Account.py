@@ -1,10 +1,9 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
-from enum import Enum
 from typing import Optional, Dict, TYPE_CHECKING
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 
 from UM.Message import Message
 from UM.i18n import i18nCatalog
@@ -16,6 +15,13 @@ if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
 
 i18n_catalog = i18nCatalog("cura")
+
+
+class SyncState(QObject):
+    """QML: Cura.AccountSyncState"""
+    SYNCING = 0
+    SUCCESS = 1
+    ERROR = 2
 
 
 ##  The account API provides a version-proof bridge to use Ultimaker Accounts
@@ -30,13 +36,7 @@ i18n_catalog = i18nCatalog("cura")
 class Account(QObject):
     # The interval with which the remote clusters are checked
     SYNC_INTERVAL = 30.0  # seconds
-
-    class SyncState(Enum):
-        """Caution: values used in qml (eg. SyncState.qml)"""
-
-        SYNCING = "syncing",
-        SUCCESS = "success",
-        ERROR = "error"
+    Q_ENUMS(SyncState)
 
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
@@ -44,7 +44,7 @@ class Account(QObject):
     cloudPrintersDetectedChanged = pyqtSignal(bool)
     syncRequested = pyqtSignal()
     lastSyncDateTimeChanged = pyqtSignal()
-    syncStateChanged = pyqtSignal(str)
+    syncStateChanged = pyqtSignal(int)  # because it's an int Enum
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -53,7 +53,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
-        self._sync_state = self.SyncState.SUCCESS
+        self._sync_state = SyncState.SUCCESS
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -81,7 +81,7 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.syncRequested)
 
-        self._sync_services = {}  # type: Dict[str, Account.SyncState]
+        self._sync_services = {}  # type: Dict[str, SyncState]
         """contains entries "service_name" : SyncState"""
 
     def initialize(self) -> None:
@@ -94,30 +94,30 @@ class Account(QObject):
     def setSyncState(self, service_name: str, state: SyncState) -> None:
         """ Can be used to register sync services and update account sync states
 
-        Example: `setSyncState("PluginSyncService", Account.SyncState.SYNCING)`
+        Example: `setSyncState("PluginSyncService", SyncState.SYNCING)`
         :param service_name: A unique name for your service, such as `plugins` or `backups`
-        :param state: One of Account.SyncState
+        :param state: One of SyncState
         """
 
         prev_state = self._sync_state
 
         self._sync_services[service_name] = state
 
-        if any(val == self.SyncState.SYNCING for val in self._sync_services.values()):
-            self._sync_state = self.SyncState.SYNCING
-        elif any(val == self.SyncState.ERROR for val in self._sync_services.values()):
-            self._sync_state = self.SyncState.ERROR
+        if any(val == SyncState.SYNCING for val in self._sync_services.values()):
+            self._sync_state = SyncState.SYNCING
+        elif any(val == SyncState.ERROR for val in self._sync_services.values()):
+            self._sync_state = SyncState.ERROR
         else:
-            self._sync_state = self.SyncState.SUCCESS
+            self._sync_state = SyncState.SUCCESS
 
         if self._sync_state != prev_state:
-            self.syncStateChanged.emit(self._sync_state.value[0])
+            self.syncStateChanged.emit(self._sync_state)
 
-            if self._sync_state == self.SyncState.SUCCESS:
+            if self._sync_state == SyncState.SUCCESS:
                 self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.lastSyncDateTimeChanged.emit()
 
-            if self._sync_state != self.SyncState.SYNCING:
+            if self._sync_state != SyncState.SYNCING:
                 # schedule new auto update after syncing completed (for whatever reason)
                 if not self._update_timer.isActive():
                     self._update_timer.start()

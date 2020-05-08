@@ -13,7 +13,7 @@ from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
-from cura.API import Account
+from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication, ApplicationMetadata
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .SubscribedPackagesModel import SubscribedPackagesModel
@@ -62,7 +62,7 @@ class CloudPackageChecker(QObject):
             self._hideSyncMessage()
 
     def _getUserSubscribedPackages(self) -> None:
-        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, Account.SyncState.SYNCING)
+        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
         Logger.debug("Requesting subscribed packages metadata from server.")
         url = CloudApiModel.api_url_user_packages
         self._application.getHttpRequestManager().get(url,
@@ -75,7 +75,7 @@ class CloudPackageChecker(QObject):
             Logger.log("w",
                        "Requesting user packages failed, response code %s while trying to connect to %s",
                        reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url())
-            self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, "error")
+            self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
             return
 
         try:
@@ -84,13 +84,13 @@ class CloudPackageChecker(QObject):
             if "errors" in json_data:
                 for error in json_data["errors"]:
                     Logger.log("e", "%s", error["title"])
-                    self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, "error")
+                    self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
                 return
             self._handleCompatibilityData(json_data["data"])
         except json.decoder.JSONDecodeError:
             Logger.log("w", "Received invalid JSON for user subscribed packages from the Web Marketplace")
 
-        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, "success")
+        self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
     def _handleCompatibilityData(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
         user_subscribed_packages = [plugin["package_id"] for plugin in subscribed_packages_payload]
