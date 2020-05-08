@@ -14,7 +14,7 @@ Cura's scene has a few nodes that are always present, and a few nodes that are r
 
 * Root
   * Camera
-  * Build volume
+  * [Build volume](build_volume.md)
     * Platform
   * Object 1
   * Group 1
