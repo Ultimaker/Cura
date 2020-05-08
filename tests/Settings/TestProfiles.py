@@ -3,17 +3,14 @@
 
 from unittest.mock import MagicMock
 import configparser  # To read the profiles.
+import os
+import os.path
 import pytest
 
 from cura.CuraApplication import CuraApplication  # To compare against the current SettingVersion.
 from UM.Settings.DefinitionContainer import DefinitionContainer
 from UM.Settings.InstanceContainer import InstanceContainer
-
-import os
-import os.path
-
 from UM.VersionUpgradeManager import VersionUpgradeManager
-from cura.CuraApplication import CuraApplication
 
 
 def collectAllQualities():
@@ -145,11 +142,15 @@ def test_validateVariantProfiles(file_name):
         assert False
 
 @pytest.mark.parametrize("file_name", quality_filepaths + variant_filepaths + intent_filepaths)
-def test_settingVersionUpToDate(file_name):
+def test_versionUpToDate(file_name):
     try:
         with open(file_name, encoding = "utf-8") as data:
             parser = configparser.ConfigParser(interpolation = None)
             parser.read(file_name)
+
+            assert "general" in parser
+            assert "version" in parser["general"]
+            assert int(parser["general"]["version"]) == InstanceContainer.Version
 
             assert "metadata" in parser
             assert "setting_version" in parser["metadata"]
