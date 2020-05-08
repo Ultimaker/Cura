@@ -89,8 +89,9 @@ class ExtruderInfo:
         self.intent_info = None
 
 
-##    Base implementation for reading 3MF workspace files.
 class ThreeMFWorkspaceReader(WorkspaceReader):
+    """Base implementation for reading 3MF workspace files."""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -130,18 +131,21 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         self._old_new_materials = {}
         self._machine_info = None
 
-    ##  Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
-    #   This has nothing to do with speed, but with getting consistent new naming for instances & objects.
     def getNewId(self, old_id: str):
+        """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
+        
+        This has nothing to do with speed, but with getting consistent new naming for instances & objects.
+        """
         if old_id not in self._id_mapping:
             self._id_mapping[old_id] = self._container_registry.uniqueName(old_id)
         return self._id_mapping[old_id]
 
-    ##  Separates the given file list into a list of GlobalStack files and a list of ExtruderStack files.
-    #
-    #   In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
-    #
     def _determineGlobalAndExtruderStackFiles(self, project_file_name: str, file_list: List[str]) -> Tuple[str, List[str]]:
+        """Separates the given file list into a list of GlobalStack files and a list of ExtruderStack files.
+        
+        In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
+        """
+
         archive = zipfile.ZipFile(project_file_name, "r")
 
         global_stack_file_list = [name for name in file_list if name.endswith(self._global_stack_suffix)]
@@ -181,10 +185,13 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return global_stack_file_list[0], extruder_stack_file_list
 
-    ##  read some info so we can make decisions
-    #   \param file_name
-    #   \param show_dialog  In case we use preRead() to check if a file is a valid project file, we don't want to show a dialog.
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
+        """Read some info so we can make decisions
+        
+        :param file_name:
+        :param show_dialog: In case we use preRead() to check if a file is a valid project file,
+                            we don't want to show a dialog.
+        """
         self._clearState()
 
         self._3mf_mesh_reader = Application.getInstance().getMeshFileHandler().getReaderForFile(file_name)
@@ -578,15 +585,17 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         return WorkspaceReader.PreReadResult.accepted
 
-    ##  Read the project file
-    #   Add all the definitions / materials / quality changes that do not exist yet. Then it loads
-    #   all the stacks into the container registry. In some cases it will reuse the container for the global stack.
-    #   It handles old style project files containing .stack.cfg as well as new style project files
-    #   containing global.cfg / extruder.cfg
-    #
-    #   \param file_name
     @call_on_qt_thread
     def read(self, file_name):
+        """Read the project file
+        
+        Add all the definitions / materials / quality changes that do not exist yet. Then it loads
+        all the stacks into the container registry. In some cases it will reuse the container for the global stack.
+        It handles old style project files containing .stack.cfg as well as new style project files
+        containing global.cfg / extruder.cfg
+        
+        :param file_name:
+        """
         application = CuraApplication.getInstance()
 
         archive = zipfile.ZipFile(file_name, "r")
@@ -856,19 +865,22 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
         self._machine_info.quality_changes_info.name = quality_changes_name
 
-    ##  Helper class to create a new quality changes profile.
-    #
-    #   This will then later be filled with the appropriate data.
-    #   \param quality_type The quality type of the new profile.
-    #   \param intent_category The intent category of the new profile.
-    #   \param name The name for the profile. This will later be made unique so
-    #   it doesn't need to be unique yet.
-    #   \param global_stack The global stack showing the configuration that the
-    #   profile should be created for.
-    #   \param extruder_stack The extruder stack showing the configuration that
-    #   the profile should be created for. If this is None, it will be created
-    #   for the global stack.
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
+        """Helper class to create a new quality changes profile.
+        
+        This will then later be filled with the appropriate data.
+
+        :param quality_type: The quality type of the new profile.
+        :param intent_category: The intent category of the new profile.
+        :param name: The name for the profile. This will later be made unique so
+            it doesn't need to be unique yet.
+        :param global_stack: The global stack showing the configuration that the
+            profile should be created for.
+        :param extruder_stack: The extruder stack showing the configuration that
+            the profile should be created for. If this is None, it will be created
+            for the global stack.
+        """
+
         container_registry = CuraApplication.getInstance().getContainerRegistry()
         base_id = global_stack.definition.getId() if extruder_stack is None else extruder_stack.getId()
         new_id = base_id + "_" + name
@@ -1077,9 +1089,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def _getXmlProfileClass(self):
         return self._container_registry.getContainerForMimeType(MimeTypeDatabase.getMimeType("application/x-ultimaker-material-profile"))
 
-    ##  Get the list of ID's of all containers in a container stack by partially parsing it's serialized data.
     @staticmethod
     def _getContainerIdListFromSerialized(serialized):
+        """Get the list of ID's of all containers in a container stack by partially parsing it's serialized data."""
+
         parser = ConfigParser(interpolation = None, empty_lines_in_values = False)
         parser.read_string(serialized)
 

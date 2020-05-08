@@ -107,11 +107,13 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
             import json
             archive.writestr(file_in_archive, json.dumps(metadata, separators = (", ", ": "), indent = 4, skipkeys = True))
 
-    ##  Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
-    #   \param container That follows the \type{ContainerInterface} to archive.
-    #   \param archive The archive to write to.
     @staticmethod
     def _writeContainerToArchive(container, archive):
+        """Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
+        
+        :param container: That follows the :type{ContainerInterface} to archive.
+        :param archive: The archive to write to.
+        """
         if isinstance(container, type(ContainerRegistry.getInstance().getEmptyInstanceContainer())):
             return  # Empty file, do nothing.
 

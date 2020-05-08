@@ -60,15 +60,19 @@ class ThreeMFWriter(MeshWriter):
         result += str(matrix._data[2, 3])
         return result
 
-    ##  Should we store the archive
-    #   Note that if this is true, the archive will not be closed.
-    #   The object that set this parameter is then responsible for closing it correctly!
     def setStoreArchive(self, store_archive):
+        """Should we store the archive
+        
+        Note that if this is true, the archive will not be closed.
+        The object that set this parameter is then responsible for closing it correctly!
+        """
         self._store_archive = store_archive
 
-    ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
-    #   \returns Uranium Scene node.
     def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+        """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
+        
+        :returns: Uranium Scene node.
+        """
         if not isinstance(um_node, SceneNode):
             return None
 
