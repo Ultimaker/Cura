@@ -50,10 +50,18 @@ def collectAllVariants():
             result.append(os.path.join(root, filename))
     return result
 
+def collectAllIntents():
+    result = []
+    for root, directories, filenames in os.walk(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "resources", "intent"))):
+        for filename in filenames:
+            result.append(os.path.join(root, filename))
+    return result
+
 all_definition_ids = collecAllDefinitionIds()
 quality_filepaths = collectAllQualities()
 all_setting_ids = collectAllSettingIds()
 variant_filepaths = collectAllVariants()
+intent_filepaths = collectAllIntents()
 
 
 ##  Attempt to load all the quality profiles.
@@ -87,6 +95,27 @@ def test_validateQualityProfiles(file_name):
         print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
         assert False
 
+@pytest.mark.parametrize("file_name", intent_filepaths)
+def test_validateIntentProfiles(file_name):
+    try:
+        with open(file_name, encoding = "utf-8") as f:
+            serialized = f.read()
+            result = InstanceContainer._readAndValidateSerialized(serialized)
+            assert InstanceContainer.getConfigurationTypeFromSerialized(serialized) == "intent", "The intent folder must only contain intent profiles."
+            assert result["general"]["definition"] in all_definition_ids, "The definition for this intent profile must exist."
+            assert result["metadata"].get("intent_category", None) is not None, "All intent profiles must have some intent category."
+            assert result["metadata"].get("quality_type", None) is not None, "All intent profiles must be linked to some quality type."
+            assert result["metadata"].get("material", None) is not None, "All intent profiles must be linked to some material."
+            assert result["metadata"].get("variant", None) is not None, "All intent profiles must be linked to some variant."
+
+            # Check that all the values that we say something about are known.
+            if "values" in result:
+                intent_setting_keys = set(result["values"])
+                unknown_settings = intent_setting_keys - all_setting_ids
+                assert len(unknown_settings) == 0, "The settings {setting_list} are defined in the intent {file_name}, but not in fdmprinter.def.json".format(setting_list = unknown_settings, file_name = file_name)
+    except Exception as e:
+        # File can't be read, header sections missing, whatever the case, this shouldn't happen!
+        assert False, "Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e))
 
 ##  Attempt to load all the variant profiles.
 @pytest.mark.parametrize("file_name", variant_filepaths)
@@ -115,7 +144,7 @@ def test_validateVariantProfiles(file_name):
         print("Got an Exception while reading the file [%s]: %s" % (file_name, e))
         assert False
 
-@pytest.mark.parametrize("file_name", quality_filepaths + variant_filepaths)
+@pytest.mark.parametrize("file_name", quality_filepaths + variant_filepaths + intent_filepaths)
 def test_settingVersionUpToDate(file_name):
     try:
         with open(file_name, encoding = "utf-8") as data:
