@@ -9,8 +9,10 @@ import os
 
 import plistlib
 
-## Support for removable devices on Mac OSX
+
 class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
+    """Support for removable devices on Mac OSX"""
+
     def checkRemovableDrives(self):
         drives = {}
         p = subprocess.Popen(["system_profiler", "SPUSBDataType", "-xml"], stdout = subprocess.PIPE, stderr = subprocess.PIPE)

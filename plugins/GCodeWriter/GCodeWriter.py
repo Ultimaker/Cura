@@ -14,34 +14,40 @@ from cura.Machines.ContainerTree import ContainerTree
 from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
-##  Writes g-code to a file.
-#
-#   While this poses as a mesh writer, what this really does is take the g-code
-#   in the entire scene and write it to an output device. Since the g-code of a
-#   single mesh isn't separable from the rest what with rafts and travel moves
-#   and all, it doesn't make sense to write just a single mesh.
-#
-#   So this plug-in takes the g-code that is stored in the root of the scene
-#   node tree, adds a bit of extra information about the profiles and writes
-#   that to the output device.
-class GCodeWriter(MeshWriter):
-    ##  The file format version of the serialised g-code.
-    #
-    #   It can only read settings with the same version as the version it was
-    #   written with. If the file format is changed in a way that breaks reverse
-    #   compatibility, increment this version number!
-    version = 3
 
-    ##  Dictionary that defines how characters are escaped when embedded in
-    #   g-code.
-    #
-    #   Note that the keys of this dictionary are regex strings. The values are
-    #   not.
+class GCodeWriter(MeshWriter):
+    """Writes g-code to a file.
+    
+    While this poses as a mesh writer, what this really does is take the g-code
+    in the entire scene and write it to an output device. Since the g-code of a
+    single mesh isn't separable from the rest what with rafts and travel moves
+    and all, it doesn't make sense to write just a single mesh.
+    
+    So this plug-in takes the g-code that is stored in the root of the scene
+    node tree, adds a bit of extra information about the profiles and writes
+    that to the output device.
+    """
+
+    version = 3
+    """The file format version of the serialised g-code.
+    
+    It can only read settings with the same version as the version it was
+    written with. If the file format is changed in a way that breaks reverse
+    compatibility, increment this version number!
+    """
+
     escape_characters = {
         re.escape("\\"): "\\\\",  # The escape character.
         re.escape("\n"): "\\n",   # Newlines. They break off the comment.
         re.escape("\r"): "\\r"    # Carriage return. Windows users may need this for visualisation in their editors.
     }
+    """Dictionary that defines how characters are escaped when embedded in
+    
+    g-code.
+    
+    Note that the keys of this dictionary are regex strings. The values are
+    not.
+    """
 
     _setting_keyword = ";SETTING_"
 
@@ -50,17 +56,19 @@ class GCodeWriter(MeshWriter):
 
         self._application = Application.getInstance()
 
-    ##  Writes the g-code for the entire scene to a stream.
-    #
-    #   Note that even though the function accepts a collection of nodes, the
-    #   entire scene is always written to the file since it is not possible to
-    #   separate the g-code for just specific nodes.
-    #
-    #   \param stream The stream to write the g-code to.
-    #   \param nodes This is ignored.
-    #   \param mode Additional information on how to format the g-code in the
-    #   file. This must always be text mode.
     def write(self, stream, nodes, mode = MeshWriter.OutputMode.TextMode):
+        """Writes the g-code for the entire scene to a stream.
+        
+        Note that even though the function accepts a collection of nodes, the
+        entire scene is always written to the file since it is not possible to
+        separate the g-code for just specific nodes.
+        
+        :param stream: The stream to write the g-code to.
+        :param nodes: This is ignored.
+        :param mode: Additional information on how to format the g-code in the
+            file. This must always be text mode.
+        """
+
         if mode != MeshWriter.OutputMode.TextMode:
             Logger.log("e", "GCodeWriter does not support non-text mode.")
             self.setInformation(catalog.i18nc("@error:not supported", "GCodeWriter does not support non-text mode."))
@@ -88,8 +96,9 @@ class GCodeWriter(MeshWriter):
         self.setInformation(catalog.i18nc("@warning:status", "Please prepare G-code before exporting."))
         return False
 
-    ##  Create a new container with container 2 as base and container 1 written over it.
     def _createFlattenedContainerInstance(self, instance_container1, instance_container2):
+        """Create a new container with container 2 as base and container 1 written over it."""
+
         flat_container = InstanceContainer(instance_container2.getName())
 
         # The metadata includes id, name and definition
@@ -106,15 +115,15 @@ class GCodeWriter(MeshWriter):
 
         return flat_container
 
-    ##  Serialises a container stack to prepare it for writing at the end of the
-    #   g-code.
-    #
-    #   The settings are serialised, and special characters (including newline)
-    #   are escaped.
-    #
-    #   \param settings A container stack to serialise.
-    #   \return A serialised string of the settings.
     def _serialiseSettings(self, stack):
+        """Serialises a container stack to prepare it for writing at the end of the g-code.
+        
+        The settings are serialised, and special characters (including newline)
+        are escaped.
+        
+        :param stack: A container stack to serialise.
+        :return: A serialised string of the settings.
+        """
         container_registry = self._application.getContainerRegistry()
 
         prefix = self._setting_keyword + str(GCodeWriter.version) + " "  # The prefix to put before each line.
