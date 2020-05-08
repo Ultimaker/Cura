@@ -13,7 +13,7 @@ import UM.PluginRegistry # To mock the plug-in registry out.
 import UM.Settings.ContainerRegistry # To mock the container registry out.
 import UM.Settings.InstanceContainer # To intercept the serialised data from the read() function.
 
-import LegacyProfileReader as LegacyProfileReaderModule # To get the directory of the module.
+import LegacyProfileReader as LegacyProfileReaderModule  # To get the directory of the module.
 
 
 @pytest.fixture
@@ -126,9 +126,11 @@ test_prepareLocalsNoSectionErrorData = [
     )
 ]
 
-##  Test cases where a key error is expected.
+
 @pytest.mark.parametrize("parser_data, defaults", test_prepareLocalsNoSectionErrorData)
 def test_prepareLocalsNoSectionError(legacy_profile_reader, parser_data, defaults):
+    """Test cases where a key error is expected."""
+
     parser = configparser.ConfigParser()
     parser.read_dict(parser_data)
 

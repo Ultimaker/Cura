@@ -23,9 +23,11 @@ if TYPE_CHECKING:
 catalog = UM.i18n.i18nCatalog("cura")
 
 
-##  This action allows for certain settings that are "machine only") to be modified.
-#   It automatically detects machine definitions that it knows how to change and attaches itself to those.
 class MachineSettingsAction(MachineAction):
+    """This action allows for certain settings that are "machine only") to be modified.
+    
+    It automatically detects machine definitions that it knows how to change and attaches itself to those.
+    """
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__("MachineSettingsAction", catalog.i18nc("@action", "Machine Settings"))
         self._qml_url = "MachineSettingsAction.qml"
@@ -56,9 +58,11 @@ class MachineSettingsAction(MachineAction):
         if isinstance(container, DefinitionContainer) and container.getMetaDataEntry("type") == "machine":
             self._application.getMachineActionManager().addSupportedAction(container.getId(), self.getKey())
 
-    ##  Triggered when the global container stack changes or when the g-code
-    #   flavour setting is changed.
     def _updateHasMaterialsInContainerTree(self) -> None:
+        """Triggered when the global container stack changes or when the g-code
+        
+        flavour setting is changed.
+        """
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return
