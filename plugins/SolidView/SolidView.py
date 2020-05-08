@@ -149,6 +149,7 @@ class SolidView(View):
                 theme = Application.getInstance().getTheme()
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_flat_error_color_mix", 0.)  # Don't show flat error color in solid-view.
 
             renderer = self.getRenderer()
             if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
@@ -267,13 +268,23 @@ class SolidView(View):
                 Class that ducktypes to be a Numpy ndarray.
                 """
                 def __init__(self, qimage):
-                    self.__array_interface__ = {
-                        "shape": (qimage.height(), qimage.width()),
-                        "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
-                        "data": (int(qimage.bits()), False),
-                        "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
-                        "version": 3
-                    }
+                    bits_pointer = qimage.bits()
+                    if bits_pointer is None:  # If this happens before there is a window.
+                        self.__array_interface__ = {
+                            "shape": (0, 0),
+                            "typestr": "|u4",
+                            "data": (0, False),
+                            "strides": (1, 3),
+                            "version": 3
+                        }
+                    else:
+                        self.__array_interface__ = {
+                            "shape": (qimage.height(), qimage.width()),
+                            "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
+                            "data": (int(bits_pointer), False),
+                            "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
+                            "version": 3
+                        }
             array = np.asarray(QImageArrayView(xray_img)).view(np.dtype({
                 "r": (np.uint8, 0, "red"),
                 "g": (np.uint8, 1, "green"),
@@ -286,25 +297,6 @@ class SolidView(View):
                 Logger.log("i", "X-Ray overlay found non-manifold pixels.")
 
     def event(self, event):
-        if event.type == Event.ViewActivateEvent:
-            # FIX: on Max OS X, somehow QOpenGLContext.currentContext() can become None during View switching.
-            # This can happen when you do the following steps:
-            #   1. Start Cura
-            #   2. Load a model
-            #   3. Switch to Custom mode
-            #   4. Select the model and click on the per-object tool icon
-            #   5. Switch view to Layer view or X-Ray
-            #   6. Cura will very likely crash
-            # It seems to be a timing issue that the currentContext can somehow be empty, but I have no clue why.
-            # This fix tries to reschedule the view changing event call on the Qt thread again if the current OpenGL
-            # context is None.
-            if Platform.isOSX():
-                if QOpenGLContext.currentContext() is None:
-                    Logger.log("d", "current context of OpenGL is empty on Mac OS X, will try to create shaders later")
-                    Application.getInstance().callLater(lambda e = event: self.event(e))
-                    return
-
-
         if event.type == Event.ViewDeactivateEvent:
             if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
                 self.getRenderer().removeRenderPass(self._xray_pass)

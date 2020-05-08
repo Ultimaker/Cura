@@ -44,7 +44,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def __init__(self) -> None:
         """Starts the back-end plug-in.
-        
+
         This registers all the signal listeners and prepares for communication
         with the back-end in general.
         CuraEngineBackend is exposed to qml as well.
@@ -181,7 +181,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def close(self) -> None:
         """Terminate the engine process.
-        
+
         This function should terminate the engine process.
         Called when closing the application.
         """
@@ -191,7 +191,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def getEngineCommand(self) -> List[str]:
         """Get the command that is used to call the engine.
-        
+
         This is useful for debugging and used to actually start the engine.
         :return: list of commands and args / parameters.
         """
@@ -300,7 +300,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _terminate(self) -> None:
         """Terminate the engine process.
-        
+
         Start the engine process by calling _createSocket()
         """
         self._slicing = False
@@ -329,13 +329,13 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onStartSliceCompleted(self, job: StartSliceJob) -> None:
         """Event handler to call when the job to initiate the slicing process is
-        
+
         completed.
-        
+
         When the start slice job is successfully completed, it will be happily
         slicing. This function handles any errors that may occur during the
         bootstrapping of a slice job.
-        
+
         :param job: The start slice job that was just finished.
         """
         if self._error_message:
@@ -458,7 +458,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def determineAutoSlicing(self) -> bool:
         """Determine enable or disable auto slicing. Return True for enable timer and False otherwise.
-        
+
         It disables when:
             - preference auto slice is off
             - decorator isBlockSlicing is found (used in g-code reader)
@@ -501,13 +501,13 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onSceneChanged(self, source: SceneNode) -> None:
         """Listener for when the scene has changed.
-        
+
         This should start a slice if the scene is now ready to slice.
-        
+
         :param source: The scene node that was changed.
         """
 
-        if not source.callDecoration("isSliceable"):
+        if not source.callDecoration("isSliceable") and source != self._scene.getRoot():
             return
 
         # This case checks if the source node is a node that contains GCode. In this case the
@@ -556,7 +556,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onSocketError(self, error: Arcus.Error) -> None:
         """Called when an error occurs in the socket connection towards the engine.
-        
+
         :param error: The exception that occurred.
         """
 
@@ -621,7 +621,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onSettingChanged(self, instance: SettingInstance, property: str) -> None:
         """A setting has changed, so check if we must reslice.
-        
+
         :param instance: The setting instance that has changed.
         :param property: The property of the setting instance that has changed.
         """
@@ -644,7 +644,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onLayerMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a sliced layer data message is received from the engine.
-        
+
         :param message: The protobuf message containing sliced layer data.
         """
 
@@ -652,7 +652,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onOptimizedLayerMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when an optimized sliced layer data message is received from the engine.
-        
+
         :param message: The protobuf message containing sliced layer data.
         """
 
@@ -663,7 +663,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onProgressMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a progress message is received from the engine.
-        
+
         :param message: The protobuf message containing the slicing progress.
         """
 
@@ -685,7 +685,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onSlicingFinishedMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when the engine sends a message that slicing is finished.
-        
+
         :param message: The protobuf message signalling that slicing is finished.
         """
 
@@ -732,7 +732,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onGCodeLayerMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a g-code message is received from the engine.
-        
+
         :param message: The protobuf message containing g-code, encoded as UTF-8.
         """
 
@@ -743,7 +743,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onGCodePrefixMessage(self, message: Arcus.PythonMessage) -> None:
         """Called when a g-code prefix message is received from the engine.
-        
+
         :param message: The protobuf message containing the g-code prefix,
         encoded as UTF-8.
         """
@@ -757,9 +757,12 @@ class CuraEngineBackend(QObject, Backend):
         """Creates a new socket connection."""
 
         if not protocol_file:
+            if not self.getPluginId():
+                Logger.error("Can't create socket before CuraEngineBackend plug-in is registered.")
+                return
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if not plugin_path:
-                Logger.log("e", "Could not get plugin path!", self.getPluginId())
+                Logger.error("Could not get plugin path!", self.getPluginId())
                 return
             protocol_file = os.path.abspath(os.path.join(plugin_path, "Cura.proto"))
         super()._createSocket(protocol_file)
@@ -767,7 +770,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onChanged(self, *args: Any, **kwargs: Any) -> None:
         """Called when anything has changed to the stuff that needs to be sliced.
-        
+
         This indicates that we should probably re-slice soon.
         """
 
@@ -786,7 +789,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onPrintTimeMaterialEstimates(self, message: Arcus.PythonMessage) -> None:
         """Called when a print time message is received from the engine.
-        
+
         :param message: The protobuf message containing the print time per feature and
             material amount per extruder
         """
@@ -800,7 +803,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _parseMessagePrintTimes(self, message: Arcus.PythonMessage) -> Dict[str, float]:
         """Called for parsing message to retrieve estimated time per feature
-        
+
         :param message: The protobuf message containing the print time per feature
         """
 
@@ -829,10 +832,10 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onToolOperationStarted(self, tool: Tool) -> None:
         """Called when the user starts using some tool.
-        
+
         When the user starts using a tool, we should pause slicing to prevent
         continuously slicing while the user is dragging some tool handle.
-        
+
         :param tool: The tool that the user is using.
         """
 
@@ -845,9 +848,9 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onToolOperationStopped(self, tool: Tool) -> None:
         """Called when the user stops using some tool.
-        
+
         This indicates that we can safely start slicing again.
-        
+
         :param tool: The tool that the user was using.
         """
 
@@ -886,7 +889,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def _onBackendQuit(self) -> None:
         """Called when the back-end self-terminates.
-        
+
         We should reset our state and start listening for new connections.
         """
 
@@ -935,7 +938,7 @@ class CuraEngineBackend(QObject, Backend):
 
     def disableTimer(self) -> None:
         """Disconnect slice function from timer.
-        
+
         This means that slicing will not be triggered automatically
         """
         if self._use_timer:

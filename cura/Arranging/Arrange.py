@@ -199,6 +199,7 @@ class Arrange:
                 start_idx = 0
         else:
             start_idx = 0
+        priority = 0
         for priority in self._priority_unique_values[start_idx::step]:
             tryout_idx = numpy.where(self._priority == priority)
             for idx in range(len(tryout_idx[0])):

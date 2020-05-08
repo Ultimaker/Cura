@@ -13,6 +13,8 @@ from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -107,20 +109,32 @@ class StartSliceJob(Job):
 
         """returns true if it has errors, false otherwise."""
 
-        if stack is None:
-            return False
+        top_of_stack = cast(InstanceContainer, stack.getTop())  # Cache for efficiency.
+        changed_setting_keys = top_of_stack.getAllKeys()
 
-        # if there are no per-object settings we don't need to check the other settings here
-        stack_top = stack.getTop()
-        if stack_top is None or not stack_top.getAllKeys():
-            return False
+        # Add all relations to changed settings as well.
+        for key in top_of_stack.getAllKeys():
+            instance = top_of_stack.getInstance(key)
+            if instance is None:
+                continue
+            self._addRelations(changed_setting_keys, instance.definition.relations)
+            Job.yieldThread()
 
-        for key in stack.getAllKeys():
-            validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+        for changed_setting_key in changed_setting_keys:
+            validation_state = stack.getProperty(changed_setting_key, "validationState")
+
+            if validation_state is None:
+                definition = cast(SettingDefinition, stack.getSettingDefinition(changed_setting_key))
+                validator_type = SettingDefinition.getValidatorForType(definition.type)
+                if validator_type:
+                    validator = validator_type(changed_setting_key)
+                    validation_state = validator(stack)
+            if validation_state in (
+            ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", changed_setting_key, validation_state)
                 return True
             Job.yieldThread()
+
         return False
 
     def run(self) -> None:
@@ -330,7 +344,7 @@ class StartSliceJob(Job):
 
     def _buildReplacementTokens(self, stack: ContainerStack) -> Dict[str, Any]:
         """Creates a dictionary of tokens to replace in g-code pieces.
-        
+
         This indicates what should be replaced in the start and end g-codes.
         :param stack: The stack to get the settings from to replace the tokens with.
         :return: A dictionary of replacement tokens to the values they should be replaced with.
@@ -365,7 +379,7 @@ class StartSliceJob(Job):
 
     def _expandGcodeTokens(self, value: str, default_extruder_nr: int = -1) -> str:
         """Replace setting tokens in a piece of g-code.
-        
+
         :param value: A piece of g-code to replace tokens in.
         :param default_extruder_nr: Stack nr to use when no stack nr is specified, defaults to the global stack
         """
@@ -417,7 +431,7 @@ class StartSliceJob(Job):
 
     def _buildGlobalSettingsMessage(self, stack: ContainerStack) -> None:
         """Sends all global settings to the engine.
-        
+
         The settings are taken from the global stack. This does not include any
         per-extruder settings or per-object settings.
         """
@@ -457,10 +471,10 @@ class StartSliceJob(Job):
 
     def _buildGlobalInheritsStackMessage(self, stack: ContainerStack) -> None:
         """Sends for some settings which extruder they should fallback to if not set.
-        
+
         This is only set for settings that have the limit_to_extruder
         property.
-        
+
         :param stack: The global stack with all settings, from which to read the
             limit_to_extruder property.
         """
@@ -475,7 +489,7 @@ class StartSliceJob(Job):
 
     def _handlePerObjectSettings(self, node: CuraSceneNode, message: Arcus.PythonMessage):
         """Check if a node has per object settings and ensure that they are set correctly in the message
-        
+
         :param node: Node to check.
         :param message: object_lists message to put the per object settings in
         """
@@ -517,7 +531,7 @@ class StartSliceJob(Job):
 
     def _addRelations(self, relations_set: Set[str], relations: List[SettingRelation]):
         """Recursive function to put all settings that require each other for value changes in a list
-        
+
         :param relations_set: Set of keys of settings that are influenced
         :param relations: list of relation objects that need to be checked.
         """
@@ -528,4 +542,3 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
-

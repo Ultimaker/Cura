@@ -5118,7 +5118,7 @@ msgstr "Merkmale, die noch nicht vollständig ausgearbeitet wurden."
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
 msgid "Tree Support"
-msgstr "Baumstruktur"
+msgstr "Baumstützstruktur"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable description"

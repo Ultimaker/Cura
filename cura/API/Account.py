@@ -38,6 +38,7 @@ class Account(QObject):
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
         self._application = application
+        self._new_cloud_printers_detected = False
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False

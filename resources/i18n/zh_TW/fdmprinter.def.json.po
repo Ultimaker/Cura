@@ -83,7 +83,7 @@ msgstr "耗材 GUID"
 #: fdmprinter.def.json
 msgctxt "material_guid description"
 msgid "GUID of the material. This is set automatically."
-msgstr ""
+msgstr "耗材的 GUID，此項為自動設定。"
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -1253,12 +1253,12 @@ msgstr "套用到第一層所有多邊形的偏移量。負數值可以補償第
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset label"
 msgid "Hole Horizontal Expansion"
-msgstr ""
+msgstr "孔洞水平擴展"
 
 #: fdmprinter.def.json
 msgctxt "hole_xy_offset description"
 msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
-msgstr ""
+msgstr "套用到每一層孔洞的偏移量。正值增加孔洞的大小，負值減小孔洞的大小。"
 
 #: fdmprinter.def.json
 msgctxt "z_seam_type label"
@@ -2192,7 +2192,7 @@ msgstr "沖洗速度"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
 msgid "How fast to prime the material after switching to a different material."
-msgstr ""
+msgstr "切換到另一耗材後，用多快的速度擠出耗材做沖洗。"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2202,27 +2202,27 @@ msgstr "沖洗長度"
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
-msgstr ""
+msgstr "切換到另一耗材時，要使用多少耗材（以耗材長度計算）將噴頭內先前的耗材沖洗出來。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
 msgid "End of Filament Purge Speed"
-msgstr ""
+msgstr "耗材更換沖洗速度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
 msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "更換新的一捲相同耗材後，用多快的速度擠出耗材做沖洗。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
 msgid "End of Filament Purge Length"
-msgstr ""
+msgstr "耗材更換沖洗長度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
 msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
-msgstr ""
+msgstr "更換新的一捲相同耗材時，要使用多少耗材（以耗材長度計算）將噴頭內先前的耗材沖洗出來。"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2232,7 +2232,7 @@ msgstr "最長停放時間"
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
 msgid "How long the material can be kept out of dry storage safely."
-msgstr ""
+msgstr "耗材可在乾燥箱外安全的存放多久。"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2242,7 +2242,7 @@ msgstr "空載移動係數"
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
 msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
-msgstr ""
+msgstr "一個用來表示耗材在進料器和噴頭腔室之間能被壓縮多少的係數，用來決定耗材切換時需要移動多長。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3022,7 +3022,7 @@ msgstr "啟用回抽"
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
 msgid "Retract the filament when the nozzle is moving over a non-printed area."
-msgstr ""
+msgstr "當噴頭移動經過非列印區域時回抽耗材。"
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3717,7 +3717,7 @@ msgstr "最小支撐 X/Y 間距"
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
 msgid "Distance of the support structure from the overhang in the X/Y directions."
-msgstr ""
+msgstr "支撐結構在 X/Y 方向與突出部分的間距。 "
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4816,7 +4816,7 @@ msgstr "網格修復"
 #: fdmprinter.def.json
 msgctxt "meshfix description"
 msgid "Make the meshes more suited for 3D printing."
-msgstr ""
+msgstr "讓網格更適合 3D 列印。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4936,7 +4936,7 @@ msgstr "特殊模式"
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
 msgid "Non-traditional ways to print your models."
-msgstr ""
+msgstr "以非傳統的方式列印你的模型。"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5111,7 +5111,7 @@ msgstr "實驗性"
 #: fdmprinter.def.json
 msgctxt "experimental description"
 msgid "Features that haven't completely been fleshed out yet."
-msgstr ""
+msgstr "尚未完全的功能。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"

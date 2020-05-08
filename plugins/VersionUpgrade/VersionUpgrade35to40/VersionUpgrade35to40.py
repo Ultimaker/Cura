@@ -34,13 +34,6 @@ class VersionUpgrade35to40(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
-
     ##  Upgrades Preferences to have the new version number.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         parser = configparser.ConfigParser(interpolation=None)

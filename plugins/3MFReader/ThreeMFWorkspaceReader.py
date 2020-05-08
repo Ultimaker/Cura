@@ -747,11 +747,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     @staticmethod
     def _loadMetadata(file_name: str) -> Dict[str, Dict[str, Any]]:
-        archive = zipfile.ZipFile(file_name, "r")
+        result = dict()  # type: Dict[str, Dict[str, Any]]
+        try:
+            archive = zipfile.ZipFile(file_name, "r")
+        except zipfile.BadZipFile:
+            Logger.logException("w", "Unable to retrieve metadata from {fname}: 3MF archive is corrupt.".format(fname = file_name))
+            return result
 
         metadata_files = [name for name in archive.namelist() if name.endswith("plugin_metadata.json")]
 
-        result = dict()
 
         for metadata_file in metadata_files:
             try:

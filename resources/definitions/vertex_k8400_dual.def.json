@@ -6,7 +6,7 @@
         "visible": true,
         "manufacturer": "Velleman N.V.",
         "file_formats": "text/x-gcode",
-        "platform": "Vertex_build_panel.stl",
+        "platform": "Vertex_build_panel.3mf",
         "platform_offset": [0, -3, 0],
         "machine_extruder_trains": {
             "0": "vertex_k8400_dual_1st",

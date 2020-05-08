@@ -1,3 +1,13 @@
+[4.6.1]
+
+Patch release to fix some bugs that emerged with 4.6.0.
+
+* Z seam placement.
+Changes to the Simplify() algorithm in 4.6.0 caused Z seam placement issues, which resulted in less-than-perfect results. This has been fixed.
+
+* Ender 3 Pro nozzles missing.
+A lot of issue reports came in about nozzles missing for this machine definition, so we made a fix to stop this happening.
+
 [4.6.0]
 
 THANK YOU to all Ultimaker Cura users helping in the fight against COVID-19 – with 3D printing, volunteering, or just by staying home. Want to get involved? Find out more at https://ultimaker.com/in/cura/covid-19
@@ -42,7 +52,22 @@ Fixed a bug where comments were removed from Start/End G-codes when opening from
 Values in the print monitor preheat fields were broken in previous versions, they have now been fixed by fieldOfview.
 
 * Stepper motor disarming during pause at height.
-Some printers (like the Ultimaker S5) have a very heavy build platform. When the pause at height script was enabled, it would disarm the Z stepper motor at pause height. The weight of the build platform would cause the Z axis to lower by gravity and lose the Z position. ilyko96 has contributed a fix to the pause at height script so that the Z stepper motor now remains armed during a pause, locking the build plate in position.
+Some printers automatically disable their steppers after a pause after a certain time. This script makes it possible to set that in the pause script (instead of relying on default behavior of the firmware).
+
+* Crash if logging in on two instances at the same time.
+During the beta period we caught a critical bug where logging in to an Ultimaker account with two instances of Cura would crash the second instance. It crashes because while the web page is open, Cura opens a web server in the local host. The web page redirects to that web server when you've logged in, so that it knows that the log-in was successful and what the credentials are. Both instances try to create a web server on the same port, which is impossible.
+
+* "Changes detected from your Ultimaker account" message.
+We fixed a bug on MacOS where duplicate "Changes detected from your Ultimaker account" popups would appear at a single time.
+
+* Crashes when inactive.
+Some people reported experiencing crashes when the computer had been inactive for a long time, or when the laptop got suspended or went to sleep. This has been fixed.
+
+* Support blocker is not blocking support.
+Fixed an issue where the support blocker was not blocking support.
+
+* Sending slice message takes too long when using mesh helpers.
+Fixed an issue where it would take too long to trigger a slice when using the mesh helpers and support blocker.
 
 * Flying Bear printers.
 oducceu has contributed a machine definition for the Flying Bear Ghost 4S Printer.

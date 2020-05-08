@@ -5,7 +5,6 @@
     "metadata": {
         "author": "Brian Corbino, Tyler Gibson",
         "manufacturer": "Monoprice",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "quality_definition": "malyan_m200",
         "visible": true,
