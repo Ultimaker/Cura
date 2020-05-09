@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Psychometer",
         "manufacturer": "Leapfrog B.V.",
-		"category" : "Other",
         "file_formats": "text/x-gcode",
         "supports_usb_connection": true,
         "machine_extruder_trains":
