@@ -3,7 +3,7 @@
     "name": "Left extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "leapfrog_creatr_hs",
+        "machine": "leapfrog_creatr_hs_xl",
         "position": "1"
     },
     "overrides": {
