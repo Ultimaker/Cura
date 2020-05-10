@@ -118,7 +118,10 @@ if Platform.isWindows() and hasattr(sys, "frozen"):
 # otherwise it doesn't work. This is a workaround on Linux that before we call QDesktopServices.openUrl(), we
 # switch to a directory where the user has the ownership.
 if Platform.isLinux() and hasattr(sys, "frozen"):
-    os.chdir(os.path.expanduser("~"))
+    if "OWD" in os.environ and os.path.isdir(os.environ["OWD"]):
+        os.chdir(os.environ["OWD"])
+    else:
+        os.chdir(os.path.expanduser("~"))
 
 # WORKAROUND: GITHUB-704 GITHUB-708
 # It looks like setuptools creates a .pth file in
