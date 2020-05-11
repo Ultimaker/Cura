@@ -4,7 +4,7 @@
 import json
 from datetime import datetime, timedelta
 from typing import Optional, TYPE_CHECKING
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 
 import requests.exceptions
 from PyQt5.QtCore import QUrl
@@ -142,7 +142,7 @@ class AuthorizationService:
             self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login.
-    def startAuthorizationFlow(self) -> None:
+    def startAuthorizationFlow(self, force_logout_from_mycloud = False) -> None:
         Logger.log("d", "Starting new OAuth2 flow...")
 
         # Create the tokens needed for the code challenge (PKCE) extension for OAuth2.
@@ -173,8 +173,17 @@ class AuthorizationService:
                     title=i18n_catalog.i18nc("@info:title", "Warning")).show()
             return
 
-        # Open the authorization page in a new browser window.
-        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
+        # Open the authorization page in a new browser window. If a force logout is requested during the authorization
+        # flow, the "mycloud logoff" link will be prepended to the authorization url to make sure that the user will be
+        # logged off from the browser before being redirected to login again. This case is used to sync the accounts
+        # between Cura and the browser.
+        auth_url = "{}?{}".format(self._auth_url, query_string)
+        if force_logout_from_mycloud:
+            mycloud_logoff_link = "https://mycloud.ultimaker.com/logoff"
+            logoff_auth_url = "{}?next={}".format(mycloud_logoff_link, quote_plus(auth_url))
+            QDesktopServices.openUrl(QUrl(logoff_auth_url))
+        else:
+            QDesktopServices.openUrl(QUrl(auth_url))
 
 
     ##  Callback method for the authentication flow.

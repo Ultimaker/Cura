@@ -51,11 +51,11 @@ Item
         }
 
         // Component that contains a busy indicator and a message, while it waits for Cura to discover a cloud printer
-        Rectangle
+        Item
         {
             id: waitingContent
             width: parent.width
-            height: waitingIndicator.height + waitingLabel.height
+            height: childrenRect.height
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
             BusyIndicator
@@ -73,6 +73,37 @@ Item
                 text: catalog.i18nc("@label", "Waiting for Cloud response")
                 font: UM.Theme.getFont("large")
                 renderType: Text.NativeRendering
+            }
+            Label
+            {
+                id: noPrintersFoundLabel
+                anchors.top: waitingLabel.bottom
+                anchors.topMargin: 2 * UM.Theme.getSize("wide_margin").height
+                anchors.horizontalCenter: parent.horizontalCenter
+                horizontalAlignment: Text.AlignHCenter
+                text: catalog.i18nc("@label", "No printers found in your account?")
+                font: UM.Theme.getFont("medium")
+            }
+            Label
+            {
+                text: "Sign in with a different account"
+                anchors.top: noPrintersFoundLabel.bottom
+                anchors.horizontalCenter: parent.horizontalCenter
+                font: UM.Theme.getFont("medium")
+                color: UM.Theme.getColor("text_link")
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: Cura.API.account.loginWithForcedLogout()
+                    hoverEnabled: true
+                    onEntered:
+                    {
+                        parent.font.underline = true
+                    }
+                    onExited:
+                    {
+                        parent.font.underline = false
+                    }
+                }
             }
             visible: discoveredCloudPrintersModel.count == 0
         }

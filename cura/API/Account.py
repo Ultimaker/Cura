@@ -96,6 +96,18 @@ class Account(QObject):
             return
         self._authorization_service.startAuthorizationFlow()
 
+    @pyqtSlot()
+    def loginWithForcedLogout(self) -> None:
+        """
+        Forces a logout from Cura and then initiates the authorization flow with the force_logout_from_mycloud variable
+        as true, to sync the accounts in Cura and in the browser.
+
+        :return: None
+        """
+        if self._logged_in:
+            self.logout()
+        self._authorization_service.startAuthorizationFlow(True)
+
     @pyqtProperty(str, notify=loginStateChanged)
     def userName(self):
         user_profile = self._authorization_service.getUserProfile()
