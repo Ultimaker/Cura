@@ -31,7 +31,7 @@
         "machine_center_is_zero":          { "default_value": true },
         "machine_gcode_flavor":            { "default_value": "RepRap (Marlin/Sprinter)" },
         "machine_start_gcode":             { "default_value": ";---------------------------------------\n;Deltacomb start script\n;---------------------------------------\nG21 ;metric values\nG90 ;absolute positioning\nM107 ;start with the fan off\nG28 ;Home all axes (max endstops)\nG92 E0 ;zero the extruded length\nG1 Z15.0 F9000 ;move to the platform down 15mm\nG1 F9000\n\n;Put printing message on LCD screen\nM117 Printing...\n;---------------------------------------"},
-        "machine_end_gcode":               { "default_value": ";---------------------------------------\n;Deltacomb end script\n;---------------------------------------\nG91 ;relative positioning\nG1 F4200 E-4.5 ;wipe filament\nG1 F15000 E4.0 Z1 ;retraction compensation\nG28 ;Home all axes (max endstops)\nM84 ;steppers off" },
+        "machine_end_gcode":               { "default_value": ";---------------------------------------\n;Deltacomb end script\n;---------------------------------------\nG91 ;relative positioning\nG1 F15000 X8.0 E-4.5 ;Wipe filament+material retraction\nG1 F15000 E4.0 Z1 ;Retraction compensation\nG28 ;Home all axes (max endstops)\nM84 ;steppers off\n" },
         "machine_shape":                   { "default_value": "elliptic" },
 
         "machine_max_feedrate_z" :         { "default_value": 300 },
