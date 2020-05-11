@@ -162,6 +162,5 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }
