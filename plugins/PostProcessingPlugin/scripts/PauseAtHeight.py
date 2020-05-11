@@ -362,8 +362,8 @@ class PauseAtHeight(Script):
 
                     prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
-                    # reset extrude value to pre pause value
-                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                # reset extrude value to pre pause value
+                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 
