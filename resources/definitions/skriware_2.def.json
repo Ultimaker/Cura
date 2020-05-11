@@ -591,7 +591,7 @@
             "value": "0.2"
         },
         "meshfix_maximum_deviation": {
-            "default_value": 0.005
+            "default_value": 0.003
         },
         "jerk_roofing": {
             "value": "10"
