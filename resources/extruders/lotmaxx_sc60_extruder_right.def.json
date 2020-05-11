@@ -1,5 +1,4 @@
 {
-    "id":"lotmaxx_sc60_extruder_right",
     "version": 2,
     "name": "Extruder 2",
     "inherits": "fdmextruder",
