@@ -7,7 +7,7 @@
         "machine_width": { "default_value": 235 },
         "machine_depth": { "default_value": 235 },
         "machine_height": { "default_value": 265 },
-        "machine_head_polygon": { "default_value": [
+        "machine_head_with_fans_polygon": { "default_value": [
                 [-50.7,16.8],
                 [-50.7,-29.5],
                 [46.9,-29.5],
