@@ -101,15 +101,15 @@
         "filter_out_tiny_gaps": { "value": false },
 
         "retraction_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         "retraction_retract_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         "retraction_prime_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         
