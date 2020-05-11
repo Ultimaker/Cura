@@ -78,6 +78,27 @@ class VersionUpgrade462to47(VersionUpgrade):
             parser["metadata"] = {}
         parser["metadata"]["setting_version"] = "15"
 
+        # Update Pause at Height script parameters if present.
+        if "post_processing_scripts" in parser["metadata"]:
+            new_scripts_entries = []
+            for script_str in parser["metadata"]["post_processing_scripts"].split("\n"):
+                if not script_str:
+                    continue
+                script_str = script_str.replace(r"\\\n", "\n").replace(r"\\\\", "\\\\")  # Unescape escape sequences.
+                script_parser = configparser.ConfigParser(interpolation=None)
+                script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
+                script_parser.read_string(script_str)
+                if "PauseAtHeight" in script_parser:
+                    if "redo_layers" in script_parser["PauseAtHeight"]:
+                        script_parser["PauseAtHeight"]["redo_layer"] = str(int(script_parser["PauseAtHeight"]["redo_layers"]) > 0)
+                        del script_parser["PauseAtHeight"]["redo_layers"]  # Has been renamed to without the S.
+                script_io = io.StringIO()
+                script_parser.write(script_io)
+                script_str = script_io.getvalue()
+                script_str = script_str.replace("\\\\", r"\\\\").replace("\n", r"\\\n")  # Escape newlines because configparser sees those as section delimiters.
+                new_scripts_entries.append(script_str)
+            parser["metadata"]["post_processing_scripts"] = "\n".join(new_scripts_entries)
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
