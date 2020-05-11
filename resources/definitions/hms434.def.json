@@ -35,7 +35,7 @@
         "preferred_variant_name": "0.4mm TP extruder",
 
         "has_machine_quality":    true,
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "high",
 
         "machine_extruder_trains":
         {
