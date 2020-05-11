@@ -19,7 +19,7 @@
         "variants_name": "Nozzle Size",
 
         "preferred_variant_name": "0.4mm Nozzle",
-        "preferred_quality_type": "standard",
+        "preferred_quality_type": "normal",
         "preferred_material": "generic_pla"
     },
     "overrides": {
