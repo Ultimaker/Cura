@@ -5,6 +5,7 @@ from typing import Optional, Dict, TYPE_CHECKING
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 
+from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -34,7 +35,7 @@ class SyncState:
 #       api.account.userProfile # Who is logged in``
 #
 class Account(QObject):
-    # The interval with which the remote clusters are checked
+    # The interval in which sync services are automatically triggered
     SYNC_INTERVAL = 30.0  # seconds
     Q_ENUMS(SyncState)
 
@@ -43,8 +44,13 @@ class Account(QObject):
     accessTokenChanged = pyqtSignal()
     cloudPrintersDetectedChanged = pyqtSignal(bool)
     syncRequested = pyqtSignal()
+    """Sync services may connect to this signal to receive sync triggers.
+    Services should be resilient to receiving a signal while they are still syncing,
+    either by ignoring subsequent signals or restarting a sync.
+    See setSyncState() for providing user feedback on the state of your service. 
+    """
     lastSyncDateTimeChanged = pyqtSignal()
-    syncStateChanged = pyqtSignal(int)  # because it's an int Enum
+    syncStateChanged = pyqtSignal(int)  # because SyncState is an int Enum
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -93,6 +99,8 @@ class Account(QObject):
 
     def setSyncState(self, service_name: str, state: SyncState) -> None:
         """ Can be used to register sync services and update account sync states
+
+        Contract: A sync service is expected exit syncing state in all cases, within reasonable time
 
         Example: `setSyncState("PluginSyncService", SyncState.SYNCING)`
         :param service_name: A unique name for your service, such as `plugins` or `backups`
@@ -207,6 +215,9 @@ class Account(QObject):
 
         if self._update_timer.isActive():
             self._update_timer.stop()
+        elif self._sync_state == SyncState.SYNCING:
+            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+
         self.syncRequested.emit()
 
     @pyqtSlot()
