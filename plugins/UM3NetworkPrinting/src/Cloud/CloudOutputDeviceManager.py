@@ -105,10 +105,6 @@ class CloudOutputDeviceManager:
 
         self._onDevicesDiscovered(new_clusters)
 
-        # Inform whether new cloud printers have been detected. If they have, the welcome wizard can close.
-        self._account._new_cloud_printers_detected = len(new_clusters) > 0
-        self._account.cloudPrintersDetectedChanged.emit(len(new_clusters) > 0)
-
         removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
         for device_id in removed_device_keys:
             self._onDiscoveredDeviceRemoved(device_id)
@@ -145,9 +141,19 @@ class CloudOutputDeviceManager:
             if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
                     and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
                 new_devices.append(device)
+
             elif device.getId() not in self._remote_clusters:
                 self._remote_clusters[device.getId()] = device
                 remote_clusters_added = True
+
+        # Inform the Cloud printers model about new devices.
+        new_devices_list_of_dicts = [{
+                "key": d.getId(),
+                "name": d.name,
+                "machine_type": d.printerTypeName,
+                "firmware_version": d.firmwareVersion} for d in new_devices]
+        discovered_cloud_printers_model = CuraApplication.getInstance().getDiscoveredCloudPrintersModel()
+        discovered_cloud_printers_model.addDiscoveredCloudPrinters(new_devices_list_of_dicts)
 
         if not new_devices:
             if remote_clusters_added:

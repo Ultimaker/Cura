@@ -12,6 +12,7 @@ from UM.Event import Event, KeyEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Color import Color
+from UM.Math.Matrix import Matrix
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
@@ -139,7 +140,7 @@ class SimulationView(CuraView):
     def _resetSettings(self) -> None:
         self._layer_view_type = 0  # type: int # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
-        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
         self._show_travel_moves = False
         self._show_helpers = True
         self._show_skin = True
@@ -308,15 +309,17 @@ class SimulationView(CuraView):
 
     ##  Set the extruder opacity
     #
-    #   \param extruder_nr 0..3
+    #   \param extruder_nr 0..15
     #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
-        if 0 <= extruder_nr <= 3:
-            self._extruder_opacity[extruder_nr] = opacity
+        if 0 <= extruder_nr <= 15:
+            self._extruder_opacity[extruder_nr // 4][extruder_nr % 4] = opacity
             self.currentLayerNumChanged.emit()
 
-    def getExtruderOpacities(self)-> List[float]:
-        return self._extruder_opacity
+    def getExtruderOpacities(self) -> Matrix:
+        # NOTE: Extruder opacities are stored in a matrix for (minor) performance reasons (w.r.t. OpenGL/shaders).
+        # If more than 16 extruders are called for, this should be converted to a sampler1d.
+        return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
         self._show_travel_moves = show

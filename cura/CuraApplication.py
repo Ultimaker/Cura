@@ -57,6 +57,7 @@ from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
+from cura.Machines.Models.DiscoveredCloudPrintersModel import DiscoveredCloudPrintersModel
 from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
 from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
@@ -125,7 +126,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 13
+    SettingVersion = 15
 
     Created = False
 
@@ -202,6 +203,7 @@ class CuraApplication(QtApplication):
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
+        self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
@@ -887,6 +889,10 @@ class CuraApplication(QtApplication):
     def getDiscoveredPrintersModel(self, *args) -> "DiscoveredPrintersModel":
         return self._discovered_printer_model
 
+    @pyqtSlot(result=QObject)
+    def getDiscoveredCloudPrintersModel(self, *args) -> "DiscoveredCloudPrintersModel":
+        return self._discovered_cloud_printers_model
+
     @pyqtSlot(result = QObject)
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
         if self._first_start_machine_actions_model is None:
@@ -1085,6 +1091,7 @@ class CuraApplication(QtApplication):
 
         self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
+        qmlRegisterType(DiscoveredCloudPrintersModel, "Cura", 1, 7, "DiscoveredCloudPrintersModel")
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
         qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
