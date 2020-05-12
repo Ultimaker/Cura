@@ -2,7 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import json
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Set
 from typing import Optional
 
 from PyQt5.QtCore import QObject
@@ -36,9 +36,8 @@ class CloudPackageChecker(QObject):
         self._application.initializationFinished.connect(self._onAppInitialized)
         self._i18n_catalog = i18nCatalog("cura")
         self._sdk_version = ApplicationMetadata.CuraSDKVersion
-        self._last_check_packages = []  # type: List[str]
-        """Result from a previous check within the same user session. 
-        Used to prevent duplicate notifications"""
+        self._last_notified_packages = set()  # type: Set[str]
+        """Packages for which a notification has been shown. No need to bother the user twice fo equal content"""
 
     # This is a plugin, so most of the components required are not ready when
     # this is initialized. Therefore, we wait until the application is ready.
@@ -52,7 +51,7 @@ class CloudPackageChecker(QObject):
 
     def _onLoginStateChanged(self) -> None:
         # reset session
-        self._last_check_packages = []
+        self._last_notified_packages = set()
         self._getPackagesIfLoggedIn()
 
     def _getPackagesIfLoggedIn(self) -> None:
@@ -96,8 +95,8 @@ class CloudPackageChecker(QObject):
         user_subscribed_packages = {plugin["package_id"] for plugin in subscribed_packages_payload}
         user_installed_packages = self._package_manager.getAllInstalledPackageIDs()
 
-        if user_subscribed_packages == self._last_check_packages:
-            # nothing new here
+        if user_subscribed_packages == self._last_notified_packages:
+            # already notified user about these
             return
 
         # We need to re-evaluate the dismissed packages
@@ -109,13 +108,13 @@ class CloudPackageChecker(QObject):
             user_installed_packages += user_dismissed_packages
 
         # We check if there are packages installed in Web Marketplace but not in Cura marketplace
-        package_discrepancy = list(set(user_subscribed_packages).difference(user_installed_packages))
+        package_discrepancy = list(user_subscribed_packages.difference(user_installed_packages))
         if package_discrepancy:
             Logger.log("d", "Discrepancy found between Cloud subscribed packages and Cura installed packages")
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
             self._showSyncMessage()
-            self._last_check_packages = user_subscribed_packages
+            self._last_notified_packages = user_subscribed_packages
 
     def _showSyncMessage(self) -> None:
         """Show the message if it is not already shown"""
