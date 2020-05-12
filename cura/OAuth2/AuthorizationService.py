@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
-MYCLOUD_LOGOFF = "https://mycloud.ultimaker.com/logoff"
+MYCLOUD_LOGOFF_URL = "https://mycloud.ultimaker.com/logoff"
 
 ##  The authorization service is responsible for handling the login flow,
 #   storing user credentials and providing account information.
@@ -184,14 +184,17 @@ class AuthorizationService:
         If there is a request to force logging out of mycloud in the browser, the link to logoff from mycloud is
         prepended in order to force the browser to logoff from mycloud and then redirect to the authentication url to
         login again. This case is used to sync the accounts between Cura and the browser.
-        :param query_parameters_dict:
-        :param force_browser_logout:
-        :return:
+
+        :param query_parameters_dict: A dictionary with the query parameters to be url encoded and added to the
+                                      authentication link
+        :param force_browser_logout: If True, Cura will prepend the MYCLOUD_LOGOFF_URL link before the authentication
+                                     link to force the a browser logout from mycloud.ultimaker.com
+        :return: The authentication URL, properly formatted and encoded
         """
         auth_url = "{}?{}".format(self._auth_url, urlencode(query_parameters_dict))
         if force_browser_logout:
             # The url after '?next=' should be urlencoded
-            auth_url = "{}?next={}".format(MYCLOUD_LOGOFF, quote_plus(auth_url))
+            auth_url = "{}?next={}".format(MYCLOUD_LOGOFF_URL, quote_plus(auth_url))
         return auth_url
 
     ##  Callback method for the authentication flow.

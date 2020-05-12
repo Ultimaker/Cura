@@ -7,7 +7,7 @@ from PyQt5.QtGui import QDesktopServices
 
 from UM.Preferences import Preferences
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
-from cura.OAuth2.AuthorizationService import AuthorizationService, MYCLOUD_LOGOFF
+from cura.OAuth2.AuthorizationService import AuthorizationService, MYCLOUD_LOGOFF_URL
 from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import OAuth2Settings, AuthenticationResponse, UserProfile
 
@@ -238,7 +238,7 @@ def test__generate_auth_url() -> None:
         "response_type": "code"
     }
     auth_url = authorization_service._generate_auth_url(query_parameters_dict, force_browser_logout = False)
-    assert MYCLOUD_LOGOFF + "?next=" not in auth_url
+    assert MYCLOUD_LOGOFF_URL + "?next=" not in auth_url
 
     auth_url = authorization_service._generate_auth_url(query_parameters_dict, force_browser_logout = True)
-    assert MYCLOUD_LOGOFF + "?next=" in auth_url
+    assert MYCLOUD_LOGOFF_URL + "?next=" in auth_url
