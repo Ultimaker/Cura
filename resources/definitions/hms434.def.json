@@ -17,12 +17,13 @@
  "fabtotum_abs", "fabtotum_nylon", "fabtotum_pla", "fabtotum_tpu",
  "fiberlogy_hd_pla",
  "filo3d_pla", "filo3d_pla_green", "filo3d_pla_red",
- "generic_abs", "generic_abs_175", "generic_cpe_175", "generic_hips_175", "generic_nylon_175", "generic_pc_175", "generic_petg_175",  "generic_pla_175",  "generic_pva_175", "generic_tpu_175",
+ "generic_abs", "generic_abs_175", "generic_cpe_175", "generic_hips_175", "generic_nylon_175", "generic_pc_175", "generic_petg_175",    "generic_pva_175", "generic_tpu_175",
  "imade3d_petg_175", "imade3d_pla_175",
  "innofill_innoflex60_175",
  "leapfrog_abs_natural", "leapfrog_epla_natural","leapfrog_pva_natural",
  "octofiber_pla",
  "polyflex_pla", "polymax_pla", "polyplus_pla", "polywood_pla",
+ "redd_abs", "redd_asa", "redd_hips", "redd_nylon", "redd_petg", "redd_pla", "redd_tpe",
  "verbatim_bvoh_175",
  "Vertex_Delta_ABS", "Vertex_Delta_PET", "Vertex_Delta_PLA", "Vertex_Delta_PLA_Glitter", "Vertex_Delta_PLA_Mat", "Vertex_Delta_PLA_Satin", "Vertex_Delta_PLA_Wood", "Vertex_Delta_TPU",
  "tizyx_abs", "tizyx_flex", "tizyx_petg", "tizyx_pla", "tizyx_pla_bois", "tizyx_pva",
@@ -34,7 +35,7 @@
         "preferred_variant_name": "0.4mm TP extruder",
 
         "has_machine_quality":    true,
-        "preferred_quality_type": "normal",
+        "preferred_quality_type": "high",
 
         "machine_extruder_trains":
         {
@@ -172,7 +173,7 @@
 
         "meshfix_maximum_resolution":       {"value": 0.01 },
         "meshfix_maximum_travel_resolution":{"value": 0.1 },
-        "meshfix_maximum_deviation":        {"value": 0.01 },
+        "meshfix_maximum_deviation":        {"value": 0.005 },
 
         "minimum_polygon_circumference":    {"value": 0.05 },
         "coasting_enable":                  {"value": false},
