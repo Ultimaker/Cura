@@ -146,11 +146,18 @@ class Account(QObject):
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
+            if self._update_timer.isActive():
+                self._update_timer.stop()
             return
 
         if self._logged_in != logged_in:
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
+            if logged_in:
+                self.sync()
+            else:
+                if self._update_timer.isActive():
+                    self._update_timer.stop()
 
     @pyqtSlot()
     def login(self) -> None:
@@ -192,8 +199,14 @@ class Account(QObject):
 
     @pyqtSlot()
     def sync(self) -> None:
-        """Checks for new cloud printers"""
+        """Signals all sync services to start syncing
 
+        This can be considered a forced sync: even when a
+        sync is currently running, a sync will be requested.
+        """
+
+        if self._update_timer.isActive():
+            self._update_timer.stop()
         self.syncRequested.emit()
 
     @pyqtSlot()
