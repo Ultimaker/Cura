@@ -23,12 +23,32 @@ def test_login():
     account.login()
     mocked_auth_service.startAuthorizationFlow.assert_called_once_with()
 
-    # Fake a sucesfull login
+    # Fake a successful login
     account._onLoginStateChanged(True)
 
     # Attempting to log in again shouldn't change anything.
     account.login()
     mocked_auth_service.startAuthorizationFlow.assert_called_once_with()
+
+
+def test_loginWithForcedLogout():
+    account = Account(MagicMock())
+    mocked_auth_service = MagicMock()
+    account._authorization_service = mocked_auth_service
+    account.logout = MagicMock()
+
+    # Fake a successful login
+    account._onLoginStateChanged(True)
+    account.loginWithForcedLogout()
+    # Make sure logout is called once
+    account.logout.assert_called_once_with()
+    mocked_auth_service.startAuthorizationFlow.assert_called_once_with(True)
+
+    account._onLoginStateChanged(False)
+    account.loginWithForcedLogout()
+    # If we are not logged in previously, logout shouldn't be called again
+    account.logout.assert_called_once_with()
+    assert mocked_auth_service.startAuthorizationFlow.call_count == 2
 
 
 def test_initialize():

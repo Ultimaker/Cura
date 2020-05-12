@@ -99,7 +99,7 @@ class Account(QObject):
     @pyqtSlot()
     def loginWithForcedLogout(self) -> None:
         """
-        Forces a logout from Cura and then initiates the authorization flow with the force_logout_from_mycloud variable
+        Forces a logout from Cura and then initiates the authorization flow with the force_browser_logout variable
         as true, to sync the accounts in Cura and in the browser.
 
         :return: None
