@@ -1,7 +1,7 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 from datetime import datetime
-from typing import Optional, Dict, TYPE_CHECKING
+from typing import Optional, Dict, TYPE_CHECKING, Union
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 
@@ -87,7 +87,7 @@ class Account(QObject):
         self._update_timer.setSingleShot(True)
         self._update_timer.timeout.connect(self.syncRequested)
 
-        self._sync_services = {}  # type: Dict[str, SyncState]
+        self._sync_services = {}  # type: Dict[str, int]
         """contains entries "service_name" : SyncState"""
 
     def initialize(self) -> None:
@@ -97,7 +97,7 @@ class Account(QObject):
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
 
-    def setSyncState(self, service_name: str, state: SyncState) -> None:
+    def setSyncState(self, service_name: str, state: int) -> None:
         """ Can be used to register sync services and update account sync states
 
         Contract: A sync service is expected exit syncing state in all cases, within reasonable time
