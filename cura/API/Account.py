@@ -163,11 +163,23 @@ class Account(QObject):
                     self._update_timer.stop()
 
     @pyqtSlot()
-    def login(self) -> None:
+    @pyqtSlot(bool)
+    def login(self, force_logout_before_login: bool = False) -> None:
+        """
+        Initializes the login process. If the user is logged in already and force_logout_before_login is true, Cura will
+        logout from the account before initiating the authorization flow. If the user is logged in and
+        force_logout_before_login is false, the function will return, as there is nothing to do.
+
+        :param force_logout_before_login: Optional boolean parameter
+        :return: None
+        """
         if self._logged_in:
-            # Nothing to do, user already logged in.
-            return
-        self._authorization_service.startAuthorizationFlow()
+            if force_logout_before_login:
+                self.logout()
+            else:
+                # Nothing to do, user already logged in.
+                return
+        self._authorization_service.startAuthorizationFlow(force_logout_before_login)
 
     @pyqtProperty(str, notify=loginStateChanged)
     def userName(self):
