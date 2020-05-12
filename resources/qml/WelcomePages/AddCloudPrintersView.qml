@@ -93,7 +93,7 @@ Item
                 color: UM.Theme.getColor("text_link")
                 MouseArea {
                     anchors.fill: parent;
-                    onClicked: Cura.API.account.loginWithForcedLogout()
+                    onClicked: Cura.API.account.login(true)
                     hoverEnabled: true
                     onEntered:
                     {
