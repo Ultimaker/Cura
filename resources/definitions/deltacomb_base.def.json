@@ -1,0 +1,93 @@
+{
+    "version":      2,
+    "name":         "Deltacomb Base Printer",
+    "inherits":     "fdmprinter",
+
+    "metadata": {
+        "author":                          "Gabriele Rossetti",
+        "visible":                         false,
+        "manufacturer":                    "Deltacomb 3D Printers",
+        "category":                        "Other",
+        "file_formats":                    "text/x-gcode",
+        "has_machine_quality":             true,
+        "has_materials":                   true,
+        "has_variants":                    true,
+        "variants_name":                   "Head",
+        
+        "preferred_quality_type":          "d",
+        "preferred_material":              "generic_pla",
+        
+        "machine_extruder_trains": {
+            "0": "deltacomb_base_extruder_0",
+            "1": "deltacomb_base_extruder_1",
+            "2": "deltacomb_base_extruder_2",
+            "3": "deltacomb_base_extruder_3"
+        }
+    },
+
+    "overrides": {
+        "machine_extruder_count":          { "default_value": 1, "maximum_value": "4" },
+        "machine_heated_bed":              { "default_value": true },
+        "machine_center_is_zero":          { "default_value": true },
+        "machine_gcode_flavor":            { "default_value": "RepRap (Marlin/Sprinter)" },
+        "machine_start_gcode":             { "default_value": ";---------------------------------------\n;Deltacomb start script\n;---------------------------------------\nG21 ;metric values\nG90 ;absolute positioning\nM107 ;start with the fan off\nG28 ;Home all axes (max endstops)\nG92 E0 ;zero the extruded length\nG1 Z15.0 F9000 ;move to the platform down 15mm\nG1 F9000\n\n;Put printing message on LCD screen\nM117 Printing...\n;---------------------------------------"},
+        "machine_end_gcode":               { "default_value": ";---------------------------------------\n;Deltacomb end script\n;---------------------------------------\nG91 ;relative positioning\nG1 F15000 X8.0 E-4.5 ;Wipe filament+material retraction\nG1 F15000 E4.0 Z1 ;Retraction compensation\nG28 ;Home all axes (max endstops)\nM84 ;steppers off\n" },
+        "machine_shape":                   { "default_value": "elliptic" },
+
+        "machine_max_feedrate_z" :         { "default_value": 300 },
+
+        "speed_print" :                    { "default_value": 80 },
+        "speed_topbottom":                 { "value": "speed_print * 0.90" },
+        "speed_wall_0":                    { "value": "35 if speed_print > 35 else speed_print" },
+        "speed_layer_0":                   { "value": "speed_print * 0.55" }, 
+
+        "speed_travel":                    { "value": "170" },
+        "speed_travel_layer_0":            { "value": "speed_travel * 0.70" },
+        "speed_z_hop":                     { "value": "speed_travel" },
+
+        "acceleration_enabled":            { "value": "True" },
+        "acceleration_travel" :            { "value": "9000" },
+        "acceleration_print":              { "value": "4000" },
+        "acceleration_wall":               { "value": "acceleration_print * 0.5" },
+        "acceleration_wall_0":             { "value": "acceleration_wall * 0.5" },
+        "acceleration_topbottom":          { "value": "acceleration_wall_0" },
+        "acceleration_layer_0":            { "value": "acceleration_wall_0" },
+        "acceleration_prime_tower":        { "value": "acceleration_wall" },
+        "acceleration_support":            { "value": "acceleration_wall" },
+        "acceleration_support_interface":  { "value": "acceleration_wall_0" },
+
+        "jerk_enabled":                    { "value": "True" },
+        "jerk_print":                      { "value": "25" },
+        "jerk_infill":                     { "value": "10" },
+        "jerk_travel":                     { "value": "10" },
+
+        "retraction_hop_enabled":          { "default_value": true },
+        "retraction_hop":                  { "default_value": 0.5 },
+        "retraction_amount" :              { "default_value": 3.5 },
+        "retraction_speed" :               { "default_value": 70 },
+        "retraction_combing" :             { "default_value": "noskin" },
+        "travel_avoid_distance":           { "value": "1" },
+
+        "top_bottom_thickness":            { "default_value": 0.8 },
+        "roofing_layer_count":             { "value": "1" },
+        "roofing_line_width":              { "value": "line_width * 0.75" },
+
+        "infill_sparse_density":           { "default_value": 30 },
+        "infill_pattern":                  { "value": "'cubic'" },
+        "infill_before_walls":             { "default_value": false },
+
+        "support_z_distance":              { "value": "layer_height * 2" },
+        "support_bottom_distance":         { "value": "layer_height" },
+        "support_use_towers" :             { "default_value": false },
+        "support_bottom_enable" :          { "value": "0" },
+
+        "skirt_brim_speed":                { "value": "speed_layer_0" },
+        "skirt_line_count":                { "default_value": 3 },
+        "skirt_brim_minimal_length":       { "default_value": 150 },
+        "brim_width":                      { "value": "3" },
+
+        "prime_tower_size":                { "value": "math.sqrt(extruders_enabled_count * prime_tower_min_volume / layer_height / math.pi) * 2"},
+        "prime_tower_position_x":          { "value": "prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0)" },
+        "prime_tower_position_y":          { "value": "machine_depth / 2 - prime_tower_size - max(extruderValue(adhesion_extruder_nr, 'brim_width') * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 if adhesion_type == 'brim' or (prime_tower_brim_enable and adhesion_type != 'raft') else (extruderValue(adhesion_extruder_nr, 'raft_margin') if adhesion_type == 'raft' else (extruderValue(adhesion_extruder_nr, 'skirt_gap') if adhesion_type == 'skirt' else 0)), max(extruderValues('travel_avoid_distance'))) - max(extruderValues('support_offset')) - sum(extruderValues('skirt_brim_line_width')) * extruderValue(adhesion_extruder_nr, 'initial_layer_line_width_factor') / 100 - (resolveOrValue('draft_shield_dist') if resolveOrValue('draft_shield_enabled') else 0) - 1" }
+    }
+}
