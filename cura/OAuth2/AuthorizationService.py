@@ -178,7 +178,7 @@ class AuthorizationService:
         # Open the authorization page in a new browser window.
         QDesktopServices.openUrl(QUrl(auth_url))
 
-    def _generate_auth_url(self, query_parameters_dict: Dict[str, str], force_browser_logout: bool) -> str:
+    def _generate_auth_url(self, query_parameters_dict: Dict[str, Optional[str]], force_browser_logout: bool) -> str:
         """
         Generates the authentications url based on the original auth_url and the query_parameters_dict to be included.
         If there is a request to force logging out of mycloud in the browser, the link to logoff from mycloud is
