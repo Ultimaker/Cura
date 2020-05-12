@@ -40,11 +40,6 @@ fragment =
 
     uniform lowp float u_renderError;
 
-    float round(float f)
-    {
-        return sign(f) * floor(abs(f) + 0.5);
-    }
-
     void main()
     {
         mediump vec4 finalColor = vec4(0.0);
@@ -68,7 +63,7 @@ fragment =
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
 
-        vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
+        highp vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
         finalColor.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
 
         gl_FragColor = finalColor;
