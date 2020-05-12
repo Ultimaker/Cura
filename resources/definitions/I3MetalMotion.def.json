@@ -6,7 +6,6 @@
         "visible": true,
         "author": "Peter Felecan",
         "manufacturer": "eMotionTech",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "has_materials": true,
         "preferred_material": "emotiontech_pla",
