@@ -115,7 +115,7 @@ class CloudPackageChecker(QObject):
             self._model.addDiscrepancies(package_discrepancy)
             self._model.initialize(self._package_manager, subscribed_packages_payload)
             self._showSyncMessage()
-            self._last_check_packages = user_subscribed_packages
+            self._last_check_packages = list(user_subscribed_packages)
 
     def _showSyncMessage(self) -> None:
         """Show the message if it is not already shown"""
