@@ -80,8 +80,10 @@ class VersionUpgrade460to462(VersionUpgrade):
             if parser["general"]["definition"] == "deltacomb_extruder_0":
                 parser["general"]["definition"] = "deltacomb_base_extruder_0"
             elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
-                parser_e2 = copy.deepcopy(parser)
-                parser_e3 = copy.deepcopy(parser)
+                parser_e2 = configparser.ConfigParser(interpolation=None)
+                parser_e3 = configparser.ConfigParser(interpolation=None)
+                parser_e2.read_dict(parser)
+                parser_e3.read_dict(parser)
 
                 parser["general"]["definition"] = "deltacomb_base_extruder_1"
                 parser_e2["general"]["definition"] = "deltacomb_base_extruder_2"
@@ -92,8 +94,10 @@ class VersionUpgrade460to462(VersionUpgrade):
                 parser["general"]["definition"] = "deltacomb_dc20"
 
                 if "metadata" in parser and "extruder" in parser["metadata"]:  # Per-extruder user container.
-                    parser_e2 = copy.deepcopy(parser)
-                    parser_e3 = copy.deepcopy(parser)
+                    parser_e2 = configparser.ConfigParser(interpolation=None)
+                    parser_e3 = configparser.ConfigParser(interpolation=None)
+                    parser_e2.read_dict(parser)
+                    parser_e3.read_dict(parser)
                     parser_e2["metadata"]["extruder"] += "_e2_upgrade"
                     parser_e3["metadata"]["extruder"] += "_e3_upgrade"
                     results.append((parser_e2, filename + "_e2_upgrade"))
@@ -178,8 +182,10 @@ class VersionUpgrade460to462(VersionUpgrade):
                 else:
                     parser["containers"]["7"] = "deltacomb_base_extruder_1"
                     # Copy this extruder to extruder 3 and 4.
-                    extruder3 = copy.deepcopy(parser)
-                    extruder4 = copy.deepcopy(parser)
+                    extruder3 = configparser.ConfigParser(interpolation=None)
+                    extruder4 = configparser.ConfigParser(interpolation=None)
+                    extruder3.read_dict(parser)
+                    extruder4.read_dict(parser)
 
                     extruder3["general"]["id"] += "_e2_upgrade"
                     extruder3["metadata"]["position"] = "2"
