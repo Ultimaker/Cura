@@ -93,8 +93,8 @@ class CloudPackageChecker(QObject):
         self._application.getCuraAPI().account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
     def _handleCompatibilityData(self, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
-        user_subscribed_packages = [plugin["package_id"] for plugin in subscribed_packages_payload]
-        user_installed_packages = self._package_manager.getUserInstalledPackages()
+        user_subscribed_packages = {plugin["package_id"] for plugin in subscribed_packages_payload}
+        user_installed_packages = self._package_manager.getAllInstalledPackageIDs()
 
         if user_subscribed_packages == self._last_check_packages:
             # nothing new here

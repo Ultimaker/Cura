@@ -77,7 +77,7 @@ class SimulationPass(RenderPass):
             self._layer_shader.setUniformValue("u_max_thickness", 1)
             self._layer_shader.setUniformValue("u_min_thickness", 0)
             self._layer_shader.setUniformValue("u_layer_view_type", 1)
-            self._layer_shader.setUniformValue("u_extruder_opacity", [1, 1, 1, 1])
+            self._layer_shader.setUniformValue("u_extruder_opacity", [[1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1]])
             self._layer_shader.setUniformValue("u_show_travel_moves", 0)
             self._layer_shader.setUniformValue("u_show_helpers", 1)
             self._layer_shader.setUniformValue("u_show_skin", 1)

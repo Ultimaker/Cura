@@ -50,7 +50,7 @@ class ImageReader(MeshReader):
         size = max(self._ui.getWidth(), self._ui.getDepth())
         return self._generateSceneNode(file_name, size, self._ui.peak_height, self._ui.base_height, self._ui.smoothing, 512, self._ui.lighter_is_higher, self._ui.use_transparency_model, self._ui.transmittance_1mm)
 
-    def _generateSceneNode(self, file_name, xz_size, peak_height, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
+    def _generateSceneNode(self, file_name, xz_size, height_from_base, base_height, blur_iterations, max_size, lighter_is_higher, use_transparency_model, transmittance_1mm):
         scene_node = SceneNode()
 
         mesh = MeshBuilder()
@@ -68,8 +68,10 @@ class ImageReader(MeshReader):
         if img.width() < 2 or img.height() < 2:
             img = img.scaled(width, height, Qt.IgnoreAspectRatio)
 
+        height_from_base = max(height_from_base, 0)
         base_height = max(base_height, 0)
-        peak_height = max(peak_height, -base_height)
+        peak_height = base_height + height_from_base
+
 
         xz_size = max(xz_size, 1)
         scale_vector = Vector(xz_size, peak_height, xz_size)

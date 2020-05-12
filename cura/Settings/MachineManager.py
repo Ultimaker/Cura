@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -1424,6 +1424,9 @@ class MachineManager(QObject):
         machine_definition_id = self._global_container_stack.definition.id
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
+        if variant_node is None:
+            Logger.error("There is no variant with the name {variant_name}.")
+            return
         self.setVariant(position, variant_node)
 
     @pyqtSlot(str, "QVariant")

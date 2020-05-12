@@ -119,8 +119,10 @@ class WelcomePagesModel(ListModel):
                     return
                 next_page_index = idx
 
+            is_final_page = page_item.get("is_final_page")
+
             # If we have reached the last page, emit allFinished signal and reset.
-            if next_page_index == len(self._items):
+            if next_page_index == len(self._items) or is_final_page:
                 self.atEnd()
                 return
 
@@ -254,6 +256,11 @@ class WelcomePagesModel(ListModel):
                           {"id": "add_printer_by_ip",
                            "page_url": self._getBuiltinWelcomePagePath("AddPrinterByIpContent.qml"),
                            "next_page_id": "machine_actions",
+                           },
+                          {"id": "add_cloud_printers",
+                           "page_url": self._getBuiltinWelcomePagePath("AddCloudPrintersView.qml"),
+                           "is_final_page": True,  # If we end up in this page, the next button will close the dialog
+                           "next_page_button_text": self._catalog.i18nc("@action:button", "Finish"),
                            },
                           {"id": "machine_actions",
                            "page_url": self._getBuiltinWelcomePagePath("FirstStartMachineActionsContent.qml"),
