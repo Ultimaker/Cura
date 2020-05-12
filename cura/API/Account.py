@@ -1,9 +1,11 @@
 # Copyright (c) 2018 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-from typing import Optional, Dict, TYPE_CHECKING
+from datetime import datetime
+from typing import Optional, Dict, TYPE_CHECKING, Union
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty, QTimer, Q_ENUMS
 
+from UM.Logger import Logger
 from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
@@ -16,6 +18,13 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 
+class SyncState:
+    """QML: Cura.AccountSyncState"""
+    SYNCING = 0
+    SUCCESS = 1
+    ERROR = 2
+
+
 ##  The account API provides a version-proof bridge to use Ultimaker Accounts
 #
 #   Usage:
@@ -26,9 +35,21 @@ i18n_catalog = i18nCatalog("cura")
 #       api.account.userProfile # Who is logged in``
 #
 class Account(QObject):
+    # The interval in which sync services are automatically triggered
+    SYNC_INTERVAL = 30.0  # seconds
+    Q_ENUMS(SyncState)
+
     # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
     accessTokenChanged = pyqtSignal()
+    syncRequested = pyqtSignal()
+    """Sync services may connect to this signal to receive sync triggers.
+    Services should be resilient to receiving a signal while they are still syncing,
+    either by ignoring subsequent signals or restarting a sync.
+    See setSyncState() for providing user feedback on the state of your service. 
+    """
+    lastSyncDateTimeChanged = pyqtSignal()
+    syncStateChanged = pyqtSignal(int)  # because SyncState is an int Enum
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -37,6 +58,8 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
+        self._sync_state = SyncState.SUCCESS
+        self._last_sync_str = "-"
 
         self._callback_port = 32118
         self._oauth_root = UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
@@ -56,12 +79,55 @@ class Account(QObject):
 
         self._authorization_service = AuthorizationService(self._oauth_settings)
 
+        # Create a timer for automatic account sync
+        self._update_timer = QTimer()
+        self._update_timer.setInterval(int(self.SYNC_INTERVAL * 1000))
+        # The timer is restarted explicitly after an update was processed. This prevents 2 concurrent updates
+        self._update_timer.setSingleShot(True)
+        self._update_timer.timeout.connect(self.syncRequested)
+
+        self._sync_services = {}  # type: Dict[str, int]
+        """contains entries "service_name" : SyncState"""
+
     def initialize(self) -> None:
         self._authorization_service.initialize(self._application.getPreferences())
         self._authorization_service.onAuthStateChanged.connect(self._onLoginStateChanged)
         self._authorization_service.onAuthenticationError.connect(self._onLoginStateChanged)
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
+
+    def setSyncState(self, service_name: str, state: int) -> None:
+        """ Can be used to register sync services and update account sync states
+
+        Contract: A sync service is expected exit syncing state in all cases, within reasonable time
+
+        Example: `setSyncState("PluginSyncService", SyncState.SYNCING)`
+        :param service_name: A unique name for your service, such as `plugins` or `backups`
+        :param state: One of SyncState
+        """
+
+        prev_state = self._sync_state
+
+        self._sync_services[service_name] = state
+
+        if any(val == SyncState.SYNCING for val in self._sync_services.values()):
+            self._sync_state = SyncState.SYNCING
+        elif any(val == SyncState.ERROR for val in self._sync_services.values()):
+            self._sync_state = SyncState.ERROR
+        else:
+            self._sync_state = SyncState.SUCCESS
+
+        if self._sync_state != prev_state:
+            self.syncStateChanged.emit(self._sync_state)
+
+            if self._sync_state == SyncState.SUCCESS:
+                self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
+                self.lastSyncDateTimeChanged.emit()
+
+            if self._sync_state != SyncState.SYNCING:
+                # schedule new auto update after syncing completed (for whatever reason)
+                if not self._update_timer.isActive():
+                    self._update_timer.start()
 
     def _onAccessTokenChanged(self):
         self.accessTokenChanged.emit()
@@ -83,11 +149,18 @@ class Account(QObject):
             self._error_message.show()
             self._logged_in = False
             self.loginStateChanged.emit(False)
+            if self._update_timer.isActive():
+                self._update_timer.stop()
             return
 
         if self._logged_in != logged_in:
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
+            if logged_in:
+                self.sync()
+            else:
+                if self._update_timer.isActive():
+                    self._update_timer.stop()
 
     @pyqtSlot()
     def login(self) -> None:
@@ -122,6 +195,25 @@ class Account(QObject):
         if not user_profile:
             return None
         return user_profile.__dict__
+
+    @pyqtProperty(str, notify=lastSyncDateTimeChanged)
+    def lastSyncDateTime(self) -> str:
+        return self._last_sync_str
+
+    @pyqtSlot()
+    def sync(self) -> None:
+        """Signals all sync services to start syncing
+
+        This can be considered a forced sync: even when a
+        sync is currently running, a sync will be requested.
+        """
+
+        if self._update_timer.isActive():
+            self._update_timer.stop()
+        elif self._sync_state == SyncState.SYNCING:
+            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+
+        self.syncRequested.emit()
 
     @pyqtSlot()
     def logout(self) -> None:

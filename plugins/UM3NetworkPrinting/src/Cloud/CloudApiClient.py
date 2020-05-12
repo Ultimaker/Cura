@@ -53,10 +53,10 @@ class CloudApiClient:
 
     ## Retrieves all the clusters for the user that is currently logged in.
     #  \param on_finished: The function to be called after the result is parsed.
-    def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any]) -> None:
+    def getClusters(self, on_finished: Callable[[List[CloudClusterResponse]], Any], failed: Callable) -> None:
         url = "{}/clusters?status=active".format(self.CLUSTER_API_ROOT)
         reply = self._manager.get(self._createEmptyRequest(url))
-        self._addCallback(reply, on_finished, CloudClusterResponse)
+        self._addCallback(reply, on_finished, CloudClusterResponse, failed)
 
     ## Retrieves the status of the given cluster.
     #  \param cluster_id: The ID of the cluster.
@@ -166,16 +166,24 @@ class CloudApiClient:
                      reply: QNetworkReply,
                      on_finished: Union[Callable[[CloudApiClientModel], Any],
                                         Callable[[List[CloudApiClientModel]], Any]],
-                     model: Type[CloudApiClientModel]) -> None:
+                     model: Type[CloudApiClientModel],
+                     on_error: Optional[Callable] = None) -> None:
         def parse() -> None:
             self._anti_gc_callbacks.remove(parse)
 
             # Don't try to parse the reply if we didn't get one
             if reply.attribute(QNetworkRequest.HttpStatusCodeAttribute) is None:
+                if on_error is not None:
+                    on_error()
                 return
 
             status_code, response = self._parseReply(reply)
-            self._parseModels(response, on_finished, model)
+            if status_code >= 300 and on_error is not None:
+                on_error()
+            else:
+                self._parseModels(response, on_finished, model)
 
         self._anti_gc_callbacks.append(parse)
         reply.finished.connect(parse)
+        if on_error is not None:
+            reply.error.connect(on_error)

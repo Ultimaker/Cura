@@ -13,6 +13,11 @@ Column
 
     spacing: UM.Theme.getSize("default_margin").height
 
+    SystemPalette
+    {
+        id: palette
+    }
+
     Label
     {
         id: title
@@ -22,6 +27,24 @@ Column
         text: catalog.i18nc("@label The argument is a username.", "Hi %1").arg(profile.username)
         font: UM.Theme.getFont("large_bold")
         color: UM.Theme.getColor("text")
+    }
+
+    SyncState
+    {
+        id: syncRow
+    }
+
+
+
+    Label
+    {
+        id: lastSyncLabel
+        anchors.horizontalCenter: parent.horizontalCenter
+        horizontalAlignment: Text.AlignHCenter
+        renderType: Text.NativeRendering
+        text: catalog.i18nc("@label The argument is a timestamp", "Last update: %1").arg(Cura.API.account.lastSyncDateTime)
+        font: UM.Theme.getFont("default")
+        color: UM.Theme.getColor("text_medium")
     }
 
     Cura.SecondaryButton
@@ -53,4 +76,5 @@ Column
             onExited: signOutButton.font.underline = false
         }
     }
+
 }
