@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 i18n_catalog = i18nCatalog("cura")
 
 
-class SyncState(QObject):
+class SyncState:
     """QML: Cura.AccountSyncState"""
     SYNCING = 0
     SUCCESS = 1
