@@ -1734,6 +1734,9 @@ class CuraApplication(QtApplication):
         if not global_container_stack:
             Logger.log("w", "Can't load meshes before a printer is added.")
             return
+        if not self._volume:
+            Logger.log("w", "Can't load meshes before the build volume is initialized")
+            return
 
         nodes = job.getResult()
         file_name = job.getFileName()
