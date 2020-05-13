@@ -7,11 +7,7 @@ import Cura 1.1 as Cura
 Row // sync state icon + message
 {
 
-    property alias iconSource: icon.source
-    property alias labelText: stateLabel.text
-    property alias syncButtonVisible: accountSyncButton.visible
-    property alias animateIconRotation: updateAnimator.running
-
+    id: syncRow
     width: childrenRect.width
     height: childrenRect.height
     anchors.horizontalCenter: parent.horizontalCenter
@@ -83,24 +79,24 @@ Row // sync state icon + message
 
     onSyncStateChanged: {
         if(newState == Cura.AccountSyncState.SYNCING){
-            syncRow.iconSource = UM.Theme.getIcon("update")
-            syncRow.labelText = catalog.i18nc("@label", "Checking...")
+            icon.source = UM.Theme.getIcon("update")
+            stateLabel.text = catalog.i18nc("@label", "Checking...")
         } else if (newState == Cura.AccountSyncState.SUCCESS) {
-            syncRow.iconSource = UM.Theme.getIcon("checked")
-            syncRow.labelText = catalog.i18nc("@label", "You are up to date")
+            icon.source = UM.Theme.getIcon("checked")
+            stateLabel.text = catalog.i18nc("@label", "You are up to date")
         } else if (newState == Cura.AccountSyncState.ERROR) {
-            syncRow.iconSource = UM.Theme.getIcon("warning_light")
-            syncRow.labelText = catalog.i18nc("@label", "Something went wrong...")
+            icon.source = UM.Theme.getIcon("warning_light")
+            stateLabel.text = catalog.i18nc("@label", "Something went wrong...")
         } else {
             print("Error: unexpected sync state: " + newState)
         }
 
         if(newState == Cura.AccountSyncState.SYNCING){
-            syncRow.animateIconRotation = true
-            syncRow.syncButtonVisible = false
+            updateAnimator.running = true
+            accountSyncButton.visible = false
         } else {
-            syncRow.animateIconRotation = false
-            syncRow.syncButtonVisible = true
+            updateAnimator.running = false
+            accountSyncButton.visible = true
         }
     }
 

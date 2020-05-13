@@ -29,12 +29,7 @@ Column
         color: UM.Theme.getColor("text")
     }
 
-    SyncState
-    {
-        id: syncRow
-    }
-
-
+    SyncState {}
 
     Label
     {
