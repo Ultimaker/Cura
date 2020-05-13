@@ -80,8 +80,8 @@ class VersionUpgrade460to462(VersionUpgrade):
             if parser["general"]["definition"] == "deltacomb_extruder_0":
                 parser["general"]["definition"] = "deltacomb_base_extruder_0"
             elif parser["general"]["definition"] == "deltacomb_extruder_1":  # Split up the second Deltacomb extruder into 3, creating an extra two extruders.
-                parser_e2 = configparser.ConfigParser(interpolation=None)
-                parser_e3 = configparser.ConfigParser(interpolation=None)
+                parser_e2 = configparser.ConfigParser(interpolation = None)
+                parser_e3 = configparser.ConfigParser(interpolation = None)
                 parser_e2.read_dict(parser)
                 parser_e3.read_dict(parser)
 
@@ -94,8 +94,8 @@ class VersionUpgrade460to462(VersionUpgrade):
                 parser["general"]["definition"] = "deltacomb_dc20"
 
                 if "metadata" in parser and "extruder" in parser["metadata"]:  # Per-extruder user container.
-                    parser_e2 = configparser.ConfigParser(interpolation=None)
-                    parser_e3 = configparser.ConfigParser(interpolation=None)
+                    parser_e2 = configparser.ConfigParser(interpolation = None)
+                    parser_e3 = configparser.ConfigParser(interpolation = None)
                     parser_e2.read_dict(parser)
                     parser_e3.read_dict(parser)
                     parser_e2["metadata"]["extruder"] += "_e2_upgrade"
