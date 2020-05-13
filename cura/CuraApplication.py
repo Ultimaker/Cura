@@ -454,7 +454,10 @@ class CuraApplication(QtApplication):
         super().startSplashWindowPhase()
 
         if not self.getIsHeadLess():
-            self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+            try:
+                self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+            except FileNotFoundError:
+                Logger.log("w", "Unable to find the window icon.")
 
         self.setRequiredPlugins([
             # Misc.:
