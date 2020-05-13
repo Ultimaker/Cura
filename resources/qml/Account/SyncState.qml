@@ -63,11 +63,12 @@ Row // sync state icon + message
             color: UM.Theme.getColor("secondary_button_text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            visible: Cura.API.account.manualSyncEnabled
 
             MouseArea
             {
                 anchors.fill: parent
-                onClicked: Cura.API.account.sync()
+                onClicked: Cura.API.account.sync(true)
                 hoverEnabled: true
                 onEntered: accountSyncButton.font.underline = true
                 onExited: accountSyncButton.font.underline = false
@@ -93,10 +94,8 @@ Row // sync state icon + message
 
         if(newState == Cura.AccountSyncState.SYNCING){
             updateAnimator.running = true
-            accountSyncButton.visible = false
         } else {
             updateAnimator.running = false
-            accountSyncButton.visible = true
         }
     }
 

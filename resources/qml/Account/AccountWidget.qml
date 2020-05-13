@@ -108,7 +108,15 @@ Item
             }
         }
 
-        onClicked: popup.opened ? popup.close() : popup.open()
+        onClicked: {
+            if (popup.opened)
+            {
+                popup.close()
+                Cura.API.account.popupClosed()
+            } else {
+                popup.open()
+            }
+        }
     }
 
     Popup
