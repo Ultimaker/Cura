@@ -19,7 +19,7 @@
         "variants_name": "Nozzle Size",
 
         "preferred_variant_name": "0.4mm Nozzle",
-        "preferred_quality_type": "standard",
+        "preferred_quality_type": "normal",
         "preferred_material": "generic_pla"
     },
     "overrides": {
@@ -101,15 +101,15 @@
         "filter_out_tiny_gaps": { "value": false },
 
         "retraction_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         "retraction_retract_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         "retraction_prime_speed": {
-            "maximum_value_warning": "machine_max_feedrate_e if retraction_enable else float('inf')",
+            "maximum_value_warning": "machine_max_feedrate_e",
             "maximum_value": 200
         },
         
@@ -162,6 +162,5 @@
         "minimum_interface_area": { "value": 10 },
         "top_bottom_thickness": {"value":  "layer_height_0 + layer_height * 3" },
         "wall_thickness": {"value": "line_width * 2" }
-
     }
 }

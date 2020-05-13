@@ -155,8 +155,10 @@ class ImageReaderUI(QObject):
         if len(value) > 0:
             try:
                 self.peak_height = float(value.replace(",", "."))
+                if self.peak_height < 0:
+                    self.peak_height = 2.5
             except ValueError:  # Can happen with incomplete numbers, such as "-".
-                self._width = 0
+                self.peak_height = 2.5  # restore default
         else:
             self.peak_height = 0
 

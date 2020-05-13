@@ -7,7 +7,7 @@
         "author": "FABtotum",
         "manufacturer": "FABtotum",
         "file_formats": "text/x-gcode",
-        "platform": "fabtotum_platform.stl",
+        "platform": "fabtotum_platform.3mf",
         "has_machine_quality": true,
         "has_variants": true,
         "variants_name": "Head",

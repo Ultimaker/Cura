@@ -489,7 +489,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source: SceneNode) -> None:
-        if not source.callDecoration("isSliceable"):
+        if not source.callDecoration("isSliceable") and source != self._scene.getRoot():
             return
 
         # This case checks if the source node is a node that contains GCode. In this case the

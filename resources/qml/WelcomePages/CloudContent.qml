@@ -15,15 +15,18 @@ Item
 {
     UM.I18nCatalog { id: catalog; name: "cura" }
 
-    property bool newCloudPrintersDetected: Cura.API.account.newCloudPrintersDetected
+    signal cloudPrintersDetected(bool newCloudPrintersDetected)
 
-    onNewCloudPrintersDetectedChanged:
+    Component.onCompleted: CuraApplication.getDiscoveredCloudPrintersModel().cloudPrintersDetectedChanged.connect(cloudPrintersDetected)
+
+    onCloudPrintersDetected:
     {
         // When the user signs in successfully, it will be checked whether he/she has cloud printers connected to
-        // the account. If he/she does, then the welcome wizard can close. If not, then proceed to the next page (if any)
+        // the account. If he/she does, then the welcome wizard will show a summary of the Cloud printers linked to the
+        // account. If there are no cloud printers, then proceed to the next page (if any)
         if(newCloudPrintersDetected)
         {
-            base.endWizard()
+            base.goToPage("add_cloud_printers")
         }
         else
         {

@@ -1,14 +1,16 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import Optional, TYPE_CHECKING
 
 from UM.Qt.QtApplication import QtApplication
+from UM.Logger import Logger
 from UM.Math.Vector import Vector
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
 from UM.View.GL.OpenGL import OpenGL
+from UM.View.GL.ShaderProgram import InvalidShaderProgramError
 from UM.View.RenderBatch import RenderBatch
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -31,7 +33,11 @@ class PickingPass(RenderPass):
 
     def render(self) -> None:
         if not self._shader:
-            self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "camera_distance.shader"))
+            try:
+                self._shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "camera_distance.shader"))
+            except InvalidShaderProgramError:
+                Logger.error("Unable to compile shader program: camera_distance.shader")
+                return
 
         width, height = self.getSize()
         self._gl.glViewport(0, 0, width, height)

@@ -24,7 +24,7 @@
             "2": "cartesio_extruder_2",
             "3": "cartesio_extruder_3"
         },
-        "platform": "cartesio_platform.stl",
+        "platform": "cartesio_platform.3mf",
         "platform_offset": [ -220, -5, 150],
         "first_start_actions": ["MachineSettingsAction"],
         "supported_actions": ["MachineSettingsAction"]

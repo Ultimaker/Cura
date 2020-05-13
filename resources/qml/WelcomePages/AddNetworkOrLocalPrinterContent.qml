@@ -65,6 +65,20 @@ Item
                 {
                     base.goToPage("add_printer_by_ip")
                 }
+
+                onAddCloudPrinterButtonClicked:
+                {
+                    base.goToPage("add_cloud_printers")
+                    if (!Cura.API.account.isLoggedIn)
+                    {
+                        Cura.API.account.login()
+                    }
+                    else
+                    {
+                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
+                    }
+
+                }
             }
         }
     }
