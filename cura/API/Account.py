@@ -116,6 +116,8 @@ class Account(QObject):
             self._sync_state = SyncState.SYNCING
         elif any(val == SyncState.ERROR for val in self._sync_services.values()):
             self._sync_state = SyncState.ERROR
+            self._manual_sync_enabled = True
+            self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
         else:
             self._sync_state = SyncState.SUCCESS
 
@@ -159,6 +161,8 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
             if logged_in:
+                self._manual_sync_enabled = False
+                self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
                 self._sync()
             else:
                 if self._update_timer.isActive():
