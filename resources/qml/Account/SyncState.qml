@@ -50,7 +50,7 @@ Row // sync state icon + message
         Label
         {
             id: stateLabel
-            text: catalog.i18nc("@state", "Checking...")
+            text: catalog.i18nc("@state", catalog.i18nc("@label", "You are in sync with your account"))
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
@@ -83,7 +83,7 @@ Row // sync state icon + message
             stateLabel.text = catalog.i18nc("@label", "Checking...")
         } else if (newState == Cura.AccountSyncState.SUCCESS) {
             icon.source = UM.Theme.getIcon("checked")
-            stateLabel.text = catalog.i18nc("@label", "You are up to date")
+            stateLabel.text = catalog.i18nc("@label", "You are in sync with your account")
         } else if (newState == Cura.AccountSyncState.ERROR) {
             icon.source = UM.Theme.getIcon("warning_light")
             stateLabel.text = catalog.i18nc("@label", "Something went wrong...")

@@ -9,7 +9,10 @@ import Cura 1.1 as Cura
 
 Column
 {
-    width: Math.max(title.width, accountButton.width) + 2 * UM.Theme.getSize("default_margin").width
+    width: Match.max(
+            Math.max(title.width, accountButton.width) + 2 * UM.Theme.getSize("default_margin").width,
+            syncRow.width
+           )
 
     spacing: UM.Theme.getSize("default_margin").height
 
@@ -29,7 +32,9 @@ Column
         color: UM.Theme.getColor("text")
     }
 
-    SyncState {}
+    SyncState {
+        id: syncRow
+    }
 
     Label
     {
