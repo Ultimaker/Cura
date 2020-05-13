@@ -64,6 +64,7 @@ Row // sync state icon + message
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
             visible: Cura.API.account.manualSyncEnabled
+            height: visible ? accountSyncButton.intrinsicHeight : 0
 
             MouseArea
             {
