@@ -18,13 +18,13 @@
     "overrides": {
         "machine_name": { "default_value": "Geeetech A10" },
         "machine_width": {
-            "default_value": 220
+            "default_value": 235
         },
         "machine_height": {
-            "default_value": 220
+            "default_value": 260
         },
         "machine_depth": {
-            "default_value": 260
+            "default_value": 235
         },        "machine_center_is_zero": {
             "default_value": false
         },
