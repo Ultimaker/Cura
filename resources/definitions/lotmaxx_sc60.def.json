@@ -63,7 +63,7 @@
         "manufacturer": "Lotmaxx",
         "platform": "lotmaxx_sc_10_20_platform.3mf",
         "machine_extruder_trains": {
-            "0": "lotmaxx_sc60_extruder_0",
+            "0": "lotmaxx_sc60_extruder_left",
             "1": "lotmaxx_sc60_extruder_right"
         },
         "has_materials": true,
