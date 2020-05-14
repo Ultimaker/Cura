@@ -6,7 +6,6 @@
         "visible": true,
         "author": "grk3010",
         "manufacturer": "Custom",
-        "category": "Custom",
         "file_formats": "text/x-gcode",
         "machine_extruder_trains":
         {
