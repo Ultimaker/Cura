@@ -9,7 +9,7 @@ import Cura 1.1 as Cura
 
 Column
 {
-    width: Match.max(
+    width: Math.max(
             Math.max(title.width, accountButton.width) + 2 * UM.Theme.getSize("default_margin").width,
             syncRow.width
            )
