@@ -48,6 +48,15 @@ class DisplayPercentCompleteOnLCD(Script):
         list_split = re.split(":", line)  # Split at ":" so we can get the numerical value
         return float(list_split[1])  # Convert the numerical portion to a float
 
+    def outputTime(self, lines, line_index, time_left):
+        # Do some math to get the time left in seconds into the right format. (HH,MM,SS)
+        m, s = divmod(time_left, 60)
+        h, m = divmod(m, 60)
+        # Create the string
+        current_time_string = "{:d}h{:02d}m{:02d}s".format(int(h), int(m), int(s))
+        # And now insert that into the GCODE
+        lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
+
     def execute(self, data):
         output_time = self.getSettingValueByKey("TimeRemaining")
         output_percentage = self.getSettingValueByKey("Percentage")
@@ -65,13 +74,10 @@ class DisplayPercentCompleteOnLCD(Script):
                         line_index = lines.index(line)
 
                         if (output_time):
-                            m, s = divmod(total_time, 60)    # Math to calculate
-                            h, m = divmod(m, 60)             # hours, minutes and seconds.
-                            total_time_string = "{:d}h{:02d}m{:02d}s".format(h, m, s)           # Now we put it into the string
-                            lines.insert(line_index, "M117 Time Left {}".format(total_time_string))   # And print that string instead of the original one
+                            self.outputTime(lines, line_index, total_time)
                         if (output_percentage):
                             # Emit 0 percent to sure Marlin knows we are overriding the completion percentage
-                            lines.insert(line_index,"M73 P0")
+                            lines.insert(line_index, "M73 P0")
 
 
                     elif line.startswith(";TIME_ELAPSED:"):
@@ -85,14 +91,8 @@ class DisplayPercentCompleteOnLCD(Script):
                         line_index = lines.index(line)
                         
                         if (output_time):
-                            # Here we calculate remaining time and do some math to get the total time in seconds into the right format. (HH,MM,SS)
-                            time_left = total_time - current_time
-                            m1, s1 = divmod(time_left, 60)
-                            h1, m1 = divmod(m1, 60)
-                             # Here we create the string holding our time
-                            current_time_string = "{:d}h{:2d}m{:2d}s".format(int(h1), int(m1), int(s1))
-                             # And now insert that into the GCODE
-                            lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
+                            # Here we calculate remaining time
+                            self.outputTime(lines, line_index, total_time - current_time)
 
                         if (output_percentage):
                             # Calculate percentage value this layer ends at
