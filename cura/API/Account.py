@@ -116,8 +116,7 @@ class Account(QObject):
             self._sync_state = SyncState.SYNCING
         elif any(val == SyncState.ERROR for val in self._sync_services.values()):
             self._sync_state = SyncState.ERROR
-            self._manual_sync_enabled = True
-            self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
+            self._setManualSyncEnabled(True)
         else:
             self._sync_state = SyncState.SUCCESS
 
@@ -161,8 +160,7 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
             if logged_in:
-                self._manual_sync_enabled = False
-                self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
+                self._setManualSyncEnabled(False)
                 self._sync()
             else:
                 if self._update_timer.isActive():
@@ -181,6 +179,11 @@ class Account(QObject):
             Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
 
         self.syncRequested.emit()
+
+    def _setManualSyncEnabled(self, enabled: bool) -> None:
+        if self._manual_sync_enabled != enabled:
+            self._manual_sync_enabled = enabled
+            self.manualSyncEnabledChanged.emit(enabled)
 
     @pyqtSlot()
     def login(self) -> None:
@@ -228,15 +231,13 @@ class Account(QObject):
     @pyqtSlot(bool)
     def sync(self, user_initiated=False):
         if user_initiated:
-            self._manual_sync_enabled = False
-            self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
+            self._setManualSyncEnabled(False)
 
         self._sync()
 
     @pyqtSlot()
     def popupClosed(self):
-        self._manual_sync_enabled = True
-        self.manualSyncEnabledChanged.emit(self._manual_sync_enabled)
+        self._setManualSyncEnabled(True)
 
     @pyqtSlot()
     def logout(self) -> None:
