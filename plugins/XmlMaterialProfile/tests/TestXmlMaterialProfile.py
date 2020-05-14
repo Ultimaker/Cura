@@ -1,6 +1,4 @@
 from unittest.mock import patch, MagicMock
-import sys
-import os
 
 # Prevents error: "PyCapsule_GetPointer called with incorrect name" with conflicting SIP configurations between Arcus and PyQt: Import Arcus and Savitar first!
 import Savitar  # Dont remove this line

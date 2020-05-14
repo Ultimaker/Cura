@@ -54,7 +54,7 @@ Item
         UM.ActiveTool.setProperty("MeshType", type)
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Column
     {

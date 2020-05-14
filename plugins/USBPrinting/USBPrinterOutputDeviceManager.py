@@ -50,7 +50,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
 
     # The method updates/reset the USB settings for all connected USB devices
     def updateUSBPrinterOutputDevices(self):
-        for key, device in self._usb_output_devices.items():
+        for device in self._usb_output_devices.values():
             if isinstance(device, USBPrinterOutputDevice.USBPrinterOutputDevice):
                 device.resetDeviceSettings()
 

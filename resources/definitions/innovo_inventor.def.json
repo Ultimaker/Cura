@@ -7,7 +7,7 @@
         "author": "Adam Rumjahn",
         "manufacturer": "Innovo",
         "file_formats": "text/x-gcode",
-        "platform": "inventor_platform.stl",
+        "platform": "inventor_platform.3mf",
         "platform_offset": [-180, -0.25, 160],
         "machine_extruder_trains":
         {

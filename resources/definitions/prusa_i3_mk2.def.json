@@ -7,7 +7,7 @@
         "author": "Apsu, Nounours2099",
         "manufacturer": "Prusa3D",
         "file_formats": "text/x-gcode",
-        "platform": "prusai3_platform.stl",
+        "platform": "prusai3_platform.3mf",
         "has_materials": true,
         "machine_extruder_trains":
         {

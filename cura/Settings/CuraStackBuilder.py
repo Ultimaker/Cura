@@ -9,7 +9,6 @@ from UM.Settings.Interfaces import DefinitionContainerInterface
 from UM.Settings.InstanceContainer import InstanceContainer
 
 from cura.Machines.ContainerTree import ContainerTree
-from cura.Machines.MachineNode import MachineNode
 from .GlobalStack import GlobalStack
 from .ExtruderStack import ExtruderStack
 

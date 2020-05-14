@@ -75,7 +75,7 @@ Item
             anchors.right: parent.right
             anchors.top: parent.top
 
-            height: maxItemCountAtOnce * UM.Theme.getSize("action_button").height
+            height: (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             ScrollBar.vertical.policy: ScrollBar.AsNeeded

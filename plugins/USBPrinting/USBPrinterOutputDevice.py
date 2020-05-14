@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os
@@ -191,7 +191,10 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             try:
                 self._serial = Serial(str(self._serial_port), self._baud_rate, timeout=self._timeout, writeTimeout=self._timeout)
             except SerialException:
-                Logger.log("w", "An exception occurred while trying to create serial connection")
+                Logger.warning("An exception occurred while trying to create serial connection.")
+                return
+            except OSError as e:
+                Logger.warning("The serial device is suddenly unavailable while trying to create a serial connection: {err}".format(err = str(e)))
                 return
         CuraApplication.getInstance().globalContainerStackChanged.connect(self._onGlobalContainerStackChanged)
         self._onGlobalContainerStackChanged()
@@ -364,11 +367,18 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._sendCommand("M84")
 
     def _sendNextGcodeLine(self):
-        if self._gcode_position >= len(self._gcode):
+        """
+        Send the next line of g-code, at the current `_gcode_position`, via a
+        serial port to the printer.
+
+        If the print is done, this sets `_is_printing` to `False` as well.
+        """
+        try:
+            line = self._gcode[self._gcode_position]
+        except IndexError:  # End of print, or print got cancelled.
             self._printers[0].updateActivePrintJob(None)
             self._is_printing = False
             return
-        line = self._gcode[self._gcode_position]
 
         if ";" in line:
             line = line[:line.find(";")]
@@ -398,7 +408,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         if print_job is None:
             controller = GenericOutputController(self)
             controller.setCanUpdateFirmware(True)
-            print_job = PrintJobOutputModel(output_controller=controller, name=CuraApplication.getInstance().getPrintInformation().jobName)
+            print_job = PrintJobOutputModel(output_controller = controller, name = CuraApplication.getInstance().getPrintInformation().jobName)
             print_job.updateState("printing")
             self._printers[0].updateActivePrintJob(print_job)
 

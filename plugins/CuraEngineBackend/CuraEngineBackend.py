@@ -489,7 +489,7 @@ class CuraEngineBackend(QObject, Backend):
     #
     #   \param source The scene node that was changed.
     def _onSceneChanged(self, source: SceneNode) -> None:
-        if not source.callDecoration("isSliceable"):
+        if not source.callDecoration("isSliceable") and source != self._scene.getRoot():
             return
 
         # This case checks if the source node is a node that contains GCode. In this case the
@@ -720,9 +720,12 @@ class CuraEngineBackend(QObject, Backend):
     ##  Creates a new socket connection.
     def _createSocket(self, protocol_file: str = None) -> None:
         if not protocol_file:
+            if not self.getPluginId():
+                Logger.error("Can't create socket before CuraEngineBackend plug-in is registered.")
+                return
             plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
             if not plugin_path:
-                Logger.log("e", "Could not get plugin path!", self.getPluginId())
+                Logger.error("Could not get plugin path!", self.getPluginId())
                 return
             protocol_file = os.path.abspath(os.path.join(plugin_path, "Cura.proto"))
         super()._createSocket(protocol_file)

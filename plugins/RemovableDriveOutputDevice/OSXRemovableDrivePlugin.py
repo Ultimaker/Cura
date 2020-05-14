@@ -49,7 +49,7 @@ class OSXRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
 
     def performEjectDevice(self, device):
         p = subprocess.Popen(["diskutil", "eject", device.getId()], stdin = subprocess.PIPE, stdout = subprocess.PIPE, stderr = subprocess.PIPE)
-        output = p.communicate()
+        p.communicate()
 
         return_code = p.wait()
         if return_code != 0:

@@ -38,9 +38,10 @@ fragment =
     varying highp vec3 f_vertex;
     varying highp vec3 f_normal;
 
+    uniform lowp float u_renderError;
+
     void main()
     {
-
         mediump vec4 finalColor = vec4(0.0);
 
         // Ambient Component
@@ -62,8 +63,10 @@ fragment =
 
         finalColor = (-normal.y > u_overhangAngle) ? u_overhangColor : finalColor;
 
+        highp vec3 grid = vec3(f_vertex.x - floor(f_vertex.x - 0.5), f_vertex.y - floor(f_vertex.y - 0.5), f_vertex.z - floor(f_vertex.z - 0.5));
+        finalColor.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
+
         gl_FragColor = finalColor;
-        gl_FragColor.a = 1.0;
     }
 
 vertex41core =
@@ -98,6 +101,7 @@ fragment41core =
     uniform highp vec3 u_lightPosition;
     uniform mediump float u_shininess;
     uniform highp vec3 u_viewPosition;
+    uniform lowp float u_renderError;
 
     uniform lowp float u_overhangAngle;
     uniform lowp vec4 u_overhangColor;
@@ -111,7 +115,6 @@ fragment41core =
 
     void main()
     {
-
         mediump vec4 finalColor = vec4(0.0);
 
         // Ambient Component
@@ -134,7 +137,8 @@ fragment41core =
         finalColor = (u_faceId != gl_PrimitiveID) ? ((-normal.y > u_overhangAngle) ? u_overhangColor : finalColor) : u_faceColor;
 
         frag_color = finalColor;
-        frag_color.a = 1.0;
+        vec3 grid = f_vertex - round(f_vertex);
+        frag_color.a = (u_renderError > 0.5) && dot(grid, grid) < 0.245 ? 0.667 : 1.0;
     }
 
 [defaults]
@@ -144,6 +148,7 @@ u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_overhangColor = [1.0, 0.0, 0.0, 1.0]
 u_faceColor = [0.0, 0.0, 1.0, 1.0]
 u_shininess = 20.0
+u_renderError = 1.0
 
 [bindings]
 u_modelMatrix = model_matrix

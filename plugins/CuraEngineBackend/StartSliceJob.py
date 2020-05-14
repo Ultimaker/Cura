@@ -13,6 +13,8 @@ from UM.Job import Job
 from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Settings.ContainerStack import ContainerStack #For typing.
+from UM.Settings.InstanceContainer import InstanceContainer
+from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.SettingRelation import SettingRelation #For typing.
 
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -103,20 +105,33 @@ class StartSliceJob(Job):
     ##  Check if a stack has any errors.
     ##  returns true if it has errors, false otherwise.
     def _checkStackForErrors(self, stack: ContainerStack) -> bool:
-        if stack is None:
-            return False
 
-        # if there are no per-object settings we don't need to check the other settings here
-        stack_top = stack.getTop()
-        if stack_top is None or not stack_top.getAllKeys():
-            return False
+        top_of_stack = cast(InstanceContainer, stack.getTop())  # Cache for efficiency.
+        changed_setting_keys = top_of_stack.getAllKeys()
 
-        for key in stack.getAllKeys():
-            validation_state = stack.getProperty(key, "validationState")
-            if validation_state in (ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
-                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", key, validation_state)
+        # Add all relations to changed settings as well.
+        for key in top_of_stack.getAllKeys():
+            instance = top_of_stack.getInstance(key)
+            if instance is None:
+                continue
+            self._addRelations(changed_setting_keys, instance.definition.relations)
+            Job.yieldThread()
+
+        for changed_setting_key in changed_setting_keys:
+            validation_state = stack.getProperty(changed_setting_key, "validationState")
+
+            if validation_state is None:
+                definition = cast(SettingDefinition, stack.getSettingDefinition(changed_setting_key))
+                validator_type = SettingDefinition.getValidatorForType(definition.type)
+                if validator_type:
+                    validator = validator_type(changed_setting_key)
+                    validation_state = validator(stack)
+            if validation_state in (
+            ValidatorState.Exception, ValidatorState.MaximumError, ValidatorState.MinimumError, ValidatorState.Invalid):
+                Logger.log("w", "Setting %s is not valid, but %s. Aborting slicing.", changed_setting_key, validation_state)
                 return True
             Job.yieldThread()
+
         return False
 
     ##  Runs the job that initiates the slicing.
@@ -511,4 +526,3 @@ class StartSliceJob(Job):
 
             relations_set.add(relation.target.key)
             self._addRelations(relations_set, relation.target.relations)
-

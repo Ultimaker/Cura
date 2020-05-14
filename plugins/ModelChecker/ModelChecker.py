@@ -79,14 +79,14 @@ class ModelChecker(QObject, Extension):
             # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
             # has not done yet.
             try:
-                extruder = global_container_stack.extruderList[int(node_extruder_position)]
+                global_container_stack.extruderList[int(node_extruder_position)]
             except IndexError:
                 Application.getInstance().callLater(lambda: self.onChanged.emit())
                 return False
 
             if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
-                if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
+                if bbox is not None and (bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z):
                     warning_nodes.append(node)
 
         self._caution_message.setText(catalog.i18nc(

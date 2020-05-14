@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.5\n"
+"Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-04-06 16:33+0000\n"
 "PO-Revision-Date: 2019-07-29 15:51+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: French <info@lionbridge.com>, French <info@bothof.nl>\n"
@@ -81,8 +81,8 @@ msgstr "GUID matériau"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "GUID du matériau. Cela est configuré automatiquement. "
+msgid "GUID of the material. This is set automatically."
+msgstr "GUID du matériau. Cela est configuré automatiquement."
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -293,16 +293,6 @@ msgstr "Longueur de la zone chauffée"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "Distance depuis la pointe du bec d'impression sur laquelle la chaleur du bec d'impression est transférée au filament."
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "Distance de stationnement du filament"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "Distance depuis la pointe du bec sur laquelle stationner le filament lorsqu'une extrudeuse n'est plus utilisée."
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -1260,6 +1250,17 @@ msgid "Amount of offset applied to all polygons in the first layer. A negative v
 msgstr "Le décalage appliqué à tous les polygones dans la première couche. Une valeur négative peut compenser l'écrasement de la première couche, appelé « patte d'éléphant »."
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr "Expansion horizontale des trous"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr "Le décalage appliqué à tous les trous dans chaque couche. Les valeurs positives augmentent la taille des trous ; les valeurs négatives réduisent la taille"
+" des trous."
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Alignement de la jointure en Z"
@@ -2190,8 +2191,8 @@ msgstr "Vitesse de purge d'insertion"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How fast to prime the material after switching to a different material."
+msgstr "La vitesse d'amorçage du matériau après le passage à un autre matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2200,28 +2201,29 @@ msgstr "Longueur de la purge d'insertion"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr "La quantité de matériau à utiliser pour purger le matériau précédent de la buse (en longueur de filament) lors du passage à un autre matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
+msgid "End of Filament Purge Speed"
 msgstr "Vitesse de purge de l'extrémité du filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr "La vitesse d'amorçage du matériau après le remplacement d'une bobine vide par une nouvelle bobine du même matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
+msgid "End of Filament Purge Length"
 msgstr "Longueur de purge de l'extrémité du filament"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr "La quantité de matériau à utiliser pour purger le matériau précédent de la buse (en longueur de filament) lors du remplacement d'une bobine vide par une"
+" nouvelle bobine du même matériau."
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2230,8 +2232,8 @@ msgstr "Durée maximum du stationnement"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr "La durée pendant laquelle le matériau peut être conservé à l'abri de la sécheresse."
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2240,8 +2242,9 @@ msgstr "Facteur de déplacement sans chargement"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Valeur interne de la Material Station"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr "Un facteur indiquant la quantité de filament compressée entre le chargeur et la chambre de la buse ; utilisé pour déterminer jusqu'où faire avancer le"
+" matériau pour changer de filament."
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3020,8 +3023,8 @@ msgstr "Activer la rétraction"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée. "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée."
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3715,8 +3718,8 @@ msgstr "Distance X/Y minimale des supports"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y. "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y."
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4325,8 +4328,7 @@ msgstr "Distance de la bordure"
 #: fdmprinter.def.json
 msgctxt "brim_gap description"
 msgid "The horizontal distance between the first brim line and the outline of the first layer of the print. A small gap can make the brim easier to remove while still providing the thermal benefits."
-msgstr "La distance horizontale entre la première ligne de bordure et le contour de la première couche de l'impression. Un petit trou peut faciliter l'enlèvement"
-" de la bordure tout en offrant des avantages thermiques."
+msgstr "La distance horizontale entre la première ligne de bordure et le contour de la première couche de l'impression. Un petit trou peut faciliter l'enlèvement de la bordure tout en offrant des avantages thermiques."
 
 #: fdmprinter.def.json
 msgctxt "brim_replaces_support label"
@@ -4815,8 +4817,8 @@ msgstr "Corrections"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "catégorie_corrections"
+msgid "Make the meshes more suited for 3D printing."
+msgstr "Rendez les mailles plus adaptées à l'impression 3D."
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +4937,8 @@ msgstr "Modes spéciaux"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "catégorie_noirmagique"
+msgid "Non-traditional ways to print your models."
+msgstr "Des moyens non traditionnels d'imprimer vos modèles."
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -4946,9 +4948,7 @@ msgstr "Séquence d'impression"
 #: fdmprinter.def.json
 msgctxt "print_sequence description"
 msgid "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. "
-msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est"
-" disponible seulement si a) un seul extrudeur est activé et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux"
-" et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y. "
+msgstr "Imprime tous les modèles en même temps, couche par couche, ou attend la fin d'un modèle pour en commencer un autre. Le mode « Un modèle à la fois » est disponible seulement si a) un seul extrudeur est activé et si b) tous les modèles sont suffisamment éloignés pour que la tête puisse passer entre eux et qu'ils sont tous inférieurs à la distance entre la buse et les axes X/Y. "
 
 #: fdmprinter.def.json
 msgctxt "print_sequence option all_at_once"
@@ -5112,8 +5112,8 @@ msgstr "Expérimental"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "expérimental !"
+msgid "Features that haven't completely been fleshed out yet."
+msgstr "Des fonctionnalités qui n'ont pas encore été complètement développées."
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
@@ -5982,8 +5982,7 @@ msgstr "Densité maximale du remplissage mince du pont"
 #: fdmprinter.def.json
 msgctxt "bridge_sparse_infill_max_density description"
 msgid "Maximum density of infill considered to be sparse. Skin over sparse infill is considered to be unsupported and so may be treated as a bridge skin."
-msgstr "Densité maximale du remplissage considéré comme étant mince. La couche sur le remplissage mince est considérée comme non soutenue et peut donc être traitée"
-" comme une couche du pont."
+msgstr "Densité maximale du remplissage considéré comme étant mince. La couche sur le remplissage mince est considérée comme non soutenue et peut donc être traitée comme une couche du pont."
 
 #: fdmprinter.def.json
 msgctxt "bridge_wall_coast label"
@@ -6153,9 +6152,7 @@ msgstr "Essuyer la buse entre les couches"
 #: fdmprinter.def.json
 msgctxt "clean_between_layers description"
 msgid "Whether to include nozzle wipe G-Code between layers (maximum 1 per layer). Enabling this setting could influence behavior of retract at layer change. Please use Wipe Retraction settings to control retraction at layers where the wipe script will be working."
-msgstr "Inclure ou non le G-Code d'essuyage de la buse entre les couches (maximum 1 par couche). L'activation de ce paramètre peut influencer le comportement de"
-" la rétraction lors du changement de couche. Veuillez utiliser les paramètres de rétraction d'essuyage pour contrôler la rétraction aux couches où le script"
-" d'essuyage sera exécuté."
+msgstr "Inclure ou non le G-Code d'essuyage de la buse entre les couches (maximum 1 par couche). L'activation de ce paramètre peut influencer le comportement de la rétraction lors du changement de couche. Veuillez utiliser les paramètres de rétraction d'essuyage pour contrôler la rétraction aux couches où le script d'essuyage sera exécuté."
 
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe label"
@@ -6165,8 +6162,7 @@ msgstr "Volume de matériau entre les essuyages"
 #: fdmprinter.def.json
 msgctxt "max_extrusion_before_wipe description"
 msgid "Maximum material that can be extruded before another nozzle wipe is initiated. If this value is less than the volume of material required in a layer, the setting has no effect in this layer, i.e. it is limited to one wipe per layer."
-msgstr "Le volume maximum de matériau qui peut être extrudé avant qu'un autre essuyage de buse ne soit lancé. Si cette valeur est inférieure au volume de matériau"
-" nécessaire dans une couche, le paramètre n'a aucun effet dans cette couche, c'est-à-dire qu'il est limité à un essuyage par couche."
+msgstr "Le volume maximum de matériau qui peut être extrudé avant qu'un autre essuyage de buse ne soit lancé. Si cette valeur est inférieure au volume de matériau nécessaire dans une couche, le paramètre n'a aucun effet dans cette couche, c'est-à-dire qu'il est limité à un essuyage par couche."
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_enable label"
@@ -6246,8 +6242,7 @@ msgstr "Décalage en Z de l'essuyage"
 #: fdmprinter.def.json
 msgctxt "wipe_hop_enable description"
 msgid "When wiping, the build plate is lowered to create clearance between the nozzle and the print. It prevents the nozzle from hitting the print during travel moves, reducing the chance to knock the print from the build plate."
-msgstr "Lors de l'essuyage, le plateau de fabrication est abaissé pour créer un espace entre la buse et l'impression. Cela évite que la buse ne touche l'impression"
-" pendant les déplacements, réduisant ainsi le risque de heurter l'impression à partir du plateau de fabrication."
+msgstr "Lors de l'essuyage, le plateau de fabrication est abaissé pour créer un espace entre la buse et l'impression. Cela évite que la buse ne touche l'impression pendant les déplacements, réduisant ainsi le risque de heurter l'impression à partir du plateau de fabrication."
 
 #: fdmprinter.def.json
 msgctxt "wipe_hop_amount label"
@@ -6398,6 +6393,70 @@ msgstr "Matrice de rotation de la maille"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "Matrice de transformation à appliquer au modèle lors de son chargement depuis le fichier."
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "GUID du matériau. Cela est configuré automatiquement. "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "Distance de stationnement du filament"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "Distance depuis la pointe du bec sur laquelle stationner le filament lorsqu'une extrudeuse n'est plus utilisée."
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "Vitesse de purge de l'extrémité du filament"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "Longueur de purge de l'extrémité du filament"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Valeur interne de la Material Station"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "Rétracte le filament quand la buse se déplace vers une zone non imprimée. "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "Distance entre la structure de support et le porte-à-faux dans les directions X/Y. "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "catégorie_corrections"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "catégorie_noirmagique"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "expérimental !"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"

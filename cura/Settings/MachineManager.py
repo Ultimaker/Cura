@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import time
@@ -320,9 +320,10 @@ class MachineManager(QObject):
             # This signal might not have been emitted yet (if it didn't change) but we still want the models to update that depend on it because we changed the contents of the containers too.
             extruder_manager.activeExtruderChanged.emit()
 
-        # Validate if the machine has the correct variants
-        # It can happen that a variant is empty, even though the machine has variants. This will ensure that that
-        # that situation will be fixed (and not occur again, since it switches it out to the preferred variant instead!)
+        # Validate if the machine has the correct variants and materials.
+        # It can happen that a variant or material is empty, even though the machine has them. This will ensure that
+        # that situation will be fixed (and not occur again, since it switches it out to the preferred variant or
+        # variant instead!)
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         for extruder in self._global_container_stack.extruderList:
             variant_name = extruder.variant.getName()
@@ -330,8 +331,12 @@ class MachineManager(QObject):
             if variant_node is None:
                 Logger.log("w", "An extruder has an unknown variant, switching it to the preferred variant")
                 self.setVariantByName(extruder.getMetaDataEntry("position"), machine_node.preferred_variant_name)
-        self.__emitChangedSignals()
+                variant_node = machine_node.variants.get(machine_node.preferred_variant_name)
 
+            material_node = variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
+            if material_node is None:
+                Logger.log("w", "An extruder has an unknown material, switching it to the preferred material")
+                self.setMaterialById(extruder.getMetaDataEntry("position"), machine_node.preferred_material)
 
     ##  Given a definition id, return the machine with this id.
     #   Optional: add a list of keys and values to filter the list of machines with the given definition id
@@ -1249,7 +1254,11 @@ class MachineManager(QObject):
             return
         Logger.log("i", "Attempting to switch the printer type to [%s]", machine_name)
         # Get the definition id corresponding to this machine name
-        machine_definition_id = CuraContainerRegistry.getInstance().findDefinitionContainers(name = machine_name)[0].getId()
+        definitions = CuraContainerRegistry.getInstance().findDefinitionContainers(name=machine_name)
+        if not definitions:
+            Logger.log("e", "Unable to switch printer type since it could not be found!")
+            return
+        machine_definition_id = definitions[0].getId()
         # Try to find a machine with the same network key
         metadata_filter = {"group_id": self._global_container_stack.getMetaDataEntry("group_id")}
         new_machine = self.getMachine(machine_definition_id, metadata_filter = metadata_filter)
@@ -1415,6 +1424,9 @@ class MachineManager(QObject):
         machine_definition_id = self._global_container_stack.definition.id
         machine_node = ContainerTree.getInstance().machines.get(machine_definition_id)
         variant_node = machine_node.variants.get(variant_name)
+        if variant_node is None:
+            Logger.error("There is no variant with the name {variant_name}.")
+            return
         self.setVariant(position, variant_node)
 
     @pyqtSlot(str, "QVariant")

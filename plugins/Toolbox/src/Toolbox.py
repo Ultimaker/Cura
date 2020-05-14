@@ -77,10 +77,15 @@ class Toolbox(QObject, Extension):
         self._plugins_showcase_model = PackagesModel(self)
         self._plugins_available_model = PackagesModel(self)
         self._plugins_installed_model = PackagesModel(self)
-
+        self._plugins_installed_model.setFilter({"is_bundled": "False"})
+        self._plugins_bundled_model = PackagesModel(self)
+        self._plugins_bundled_model.setFilter({"is_bundled": "True"})
         self._materials_showcase_model = AuthorsModel(self)
         self._materials_available_model = AuthorsModel(self)
         self._materials_installed_model = PackagesModel(self)
+        self._materials_installed_model.setFilter({"is_bundled": "False"})
+        self._materials_bundled_model = PackagesModel(self)
+        self._materials_bundled_model.setFilter({"is_bundled": "True"})
         self._materials_generic_model = PackagesModel(self)
 
         self._license_model = LicenseModel()
@@ -289,9 +294,11 @@ class Toolbox(QObject, Extension):
             self._old_plugin_metadata = {k: v for k, v in self._old_plugin_metadata.items() if k in self._old_plugin_ids}
 
             self._plugins_installed_model.setMetadata(all_packages["plugin"] + list(self._old_plugin_metadata.values()))
+            self._plugins_bundled_model.setMetadata(all_packages["plugin"] + list(self._old_plugin_metadata.values()))
             self.metadataChanged.emit()
         if "material" in all_packages:
             self._materials_installed_model.setMetadata(all_packages["material"])
+            self._materials_bundled_model.setMetadata(all_packages["material"])
             self.metadataChanged.emit()
 
     @pyqtSlot(str)
@@ -758,6 +765,10 @@ class Toolbox(QObject, Extension):
         return self._plugins_installed_model
 
     @pyqtProperty(QObject, constant = True)
+    def pluginsBundledModel(self) -> PackagesModel:
+        return self._plugins_bundled_model
+
+    @pyqtProperty(QObject, constant = True)
     def materialsShowcaseModel(self) -> AuthorsModel:
         return self._materials_showcase_model
 
@@ -768,6 +779,10 @@ class Toolbox(QObject, Extension):
     @pyqtProperty(QObject, constant = True)
     def materialsInstalledModel(self) -> PackagesModel:
         return self._materials_installed_model
+
+    @pyqtProperty(QObject, constant = True)
+    def materialsBundledModel(self) -> PackagesModel:
+        return self._materials_bundled_model
 
     @pyqtProperty(QObject, constant = True)
     def materialsGenericModel(self) -> PackagesModel:

@@ -3,29 +3,28 @@
 
 import json
 from datetime import datetime, timedelta
-from typing import Optional, TYPE_CHECKING
-from urllib.parse import urlencode
+from typing import Optional, TYPE_CHECKING, Dict
+from urllib.parse import urlencode, quote_plus
 
 import requests.exceptions
-
 from PyQt5.QtCore import QUrl
 from PyQt5.QtGui import QDesktopServices
 
 from UM.Logger import Logger
 from UM.Message import Message
 from UM.Signal import Signal
-
-from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
+from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers, TOKEN_TIMESTAMP_FORMAT
+from cura.OAuth2.LocalAuthorizationServer import LocalAuthorizationServer
 from cura.OAuth2.Models import AuthenticationResponse
 
-from UM.i18n import i18nCatalog
 i18n_catalog = i18nCatalog("cura")
 
 if TYPE_CHECKING:
     from cura.OAuth2.Models import UserProfile, OAuth2Settings
     from UM.Preferences import Preferences
 
+MYCLOUD_LOGOFF_URL = "https://mycloud.ultimaker.com/logoff"
 
 ##  The authorization service is responsible for handling the login flow,
 #   storing user credentials and providing account information.
@@ -144,7 +143,7 @@ class AuthorizationService:
             self.onAuthStateChanged.emit(logged_in = False)
 
     ##  Start the flow to become authenticated. This will start a new webbrowser tap, prompting the user to login.
-    def startAuthorizationFlow(self) -> None:
+    def startAuthorizationFlow(self, force_browser_logout: bool = False) -> None:
         Logger.log("d", "Starting new OAuth2 flow...")
 
         # Create the tokens needed for the code challenge (PKCE) extension for OAuth2.
@@ -155,8 +154,8 @@ class AuthorizationService:
 
         state = AuthorizationHelpers.generateVerificationCode()
 
-        # Create the query string needed for the OAuth2 flow.
-        query_string = urlencode({
+        # Create the query dict needed for the OAuth2 flow.
+        query_parameters_dict = {
             "client_id": self._settings.CLIENT_ID,
             "redirect_uri": self._settings.CALLBACK_URL,
             "scope": self._settings.CLIENT_SCOPES,
@@ -164,13 +163,39 @@ class AuthorizationService:
             "state": state,  # Forever in our Hearts, RIP "(.Y.)" (2018-2020)
             "code_challenge": challenge_code,
             "code_challenge_method": "S512"
-        })
-
-        # Open the authorization page in a new browser window.
-        QDesktopServices.openUrl(QUrl("{}?{}".format(self._auth_url, query_string)))
+        }
 
         # Start a local web server to receive the callback URL on.
-        self._server.start(verification_code, state)
+        try:
+            self._server.start(verification_code, state)
+        except OSError:
+            Logger.logException("w", "Unable to create authorization request server")
+            Message(i18n_catalog.i18nc("@info", "Unable to start a new sign in process. Check if another sign in attempt is still active."),
+                    title=i18n_catalog.i18nc("@info:title", "Warning")).show()
+            return
+
+        auth_url = self._generate_auth_url(query_parameters_dict, force_browser_logout)
+        # Open the authorization page in a new browser window.
+        QDesktopServices.openUrl(QUrl(auth_url))
+
+    def _generate_auth_url(self, query_parameters_dict: Dict[str, Optional[str]], force_browser_logout: bool) -> str:
+        """
+        Generates the authentications url based on the original auth_url and the query_parameters_dict to be included.
+        If there is a request to force logging out of mycloud in the browser, the link to logoff from mycloud is
+        prepended in order to force the browser to logoff from mycloud and then redirect to the authentication url to
+        login again. This case is used to sync the accounts between Cura and the browser.
+
+        :param query_parameters_dict: A dictionary with the query parameters to be url encoded and added to the
+                                      authentication link
+        :param force_browser_logout: If True, Cura will prepend the MYCLOUD_LOGOFF_URL link before the authentication
+                                     link to force the a browser logout from mycloud.ultimaker.com
+        :return: The authentication URL, properly formatted and encoded
+        """
+        auth_url = "{}?{}".format(self._auth_url, urlencode(query_parameters_dict))
+        if force_browser_logout:
+            # The url after '?next=' should be urlencoded
+            auth_url = "{}?next={}".format(MYCLOUD_LOGOFF_URL, quote_plus(auth_url))
+        return auth_url
 
     ##  Callback method for the authentication flow.
     def _onAuthStateChanged(self, auth_response: AuthenticationResponse) -> None:

@@ -4,7 +4,7 @@
 import os
 import sys
 import time
-from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any
+from typing import cast, TYPE_CHECKING, Optional, Callable, List, Any, Dict
 
 import numpy
 from PyQt5.QtCore import QObject, QTimer, QUrl, pyqtSignal, pyqtProperty, QEvent, Q_ENUMS
@@ -48,6 +48,7 @@ from UM.Workspace.WorkspaceReader import WorkspaceReader
 from UM.i18n import i18nCatalog
 from cura import ApplicationMetadata
 from cura.API import CuraAPI
+from cura.API.Account import Account
 from cura.Arranging.Arrange import Arrange
 from cura.Arranging.ArrangeObjectsAllBuildPlatesJob import ArrangeObjectsAllBuildPlatesJob
 from cura.Arranging.ArrangeObjectsJob import ArrangeObjectsJob
@@ -56,6 +57,7 @@ from cura.Machines.MachineErrorChecker import MachineErrorChecker
 from cura.Machines.Models.BuildPlateModel import BuildPlateModel
 from cura.Machines.Models.CustomQualityProfilesDropDownMenuModel import CustomQualityProfilesDropDownMenuModel
 from cura.Machines.Models.DiscoveredPrintersModel import DiscoveredPrintersModel
+from cura.Machines.Models.DiscoveredCloudPrintersModel import DiscoveredCloudPrintersModel
 from cura.Machines.Models.ExtrudersModel import ExtrudersModel
 from cura.Machines.Models.FavoriteMaterialsModel import FavoriteMaterialsModel
 from cura.Machines.Models.FirstStartMachineActionsModel import FirstStartMachineActionsModel
@@ -124,7 +126,7 @@ class CuraApplication(QtApplication):
     # SettingVersion represents the set of settings available in the machine/extruder definitions.
     # You need to make sure that this version number needs to be increased if there is any non-backwards-compatible
     # changes of the settings.
-    SettingVersion = 11
+    SettingVersion = 15
 
     Created = False
 
@@ -201,6 +203,7 @@ class CuraApplication(QtApplication):
         self._quality_management_model = None
 
         self._discovered_printer_model = DiscoveredPrintersModel(self, parent = self)
+        self._discovered_cloud_printers_model = DiscoveredCloudPrintersModel(self, parent = self)
         self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
@@ -451,7 +454,10 @@ class CuraApplication(QtApplication):
         super().startSplashWindowPhase()
 
         if not self.getIsHeadLess():
-            self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+            try:
+                self.setWindowIcon(QIcon(Resources.getPath(Resources.Images, "cura-icon.png")))
+            except FileNotFoundError:
+                Logger.log("w", "Unable to find the window icon.")
 
         self.setRequiredPlugins([
             # Misc.:
@@ -886,6 +892,10 @@ class CuraApplication(QtApplication):
     def getDiscoveredPrintersModel(self, *args) -> "DiscoveredPrintersModel":
         return self._discovered_printer_model
 
+    @pyqtSlot(result=QObject)
+    def getDiscoveredCloudPrintersModel(self, *args) -> "DiscoveredCloudPrintersModel":
+        return self._discovered_cloud_printers_model
+
     @pyqtSlot(result = QObject)
     def getFirstStartMachineActionsModel(self, *args) -> "FirstStartMachineActionsModel":
         if self._first_start_machine_actions_model is None:
@@ -1084,6 +1094,7 @@ class CuraApplication(QtApplication):
 
         self.processEvents()
         qmlRegisterType(DiscoveredPrintersModel, "Cura", 1, 0, "DiscoveredPrintersModel")
+        qmlRegisterType(DiscoveredCloudPrintersModel, "Cura", 1, 7, "DiscoveredCloudPrintersModel")
         qmlRegisterSingletonType(QualityProfilesDropDownMenuModel, "Cura", 1, 0,
                                  "QualityProfilesDropDownMenuModel", self.getQualityProfilesDropDownMenuModel)
         qmlRegisterSingletonType(CustomQualityProfilesDropDownMenuModel, "Cura", 1, 0,
@@ -1106,6 +1117,7 @@ class CuraApplication(QtApplication):
 
         from cura.API import CuraAPI
         qmlRegisterSingletonType(CuraAPI, "Cura", 1, 1, "API", self.getCuraAPI)
+        qmlRegisterUncreatableType(Account, "Cura", 1, 0, "AccountSyncState", "Could not create AccountSyncState")
 
         # As of Qt5.7, it is necessary to get rid of any ".." in the path for the singleton to work.
         actions_url = QUrl.fromLocalFile(os.path.abspath(Resources.getPath(CuraApplication.ResourceTypes.QmlFiles, "Actions.qml")))
@@ -1382,21 +1394,28 @@ class CuraApplication(QtApplication):
         if not nodes:
             return
 
+        objects_in_filename = {}  # type: Dict[str, List[CuraSceneNode]]
         for node in nodes:
             mesh_data = node.getMeshData()
-
             if mesh_data:
                 file_name = mesh_data.getFileName()
                 if file_name:
-                    job = ReadMeshJob(file_name)
-                    job._node = node  # type: ignore
-                    job.finished.connect(self._reloadMeshFinished)
-                    if has_merged_nodes:
-                        job.finished.connect(self.updateOriginOfMergedMeshes)
-
-                    job.start()
+                    if file_name not in objects_in_filename:
+                        objects_in_filename[file_name] = []
+                    if file_name in objects_in_filename:
+                        objects_in_filename[file_name].append(node)
                 else:
                     Logger.log("w", "Unable to reload data because we don't have a filename.")
+
+        for file_name, nodes in objects_in_filename.items():
+            for node in nodes:
+                job = ReadMeshJob(file_name)
+                job._node = node  # type: ignore
+                job.finished.connect(self._reloadMeshFinished)
+                if has_merged_nodes:
+                    job.finished.connect(self.updateOriginOfMergedMeshes)
+
+                job.start()
 
     @pyqtSlot("QStringList")
     def setExpandedCategories(self, categories: List[str]) -> None:
@@ -1572,13 +1591,30 @@ class CuraApplication(QtApplication):
     fileLoaded = pyqtSignal(str)
     fileCompleted = pyqtSignal(str)
 
-    def _reloadMeshFinished(self, job):
-        # TODO; This needs to be fixed properly. We now make the assumption that we only load a single mesh!
-        job_result = job.getResult()
+    def _reloadMeshFinished(self, job) -> None:
+        """
+        Function called whenever a ReadMeshJob finishes in the background. It reloads a specific node object in the
+        scene from its source file. The function gets all the nodes that exist in the file through the job result, and
+        then finds the scene node that it wants to refresh by its object id. Each job refreshes only one node.
+
+        :param job: The ReadMeshJob running in the background that reads all the meshes in a file
+        :return: None
+        """
+        job_result = job.getResult()  # nodes that exist inside the file read by this job
         if len(job_result) == 0:
             Logger.log("e", "Reloading the mesh failed.")
             return
-        mesh_data = job_result[0].getMeshData()
+        object_found = False
+        mesh_data = None
+        # Find the node to be refreshed based on its id
+        for job_result_node in job_result:
+            if job_result_node.getId() == job._node.getId():
+                mesh_data = job_result_node.getMeshData()
+                object_found = True
+                break
+        if not object_found:
+            Logger.warning("The object with id {} no longer exists! Keeping the old version in the scene.".format(job_result_node.getId()))
+            return
         if not mesh_data:
             Logger.log("w", "Could not find a mesh in reloaded node.")
             return
@@ -1701,6 +1737,9 @@ class CuraApplication(QtApplication):
         if not global_container_stack:
             Logger.log("w", "Can't load meshes before a printer is added.")
             return
+        if not self._volume:
+            Logger.log("w", "Can't load meshes before the build volume is initialized")
+            return
 
         nodes = job.getResult()
         file_name = job.getFileName()
@@ -1774,7 +1813,7 @@ class CuraApplication(QtApplication):
                         # If a model is to small then it will not contain any points
                         if offset_shape_arr is None and hull_shape_arr is None:
                             Message(self._i18n_catalog.i18nc("@info:status", "The selected model was too small to load."),
-                                    title=self._i18n_catalog.i18nc("@info:title", "Warning")).show()
+                                    title = self._i18n_catalog.i18nc("@info:title", "Warning")).show()
                             return
 
                         # Step is for skipping tests to make it a lot faster. it also makes the outcome somewhat rougher

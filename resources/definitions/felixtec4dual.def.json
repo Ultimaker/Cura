@@ -6,7 +6,7 @@
         "visible": true,
         "author": "kerog777@gmail.com",
         "manufacturer": "Felix",
-        "platform": "FelixTec4_platform.stl",
+        "platform": "FelixTec4_platform.3mf",
         "platform_offset": [-128,0, 102],
         "machine_extruder_trains":
         {

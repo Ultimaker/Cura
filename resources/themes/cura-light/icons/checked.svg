@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>checked</title>
+    <desc>Created with Sketch.</desc>
+    <g id="checked" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Check-circle" fill="#000000" fill-rule="nonzero">
+            <path d="M8,0 C3.581722,0 1.42108547e-15,3.581722 1.42108547e-15,8 C1.42108547e-15,12.418278 3.581722,16 8,16 C12.418278,16 16,12.418278 16,8 C16,5.87826808 15.1571453,3.84343678 13.6568542,2.34314575 C12.1565632,0.842854723 10.1217319,0 8,0 Z M8,14.4 C4.4653776,14.4 1.6,11.5346224 1.6,8 C1.6,4.4653776 4.4653776,1.6 8,1.6 C11.5346224,1.6 14.4,4.4653776 14.4,8 C14.4,9.69738553 13.7257162,11.3252506 12.5254834,12.5254834 C11.3252506,13.7257162 9.69738553,14.4 8,14.4 Z" id="Shape"></path>
+            <polygon id="Path" points="11.44 5.04 7.2 9.28 4.56 6.64 3.44 7.76 7.2 11.52 12.56 6.16"></polygon>
+        </g>
+    </g>
+</svg>

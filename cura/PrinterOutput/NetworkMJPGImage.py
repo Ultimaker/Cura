@@ -111,7 +111,7 @@ class NetworkMJPGImage(QQuickPaintedItem):
 
                 if not self._image_reply.isFinished():
                     self._image_reply.close()
-            except Exception as e:  # RuntimeError
+            except Exception:  # RuntimeError
                 pass  # It can happen that the wrapped c++ object is already deleted.
 
             self._image_reply = None

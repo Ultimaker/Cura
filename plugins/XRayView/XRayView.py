@@ -1,13 +1,14 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import os.path
-from PyQt5.QtGui import QOpenGLContext
+from PyQt5.QtGui import QOpenGLContext, QImage
 
 from UM.Application import Application
 from UM.Logger import Logger
 from UM.Math.Color import Color
 from UM.PluginRegistry import PluginRegistry
+from UM.Resources import Resources
 from UM.Platform import Platform
 from UM.Event import Event
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
@@ -19,7 +20,8 @@ from cura.CuraApplication import CuraApplication
 from cura.CuraView import CuraView
 from cura.Scene.ConvexHullNode import ConvexHullNode
 
-from . import XRayPass
+from cura import XRayPass
+
 
 ## View used to display a see-through version of objects with errors highlighted.
 class XRayView(CuraView):
@@ -38,7 +40,7 @@ class XRayView(CuraView):
         renderer = self.getRenderer()
 
         if not self._xray_shader:
-            self._xray_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray.shader"))
+            self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
             self._xray_shader.setUniformValue("u_color", Color(*Application.getInstance().getTheme().getColor("xray").getRgb()))
 
         for node in BreadthFirstIterator(scene.getRoot()):
@@ -87,11 +89,11 @@ class XRayView(CuraView):
             self.getRenderer().addRenderPass(self._xray_pass)
 
             if not self._xray_composite_shader:
-                self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(os.path.join(PluginRegistry.getInstance().getPluginPath("XRayView"), "xray_composite.shader"))
+                self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
                 theme = Application.getInstance().getTheme()
                 self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
-                self._xray_composite_shader.setUniformValue("u_error_color", Color(*theme.getColor("xray_error").getRgb()))
                 self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_flat_error_color_mix", 1.)  # Show flat error color _only_ in xray-view.
 
             if not self._composite_pass:
                 self._composite_pass = self.getRenderer().getRenderPass("composite")

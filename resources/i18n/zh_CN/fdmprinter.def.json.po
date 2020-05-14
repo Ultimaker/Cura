@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Cura 4.5\n"
+"Project-Id-Version: Cura 4.6\n"
 "Report-Msgid-Bugs-To: r.dulek@ultimaker.com\n"
-"POT-Creation-Date: 2020-02-07 14:19+0000\n"
+"POT-Creation-Date: 2020-04-06 16:33+0000\n"
 "PO-Revision-Date: 2019-09-23 14:18+0200\n"
 "Last-Translator: Lionbridge <info@lionbridge.com>\n"
 "Language-Team: Chinese <info@lionbridge.com>, PCDotFan <pc@edu.ax>, Chinese <info@bothof.nl>\n"
@@ -82,8 +82,8 @@ msgstr "材料 GUID"
 
 #: fdmprinter.def.json
 msgctxt "material_guid description"
-msgid "GUID of the material. This is set automatically. "
-msgstr "材料 GUID，此项为自动设置。 "
+msgid "GUID of the material. This is set automatically."
+msgstr "材料 GUID，此项为自动设置。"
 
 #: fdmprinter.def.json
 msgctxt "material_diameter label"
@@ -294,16 +294,6 @@ msgstr "加热区长度"
 msgctxt "machine_heat_zone_length description"
 msgid "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament."
 msgstr "与喷嘴尖端的距离，喷嘴产生的热量在这段距离内传递到耗材中。"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance label"
-msgid "Filament Park Distance"
-msgstr "耗材停放距离"
-
-#: fdmprinter.def.json
-msgctxt "machine_filament_park_distance description"
-msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
-msgstr "与喷嘴尖端的距离，当不再使用挤出机时会将耗材停放在此区域。"
 
 #: fdmprinter.def.json
 msgctxt "machine_nozzle_temp_enabled label"
@@ -1261,6 +1251,16 @@ msgid "Amount of offset applied to all polygons in the first layer. A negative v
 msgstr "应用到第一层所有多边形的偏移量。 负数值可以补偿第一层的压扁量（被称为“象脚”）。"
 
 #: fdmprinter.def.json
+msgctxt "hole_xy_offset label"
+msgid "Hole Horizontal Expansion"
+msgstr "孔洞水平扩展"
+
+#: fdmprinter.def.json
+msgctxt "hole_xy_offset description"
+msgid "Amount of offset applied to all holes in each layer. Positive values increase the size of the holes, negative values reduce the size of the holes."
+msgstr "应用到每一层中所有孔洞的偏移量。正数值可以补偿过大的孔洞，负数值可以补偿过小的孔洞。"
+
+#: fdmprinter.def.json
 msgctxt "z_seam_type label"
 msgid "Z Seam Alignment"
 msgstr "Z 缝对齐"
@@ -2191,8 +2191,8 @@ msgstr "冲洗清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How fast to prime the material after switching to a different material."
+msgstr "切换到其他材料后，装填材料的速度如何。"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length label"
@@ -2201,28 +2201,28 @@ msgstr "冲洗清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_flush_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when switching to a different material."
+msgstr "切换到其他材料时，需要使用多少材料从喷嘴中清除之前的材料（以长丝长度计）。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed label"
-msgid "End Of Filament Purge Speed"
-msgstr "线末清除速度"
+msgid "End of Filament Purge Speed"
+msgstr "耗材末端清除速度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_speed description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How fast to prime the material after replacing an empty spool with a fresh spool of the same material."
+msgstr "将空线轴替换为使用相同材料的新线轴后，装填材料的速度如何。"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length label"
-msgid "End Of Filament Purge Length"
-msgstr "线末清除长度"
+msgid "End of Filament Purge Length"
+msgstr "耗材末端清除长度"
 
 #: fdmprinter.def.json
 msgctxt "material_end_of_filament_purge_length description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How much material to use to purge the previous material out of the nozzle (in length of filament) when replacing an empty spool with a fresh spool of the same material."
+msgstr "将空线轴替换为使用相同材料的新线轴后，需要使用多少材料从喷嘴中清除之前的材料（以长丝长度计）。"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration label"
@@ -2231,8 +2231,8 @@ msgstr "最长停放持续时间"
 
 #: fdmprinter.def.json
 msgctxt "material_maximum_park_duration description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "How long the material can be kept out of dry storage safely."
+msgstr "材料能在干燥存储区之外安全存放多长时间。"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor label"
@@ -2241,8 +2241,8 @@ msgstr "空载移动系数"
 
 #: fdmprinter.def.json
 msgctxt "material_no_load_move_factor description"
-msgid "Material Station internal value"
-msgstr "Material Station 内部值"
+msgid "A factor indicating how much the filament gets compressed between the feeder and the nozzle chamber, used to determine how far to move the material for a filament switch."
+msgstr "表示长丝在进料器和喷嘴室之间被压缩多少的系数，用于确定针对长丝开关将材料移动的距离。"
 
 #: fdmprinter.def.json
 msgctxt "material_flow label"
@@ -3021,8 +3021,8 @@ msgstr "启用回抽"
 
 #: fdmprinter.def.json
 msgctxt "retraction_enable description"
-msgid "Retract the filament when the nozzle is moving over a non-printed area. "
-msgstr "当喷嘴移动到非打印区域上方时回抽耗材。 "
+msgid "Retract the filament when the nozzle is moving over a non-printed area."
+msgstr "当喷嘴移动到非打印区域上方时回抽耗材。"
 
 #: fdmprinter.def.json
 msgctxt "retract_at_layer_change label"
@@ -3716,8 +3716,8 @@ msgstr "最小支撑 X/Y 距离"
 
 #: fdmprinter.def.json
 msgctxt "support_xy_distance_overhang description"
-msgid "Distance of the support structure from the overhang in the X/Y directions. "
-msgstr "支撑结构在 X/Y 方向距悬垂的距离。 "
+msgid "Distance of the support structure from the overhang in the X/Y directions."
+msgstr "支撑结构在 X/Y 方向距悬垂的距离。"
 
 #: fdmprinter.def.json
 msgctxt "support_bottom_stair_step_height label"
@@ -4815,8 +4815,8 @@ msgstr "网格修复"
 
 #: fdmprinter.def.json
 msgctxt "meshfix description"
-msgid "category_fixes"
-msgstr "category_fixes"
+msgid "Make the meshes more suited for 3D printing."
+msgstr "使网格更适合 3D 打印。"
 
 #: fdmprinter.def.json
 msgctxt "meshfix_union_all label"
@@ -4935,8 +4935,8 @@ msgstr "特殊模式"
 
 #: fdmprinter.def.json
 msgctxt "blackmagic description"
-msgid "category_blackmagic"
-msgstr "category_blackmagic"
+msgid "Non-traditional ways to print your models."
+msgstr "打印模型的非传统方式。"
 
 #: fdmprinter.def.json
 msgctxt "print_sequence label"
@@ -5110,8 +5110,8 @@ msgstr "实验性"
 
 #: fdmprinter.def.json
 msgctxt "experimental description"
-msgid "experimental!"
-msgstr "实验性！"
+msgid "Features that haven't completely been fleshed out yet."
+msgstr "尚未完全充实的功能。"
 
 #: fdmprinter.def.json
 msgctxt "support_tree_enable label"
@@ -6391,6 +6391,70 @@ msgstr "网格旋转矩阵"
 msgctxt "mesh_rotation_matrix description"
 msgid "Transformation matrix to be applied to the model when loading it from file."
 msgstr "在将模型从文件中载入时应用在模型上的转换矩阵。"
+
+#~ msgctxt "material_guid description"
+#~ msgid "GUID of the material. This is set automatically. "
+#~ msgstr "材料 GUID，此项为自动设置。 "
+
+#~ msgctxt "machine_filament_park_distance label"
+#~ msgid "Filament Park Distance"
+#~ msgstr "耗材停放距离"
+
+#~ msgctxt "machine_filament_park_distance description"
+#~ msgid "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used."
+#~ msgstr "与喷嘴尖端的距离，当不再使用挤出机时会将耗材停放在此区域。"
+
+#~ msgctxt "material_flush_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_flush_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_end_of_filament_purge_speed label"
+#~ msgid "End Of Filament Purge Speed"
+#~ msgstr "线末清除速度"
+
+#~ msgctxt "material_end_of_filament_purge_speed description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_end_of_filament_purge_length label"
+#~ msgid "End Of Filament Purge Length"
+#~ msgstr "线末清除长度"
+
+#~ msgctxt "material_end_of_filament_purge_length description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_maximum_park_duration description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "material_no_load_move_factor description"
+#~ msgid "Material Station internal value"
+#~ msgstr "Material Station 内部值"
+
+#~ msgctxt "retraction_enable description"
+#~ msgid "Retract the filament when the nozzle is moving over a non-printed area. "
+#~ msgstr "当喷嘴移动到非打印区域上方时回抽耗材。 "
+
+#~ msgctxt "support_xy_distance_overhang description"
+#~ msgid "Distance of the support structure from the overhang in the X/Y directions. "
+#~ msgstr "支撑结构在 X/Y 方向距悬垂的距离。 "
+
+#~ msgctxt "meshfix description"
+#~ msgid "category_fixes"
+#~ msgstr "category_fixes"
+
+#~ msgctxt "blackmagic description"
+#~ msgid "category_blackmagic"
+#~ msgstr "category_blackmagic"
+
+#~ msgctxt "experimental description"
+#~ msgid "experimental!"
+#~ msgstr "实验性！"
 
 #~ msgctxt "machine_head_polygon label"
 #~ msgid "Machine Head Polygon"

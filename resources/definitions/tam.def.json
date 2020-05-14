@@ -7,7 +7,7 @@
         "author": "typeamachines",
         "manufacturer": "typeamachines",
         "file_formats": "text/x-gcode",
-        "platform": "tam_series1.stl",
+        "platform": "tam_series1.3mf",
         "platform_offset": [-580.0, -6.23, 253.5],
         "has_materials": false,
         "machine_extruder_trains":
