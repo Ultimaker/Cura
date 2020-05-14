@@ -1,48 +1,32 @@
 {
     "version": 2,
-    "name": "Smoothie Dual Custom",
+    "name": "Smoothie Custom Printer",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,
         "author": "grk3010",
         "manufacturer": "Custom",
+        "category": "Custom",
         "file_formats": "text/x-gcode",
-        "has_machine_quality": true,
-        "has_variants": true,
-        "preferred_variant_name": "Mosquito Magnum 0.8",
-        "preferred_quality_type": "normal",
-        "variants_name": "Nozzle",
         "machine_extruder_trains":
         {
-            "0": "bondtech_bmgx2m_extruder_0",
-            "1": "bondtech_bmgx2m_extruder_1"
-        }
+            "0": "custom_extruder_1",
+            "1": "custom_extruder_2",
+            "2": "custom_extruder_3",
+            "3": "custom_extruder_4",
+            "4": "custom_extruder_5",
+            "5": "custom_extruder_6",
+            "6": "custom_extruder_7",
+            "7": "custom_extruder_8"
+        },
+        "first_start_actions": ["MachineSettingsAction"]
     },
     "overrides": {
-        "machine_name": { "default_value": "Smoothie Dual Custom" },
-        "machine_width": {
-            "default_value": 600
-        },
-        "machine_depth": {
-            "default_value": 550
-        },
-        "machine_height": {
-            "default_value": 500
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
         "machine_always_write_active_tool": {
         	"default_value": true
-        },
-        "machine_extruder_count": {
-            "default_value": 2
-        },
-        "machine_heat_zone_length": {
-        	"default_value": 15
         },
         "machine_start_gcode": {
             "default_value": "G28 X0 Y0 ; Home X Y\nM375; Load Bed Leveling Grid\nG1 X300 Y275 F15000 ; Move to bed center\nM280 S3.0 ; Deploy probe pin\n## NOTE: Adjust \"ZX.XX\" after G30 to be the Z-offset (in mm) between the probe and the nozzle\n## This is how you adjust nozzle printing height!\nG30 Z1.25 ; Move down to find bed & set Z home offset\nM280 S7.0 ; Retract probe\nG1 Z15.0 F600 ; move extruder up 15mm\nT0; Activate Extruder 1"
