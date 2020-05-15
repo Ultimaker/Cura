@@ -1099,7 +1099,7 @@ class MachineManager(QObject):
     def _setVariantNode(self, position: str, variant_node: "VariantNode") -> None:
         if self._global_container_stack is None:
             return
-        self._global_container_stack.extruders[position].variant = variant_node.container
+        self._global_container_stack.extruderList[int(position)].variant = variant_node.container
         self.activeVariantChanged.emit()
 
     def _setGlobalVariant(self, container_node: "ContainerNode") -> None:
@@ -1354,7 +1354,7 @@ class MachineManager(QObject):
                         material_container_node = variant_node.materials.get(base_file, material_container_node)
 
                     self._setMaterial(position, material_container_node)
-                    self._global_container_stack.extruders[position].setEnabled(True)
+                    self._global_container_stack.extruderList[int(position)].setEnabled(True)
                     self.updateMaterialWithVariant(position)
 
             self.updateDefaultExtruder()
