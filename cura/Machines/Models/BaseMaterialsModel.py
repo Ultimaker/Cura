@@ -150,9 +150,10 @@ class BaseMaterialsModel(ListModel):
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack.hasMaterials:
             return  # There are no materials for this machine, so nothing to do.
-        extruder_stack = global_stack.extruders.get(str(self._extruder_position))
-        if not extruder_stack:
+        extruder_list = global_stack.extruderList
+        if self._extruder_position > len(extruder_list):
             return
+        extruder_stack = extruder_list[self._extruder_position]
         nozzle_name = extruder_stack.variant.getName()
         machine_node = ContainerTree.getInstance().machines[global_stack.definition.getId()]
         if nozzle_name not in machine_node.variants:
