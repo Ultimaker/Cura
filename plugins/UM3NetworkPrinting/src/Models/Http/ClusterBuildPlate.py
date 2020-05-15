@@ -3,11 +3,13 @@
 from ..BaseModel import BaseModel
 
 
-## Class representing a cluster printer
 class ClusterBuildPlate(BaseModel):
+    """Class representing a cluster printer"""
 
-    ## Create a new build plate
-    #  \param type: The type of build plate glass or aluminium
     def __init__(self, type: str = "glass", **kwargs) -> None:
+        """Create a new build plate
+        
+        :param type: The type of build plate glass or aluminium
+        """
         self.type = type
         super().__init__(**kwargs)

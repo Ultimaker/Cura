@@ -7,12 +7,12 @@ from UM.Message import Message
 I18N_CATALOG = i18nCatalog("cura")
 
 
-## Message shown when trying to connect to a legacy printer device.
 class LegacyDeviceNoLongerSupportedMessage(Message):
-    
-    # Singleton used to prevent duplicate messages of this type at the same time.
+    """Message shown when trying to connect to a legacy printer device."""
+
     __is_visible = False
-    
+    """Singleton used to prevent duplicate messages of this type at the same time."""
+
     def __init__(self) -> None:
         super().__init__(
             text = I18N_CATALOG.i18nc("@info:status", "You are attempting to connect to a printer that is not "

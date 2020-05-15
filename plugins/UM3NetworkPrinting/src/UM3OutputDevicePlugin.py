@@ -13,11 +13,11 @@ from .Network.LocalClusterOutputDeviceManager import LocalClusterOutputDeviceMan
 from .Cloud.CloudOutputDeviceManager import CloudOutputDeviceManager
 
 
-## This plugin handles the discovery and networking for Ultimaker 3D printers that support network and cloud printing.
 class UM3OutputDevicePlugin(OutputDevicePlugin):
-    
-    # Signal emitted when the list of discovered devices changed. Used by printer action in this plugin.
+    """This plugin handles the discovery and networking for Ultimaker 3D printers"""
+
     discoveredDevicesChanged = Signal()
+    """Signal emitted when the list of discovered devices changed. Used by printer action in this plugin."""
 
     def __init__(self) -> None:
         super().__init__()
@@ -33,8 +33,9 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         # This ensures no output devices are still connected that do not belong to the new active machine.
         CuraApplication.getInstance().globalContainerStackChanged.connect(self.refreshConnections)
 
-    ##  Start looking for devices in the network and cloud.
     def start(self):
+        """Start looking for devices in the network and cloud."""
+
         self._network_output_device_manager.start()
         self._cloud_output_device_manager.start()
 
@@ -43,31 +44,38 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         self._network_output_device_manager.stop()
         self._cloud_output_device_manager.stop()
 
-    ## Restart network discovery.
     def startDiscovery(self) -> None:
+        """Restart network discovery."""
+
         self._network_output_device_manager.startDiscovery()
 
-    ## Force refreshing the network connections.
     def refreshConnections(self) -> None:
+        """Force refreshing the network connections."""
+
         self._network_output_device_manager.refreshConnections()
         self._cloud_output_device_manager.refreshConnections()
 
-    ## Indicate that this plugin supports adding networked printers manually.
     def canAddManualDevice(self, address: str = "") -> ManualDeviceAdditionAttempt:
+        """Indicate that this plugin supports adding networked printers manually."""
+
         return ManualDeviceAdditionAttempt.PRIORITY
 
-    ## Add a networked printer manually based on its network address.
     def addManualDevice(self, address: str, callback: Optional[Callable[[bool, str], None]] = None) -> None:
+        """Add a networked printer manually based on its network address."""
+
         self._network_output_device_manager.addManualDevice(address, callback)
 
-    ## Remove a manually connected networked printer.
     def removeManualDevice(self, key: str, address: Optional[str] = None) -> None:
+        """Remove a manually connected networked printer."""
+
         self._network_output_device_manager.removeManualDevice(key, address)
         
-    ## Get the discovered devices from the local network.
     def getDiscoveredDevices(self) -> Dict[str, LocalClusterOutputDevice]:
+        """Get the discovered devices from the local network."""
+
         return self._network_output_device_manager.getDiscoveredDevices()
 
-    ## Connect the active machine to a device.
     def associateActiveMachineWithPrinterDevice(self, device: LocalClusterOutputDevice) -> None:
+        """Connect the active machine to a device."""
+
         self._network_output_device_manager.associateActiveMachineWithPrinterDevice(device)
