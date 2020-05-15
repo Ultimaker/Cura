@@ -261,7 +261,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if len(profile_or_list) == 1:
                     global_profile = profile_or_list[0]
                     extruder_profiles = []
-                    for idx, extruder in enumerate(global_stack.extruders.values()):
+                    for idx, extruder in enumerate(global_stack.extruderList):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
                         profile.setName(quality_name)
