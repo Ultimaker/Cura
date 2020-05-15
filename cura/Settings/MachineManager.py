@@ -1073,14 +1073,14 @@ class MachineManager(QObject):
         self._global_container_stack.quality = quality_container
         self._global_container_stack.qualityChanges = quality_changes_container
 
-        for position, extruder in self._global_container_stack.extruders.items():
+        for position, extruder in enumerate(self._global_container_stack.extruderList):
             quality_node = None
             if quality_group is not None:
-                quality_node = quality_group.nodes_for_extruders.get(int(position))
+                quality_node = quality_group.nodes_for_extruders.get(position)
 
             quality_changes_container = empty_quality_changes_container
             quality_container = empty_quality_container
-            quality_changes_metadata = quality_changes_group.metadata_per_extruder.get(int(position))
+            quality_changes_metadata = quality_changes_group.metadata_per_extruder.get(position)
             if quality_changes_metadata:
                 containers = container_registry.findContainers(id = quality_changes_metadata["id"])
                 if containers:
