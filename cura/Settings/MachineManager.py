@@ -1114,7 +1114,7 @@ class MachineManager(QObject):
             return
         if material_node and material_node.container:
             material_container = material_node.container
-            self._global_container_stack.extruders[position].material = material_container
+            self._global_container_stack.extruderList[int(position)].material = material_container
             root_material_id = material_container.getMetaDataEntry("base_file", None)
         else:
             self._global_container_stack.extruderList[int(position)].material = empty_material_container
