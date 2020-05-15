@@ -33,10 +33,12 @@ class SentryLogger(LogOutput):
         super().__init__()
         self._show_once = set()  # type: Set[str]
     
-    ##  Log the message to the sentry hub as a breadcrumb
-    #   \param log_type "e" (error), "i"(info), "d"(debug), "w"(warning) or "c"(critical) (can postfix with "_once")
-    #   \param message String containing message to be logged
     def log(self, log_type: str, message: str) -> None:
+        """Log the message to the sentry hub as a breadcrumb
+        
+        :param log_type: "e" (error), "i"(info), "d"(debug), "w"(warning) or "c"(critical) (can postfix with "_once")
+        :param message: String containing message to be logged
+        """
         level = self._translateLogType(log_type)
         message = CrashHandler.pruneSensitiveData(message)
         if level is None:

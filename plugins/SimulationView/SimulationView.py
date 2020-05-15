@@ -48,8 +48,9 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
+    """The preview layer view. It is used to display g-code paths."""
+
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
@@ -294,23 +295,28 @@ class SimulationView(CuraView):
 
             self.currentPathNumChanged.emit()
 
-    ##  Set the layer view type
-    #
-    #   \param layer_view_type integer as in SimulationView.qml and this class
     def setSimulationViewType(self, layer_view_type: int) -> None:
+        """Set the layer view type
+        
+        :param layer_view_type: integer as in SimulationView.qml and this class
+        """
+
         if layer_view_type != self._layer_view_type:
             self._layer_view_type = layer_view_type
             self.currentLayerNumChanged.emit()
 
-    ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
+        """Return the layer view type, integer as in SimulationView.qml and this class"""
+
         return self._layer_view_type
 
-    ##  Set the extruder opacity
-    #
-    #   \param extruder_nr 0..3
-    #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
+        """Set the extruder opacity
+        
+        :param extruder_nr: 0..3
+        :param opacity: 0.0 .. 1.0
+        """
+
         if 0 <= extruder_nr <= 3:
             self._extruder_opacity[extruder_nr] = opacity
             self.currentLayerNumChanged.emit()
@@ -372,8 +378,8 @@ class SimulationView(CuraView):
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
-        ## Recalculate num max layers
         new_max_layers = -1
+        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -449,9 +455,11 @@ class SimulationView(CuraView):
     busyChanged = Signal()
     activityChanged = Signal()
 
-    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        """Hackish way to ensure the proxy is already created
+
+        which ensures that the layerview.qml is already created as this caused some issues.
+        """
         if self._proxy is None:
             self._proxy = SimulationViewProxy(self)
         return self._proxy
