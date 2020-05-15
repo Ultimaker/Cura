@@ -915,7 +915,7 @@ class MachineManager(QObject):
 
     @pyqtSlot(int, bool)
     def setExtruderEnabled(self, position: int, enabled: bool) -> None:
-        if self._global_container_stack is None or str(position) not in self._global_container_stack.extruders:
+        if self._global_container_stack is None or position >= len(self._global_container_stack.extruderList):
             Logger.log("w", "Could not find extruder on position %s.", position)
             return
         extruder = self._global_container_stack.extruderList[position]
@@ -1590,7 +1590,7 @@ class MachineManager(QObject):
             return
         with postponeSignals(*self._getContainerChangedSignals(), compress = CompressTechnique.CompressPerParameterValue):
             self._setQualityGroup(self.activeQualityGroup())
-            for stack in [self._global_container_stack] + list(self._global_container_stack.extruders.values()):
+            for stack in [self._global_container_stack] + self._global_container_stack.extruderList:
                 stack.userChanges.clear()
 
     @pyqtProperty(QObject, fset = setQualityChangesGroup, notify = activeQualityChangesGroupChanged)
