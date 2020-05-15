@@ -4,6 +4,7 @@ import os
 from typing import Dict, List, Optional
 
 from PyQt5.QtCore import QTimer
+from PyQt5.QtNetwork import QNetworkReply
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
@@ -43,7 +44,7 @@ class CloudOutputDeviceManager:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
-        self._api = CloudApiClient(self._account, on_error = lambda error: Logger.log("e", str(error)))
+        self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
 
         # Ensure we don't start twice.
@@ -127,7 +128,7 @@ class CloudOutputDeviceManager:
 
         self._onSyncFinished(True)
 
-    def _onGetRemoteClusterFailed(self):
+    def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError):
         self._onSyncFinished(False)
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
