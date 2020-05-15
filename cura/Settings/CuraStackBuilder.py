@@ -62,7 +62,7 @@ class CuraStackBuilder:
             except IndexError:
                 return None
 
-        for new_extruder in new_global_stack.extruders.values():  # Only register the extruders if we're sure that all of them are correct.
+        for new_extruder in new_global_stack.extruderList:  # Only register the extruders if we're sure that all of them are correct.
             registry.addContainer(new_extruder)
 
         # Register the global stack after the extruder stacks are created. This prevents the registry from adding another
