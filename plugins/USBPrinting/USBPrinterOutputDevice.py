@@ -110,20 +110,22 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
             application = CuraApplication.getInstance()
             application.triggerNextExitCheck()
 
-    ## Reset USB device settings
-    #
     def resetDeviceSettings(self) -> None:
+        """Reset USB device settings"""
+
         self._firmware_name = None
 
-    ##  Request the current scene to be sent to a USB-connected printer.
-    #
-    #   \param nodes A collection of scene nodes to send. This is ignored.
-    #   \param file_name A suggestion for a file name to write.
-    #   \param filter_by_machine Whether to filter MIME types by machine. This
-    #   is ignored.
-    #   \param kwargs Keyword arguments.
     def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
+        """Request the current scene to be sent to a USB-connected printer.
+        
+        :param nodes: A collection of scene nodes to send. This is ignored.
+        :param file_name: A suggestion for a file name to write.
+        :param filter_by_machine: Whether to filter MIME types by machine. This
+               is ignored.
+        :param kwargs: Keyword arguments.
+        """
+
         if self._is_printing:
             message = Message(text = catalog.i18nc("@message", "A print is still in progress. Cura cannot start another print via USB until the previous print has completed."), title = catalog.i18nc("@message", "Print in Progress"))
             message.show()
@@ -144,9 +146,11 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._printGCode(gcode_textio.getvalue())
 
-    ##  Start a print based on a g-code.
-    #   \param gcode The g-code to print.
     def _printGCode(self, gcode: str):
+        """Start a print based on a g-code.
+        
+        :param gcode: The g-code to print.
+        """
         self._gcode.clear()
         self._paused = False
 
@@ -219,8 +223,9 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
         self._update_thread = Thread(target=self._update, daemon=True, name = "USBPrinterUpdate")
         self._serial = None
 
-    ##  Send a command to printer.
     def sendCommand(self, command: Union[str, bytes]):
+        """Send a command to printer."""
+
         if not self._command_received.is_set():
             self._command_queue.put(command)
         else:
