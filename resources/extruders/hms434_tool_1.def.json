@@ -16,7 +16,7 @@
         "machine_nozzle_offset_y": { "default_value": 0.0 },
         "material_diameter": { "default_value": 1.75 },
         "machine_extruder_start_code": {
-          "default_value": "\n;changing to tool1\nM83\nM109 T0 S{material_print_temperature}\nM114\nM118 // action:set_pid\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E-{switch_extruder_retraction_amount} F2400\nG1 Y40 F3000\nG1 X10 F12000\n\n"
+          "default_value": "\n;changing to tool1\nM83\nM109 T0 S{material_print_temperature}\nM114\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E{switch_extruder_retraction_amount} F300\nG1 E-{switch_extruder_retraction_amount} F2400\nG1 Y40 F3000\nG1 X10 F12000\n\n"
         },
         "machine_extruder_end_code": {
            "default_value": "\nG1 X10 Y40 F12000\nG1 X-25 F12000\nM109 T0 R{material_standby_temperature}\nG1 Y20 F3000\n; ending tool1\n\n"
