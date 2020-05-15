@@ -27,9 +27,6 @@ class CloudOutputDeviceManager:
     API spec is available on https://api.ultimaker.com/docs/connect/spec/.
     """
 
-    SYNC_TIMEOUT = 50.0
-    """seconds. Adding many different kinds of printers can take a long time"""
-
     META_CLUSTER_ID = "um_cloud_cluster_id"
     META_NETWORK_KEY = "um_network_key"
     SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
@@ -50,13 +47,7 @@ class CloudOutputDeviceManager:
         # Ensure we don't start twice.
         self._running = False
 
-        # Unfortunately, not all cases of a failed request result in an error callback, such as VPN connection
-        # being broken or possibly switching wifi networks. Better solution: Refactor CloudApiClient to use
-        # HttpRequestManager, which supports timeout.
-        self._sync_timeout_timer = QTimer()
-        self._sync_timeout_timer.setInterval(int(self.SYNC_TIMEOUT * 1000))
-        self._sync_timeout_timer.setSingleShot(True)
-        self._sync_timeout_timer.timeout.connect(self._onSyncTimeout)
+        self._syncing = False
 
     def start(self):
         """Starts running the cloud output device manager, thus periodically requesting cloud data."""
@@ -94,13 +85,12 @@ class CloudOutputDeviceManager:
     def _getRemoteClusters(self) -> None:
         """Gets all remote clusters from the API."""
 
-        if self._sync_timeout_timer.isActive():
-            # A sync is running
+        if self._syncing:
             return
 
         Logger.info("Syncing cloud printer clusters")
 
-        self._sync_timeout_timer.start()
+        self._syncing = True
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
@@ -126,10 +116,12 @@ class CloudOutputDeviceManager:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
 
-        self._onSyncFinished(True)
+        self._syncing = False
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
 
     def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError):
-        self._onSyncFinished(False)
+        self._syncing = False
+        self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
@@ -231,19 +223,6 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key in output_device_manager.getOutputDeviceIds():
             output_device_manager.removeOutputDevice(device.key)
-
-    def _onSyncTimeout(self):
-        Logger.warning("Cloud printer sync timed out after {} seconds".format(self.SYNC_TIMEOUT))
-        self._onSyncFinished(False)
-
-    def _onSyncFinished(self, success: bool):
-        if self._sync_timeout_timer.isActive():
-            self._sync_timeout_timer.stop()
-
-        if success:
-            self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SUCCESS)
-        else:
-            self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
 
     def _createMachineFromDiscoveredDevice(self, key: str, activate: bool = True) -> None:
         device = self._remote_clusters[key]
