@@ -75,7 +75,7 @@ Item
                     }
                     else
                     {
-                        Qt.openUrlExternally("https://mycloud.ultimaker.com/app/manage/printers")
+                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
                     }
 
                 }

@@ -108,13 +108,12 @@ class PauseAtHeight(Script):
                     "type": "float",
                     "default_value": 3.3333
                 },
-                "redo_layers":
+                "redo_layer":
                 {
-                    "label": "Redo Layers",
-                    "description": "Redo a number of previous layers after a pause to increases adhesion.",
-                    "unit": "layers",
-                    "type": "int",
-                    "default_value": 0
+                    "label": "Redo Layer",
+                    "description": "Redo the last layer before the pause, to get the filament flowing again after having oozed a bit during the pause.",
+                    "type": "bool",
+                    "default_value": false
                 },
                 "standby_temperature":
                 {
@@ -161,7 +160,7 @@ class PauseAtHeight(Script):
         park_x = self.getSettingValueByKey("head_park_x")
         park_y = self.getSettingValueByKey("head_park_y")
         layers_started = False
-        redo_layers = self.getSettingValueByKey("redo_layers")
+        redo_layer = self.getSettingValueByKey("redo_layer")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
         firmware_retract = Application.getInstance().getGlobalContainerStack().getProperty("machine_firmware_retract", "value")
         control_temperatures = Application.getInstance().getGlobalContainerStack().getProperty("machine_nozzle_temp_enabled", "value")
@@ -265,24 +264,23 @@ class PauseAtHeight(Script):
                     if current_e >= 0:
                         break
 
-                # include a number of previous layers
-                for i in range(1, redo_layers + 1):
-                    prev_layer = data[index - i]
+                # Maybe redo the last layer.
+                if redo_layer:
+                    prev_layer = data[index - 1]
                     layer = prev_layer + layer
 
                     # Get extruder's absolute position at the
-                    # beginning of the first layer redone
+                    # beginning of the redone layer.
                     # see https://github.com/nallath/PostProcessingPlugin/issues/55
-                    if i == redo_layers:
-                        # Get X and Y from the next layer (better position for
-                        # the nozzle)
-                        x, y = self.getNextXY(layer)
-                        prev_lines = prev_layer.split("\n")
-                        for lin in prev_lines:
-                            new_e = self.getValue(lin, "E", current_e)
-                            if new_e != current_e:
-                                current_e = new_e
-                                break
+                    # Get X and Y from the next layer (better position for
+                    # the nozzle)
+                    x, y = self.getNextXY(layer)
+                    prev_lines = prev_layer.split("\n")
+                    for lin in prev_lines:
+                        new_e = self.getValue(lin, "E", current_e)
+                        if new_e != current_e:
+                            current_e = new_e
+                            break
 
                 prepend_gcode = ";TYPE:CUSTOM\n"
                 prepend_gcode += ";added code by post processing\n"
@@ -365,8 +363,8 @@ class PauseAtHeight(Script):
 
                     prepend_gcode += self.putValue(M = 82) + " ; switch back to absolute E values\n"
 
-                    # reset extrude value to pre pause value
-                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+                # reset extrude value to pre pause value
+                prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
 
                 layer = prepend_gcode + layer
 
