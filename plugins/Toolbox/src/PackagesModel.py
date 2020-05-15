@@ -12,8 +12,12 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
+    """Model that holds Cura packages.
+
+    By setting the filter property the instances held by this model can be changed.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -131,9 +135,11 @@ class PackagesModel(ListModel):
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
 
-    ##  Set the filter of this model based on a string.
-    #   \param filter_dict \type{Dict} Dictionary to do the filtering by.
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
+        """Set the filter of this model based on a string.
+        
+        :param filter_dict: Dictionary to do the filtering by.
+        """
         if filter_dict != self._filter:
             self._filter = filter_dict
             self._update()

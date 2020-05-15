@@ -16,20 +16,23 @@ from .RestartApplicationPresenter import RestartApplicationPresenter
 from .SubscribedPackagesModel import SubscribedPackagesModel
 
 
-## Orchestrates the synchronizing of packages from the user account to the installed packages
-# Example flow:
-# - CloudPackageChecker compares a list of packages the user `subscribed` to in their account
-#   If there are `discrepancies` between the account and locally installed packages, they are emitted
-# - DiscrepanciesPresenter shows a list of packages to be added or removed to the user. It emits the `packageMutations`
-#   the user selected to be performed
-# - The SyncOrchestrator uses PackageManager to remove local packages the users wants to see removed
-# - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
-# - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
-#   be installed. It emits the `licenseAnswers` signal for accept or declines
-# - The CloudApiClient removes the declined packages from the account
-# - The SyncOrchestrator uses PackageManager to install the downloaded packages and delete temp files.
-# - The RestartApplicationPresenter notifies the user that a restart is required for changes to take effect
 class SyncOrchestrator(Extension):
+    """Orchestrates the synchronizing of packages from the user account to the installed packages
+    
+    Example flow:
+
+    - CloudPackageChecker compares a list of packages the user `subscribed` to in their account
+      If there are `discrepancies` between the account and locally installed packages, they are emitted
+    - DiscrepanciesPresenter shows a list of packages to be added or removed to the user. It emits the `packageMutations`
+      the user selected to be performed
+    - The SyncOrchestrator uses PackageManager to remove local packages the users wants to see removed
+    - The DownloadPresenter shows a download progress dialog. It emits A tuple of succeeded and failed downloads
+    - The LicensePresenter extracts licenses from the downloaded packages and presents a license for each package to
+      be installed. It emits the `licenseAnswers` signal for accept or declines
+    - The CloudApiClient removes the declined packages from the account
+    - The SyncOrchestrator uses PackageManager to install the downloaded packages and delete temp files.
+    - The RestartApplicationPresenter notifies the user that a restart is required for changes to take effect
+    """
 
     def __init__(self, app: CuraApplication) -> None:
         super().__init__()
@@ -63,10 +66,12 @@ class SyncOrchestrator(Extension):
         self._download_presenter.done.connect(self._onDownloadFinished)
         self._download_presenter.download(mutations)
 
-    ## Called when a set of packages have finished downloading
-    # \param success_items: Dict[package_id, Dict[str, str]]
-    # \param error_items: List[package_id]
     def _onDownloadFinished(self, success_items: Dict[str, Dict[str, str]], error_items: List[str]) -> None:
+        """Called when a set of packages have finished downloading
+        
+        :param success_items:: Dict[package_id, Dict[str, str]]
+        :param error_items:: List[package_id]
+        """
         if error_items:
             message = i18n_catalog.i18nc("@info:generic", "{} plugins failed to download".format(len(error_items)))
             self._showErrorMessage(message)
@@ -96,7 +101,8 @@ class SyncOrchestrator(Extension):
         if has_changes:
             self._restart_presenter.present()
 
-    ## Logs an error and shows it to the user
     def _showErrorMessage(self, text: str):
+        """Logs an error and shows it to the user"""
+
         Logger.error(text)
         Message(text, lifetime=0).show()
