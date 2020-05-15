@@ -180,9 +180,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
         container_tree = ContainerTree.getInstance()
 
-        machine_extruders = []
-        for position in sorted(global_stack.extruders):
-            machine_extruders.append(global_stack.extruders[position])
+        machine_extruders = global_stack.extruderList
 
         plugin_registry = PluginRegistry.getInstance()
         extension = file_name.split(".")[-1]
