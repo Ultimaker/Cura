@@ -1405,7 +1405,7 @@ class MachineManager(QObject):
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:
         if global_stack is not None and global_stack != self._global_container_stack:
-            global_stack.extruders[position].material = container_node.container
+            global_stack.extruderList[int(position)].material = container_node.container
             return
         position = str(position)
         self.blurSettings.emit()
