@@ -1214,7 +1214,7 @@ class MachineManager(QObject):
         if self._global_container_stack is None:
             return
         if position is None:
-            position_list = list(range(len(self._global_container_stack.extruderList)))
+            position_list = [str(position) for position in range(len(self._global_container_stack.extruderList))]
         else:
             position_list = [position]
 
