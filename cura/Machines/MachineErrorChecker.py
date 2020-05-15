@@ -13,16 +13,16 @@ from UM.Settings.SettingDefinition import SettingDefinition
 from UM.Settings.Validator import ValidatorState
 
 import cura.CuraApplication
-#
-# This class performs setting error checks for the currently active machine.
-#
-# The whole error checking process is pretty heavy which can take ~0.5 secs, so it can cause GUI to lag.
-# The idea here is to split the whole error check into small tasks, each of which only checks a single setting key
-# in a stack. According to my profiling results, the maximal runtime for such a sub-task is <0.03 secs, which should
-# be good enough. Moreover, if any changes happened to the machine, we can cancel the check in progress without wait
-# for it to finish the complete work.
-#
+
 class MachineErrorChecker(QObject):
+    """This class performs setting error checks for the currently active machine.
+
+    The whole error checking process is pretty heavy which can take ~0.5 secs, so it can cause GUI to lag. The idea
+    here is to split the whole error check into small tasks, each of which only checks a single setting key in a
+    stack. According to my profiling results, the maximal runtime for such a sub-task is <0.03 secs, which should be
+    good enough. Moreover, if any changes happened to the machine, we can cancel the check in progress without wait
+    for it to finish the complete work.
+    """
 
     def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
@@ -92,24 +92,37 @@ class MachineErrorChecker(QObject):
     def needToWaitForResult(self) -> bool:
         return self._need_to_check or self._check_in_progress
 
-    #   Start the error check for property changed
-    #   this is seperate from the startErrorCheck because it ignores a number property types
     def startErrorCheckPropertyChanged(self, key: str, property_name: str) -> None:
+        """Start the error check for property changed
+
+        this is seperate from the startErrorCheck because it ignores a number property types
+
+        :param key:
+        :param property_name:
+        """
+
         if property_name != "value":
             return
         self.startErrorCheck()
 
-    # Starts the error check timer to schedule a new error check.
     def startErrorCheck(self, *args: Any) -> None:
+        """Starts the error check timer to schedule a new error check.
+
+        :param args:
+        """
+
         if not self._check_in_progress:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()
         self._error_check_timer.start()
 
-    # This function is called by the timer to reschedule a new error check.
-    # If there is no check in progress, it will start a new one. If there is any, it sets the "_need_to_check" flag
-    # to notify the current check to stop and start a new one.
     def _rescheduleCheck(self) -> None:
+        """This function is called by the timer to reschedule a new error check.
+
+        If there is no check in progress, it will start a new one. If there is any, it sets the "_need_to_check" flag
+        to notify the current check to stop and start a new one.
+        """
+
         if self._check_in_progress and not self._need_to_check:
             self._need_to_check = True
             self.needToWaitForResultChanged.emit()

@@ -18,9 +18,9 @@ from UM.i18n import i18nCatalog
 catalog = i18nCatalog("cura")
 
 
-##  Lists the intent categories that are available for the current printer
-#   configuration.
 class IntentCategoryModel(ListModel):
+    """Lists the intent categories that are available for the current printer configuration. """
+
     NameRole = Qt.UserRole + 1
     IntentCategoryRole = Qt.UserRole + 2
     WeightRole = Qt.UserRole + 3
@@ -31,10 +31,12 @@ class IntentCategoryModel(ListModel):
 
     _translations = collections.OrderedDict()  # type: "collections.OrderedDict[str,Dict[str,Optional[str]]]"
 
-    # Translations to user-visible string. Ordered by weight.
-    # TODO: Create a solution for this name and weight to be used dynamically.
     @classmethod
     def _get_translations(cls):
+        """Translations to user-visible string. Ordered by weight.
+
+        TODO: Create a solution for this name and weight to be used dynamically.
+        """
         if len(cls._translations) == 0:
             cls._translations["default"] = {
                 "name": catalog.i18nc("@label", "Default")
@@ -53,9 +55,12 @@ class IntentCategoryModel(ListModel):
             }
         return cls._translations
 
-    ##  Creates a new model for a certain intent category.
-    #   \param The category to list the intent profiles for.
     def __init__(self, intent_category: str) -> None:
+        """Creates a new model for a certain intent category.
+        
+        :param intent_category: category to list the intent profiles for.
+        """
+
         super().__init__()
         self._intent_category = intent_category
 
@@ -84,16 +89,18 @@ class IntentCategoryModel(ListModel):
 
         self.update()
 
-    ##  Updates the list of intents if an intent profile was added or removed.
     def _onContainerChange(self, container: "ContainerInterface") -> None:
+        """Updates the list of intents if an intent profile was added or removed."""
+
         if container.getMetaDataEntry("type") == "intent":
             self.update()
 
     def update(self):
         self._update_timer.start()
 
-    ##  Updates the list of intents.
     def _update(self) -> None:
+        """Updates the list of intents."""
+
         available_categories = IntentManager.getInstance().currentAvailableIntentCategories()
         result = []
         for category in available_categories:
@@ -109,9 +116,9 @@ class IntentCategoryModel(ListModel):
         result.sort(key = lambda k: k["weight"])
         self.setItems(result)
 
-    ##  Get a display value for a category.
-    ##  for categories and keys
     @staticmethod
     def translation(category: str, key: str, default: Optional[str] = None):
+        """Get a display value for a category.for categories and keys"""
+
         display_strings = IntentCategoryModel._get_translations().get(category, {})
         return display_strings.get(key, default)

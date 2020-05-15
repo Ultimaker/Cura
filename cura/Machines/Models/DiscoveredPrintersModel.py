@@ -115,12 +115,11 @@ class DiscoveredPrinter(QObject):
             return catalog.i18nc("@label", "Available networked printers")
 
 
-#
-# Discovered printers are all the printers that were found on the network, which provide a more convenient way
-# to add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then
-# add that printer to Cura as the active one).
-#
 class DiscoveredPrintersModel(QObject):
+    """Discovered printers are all the printers that were found on the network, which provide a more convenient way to
+     add networked printers (Plugin finds a bunch of printers, user can select one from the list, plugin can then add
+     that printer to Cura as the active one).
+    """
 
     def __init__(self, application: "CuraApplication", parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
@@ -254,8 +253,14 @@ class DiscoveredPrintersModel(QObject):
         del self._discovered_printer_by_ip_dict[ip_address]
         self.discoveredPrintersChanged.emit()
 
-    # A convenience function for QML to create a machine (GlobalStack) out of the given discovered printer.
-    # This function invokes the given discovered printer's "create_callback" to do this.
+
     @pyqtSlot("QVariant")
     def createMachineFromDiscoveredPrinter(self, discovered_printer: "DiscoveredPrinter") -> None:
+        """A convenience function for QML to create a machine (GlobalStack) out of the given discovered printer.
+
+        This function invokes the given discovered printer's "create_callback" to do this
+
+        :param discovered_printer:
+        """
+
         discovered_printer.create_callback(discovered_printer.getKey())

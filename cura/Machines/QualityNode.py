@@ -13,12 +13,14 @@ if TYPE_CHECKING:
     from cura.Machines.MachineNode import MachineNode
 
 
-##  Represents a quality profile in the container tree.
-#
-#   This may either be a normal quality profile or a global quality profile.
-#
-#   Its subcontainers are intent profiles.
 class QualityNode(ContainerNode):
+    """Represents a quality profile in the container tree.
+    
+    This may either be a normal quality profile or a global quality profile.
+    
+    Its subcontainers are intent profiles.
+    """
+
     def __init__(self, container_id: str, parent: Union["MaterialNode", "MachineNode"]) -> None:
         super().__init__(container_id)
         self.parent = parent

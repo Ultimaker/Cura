@@ -9,11 +9,11 @@ from UM.Scene.Selection import Selection
 from UM.Qt.ListModel import ListModel
 
 
-#
-# This is the model for multi build plate feature.
-# This has nothing to do with the build plate types you can choose on the sidebar for a machine.
-#
 class MultiBuildPlateModel(ListModel):
+    """This is the model for multi build plate feature.
+
+    This has nothing to do with the build plate types you can choose on the sidebar for a machine.
+    """
 
     maxBuildPlateChanged = pyqtSignal()
     activeBuildPlateChanged = pyqtSignal()
@@ -39,9 +39,10 @@ class MultiBuildPlateModel(ListModel):
             self._max_build_plate = max_build_plate
             self.maxBuildPlateChanged.emit()
 
-    ##  Return the highest build plate number
     @pyqtProperty(int, notify = maxBuildPlateChanged)
     def maxBuildPlate(self):
+        """Return the highest build plate number"""
+
         return self._max_build_plate
 
     def setActiveBuildPlate(self, nr):
