@@ -129,6 +129,7 @@ class DiscoveredPrintersModel(QObject):
         self._discovered_printer_by_ip_dict = dict()  # type: Dict[str, DiscoveredPrinter]
 
         self._plugin_for_manual_device = None  # type: Optional[OutputDevicePlugin]
+        self._network_plugin_queue = []  # type: List[OutputDevicePlugin]
         self._manual_device_address = ""
 
         self._manual_device_request_timeout_in_seconds = 5  # timeout for adding a manual device in seconds
@@ -153,20 +154,25 @@ class DiscoveredPrintersModel(QObject):
 
         all_plugins_dict = self._application.getOutputDeviceManager().getAllOutputDevicePlugins()
 
-        can_add_manual_plugins = [item for item in filter(
+        self._network_plugin_queue = [item for item in filter(
             lambda plugin_item: plugin_item.canAddManualDevice(address) in priority_order,
             all_plugins_dict.values())]
 
-        if not can_add_manual_plugins:
+        if not self._network_plugin_queue:
             Logger.log("d", "Could not find a plugin to accept adding %s manually via address.", address)
             return
 
-        plugin = max(can_add_manual_plugins, key = lambda p: priority_order.index(p.canAddManualDevice(address)))
-        self._plugin_for_manual_device = plugin
-        self._plugin_for_manual_device.addManualDevice(address, callback = self._onManualDeviceRequestFinished)
-        self._manual_device_address = address
-        self._manual_device_request_timer.start()
-        self.hasManualDeviceRequestInProgressChanged.emit()
+        self._attemptToAddManualDevice(address)
+
+    def _attemptToAddManualDevice(self, address: str) -> None:
+        if self._network_plugin_queue:
+            self._plugin_for_manual_device = self._network_plugin_queue.pop()
+            Logger.log("d", "Network plugin %s: attempting to add manual device with address %s.",
+                       self._plugin_for_manual_device.getId(), address)
+            self._plugin_for_manual_device.addManualDevice(address, callback=self._onManualDeviceRequestFinished)
+            self._manual_device_address = address
+            self._manual_device_request_timer.start()
+            self.hasManualDeviceRequestInProgressChanged.emit()
 
     @pyqtSlot()
     def cancelCurrentManualDeviceRequest(self) -> None:
@@ -181,8 +187,11 @@ class DiscoveredPrintersModel(QObject):
             self.manualDeviceRequestFinished.emit(False)
 
     def _onManualRequestTimeout(self) -> None:
-        Logger.log("w", "Manual printer [%s] request timed out. Cancel the current request.", self._manual_device_address)
+        address = self._manual_device_address
+        Logger.log("w", "Manual printer [%s] request timed out. Cancel the current request.", address)
         self.cancelCurrentManualDeviceRequest()
+        if self._network_plugin_queue:
+            self._attemptToAddManualDevice(address)
 
     hasManualDeviceRequestInProgressChanged = pyqtSignal()
 
@@ -198,6 +207,8 @@ class DiscoveredPrintersModel(QObject):
             self._manual_device_address = ""
             self.hasManualDeviceRequestInProgressChanged.emit()
             self.manualDeviceRequestFinished.emit(success)
+        if not success and self._network_plugin_queue:
+            self._attemptToAddManualDevice(address)
 
     @pyqtProperty("QVariantMap", notify = discoveredPrintersChanged)
     def discoveredPrintersByAddress(self) -> Dict[str, DiscoveredPrinter]:
