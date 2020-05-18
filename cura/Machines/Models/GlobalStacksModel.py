@@ -68,7 +68,7 @@ class GlobalStacksModel(ListModel):
             if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
 
-            section_name = "Network enabled printers" if has_remote_connection else "Local printers"
+            section_name = "Connected printers" if has_remote_connection else "Preset printers"
             section_name = self._catalog.i18nc("@info:title", section_name)
 
             items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
