@@ -623,8 +623,8 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
             machine_name = self._container_registry.uniqueName(self._machine_info.name)
 
             global_stack = CuraStackBuilder.createMachine(machine_name, self._machine_info.definition_id)
-            if global_stack: #Only switch if creating the machine was successful.
-                extruder_stack_dict = global_stack.extruders
+            if global_stack:  # Only switch if creating the machine was successful.
+                extruder_stack_dict = {str(position): extruder for position, extruder in enumerate(global_stack.extruderList)}
 
                 self._container_registry.addContainer(global_stack)
         else:
