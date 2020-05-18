@@ -19,6 +19,7 @@ class GlobalStacksModel(ListModel):
     ConnectionTypeRole = Qt.UserRole + 4
     MetaDataRole = Qt.UserRole + 5
     DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
+    HasCloudConnectionRole = Qt.UserRole + 7
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -57,10 +58,12 @@ class GlobalStacksModel(ListModel):
         container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for container_stack in container_stacks:
             has_remote_connection = False
+            has_cloud_connection = False
 
             for connection_type in container_stack.configuredConnectionTypes:
                 has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
                                                              ConnectionType.CloudConnection.value]
+                has_cloud_connection |= connection_type == ConnectionType.CloudConnection.value
 
             if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
@@ -71,6 +74,7 @@ class GlobalStacksModel(ListModel):
             items.append({"name": container_stack.getMetaDataEntry("group_name", container_stack.getName()),
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
+                          "hasCloudConnection": has_cloud_connection,
                           "metadata": container_stack.getMetaData().copy(),
                           "discoverySource": section_name})
         items.sort(key = lambda i: (not i["hasRemoteConnection"], i["name"]))

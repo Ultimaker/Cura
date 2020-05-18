@@ -136,6 +136,11 @@ UM.ManagementPage
         {
             id: confirmDialog
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+            text: base.currentItem && base.currentItem.hasCloudConnection?
+                    catalog.i18nc("@label (%1 is object name)", "%1 will be removed but will be added again in the next sync. To remove the printer permanently, visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>").arg(base.currentItem.name)
+                  :
+                    catalog.i18nc("@label (%1 is object name)", "Are you sure you wish to remove %1? This cannot be undone!").arg(base.currentItem.name)
+                  ;
             onYes:
             {
                 Cura.MachineManager.removeMachine(base.currentItem.id)
