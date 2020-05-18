@@ -58,6 +58,15 @@ class VersionUpgrade462to47(VersionUpgrade):
                 maximum_deviation = "=(" + maximum_deviation + ") / 2"
                 parser["values"]["meshfix_maximum_deviation"] = maximum_deviation
 
+            # Ironing inset is now based on the flow-compensated line width to make the setting have a more logical UX.
+            # Adjust so that the actual print result remains the same.
+            if "ironing_inset" in parser["values"]:
+                ironing_inset = parser["values"]["ironing_inset"]
+                if ironing_inset.startswith("="):
+                    ironing_inset = ironing_inset[1:]
+                ironing_inset = "=(" + ironing_inset + ") + skin_line_width * (1.0 - ironing_flow) / 2"
+                parser["values"]["ironing_inset"] = ironing_inset
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]

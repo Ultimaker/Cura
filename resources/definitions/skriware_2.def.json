@@ -345,7 +345,7 @@
             "value": "0.8"
         },
         "ironing_inset": {
-            "value": "0.2"
+            "value": "0.2 + skin_line_width * (1.0 - ironing_flow) / 2"
         },
         "jerk_travel": {
             "value": "10"
