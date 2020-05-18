@@ -2,7 +2,7 @@
 # !/usr/bin/env python
 # -*- coding: utf-8 -*-
 from PyQt5.QtNetwork import QNetworkRequest, QNetworkReply
-from typing import Callable, Any, Tuple
+from typing import Callable, Any, Tuple, cast, Dict, Optional
 
 from UM.Logger import Logger
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
@@ -78,14 +78,14 @@ class ToolPathUploader:
         content_range = "bytes {}-{}/{}".format(first_byte, last_byte - 1, len(self._data))
 
         headers = {
-            "Content-Type": self._print_job.content_type,
+            "Content-Type": cast(str, self._print_job.content_type),
             "Content-Range": content_range
-        }
+        }  # type: Dict[str, str]
 
         Logger.log("i", "Uploading %s to %s", content_range, self._print_job.upload_url)
 
         self._http.put(
-            url = self._print_job.upload_url,
+            url = cast(str, self._print_job.upload_url),
             headers_dict = headers,
             data = self._data[first_byte:last_byte],
             callback = self._finishedCallback,
