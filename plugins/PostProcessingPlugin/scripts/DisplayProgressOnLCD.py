@@ -10,31 +10,29 @@ from ..Script import Script
 import re
 import datetime
 
-class DisplayPercentCompleteOnLCD(Script):
+class DisplayProgressOnLCD(Script):
 
     def __init__(self):
         super().__init__()
 
     def getSettingDataString(self):
         return """{
-            "name":"Display Percent Complete on LCD",
-            "key":"DisplayPercentCompleteOnLCD",
+            "name":"Display Progress On LCD",
+            "key":"DisplayProgressOnLCD",
             "metadata": {},
             "version": 2,
             "settings":
             {
                 "TimeRemaining":
                 {
-                    "label": "Enable",
+                    "label": "Time Remaining",
                     "description": "When enabled, write Time Left: HHMMSS on the display using M117. This is updated every layer.",
                     "type": "bool",
                     "default_value": false
-                }
-            }
-            {
+                },
                 "Percentage":
                 {
-                    "label": "Enable",
+                    "label": "Percentage",
                     "description": "When enabled, set the completion bar percentage on the LCD using Marlin's M73 command.",
                     "type": "bool",
                     "default_value": false
@@ -60,6 +58,7 @@ class DisplayPercentCompleteOnLCD(Script):
     def execute(self, data):
         output_time = self.getSettingValueByKey("TimeRemaining")
         output_percentage = self.getSettingValueByKey("Percentage")
+        line_set = {}
         if (output_percentage or output_time) == True:
             total_time = -1
             previous_layer_end_percentage = 0
@@ -82,6 +81,13 @@ class DisplayPercentCompleteOnLCD(Script):
 
                     elif line.startswith(";TIME_ELAPSED:"):
                         # We've found one of the time elapsed values which are added at the end of layers
+                        
+                        # If we have seen this line before then skip processing it. We can see lines multiple times because we are adding
+                        # intermediate percentages before the line being processed. This can cause the current line to shift back and be
+                        # encountered more than once
+                        if (line in line_set):
+                            continue
+                        line_set[line] = True
 
                         # If total_time was not already found then noop
                         if (total_time == -1):
