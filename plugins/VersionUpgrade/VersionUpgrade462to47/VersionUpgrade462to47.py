@@ -64,7 +64,11 @@ class VersionUpgrade462to47(VersionUpgrade):
                 ironing_inset = parser["values"]["ironing_inset"]
                 if ironing_inset.startswith("="):
                     ironing_inset = ironing_inset[1:]
-                ironing_inset = "=(" + ironing_inset + ") + skin_line_width * (1.0 - ironing_flow) / 2"
+                if "ironing_pattern" in parser["values"] and parser["values"]["ironing_pattern"] == "concentric":
+                    correction = " + ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2"
+                else:  # If ironing_pattern doesn't exist, it means the default (zigzag) is selected
+                    correction = " + skin_line_width * (1.0 - ironing_flow / 100) / 2"
+                ironing_inset = "=(" + ironing_inset + ")" + correction
                 parser["values"]["ironing_inset"] = ironing_inset
 
         result = io.StringIO()
