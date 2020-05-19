@@ -126,7 +126,7 @@ class Account(QObject):
             self.syncStateChanged.emit(self._sync_state)
 
             if self._sync_state == SyncState.SUCCESS:
-                self._last_sync_str = datetime.now().strftime("%m/%d/%Y %H:%M")
+                self._last_sync_str = datetime.now().strftime("%d/%m/%Y %H:%M")
                 self.lastSyncDateTimeChanged.emit()
 
             if self._sync_state != SyncState.SYNCING:
