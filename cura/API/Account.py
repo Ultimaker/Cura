@@ -238,7 +238,7 @@ class Account(QObject):
         self._sync()
 
     @pyqtSlot()
-    def popupClosed(self):
+    def popupClosed(self) -> None:
         self._setManualSyncEnabled(True)
 
     @pyqtSlot()
