@@ -231,7 +231,7 @@ class Account(QObject):
 
     @pyqtSlot()
     @pyqtSlot(bool)
-    def sync(self, user_initiated=False):
+    def sync(self, user_initiated: bool = False) -> None:
         if user_initiated:
             self._setManualSyncEnabled(False)
 
