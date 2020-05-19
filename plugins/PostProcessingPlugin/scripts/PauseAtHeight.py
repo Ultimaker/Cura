@@ -25,7 +25,7 @@ class PauseAtHeight(Script):
                     "label": "Pause at",
                     "description": "Whether to pause at a certain height or at a certain layer.",
                     "type": "enum",
-                    "options": {"height": "Height", "layer_no": "Layer No."},
+                    "options": {"height": "Height", "layer_no": "Layer Number"},
                     "default_value": "height"
                 },
                 "pause_height":
@@ -49,6 +49,15 @@ class PauseAtHeight(Script):
                     "minimum_value_warning": "1",
                     "enabled": "pause_at == 'layer_no'"
                 },
+                "pause_method":
+                {
+                    "label": "Method",
+                    "description": "The method or gcode command to use for pausing.",
+                    "type": "enum",
+                    "options": {"marlin": "Marlin (M0)", "griffin": "Griffin (M0, firmware retract)", "bq": "BQ (M25)", "reprap": "RepRap (M226)", "repetier": "Repetier (@pause)"},
+                    "default_value": "marlin",
+                    "value": "\\\"griffin\\\" if machine_gcode_flavor==\\\"Griffin\\\" else \\\"reprap\\\" if machine_gcode_flavor==\\\"RepRap (RepRap)\\\" else \\\"repetier\\\" if machine_gcode_flavor==\\\"Repetier\\\" else \\\"bq\\\" if \\\"BQ\\\" in machine_name else \\\"marlin\\\""
+                },                    
                 "disarm_timeout":
                 {
                     "label": "Disarm timeout",
@@ -66,7 +75,8 @@ class PauseAtHeight(Script):
                     "description": "What X location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 190,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "head_park_y":
                 {
@@ -74,7 +84,17 @@ class PauseAtHeight(Script):
                     "description": "What Y location does the head move to when pausing.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 190
+                    "default_value": 190,
+                    "enabled": "pause_method != \\\"griffin\\\""
+                },
+                "head_move_z":
+                {
+                    "label": "Head move Z",
+                    "description": "The Height of Z-axis retraction before parking.",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 15.0,
+                    "enabled": "pause_method == \\\"repetier\\\""
                 },
                 "retraction_amount":
                 {
@@ -82,7 +102,8 @@ class PauseAtHeight(Script):
                     "description": "How much filament must be retracted at pause.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "retraction_speed":
                 {
@@ -90,7 +111,8 @@ class PauseAtHeight(Script):
                     "description": "How fast to retract the filament.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 25
+                    "default_value": 25,
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
                 "extrude_amount":
                 {
@@ -98,7 +120,8 @@ class PauseAtHeight(Script):
                     "description": "How much filament should be extruded after pause. This is needed when doing a material change on Ultimaker2's to compensate for the retraction after the change. In that case 128+ is recommended.",
                     "unit": "mm",
                     "type": "float",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method != \\\"griffin\\\""
                 },
                 "extrude_speed":
                 {
@@ -106,7 +129,8 @@ class PauseAtHeight(Script):
                     "description": "How fast to extrude the material after pause.",
                     "unit": "mm/s",
                     "type": "float",
-                    "default_value": 3.3333
+                    "default_value": 3.3333,
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
                 "redo_layer":
                 {
@@ -121,17 +145,58 @@ class PauseAtHeight(Script):
                     "description": "Change the temperature during the pause.",
                     "unit": "°C",
                     "type": "int",
-                    "default_value": 0
+                    "default_value": 0,
+                    "enabled": "pause_method not in [\\\"griffin\\\", \\\"repetier\\\"]"
                 },
                 "display_text":
                 {
                     "label": "Display Text",
                     "description": "Text that should appear on the display while paused. If left empty, there will not be any message.",
                     "type": "str",
-                    "default_value": ""
+                    "default_value": "",
+                    "enabled": "pause_method != \\\"repetier\\\""
+                },
+                "machine_name":
+                {
+                    "label": "Machine Type",
+                    "description": "The name of your 3D printer model. This setting is controlled by the script and will not be visible.",
+                    "default_value": "Unknown",
+                    "type": "str",
+                    "enabled": false
+                },
+                "machine_gcode_flavor":
+                {
+                    "label": "G-code flavor",
+                    "description": "The type of g-code to be generated. This setting is controlled by the script and will not be visible.",
+                    "type": "enum",
+                    "options":
+                    {
+                        "RepRap (Marlin/Sprinter)": "Marlin",
+                        "RepRap (Volumetric)": "Marlin (Volumetric)",
+                        "RepRap (RepRap)": "RepRap",
+                        "UltiGCode": "Ultimaker 2",
+                        "Griffin": "Griffin",
+                        "Makerbot": "Makerbot",
+                        "BFB": "Bits from Bytes",
+                        "MACH3": "Mach3",
+                        "Repetier": "Repetier"
+                    },
+                    "default_value": "RepRap (Marlin/Sprinter)",
+                    "enabled": false
                 }
             }
         }"""
+
+    ##  Copy machine name and gcode flavor from global stack so we can use their value in the script stack
+    def initialize(self) -> None:
+        super().initialize()
+
+        global_container_stack = Application.getInstance().getGlobalContainerStack()
+        if global_container_stack is None or self._instance is None:
+            return
+
+        for key in ["machine_name", "machine_gcode_flavor"]:
+            self._instance.setProperty(key, "value", global_container_stack.getProperty(key, "value"))
 
     ##  Get the X and Y values for a layer (will be used to get X and Y of the
     #   layer after the pause).
@@ -158,6 +223,7 @@ class PauseAtHeight(Script):
         extrude_speed = self.getSettingValueByKey("extrude_speed")
         park_x = self.getSettingValueByKey("head_park_x")
         park_y = self.getSettingValueByKey("head_park_y")
+        move_z = self.getSettingValueByKey("head_move_z")
         layers_started = False
         redo_layer = self.getSettingValueByKey("redo_layer")
         standby_temperature = self.getSettingValueByKey("standby_temperature")
@@ -166,7 +232,14 @@ class PauseAtHeight(Script):
         initial_layer_height = Application.getInstance().getGlobalContainerStack().getProperty("layer_height_0", "value")
         display_text = self.getSettingValueByKey("display_text")
 
-        is_griffin = False
+        pause_method = self.getSettingValueByKey("pause_method")
+        pause_command = {
+            "marlin": self.putValue(M = 0),
+            "griffin": self.putValue(M = 0),
+            "bq": self.putValue(M = 25),
+            "reprap": self.putValue(M = 226),
+            "repetier": self.putValue("@pause now change filament and press continue printing")
+        }[pause_method]
 
         # T = ExtruderManager.getInstance().getActiveExtruderStack().getProperty("material_print_temperature", "value")
 
@@ -187,8 +260,6 @@ class PauseAtHeight(Script):
 
             # Scroll each line of instruction for each layer in the G-code
             for line in lines:
-                if ";FLAVOR:Griffin" in line:
-                    is_griffin = True
                 # Fist positive layer reached
                 if ";LAYER:0" in line:
                     layers_started = True
@@ -290,7 +361,22 @@ class PauseAtHeight(Script):
                 else:
                     prepend_gcode += ";current layer: {layer}\n".format(layer = current_layer)
 
-                if not is_griffin:
+                if pause_method == "repetier":
+                    #Retraction
+                    prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
+
+                    #Move the head away
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + " ; move up a millimeter to get out of the way\n"
+                    prepend_gcode += self.putValue(G = 1, X = park_x, Y = park_y, F = 9000) + "\n"
+                    if current_z < move_z:
+                        prepend_gcode += self.putValue(G = 1, Z = current_z + move_z, F = 300) + "\n"
+
+                    #Disable the E steppers
+                    prepend_gcode += self.putValue(M = 84, E = 0) + "\n"
+
+                elif pause_method != "griffin":
                     # Retraction
                     prepend_gcode += self.putValue(M = 83) + " ; switch to relative E values for any needed retraction\n"
                     if retraction_amount != 0:
@@ -322,9 +408,40 @@ class PauseAtHeight(Script):
                     prepend_gcode += self.putValue(M = 18, S = disarm_timeout) + " ; Set the disarm timeout\n"
 
                 # Wait till the user continues printing
-                prepend_gcode += self.putValue(M = 0) + " ; Do the actual pause\n"
+                prepend_gcode += pause_command + " ; Do the actual pause\n"
 
-                if not is_griffin:
+                if pause_method == "repetier":
+                    #Push the filament back,
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
+
+                    # Optionally extrude material
+                    if extrude_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = extrude_amount, F = 200) + "\n"
+                        prepend_gcode += self.putValue("@info wait for cleaning nozzle from previous filament") + "\n"
+                        prepend_gcode += self.putValue("@pause remove the waste filament from parking area and press continue printing") + "\n"
+
+                    # and retract again, the properly primes the nozzle when changing filament.
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = -retraction_amount, F = 6000) + "\n"
+
+                    #Move the head back
+                    prepend_gcode += self.putValue(G = 1, Z = current_z + 1, F = 300) + "\n"
+                    prepend_gcode += self.putValue(G = 1, X = x, Y = y, F = 9000) + "\n"
+                    if retraction_amount != 0:
+                        prepend_gcode += self.putValue(G = 1, E = retraction_amount, F = 6000) + "\n"
+
+                    if current_extrusion_f != 0:
+                        prepend_gcode += self.putValue(G = 1, F = current_extrusion_f) + " ; restore extrusion feedrate\n"
+                    else:
+                        Logger.log("w", "No previous feedrate found in gcode, feedrate for next layer(s) might be incorrect")
+
+                    prepend_gcode += self.putValue(M = 82) + "\n"
+
+                    # reset extrude value to pre pause value
+                    prepend_gcode += self.putValue(G = 92, E = current_e) + "\n"
+
+                elif pause_method != "griffin":
                     if control_temperatures:
                         # Set extruder resume temperature
                         prepend_gcode += self.putValue(M = 109, S = int(target_temperature.get(current_t, 0))) + " ; resume temperature\n"

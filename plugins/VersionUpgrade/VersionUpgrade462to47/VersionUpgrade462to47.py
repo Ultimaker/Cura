@@ -97,6 +97,25 @@ class VersionUpgrade462to47(VersionUpgrade):
                 script_parser = configparser.ConfigParser(interpolation=None)
                 script_parser.optionxform = str  # type: ignore  # Don't transform the setting keys as they are case-sensitive.
                 script_parser.read_string(script_str)
+
+                # Unify all Pause at Height
+                script_id = script_parser.sections()[0]
+                if script_id in ["BQ_PauseAtHeight", "PauseAtHeightRepRapFirmwareDuet", "PauseAtHeightforRepetier"]:
+                    script_settings = script_parser.items(script_id)
+                    script_settings.append(("pause_method", {
+                        "BQ_PauseAtHeight": "bq",
+                        "PauseAtHeightforRepetier": "repetier",
+                        "PauseAtHeightRepRapFirmwareDuet": "reprap"
+                    }[script_id]))
+
+                    # Since we cannot rename a section, we remove the original section and create a new section with the new script id.
+                    script_parser.remove_section(script_id)
+                    script_id = "PauseAtHeight"
+                    script_parser.add_section(script_id)
+                    for setting_tuple in script_settings:
+                        script_parser.set(script_id, setting_tuple[0], setting_tuple[1])
+
+                # Update redo_layers to redo_layer
                 if "PauseAtHeight" in script_parser:
                     if "redo_layers" in script_parser["PauseAtHeight"]:
                         script_parser["PauseAtHeight"]["redo_layer"] = str(int(script_parser["PauseAtHeight"]["redo_layers"]) > 0)
