@@ -1575,7 +1575,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.35,
-                    "value": "wall_line_width_0 / 2",
+                    "value": "wall_line_width_0 / 2 + skin_line_width * (1.0 - ironing_flow) / 2",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "ironing_enabled",

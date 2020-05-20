@@ -143,25 +143,6 @@ class ExtruderManager(QObject):
                     return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
-    def registerExtruder(self, extruder_train: "ExtruderStack", machine_id: str) -> None:
-        changed = False
-
-        if machine_id not in self._extruder_trains:
-            self._extruder_trains[machine_id] = {}
-            changed = True
-
-        # do not register if an extruder has already been registered at the position on this machine
-        if any(item.getId() == extruder_train.getId() for item in self._extruder_trains[machine_id].values()):
-            Logger.log("w", "Extruder [%s] has already been registered on machine [%s], not doing anything",
-                       extruder_train.getId(), machine_id)
-            return
-
-        if extruder_train:
-            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
-            changed = True
-        if changed:
-            self.extrudersChanged.emit(machine_id)
-
     ##  Gets a property of a setting for all extruders.
     #
     #   \param setting_key  \type{str} The setting to get the property of.

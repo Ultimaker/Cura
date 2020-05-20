@@ -251,7 +251,7 @@ class StartSliceJob(Job):
         global_stack = CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             return
-        extruders_enabled = {position: stack.isEnabled for position, stack in global_stack.extruders.items()}
+        extruders_enabled = [stack.isEnabled for stack in global_stack.extruderList]
         filtered_object_groups = []
         has_model_with_disabled_extruders = False
         associated_disabled_extruders = set()
@@ -261,7 +261,7 @@ class StartSliceJob(Job):
             for node in group:
                 # Only check if the printing extruder is enabled for printing meshes
                 is_non_printing_mesh = node.callDecoration("evaluateIsNonPrintingMesh")
-                extruder_position = node.callDecoration("getActiveExtruderPosition")
+                extruder_position = int(node.callDecoration("getActiveExtruderPosition"))
                 if not is_non_printing_mesh and not extruders_enabled[extruder_position]:
                     skip_group = True
                     has_model_with_disabled_extruders = True
@@ -271,8 +271,8 @@ class StartSliceJob(Job):
 
         if has_model_with_disabled_extruders:
             self.setResult(StartJobResult.ObjectsWithDisabledExtruder)
-            associated_disabled_extruders = {str(c) for c in sorted([int(p) + 1 for p in associated_disabled_extruders])}
-            self.setMessage(", ".join(associated_disabled_extruders))
+            associated_disabled_extruders = {p + 1 for p in associated_disabled_extruders}
+            self.setMessage(", ".join(map(str, sorted(associated_disabled_extruders))))
             return
 
         # There are cases when there is nothing to slice. This can happen due to one at a time slicing not being

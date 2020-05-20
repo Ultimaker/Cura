@@ -90,16 +90,17 @@ class VersionUpgrade460to462(VersionUpgrade):
                 parser_e3["general"]["definition"] = "deltacomb_base_extruder_3"
                 results.append((parser_e2, filename + "_e2_upgrade"))  # Hopefully not already taken.
                 results.append((parser_e3, filename + "_e3_upgrade"))
-            elif parser["general"]["definition"] == "deltacomb":  # On the global stack OR the per-extruder user container.
+            elif parser["general"]["definition"] == "deltacomb":  # On the global stack, the per-extruder user container OR the per-extruder quality changes container.
                 parser["general"]["definition"] = "deltacomb_dc20"
 
-                if "metadata" in parser and "extruder" in parser["metadata"]:  # Per-extruder user container.
+                if "metadata" in parser and ("extruder" in parser["metadata"] or "position" in parser["metadata"]):  # Per-extruder user container or quality changes container.
                     parser_e2 = configparser.ConfigParser(interpolation = None)
                     parser_e3 = configparser.ConfigParser(interpolation = None)
                     parser_e2.read_dict(parser)
                     parser_e3.read_dict(parser)
-                    parser_e2["metadata"]["extruder"] += "_e2_upgrade"
-                    parser_e3["metadata"]["extruder"] += "_e3_upgrade"
+                    if "extruder" in parser["metadata"]:
+                        parser_e2["metadata"]["extruder"] += "_e2_upgrade"
+                        parser_e3["metadata"]["extruder"] += "_e3_upgrade"
                     results.append((parser_e2, filename + "_e2_upgrade"))
                     results.append((parser_e3, filename + "_e3_upgrade"))
 
