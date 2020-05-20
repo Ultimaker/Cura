@@ -345,7 +345,7 @@
             "value": "0.8"
         },
         "ironing_inset": {
-            "value": "0.2 + skin_line_width * (1.0 - ironing_flow) / 2"
+            "value": "0.2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)"
         },
         "jerk_travel": {
             "value": "10"
