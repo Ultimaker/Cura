@@ -267,9 +267,10 @@ class CloudOutputDeviceManager:
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
             "@label ({} is printer name)",
-            "{} will be removed but will be added again in the next sync. To remove the printer permanently, "
-            "visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>",
-            device.name
+            "{} will be removed until the next account sync. <br> To remove {} permanently, "
+            "visit <a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>. "
+            "<br><br>Are you sure you want to remove {} temporarily?",
+            device.name, device.name, device.name
         ))
         machine.addConfiguredConnectionType(device.connectionType.value)
 
