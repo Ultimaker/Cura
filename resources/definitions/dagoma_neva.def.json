@@ -14,7 +14,7 @@
         "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
-            "0": "dagoma_neva_extruder_0"
+            "0": "dagoma_neva_extruder"
         }
     },
     "overrides": {

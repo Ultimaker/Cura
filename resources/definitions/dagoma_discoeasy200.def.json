@@ -14,13 +14,12 @@
         "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
-            "0": "dagoma_discoeasy200_extruder_0",
-            "1": "dagoma_discoeasy200_extruder_1"
+            "0": "dagoma_discoeasy200_extruder"
         }
     },
     "overrides": {
         "machine_extruder_count": {
-            "default_value": 2
+            "default_value": 1
         },
         "machine_extruders_share_heater": {
             "default_value": true
@@ -49,10 +48,10 @@
             "value": "10"
         },
         "machine_start_gcode": {
-            "default_value": ";Gcode by Cura\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
+            "default_value": "\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nG29\nM104 S{material_print_temperature_layer_0}\nM107\nG1 X100 Y20 0.5 F3000\nM109 S{material_print_temperature_layer_0}\nM83\nG1 E10 F200\nG1 E-3 F5000\nG1 Z3 F240\nM82\nG92 E0\n"
         },
         "machine_end_gcode": {
-            "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 F3000\nG90\nG28 X Y\nM107\nM84\n"
+            "default_value": "\nM106 S255\nM104 S0\nM140 S0\nG91\nG1 E-3 F5000\nG1 Z2 F3000\nG90\nG28 X Y\nM107\nM84\n"
         },
         "default_material_print_temperature": {
             "default_value": 205
