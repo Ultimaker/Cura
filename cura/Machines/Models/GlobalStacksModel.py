@@ -21,7 +21,7 @@ class GlobalStacksModel(ListModel):
     DiscoverySourceRole = Qt.UserRole + 6  # For separating local and remote printers in the machine management page
     RemovalWarningRole = Qt.UserRole + 7
 
-    def __init__(self, parent=None) -> None:
+    def __init__(self, parent = None) -> None:
         super().__init__(parent)
 
         self._catalog = i18nCatalog("cura")
@@ -55,7 +55,7 @@ class GlobalStacksModel(ListModel):
     def _update(self) -> None:
         items = []
 
-        container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
+        container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine")
         for container_stack in container_stacks:
             has_remote_connection = False
 
