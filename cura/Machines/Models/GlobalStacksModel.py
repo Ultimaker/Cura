@@ -58,12 +58,10 @@ class GlobalStacksModel(ListModel):
         container_stacks = CuraContainerRegistry.getInstance().findContainerStacks(type="machine")
         for container_stack in container_stacks:
             has_remote_connection = False
-            has_cloud_connection = False
 
             for connection_type in container_stack.configuredConnectionTypes:
                 has_remote_connection |= connection_type in [ConnectionType.NetworkConnection.value,
                                                              ConnectionType.CloudConnection.value]
-                has_cloud_connection |= connection_type == ConnectionType.CloudConnection.value
 
             if parseBool(container_stack.getMetaDataEntry("hidden", False)):
                 continue
@@ -81,7 +79,6 @@ class GlobalStacksModel(ListModel):
             items.append({"name": device_name,
                           "id": container_stack.getId(),
                           "hasRemoteConnection": has_remote_connection,
-                          "hasCloudConnection": has_cloud_connection,
                           "metadata": container_stack.getMetaData().copy(),
                           "discoverySource": section_name,
                           "removalWarning": removal_warning})
