@@ -5,14 +5,15 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 Cura.ExpandablePopup
 {
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasNetworkConnection
-    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
     contentPadding: UM.Theme.getSize("default_lining").width
@@ -44,7 +45,7 @@ Cura.ExpandablePopup
             {
                 return UM.Theme.getIcon("printer_group")
             }
-            else if (isNetworkPrinter || isCloudPrinter)
+            else if (isNetworkPrinter || isCloudRegistered)
             {
                 return UM.Theme.getIcon("printer_single")
             }
@@ -72,9 +73,13 @@ Cura.ExpandablePopup
                 {
                     return UM.Theme.getIcon("printer_connected")
                 }
-                else if (isCloudPrinter)
+                else if (isConnectedCloudPrinter)
                 {
                     return UM.Theme.getIcon("printer_cloud_connected")
+                }
+                else if (isCloudRegistered)
+                {
+                    return UM.Theme.getIcon("printer_cloud_not_available")
                 }
                 else
                 {
@@ -85,8 +90,9 @@ Cura.ExpandablePopup
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            color: UM.Theme.getColor("primary")
-            visible: isNetworkPrinter || isCloudPrinter
+            color: source == UM.Theme.getIcon("printer_cloud_not_available") ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+
+            visible: isNetworkPrinter || isCloudRegistered
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle

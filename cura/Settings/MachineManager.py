@@ -490,6 +490,10 @@ class MachineManager(QObject):
     def activeMachineHasCloudConnection(self) -> bool:
         # A cloud connection is only available if any output device actually is a cloud connected device.
         return any(d.connectionType == ConnectionType.CloudConnection for d in self._printer_output_devices)
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineHasCloudRegistration(self) -> bool:
+        return self.activeMachine is not None and ConnectionType.CloudConnection in self.activeMachine.configuredConnectionTypes
     
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsUsingCloudConnection(self) -> bool:
