@@ -120,6 +120,7 @@ Button
     background: Cura.RoundedRectangle
     {
         id: backgroundRect
+        implicitWidth: contentItem.implicitWidth+contentItem.spacing*4
         cornerSide: Cura.RoundedRectangle.Direction.All
         color: button.enabled ? (button.hovered ? button.hoverColor : button.color) : button.disabledColor
         radius: UM.Theme.getSize("action_button_radius").width
