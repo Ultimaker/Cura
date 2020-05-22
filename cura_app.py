@@ -230,5 +230,8 @@ if ApplicationMetadata.CuraDebugMode:
     ssl_conf.setPeerVerifyMode(QSslSocket.VerifyNone)
     QSslConfiguration.setDefaultConfiguration(ssl_conf)
 
+if "QT_QUICK_CONTROLS_STYLE" not in os.environ:
+    os.environ["QT_QUICK_CONTROLS_STYLE"] = "Default"
+
 app = CuraApplication()
 app.run()
