@@ -120,6 +120,17 @@ class VersionUpgrade462to47(VersionUpgrade):
                     if "redo_layers" in script_parser["PauseAtHeight"]:
                         script_parser["PauseAtHeight"]["redo_layer"] = str(int(script_parser["PauseAtHeight"]["redo_layers"]) > 0)
                         del script_parser["PauseAtHeight"]["redo_layers"]  # Has been renamed to without the S.
+
+                # Migrate DisplayCompleteOnLCD to DisplayProgressOnLCD
+                if script_id == "DisplayPercentCompleteOnLCD":
+                    script_settings = script_parser.items(script_id)
+                    script_parser.remove_section(script_id)
+
+                    script_id = "DisplayProgressOnLCD"
+                    script_parser.add_section(script_id)
+                    if (script_settings["TurnOn"] == "true"):
+                        script_parser.set(script_id, "time_remaining", "true")
+
                 script_io = io.StringIO()
                 script_parser.write(script_io)
                 script_str = script_io.getvalue()

@@ -1,7 +1,7 @@
 # Cura PostProcessingPlugin
 # Author:   Mathias Lyngklip Kjeldgaard, Alexander Gee
 # Date:     July 31, 2019
-# Modified: May 13, 2020
+# Modified: May 22, 2020
 
 # Description:  This plugin displays progress on the LCD. It can output the estimated time remaining and the completion percentage.
 
@@ -17,20 +17,20 @@ class DisplayProgressOnLCD(Script):
 
     def getSettingDataString(self):
         return """{
-            "name":"Display Progress On LCD",
-            "key":"DisplayProgressOnLCD",
+            "name": "Display Progress On LCD",
+            "key": "DisplayProgressOnLCD",
             "metadata": {},
             "version": 2,
             "settings":
             {
-                "TimeRemaining":
+                "time_remaining":
                 {
                     "label": "Time Remaining",
                     "description": "When enabled, write Time Left: HHMMSS on the display using M117. This is updated every layer.",
                     "type": "bool",
                     "default_value": false
                 },
-                "Percentage":
+                "percentage":
                 {
                     "label": "Percentage",
                     "description": "When enabled, set the completion bar percentage on the LCD using Marlin's M73 command.",
@@ -56,8 +56,8 @@ class DisplayProgressOnLCD(Script):
         lines.insert(line_index, "M117 Time Left {}".format(current_time_string))
 
     def execute(self, data):
-        output_time = self.getSettingValueByKey("TimeRemaining")
-        output_percentage = self.getSettingValueByKey("Percentage")
+        output_time = self.getSettingValueByKey("time_remaining")
+        output_percentage = self.getSettingValueByKey("percentage")
         line_set = {}
         if (output_percentage or output_time) == True:
             total_time = -1
