@@ -123,12 +123,12 @@ class VersionUpgrade462to47(VersionUpgrade):
 
                 # Migrate DisplayCompleteOnLCD to DisplayProgressOnLCD
                 if script_id == "DisplayPercentCompleteOnLCD":
-                    script_settings = script_parser.items(script_id)
+                    was_enabled = script_parser[script_id]["TurnOn"] == "true" if "TurnOn" in script_parser[script_id] else False
                     script_parser.remove_section(script_id)
 
                     script_id = "DisplayProgressOnLCD"
                     script_parser.add_section(script_id)
-                    if (script_settings["TurnOn"] == "true"):
+                    if (was_enabled):
                         script_parser.set(script_id, "time_remaining", "true")
 
                 script_io = io.StringIO()
