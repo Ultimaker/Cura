@@ -11,6 +11,7 @@
 # Modified by Jaime van Kessel (Ultimaker), j.vankessel@ultimaker.com to make it work for 15.10 / 2.x
 # Modified by Ruben Dulek (Ultimaker), r.dulek@ultimaker.com, to debug.
 # Modified by Wes Hanney, https://github.com/novamxd, Retract Length + Speed, Clean up
+# Modified by Viesturs Zarins, https://github.com/viesturz, Repeat
 
 # history / changelog:
 # V3.0.1:   TweakAtZ-state default 1 (i.e. the plugin works without any TweakAtZ comment)
@@ -40,6 +41,7 @@
 # Added support for outputting changes to LCD (untested). Added type hints to most functions and variables. Added more comments. Created GCodeCommand
 # class for better detection of G1 vs G10 or G11 commands, and accessing arguments. Moved most GCode methods to GCodeCommand class. Improved wording
 # of Single Layer vs Keep Layer to better reflect what was happening.
+# V5.3.0:   Viesturs Zarins. Add repeat.
 
 # Uses -
 # M220 S<factor in percent> - set speed factor override percentage
@@ -51,6 +53,7 @@
 # M207 S<mm> F<mm/m> - set the retract length <S> or feed rate <F>
 # M117 - output the current changes
 
+from collections import defaultdict
 from typing import List, Optional, Dict
 from ..Script import Script
 import re
@@ -58,7 +61,7 @@ import re
 
 # this was broken up into a separate class so the main ChangeZ script could be debugged outside of Cura
 class ChangeAtZ(Script):
-    version = "5.2.1"
+    version = "5.3.0"
 
     def getSettingDataString(self):
         return """{
@@ -104,6 +107,36 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "-1",
                     "enabled": "a_trigger == 'layer_no'"
                 },
+                "b_repeat":
+                {
+                    "label": "Repeat",
+                    "description": "Repeat the change until end of the print",
+                    "unit": "",
+                    "type": "bool",
+                    "default_value": false
+                },
+                "b_repeat_layers":
+                {
+                    "label": "Repeat every",
+                    "description": "Repeat every N layers",
+                    "unit": "layers",
+                    "type": "int",
+                    "default_value": 10,
+                    "minimum_value": "1",
+                    "minimum_value_warning": "-1",
+                    "enabled": "(b_repeat) and (a_trigger == 'layer_no')"
+                },                                
+                "b_repeat_z":
+                {
+                    "label": "Repeat every",
+                    "description": "Repeat every N mm",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 1,
+                    "minimum_value": "0.001",
+                    "minimum_value_warning": "-1",
+                    "enabled": "(b_repeat) and (a_trigger == 'height')"
+                },                                
                 "c_behavior": {
                     "label": "Apply To",
                     "description": "Target Layer + Subsequent Layers is good for testing changes between ranges of layers, ex: Layer 0 to 10 or 0mm to 5mm. Single layer is good for testing changes at a single layer, ex: at Layer 10 or 5mm only.",
@@ -137,6 +170,15 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "200",
                     "enabled": "e1_Change_speed"
                 },
+                "e2_speed_diff": {
+                    "label": "Repeat Speed change",
+                    "description": "Change of total speed on each repeat (print and travel)",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "enabled": "(e1_Change_speed) and (b_repeat)"
+                },
                 "f1_Change_printspeed": {
                     "label": "Change Print Speed",
                     "description": "Select if print speed has to be changed",
@@ -153,6 +195,16 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
                     "enabled": "f1_Change_printspeed"
+                },
+                "f2_printspeed_repeat": {
+                    "label": "Repeat Print Speed change",
+                    "description": "Change of print speed on each repeat",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "maximum_value_warning": "200",
+                    "enabled": "(f1_Change_printspeed) and (b_repeat)"
                 },
                 "g1_Change_flowrate": {
                     "label": "Change Flow Rate",
@@ -171,6 +223,16 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "200",
                     "enabled": "g1_Change_flowrate"
                 },
+                "g2_flowrate_repeat": {
+                    "label": "Repeat Flow Rate change",
+                    "description": "Change of Flow rate on each repeat",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "maximum_value_warning": "200",
+                    "enabled": "(g1_Change_flowrate) and (b_repeat)"
+                },
                 "g3_Change_flowrateOne": {
                     "label": "Change Flow Rate 1",
                     "description": "Select if first extruder flow rate has to be changed",
@@ -187,6 +249,16 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "10",
                     "maximum_value_warning": "200",
                     "enabled": "g3_Change_flowrateOne"
+                },
+                "g4_flowrateOne_repeat": {
+                    "label": "Repeat Flow Rate One",
+                    "description": "Change of Flow rate Extruder 1 on Repeat",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "maximum_value_warning": "200",
+                    "enabled": "(g3_Change_flowrateOne) and (b_repeat)"
                 },
                 "g5_Change_flowrateTwo": {
                     "label": "Change Flow Rate 2",
@@ -205,6 +277,16 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "200",
                     "enabled": "g5_Change_flowrateTwo"
                 },
+                "g6_flowrateTwo_repeat": {
+                    "label": "Repeat Flow Rate two",
+                    "description": "Change of Flow rate Extruder 2 on repeat",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "maximum_value_warning": "200",
+                    "enabled": "(g5_Change_flowrateTwo) and (b_repeat)"
+                },
                 "h1_Change_bedTemp": {
                     "label": "Change Bed Temp",
                     "description": "Select if Bed Temperature has to be changed",
@@ -221,6 +303,17 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "30",
                     "maximum_value_warning": "120",
                     "enabled": "h1_Change_bedTemp"
+                },
+                "h2_bedTemp_repeat": {
+                    "label": "Repeat Bed Temp",
+                    "description": "Change of Bed Temperature on Repeat",
+                    "unit": "C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "minimum_value_warning": "-10",
+                    "maximum_value_warning": "10",
+                    "enabled": "(h1_Change_bedTemp) and (b_repeat)"
                 },
                 "i1_Change_extruderOne": {
                     "label": "Change Extruder 1 Temp",
@@ -239,6 +332,16 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "250",
                     "enabled": "i1_Change_extruderOne"
                 },
+                "i2_extruderOne_repeat": {
+                    "label": "Repeat Extruder 1 Temp",
+                    "description": "Change of First Extruder Temperature on Repeat",
+                    "unit": "C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "-20",
+                    "maximum_value_warning": "20",
+                    "enabled": "(i1_Change_extruderOne) and (b_repeat)"
+                },
                 "i3_Change_extruderTwo": {
                     "label": "Change Extruder 2 Temp",
                     "description": "Select if Second Extruder Temperature has to be changed",
@@ -256,6 +359,16 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "250",
                     "enabled": "i3_Change_extruderTwo"
                 },
+                "i4_extruderTwo_repeat": {
+                    "label": "Repeat Extruder 2 Temp",
+                    "description": "Change of Second Extruder Temperature on Repeat",
+                    "unit": "C",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "-20",
+                    "maximum_value_warning": "20",
+                    "enabled": "(i3_Change_extruderTwo) and (b_repeat)"
+                },
                 "j1_Change_fanSpeed": {
                     "label": "Change Fan Speed",
                     "description": "Select if Fan Speed has to be changed",
@@ -272,6 +385,15 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "100",
                     "enabled": "j1_Change_fanSpeed"
+                },
+                "j2_fanSpeed_repeat": {
+                    "label": "Repeat Fan Speed",
+                    "description": "Change of Fan Speed (0-100) on Repeat",
+                    "unit": "%",
+                    "type": "int",
+                    "default_value": 0,
+                    "minimum_value": "-100",
+                    "enabled": "(j1_Change_fanSpeed) and (b_repeat)"
                 },
                 "caz_change_retract": {
                     "label": "Change Retraction",
@@ -308,6 +430,16 @@ class ChangeAtZ(Script):
                     "maximum_value_warning": "100",
                     "enabled": "caz_change_retractfeedrate"
                 },
+                "caz_retractfeedrate_repeat": {
+                    "label": "Repeat Retract Feed Rate",
+                    "description": "Change of Retract Feed Rate (mm/s) on Repeat",
+                    "unit": "mm/s",
+                    "type": "float",
+                    "default_value": 0,
+                    "minimum_value_warning": "0",
+                    "maximum_value_warning": "100",
+                    "enabled": "(caz_change_retractfeedrate) and (b_repeat)"
+                },                
                 "caz_change_retractlength": {
                     "label": "Change Retract Length",
                     "description": "Changes the retraction length during print",
@@ -325,6 +457,14 @@ class ChangeAtZ(Script):
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "20",
                     "enabled": "caz_change_retractlength"
+                },            
+                "caz_retractlength_repeat": {
+                    "label": "Repeat Retract Length",
+                    "description": "Change of Retract Length (mm) on Repeat",
+                    "unit": "mm",
+                    "type": "float",
+                    "default_value": 0,
+                    "enabled": "(caz_change_retractlength) and (b_repeat)"
                 }            
             }
         }"""
@@ -335,8 +475,6 @@ class ChangeAtZ(Script):
     def execute(self, data):
 
         caz_instance = ChangeAtZProcessor()
-
-        caz_instance.TargetValues = {}
 
         # copy over our settings to our change z class
         self.setIntSettingIfEnabled(caz_instance, "e1_Change_speed", "speed", "e2_speed")
@@ -370,6 +508,11 @@ class ChangeAtZ(Script):
         caz_instance.TargetLayer = self.getIntSettingByKey("b_targetL", None)
         caz_instance.TargetZ = self.getFloatSettingByKey("b_targetZ", None)
 
+        # read repeat settings
+        caz_instance.Repeat = self.getSettingValueByKey("b_repeat")
+        caz_instance.RepeatLayers = self.getIntSettingByKey("b_repeat_layers", None)
+        caz_instance.RepeatZ = self.getFloatSettingByKey("b_repeat_z", None)
+
         # run our script
         return caz_instance.execute(data)
 
@@ -388,7 +531,8 @@ class ChangeAtZ(Script):
             return
 
         # set our value in the target settings
-        caz_instance.TargetValues[target] = value
+        caz_instance.BaseValues[target] = value
+        caz_instance.RepeatValues[target] = self.getIntSettingByKey(setting + "_repeat", 0)
 
     # Sets the given TargetValue in the ChangeAtZ instance if the trigger is specified
     def setFloatSettingIfEnabled(self, caz_instance, trigger, target, setting):
@@ -405,7 +549,8 @@ class ChangeAtZ(Script):
             return
 
         # set our value in the target settings
-        caz_instance.TargetValues[target] = value
+        caz_instance.BaseValues[target] = value
+        caz_instance.RepeatValues[target] = self.getFloatSettingByKey(setting + "_repeat", 0.0)
 
     # Returns the given settings value as an integer or the default if it cannot parse it
     def getIntSettingByKey(self, key, default):
@@ -648,6 +793,9 @@ class ChangeAtZProcessor:
     # Indicates that this mod is still enabled (or not)
     IsEnabled = True
 
+    # Is repeat enabled
+    Repeat = False
+
     # Indicates if we're processing inside the target layer or not
     IsInsideTargetLayer = False
 
@@ -660,8 +808,8 @@ class ChangeAtZProcessor:
     # Indicates if we're targetting by layer or height value
     IsTargetByLayer = True
 
-    # Indicates if we have injected our changed values for the given layer yet
-    IsTargetValuesInjected = False
+    # Indicates if we have injected our changed values for the given iteration
+    TargetValuesInjectedForIteration = -1
 
     # Holds the last extrusion value, used with detecting when a retraction is made
     LastE = None
@@ -675,14 +823,29 @@ class ChangeAtZProcessor:
     # The target layer
     TargetLayer = None
 
+    # Number of layers to repeat after
+    RepeatLayers = None
+
     # Holds the values the user has requested to change
+    BaseValues = {}
+
+    # Holds the increment values for each repeat
+    RepeatValues = defaultdict(int)
+
+    # Holds the computed values for current layer/height based on changed and repeat
     TargetValues = {}
 
     # The target height in mm
     TargetZ = None
 
+    # Height diff in mm to repeat after
+    RepeatZ = None
+
     # Used to track if we've been inside our target layer yet
     WasInsideTargetLayer = False
+
+    # How many times has repeat applied to far
+    RepeatedTimes = 0
 
     # boots up the class with defaults
     def __init__(self):
@@ -932,10 +1095,10 @@ class ChangeAtZProcessor:
             return self.getLastValues() + "\n" + self.getLastDisplayValues()
 
         # if we're inside our target layer but haven't added our values yet, do so now
-        if self.IsInsideTargetLayer and not self.IsTargetValuesInjected:
+        if self.IsInsideTargetLayer and self.TargetValuesInjectedForIteration != self.RepeatedTimes:
 
-            # mark that we've injected the target values
-            self.IsTargetValuesInjected = True
+            # mark that we've injected the target values for this repetition
+            self.TargetValuesInjectedForIteration = self.RepeatedTimes
 
             # inject the defaults
             return self.getTargetValues() + "\n" + self.getTargetDisplayValues()
@@ -974,7 +1137,10 @@ class ChangeAtZProcessor:
 
             # if we're applying to a single layer, stop if our layer is not identical
             if self.IsApplyToSingleLayer:
-                return self.CurrentLayer == self.TargetLayer
+                if self.Repeat:
+                    return self.CurrentLayer >= self.TargetLayer and (self.CurrentLayer - self.TargetLayer) % self.RepeatLayers == 0
+                else:
+                    return self.CurrentLayer == self.TargetLayer
             else:
                 return self.CurrentLayer >= self.TargetLayer
 
@@ -986,9 +1152,33 @@ class ChangeAtZProcessor:
 
             # if we're applying to a single layer, stop if our Z is not identical
             if self.IsApplyToSingleLayer:
-                return self.CurrentZ == self.TargetZ
+                # TODO: this assumes the Z values match exactly, and would skip the layer if Z value is off slightly.
+                if self.Repeat:
+                    return self.CurrentZ >= self.TargetZ and (self.CurrentZ - self.TargetZ) % self.RepeatZ == 0
+                else:
+                    return self.CurrentZ == self.TargetZ
             else:
                 return self.CurrentZ >= self.TargetZ
+
+    # Computes the number of times repeat should be applied
+    def computeRepeatTimes(self) -> int:
+        if not self.Repeat:
+            return 0
+
+        if self.IsTargetByLayer:
+            if self.CurrentLayer is None or self.CurrentLayer < self.TargetLayer:
+                return 0
+            return (self.CurrentLayer - self.TargetLayer) // self.RepeatLayers
+
+        else:
+            if self.CurrentZ is None or self.CurrentZ < self.TargetZ:
+                return 0
+            return (self.CurrentZ - self.TargetZ) // self.RepeatZ
+
+    # Computes the values to set based on repeat.
+    def computeTargetValues(self, repeatTimes) -> dict:
+        return {name : (base_v + self.RepeatValues[name] * repeatTimes)
+                for name, base_v in self.BaseValues.items()}
 
     # Marks any current ChangeZ layer defaults in the layer for deletion
     @staticmethod
@@ -1287,6 +1477,9 @@ class ChangeAtZProcessor:
         # flag that we're inside our target layer
         self.IsInsideTargetLayer = True
 
+        self.RepeatedTimes = self.computeRepeatTimes()
+        self.TargetValues = self.computeTargetValues(self.RepeatedTimes)
+
     # Removes all the ChangeZ layer defaults from the given layer
     @staticmethod
     def removeMarkedChanges(layer: str) -> str:
@@ -1296,18 +1489,24 @@ class ChangeAtZProcessor:
     def reset(self):
 
         self.TargetValues = {}
+        self.BaseValues = {}
+        self.RepeatValues = defaultdict(int)
         self.IsApplyToSingleLayer = False
+        self.Repeat = False
+        self.RepeatedTimes = 0
         self.LastE = None
         self.CurrentZ = None
         self.CurrentLayer = None
         self.IsTargetByLayer = True
         self.TargetLayer = None
+        self.RepeatLayers = None
         self.TargetZ = None
+        self.RepeatZ = None
         self.LayerHeight = None
         self.LastValues = {}
         self.IsLinearRetraction = True
         self.IsInsideTargetLayer = False
-        self.IsTargetValuesInjected = False
+        self.TargetValuesInjectedForIteration = -1
         self.IsLastValuesRestored = False
         self.WasInsideTargetLayer = False
         self.IsEnabled = True
