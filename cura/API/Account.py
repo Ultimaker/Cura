@@ -23,6 +23,7 @@ class SyncState:
     SYNCING = 0
     SUCCESS = 1
     ERROR = 2
+    IDLE = 3
 
 
 ##  The account API provides a version-proof bridge to use Ultimaker Accounts
@@ -59,7 +60,7 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
-        self._sync_state = SyncState.SUCCESS
+        self._sync_state = SyncState.IDLE
         self._manual_sync_enabled = False
         self._last_sync_str = "-"
 
@@ -116,11 +117,13 @@ class Account(QObject):
 
         if any(val == SyncState.SYNCING for val in self._sync_services.values()):
             self._sync_state = SyncState.SYNCING
+            self._setManualSyncEnabled(False)
         elif any(val == SyncState.ERROR for val in self._sync_services.values()):
             self._sync_state = SyncState.ERROR
             self._setManualSyncEnabled(True)
         else:
             self._sync_state = SyncState.SUCCESS
+            self._setManualSyncEnabled(False)
 
         if self._sync_state != prev_state:
             self.syncStateChanged.emit(self._sync_state)
@@ -238,8 +241,10 @@ class Account(QObject):
         self._sync()
 
     @pyqtSlot()
-    def popupClosed(self) -> None:
+    def popupOpened(self) -> None:
         self._setManualSyncEnabled(True)
+        self._sync_state = SyncState.IDLE
+        self.syncStateChanged.emit(self._sync_state)
 
     @pyqtSlot()
     def logout(self) -> None:

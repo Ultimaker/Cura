@@ -19,7 +19,7 @@ Row // sync state icon + message
         width: 20 * screenScaleFactor
         height: width
 
-        source: UM.Theme.getIcon("update")
+        source: Cura.API.account.manualSyncEnabled ? UM.Theme.getIcon("update") : UM.Theme.getIcon("checked")
         color: palette.text
 
         RotationAnimator
@@ -54,6 +54,7 @@ Row // sync state icon + message
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            visible: !Cura.API.account.manualSyncEnabled
         }
 
         Label
@@ -80,7 +81,9 @@ Row // sync state icon + message
     signal syncStateChanged(string newState)
 
     onSyncStateChanged: {
-        if(newState == Cura.AccountSyncState.SYNCING){
+        if(newState == Cura.AccountSyncState.IDLE){
+            icon.source = UM.Theme.getIcon("update")
+        } else if(newState == Cura.AccountSyncState.SYNCING){
             icon.source = UM.Theme.getIcon("update")
             stateLabel.text = catalog.i18nc("@label", "Checking...")
         } else if (newState == Cura.AccountSyncState.SUCCESS) {
