@@ -60,6 +60,7 @@ Cura.ExpandablePopup
 
         UM.RecolorImage
         {
+            id: connectionStatusImage
             anchors
             {
                 bottom: parent.bottom
@@ -106,6 +107,27 @@ Cura.ExpandablePopup
                 color: UM.Theme.getColor("main_background")
                 z: parent.z - 1
             }
+
+            MouseArea // Connection status tooltip hover area
+                {
+                    id: connectionStatusTooltipHoverArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    enabled: true // todo
+                    acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+                    onEntered:
+                    {
+                        base.showTooltip(
+                            connectionStatusImage,
+                            Qt.point(0, 0),
+                            "blaat blaat"
+                        ); //todo
+                        machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+                    }
+                    onExited: base.hideTooltip()
+                }
+
         }
     }
 
