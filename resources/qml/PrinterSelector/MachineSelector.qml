@@ -16,6 +16,25 @@ Cura.ExpandablePopup
     property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
+    property string connectionStatus: {
+        if (isNetworkPrinter)
+        {
+            return "printer_connected"
+        }
+        else if (isConnectedCloudPrinter)
+        {
+            return "printer_cloud_connected"
+        }
+        else if (isCloudRegistered)
+        {
+            return "printer_cloud_not_available"
+        }
+        else
+        {
+            return ""
+        }
+    }
+
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
 
@@ -68,30 +87,12 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source:
-            {
-                if (isNetworkPrinter)
-                {
-                    return UM.Theme.getIcon("printer_connected")
-                }
-                else if (isConnectedCloudPrinter)
-                {
-                    return UM.Theme.getIcon("printer_cloud_connected")
-                }
-                else if (isCloudRegistered)
-                {
-                    return UM.Theme.getIcon("printer_cloud_not_available")
-                }
-                else
-                {
-                    return ""
-                }
-            }
+            source: UM.Theme.getIcon(connectionStatus)
 
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            color: source == UM.Theme.getIcon("printer_cloud_not_available") ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+            color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
 
             visible: isNetworkPrinter || isCloudRegistered
 
