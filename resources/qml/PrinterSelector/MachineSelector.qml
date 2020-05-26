@@ -122,25 +122,36 @@ Cura.ExpandablePopup
                 z: parent.z - 1
             }
 
-            MouseArea // Connection status tooltip hover area
-                {
-                    id: connectionStatusTooltipHoverArea
-                    anchors.fill: parent
-                    hoverEnabled: connectionStatusMessage !== ""
-                    acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+        }
 
-                    onEntered:
-                    {
-                        base.showTooltip(
-                            connectionStatusImage,
-                            Qt.point(0, 0),
-                            connectionStatusMessage
-                        ); //todo: positioning
-                        machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
-                    }
-                    onExited: base.hideTooltip()
-                }
+        MouseArea // Connection status tooltip hover area
+        {
+            id: connectionStatusTooltipHoverArea
+            anchors.fill: parent
+            hoverEnabled: connectionStatusMessage !== ""
+            acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
+            onEntered:
+            {
+                machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+                tooltip.show()
+            }
+            onExited: { tooltip.hide() }
+        }
+
+        Cura.ToolTip
+        {
+            id: tooltip
+
+            width: 250 * screenScaleFactor
+            tooltipText: connectionStatusMessage
+            arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
+            x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
+            y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
+            targetPoint: Qt.point(
+                connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
+                connectionStatusImage.y
+            )
         }
     }
 
