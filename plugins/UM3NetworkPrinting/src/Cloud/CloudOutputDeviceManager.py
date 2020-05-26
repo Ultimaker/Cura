@@ -106,8 +106,8 @@ class CloudOutputDeviceManager:
         self._onDevicesDiscovered(new_clusters)
 
         removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
-        # for device_id in removed_device_keys:
-        #     self._onDiscoveredDeviceRemoved(device_id)
+        for device_id in removed_device_keys:
+            self._onDiscoveredDeviceRemoved(device_id)
 
         if new_clusters or removed_device_keys:
             self.discoveredDevicesChanged.emit()
