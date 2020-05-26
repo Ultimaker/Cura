@@ -589,7 +589,15 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     def read(self, file_name):
         application = CuraApplication.getInstance()
 
-        archive = zipfile.ZipFile(file_name, "r")
+        try:
+            archive = zipfile.ZipFile(file_name, "r")
+        except EnvironmentError as e:
+            message = Message(i18n_catalog.i18nc("@info:error Don't translate the XML tags <filename> or <message>!",
+                                                 "Project file <filename>{0}</filename> is suddenly inaccessible: <message>{1}</message>.", file_name, str(e)),
+                                                 title = i18n_catalog.i18nc("@info:title", "Can't Open Project File"))
+            message.show()
+            self.setWorkspaceName("")
+            return [], {}
 
         cura_file_names = [name for name in archive.namelist() if name.startswith("Cura/")]
 

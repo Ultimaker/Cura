@@ -104,7 +104,7 @@
         "skin_outline_count":        {"value": "0"},
         "ironing_line_spacing":      {"value": "line_width / 4 * 3"},
         "ironing_flow":              {"value": "0"},
-        "ironing_inset":             {"value": "ironing_line_spacing + skin_line_width * (1.0 - ironing_flow) / 2"},
+        "ironing_inset":             {"value": "ironing_line_spacing + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)"},
         "speed_ironing":             {"value": "150"},
  
         "infill_sparse_density": {"value": 30},
