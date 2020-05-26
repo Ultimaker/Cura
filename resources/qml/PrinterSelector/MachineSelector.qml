@@ -16,7 +16,7 @@ Cura.ExpandablePopup
     property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
 
-    property string connectionStatus: {
+    readonly property string connectionStatus: {
         if (isNetworkPrinter)
         {
             return "printer_connected"
@@ -31,6 +31,15 @@ Cura.ExpandablePopup
         }
         else
         {
+            return ""
+        }
+    }
+
+    readonly property string connectionStatusMessage: {
+        if (connectionStatus == "printer_cloud_not_available")
+        {
+            return "The cloud connection is currently unavailable. Please check your internet connection and sign in to connect to the cloud printer"
+        } else {
             return ""
         }
     }
@@ -113,8 +122,7 @@ Cura.ExpandablePopup
                 {
                     id: connectionStatusTooltipHoverArea
                     anchors.fill: parent
-                    hoverEnabled: true
-                    enabled: true // todo
+                    hoverEnabled: connectionStatusMessage !== ""
                     acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
                     onEntered:
@@ -122,8 +130,8 @@ Cura.ExpandablePopup
                         base.showTooltip(
                             connectionStatusImage,
                             Qt.point(0, 0),
-                            "blaat blaat"
-                        ); //todo
+                            connectionStatusMessage
+                        ); //todo: positioning
                         machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
                     }
                     onExited: base.hideTooltip()
