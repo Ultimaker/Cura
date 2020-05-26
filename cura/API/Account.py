@@ -23,6 +23,7 @@ class SyncState:
     SYNCING = 0
     SUCCESS = 1
     ERROR = 2
+    IDLE = 3
 
 
 ##  The account API provides a version-proof bridge to use Ultimaker Accounts
@@ -50,6 +51,7 @@ class Account(QObject):
     """
     lastSyncDateTimeChanged = pyqtSignal()
     syncStateChanged = pyqtSignal(int)  # because SyncState is an int Enum
+    manualSyncEnabledChanged = pyqtSignal(bool)
 
     def __init__(self, application: "CuraApplication", parent = None) -> None:
         super().__init__(parent)
@@ -58,7 +60,8 @@ class Account(QObject):
 
         self._error_message = None  # type: Optional[Message]
         self._logged_in = False
-        self._sync_state = SyncState.SUCCESS
+        self._sync_state = SyncState.IDLE
+        self._manual_sync_enabled = False
         self._last_sync_str = "-"
 
         self._callback_port = 32118
@@ -106,16 +109,21 @@ class Account(QObject):
         :param state: One of SyncState
         """
 
+        Logger.info("Service {service} enters sync state {state}", service = service_name, state = state)
+
         prev_state = self._sync_state
 
         self._sync_services[service_name] = state
 
         if any(val == SyncState.SYNCING for val in self._sync_services.values()):
             self._sync_state = SyncState.SYNCING
+            self._setManualSyncEnabled(False)
         elif any(val == SyncState.ERROR for val in self._sync_services.values()):
             self._sync_state = SyncState.ERROR
+            self._setManualSyncEnabled(True)
         else:
             self._sync_state = SyncState.SUCCESS
+            self._setManualSyncEnabled(False)
 
         if self._sync_state != prev_state:
             self.syncStateChanged.emit(self._sync_state)
@@ -157,10 +165,30 @@ class Account(QObject):
             self._logged_in = logged_in
             self.loginStateChanged.emit(logged_in)
             if logged_in:
-                self.sync()
+                self._setManualSyncEnabled(False)
+                self._sync()
             else:
                 if self._update_timer.isActive():
                     self._update_timer.stop()
+
+    def _sync(self) -> None:
+        """Signals all sync services to start syncing
+
+        This can be considered a forced sync: even when a
+        sync is currently running, a sync will be requested.
+        """
+
+        if self._update_timer.isActive():
+            self._update_timer.stop()
+        elif self._sync_state == SyncState.SYNCING:
+            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
+
+        self.syncRequested.emit()
+
+    def _setManualSyncEnabled(self, enabled: bool) -> None:
+        if self._manual_sync_enabled != enabled:
+            self._manual_sync_enabled = enabled
+            self.manualSyncEnabledChanged.emit(enabled)
 
     @pyqtSlot()
     @pyqtSlot(bool)
@@ -212,20 +240,23 @@ class Account(QObject):
     def lastSyncDateTime(self) -> str:
         return self._last_sync_str
 
+    @pyqtProperty(bool, notify=manualSyncEnabledChanged)
+    def manualSyncEnabled(self) -> bool:
+        return self._manual_sync_enabled
+
     @pyqtSlot()
-    def sync(self) -> None:
-        """Signals all sync services to start syncing
+    @pyqtSlot(bool)
+    def sync(self, user_initiated: bool = False) -> None:
+        if user_initiated:
+            self._setManualSyncEnabled(False)
 
-        This can be considered a forced sync: even when a
-        sync is currently running, a sync will be requested.
-        """
+        self._sync()
 
-        if self._update_timer.isActive():
-            self._update_timer.stop()
-        elif self._sync_state == SyncState.SYNCING:
-            Logger.warning("Starting a new sync while previous sync was not completed\n{}", str(self._sync_services))
-
-        self.syncRequested.emit()
+    @pyqtSlot()
+    def popupOpened(self) -> None:
+        self._setManualSyncEnabled(True)
+        self._sync_state = SyncState.IDLE
+        self.syncStateChanged.emit(self._sync_state)
 
     @pyqtSlot()
     def logout(self) -> None:

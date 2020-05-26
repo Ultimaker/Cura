@@ -67,6 +67,7 @@ class CloudPackageChecker(QObject):
         self._application.getHttpRequestManager().get(url,
                                                       callback = self._onUserPackagesRequestFinished,
                                                       error_callback = self._onUserPackagesRequestFinished,
+                                                      timeout=10,
                                                       scope = self._scope)
 
     def _onUserPackagesRequestFinished(self, reply: "QNetworkReply", error: Optional["QNetworkReply.NetworkError"] = None) -> None:
