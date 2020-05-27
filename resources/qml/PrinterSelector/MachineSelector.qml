@@ -148,6 +148,7 @@ Cura.ExpandablePopup
             arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
             x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
             y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
+            z: popup.z + 1
             targetPoint: Qt.point(
                 connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
                 connectionStatusImage.y
