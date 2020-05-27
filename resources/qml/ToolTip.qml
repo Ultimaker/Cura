@@ -26,6 +26,8 @@ ToolTip
     text: ""
     delay: 500
     font: UM.Theme.getFont("default")
+    visible: opacity != 0.0
+    opacity: 0.0 // initially hidden
 
     Behavior on opacity
     {
@@ -68,7 +70,6 @@ ToolTip
     }
 
     function show() {
-        visible = true
         opacity = 1
     }
 
