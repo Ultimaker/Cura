@@ -18,10 +18,10 @@
             "default_value": 1.75
         },
         "machine_extruder_start_code": {
-            "default_value": "\n;This start extruder gcode comes from CuraByDagoma\n;Commented for now as there is discussion regarding its usage in Ultimaker Cura\n;Start T1\n;G92 E0\n;G1 E-{retraction_amount} F10000\n;G92 E0\n;G1 E1.5 F3000\n;G1 E-60 F10000\n;G92 E0\n"         
+            "default_value": ";This start extruder gcode comes from CuraByDagoma\n;Commented for now as there is discussion regarding its usage in Ultimaker Cura\n;Start T1\n;G92 E0\n;G1 E-{retraction_amount} F10000\n;G92 E0\n;G1 E1.5 F3000\n;G1 E-60 F10000\n;G92 E0"
         },
         "machine_extruder_end_code": {
-            "default_value": "\n;This end extruder gcode comes from CuraByDagoma\n;Commented for now as there is discussion regarding its usage in Ultimaker Cura\n;G92 E0\n;G1 E{retraction_amount} F3000\n;G92 E0\n;G1 E60 F3000\n;G92 E0\n;G1 E-{retraction_amount} F5000\n;End T1\n\n"
+            "default_value": ";This end extruder gcode comes from CuraByDagoma\n;Commented for now as there is discussion regarding its usage in Ultimaker Cura\n;G92 E0\n;G1 E{retraction_amount} F3000\n;G92 E0\n;G1 E60 F3000\n;G92 E0\n;G1 E-{retraction_amount} F5000\n;End T1"
         }
     }
 }
