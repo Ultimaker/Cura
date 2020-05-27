@@ -3,6 +3,7 @@
 
 import re #Regular expressions for parsing escape characters in the settings.
 import json
+from typing import Optional
 
 from UM.Settings.ContainerFormatError import ContainerFormatError
 from UM.Settings.InstanceContainer import InstanceContainer
@@ -117,7 +118,7 @@ def unescapeGcodeComment(string: str) -> str:
     return pattern.sub(lambda m: GCodeProfileReader.escape_characters[re.escape(m.group(0))], string)
 
 
-def readQualityProfileFromString(profile_string) -> InstanceContainer:
+def readQualityProfileFromString(profile_string) -> Optional[InstanceContainer]:
     """Read in a profile from a serialized string.
     
     :param profile_string: The profile data in serialized form.
