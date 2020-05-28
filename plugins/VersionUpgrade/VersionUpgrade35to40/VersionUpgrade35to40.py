@@ -34,8 +34,9 @@ class VersionUpgrade35to40(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades Preferences to have the new version number.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades Preferences to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 
@@ -48,9 +49,9 @@ class VersionUpgrade35to40(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades instance containers to have the new version
-    #   number.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades instance containers to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation=None)
         parser.read_string(serialized)
 

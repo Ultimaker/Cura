@@ -27,10 +27,12 @@ _renamed_container_id_map = {
 
 class VersionUpgrade43to44(VersionUpgrade):
 
-    ##  Upgrades Preferences to have the new version number.
-    #
-    #   This renames the renamed settings in the list of visible settings.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades Preferences to have the new version number.
+        
+        This renames the renamed settings in the list of visible settings.
+        """
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -41,11 +43,11 @@ class VersionUpgrade43to44(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades instance containers to have the new version
-    #   number.
-    #
-    #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades instance containers to have the new version number.
+        
+        This renames the renamed settings in the containers.
+        """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
@@ -72,8 +74,9 @@ class VersionUpgrade43to44(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades stacks to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
