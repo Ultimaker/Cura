@@ -47,9 +47,9 @@ class CuraContainerRegistry(ContainerRegistry):
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> None:
         """Overridden from ContainerRegistry
-        
+
         Adds a container to the registry.
-        
+
         This will also try to convert a ContainerStack to either Extruder or
         Global stack based on metadata information.
         """
@@ -70,7 +70,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
         """Create a name that is not empty and unique
-        
+
         :param container_type: :type{string} Type of the container (machine, quality, ...)
         :param current_name: :type{} Current name of the container, which may be an acceptable option
         :param new_name: :type{string} Base name, which may not be unique
@@ -95,7 +95,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def _containerExists(self, container_type: str, container_name: str):
         """Check if a container with of a certain type and a certain name or id exists
-        
+
         Both the id and the name are checked, because they may not be the same and it is better if they are both unique
         :param container_type: :type{string} Type of the container (machine, quality, ...)
         :param container_name: :type{string} Name to check
@@ -107,7 +107,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def exportQualityProfile(self, container_list: List[InstanceContainer], file_name: str, file_type: str) -> bool:
         """Exports an profile to a file
-        
+
         :param container_list: :type{list} the containers to export. This is not
         necessarily in any order!
         :param file_name: :type{str} the full path and filename to export to.
@@ -160,7 +160,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def _findProfileWriter(self, extension: str, description: str) -> Optional[ProfileWriter]:
         """Gets the plugin object matching the criteria
-        
+
         :param extension:
         :param description:
         :return: The plugin object matching the given extension and description.
@@ -177,7 +177,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def importProfile(self, file_name: str) -> Dict[str, str]:
         """Imports a profile from a file
-        
+
         :param file_name: The full path and filename of the profile to import.
         :return: Dict with a 'status' key containing the string 'ok' or 'error',
             and a 'message' key containing a message for the user.
@@ -192,9 +192,7 @@ class CuraContainerRegistry(ContainerRegistry):
             return {"status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Can't import profile from <filename>{0}</filename> before a printer is added.", file_name)}
         container_tree = ContainerTree.getInstance()
 
-        machine_extruders = []
-        for position in sorted(global_stack.extruders):
-            machine_extruders.append(global_stack.extruders[position])
+        machine_extruders = global_stack.extruderList
 
         plugin_registry = PluginRegistry.getInstance()
         extension = file_name.split(".")[-1]
@@ -275,7 +273,7 @@ class CuraContainerRegistry(ContainerRegistry):
                 if len(profile_or_list) == 1:
                     global_profile = profile_or_list[0]
                     extruder_profiles = []
-                    for idx, extruder in enumerate(global_stack.extruders.values()):
+                    for idx, extruder in enumerate(global_stack.extruderList):
                         profile_id = ContainerRegistry.getInstance().uniqueName(global_stack.getId() + "_extruder_" + str(idx + 1))
                         profile = InstanceContainer(profile_id)
                         profile.setName(quality_name)
@@ -353,7 +351,7 @@ class CuraContainerRegistry(ContainerRegistry):
     @override(ContainerRegistry)
     def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
         """Check if the metadata for a container is okay before adding it.
-        
+
         This overrides the one from UM.Settings.ContainerRegistry because we
         also require that the setting_version is correct.
         """
@@ -371,11 +369,11 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str, machine_definition_id: str) -> Optional[str]:
         """Update an imported profile to match the current machine configuration.
-        
+
         :param profile: The profile to configure.
         :param id_seed: The base ID for the profile. May be changed so it does not conflict with existing containers.
         :param new_name: The new name for the profile.
-        
+
         :return: None if configuring was successful or an error message if an error occurred.
         """
 
@@ -438,7 +436,7 @@ class CuraContainerRegistry(ContainerRegistry):
 
     def _getIOPlugins(self, io_type):
         """Gets a list of profile writer plugins
-        
+
         :return: List of tuples of (plugin_id, meta_data).
         """
         plugin_registry = PluginRegistry.getInstance()

@@ -17,10 +17,10 @@ def getMetaData() -> Dict[str, Any]:
             ("preferences", 6000013):        ("preferences", 6000014,        upgrade.upgradePreferences),
             ("machine_stack", 4000013):      ("machine_stack", 4000014,      upgrade.upgradeStack),
             ("extruder_train", 4000013):     ("extruder_train", 4000014,     upgrade.upgradeStack),
-            ("definition_changes", 4000013): ("definition_changes", 4000014, upgrade.upgradeInstanceContainer),
-            ("quality_changes", 4000013):    ("quality_changes", 4000014,    upgrade.upgradeInstanceContainer),
-            ("quality", 4000013):            ("quality", 4000014,            upgrade.upgradeInstanceContainer),
-            ("user", 4000013):               ("user", 4000014,               upgrade.upgradeInstanceContainer),
+            ("definition_changes", 4000013): ("definition_changes", 4000014, upgrade.upgradeExtruderInstanceContainer),
+            ("quality_changes", 4000013):    ("quality_changes", 4000014,    upgrade.upgradeExtruderInstanceContainer),
+            ("quality", 4000013):            ("quality", 4000014,            upgrade.upgradeExtruderInstanceContainer),
+            ("user", 4000013):               ("user", 4000014,               upgrade.upgradeExtruderInstanceContainer),
         },
         "sources": {
             "preferences": {

@@ -151,7 +151,7 @@ class LocalClusterOutputDeviceManager:
     @staticmethod
     def _getPrinterTypeIdentifiers() -> Dict[str, str]:
         """Returns a dict of printer BOM numbers to machine types.
-        
+
         These numbers are available in the machine definition already so we just search for them here.
         """
 
@@ -286,7 +286,7 @@ class LocalClusterOutputDeviceManager:
     def _showCloudFlowMessage(device: LocalClusterOutputDevice) -> None:
         """Nudge the user to start using Ultimaker Cloud."""
 
-        if CuraApplication.getInstance().getMachineManager().activeMachineIsUsingCloudConnection:
+        if CuraApplication.getInstance().getMachineManager().activeMachineHasCloudRegistration:
             # This printer is already cloud connected, so we do not bother the user anymore.
             return
         if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:

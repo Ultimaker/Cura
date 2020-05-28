@@ -136,6 +136,7 @@ UM.ManagementPage
         {
             id: confirmDialog
             object: base.currentItem && base.currentItem.name ? base.currentItem.name : ""
+            text: base.currentItem ? base.currentItem.removalWarning : "";
             onYes:
             {
                 Cura.MachineManager.removeMachine(base.currentItem.id)

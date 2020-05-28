@@ -1575,7 +1575,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.35,
-                    "value": "wall_line_width_0 / 2",
+                    "value": "wall_line_width_0 / 2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "ironing_enabled",
@@ -1761,7 +1761,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'cubicsubdiv' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'concentric' and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },

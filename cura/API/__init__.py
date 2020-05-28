@@ -5,6 +5,7 @@ from typing import Optional, TYPE_CHECKING
 from PyQt5.QtCore import QObject, pyqtProperty
 
 from cura.API.Backups import Backups
+from cura.API.ConnectionStatus import ConnectionStatus
 from cura.API.Interface import Interface
 from cura.API.Account import Account
 
@@ -14,7 +15,7 @@ if TYPE_CHECKING:
 
 class CuraAPI(QObject):
     """The official Cura API that plug-ins can use to interact with Cura.
-    
+
     Python does not technically prevent talking to other classes as well, but this API provides a version-safe
     interface with proper deprecation warnings etc. Usage of any other methods than the ones provided in this API can
     cause plug-ins to be unstable.
@@ -44,6 +45,9 @@ class CuraAPI(QObject):
 
         self._backups = Backups(self._application)
 
+        self._connectionStatus = ConnectionStatus()
+
+        # Interface API
         self._interface = Interface(self._application)
 
     def initialize(self) -> None:
@@ -54,6 +58,10 @@ class CuraAPI(QObject):
         """Accounts API"""
 
         return self._account
+
+    @pyqtProperty(QObject, constant = True)
+    def connectionStatus(self) -> "ConnectionStatus":
+        return self._connectionStatus
 
     @property
     def backups(self) -> "Backups":

@@ -241,7 +241,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
         if self._node is None:
             return None
         if self._node.callDecoration("isGroup"):
-            points = numpy.zeros((0, 2), dtype=numpy.int32)
+            points = numpy.zeros((0, 2), dtype = numpy.int32)
             for child in self._node.getChildren():
                 child_hull = child.callDecoration("_compute2DConvexHull")
                 if child_hull:
@@ -285,7 +285,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
             # Do not throw away vertices: the convex hull may be too small and objects can collide.
             # vertex_data = vertex_data[vertex_data[:,1] >= -0.01]
 
-            if len(vertex_data) >= 4:  # type: ignore # mypy and numpy don't play along well just yet.
+            if vertex_data is not None and len(vertex_data) >= 4:  # type: ignore # mypy and numpy don't play along well just yet.
                 # Round the vertex data to 1/10th of a mm, then remove all duplicate vertices
                 # This is done to greatly speed up further convex hull calculations as the convex hull
                 # becomes much less complex when dealing with highly detailed models.

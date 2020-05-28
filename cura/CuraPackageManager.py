@@ -40,10 +40,10 @@ class CuraPackageManager(PackageManager):
         machine_with_qualities = []
         for container_id in ids:
             for global_stack in global_stacks:
-                for extruder_nr, extruder_stack in global_stack.extruders.items():
+                for extruder_nr, extruder_stack in enumerate(global_stack.extruderList):
                     if container_id in (extruder_stack.material.getId(), extruder_stack.material.getMetaData().get("base_file")):
-                        machine_with_materials.append((global_stack, extruder_nr, container_id))
+                        machine_with_materials.append((global_stack, str(extruder_nr), container_id))
                     if container_id == extruder_stack.quality.getId():
-                        machine_with_qualities.append((global_stack, extruder_nr, container_id))
+                        machine_with_qualities.append((global_stack, str(extruder_nr), container_id))
 
         return machine_with_materials, machine_with_qualities

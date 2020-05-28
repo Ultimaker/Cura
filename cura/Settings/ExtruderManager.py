@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 
 class ExtruderManager(QObject):
     """Manages all existing extruder stacks.
-    
+
     This keeps a list of extruder stacks for each machine.
     """
 
@@ -54,10 +54,10 @@ class ExtruderManager(QObject):
     @pyqtProperty(str, notify = activeExtruderChanged)
     def activeExtruderStackId(self) -> Optional[str]:
         """Gets the unique identifier of the currently active extruder stack.
-        
+
         The currently active extruder stack is the stack that is currently being
         edited.
-        
+
         :return: The unique ID of the currently active extruder stack.
         """
 
@@ -83,7 +83,7 @@ class ExtruderManager(QObject):
     @pyqtSlot(int)
     def setActiveExtruderIndex(self, index: int) -> None:
         """Changes the active extruder by index.
-        
+
         :param index: The index of the new active extruder.
         """
 
@@ -132,7 +132,7 @@ class ExtruderManager(QObject):
 
     def resetSelectedObjectExtruders(self) -> None:
         """Reset the internal list used for the selectedObjectExtruders property
-        
+
         This will trigger a recalculation of the extruders used for the
         selection.
         """
@@ -154,28 +154,9 @@ class ExtruderManager(QObject):
                     return self._extruder_trains[global_container_stack.getId()][str(index)]
         return None
 
-    def registerExtruder(self, extruder_train: "ExtruderStack", machine_id: str) -> None:
-        changed = False
-
-        if machine_id not in self._extruder_trains:
-            self._extruder_trains[machine_id] = {}
-            changed = True
-
-        # do not register if an extruder has already been registered at the position on this machine
-        if any(item.getId() == extruder_train.getId() for item in self._extruder_trains[machine_id].values()):
-            Logger.log("w", "Extruder [%s] has already been registered on machine [%s], not doing anything",
-                       extruder_train.getId(), machine_id)
-            return
-
-        if extruder_train:
-            self._extruder_trains[machine_id][extruder_train.getMetaDataEntry("position")] = extruder_train
-            changed = True
-        if changed:
-            self.extrudersChanged.emit(machine_id)
-
     def getAllExtruderSettings(self, setting_key: str, prop: str) -> List[Any]:
         """Gets a property of a setting for all extruders.
-        
+
         :param setting_key:  :type{str} The setting to get the property of.
         :param prop:  :type{str} The property to get.
         :return: :type{List} the list of results
@@ -197,14 +178,14 @@ class ExtruderManager(QObject):
 
     def getUsedExtruderStacks(self) -> List["ExtruderStack"]:
         """Gets the extruder stacks that are actually being used at the moment.
-        
+
         An extruder stack is being used if it is the extruder to print any mesh
         with, or if it is the support infill extruder, the support interface
         extruder, or the bed adhesion extruder.
-        
+
         If there are no extruders, this returns the global stack as a singleton
         list.
-        
+
         :return: A list of extruder stacks.
         """
 
@@ -294,7 +275,7 @@ class ExtruderManager(QObject):
 
     def getInitialExtruderNr(self) -> int:
         """Get the extruder that the print will start with.
-        
+
         This should mirror the implementation in CuraEngine of
         ``FffGcodeWriter::getStartExtruder()``.
         """
@@ -315,7 +296,7 @@ class ExtruderManager(QObject):
 
     def removeMachineExtruders(self, machine_id: str) -> None:
         """Removes the container stack and user profile for the extruders for a specific machine.
-        
+
         :param machine_id: The machine to remove the extruders for.
         """
 
@@ -327,7 +308,7 @@ class ExtruderManager(QObject):
 
     def getMachineExtruders(self, machine_id: str) -> List["ExtruderStack"]:
         """Returns extruders for a specific machine.
-        
+
         :param machine_id: The machine to get the extruders of.
         """
 
@@ -337,7 +318,7 @@ class ExtruderManager(QObject):
 
     def getActiveExtruderStacks(self) -> List["ExtruderStack"]:
         """Returns the list of active extruder stacks, taking into account the machine extruder count.
-        
+
         :return: :type{List[ContainerStack]} a list of
         """
 
@@ -423,11 +404,11 @@ class ExtruderManager(QObject):
     @pyqtSlot(str, result="QVariant")
     def getInstanceExtruderValues(self, key: str) -> List:
         """Get all extruder values for a certain setting.
-        
+
         This is exposed to qml for display purposes
-        
+
         :param key: The key of the setting to retrieve values for.
-        
+
         :return: String representing the extruder values
         """
 
@@ -436,11 +417,11 @@ class ExtruderManager(QObject):
     @staticmethod
     def getResolveOrValue(key: str) -> Any:
         """Get the resolve value or value for a given key
-        
+
         This is the effective value for a given key, it is used for values in the global stack.
         This is exposed to SettingFunction to use in value functions.
         :param key: The key of the setting to get the value of.
-        
+
         :return: The effective value
         """
 
