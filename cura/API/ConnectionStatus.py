@@ -10,7 +10,7 @@ from cura.UltimakerCloud import UltimakerCloudAuthentication
 class ConnectionStatus(QObject):
     """Status info for some web services"""
 
-    UPDATE_INTERVAL = 5.0  # seconds
+    UPDATE_INTERVAL = 10.0  # seconds
     ULTIMAKER_CLOUD_STATUS_URL = UltimakerCloudAuthentication.CuraCloudAPIRoot + "/connect/v1/"
 
     __instance = None  # type: Optional[ConnectionStatus]
