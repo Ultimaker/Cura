@@ -5,6 +5,7 @@ from typing import Optional, TYPE_CHECKING
 from PyQt5.QtCore import QObject, pyqtProperty
 
 from cura.API.Backups import Backups
+from cura.API.ConnectionStatus import ConnectionStatus
 from cura.API.Interface import Interface
 from cura.API.Account import Account
 
@@ -45,6 +46,8 @@ class CuraAPI(QObject):
         # Backups API
         self._backups = Backups(self._application)
 
+        self._connectionStatus = ConnectionStatus()
+
         # Interface API
         self._interface = Interface(self._application)
 
@@ -54,6 +57,10 @@ class CuraAPI(QObject):
     @pyqtProperty(QObject, constant = True)
     def account(self) -> "Account":
         return self._account
+
+    @pyqtProperty(QObject, constant = True)
+    def connectionStatus(self) -> "ConnectionStatus":
+        return self._connectionStatus
 
     @property
     def backups(self) -> "Backups":

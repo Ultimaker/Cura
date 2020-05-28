@@ -265,7 +265,7 @@ class LocalClusterOutputDeviceManager:
     ## Nudge the user to start using Ultimaker Cloud.
     @staticmethod
     def _showCloudFlowMessage(device: LocalClusterOutputDevice) -> None:
-        if CuraApplication.getInstance().getMachineManager().activeMachineIsUsingCloudConnection:
+        if CuraApplication.getInstance().getMachineManager().activeMachineHasCloudRegistration:
             # This printer is already cloud connected, so we do not bother the user anymore.
             return
         if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
