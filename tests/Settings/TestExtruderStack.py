@@ -248,7 +248,6 @@ def test_deserializeMoveDefinitionContainer(extruder_stack):
 def test_getPropertyFallThrough(global_stack, extruder_stack):
     """Tests whether getProperty properly applies the stack-like behaviour on its containers."""
 
-    # ExtruderStack.setNextStack calls registerExtruder for backward compatibility, but we do not need a complete extruder manager
     ExtruderManager._ExtruderManager__instance = unittest.mock.MagicMock()
 
     #A few instance container mocks to put in the stack.
