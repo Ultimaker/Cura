@@ -48,9 +48,11 @@ class PrinterConfigurationModel(QObject):
     def buildplateConfiguration(self) -> str:
         return self._buildplate_configuration
 
-    ##  This method is intended to indicate whether the configuration is valid or not.
-    #   The method checks if the mandatory fields are or not set
     def isValid(self) -> bool:
+        """This method is intended to indicate whether the configuration is valid or not.
+        
+        The method checks if the mandatory fields are or not set
+        """
         if not self._extruder_configurations:
             return False
         for configuration in self._extruder_configurations:
@@ -97,9 +99,11 @@ class PrinterConfigurationModel(QObject):
 
         return True
 
-    ##  The hash function is used to compare and create unique sets. The configuration is unique if the configuration
-    #   of the extruders is unique (the order of the extruders matters), and the type and buildplate is the same.
     def __hash__(self):
+        """The hash function is used to compare and create unique sets. The configuration is unique if the configuration
+        
+        of the extruders is unique (the order of the extruders matters), and the type and buildplate is the same.
+        """
         extruder_hash = hash(0)
         first_extruder = None
         for configuration in self._extruder_configurations:

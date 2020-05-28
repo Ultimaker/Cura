@@ -44,8 +44,9 @@ class FirmwareUpdater(QObject):
     def _updateFirmware(self) -> None:
         raise NotImplementedError("_updateFirmware needs to be implemented")
 
-    ##  Cleanup after a succesful update
     def _cleanupAfterUpdate(self) -> None:
+        """Cleanup after a succesful update"""
+
         # Clean up for next attempt.
         self._update_firmware_thread = Thread(target=self._updateFirmware, daemon=True, name = "FirmwareUpdateThread")
         self._firmware_file = ""

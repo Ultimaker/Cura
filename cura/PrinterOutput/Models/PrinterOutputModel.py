@@ -163,13 +163,15 @@ class PrinterOutputModel(QObject):
     def moveHead(self, x: float = 0, y: float = 0, z: float = 0, speed: float = 3000) -> None:
         self._controller.moveHead(self, x, y, z, speed)
 
-    ##  Pre-heats the heated bed of the printer.
-    #
-    #   \param temperature The temperature to heat the bed to, in degrees
-    #   Celsius.
-    #   \param duration How long the bed should stay warm, in seconds.
     @pyqtSlot(float, float)
     def preheatBed(self, temperature: float, duration: float) -> None:
+        """Pre-heats the heated bed of the printer.
+        
+        :param temperature: The temperature to heat the bed to, in degrees
+            Celsius.
+        :param duration: How long the bed should stay warm, in seconds.
+        """
+
         self._controller.preheatBed(self, temperature, duration)
 
     @pyqtSlot()
@@ -200,8 +202,9 @@ class PrinterOutputModel(QObject):
             self._unique_name = unique_name
             self.nameChanged.emit()
 
-    ##  Update the bed temperature. This only changes it locally.
     def updateBedTemperature(self, temperature: float) -> None:
+        """Update the bed temperature. This only changes it locally."""
+
         if self._bed_temperature != temperature:
             self._bed_temperature = temperature
             self.bedTemperatureChanged.emit()
@@ -211,9 +214,10 @@ class PrinterOutputModel(QObject):
             self._target_bed_temperature = temperature
             self.targetBedTemperatureChanged.emit()
 
-    ##  Set the target bed temperature. This ensures that it's actually sent to the remote.
     @pyqtSlot(float)
     def setTargetBedTemperature(self, temperature: float) -> None:
+        """Set the target bed temperature. This ensures that it's actually sent to the remote."""
+
         self._controller.setTargetBedTemperature(self, temperature)
         self.updateTargetBedTemperature(temperature)
 

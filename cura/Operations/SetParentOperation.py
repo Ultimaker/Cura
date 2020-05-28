@@ -6,31 +6,37 @@ from UM.Scene.SceneNode import SceneNode
 from UM.Operations import Operation
 
 
-
-##  An operation that parents a scene node to another scene node.
 class SetParentOperation(Operation.Operation):
-    ##  Initialises this SetParentOperation.
-    #
-    #   \param node The node which will be reparented.
-    #   \param parent_node The node which will be the parent.
+    """An operation that parents a scene node to another scene node."""
+
     def __init__(self, node: SceneNode, parent_node: Optional[SceneNode]) -> None:
+        """Initialises this SetParentOperation.
+        
+        :param node: The node which will be reparented.
+        :param parent_node: The node which will be the parent.
+        """
+
         super().__init__()
         self._node = node
         self._parent = parent_node
         self._old_parent = node.getParent() # To restore the previous parent in case of an undo.
 
-    ##  Undoes the set-parent operation, restoring the old parent.
     def undo(self) -> None:
+        """Undoes the set-parent operation, restoring the old parent."""
+
         self._set_parent(self._old_parent)
 
-    ##  Re-applies the set-parent operation.
     def redo(self) -> None:
+        """Re-applies the set-parent operation."""
+
         self._set_parent(self._parent)
 
-    ##  Sets the parent of the node while applying transformations to the world-transform of the node stays the same.
-    #
-    #   \param new_parent The new parent. Note: this argument can be None, which would hide the node from the scene.
     def _set_parent(self, new_parent: Optional[SceneNode]) -> None:
+        """Sets the parent of the node while applying transformations to the world-transform of the node stays the same.
+        
+        :param new_parent: The new parent. Note: this argument can be None, which would hide the node from the scene.
+        """
+
         if new_parent:
             current_parent = self._node.getParent()
             if current_parent:
@@ -56,8 +62,10 @@ class SetParentOperation(Operation.Operation):
 
         self._node.setParent(new_parent)
 
-    ##  Returns a programmer-readable representation of this operation.
-    #
-    #   \return A programmer-readable representation of this operation.
     def __repr__(self) -> str:
+        """Returns a programmer-readable representation of this operation.
+        
+        :return: A programmer-readable representation of this operation.
+        """
+
         return "SetParentOperation(node = {0}, parent_node={1})".format(self._node, self._parent)

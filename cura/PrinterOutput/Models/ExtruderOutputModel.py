@@ -54,8 +54,9 @@ class ExtruderOutputModel(QObject):
     def updateActiveMaterial(self, material: Optional["MaterialOutputModel"]) -> None:
         self._extruder_configuration.setMaterial(material)
 
-    ##  Update the hotend temperature. This only changes it locally.
     def updateHotendTemperature(self, temperature: float) -> None:
+        """Update the hotend temperature. This only changes it locally."""
+
         if self._hotend_temperature != temperature:
             self._hotend_temperature = temperature
             self.hotendTemperatureChanged.emit()
@@ -65,9 +66,10 @@ class ExtruderOutputModel(QObject):
             self._target_hotend_temperature = temperature
             self.targetHotendTemperatureChanged.emit()
 
-    ##  Set the target hotend temperature. This ensures that it's actually sent to the remote.
     @pyqtSlot(float)
     def setTargetHotendTemperature(self, temperature: float) -> None:
+        """Set the target hotend temperature. This ensures that it's actually sent to the remote."""
+
         self._printer.getController().setTargetHotendTemperature(self._printer, self, temperature)
         self.updateTargetHotendTemperature(temperature)
 
@@ -101,13 +103,15 @@ class ExtruderOutputModel(QObject):
     def isPreheating(self) -> bool:
         return self._is_preheating
 
-    ##  Pre-heats the extruder before printer.
-    #
-    #   \param temperature The temperature to heat the extruder to, in degrees
-    #   Celsius.
-    #   \param duration How long the bed should stay warm, in seconds.
     @pyqtSlot(float, float)
     def preheatHotend(self, temperature: float, duration: float) -> None:
+        """Pre-heats the extruder before printer.
+        
+        :param temperature: The temperature to heat the extruder to, in degrees
+            Celsius.
+        :param duration: How long the bed should stay warm, in seconds.
+        """
+
         self._printer._controller.preheatHotend(self, temperature, duration)
 
     @pyqtSlot()

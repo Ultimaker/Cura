@@ -47,10 +47,13 @@ class ExtruderConfigurationModel(QObject):
     def hotendID(self) -> Optional[str]:
         return self._hotend_id
 
-    ##  This method is intended to indicate whether the configuration is valid or not.
-    #   The method checks if the mandatory fields are or not set
-    #   At this moment is always valid since we allow to have empty material and variants.
     def isValid(self) -> bool:
+        """This method is intended to indicate whether the configuration is valid or not.
+        
+        The method checks if the mandatory fields are or not set
+        At this moment is always valid since we allow to have empty material and variants.
+        """
+
         return True
 
     def __str__(self) -> str:

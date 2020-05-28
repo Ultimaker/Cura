@@ -15,13 +15,15 @@ if TYPE_CHECKING:
     from cura.MachineAction import MachineAction
 
 
-##  Raised when trying to add an unknown machine action as a required action
 class UnknownMachineActionError(Exception):
+    """Raised when trying to add an unknown machine action as a required action"""
+
     pass
 
 
-##  Raised when trying to add a machine action that does not have an unique key.
 class NotUniqueMachineActionError(Exception):
+    """Raised when trying to add a machine action that does not have an unique key."""
+
     pass
 
 
@@ -71,9 +73,11 @@ class MachineActionManager(QObject):
         self._definition_ids_with_default_actions_added.add(definition_id)
         Logger.log("i", "Default machine actions added for machine definition [%s]", definition_id)
 
-    ##  Add a required action to a machine
-    #   Raises an exception when the action is not recognised.
     def addRequiredAction(self, definition_id: str, action_key: str) -> None:
+        """Add a required action to a machine
+        
+        Raises an exception when the action is not recognised.
+        """
         if action_key in self._machine_actions:
             if definition_id in self._required_actions:
                 if self._machine_actions[action_key] not in self._required_actions[definition_id]:
@@ -83,8 +87,9 @@ class MachineActionManager(QObject):
         else:
             raise UnknownMachineActionError("Action %s, which is required for %s is not known." % (action_key, definition_id))
 
-    ##  Add a supported action to a machine.
     def addSupportedAction(self, definition_id: str, action_key: str) -> None:
+        """Add a supported action to a machine."""
+
         if action_key in self._machine_actions:
             if definition_id in self._supported_actions:
                 if self._machine_actions[action_key] not in self._supported_actions[definition_id]:
@@ -94,8 +99,9 @@ class MachineActionManager(QObject):
         else:
             Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 
-    ##  Add an action to the first start list of a machine.
     def addFirstStartAction(self, definition_id: str, action_key: str) -> None:
+        """Add an action to the first start list of a machine."""
+
         if action_key in self._machine_actions:
             if definition_id in self._first_start_actions:
                 self._first_start_actions[definition_id].append(self._machine_actions[action_key])
@@ -104,57 +110,69 @@ class MachineActionManager(QObject):
         else:
             Logger.log("w", "Unable to add %s to %s, as the action is not recognised", action_key, definition_id)
 
-    ##  Add a (unique) MachineAction
-    #   if the Key of the action is not unique, an exception is raised.
     def addMachineAction(self, action: "MachineAction") -> None:
+        """Add a (unique) MachineAction
+        
+        if the Key of the action is not unique, an exception is raised.
+        """
         if action.getKey() not in self._machine_actions:
             self._machine_actions[action.getKey()] = action
         else:
             raise NotUniqueMachineActionError("MachineAction with key %s was already added. Actions must have unique keys.", action.getKey())
 
-    ##  Get all actions supported by given machine
-    #   \param definition_id The ID of the definition you want the supported actions of
-    #   \returns set of supported actions.
     @pyqtSlot(str, result = "QVariantList")
     def getSupportedActions(self, definition_id: str) -> List["MachineAction"]:
+        """Get all actions supported by given machine
+        
+        :param definition_id: The ID of the definition you want the supported actions of
+        :returns: set of supported actions.
+        """
         if definition_id in self._supported_actions:
             return list(self._supported_actions[definition_id])
         else:
             return list()
 
-    ##  Get all actions required by given machine
-    #   \param definition_id The ID of the definition you want the required actions of
-    #   \returns set of required actions.
     def getRequiredActions(self, definition_id: str) -> List["MachineAction"]:
+        """Get all actions required by given machine
+        
+        :param definition_id: The ID of the definition you want the required actions of
+        :returns: set of required actions.
+        """
         if definition_id in self._required_actions:
             return self._required_actions[definition_id]
         else:
             return list()
 
-    ##  Get all actions that need to be performed upon first start of a given machine.
-    #   Note that contrary to required / supported actions a list is returned (as it could be required to run the same
-    #   action multiple times).
-    #   \param definition_id The ID of the definition that you want to get the "on added" actions for.
-    #   \returns List of actions.
     @pyqtSlot(str, result = "QVariantList")
     def getFirstStartActions(self, definition_id: str) -> List["MachineAction"]:
+        """Get all actions that need to be performed upon first start of a given machine.
+        
+        Note that contrary to required / supported actions a list is returned (as it could be required to run the same
+        action multiple times).
+        :param definition_id: The ID of the definition that you want to get the "on added" actions for.
+        :returns: List of actions.
+        """
         if definition_id in self._first_start_actions:
             return self._first_start_actions[definition_id]
         else:
             return []
 
-    ##  Remove Machine action from manager
-    #   \param action to remove
     def removeMachineAction(self, action: "MachineAction") -> None:
+        """Remove Machine action from manager
+        
+        :param action: to remove
+        """
         try:
             del self._machine_actions[action.getKey()]
         except KeyError:
             Logger.log("w", "Trying to remove MachineAction (%s) that was already removed", action.getKey())
 
-    ##  Get MachineAction by key
-    #   \param key String of key to select
-    #   \return Machine action if found, None otherwise
     def getMachineAction(self, key: str) -> Optional["MachineAction"]:
+        """Get MachineAction by key
+        
+        :param key: String of key to select
+        :return: Machine action if found, None otherwise
+        """
         if key in self._machine_actions:
             return self._machine_actions[key]
         else:

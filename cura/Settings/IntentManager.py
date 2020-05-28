@@ -15,29 +15,32 @@ if TYPE_CHECKING:
     from UM.Settings.InstanceContainer import InstanceContainer
 
 
-##  Front-end for querying which intents are available for a certain
-#   configuration.
 class IntentManager(QObject):
+    """Front-end for querying which intents are available for a certain configuration.
+    """
     __instance = None
 
-    ##  This class is a singleton.
     @classmethod
     def getInstance(cls):
+        """This class is a singleton."""
+
         if not cls.__instance:
             cls.__instance = IntentManager()
         return cls.__instance
 
     intentCategoryChanged = pyqtSignal() #Triggered when we switch categories.
 
-    ##  Gets the metadata dictionaries of all intent profiles for a given
-    #   configuration.
-    #
-    #   \param definition_id ID of the printer.
-    #   \param nozzle_name Name of the nozzle.
-    #   \param material_base_file The base_file of the material.
-    #   \return A list of metadata dictionaries matching the search criteria, or
-    #   an empty list if nothing was found.
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
+        """Gets the metadata dictionaries of all intent profiles for a given
+        
+        configuration.
+        
+        :param definition_id: ID of the printer.
+        :param nozzle_name: Name of the nozzle.
+        :param material_base_file: The base_file of the material.
+        :return: A list of metadata dictionaries matching the search criteria, or
+            an empty list if nothing was found.
+        """
         intent_metadatas = []  # type: List[Dict[str, Any]]
         try:
             materials = ContainerTree.getInstance().machines[definition_id].variants[nozzle_name].materials
@@ -53,28 +56,32 @@ class IntentManager(QObject):
                 intent_metadatas.append(intent_node.getMetadata())
         return intent_metadatas
 
-    ##  Collects and returns all intent categories available for the given
-    #   parameters. Note that the 'default' category is always available.
-    #
-    #   \param definition_id ID of the printer.
-    #   \param nozzle_name Name of the nozzle.
-    #   \param material_id ID of the material.
-    #   \return A set of intent category names.
     def intentCategories(self, definition_id: str, nozzle_id: str, material_id: str) -> List[str]:
+        """Collects and returns all intent categories available for the given
+        
+        parameters. Note that the 'default' category is always available.
+        
+        :param definition_id: ID of the printer.
+        :param nozzle_name: Name of the nozzle.
+        :param material_id: ID of the material.
+        :return: A set of intent category names.
+        """
         categories = set()
         for intent in self.intentMetadatas(definition_id, nozzle_id, material_id):
             categories.add(intent["intent_category"])
         categories.add("default") #The "empty" intent is not an actual profile specific to the configuration but we do want it to appear in the categories list.
         return list(categories)
 
-    ##  List of intents to be displayed in the interface.
-    #
-    #   For the interface this will have to be broken up into the different
-    #   intent categories. That is up to the model there.
-    #
-    #   \return A list of tuples of intent_category and quality_type. The actual
-    #   instance may vary per extruder.
     def getCurrentAvailableIntents(self) -> List[Tuple[str, str]]:
+        """List of intents to be displayed in the interface.
+        
+        For the interface this will have to be broken up into the different
+        intent categories. That is up to the model there.
+        
+        :return: A list of tuples of intent_category and quality_type. The actual
+            instance may vary per extruder.
+        """
+
         application = cura.CuraApplication.CuraApplication.getInstance()
         global_stack = application.getGlobalContainerStack()
         if global_stack is None:
@@ -100,16 +107,18 @@ class IntentManager(QObject):
             result.add((intent_metadata["intent_category"], intent_metadata["quality_type"]))
         return list(result)
 
-    ##  List of intent categories available in either of the extruders.
-    #
-    #   This is purposefully inconsistent with the way that the quality types
-    #   are listed. The quality types will show all quality types available in
-    #   the printer using any configuration. This will only list the intent
-    #   categories that are available using the current configuration (but the
-    #   union over the extruders).
-    #   \return List of all categories in the current configurations of all
-    #   extruders.
     def currentAvailableIntentCategories(self) -> List[str]:
+        """List of intent categories available in either of the extruders.
+        
+        This is purposefully inconsistent with the way that the quality types
+        are listed. The quality types will show all quality types available in
+        the printer using any configuration. This will only list the intent
+        categories that are available using the current configuration (but the
+        union over the extruders).
+        :return: List of all categories in the current configurations of all
+            extruders.
+        """
+
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return ["default"]
@@ -123,10 +132,12 @@ class IntentManager(QObject):
             final_intent_categories.update(self.intentCategories(current_definition_id, nozzle_name, material_id))
         return list(final_intent_categories)
 
-    ##  The intent that gets selected by default when no intent is available for
-    #   the configuration, an extruder can't match the intent that the user
-    #   selects, or just when creating a new printer.
     def getDefaultIntent(self) -> "InstanceContainer":
+        """The intent that gets selected by default when no intent is available for
+        
+        the configuration, an extruder can't match the intent that the user
+        selects, or just when creating a new printer.
+        """
         return empty_intent_container
 
     @pyqtProperty(str, notify = intentCategoryChanged)
@@ -137,9 +148,10 @@ class IntentManager(QObject):
             return ""
         return active_extruder_stack.intent.getMetaDataEntry("intent_category", "")
 
-    ##  Apply intent on the stacks.
     @pyqtSlot(str, str)
     def selectIntent(self, intent_category: str, quality_type: str) -> None:
+        """Apply intent on the stacks."""
+
         Logger.log("i", "Attempting to set intent_category to [%s] and quality type to [%s]", intent_category, quality_type)
         old_intent_category = self.currentIntentCategory
         application = cura.CuraApplication.CuraApplication.getInstance()

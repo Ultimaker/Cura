@@ -6,8 +6,9 @@ from UM.Operations.GroupedOperation import GroupedOperation
 from UM.Scene.SceneNode import SceneNode
 
 
-##  A specialised operation designed specifically to modify the previous operation.
 class PlatformPhysicsOperation(Operation):
+    """A specialised operation designed specifically to modify the previous operation."""
+
     def __init__(self, node: SceneNode, translation: Vector) -> None:
         super().__init__()
         self._node = node

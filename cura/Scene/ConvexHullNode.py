@@ -18,11 +18,13 @@ if TYPE_CHECKING:
 class ConvexHullNode(SceneNode):
     shader = None  # To prevent the shader from being re-built over and over again, only load it once.
 
-    ##  Convex hull node is a special type of scene node that is used to display an area, to indicate the
-    #   location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
-    #   then displayed as a transparent shadow. If the adhesion type is set to raft, the area is extruded
-    #   to represent the raft as well.
     def __init__(self, node: SceneNode, hull: Optional[Polygon], thickness: float, parent: Optional[SceneNode] = None) -> None:
+        """Convex hull node is a special type of scene node that is used to display an area, to indicate the
+        
+        location an object uses on the buildplate. This area (or area's in case of one at a time printing) is
+        then displayed as a transparent shadow. If the adhesion type is set to raft, the area is extruded
+        to represent the raft as well.
+        """
         super().__init__(parent)
 
         self.setCalculateBoundingBox(False)
