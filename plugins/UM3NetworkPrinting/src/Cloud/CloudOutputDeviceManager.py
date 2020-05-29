@@ -98,9 +98,10 @@ class CloudOutputDeviceManager:
         """Callback for when the request for getting the clusters is finished."""
 
         new_clusters = []
+        all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
-        for device_id, cluster_data in online_clusters.items():
+        for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
 
