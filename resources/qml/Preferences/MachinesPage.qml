@@ -113,6 +113,23 @@ UM.ManagementPage
                     }
                 }
             }
+
+            Text
+            {
+                textFormat: Text.RichText
+                text: "<i>Note: The USB Printing plugin can cause unexpected serial port behavior in third-party software such as Arduino IDE and PlatformIO. The USB Printing plugin can be disabled in the <a href=\"marketplace\">Marketplace</a> as a workaround. (GitHub Issue <a href=\"https://github.com/Ultimaker/Cura/issues/5207#issuecomment-570139859\">#5207</a>)</i>"
+                width: parent.width
+                wrapMode: Text.Wrap
+                topPadding: UM.Theme.getSize("default_margin").height
+                onLinkActivated:
+                {
+                    if (link == "marketplace") {
+                        Cura.Actions.browsePackages.trigger()
+                    } else {
+                        Qt.openUrlExternally(link)
+                    }
+                }
+            }
         }
 
         UM.Dialog
