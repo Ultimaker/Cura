@@ -320,7 +320,7 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
 
