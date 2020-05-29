@@ -178,8 +178,7 @@ class BaseMaterialsModel(ListModel):
         if global_stack is None or not self._enabled:
             return False
 
-        extruder_position = str(self._extruder_position)
-        if extruder_position not in global_stack.extruders:
+        if self._extruder_position >= len(global_stack.extruderList):
             return False
 
         return True
