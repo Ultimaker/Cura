@@ -208,7 +208,7 @@ class QualityManagementModel(ListModel):
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         container_manager = ContainerManager.getInstance()
-        stack_list = [global_stack] + list(global_stack.extruders.values())
+        stack_list = [global_stack] + global_stack.extruderList
         for stack in stack_list:
             quality_container = stack.quality
             quality_changes_container = stack.qualityChanges
