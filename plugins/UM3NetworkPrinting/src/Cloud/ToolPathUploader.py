@@ -118,7 +118,6 @@ class ToolPathUploader:
     def _errorCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         """Handles an error uploading."""
 
-        reply = cast(QNetworkReply, self._reply)
         body = bytes(reply.readAll()).decode()
         Logger.log("e", "Received error while uploading: %s", body)
         self.stop()
@@ -127,7 +126,6 @@ class ToolPathUploader:
     def _finishedCallback(self, reply: QNetworkReply) -> None:
         """Checks whether a chunk of data was uploaded successfully, starting the next chunk if needed."""
 
-        reply = cast(QNetworkReply, self._reply)
         Logger.log("i", "Finished callback %s %s",
                    reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
