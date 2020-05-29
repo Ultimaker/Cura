@@ -48,7 +48,7 @@ class CuraSceneNode(SceneNode):
             return None
 
         per_mesh_stack = self.callDecoration("getStack")
-        extruders = list(global_container_stack.extruders.values())
+        extruders = global_container_stack.extruderList
 
         # Use the support extruder instead of the active extruder if this is a support_mesh
         if per_mesh_stack:
