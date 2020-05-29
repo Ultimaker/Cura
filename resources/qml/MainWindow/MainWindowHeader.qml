@@ -12,7 +12,7 @@ import QtGraphicalEffects 1.0
 
 import "../Account"
 
-Item
+UM.UnclickableItem
 {
     id: base
 
