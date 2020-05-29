@@ -88,7 +88,7 @@ class CrashHandler:
     @staticmethod
     def pruneSensitiveData(obj: Any) -> Any:
         if isinstance(obj, str):
-            return obj.replace(home_dir, "<user_home>")
+            return obj.replace("\\\\", "\\").replace(home_dir, "<user_home>")
         if isinstance(obj, list):
             return [CrashHandler.pruneSensitiveData(item) for item in obj]
         if isinstance(obj, dict):
