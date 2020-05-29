@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import pytest #This module contains unit tests.
@@ -58,24 +58,24 @@ def test_addExtruder(global_stack):
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.definition = mock_definition
 
-    assert len(global_stack.extruders) == 0
+    assert len(global_stack.extruderList) == 0
     first_extruder = unittest.mock.MagicMock()
     first_extruder.getMetaDataEntry = lambda key: 0 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(first_extruder)
-    assert len(global_stack.extruders) == 1
-    assert global_stack.extruders[0] == first_extruder
+    assert len(global_stack.extruderList) == 1
+    assert global_stack.extruderList[0] == first_extruder
     second_extruder = unittest.mock.MagicMock()
     second_extruder.getMetaDataEntry = lambda key: 1 if key == "position" else None
     with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
         global_stack.addExtruder(second_extruder)
-    assert len(global_stack.extruders) == 2
-    assert global_stack.extruders[1] == second_extruder
+    assert len(global_stack.extruderList) == 2
+    assert global_stack.extruderList[1] == second_extruder
     # Disabled for now for Custom FDM Printer
     # with unittest.mock.patch("cura.Settings.CuraContainerStack.DefinitionContainer", unittest.mock.MagicMock):
     #     with pytest.raises(TooManyExtrudersError): #Should be limited to 2 extruders because of machine_extruder_count.
     #         global_stack.addExtruder(unittest.mock.MagicMock())
-    assert len(global_stack.extruders) == 2 #Didn't add the faulty extruder.
+    assert len(global_stack.extruderList) == 2  # Didn't add the faulty extruder.
 
 
 #Tests setting user changes profiles to invalid containers.
