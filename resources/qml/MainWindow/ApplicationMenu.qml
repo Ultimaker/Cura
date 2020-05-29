@@ -7,13 +7,13 @@ import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts 1.1
 import QtQuick.Dialogs 1.2
 
-import UM 1.3 as UM
+import UM 1.4 as UM
 import Cura 1.1 as Cura
 
 import "../Menus"
 import "../Dialogs"
 
-Item
+UM.UnclickableItem
 {
     id: menu
     width: applicationMenu.width
