@@ -29,8 +29,6 @@ Item
         "Custom": -1
     }
 
-    property int maxItemCountAtOnce: 11  // show at max 11 items at once, otherwise you need to scroll.
-
     // User-editable printer name
     property alias printerName: printerNameTextField.text
     property alias isPrinterNameValid: printerNameTextField.acceptableInput
