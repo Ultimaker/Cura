@@ -18,7 +18,7 @@ from cura.Settings.cura_empty_instance_containers import empty_container
 
 def getInstanceContainer(container_type) -> InstanceContainer:
     """Gets an instance container with a specified container type.
-    
+
     :param container_type: The type metadata for the instance container.
     :return: An instance container instance.
     """
@@ -219,7 +219,7 @@ def test_constrainDefinitionValid(container, global_stack):
 
 def test_deserializeCompletesEmptyContainers(global_stack):
     """Tests whether deserialising completes the missing containers with empty ones. The initial containers are just the
-    
+
     definition and the definition_changes (that cannot be empty after CURA-5281)
     """
 

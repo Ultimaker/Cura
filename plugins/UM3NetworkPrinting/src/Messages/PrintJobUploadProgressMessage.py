@@ -28,7 +28,7 @@ class PrintJobUploadProgressMessage(Message):
 
     def update(self, percentage: int) -> None:
         """Updates the percentage of the uploaded.
-        
+
         :param percentage: The percentage amount (0-100).
         """
         if not self._visible:

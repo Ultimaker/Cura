@@ -5,7 +5,7 @@ from UM.Mesh.MeshData import MeshData
 
 class LayerData(MeshData):
     """Class to holds the layer mesh and information about the layers.
-    
+
     Immutable, use :py:class:`cura.LayerDataBuilder.LayerDataBuilder` to create one of these.
     """
 

@@ -13,7 +13,7 @@ import subprocess
 
 class LinuxRemovableDrivePlugin(RemovableDrivePlugin.RemovableDrivePlugin):
     """Support for removable devices on Linux.
-    
+
     TODO: This code uses the most basic interfaces for handling this.
     We should instead use UDisks2 to handle mount/unmount and hotplugging events.
     """

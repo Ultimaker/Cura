@@ -20,7 +20,7 @@ i18n_catalog = i18nCatalog("cura")
 
 class FirmwareUpdateChecker(Extension):
     """This Extension checks for new versions of the firmware based on the latest checked version number.
-    
+
     The plugin is currently only usable for applications maintained by Ultimaker. But it should be relatively easy
     to change it to work for other applications.
     """
@@ -62,10 +62,10 @@ class FirmwareUpdateChecker(Extension):
 
     def checkFirmwareVersion(self, container = None, silent = False):
         """Connect with software.ultimaker.com, load latest.version and check version info.
-        
+
         If the version info is different from the current version, spawn a message to
         allow the user to download it.
-        
+
         :param silent: type(boolean) Suppresses messages other than "new version found" messages.
             This is used when checking for a new firmware version at startup.
         """

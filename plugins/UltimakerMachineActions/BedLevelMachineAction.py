@@ -16,7 +16,7 @@ catalog = i18nCatalog("cura")
 
 class BedLevelMachineAction(MachineAction):
     """A simple action to handle manual bed leveling procedure for printers that don't have it on the firmware.
-    
+
     This is currently only used by the Ultimaker Original+
     """
 

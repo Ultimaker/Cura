@@ -137,7 +137,7 @@ class PackagesModel(ListModel):
 
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
         """Set the filter of this model based on a string.
-        
+
         :param filter_dict: Dictionary to do the filtering by.
         """
         if filter_dict != self._filter:

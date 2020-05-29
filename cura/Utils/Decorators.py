@@ -13,9 +13,9 @@ SEMANTIC_VERSION_REGEX = re.compile(r"^[0-9]+\.[0-9]+(\.[0-9]+)?$")
 
 def api(since_version: str) -> Callable:
     """Decorator for functions that belong to a set of APIs. For now, this should only be used for officially supported
-    
+
     APIs, meaning that those APIs should be versioned and maintained.
-    
+
     :param since_version: The earliest version since when this API becomes supported. This means that since this version,
         this API function is supposed to behave the same. This parameter is not used. It's just a
         documentation.

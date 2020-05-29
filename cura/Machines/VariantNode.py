@@ -19,9 +19,9 @@ if TYPE_CHECKING:
 
 class VariantNode(ContainerNode):
     """This class represents an extruder variant in the container tree.
-    
+
     The subnodes of these nodes are materials.
-    
+
     This node contains materials with ALL filament diameters underneath it. The tree of this variant is not specific
     to one global stack, so because the list of materials can be different per stack depending on the compatible
     material diameter setting, we cannot filter them here. Filtering must be done in the model.
@@ -72,7 +72,7 @@ class VariantNode(ContainerNode):
 
     def preferredMaterial(self, approximate_diameter: int) -> MaterialNode:
         """Finds the preferred material for this printer with this nozzle in one of the extruders.
-        
+
         If the preferred material is not available, an arbitrary material is returned. If there is a configuration
         mistake (like a typo in the preferred material) this returns a random available material. If there are no
         available materials, this will return the empty material node.
@@ -85,14 +85,14 @@ class VariantNode(ContainerNode):
         for base_material, material_node in self.materials.items():
             if self.machine.preferred_material == base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                 return material_node
-            
+
         # First fallback: Check if we should be checking for the 175 variant.
         if approximate_diameter == 2:
             preferred_material = self.machine.preferred_material + "_175"
             for base_material, material_node in self.materials.items():
                 if preferred_material == base_material and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):
                     return material_node
-        
+
         # Second fallback: Choose any material with matching diameter.
         for material_node in self.materials.values():
             if material_node.getMetaDataEntry("approximate_diameter") and approximate_diameter == int(material_node.getMetaDataEntry("approximate_diameter")):

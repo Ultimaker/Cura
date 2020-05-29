@@ -76,7 +76,7 @@ class QualityManagementModel(ListModel):
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
         """Deletes a custom profile. It will be gone forever.
-        
+
         :param quality_changes_group: The quality changes group representing the profile to delete.
         """
 
@@ -99,7 +99,7 @@ class QualityManagementModel(ListModel):
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
         """Rename a custom profile.
-        
+
         Because the names must be unique, the new name may not actually become the name that was given. The actual
         name is returned by this function.
 
@@ -145,7 +145,7 @@ class QualityManagementModel(ListModel):
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, new_name: str, quality_model_item: Dict[str, Any]) -> None:
         """Duplicates a given quality profile OR quality changes profile.
-        
+
         :param new_name: The desired name of the new profile. This will be made unique, so it might end up with a
         different name.
         :param quality_model_item: The item of this model to duplicate, as dictionary. See the descriptions of the
@@ -180,7 +180,7 @@ class QualityManagementModel(ListModel):
     @pyqtSlot(str)
     def createQualityChanges(self, base_name: str) -> None:
         """Create quality changes containers from the user containers in the active stacks.
-        
+
         This will go through the global and extruder stacks and create quality_changes containers from the user
         containers in each stack. These then replace the quality_changes containers in the stack and clear the user
         settings.
@@ -229,7 +229,7 @@ class QualityManagementModel(ListModel):
 
     def _createQualityChanges(self, quality_type: str, intent_category: Optional[str], new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
         """Create a quality changes container with the given set-up.
-        
+
         :param quality_type: The quality type of the new container.
         :param intent_category: The intent category of the new container.
         :param new_name: The name of the container. This name must be unique.
@@ -264,7 +264,7 @@ class QualityManagementModel(ListModel):
 
     def _qualityChangesListChanged(self, container: "ContainerInterface") -> None:
         """Triggered when any container changed.
-        
+
         This filters the updates to the container manager: When it applies to the list of quality changes, we need to
         update our list.
         """
@@ -383,7 +383,7 @@ class QualityManagementModel(ListModel):
 
         The convenience meta-filters "All Supported Types" and "All Files" are added when listing readers,
         but not when listing writers.
-        
+
         :param io_type: name of the needed IO type
         :return: A list of strings indicating file name filters for a file dialog.
 
@@ -408,7 +408,7 @@ class QualityManagementModel(ListModel):
 
     def _getIOPlugins(self, io_type):
         """Gets a list of profile reader or writer plugins
-        
+
         :return: List of tuples of (plugin_id, meta_data).
         """
         from UM.PluginRegistry import PluginRegistry

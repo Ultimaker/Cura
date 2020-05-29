@@ -29,7 +29,7 @@ def container_registry():
 @pytest.fixture
 def empty_machine_node():
     """Creates a machine node without anything underneath it. No sub-nodes.
-    
+
     For testing stuff with machine nodes without testing _loadAll(). You'll need
     to add subnodes manually in your test.
     """
@@ -82,7 +82,7 @@ def test_metadataProperties(container_registry):
 
 def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
     """Test getting quality groups when there are quality profiles available for
-    
+
     the requested configurations on two extruders.
     """
 
@@ -130,7 +130,7 @@ def test_getQualityGroupsBothExtrudersAvailable(empty_machine_node):
 
 def test_getQualityGroupsAvailability(empty_machine_node):
     """Test the "is_available" flag on quality groups.
-    
+
     If a profile is available for a quality type on an extruder but not on all
     extruders, there should be a quality group for it but it should not be made
     available.

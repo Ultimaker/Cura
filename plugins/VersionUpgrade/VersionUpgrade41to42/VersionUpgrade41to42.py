@@ -216,13 +216,13 @@ _creality_limited_quality_type = {
 
 class VersionUpgrade41to42(VersionUpgrade):
     """Upgrades configurations from the state they were in at version 4.1 to the
-    
+
     state they should be in at version 4.2.
     """
 
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number.
-        
+
         This renames the renamed settings in the containers.
         """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
@@ -262,7 +262,7 @@ class VersionUpgrade41to42(VersionUpgrade):
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades Preferences to have the new version number.
-        
+
         This renames the renamed settings in the list of visible settings.
         """
 

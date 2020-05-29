@@ -5,7 +5,7 @@ from cura.CuraApplication import CuraApplication
 
 class RestartApplicationPresenter:
     """Presents a dialog telling the user that a restart is required to apply changes
-    
+
     Since we cannot restart Cura, the app is closed instead when the button is clicked
     """
     def __init__(self, app: CuraApplication) -> None:

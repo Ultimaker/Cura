@@ -16,10 +16,10 @@ catalog = i18nCatalog("cura")
 
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     """This handler handles all HTTP requests on the local web server.
-    
+
     It also requests the access token for the 2nd stage of the OAuth flow.
     """
-    
+
     def __init__(self, request, client_address, server) -> None:
         super().__init__(request, client_address, server)
 
@@ -60,11 +60,11 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
 
     def _handleCallback(self, query: Dict[Any, List]) -> Tuple[ResponseData, Optional[AuthenticationResponse]]:
         """Handler for the callback URL redirect.
-        
+
         :param query: Dict containing the HTTP query parameters.
         :return: HTTP ResponseData containing a success page to show to the user.
         """
-        
+
         code = self._queryGet(query, "code")
         state = self._queryGet(query, "state")
         if state != self.state:

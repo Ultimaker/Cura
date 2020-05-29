@@ -16,21 +16,21 @@ import zipfile
 
 class CuraProfileReader(ProfileReader):
     """A plugin that reads profile data from Cura profile files.
-    
+
     It reads a profile from a .curaprofile file, and returns it as a profile
     instance.
     """
 
     def __init__(self) -> None:
         """Initialises the cura profile reader.
-        
+
         This does nothing since the only other function is basically stateless.
         """
         super().__init__()
 
     def read(self, file_name: str) -> List[Optional[InstanceContainer]]:
         """Reads a cura profile from a file and returns it.
-        
+
         :param file_name: The file to read the cura profile from.
         :return: The cura profiles that were in the file, if any. If the file
             could not be read or didn't contain a valid profile, ``None`` is
@@ -59,7 +59,7 @@ class CuraProfileReader(ProfileReader):
 
     def _upgradeProfile(self, serialized: str, profile_id: str) -> List[Tuple[str, str]]:
         """Convert a profile from an old Cura to this Cura if needed.
-        
+
         :param serialized: The profile data to convert in the serialized on-disk format.
         :param profile_id: The name of the profile.
         :return: List of serialized profile strings and matching profile names.
@@ -85,7 +85,7 @@ class CuraProfileReader(ProfileReader):
 
     def _loadProfile(self, serialized: str, profile_id: str) -> Optional[InstanceContainer]:
         """Load a profile from a serialized string.
-        
+
         :param serialized: The profile data to read.
         :param profile_id: The name of the profile.
         :return: The profile that was stored in the string.
@@ -114,7 +114,7 @@ class CuraProfileReader(ProfileReader):
 
     def _upgradeProfileVersion(self, serialized: str, profile_id: str, main_version: int, setting_version: int) -> List[Tuple[str, str]]:
         """Upgrade a serialized profile to the current profile format.
-        
+
         :param serialized: The profile data to convert.
         :param profile_id: The name of the profile.
         :param source_version: The profile version of 'serialized'.

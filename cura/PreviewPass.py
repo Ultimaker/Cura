@@ -39,9 +39,9 @@ def prettier_color(color_list: List[float]) -> List[float]:
 
 class PreviewPass(RenderPass):
     """A :py:class:`Uranium.UM.View.RenderPass` subclass that renders slicable objects with default parameters.
-    
+
     It uses the active camera by default, but it can be overridden to use a different camera.
-    
+
     This is useful to get a preview image of a scene taken from a different location as the active camera.
     """
 

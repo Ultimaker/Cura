@@ -49,7 +49,7 @@ class ModelChecker(QObject, Extension):
 
     def _pluginsInitialized(self):
         """Called when plug-ins are initialized.
-        
+
         This makes sure that we listen to changes of the material and that the
         button is created that indicates warnings with the current set-up.
         """

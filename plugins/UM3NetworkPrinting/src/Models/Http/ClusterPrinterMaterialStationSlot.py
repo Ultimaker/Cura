@@ -11,7 +11,7 @@ class ClusterPrinterMaterialStationSlot(ClusterPrintCoreConfiguration):
     def __init__(self, slot_index: int, compatible: bool, material_remaining: float,
                  material_empty: Optional[bool] = False, **kwargs) -> None:
         """Create a new material station slot object.
-        
+
         :param slot_index: The index of the slot in the material station (ranging 0 to 5).
         :param compatible: Whether the configuration is compatible with the print core.
         :param material_remaining: How much material is remaining on the spool (between 0 and 1, or -1 for missing data).

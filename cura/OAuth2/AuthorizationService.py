@@ -251,7 +251,7 @@ class AuthorizationService:
         if self._preferences is None:
             Logger.log("e", "Unable to save authentication data, since no preference has been set!")
             return
-        
+
         self._auth_data = auth_data
         if auth_data:
             self._user_profile = self.getUserProfile()

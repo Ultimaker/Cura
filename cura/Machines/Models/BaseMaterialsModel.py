@@ -15,7 +15,7 @@ from cura.Settings.CuraContainerRegistry import CuraContainerRegistry
 
 class BaseMaterialsModel(ListModel):
     """This is the base model class for GenericMaterialsModel and MaterialBrandsModel.
-    
+
     Those 2 models are used by the material drop down menu to show generic materials and branded materials
     separately. The extruder position defined here is being used to bound a menu to the correct extruder. This is
     used in the top bar menu "Settings" -> "Extruder nr" -> "Material" -> this menu
@@ -125,7 +125,7 @@ class BaseMaterialsModel(ListModel):
 
     def _materialsListChanged(self, material: MaterialNode) -> None:
         """Triggered when a list of materials changed somewhere in the container
-        
+
         tree. This change may trigger an _update() call when the materials changed for the configuration that this
         model is looking for.
         """

@@ -62,7 +62,7 @@ class MachineAction(QObject, PluginObject):
     @pyqtSlot()
     def reset(self) -> None:
         """Reset the action to it's default state.
-        
+
         This should not be re-implemented by child classes, instead re-implement _reset.
 
         :py:meth:`cura.MachineAction.MachineAction._reset`
@@ -73,7 +73,7 @@ class MachineAction(QObject, PluginObject):
 
     def _reset(self) -> None:
         """Protected implementation of reset.
-        
+
         See also :py:meth:`cura.MachineAction.MachineAction.reset`
         """
 

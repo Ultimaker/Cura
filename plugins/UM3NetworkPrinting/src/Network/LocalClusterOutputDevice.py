@@ -98,7 +98,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def setJobState(self, print_job_uuid: str, action: str) -> None:
         """Set the remote print job state.
-        
+
         :param print_job_uuid: The UUID of the print job to set the state for.
         :param action: The action to undertake ('pause', 'resume', 'abort').
         """
@@ -118,7 +118,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def sendMaterialProfiles(self) -> None:
         """Sync the material profiles in Cura with the printer.
-        
+
         This gets called when connecting to a printer as well as when sending a print.
         """
         job = SendMaterialJob(device = self)
@@ -143,14 +143,14 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     @pyqtSlot(str, name="selectTargetPrinter")
     def selectTargetPrinter(self, unique_name: str = "") -> None:
         """Allows the user to choose a printer to print with from the printer selection dialogue.
-        
+
         :param unique_name: The unique name of the printer to target.
         """
         self._startPrintJobUpload(unique_name if unique_name != "" else None)
 
     def _onPrintJobCreated(self, job: ExportFileJob) -> None:
         """Handler for when the print job was created locally.
-        
+
         It can now be sent over the network.
         """
 
@@ -208,7 +208,7 @@ class LocalClusterOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _onUploadError(self, message: str = None) -> None:
         """Displays the given message if uploading the mesh has failed
-        
+
         :param message: The message to display.
         """
 

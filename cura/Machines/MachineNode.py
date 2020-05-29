@@ -19,7 +19,7 @@ import UM.FlameProfiler
 
 class MachineNode(ContainerNode):
     """This class represents a machine in the container tree.
-    
+
     The subnodes of these nodes are variants.
     """
 
@@ -51,7 +51,7 @@ class MachineNode(ContainerNode):
 
     def getQualityGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> Dict[str, QualityGroup]:
         """Get the available quality groups for this machine.
-        
+
         This returns all quality groups, regardless of whether they are available to the combination of extruders or
         not. On the resulting quality groups, the is_available property is set to indicate whether the quality group
         can be selected according to the combination of extruders in the parameters.
@@ -103,13 +103,13 @@ class MachineNode(ContainerNode):
 
     def getQualityChangesGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> List[QualityChangesGroup]:
         """Returns all of the quality changes groups available to this printer.
-        
+
         The quality changes groups store which quality type and intent category they were made for, but not which
         material and nozzle. Instead for the quality type and intent category, the quality changes will always be
         available but change the quality type and intent category when activated.
-        
+
         The quality changes group does depend on the printer: Which quality definition is used.
-        
+
         The quality changes groups that are available do depend on the quality types that are available, so it must
         still be known which extruders are enabled and which materials and variants are loaded in them. This allows
         setting the correct is_available flag.
@@ -150,7 +150,7 @@ class MachineNode(ContainerNode):
 
     def preferredGlobalQuality(self) -> "QualityNode":
         """Gets the preferred global quality node, going by the preferred quality type.
-        
+
         If the preferred global quality is not in there, an arbitrary global quality is taken. If there are no global
         qualities, an empty quality is returned.
         """

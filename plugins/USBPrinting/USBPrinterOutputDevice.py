@@ -118,7 +118,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
     def requestWrite(self, nodes: List["SceneNode"], file_name: Optional[str] = None, limit_mimetypes: bool = False,
                      file_handler: Optional["FileHandler"] = None, filter_by_machine: bool = False, **kwargs) -> None:
         """Request the current scene to be sent to a USB-connected printer.
-        
+
         :param nodes: A collection of scene nodes to send. This is ignored.
         :param file_name: A suggestion for a file name to write.
         :param filter_by_machine: Whether to filter MIME types by machine. This
@@ -148,7 +148,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
     def _printGCode(self, gcode: str):
         """Start a print based on a g-code.
-        
+
         :param gcode: The g-code to print.
         """
         self._gcode.clear()

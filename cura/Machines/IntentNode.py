@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 class IntentNode(ContainerNode):
     """This class represents an intent profile in the container tree.
-    
+
     This class has no more subnodes.
     """
 

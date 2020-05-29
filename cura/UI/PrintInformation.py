@@ -23,7 +23,7 @@ catalog = i18nCatalog("cura")
 
 class PrintInformation(QObject):
     """A class for processing and the print times per build plate as well as managing the job name
-    
+
     This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
     This job name is requested by the JobSpecs qml file.
     """

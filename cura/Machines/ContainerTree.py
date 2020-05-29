@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 
 class ContainerTree:
     """This class contains a look-up tree for which containers are available at which stages of configuration.
-    
+
     The tree starts at the machine definitions. For every distinct definition there will be one machine node here.
-    
+
     All of the fallbacks for material choices, quality choices, etc. should be encoded in this tree. There must
     always be at least one child node (for nodes that have children) but that child node may be a node representing
     the empty instance container.
@@ -44,7 +44,7 @@ class ContainerTree:
 
     def getCurrentQualityGroups(self) -> Dict[str, "QualityGroup"]:
         """Get the quality groups available for the currently activated printer.
-        
+
         This contains all quality groups, enabled or disabled. To check whether the quality group can be activated,
         test for the ``QualityGroup.is_available`` property.
 
@@ -61,7 +61,7 @@ class ContainerTree:
 
     def getCurrentQualityChangesGroups(self) -> List["QualityChangesGroup"]:
         """Get the quality changes groups available for the currently activated printer.
-        
+
         This contains all quality changes groups, enabled or disabled. To check whether the quality changes group can
         be activated, test for the ``QualityChangesGroup.is_available`` property.
 
@@ -84,7 +84,7 @@ class ContainerTree:
 
     class _MachineNodeMap:
         """Dictionary-like object that contains the machines.
-        
+
         This handles the lazy loading of MachineNodes.
         """
 
@@ -105,7 +105,7 @@ class ContainerTree:
 
         def __getitem__(self, definition_id: str) -> MachineNode:
             """Returns a machine node for the specified definition ID.
-            
+
             If the machine node wasn't loaded yet, this will load it lazily.
 
             :param definition_id: The definition to look for.
@@ -122,7 +122,7 @@ class ContainerTree:
 
         def get(self, definition_id: str, default: Optional[MachineNode] = None) -> Optional[MachineNode]:
             """Gets a machine node for the specified definition ID, with default.
-            
+
             The default is returned if there is no definition with the specified ID. If the machine node wasn't
             loaded yet, this will load it lazily.
 
@@ -140,7 +140,7 @@ class ContainerTree:
 
         def is_loaded(self, definition_id: str) -> bool:
             """Returns whether we've already cached this definition's node.
-            
+
             :param definition_id: The definition that we may have cached.
 
             :return: ``True`` if it's cached.
@@ -155,7 +155,7 @@ class ContainerTree:
 
         def __init__(self, tree_root: "ContainerTree", container_stacks: List["ContainerStack"]) -> None:
             """Creates a new background task.
-            
+
             :param tree_root: The container tree instance. This cannot be obtained through the singleton static
             function since the instance may not yet be constructed completely.
             :param container_stacks: All of the stacks to pre-load the container trees for. This needs to be provided
@@ -168,7 +168,7 @@ class ContainerTree:
 
         def run(self) -> None:
             """Starts the background task.
-            
+
             The ``JobQueue`` will schedule this on a different thread.
             """
 

@@ -8,7 +8,7 @@ from PyQt5.QtCore import QObject, pyqtProperty, pyqtSignal
 
 class QualityChangesGroup(QObject):
     """Data struct to group several quality changes instance containers together.
-    
+
     Each group represents one "custom profile" as the user sees it, which contains an instance container for the
     global stack and one instance container per extruder.
     """

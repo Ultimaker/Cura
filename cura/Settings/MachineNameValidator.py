@@ -13,7 +13,7 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 class MachineNameValidator(QObject):
     """Are machine names valid?
-    
+
     Performs checks based on the length of the name.
     """
 
@@ -37,7 +37,7 @@ class MachineNameValidator(QObject):
 
     def validate(self, name):
         """Check if a specified machine name is allowed.
-        
+
         :param name: The machine name to check.
         :return: ``QValidator.Invalid`` if it's disallowed, or ``QValidator.Acceptable`` if it's allowed.
         """

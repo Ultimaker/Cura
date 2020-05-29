@@ -30,7 +30,7 @@ catalog = i18nCatalog("cura")
 
 def colorCodeToRGBA(color_code):
     """Return a 4-tuple with floats 0-1 representing the html color code
-    
+
     :param color_code: html color code, i.e. "#FF0000" -> red
     """
 
@@ -55,7 +55,7 @@ class ProcessSlicedLayersJob(Job):
 
     def abort(self):
         """Aborts the processing of layers.
-        
+
         This abort is made on a best-effort basis, meaning that the actual
         job thread will check once in a while to see whether an abort is
         requested and then stop processing by itself. There is no guarantee

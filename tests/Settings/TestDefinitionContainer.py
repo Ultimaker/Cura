@@ -89,7 +89,7 @@ def assertIsDefinitionValid(definition_container, file_path):
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_validateOverridingDefaultValue(file_path: str):
     """Tests whether setting values are not being hidden by parent containers.
-    
+
     When a definition container defines a "default_value" but inherits from a
     definition that defines a "value", the "default_value" is ineffective. This
     test fails on those things.
@@ -135,7 +135,7 @@ def getInheritedSettings(definition_id: str) -> Dict[str, Any]:
 
 def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
     """Put all settings in the main dictionary rather than in children dicts.
-    
+
     :param settings: Nested settings. The keys are the setting IDs. The values
     are dictionaries of properties per setting, including the "children" property.
     :return: A dictionary of settings by key. Each setting is a dictionary of properties.
@@ -152,7 +152,7 @@ def flattenSettings(settings: Dict[str, Any]) -> Dict[str, Any]:
 
 def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, Any]:
     """Make one dictionary override the other. Nested dictionaries override each
-    
+
     other in the same way.
     :param base: A dictionary of settings that will get overridden by the other.
     :param overrides: A dictionary of settings that will override the other.
@@ -176,7 +176,7 @@ def merge_dicts(base: Dict[str, Any], overrides: Dict[str, Any]) -> Dict[str, An
 @pytest.mark.parametrize("file_path", definition_filepaths)
 def test_noId(file_path: str):
     """Verifies that definition contains don't have an ID field.
-    
+
     ID fields are legacy. They should not be used any more. This is legacy that
     people don't seem to be able to get used to.
     """

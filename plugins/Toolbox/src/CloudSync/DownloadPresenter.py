@@ -18,7 +18,7 @@ from .SubscribedPackagesModel import SubscribedPackagesModel
 
 class DownloadPresenter:
     """Downloads a set of packages from the Ultimaker Cloud Marketplace
-    
+
     use download() exactly once: should not be used for multiple sets of downloads since this class contains state
     """
 

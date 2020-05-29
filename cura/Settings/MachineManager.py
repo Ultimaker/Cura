@@ -342,7 +342,7 @@ class MachineManager(QObject):
     @staticmethod
     def getMachine(definition_id: str, metadata_filter: Optional[Dict[str, str]] = None) -> Optional["GlobalStack"]:
         """Given a definition id, return the machine with this id.
-        
+
         Optional: add a list of keys and values to filter the list of machines with the given definition id
         :param definition_id: :type{str} definition id that needs to look for
         :param metadata_filter: :type{dict} list of metadata keys and values used for filtering
@@ -430,7 +430,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def clearUserSettingAllCurrentStacks(self, key: str) -> None:
         """Delete a user setting from the global stack and all extruder stacks.
-        
+
         :param key: :type{str} the name of the key to delete
         """
         Logger.log("i", "Clearing the setting [%s] from all stacks", key)
@@ -464,7 +464,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = stacksValidationChanged)
     def stacksHaveErrors(self) -> bool:
         """Check if none of the stacks contain error states
-        
+
         Note that the _stacks_have_errors is cached due to performance issues
         Calling _checkStack(s)ForErrors on every change is simply too expensive
         """
@@ -503,7 +503,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasCloudRegistration(self) -> bool:
         return self.activeMachine is not None and ConnectionType.CloudConnection in self.activeMachine.configuredConnectionTypes
-    
+
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsUsingCloudConnection(self) -> bool:
         return self.activeMachineHasCloudConnection and not self.activeMachineHasNetworkConnection
@@ -544,9 +544,9 @@ class MachineManager(QObject):
     @pyqtProperty(float, notify = activeQualityGroupChanged)
     def activeQualityLayerHeight(self) -> float:
         """Gets the layer height of the currently active quality profile.
-        
+
         This is indicated together with the name of the active quality profile.
-        
+
         :return: The layer height of the currently active quality profile. If
         there is no quality profile, this returns the default layer height.
         """
@@ -623,7 +623,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = activeQualityChanged)
     def isCurrentSetupSupported(self) -> bool:
         """Returns whether there is anything unsupported in the current set-up.
-        
+
         The current set-up signifies the global stack and all extruder stacks,
         so this indicates whether there is any container in any of the container
         stacks that is not marked as supported.
@@ -670,7 +670,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeQualityDefinitionId(self) -> str:
         """Get the Definition ID to use to select quality profiles for the currently active machine
-        
+
         :returns: DefinitionID (string) if found, empty string otherwise
         """
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
@@ -681,7 +681,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = globalContainerChanged)
     def activeDefinitionVariantsName(self) -> str:
         """Gets how the active definition calls variants
-        
+
         Caveat: per-definition-variant-title is currently not translated (though the fallback is)
         """
         fallback_title = catalog.i18nc("@label", "Nozzle")
@@ -754,7 +754,7 @@ class MachineManager(QObject):
     @pyqtProperty(bool, notify = activeMaterialChanged)
     def variantBuildplateUsable(self) -> bool:
         """The selected buildplate is usable if it is usable for all materials OR it is compatible for one but not compatible
-        
+
         for the other material but the buildplate is still usable
         """
         if not self._global_container_stack:
@@ -780,7 +780,7 @@ class MachineManager(QObject):
     @pyqtSlot(str, result = str)
     def getDefinitionByMachineId(self, machine_id: str) -> Optional[str]:
         """Get the Definition ID of a machine (specified by ID)
-        
+
         :param machine_id: string machine id to get the definition ID of
         :returns: DefinitionID if found, None otherwise
         """
@@ -834,7 +834,7 @@ class MachineManager(QObject):
 
     def setActiveMachineExtruderCount(self, extruder_count: int) -> None:
         """Set the amount of extruders on the active machine (global stack)
-        
+
         :param extruder_count: int the number of extruders to set
         """
         if self._global_container_stack is None:
@@ -979,7 +979,7 @@ class MachineManager(QObject):
 
     def _getContainerChangedSignals(self) -> List[Signal]:
         """Get the signals that signal that the containers changed for all stacks.
-        
+
         This includes the global stack and all extruder stacks. So if any
         container changed anywhere.
         """
@@ -999,7 +999,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def resetSettingForAllExtruders(self, setting_name: str) -> None:
         """Reset all setting properties of a setting for all extruders.
-        
+
         :param setting_name: The ID of the setting to reset.
         """
         if self._global_container_stack is None:
@@ -1247,7 +1247,7 @@ class MachineManager(QObject):
     @pyqtSlot()
     def updateMaterialWithVariant(self, position: Optional[str] = None) -> None:
         """Update the material profile in the current stacks when the variant is
-        
+
         changed.
         :param position: The extruder stack to update. If provided with None, all
         extruder stacks will be updated.
@@ -1289,7 +1289,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def switchPrinterType(self, machine_name: str) -> None:
         """Given a printer definition name, select the right machine instance. In case it doesn't exist, create a new
-        
+
         instance with the same network key.
         """
         # Don't switch if the user tries to change to the same type of printer
@@ -1311,7 +1311,7 @@ class MachineManager(QObject):
             if not new_machine:
                 Logger.log("e", "Failed to create new machine when switching configuration.")
                 return
-            
+
             for metadata_key in self._global_container_stack.getMetaData():
                 if metadata_key in new_machine.getMetaData():
                     continue  # Don't copy the already preset stuff.
@@ -1444,7 +1444,7 @@ class MachineManager(QObject):
     @pyqtSlot(str, "QVariant")
     def setMaterial(self, position: str, container_node, global_stack: Optional["GlobalStack"] = None) -> None:
         """Global_stack: if you want to provide your own global_stack instead of the current active one
-        
+
         if you update an active machine, special measures have to be taken.
         """
         if global_stack is not None and global_stack != self._global_container_stack:
@@ -1495,7 +1495,7 @@ class MachineManager(QObject):
     @pyqtSlot(QObject)
     def setQualityGroup(self, quality_group: "QualityGroup", no_dialog: bool = False, global_stack: Optional["GlobalStack"] = None) -> None:
         """Optionally provide global_stack if you want to use your own
-        
+
         The active global_stack is treated differently.
         """
         if global_stack is not None and global_stack != self._global_container_stack:
@@ -1562,7 +1562,7 @@ class MachineManager(QObject):
     @pyqtSlot(str)
     def setIntentByCategory(self, intent_category: str) -> None:
         """Change the intent category of the current printer.
-        
+
         All extruders can change their profiles. If an intent profile is
         available with the desired intent category, that one will get chosen.
         Otherwise the intent profile will be left to the empty profile, which
@@ -1603,7 +1603,7 @@ class MachineManager(QObject):
 
     def activeQualityGroup(self) -> Optional["QualityGroup"]:
         """Get the currently activated quality group.
-        
+
         If no printer is added yet or the printer doesn't have quality profiles,
         this returns ``None``.
         :return: The currently active quality group.
@@ -1617,7 +1617,7 @@ class MachineManager(QObject):
     @pyqtProperty(str, notify = activeQualityGroupChanged)
     def activeQualityGroupName(self) -> str:
         """Get the name of the active quality group.
-        
+
         :return: The name of the active quality group.
         """
         quality_group = self.activeQualityGroup()

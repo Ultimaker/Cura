@@ -11,7 +11,7 @@ class SetParentOperation(Operation.Operation):
 
     def __init__(self, node: SceneNode, parent_node: Optional[SceneNode]) -> None:
         """Initialises this SetParentOperation.
-        
+
         :param node: The node which will be reparented.
         :param parent_node: The node which will be the parent.
         """
@@ -33,7 +33,7 @@ class SetParentOperation(Operation.Operation):
 
     def _set_parent(self, new_parent: Optional[SceneNode]) -> None:
         """Sets the parent of the node while applying transformations to the world-transform of the node stays the same.
-        
+
         :param new_parent: The new parent. Note: this argument can be None, which would hide the node from the scene.
         """
 
@@ -64,7 +64,7 @@ class SetParentOperation(Operation.Operation):
 
     def __repr__(self) -> str:
         """Returns a programmer-readable representation of this operation.
-        
+
         :return: A programmer-readable representation of this operation.
         """
 

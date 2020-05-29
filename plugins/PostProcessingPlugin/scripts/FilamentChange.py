@@ -65,7 +65,7 @@ class FilamentChange(Script):
 
     def execute(self, data: List[str]):
         """Inserts the filament change g-code at specific layer numbers.
-        
+
         :param data: A list of layers of g-code.
         :return: A similar list, with filament change commands inserted.
         """

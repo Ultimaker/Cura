@@ -11,14 +11,14 @@ from ..BaseModel import BaseModel
 
 class ClusterPrintCoreConfiguration(BaseModel):
     """Class representing a cloud cluster printer configuration
-    
+
     Also used for representing slots in a Material Station (as from Cura's perspective these are the same).
     """
 
     def __init__(self, extruder_index: int, material: Union[None, Dict[str, Any],
                  ClusterPrinterConfigurationMaterial] = None, print_core_id: Optional[str] = None, **kwargs) -> None:
         """Creates a new cloud cluster printer configuration object
-        
+
         :param extruder_index: The position of the extruder on the machine as list index. Numbered from left to right.
         :param material: The material of a configuration object in a cluster printer. May be in a dict or an object.
         :param nozzle_diameter: The diameter of the print core at this position in millimeters, e.g. '0.4'.
@@ -32,7 +32,7 @@ class ClusterPrintCoreConfiguration(BaseModel):
 
     def updateOutputModel(self, model: ExtruderOutputModel) -> None:
         """Updates the given output model.
-        
+
         :param model: The output model to update.
         """
 

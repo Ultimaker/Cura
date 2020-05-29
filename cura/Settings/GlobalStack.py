@@ -62,7 +62,7 @@ class GlobalStack(CuraContainerStack):
     @deprecated("Please use extruderList instead.", "4.4")
     def extruders(self) -> Dict[str, "ExtruderStack"]:
         """Get the list of extruders of this stack.
-        
+
         :return: The extruders registered with this stack.
         """
 
@@ -91,11 +91,11 @@ class GlobalStack(CuraContainerStack):
     @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
     def configuredConnectionTypes(self) -> List[int]:
         """The configured connection types can be used to find out if the global
-        
+
         stack is configured to be connected with a printer, without having to
         know all the details as to how this is exactly done (and without
         actually setting the stack to be active).
-        
+
         This data can then in turn also be used when the global stack is active;
         If we can't get a network connection, but it is configured to have one,
         we can display a different icon to indicate the difference.
@@ -171,9 +171,9 @@ class GlobalStack(CuraContainerStack):
 
     def addExtruder(self, extruder: ContainerStack) -> None:
         """Add an extruder to the list of extruders of this stack.
-        
+
         :param extruder: The extruder to add.
-        
+
         :raise Exceptions.TooManyExtrudersError: Raised when trying to add an extruder while we
             already have the maximum number of extruders.
         """
@@ -194,15 +194,15 @@ class GlobalStack(CuraContainerStack):
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         """Overridden from ContainerStack
-        
+
         This will return the value of the specified property for the specified setting,
         unless the property is "value" and that setting has a "resolve" function set.
         When a resolve is set, it will instead try and execute the resolve first and
         then fall back to the normal "value" property.
-        
+
         :param key: The setting key to get the property of.
         :param property_name: The property to get the value of.
-        
+
         :return: The value of the property for the specified setting, or None if not found.
         """
 
@@ -248,7 +248,7 @@ class GlobalStack(CuraContainerStack):
     @override(ContainerStack)
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         """Overridden from ContainerStack
-        
+
         This will simply raise an exception since the Global stack cannot have a next stack.
         """
 
@@ -281,7 +281,7 @@ class GlobalStack(CuraContainerStack):
 
     def isValid(self) -> bool:
         """Perform some sanity checks on the global stack
-        
+
         Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
         """
         container_registry = ContainerRegistry.getInstance()

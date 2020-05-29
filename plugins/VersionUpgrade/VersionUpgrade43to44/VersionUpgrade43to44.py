@@ -29,7 +29,7 @@ class VersionUpgrade43to44(VersionUpgrade):
 
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades Preferences to have the new version number.
-        
+
         This renames the renamed settings in the list of visible settings.
         """
 
@@ -45,7 +45,7 @@ class VersionUpgrade43to44(VersionUpgrade):
 
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number.
-        
+
         This renames the renamed settings in the containers.
         """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())

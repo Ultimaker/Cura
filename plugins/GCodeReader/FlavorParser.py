@@ -237,7 +237,7 @@ class FlavorParser:
 
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
         """Reset the current position to the values specified.
-        
+
         For example: G92 X10 will set the X to 10 without any physical motion.
         """
 

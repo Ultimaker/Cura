@@ -11,7 +11,7 @@ uranium_files = {"uranium"}
 
 def lionbridge_import(source: str) -> None:
     """Imports translation files from Lionbridge.
-    
+
     Lionbridge has a bit of a weird export feature. It exports it to the same
     file type as what we imported, so that's a .pot file. However this .pot file
     only contains the translations, so the header is completely empty. We need
@@ -48,7 +48,7 @@ def lionbridge_import(source: str) -> None:
 
 def destination_cura() -> str:
     """Gets the destination path to copy the translations for Cura to.
-    
+
     :return: Destination path for Cura.
     """
     return os.path.abspath(os.path.join(__file__, "..", "..", "resources", "i18n"))
@@ -56,7 +56,7 @@ def destination_cura() -> str:
 
 def destination_uranium() -> str:
     """Gets the destination path to copy the translations for Uranium to.
-    
+
     :return: Destination path for Uranium.
     """
     try:
@@ -75,7 +75,7 @@ def destination_uranium() -> str:
 
 def merge(source: str, destination: str) -> str:
     """Merges translations from the source file into the destination file if they
-    
+
     were missing in the destination file.
     :param source: The contents of the source .po file.
     :param destination: The contents of the destination .po file.
@@ -133,7 +133,7 @@ def merge(source: str, destination: str) -> str:
 
 def find_translation(source: str, msgctxt: str, msgid: str) -> str:
     """Finds a translation in the source file.
-    
+
     :param source: The contents of the source .po file.
     :param msgctxt: The ctxt of the translation to find.
     :param msgid: The id of the translation to find.

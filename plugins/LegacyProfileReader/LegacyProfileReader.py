@@ -18,14 +18,14 @@ from cura.ReaderWriters.ProfileReader import ProfileReader  # The plug-in type t
 
 class LegacyProfileReader(ProfileReader):
     """A plugin that reads profile data from legacy Cura versions.
-    
+
     It reads a profile from an .ini file, and performs some translations on it.
     Not all translations are correct, mind you, but it is a best effort.
     """
 
     def __init__(self):
         """Initialises the legacy profile reader.
-        
+
         This does nothing since the only other function is basically stateless.
         """
 
@@ -33,9 +33,9 @@ class LegacyProfileReader(ProfileReader):
 
     def prepareDefaults(self, json: Dict[str, Dict[str, str]]) -> Dict[str, str]:
         """Prepares the default values of all legacy settings.
-        
+
         These are loaded from the Dictionary of Doom.
-        
+
         :param json: The JSON file to load the default setting values from. This
             should not be a URL but a pre-loaded JSON handle.
         :return: A dictionary of the default values of the legacy Cura version.
@@ -49,13 +49,13 @@ class LegacyProfileReader(ProfileReader):
 
     def prepareLocals(self, config_parser, config_section, defaults):
         """Prepares the local variables that can be used in evaluation of computing
-        
+
         new setting values from the old ones.
-        
+
         This fills a dictionary with all settings from the legacy Cura version
         and their values, so that they can be used in evaluating the new setting
         values as Python code.
-        
+
         :param config_parser: The ConfigParser that finds the settings in the
             legacy profile.
         :param config_section: The section in the profile where the settings
@@ -71,7 +71,7 @@ class LegacyProfileReader(ProfileReader):
 
     def read(self, file_name):
         """Reads a legacy Cura profile from a file and returns it.
-        
+
         :param file_name: The file to read the legacy Cura profile from.
         :return: The legacy Cura profile that was in the file, if any. If the
             file could not be read or didn't contain a valid profile,  None is returned.

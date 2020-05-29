@@ -17,7 +17,7 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
     """The per object setting visibility handler ensures that only setting
-    
+
     definitions that have a matching instance Container are returned as visible.
     """
     def __init__(self, parent = None, *args, **kwargs):

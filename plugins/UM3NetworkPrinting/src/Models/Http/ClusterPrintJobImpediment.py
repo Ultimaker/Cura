@@ -8,7 +8,7 @@ class ClusterPrintJobImpediment(BaseModel):
 
     def __init__(self, translation_key: str, severity: int, **kwargs) -> None:
         """Creates a new print job constraint.
-        
+
         :param translation_key: A string indicating a reason the print cannot be printed,
         such as 'does_not_fit_in_build_volume'
         :param severity: A number indicating the severity of the problem, with higher being more severe

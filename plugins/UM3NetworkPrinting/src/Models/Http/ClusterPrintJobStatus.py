@@ -35,7 +35,7 @@ class ClusterPrintJobStatus(BaseModel):
                  **kwargs) -> None:
 
         """Creates a new cloud print job status model.
-        
+
         :param assigned_to: The name of the printer this job is assigned to while being queued.
         :param configuration: The required print core configurations of this print job.
         :param constraints: Print job constraints object.
@@ -96,7 +96,7 @@ class ClusterPrintJobStatus(BaseModel):
 
     def createOutputModel(self, controller: ClusterOutputController) -> UM3PrintJobOutputModel:
         """Creates an UM3 print job output model based on this cloud cluster print job.
-        
+
         :param printer: The output model of the printer
         """
 
@@ -115,7 +115,7 @@ class ClusterPrintJobStatus(BaseModel):
 
     def updateOutputModel(self, model: UM3PrintJobOutputModel) -> None:
         """Updates an UM3 print job output model based on this cloud cluster print job.
-        
+
         :param model: The model to update.
         """
 

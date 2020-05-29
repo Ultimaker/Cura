@@ -49,7 +49,7 @@ class ExtruderConfigurationModel(QObject):
 
     def isValid(self) -> bool:
         """This method is intended to indicate whether the configuration is valid or not.
-        
+
         The method checks if the mandatory fields are or not set
         At this moment is always valid since we allow to have empty material and variants.
         """

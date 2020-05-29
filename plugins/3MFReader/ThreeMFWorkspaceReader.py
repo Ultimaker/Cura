@@ -133,7 +133,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def getNewId(self, old_id: str):
         """Get a unique name based on the old_id. This is different from directly calling the registry in that it caches results.
-        
+
         This has nothing to do with speed, but with getting consistent new naming for instances & objects.
         """
         if old_id not in self._id_mapping:
@@ -142,7 +142,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _determineGlobalAndExtruderStackFiles(self, project_file_name: str, file_list: List[str]) -> Tuple[str, List[str]]:
         """Separates the given file list into a list of GlobalStack files and a list of ExtruderStack files.
-        
+
         In old versions, extruder stack files have the same suffix as container stack files ".stack.cfg".
         """
 
@@ -187,7 +187,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def preRead(self, file_name, show_dialog=True, *args, **kwargs):
         """Read some info so we can make decisions
-        
+
         :param file_name:
         :param show_dialog: In case we use preRead() to check if a file is a valid project file,
                             we don't want to show a dialog.
@@ -588,12 +588,12 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
     @call_on_qt_thread
     def read(self, file_name):
         """Read the project file
-        
+
         Add all the definitions / materials / quality changes that do not exist yet. Then it loads
         all the stacks into the container registry. In some cases it will reuse the container for the global stack.
         It handles old style project files containing .stack.cfg as well as new style project files
         containing global.cfg / extruder.cfg
-        
+
         :param file_name:
         """
         application = CuraApplication.getInstance()
@@ -879,7 +879,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
 
     def _createNewQualityChanges(self, quality_type: str, intent_category: Optional[str], name: str, global_stack: GlobalStack, extruder_stack: Optional[ExtruderStack]) -> InstanceContainer:
         """Helper class to create a new quality changes profile.
-        
+
         This will then later be filled with the appropriate data.
 
         :param quality_type: The quality type of the new profile.

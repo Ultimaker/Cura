@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 
 class ConvexHullDecorator(SceneNodeDecorator):
     """The convex hull decorator is a scene node decorator that adds the convex hull functionality to a scene node.
-    
+
     If a scene node has a convex hull decorator, it will have a shadow in which other objects can not be printed.
     """
 
@@ -84,7 +84,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getAdhesionArea(self) -> Optional[Polygon]:
         """The polygon representing the 2D adhesion area.
-        
+
         If no adhesion is used, the regular convex hull is returned
         """
         if self._node is None:
@@ -98,7 +98,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getConvexHull(self) -> Optional[Polygon]:
         """Get the unmodified 2D projected convex hull of the node (if any)
-        
+
         In case of one-at-a-time, this includes adhesion and head+fans clearance
         """
         if self._node is None:
@@ -118,7 +118,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getConvexHullHeadFull(self) -> Optional[Polygon]:
         """For one at the time this is the convex hull of the node with the full head size
-        
+
         In case of printing all at once this is None.
         """
         if self._node is None:
@@ -138,7 +138,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getConvexHullHead(self) -> Optional[Polygon]:
         """Get convex hull of the object + head size
-        
+
         In case of printing all at once this is None.
         For one at the time this is area with intersection of mirrored head
         """
@@ -156,7 +156,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getConvexHullBoundary(self) -> Optional[Polygon]:
         """Get convex hull of the node
-        
+
         In case of printing all at once this None??
         For one at the time this is the area without the head.
         """
@@ -173,7 +173,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def getPrintingArea(self) -> Optional[Polygon]:
         """Get the buildplate polygon where will be printed
-        
+
         In case of printing all at once this is the same as convex hull (no individual adhesion)
         For one at the time this includes the adhesion area
         """
@@ -344,7 +344,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _add2DAdhesionMargin(self, poly: Polygon) -> Polygon:
         """Compensate given 2D polygon with adhesion margin
-        
+
         :return: 2D polygon with added margin
         """
         if not self._global_stack:
@@ -379,7 +379,7 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     def _offsetHull(self, convex_hull: Polygon) -> Polygon:
         """Offset the convex hull with settings that influence the collision area.
-        
+
         :param convex_hull: Polygon of the original convex hull.
         :return: New Polygon instance that is offset with everything that
         influences the collision area.
@@ -476,6 +476,6 @@ class ConvexHullDecorator(SceneNodeDecorator):
 
     _influencing_settings = {"xy_offset", "xy_offset_layer_0", "mold_enabled", "mold_width", "anti_overhang_mesh", "infill_mesh", "cutting_mesh"}
     """Settings that change the convex hull.
-    
+
     If these settings change, the convex hull should be recalculated.
     """

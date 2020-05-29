@@ -57,7 +57,7 @@ class IntentCategoryModel(ListModel):
 
     def __init__(self, intent_category: str) -> None:
         """Creates a new model for a certain intent category.
-        
+
         :param intent_category: category to list the intent profiles for.
         """
 

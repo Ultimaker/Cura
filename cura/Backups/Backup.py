@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 
 class Backup:
     """The back-up class holds all data about a back-up.
-    
+
     It is also responsible for reading and writing the zip file to the user data folder.
     """
 
@@ -68,7 +68,7 @@ class Backup:
         material_count = len([s for s in files if "materials/" in s]) - 1
         profile_count = len([s for s in files if "quality_changes/" in s]) - 1
         plugin_count = len([s for s in files if "plugin.json" in s])
-        
+
         # Store the archive and metadata so the BackupManager can fetch them when needed.
         self.zip_file = buffer.getvalue()
         self.meta_data = {
@@ -81,7 +81,7 @@ class Backup:
 
     def _makeArchive(self, buffer: "io.BytesIO", root_path: str) -> Optional[ZipFile]:
         """Make a full archive from the given root path with the given name.
-        
+
         :param root_path: The root directory to archive recursively.
         :return: The archive as bytes.
         """
@@ -111,7 +111,7 @@ class Backup:
 
     def restore(self) -> bool:
         """Restore this back-up.
-        
+
         :return: Whether we had success or not.
         """
 
@@ -151,7 +151,7 @@ class Backup:
     @staticmethod
     def _extractArchive(archive: "ZipFile", target_path: str) -> bool:
         """Extract the whole archive to the given target path.
-        
+
         :param archive: The archive as ZipFile.
         :param target_path: The target path.
         :return: Whether we had success or not.

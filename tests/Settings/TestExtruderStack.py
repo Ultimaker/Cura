@@ -16,7 +16,7 @@ from cura.Settings.cura_empty_instance_containers import empty_container
 
 def getInstanceContainer(container_type) -> InstanceContainer:
     """Gets an instance container with a specified container type.
-    
+
     :param container_type: The type metadata for the instance container.
     :return: An instance container instance.
     """

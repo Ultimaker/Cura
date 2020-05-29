@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 
 class PreviewStage(CuraStage):
     """Displays a preview of what you're about to print.
-    
+
     The Python component of this stage just loads PreviewMain.qml for display
     when the stage is selected, and makes sure that it reverts to the previous
     view when the previous stage is activated.
@@ -28,14 +28,14 @@ class PreviewStage(CuraStage):
 
     def onStageSelected(self) -> None:
         """When selecting the stage, remember which was the previous view so that
-        
+
         we can revert to that view when we go out of the stage later.
         """
         self._previously_active_view = self._application.getController().getActiveView()
 
     def onStageDeselected(self) -> None:
         """Called when going to a different stage (away from the Preview Stage).
-        
+
         When going to a different stage, the view should be reverted to what it
         was before. Normally, that just reverts it to solid view.
         """
@@ -46,7 +46,7 @@ class PreviewStage(CuraStage):
 
     def _engineCreated(self) -> None:
         """Delayed load of the QML files.
-        
+
         We need to make sure that the QML engine is running before we can load
         these.
         """

@@ -21,9 +21,9 @@ if TYPE_CHECKING:
 class PickingPass(RenderPass):
     """A :py:class:`Uranium.UM.View.RenderPass` subclass that renders a the distance of selectable objects from the
     active camera to a texture.
-    
+
     The texture is used to map a 2d location (eg the mouse location) to a world space position
-    
+
     .. note:: that in order to increase precision, the 24 bit depth value is encoded into all three of the R,G & B channels
     """
 

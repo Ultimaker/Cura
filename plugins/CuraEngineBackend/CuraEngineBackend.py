@@ -207,7 +207,7 @@ class CuraEngineBackend(QObject, Backend):
 
     printDurationMessage = Signal()
     """Emitted when we get a message containing print duration and material amount.
-    
+
     This also implies the slicing has finished.
     :param time: The amount of time the print will take.
     :param material_amount: The amount of material the print will use.

@@ -75,7 +75,7 @@ class MachineActionManager(QObject):
 
     def addRequiredAction(self, definition_id: str, action_key: str) -> None:
         """Add a required action to a machine
-        
+
         Raises an exception when the action is not recognised.
         """
         if action_key in self._machine_actions:
@@ -112,7 +112,7 @@ class MachineActionManager(QObject):
 
     def addMachineAction(self, action: "MachineAction") -> None:
         """Add a (unique) MachineAction
-        
+
         if the Key of the action is not unique, an exception is raised.
         """
         if action.getKey() not in self._machine_actions:
@@ -123,7 +123,7 @@ class MachineActionManager(QObject):
     @pyqtSlot(str, result = "QVariantList")
     def getSupportedActions(self, definition_id: str) -> List["MachineAction"]:
         """Get all actions supported by given machine
-        
+
         :param definition_id: The ID of the definition you want the supported actions of
         :returns: set of supported actions.
         """
@@ -134,7 +134,7 @@ class MachineActionManager(QObject):
 
     def getRequiredActions(self, definition_id: str) -> List["MachineAction"]:
         """Get all actions required by given machine
-        
+
         :param definition_id: The ID of the definition you want the required actions of
         :returns: set of required actions.
         """
@@ -146,7 +146,7 @@ class MachineActionManager(QObject):
     @pyqtSlot(str, result = "QVariantList")
     def getFirstStartActions(self, definition_id: str) -> List["MachineAction"]:
         """Get all actions that need to be performed upon first start of a given machine.
-        
+
         Note that contrary to required / supported actions a list is returned (as it could be required to run the same
         action multiple times).
         :param definition_id: The ID of the definition that you want to get the "on added" actions for.
@@ -159,7 +159,7 @@ class MachineActionManager(QObject):
 
     def removeMachineAction(self, action: "MachineAction") -> None:
         """Remove Machine action from manager
-        
+
         :param action: to remove
         """
         try:
@@ -169,7 +169,7 @@ class MachineActionManager(QObject):
 
     def getMachineAction(self, key: str) -> Optional["MachineAction"]:
         """Get MachineAction by key
-        
+
         :param key: String of key to select
         :return: Machine action if found, None otherwise
         """

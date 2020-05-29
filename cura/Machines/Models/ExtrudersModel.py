@@ -17,7 +17,7 @@ catalog = i18nCatalog("cura")
 
 class ExtrudersModel(ListModel):
     """Model that holds extruders.
-    
+
     This model is designed for use by any list of extruders, but specifically intended for drop-down lists of the
     current machine's extruders in place of settings.
     """
@@ -33,7 +33,7 @@ class ExtrudersModel(ListModel):
 
     IndexRole = Qt.UserRole + 4
     """Index of the extruder, which is also the value of the setting itself.
-    
+
     An index of 0 indicates the first extruder, an index of 1 the second one, and so on. This is the value that will 
     be saved in instance containers. """
 
@@ -58,7 +58,7 @@ class ExtrudersModel(ListModel):
 
     def __init__(self, parent = None):
         """Initialises the extruders model, defining the roles and listening for changes in the data.
-        
+
         :param parent: Parent QtObject of this list.
         """
 
@@ -104,7 +104,7 @@ class ExtrudersModel(ListModel):
     def _extrudersChanged(self, machine_id = None):
         """Links to the stack-changed signal of the new extruders when an extruder is swapped out or added in the
          current machine.
-        
+
         :param machine_id: The machine for which the extruders changed. This is filled by the
         ExtruderManager.extrudersChanged signal when coming from that signal. Application.globalContainerStackChanged
         doesn't fill this signal; it's assumed to be the current printer in that case.
@@ -150,7 +150,7 @@ class ExtrudersModel(ListModel):
     @UM.FlameProfiler.profile
     def __updateExtruders(self):
         """Update the list of extruders.
-        
+
         This should be called whenever the list of extruders changes.
         """
 

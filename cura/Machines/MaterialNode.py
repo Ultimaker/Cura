@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 class MaterialNode(ContainerNode):
     """Represents a material in the container tree.
-    
+
     Its subcontainers are quality profiles.
     """
 
@@ -38,7 +38,7 @@ class MaterialNode(ContainerNode):
 
     def preferredQuality(self) -> QualityNode:
         """Finds the preferred quality for this printer with this material and this variant loaded.
-        
+
         If the preferred quality is not available, an arbitrary quality is returned. If there is a configuration
         mistake (like a typo in the preferred quality) this returns a random available quality. If there are no
         available qualities, this will return the empty quality node.

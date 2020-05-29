@@ -9,7 +9,7 @@ from functools import cmp_to_key
 
 class OneAtATimeIterator(Iterator.Iterator):
     """Iterator that returns a list of nodes in the order that they need to be printed
-    
+
     If there is no solution an empty list is returned.
     Take note that the list of nodes can have children (that may or may not contain mesh data)
     """
@@ -80,7 +80,7 @@ class OneAtATimeIterator(Iterator.Iterator):
 
     def _checkBlockMultiple(self, node: SceneNode, other_nodes: List[SceneNode]) -> bool:
         """Check for a node whether it hits any of the other nodes.
-        
+
         :param node: The node to check whether it collides with the other nodes.
         :param other_nodes: The nodes to check for collisions.
         :return: returns collision between nodes
@@ -140,7 +140,7 @@ class _ObjectOrder:
 
     def __init__(self, order: List[SceneNode], todo: List[SceneNode]) -> None:
         """Creates the _ObjectOrder instance.
-        
+
         :param order: List of indices in which to print objects, ordered by printing order.
         :param todo: List of indices which are not yet inserted into the order list.
         """

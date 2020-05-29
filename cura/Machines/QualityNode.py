@@ -15,9 +15,9 @@ if TYPE_CHECKING:
 
 class QualityNode(ContainerNode):
     """Represents a quality profile in the container tree.
-    
+
     This may either be a normal quality profile or a global quality profile.
-    
+
     Its subcontainers are intent profiles.
     """
 

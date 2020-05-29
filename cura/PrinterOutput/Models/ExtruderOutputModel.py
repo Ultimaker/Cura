@@ -106,7 +106,7 @@ class ExtruderOutputModel(QObject):
     @pyqtSlot(float, float)
     def preheatHotend(self, temperature: float, duration: float) -> None:
         """Pre-heats the extruder before printer.
-        
+
         :param temperature: The temperature to heat the extruder to, in degrees
             Celsius.
         :param duration: How long the bed should stay warm, in seconds.

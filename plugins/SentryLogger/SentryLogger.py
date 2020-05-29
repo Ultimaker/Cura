@@ -20,7 +20,7 @@ class SentryLogger(LogOutput):
     # processed and ready for sending.
     # Note that this only prepares them for sending. It only sends them when the user actually agrees to sending the
     # information.
-    
+
     _levels = {
         "w": "warning",
         "i": "info",
@@ -32,10 +32,10 @@ class SentryLogger(LogOutput):
     def __init__(self) -> None:
         super().__init__()
         self._show_once = set()  # type: Set[str]
-    
+
     def log(self, log_type: str, message: str) -> None:
         """Log the message to the sentry hub as a breadcrumb
-        
+
         :param log_type: "e" (error), "i"(info), "d"(debug), "w"(warning) or "c"(critical) (can postfix with "_once")
         :param message: String containing message to be logged
         """

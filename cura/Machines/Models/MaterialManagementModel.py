@@ -21,20 +21,20 @@ catalog = i18nCatalog("cura")
 
 class MaterialManagementModel(QObject):
     """Proxy class to the materials page in the preferences.
-    
+
     This class handles the actions in that page, such as creating new materials, renaming them, etc.
     """
 
     favoritesChanged = pyqtSignal(str)
     """Triggered when a favorite is added or removed.
-    
+
     :param The base file of the material is provided as parameter when this emits
     """
 
     @pyqtSlot("QVariant", result = bool)
     def canMaterialBeRemoved(self, material_node: "MaterialNode") -> bool:
         """Can a certain material be deleted, or is it still in use in one of the container stacks anywhere?
-        
+
         We forbid the user from deleting a material if it's in use in any stack. Deleting it while it's in use can
         lead to corrupted stacks. In the future we might enable this functionality again (deleting the material from
         those stacks) but for now it is easier to prevent the user from doing this.
@@ -54,7 +54,7 @@ class MaterialManagementModel(QObject):
     @pyqtSlot("QVariant", str)
     def setMaterialName(self, material_node: "MaterialNode", name: str) -> None:
         """Change the user-visible name of a material.
-        
+
         :param material_node: The ContainerTree node of the material to rename.
         :param name: The new name for the material.
         """
@@ -69,7 +69,7 @@ class MaterialManagementModel(QObject):
     @pyqtSlot("QVariant")
     def removeMaterial(self, material_node: "MaterialNode") -> None:
         """Deletes a material from Cura.
-        
+
         This function does not do any safety checking any more. Please call this function only if:
             - The material is not read-only.
             - The material is not used in any stacks.
@@ -200,7 +200,7 @@ class MaterialManagementModel(QObject):
     def createMaterial(self) -> str:
         """Create a new material by cloning the preferred material for the current material diameter and generate a new
         GUID.
-        
+
         The material type is explicitly left to be the one from the preferred material, since this allows the user to
         still have SOME profiles to work with.
 
@@ -234,7 +234,7 @@ class MaterialManagementModel(QObject):
     @pyqtSlot(str)
     def addFavorite(self, material_base_file: str) -> None:
         """Adds a certain material to the favorite materials.
-        
+
         :param material_base_file: The base file of the material to add.
         """
 
@@ -249,7 +249,7 @@ class MaterialManagementModel(QObject):
     @pyqtSlot(str)
     def removeFavorite(self, material_base_file: str) -> None:
         """Removes a certain material from the favorite materials.
-        
+
         If the material was not in the favorite materials, nothing happens.
         """
 

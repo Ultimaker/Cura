@@ -44,13 +44,13 @@ class ConnectionType(IntEnum):
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
     """Printer output device adds extra interface options on top of output device.
-    
+
     The assumption is made the printer is a FDM printer.
-    
+
     Note that a number of settings are marked as "final". This is because decorators
     are not inherited by children. To fix this we use the private counter part of those
     functions to actually have the implementation.
-    
+
     For all other uses it should be used in the same way as a "regular" OutputDevice.
     """
 
@@ -250,7 +250,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     def _setFirmwareName(self, name: str) -> None:
         """Set the device firmware name
-        
+
         :param name: The name of the firmware.
         """
 
@@ -258,7 +258,7 @@ class PrinterOutputDevice(QObject, OutputDevice):
 
     def getFirmwareName(self) -> Optional[str]:
         """Get the name of device firmware
-        
+
         This name can be used to define device type
         """
 

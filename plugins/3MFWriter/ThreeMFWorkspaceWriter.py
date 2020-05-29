@@ -110,7 +110,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
     @staticmethod
     def _writeContainerToArchive(container, archive):
         """Helper function that writes ContainerStacks, InstanceContainers and DefinitionContainers to the archive.
-        
+
         :param container: That follows the :type{ContainerInterface} to archive.
         :param archive: The archive to write to.
         """

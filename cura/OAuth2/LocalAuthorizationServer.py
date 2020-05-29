@@ -24,19 +24,19 @@ class LocalAuthorizationServer:
                  auth_state_changed_callback: Callable[["AuthenticationResponse"], Any],
                  daemon: bool) -> None:
         """The local LocalAuthorizationServer takes care of the oauth2 callbacks.
-        
+
         Once the flow is completed, this server should be closed down again by calling
         :py:meth:`cura.OAuth2.LocalAuthorizationServer.LocalAuthorizationServer.stop()`
-        
+
         :param auth_helpers: An instance of the authorization helpers class.
         :param auth_state_changed_callback: A callback function to be called when the authorization state changes.
         :param daemon: Whether the server thread should be run in daemon mode.
-        
+
         .. note::
-        
+
             Daemon threads are abruptly stopped at shutdown. Their resources (e.g. open files) may never be released.
         """
-        
+
         self._web_server = None  # type: Optional[AuthorizationRequestServer]
         self._web_server_thread = None  # type: Optional[threading.Thread]
         self._web_server_port = auth_helpers.settings.CALLBACK_PORT
@@ -46,11 +46,11 @@ class LocalAuthorizationServer:
 
     def start(self, verification_code: str, state: str) -> None:
         """Starts the local web server to handle the authorization callback.
-        
+
         :param verification_code: The verification code part of the OAuth2 client identification.
         :param state: The unique state code (to ensure that the request we get back is really from the server.
         """
-        
+
         if self._web_server:
             # If the server is already running (because of a previously aborted auth flow), we don't have to start it.
             # We still inject the new verification code though.

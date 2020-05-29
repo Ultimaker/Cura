@@ -81,7 +81,7 @@ class Script:
 
     def getSettingData(self) -> Dict[str, Any]:
         """Needs to return a dict that can be used to construct a settingcategory file.
-        
+
         See the example script for an example.
         It follows the same style / guides as the Uranium settings.
         Scripts can either override getSettingData directly, or use getSettingDataString
@@ -116,7 +116,7 @@ class Script:
 
     def getValue(self, line: str, key: str, default = None) -> Any:
         """Convenience function that finds the value in a line of g-code.
-        
+
         When requesting key = x from line "G1 X100" the value 100 is returned.
         """
         if not key in line or (';' in line and line.find(key) > line.find(';')):
@@ -135,7 +135,7 @@ class Script:
 
     def putValue(self, line: str = "", **kwargs) -> str:
         """Convenience function to produce a line of g-code.
-        
+
         You can put in an original g-code line and it'll re-use all the values
         in that line.
         All other keyword parameters are put in the result in g-code's format.
@@ -190,7 +190,7 @@ class Script:
 
     def execute(self, data: List[str]) -> List[str]:
         """This is called when the script is executed. 
-        
+
         It gets a list of g-code strings and needs to return a (modified) list.
         """
         raise NotImplementedError()

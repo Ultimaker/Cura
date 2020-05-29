@@ -38,11 +38,11 @@ class XmlMaterialProfile(InstanceContainer):
     @staticmethod
     def xmlVersionToSettingVersion(xml_version: str) -> int:
         """Translates the version number in the XML files to the setting_version metadata entry.
-        
+
         Since the two may increment independently we need a way to say which
         versions of the XML specification are compatible with our setting data
         version numbers.
-        
+
         :param xml_version: The version number found in an XML file.
         :return: The corresponding setting_version.
         """
@@ -56,7 +56,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def setMetaDataEntry(self, key, value, apply_to_all = True):
         """set the meta data for all machine / variant combinations
-        
+
         The "apply_to_all" flag indicates whether this piece of metadata should be applied to all material containers
         or just this specific container.
         For example, when you change the material name, you want to apply it to all its derived containers, but for
@@ -95,7 +95,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def setName(self, new_name):
         """Overridden from InstanceContainer, similar to setMetaDataEntry.
-        
+
         without this function the setName would only set the name of the specific nozzle / material / machine combination container
         The function is a bit tricky. It will not set the name of all containers if it has the correct name itself.
         """
@@ -130,7 +130,7 @@ class XmlMaterialProfile(InstanceContainer):
 
     def serialize(self, ignored_metadata_keys: Optional[Set[str]] = None):
         """Overridden from InstanceContainer
-        
+
         base file: common settings + supported machines
         machine / variant combination: only changes for itself.
         """
@@ -1075,7 +1075,7 @@ class XmlMaterialProfile(InstanceContainer):
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
         """Gets a mapping from product names in the XML files to their definition IDs.
-        
+
         This loads the mapping from a file.
         """
 

@@ -18,7 +18,7 @@ from .SubscribedPackagesModel import SubscribedPackagesModel
 
 class SyncOrchestrator(Extension):
     """Orchestrates the synchronizing of packages from the user account to the installed packages
-    
+
     Example flow:
 
     - CloudPackageChecker compares a list of packages the user `subscribed` to in their account
@@ -68,7 +68,7 @@ class SyncOrchestrator(Extension):
 
     def _onDownloadFinished(self, success_items: Dict[str, Dict[str, str]], error_items: List[str]) -> None:
         """Called when a set of packages have finished downloading
-        
+
         :param success_items:: Dict[package_id, Dict[str, str]]
         :param error_items:: List[package_id]
         """

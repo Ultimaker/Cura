@@ -12,7 +12,7 @@ class ClusterPrintJobConfigurationChange(BaseModel):
     def __init__(self, type_of_change: str, target_id: str, origin_id: str, index: Optional[int] = None,
                  target_name: Optional[str] = None, origin_name: Optional[str] = None, **kwargs) -> None:
         """Creates a new print job constraint.
-        
+
         :param type_of_change: The type of configuration change, one of: "material", "print_core_change"
         :param index: The hotend slot or extruder index to change
         :param target_id: Target material guid or hotend id

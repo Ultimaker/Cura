@@ -11,14 +11,14 @@ from UM.Settings.InstanceContainer import InstanceContainer
 
 class ContainerNode:
     """A node in the container tree. It represents one container.
-    
+
     The container it represents is referenced by its container_id. During normal use of the tree, this container is
     not constructed. Only when parts of the tree need to get loaded in the container stack should it get constructed.
     """
 
     def __init__(self, container_id: str) -> None:
         """Creates a new node for the container tree.
-        
+
         :param container_id: The ID of the container that this node should represent.
         """
 
@@ -28,7 +28,7 @@ class ContainerNode:
 
     def getMetadata(self) -> Dict[str, Any]:
         """Gets the metadata of the container that this node represents.
-        
+
         Getting the metadata from the container directly is about 10x as fast.
 
         :return: The metadata of the container in this node.
@@ -38,7 +38,7 @@ class ContainerNode:
 
     def getMetaDataEntry(self, entry: str, default: Any = None) -> Any:
         """Get an entry from the metadata of the container that this node contains.
-        
+
         This is just a convenience function.
 
         :param entry: The metadata entry key to return.
@@ -56,7 +56,7 @@ class ContainerNode:
     @property
     def container(self) -> Optional[InstanceContainer]:
         """The container that this node's container ID refers to.
-        
+
         This can be used to finally instantiate the container in order to put it in the container stack.
 
         :return: A container.

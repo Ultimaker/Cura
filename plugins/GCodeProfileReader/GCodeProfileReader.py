@@ -15,14 +15,14 @@ from cura.ReaderWriters.ProfileReader import ProfileReader, NoProfileException
 
 class GCodeProfileReader(ProfileReader):
     """A class that reads profile data from g-code files.
-    
+
     It reads the profile data from g-code files and stores it in a new profile.
     This class currently does not process the rest of the g-code in any way.
     """
 
     version = 3
     """The file format version of the serialized g-code.
-    
+
     It can only read settings with the same version as the version it was
     written with. If the file format is changed in a way that breaks reverse
     compatibility, increment this version number!
@@ -48,7 +48,7 @@ class GCodeProfileReader(ProfileReader):
 
     def read(self, file_name):
         """Reads a g-code file, loading the profile from it.
-        
+
         :param file_name: The name of the file to read the profile from.
         :return: The profile that was in the specified file, if any. If the
             specified file was no g-code or contained no parsable profile,
@@ -106,7 +106,7 @@ class GCodeProfileReader(ProfileReader):
 
 def unescapeGcodeComment(string: str) -> str:
     """Unescape a string which has been escaped for use in a gcode comment.
-    
+
     :param string: The string to unescape.
     :return: The unescaped string.
     """
@@ -120,7 +120,7 @@ def unescapeGcodeComment(string: str) -> str:
 
 def readQualityProfileFromString(profile_string) -> Optional[InstanceContainer]:
     """Read in a profile from a serialized string.
-    
+
     :param profile_string: The profile data in serialized form.
     :return: The resulting Profile object or None if it could not be read.
     """

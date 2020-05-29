@@ -32,7 +32,7 @@ class MeshFormatHandler:
     @property
     def preferred_format(self) -> Dict[str, Union[str, int, bool]]:
         """Chooses the preferred file format.
-        
+
         :return: A dict with the file format details, with the following keys:
         {id: str, extension: str, description: str, mime_type: str, mode: int, hide_in_file_dialog: bool}
         """
@@ -41,7 +41,7 @@ class MeshFormatHandler:
     @property
     def writer(self) -> Optional[FileWriter]:
         """Gets the file writer for the given file handler and mime type.
-        
+
         :return: A file writer.
         """
         return self._writer
@@ -84,7 +84,7 @@ class MeshFormatHandler:
 
     def _getPreferredFormat(self, firmware_version: str) -> Dict[str, Union[str, int, bool]]:
         """Chooses the preferred file format for the given file handler.
-        
+
         :param firmware_version: The version of the firmware.
         :return: A dict with the file format details.
         """
@@ -121,7 +121,7 @@ class MeshFormatHandler:
 
     def _getWriter(self, mime_type: str) -> Optional[FileWriter]:
         """Gets the file writer for the given file handler and mime type.
-        
+
         :param mime_type: The mine type.
         :return: A file writer.
         """

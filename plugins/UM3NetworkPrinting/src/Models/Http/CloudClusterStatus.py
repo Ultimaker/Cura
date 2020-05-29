@@ -16,7 +16,7 @@ class CloudClusterStatus(BaseModel):
                  generated_time: Union[str, datetime],
                  **kwargs) -> None:
         """Creates a new cluster status model object.
-        
+
         :param printers: The latest status of each printer in the cluster.
         :param print_jobs: The latest status of each print job in the cluster.
         :param generated_time: The datetime when the object was generated on the server-side.

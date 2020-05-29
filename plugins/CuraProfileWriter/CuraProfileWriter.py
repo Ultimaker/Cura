@@ -11,7 +11,7 @@ class CuraProfileWriter(ProfileWriter):
 
     def write(self, path, profiles):
         """Writes a profile to the specified file path.
-        
+
         :param path: :type{string} The file to output to.
         :param profiles: :type{Profile} :type{List} The profile(s) to write to that file.
         :return: True if the writing was successful, or

@@ -147,7 +147,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def createFormPart(self, content_header: str, data: bytes, content_type: Optional[str] = None) -> QHttpPart:
         """This method was only available privately before, but it was actually called from SendMaterialJob.py.
-        
+
         We now have a public equivalent as well. We did not remove the private one as plugins might be using that.
         """
         return self._createFormPart(content_header, data, content_type)
@@ -194,7 +194,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
             on_finished: Optional[Callable[[QNetworkReply], None]] = None,
             on_progress: Optional[Callable[[int, int], None]] = None) -> None:
         """Sends a put request to the given path.
-        
+
         :param url: The path after the API prefix.
         :param data: The data to be sent in the body
         :param content_type: The content type of the body data.
@@ -219,7 +219,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def delete(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         """Sends a delete request to the given path.
-        
+
         :param url: The path after the API prefix.
         :param on_finished: The function to be call when the response is received.
         """
@@ -237,7 +237,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def get(self, url: str, on_finished: Optional[Callable[[QNetworkReply], None]]) -> None:
         """Sends a get request to the given path.
-        
+
         :param url: The path after the API prefix.
         :param on_finished: The function to be call when the response is received.
         """
@@ -258,7 +258,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
              on_progress: Optional[Callable[[int, int], None]] = None) -> None:
 
         """Sends a post request to the given path.
-        
+
         :param url: The path after the API prefix.
         :param data: The data to be sent in the body
         :param on_finished: The function to call when the response is received.
@@ -333,7 +333,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
 
     def _checkCorrectGroupName(self, device_id: str, group_name: str) -> None:
         """This method checks if the name of the group stored in the definition container is correct.
-        
+
         After updating from 3.2 to 3.3 some group names may be temporary. If there is a mismatch in the name of the group
         then all the container stacks are updated, both the current and the hidden ones.
         """
@@ -385,7 +385,7 @@ class NetworkedPrinterOutputDevice(PrinterOutputDevice):
     @pyqtProperty(str, constant = True)
     def key(self) -> str:
         """Get the unique key of this machine
-        
+
         :return: key String containing the key of the machine.
         """
         return self._id

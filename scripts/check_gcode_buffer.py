@@ -89,7 +89,7 @@ def calc_acceleration_time_from_distance(initial_feedrate: float, distance: floa
 
 def calc_intersection_distance(initial_feedrate: float, final_feedrate: float, acceleration: float, distance: float) -> float:
     """Calculates the point at which you must start braking.
-    
+
     This gives the distance from the start of a line at which you must start
     decelerating (at a rate of `-acceleration`) if you started at speed
     `initial_feedrate` and accelerated until this point and want to end at the
@@ -145,7 +145,7 @@ class Command:
 
     def calculate_trapezoid(self, entry_factor, exit_factor):
         """Calculate the velocity-time trapezoid function for this move.
-        
+
         Each move has a three-part function mapping time to velocity.
         """
 

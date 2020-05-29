@@ -10,9 +10,9 @@ if TYPE_CHECKING:
 class Settings:
     """The Interface.Settings API provides a version-proof bridge
      between Cura's
-    
+
     (currently) sidebar UI and plug-ins that hook into it.
-    
+
     Usage:
 
     .. code-block:: python
@@ -34,7 +34,7 @@ class Settings:
 
     def addContextMenuItem(self, menu_item: dict) -> None:
         """Add items to the sidebar context menu.
-        
+
         :param menu_item: dict containing the menu item to add.
         """
 
@@ -42,7 +42,7 @@ class Settings:
 
     def getContextMenuItems(self) -> list:
         """Get all custom items currently added to the sidebar context menu.
-        
+
         :return: List containing all custom context menu items.
         """
 

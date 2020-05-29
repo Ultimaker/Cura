@@ -132,7 +132,7 @@ class PostProcessingPlugin(QObject, Extension):
 
     def loadAllScripts(self) -> None:
         """Load all scripts from all paths where scripts can be found.
-        
+
         This should probably only be done on init.
         """
 
@@ -157,7 +157,7 @@ class PostProcessingPlugin(QObject, Extension):
 
     def loadScripts(self, path: str) -> None:
         """Load all scripts from provided path.
-        
+
         This should probably only be done on init.
         :param path: Path to check for scripts.
         """
@@ -360,7 +360,7 @@ class PostProcessingPlugin(QObject, Extension):
 
     def _propertyChanged(self) -> None:
         """Property changed: trigger re-slice
-        
+
         To do this we use the global container stack propertyChanged.
         Re-slicing is necessary for setting changes in this plugin, because the changes
         are applied only once per "fresh" gcode

@@ -8,7 +8,7 @@ class ClusterBuildPlate(BaseModel):
 
     def __init__(self, type: str = "glass", **kwargs) -> None:
         """Create a new build plate
-        
+
         :param type: The type of build plate glass or aluminium
         """
         self.type = type

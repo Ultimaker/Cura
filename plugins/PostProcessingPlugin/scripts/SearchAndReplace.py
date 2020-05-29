@@ -8,7 +8,7 @@ from ..Script import Script
 
 class SearchAndReplace(Script):
     """Performs a search-and-replace on all g-code.
-    
+
     Due to technical limitations, the search can't cross the border between
     layers.
     """

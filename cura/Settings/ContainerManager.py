@@ -35,7 +35,7 @@ catalog = i18nCatalog("cura")
 
 class ContainerManager(QObject):
     """Manager class that contains common actions to deal with containers in Cura.
-    
+
     This is primarily intended as a class to be able to perform certain actions
     from within QML. We want to be able to trigger things like removing a container
     when a certain action happens. This can be done through this class.
@@ -72,16 +72,16 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant", str, str)
     def setContainerMetaDataEntry(self, container_node: "ContainerNode", entry_name: str, entry_value: str) -> bool:
         """Set a metadata entry of the specified container.
-        
+
         This will set the specified entry of the container's metadata to the specified
         value. Note that entries containing dictionaries can have their entries changed
         by using "/" as a separator. For example, to change an entry "foo" in a
         dictionary entry "bar", you can specify "bar/foo" as entry name.
-        
+
         :param container_node: :type{ContainerNode}
         :param entry_name: :type{str} The name of the metadata entry to change.
         :param entry_value: The new value of the entry.
-        
+
         TODO: This is ONLY used by MaterialView for material containers. Maybe refactor this.
         Update: In order for QML to use objects and sub objects, those (sub) objects must all be QObject. Is that what we want?
         """
@@ -131,14 +131,14 @@ class ContainerManager(QObject):
     @pyqtSlot(str, result = "QStringList")
     def getContainerNameFilters(self, type_name: str) -> List[str]:
         """Get a list of string that can be used as name filters for a Qt File Dialog
-        
+
         This will go through the list of available container types and generate a list of strings
         out of that. The strings are formatted as "description (*.extension)" and can be directly
         passed to a nameFilters property of a Qt File Dialog.
-        
+
         :param type_name: Which types of containers to list. These types correspond to the "type"
             key of the plugin metadata.
-        
+
         :return: A string list with name filters.
         """
 
@@ -156,11 +156,11 @@ class ContainerManager(QObject):
     @pyqtSlot(str, str, QUrl, result = "QVariantMap")
     def exportContainer(self, container_id: str, file_type: str, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         """Export a container to a file
-        
+
         :param container_id: The ID of the container to export
         :param file_type: The type of file to save as. Should be in the form of "description (*.extension, *.ext)"
         :param file_url_or_string: The URL where to save the file.
-        
+
         :return: A dictionary containing a key "status" with a status code and a key "message" with a message
         explaining the status. The status code can be one of "error", "cancelled", "success"
         """
@@ -224,9 +224,9 @@ class ContainerManager(QObject):
     @pyqtSlot(QUrl, result = "QVariantMap")
     def importMaterialContainer(self, file_url_or_string: Union[QUrl, str]) -> Dict[str, str]:
         """Imports a profile from a file
-        
+
         :param file_url: A URL that points to the file to import.
-        
+
         :return: :type{Dict} dict with a 'status' key containing the string 'success' or 'error', and a 'message' key
             containing a message for the user
         """
@@ -278,10 +278,10 @@ class ContainerManager(QObject):
     @pyqtSlot(result = bool)
     def updateQualityChanges(self) -> bool:
         """Update the current active quality changes container with the settings from the user container.
-        
+
         This will go through the active global stack and all active extruder stacks and merge the changes from the user
         container into the quality_changes container. After that, the user container is cleared.
-        
+
         :return: :type{bool} True if successful, False if not.
         """
 
@@ -350,7 +350,7 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant", bool, result = "QStringList")
     def getLinkedMaterials(self, material_node: "MaterialNode", exclude_self: bool = False) -> List[str]:
         """Get a list of materials that have the same GUID as the reference material
-        
+
         :param material_node: The node representing the material for which to get
             the same GUID.
         :param exclude_self: Whether to include the name of the material you provided.
@@ -366,7 +366,7 @@ class ContainerManager(QObject):
     @pyqtSlot("QVariant")
     def unlinkMaterial(self, material_node: "MaterialNode") -> None:
         """Unlink a material from all other materials by creating a new GUID
-        
+
         :param material_id: :type{str} the id of the material to create a new GUID for.
         """
         # Get the material group

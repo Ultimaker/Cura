@@ -20,7 +20,7 @@ class BaseModel:
 
     def __eq__(self, other):
         """Checks whether the two models are equal.
-        
+
         :param other: The other model.
         :return: True if they are equal, False if they are different.
         """
@@ -28,7 +28,7 @@ class BaseModel:
 
     def __ne__(self, other) -> bool:
         """Checks whether the two models are different.
-        
+
         :param other: The other model.
         :return: True if they are different, False if they are the same.
         """
@@ -42,7 +42,7 @@ class BaseModel:
     @staticmethod
     def parseModel(model_class: Type[T], values: Union[T, Dict[str, Any]]) -> T:
         """Parses a single model.
-        
+
         :param model_class: The model class.
         :param values: The value of the model, which is usually a dictionary, but may also be already parsed.
         :return: An instance of the model_class given.
@@ -54,7 +54,7 @@ class BaseModel:
     @classmethod
     def parseModels(cls, model_class: Type[T], values: List[Union[T, Dict[str, Any]]]) -> List[T]:
         """Parses a list of models.
-        
+
         :param model_class: The model class.
         :param values: The value of the list. Each value is usually a dictionary, but may also be already parsed.
         :return: A list of instances of the model_class given.
@@ -64,7 +64,7 @@ class BaseModel:
     @staticmethod
     def parseDate(date: Union[str, datetime]) -> datetime:
         """Parses the given date string.
-        
+
         :param date: The date to parse.
         :return: The parsed date.
         """

@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 class SendMaterialJob(Job):
     """Asynchronous job to send material profiles to the printer.
-    
+
     This way it won't freeze up the interface while sending those materials.
     """
 
@@ -40,7 +40,7 @@ class SendMaterialJob(Job):
 
     def _sendMissingMaterials(self, remote_materials_by_guid: Dict[str, ClusterMaterial]) -> None:
         """Determine which materials should be updated and send them to the printer.
-        
+
         :param remote_materials_by_guid: The remote materials by GUID.
         """
         local_materials_by_guid = self._getLocalMaterials()
@@ -57,7 +57,7 @@ class SendMaterialJob(Job):
     def _determineMaterialsToSend(local_materials: Dict[str, LocalMaterial],
                                   remote_materials: Dict[str, ClusterMaterial]) -> Set[str]:
         """From the local and remote materials, determine which ones should be synchronized.
-        
+
         Makes a Set of id's containing only the id's of the materials that are not on the printer yet or the ones that
         are newer in Cura.
         :param local_materials: The local materials by GUID.
@@ -72,7 +72,7 @@ class SendMaterialJob(Job):
 
     def _sendMaterials(self, materials_to_send: Set[str]) -> None:
         """Send the materials to the printer.
-        
+
         The given materials will be loaded from disk en sent to to printer.
         The given id's will be matched with filenames of the locally stored materials.
         :param materials_to_send: A set with id's of materials that must be sent.
@@ -97,7 +97,7 @@ class SendMaterialJob(Job):
 
     def _sendMaterialFile(self, file_path: str, file_name: str, material_id: str) -> None:
         """Send a single material file to the printer.
-        
+
         Also add the material signature file if that is available.
         :param file_path: The path of the material file.
         :param file_name: The name of the material file.
@@ -143,7 +143,7 @@ class SendMaterialJob(Job):
     @staticmethod
     def _getLocalMaterials() -> Dict[str, LocalMaterial]:
         """Retrieves a list of local materials
-        
+
         Only the new newest version of the local materials is returned
         :return: a dictionary of LocalMaterial objects by GUID
         """

@@ -24,7 +24,7 @@ from .Models.Http.ClusterPrintJobStatus import ClusterPrintJobStatus
 
 class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
     """Output device class that forms the basis of Ultimaker networked printer output devices.
-    
+
     Currently used for local networking and cloud printing using Ultimaker Connect.
     This base class primarily contains all the Qt properties and slots needed for the monitor page to work.
     """
@@ -218,7 +218,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _checkStillConnected(self) -> None:
         """Check if we're still connected by comparing the last timestamps for network response and the current time.
-        
+
         This implementation is similar to the base NetworkedPrinterOutputDevice, but is tweaked slightly.
         Re-connecting is handled automatically by the output device managers in this plugin.
         TODO: it would be nice to have this logic in the managers, but connecting those with signals causes crashes.
@@ -233,7 +233,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _reconnectForActiveMachine(self) -> None:
         """Reconnect for the active output device.
-        
+
         Does nothing if the device is not meant for the active machine.
         """
         active_machine = CuraApplication.getInstance().getGlobalContainerStack()
@@ -301,7 +301,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _updatePrintJobs(self, remote_jobs: List[ClusterPrintJobStatus]) -> None:
         """Updates the local list of print jobs with the list received from the cluster.
-        
+
         :param remote_jobs: The print jobs received from the cluster.
         """
         self._responseReceived()
@@ -336,7 +336,7 @@ class UltimakerNetworkedPrinterOutputDevice(NetworkedPrinterOutputDevice):
 
     def _createPrintJobModel(self, remote_job: ClusterPrintJobStatus) -> UM3PrintJobOutputModel:
         """Create a new print job model based on the remote status of the job.
-        
+
         :param remote_job: The remote print job data.
         """
         model = remote_job.createOutputModel(ClusterOutputController(self))

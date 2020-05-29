@@ -17,7 +17,7 @@ from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator  # F
 
 class CuraSceneNode(SceneNode):
     """Scene nodes that are models are only seen when selecting the corresponding build plate
-    
+
     Note that many other nodes can just be UM SceneNode objects.
     """
     def __init__(self, parent: Optional["SceneNode"] = None, visible: bool = True, name: str = "", no_setting_override: bool = False) -> None:
@@ -40,7 +40,7 @@ class CuraSceneNode(SceneNode):
 
     def getPrintingExtruder(self) -> Optional[ExtruderStack]:
         """Get the extruder used to print this node. If there is no active node, then the extruder in position zero is returned
-        
+
         TODO The best way to do it is by adding the setActiveExtruder decorator to every node when is loaded
         """
         global_container_stack = Application.getInstance().getGlobalContainerStack()

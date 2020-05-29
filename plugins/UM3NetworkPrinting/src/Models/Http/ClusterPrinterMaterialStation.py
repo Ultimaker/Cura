@@ -13,7 +13,7 @@ class ClusterPrinterMaterialStation(BaseModel):
                  material_slots: List[Union[ClusterPrinterMaterialStationSlot, Dict[str, Any]]] = None,
                  **kwargs) -> None:
         """Creates a new Material Station status.
-        
+
         :param status: The status of the material station.
         :param: supported: Whether the material station is supported on this machine or not.
         :param material_slots: The active slots configurations of this material station.

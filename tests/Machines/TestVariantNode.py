@@ -52,7 +52,7 @@ def machine_node():
 @pytest.fixture
 def empty_variant_node(machine_node):
     """Constructs a variant node without any subnodes.
-    
+
     This is useful for performing tests on VariantNode without being dependent
     on how _loadAll works.
     """
@@ -137,7 +137,7 @@ def test_materialAdded_update(container_registry, machine_node, metadata, change
 
 def test_preferredMaterialExactMatch(empty_variant_node):
     """Tests the preferred material when the exact base file is available in the
-    
+
     materials list for this node.
     """
     empty_variant_node.materials = {
@@ -151,7 +151,7 @@ def test_preferredMaterialExactMatch(empty_variant_node):
 
 def test_preferredMaterialSubmaterial(empty_variant_node):
     """Tests the preferred material when a submaterial is available in the
-    
+
     materials list for this node.
     """
     empty_variant_node.materials = {

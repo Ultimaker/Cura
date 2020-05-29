@@ -315,7 +315,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot(str)
     def checkPackageUsageAndUninstall(self, package_id: str) -> None:
         """Check package usage and uninstall
-        
+
         If the package is in use, you'll get a confirmation dialog to set everything to default
         """
 
@@ -359,7 +359,7 @@ class Toolbox(QObject, Extension):
     @pyqtSlot()
     def resetMaterialsQualitiesAndUninstall(self) -> None:
         """Uses "uninstall variables" to reset qualities and materials, then uninstall
-        
+
         It's used as an action on Confirm reset on Uninstall
         """
 

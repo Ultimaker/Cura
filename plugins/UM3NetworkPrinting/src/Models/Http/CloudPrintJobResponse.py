@@ -12,7 +12,7 @@ class CloudPrintJobResponse(BaseModel):
                  upload_url: Optional[str] = None, content_type: Optional[str] = None,
                  status_description: Optional[str] = None, slicing_details: Optional[dict] = None, **kwargs) -> None:
         """Creates a new print job response model.
-        
+
         :param job_id: The job unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
         :param status: The status of the print job.
         :param status_description: Contains more details about the status, e.g. the cause of failures.

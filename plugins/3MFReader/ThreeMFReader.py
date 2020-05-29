@@ -59,11 +59,11 @@ class ThreeMFReader(MeshReader):
         temp_mat = Matrix()
         """Transformation is saved as:
             M00 M01 M02 0.0
-            
+
             M10 M11 M12 0.0
-            
+
             M20 M21 M22 0.0
-            
+
             M30 M31 M32 1.0
         We switch the row & cols as that is how everyone else uses matrices!
         """
@@ -87,7 +87,7 @@ class ThreeMFReader(MeshReader):
 
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
         """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
-        
+
         :returns: Scene node.
         """
         try:
@@ -252,7 +252,7 @@ class ThreeMFReader(MeshReader):
 
     def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
         """Create a scale vector based on a unit string.
-        
+
         .. The core spec defines the following:
         * micron
         * millimeter (default)

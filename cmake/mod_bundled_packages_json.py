@@ -13,7 +13,7 @@ import sys
 
 def find_json_files(work_dir: str) -> list:
     """Finds all JSON files in the given directory recursively and returns a list of those files in absolute paths.
-    
+
     :param work_dir: The directory to look for JSON files recursively.
     :return: A list of JSON files in absolute paths that are found in the given directory.
     """
@@ -28,7 +28,7 @@ def find_json_files(work_dir: str) -> list:
 
 def remove_entries_from_json_file(file_path: str, entries: list) -> None:
     """Removes the given entries from the given JSON file. The file will modified in-place.
-    
+
     :param file_path: The JSON file to modify.
     :param entries: A list of strings as entries to remove.
     :return: None

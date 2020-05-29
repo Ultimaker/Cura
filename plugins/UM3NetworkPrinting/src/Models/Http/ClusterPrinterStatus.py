@@ -29,7 +29,7 @@ class ClusterPrinterStatus(BaseModel):
                  build_plate: Union[Dict[str, Any], ClusterBuildPlate] = None,
                  material_station: Union[Dict[str, Any], ClusterPrinterMaterialStation] = None, **kwargs) -> None:
         """Creates a new cluster printer status
-        
+
         :param enabled: A printer can be disabled if it should not receive new jobs. By default every printer is enabled.
         :param firmware_version: Firmware version installed on the printer. Can differ for each printer in a cluster.
         :param friendly_name: Human readable name of the printer. Can be used for identification purposes.
@@ -68,7 +68,7 @@ class ClusterPrinterStatus(BaseModel):
 
     def createOutputModel(self, controller: PrinterOutputController) -> PrinterOutputModel:
         """Creates a new output model.
-        
+
         :param controller: - The controller of the model.
         """
 
@@ -82,7 +82,7 @@ class ClusterPrinterStatus(BaseModel):
 
     def updateOutputModel(self, model: PrinterOutputModel) -> None:
         """Updates the given output model.
-        
+
         :param model: - The output model to update.
         """
 
@@ -121,7 +121,7 @@ class ClusterPrinterStatus(BaseModel):
 
     def _getSlotsForExtruder(self, extruder_index: int) -> List[ClusterPrinterMaterialStationSlot]:
         """Create a list of Material Station slots for the given extruder index.
-        
+
         Returns a list with a single empty material slot if none are found to ensure we don't miss configurations.
         """
 
@@ -136,7 +136,7 @@ class ClusterPrinterStatus(BaseModel):
     @staticmethod
     def _isSupportedConfiguration(slot: ClusterPrinterMaterialStationSlot, extruder_index: int) -> bool:
         """Check if a configuration is supported in order to make it selectable by the user.
-        
+
         We filter out any slot that is not supported by the extruder index, print core type or if the material is empty.
         """
 

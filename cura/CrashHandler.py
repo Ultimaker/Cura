@@ -237,7 +237,7 @@ class CrashHandler:
                 scope.set_tag("locale_os", self.data["locale_os"])
                 scope.set_tag("locale_cura", self.cura_locale)
                 scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
-    
+
                 scope.set_user({"id": str(uuid.getnode())})
 
         return group

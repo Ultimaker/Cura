@@ -59,7 +59,7 @@ _renamed_settings = {
 
 class VersionUpgrade42to43(VersionUpgrade):
     """Upgrades configurations from the state they were in at version 4.2 to the
-    
+
     state they should be in at version 4.3.
     """
     def upgradePreferences(self, serialized: str, filename: str):
@@ -79,14 +79,14 @@ class VersionUpgrade42to43(VersionUpgrade):
                 parser["general"]["visible_settings"] = ";".join(all_setting_keys)
 
         parser["metadata"]["setting_version"] = "9"
-            
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
 
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
         """Upgrades instance containers to have the new version number.
-        
+
         This renames the renamed settings in the containers.
         """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())

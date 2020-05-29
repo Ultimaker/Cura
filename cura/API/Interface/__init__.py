@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 class Interface:
     """The Interface class serves as a common root for the specific API
-    
+
     methods for each interface element.
-    
+
     Usage:
 
     .. code-block:: python

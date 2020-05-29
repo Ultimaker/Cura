@@ -83,7 +83,7 @@ class TrimeshReader(MeshReader):
 
     def _read(self, file_name: str) -> Union["SceneNode", List["SceneNode"]]:
         """Reads a file using Trimesh.
-        
+
         :param file_name: The file path. This is assumed to be one of the file
         types that Trimesh can read. It will not be checked again.
         :return: A scene node that contains the file's contents.
@@ -136,7 +136,7 @@ class TrimeshReader(MeshReader):
 
     def _toMeshData(self, tri_node: trimesh.base.Trimesh, file_name: str = "") -> MeshData:
         """Converts a Trimesh to Uranium's MeshData.
-        
+
         :param tri_node: A Trimesh containing the contents of a file that was just read.
         :param file_name: The full original filename used to watch for changes
         :return: Mesh data from the Trimesh in a way that Uranium can understand it.

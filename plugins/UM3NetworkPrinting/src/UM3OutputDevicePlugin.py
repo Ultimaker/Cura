@@ -69,7 +69,7 @@ class UM3OutputDevicePlugin(OutputDevicePlugin):
         """Remove a manually connected networked printer."""
 
         self._network_output_device_manager.removeManualDevice(key, address)
-        
+
     def getDiscoveredDevices(self) -> Dict[str, LocalClusterOutputDevice]:
         """Get the discovered devices from the local network."""
 

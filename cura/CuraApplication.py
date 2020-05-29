@@ -730,7 +730,7 @@ class CuraApplication(QtApplication):
 
     def _loadPlugins(self) -> None:
         """Handle loading of all plugin types (and the backend explicitly)
-        
+
         :py:class:`Uranium.UM.PluginRegistry`
         """
 
@@ -759,7 +759,7 @@ class CuraApplication(QtApplication):
 
     def _setLoadingHint(self, hint: str):
         """Set a short, user-friendly hint about current loading status.
-        
+
         The way this message is displayed depends on application state
         """
 
@@ -1010,7 +1010,7 @@ class CuraApplication(QtApplication):
 
     def getMachineActionManager(self, *args: Any) -> MachineActionManager.MachineActionManager:
         """Get the machine action manager
-        
+
         We ignore any *args given to this, as we also register the machine manager as qml singleton.
         It wants to give this function an engine and script engine, but we don't care about that.
         """
@@ -1068,7 +1068,7 @@ class CuraApplication(QtApplication):
 
     def registerObjects(self, engine):
         """Registers objects for the QML engine to use.
-        
+
         :param engine: The QML engine.
         """
 
@@ -1391,7 +1391,7 @@ class CuraApplication(QtApplication):
 
     def arrange(self, nodes: List[SceneNode], fixed_nodes: List[SceneNode]) -> None:
         """Arrange a set of nodes given a set of fixed nodes
-        
+
         :param nodes: nodes that we have to place
         :param fixed_nodes: nodes that are placed in the arranger before finding spots for nodes
         """
@@ -1685,7 +1685,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot(str, "QVariant")
     def addAdditionalComponent(self, area_id: str, component):
         """Add a component to a list of components to be reparented to another area in the GUI.
-        
+
         The actual reparenting is done by the area itself.
         :param area_id: dentifying name of the area to which the component should be reparented
         :param (QQuickComponent) component: The component that should be reparented
@@ -1707,7 +1707,7 @@ class CuraApplication(QtApplication):
     @pyqtSlot(QUrl)
     def readLocalFile(self, file: QUrl, project_mode: Optional[str] = None):
         """Open a local file
-        
+
         :param project_mode: How to handle project files. Either None(default): Follow user preference, "open_as_model"
          or "open_as_project". This parameter is only considered if the file is a project file.
         """

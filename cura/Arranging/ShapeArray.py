@@ -23,7 +23,7 @@ class ShapeArray:
     @classmethod
     def fromPolygon(cls, vertices: numpy.array, scale: float = 1) -> "ShapeArray":
         """Instantiate from a bunch of vertices
-        
+
         :param vertices:
         :param scale:  scale the coordinates
         :return: a shape array instantiated from a bunch of vertices
@@ -52,7 +52,7 @@ class ShapeArray:
     @classmethod
     def fromNode(cls, node: "SceneNode", min_offset: float, scale: float = 0.5, include_children: bool = False) -> Tuple[Optional["ShapeArray"], Optional["ShapeArray"]]:
         """Instantiate an offset and hull ShapeArray from a scene node.
-        
+
         :param node: source node where the convex hull must be present
         :param min_offset: offset for the offset ShapeArray
         :param scale: scale the coordinates
@@ -100,7 +100,7 @@ class ShapeArray:
     @classmethod
     def arrayFromPolygon(cls, shape: Tuple[int, int], vertices: numpy.array) -> numpy.array:
         """Create :py:class:`numpy.ndarray` with dimensions defined by shape
-        
+
         Fills polygon defined by vertices with ones, all other values zero
         Only works correctly for convex hull vertices
         Originally from: `Stackoverflow - generating a filled polygon inside a numpy array <https://stackoverflow.com/questions/37117878/generating-a-filled-polygon-inside-a-numpy-array>`_
@@ -128,7 +128,7 @@ class ShapeArray:
     @classmethod
     def _check(cls, p1: numpy.array, p2: numpy.array, base_array: numpy.array) -> Optional[numpy.array]:
         """Return indices that mark one side of the line, used by arrayFromPolygon
-        
+
         Uses the line defined by p1 and p2 to check array of
         input indices against interpolated value
         Returns boolean array, with True inside and False outside of shape

@@ -37,7 +37,7 @@ I18N_CATALOG = i18nCatalog("cura")
 
 class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
     """The cloud output device is a network output device that works remotely but has limited functionality.
-    
+
     Currently it only supports viewing the printer and print job status and adding a new job to the queue.
     As such, those methods have been implemented here.
     Note that this device represents a single remote cluster, not a list of multiple clusters.
@@ -60,7 +60,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def __init__(self, api_client: CloudApiClient, cluster: CloudClusterResponse, parent: QObject = None) -> None:
         """Creates a new cloud output device
-        
+
         :param api_client: The client that will run the API calls
         :param cluster: The device response received from the cloud API.
         :param parent: The optional parent of this output device.
@@ -165,7 +165,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _onStatusCallFinished(self, status: CloudClusterStatus) -> None:
         """Method called when HTTP request to status endpoint is finished.
-        
+
         Contains both printers and print jobs statuses in a single response.
         """
         self._responseReceived()
@@ -202,7 +202,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _onPrintJobCreated(self, job: ExportFileJob) -> None:
         """Handler for when the print job was created locally.
-        
+
         It can now be sent over the cloud.
         """
         output = job.getOutput()
@@ -217,7 +217,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _uploadPrintJob(self, job_response: CloudPrintJobResponse) -> None:
         """Uploads the mesh when the print job was registered with the cloud API.
-        
+
         :param job_response: The response received from the cloud API.
         """
         if not self._tool_path:
@@ -236,7 +236,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _onPrintUploadCompleted(self, response: CloudPrintResponse) -> None:
         """Shows a message when the upload has succeeded
-        
+
         :param response: The response from the cloud API.
         """
         self._progress.hide()
@@ -245,7 +245,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
 
     def _onUploadError(self, message: str = None) -> None:
         """Displays the given message if uploading the mesh has failed
-        
+
         :param message: The message to display.
         """
         self._progress.hide()

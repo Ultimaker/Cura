@@ -110,7 +110,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
 
     def getSerialPortList(self, only_list_usb = False):
         """Create a list of serial ports on the system.
-        
+
         :param only_list_usb: If true, only usb ports are listed
         """
         base_list = []

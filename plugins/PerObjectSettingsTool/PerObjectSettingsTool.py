@@ -14,7 +14,7 @@ from UM.Event import Event
 
 class PerObjectSettingsTool(Tool):
     """This tool allows the user to add & change settings per node in the scene.
-    
+
     The settings per object are kept in a ContainerStack, which is linked to a node by decorator.
     """
     def __init__(self):
@@ -52,7 +52,7 @@ class PerObjectSettingsTool(Tool):
 
     def getSelectedActiveExtruder(self):
         """Gets the active extruder of the currently selected object.
-        
+
         :return: The active extruder of the currently selected object.
         """
 
@@ -61,7 +61,7 @@ class PerObjectSettingsTool(Tool):
 
     def setSelectedActiveExtruder(self, extruder_stack_id):
         """Changes the active extruder of the currently selected object.
-        
+
         :param extruder_stack_id: The ID of the extruder to print the currently
         selected object with.
         """

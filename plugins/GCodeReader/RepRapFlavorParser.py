@@ -21,7 +21,7 @@ class RepRapFlavorParser(FlavorParser.FlavorParser):
 
     def _gCode90(self, position, params, path):
         """Set the absolute positioning
-        
+
         RepRapFlavor code G90 sets position of X, Y, Z to absolute
         For absolute E, M82 is used
         """
@@ -30,7 +30,7 @@ class RepRapFlavorParser(FlavorParser.FlavorParser):
 
     def _gCode91(self, position, params, path):
         """Set the relative positioning
-        
+
         RepRapFlavor code G91 sets position of X, Y, Z to relative
         For relative E, M83 is used
         """

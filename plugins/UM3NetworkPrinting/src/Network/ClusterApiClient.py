@@ -32,7 +32,7 @@ class ClusterApiClient:
 
     def __init__(self, address: str, on_error: Callable) -> None:
         """Initializes a new cluster API client.
-        
+
         :param address: The network address of the cluster to call.
         :param on_error: The callback to be called whenever we receive errors from the server.
         """
@@ -43,7 +43,7 @@ class ClusterApiClient:
 
     def getSystem(self, on_finished: Callable) -> None:
         """Get printer system information.
-        
+
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/system".format(self.PRINTER_API_PREFIX)
@@ -52,7 +52,7 @@ class ClusterApiClient:
 
     def getMaterials(self, on_finished: Callable[[List[ClusterMaterial]], Any]) -> None:
         """Get the installed materials on the printer.
-        
+
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/materials".format(self.CLUSTER_API_PREFIX)
@@ -61,7 +61,7 @@ class ClusterApiClient:
 
     def getPrinters(self, on_finished: Callable[[List[ClusterPrinterStatus]], Any]) -> None:
         """Get the printers in the cluster.
-        
+
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/printers".format(self.CLUSTER_API_PREFIX)
@@ -70,7 +70,7 @@ class ClusterApiClient:
 
     def getPrintJobs(self, on_finished: Callable[[List[ClusterPrintJobStatus]], Any]) -> None:
         """Get the print jobs in the cluster.
-        
+
         :param on_finished: The callback in case the response is successful.
         """
         url = "{}/print_jobs".format(self.CLUSTER_API_PREFIX)
@@ -112,7 +112,7 @@ class ClusterApiClient:
 
     def _createEmptyRequest(self, path: str, content_type: Optional[str] = "application/json") -> QNetworkRequest:
         """We override _createEmptyRequest in order to add the user credentials.
-        
+
         :param url: The URL to request
         :param content_type: The type of the body contents.
         """
@@ -126,7 +126,7 @@ class ClusterApiClient:
     @staticmethod
     def _parseReply(reply: QNetworkReply) -> Tuple[int, Dict[str, Any]]:
         """Parses the given JSON network reply into a status code and a dictionary, handling unexpected errors as well.
-        
+
         :param reply: The reply from the server.
         :return: A tuple with a status code and a dictionary.
         """
@@ -141,7 +141,7 @@ class ClusterApiClient:
     def _parseModels(self, response: Dict[str, Any], on_finished: Union[Callable[[ClusterApiClientModel], Any],
                      Callable[[List[ClusterApiClientModel]], Any]], model_class: Type[ClusterApiClientModel]) -> None:
         """Parses the given models and calls the correct callback depending on the result.
-        
+
         :param response: The response from the server, after being converted to a dict.
         :param on_finished: The callback in case the response is successful.
         :param model_class: The type of the model to convert the response to. It may either be a single record or a list.
@@ -163,7 +163,7 @@ class ClusterApiClient:
                            Callable[[List[ClusterApiClientModel]], Any]], model: Type[ClusterApiClientModel] = None,
                      ) -> None:
         """Creates a callback function so that it includes the parsing of the response into the correct model.
-        
+
         The callback is added to the 'finished' signal of the reply.
         :param reply: The reply that should be listened to.
         :param on_finished: The callback in case the response is successful.

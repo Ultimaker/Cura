@@ -12,7 +12,7 @@ class NoProfileException(Exception):
 
 class ProfileReader(PluginObject):
     """A type of plug-ins that reads profiles from a file.
-    
+
     The profile is then stored as instance container of the type user profile.
     """
 
@@ -21,7 +21,7 @@ class ProfileReader(PluginObject):
 
     def read(self, file_name):
         """Read profile data from a file and return a filled profile.
-        
+
         :return: :type{Profile|Profile[]} The profile that was obtained from the file or a list of Profiles.
         """
 

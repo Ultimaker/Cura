@@ -32,9 +32,9 @@ class IntentManager(QObject):
 
     def intentMetadatas(self, definition_id: str, nozzle_name: str, material_base_file: str) -> List[Dict[str, Any]]:
         """Gets the metadata dictionaries of all intent profiles for a given
-        
+
         configuration.
-        
+
         :param definition_id: ID of the printer.
         :param nozzle_name: Name of the nozzle.
         :param material_base_file: The base_file of the material.
@@ -58,9 +58,9 @@ class IntentManager(QObject):
 
     def intentCategories(self, definition_id: str, nozzle_id: str, material_id: str) -> List[str]:
         """Collects and returns all intent categories available for the given
-        
+
         parameters. Note that the 'default' category is always available.
-        
+
         :param definition_id: ID of the printer.
         :param nozzle_name: Name of the nozzle.
         :param material_id: ID of the material.
@@ -74,10 +74,10 @@ class IntentManager(QObject):
 
     def getCurrentAvailableIntents(self) -> List[Tuple[str, str]]:
         """List of intents to be displayed in the interface.
-        
+
         For the interface this will have to be broken up into the different
         intent categories. That is up to the model there.
-        
+
         :return: A list of tuples of intent_category and quality_type. The actual
             instance may vary per extruder.
         """
@@ -109,7 +109,7 @@ class IntentManager(QObject):
 
     def currentAvailableIntentCategories(self) -> List[str]:
         """List of intent categories available in either of the extruders.
-        
+
         This is purposefully inconsistent with the way that the quality types
         are listed. The quality types will show all quality types available in
         the printer using any configuration. This will only list the intent
@@ -134,7 +134,7 @@ class IntentManager(QObject):
 
     def getDefaultIntent(self) -> "InstanceContainer":
         """The intent that gets selected by default when no intent is available for
-        
+
         the configuration, an extruder can't match the intent that the user
         selects, or just when creating a new printer.
         """

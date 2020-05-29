@@ -17,7 +17,7 @@ I18N_CATALOG = i18nCatalog("cura")
 
 class UltimakerNetworkedPrinterAction(MachineAction):
     """Machine action that allows to connect the active machine to a networked devices.
-    
+
     TODO: in the future this should be part of the new discovery workflow baked into Cura.
     """
 

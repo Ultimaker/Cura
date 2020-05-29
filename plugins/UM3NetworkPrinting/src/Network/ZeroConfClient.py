@@ -14,7 +14,7 @@ from cura.CuraApplication import CuraApplication
 
 class ZeroConfClient:
     """The ZeroConfClient handles all network discovery logic.
-    
+
     It emits signals when new network services were found or disappeared.
     """
 
@@ -34,7 +34,7 @@ class ZeroConfClient:
 
     def start(self) -> None:
         """The ZeroConf service changed requests are handled in a separate thread so we don't block the UI.
-        
+
         We can also re-schedule the requests when they fail to get detailed service info.
         Any new or re-reschedule requests will be appended to the request queue and the thread will process them.
         """
@@ -108,7 +108,7 @@ class ZeroConfClient:
     def _onServiceChanged(self, zero_conf: Zeroconf, service_type: str, name: str,
                           state_change: ServiceStateChange) -> bool:
         """Handler for zeroConf detection.
-        
+
         Return True or False indicating if the process succeeded.
         Note that this function can take over 3 seconds to complete. Be careful calling it from the main thread.
         """

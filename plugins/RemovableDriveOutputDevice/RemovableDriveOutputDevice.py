@@ -30,7 +30,7 @@ class RemovableDriveOutputDevice(OutputDevice):
 
     def requestWrite(self, nodes, file_name = None, filter_by_machine = False, file_handler = None, **kwargs):
         """Request the specified nodes to be written to the removable drive.
-        
+
         :param nodes: A collection of scene nodes that should be written to the
             removable drive.
         :param file_name: :type{string} A suggestion for the file name to write to.
@@ -38,7 +38,7 @@ class RemovableDriveOutputDevice(OutputDevice):
         meshes.
         :param limit_mimetypes: Should we limit the available MIME types to the
         MIME types available to the currently active machine?
-        
+
         """
 
         filter_by_machine = True # This plugin is intended to be used by machine (regardless of what it was told to do)
@@ -110,10 +110,10 @@ class RemovableDriveOutputDevice(OutputDevice):
 
     def _automaticFileName(self, nodes):
         """Generate a file name automatically for the specified nodes to be saved in.
-        
+
         The name generated will be the name of one of the nodes. Which node that
         is can not be guaranteed.
-        
+
         :param nodes: A collection of nodes for which to generate a file name.
         """
         for root in nodes:

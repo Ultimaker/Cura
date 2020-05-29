@@ -16,7 +16,7 @@ catalog = i18nCatalog("cura")
 
 class GCodeGzWriter(MeshWriter):
     """A file writer that writes gzipped g-code.
-    
+
     If you're zipping g-code, you might as well use gzip!
     """
 
@@ -26,11 +26,11 @@ class GCodeGzWriter(MeshWriter):
 
     def write(self, stream: BufferedIOBase, nodes: List[SceneNode], mode = MeshWriter.OutputMode.BinaryMode) -> bool:
         """Writes the gzipped g-code to a stream.
-        
+
         Note that even though the function accepts a collection of nodes, the
         entire scene is always written to the file since it is not possible to
         separate the g-code for just specific nodes.
-        
+
         :param stream: The stream to write the gzipped g-code to.
         :param nodes: This is ignored.
         :param mode: Additional information on what type of stream to use. This

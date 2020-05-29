@@ -45,7 +45,7 @@ class LicensePresenter(QObject):
 
     def present(self, plugin_path: str, packages: Dict[str, Dict[str, str]]) -> None:
         """Show a license dialog for multiple packages where users can read a license and accept or decline them
-        
+
         :param plugin_path: Root directory of the Toolbox plugin
         :param packages: Dict[package id, file path]
         """

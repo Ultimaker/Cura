@@ -13,7 +13,7 @@ class CloudClusterResponse(BaseModel):
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
                  friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", **kwargs) -> None:
         """Creates a new cluster response object.
-        
+
         :param cluster_id: The secret unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
         :param host_guid: The unique identifier of the print cluster host, e.g. 'e90ae0ac-1257-4403-91ee-a44c9b7e8050'.
         :param host_name: The name of the printer as configured during the Wi-Fi setup. Used as identifier for end users.

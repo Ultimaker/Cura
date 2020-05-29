@@ -78,7 +78,7 @@ class CuraActions(QObject):
     @pyqtSlot(int)
     def multiplySelection(self, count: int) -> None:
         """Multiply all objects in the selection
-        
+
         :param count: The number of times to multiply the selection.
         """
 
@@ -114,7 +114,7 @@ class CuraActions(QObject):
     @pyqtSlot(str)
     def setExtruderForSelection(self, extruder_id: str) -> None:
         """Set the extruder that should be used to print the selection.
-        
+
         :param extruder_id: The ID of the extruder stack to use for the selected objects.
         """
 

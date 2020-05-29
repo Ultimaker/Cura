@@ -10,7 +10,7 @@ from .SubscribedPackagesModel import SubscribedPackagesModel
 
 class DiscrepanciesPresenter(QObject):
     """Shows a list of packages to be added or removed. The user can select which packages to (un)install. The user's
-    
+
     choices are emitted on the `packageMutations` Signal.
     """
 

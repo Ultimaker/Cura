@@ -166,7 +166,7 @@ class PrinterOutputModel(QObject):
     @pyqtSlot(float, float)
     def preheatBed(self, temperature: float, duration: float) -> None:
         """Pre-heats the heated bed of the printer.
-        
+
         :param temperature: The temperature to heat the bed to, in degrees
             Celsius.
         :param duration: How long the bed should stay warm, in seconds.

@@ -10,7 +10,7 @@ from UM.PluginRegistry import PluginRegistry
 
 class GCodeGzReader(MeshReader):
     """A file reader that reads gzipped g-code.
-    
+
     If you're zipping g-code, you might as well use gzip!
     """
 

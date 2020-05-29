@@ -31,12 +31,12 @@ class AuthorizationHelpers:
 
     def getAccessTokenUsingAuthorizationCode(self, authorization_code: str, verification_code: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server.
-        
+
         :param authorization_code: The authorization code from the 1st step.
         :param verification_code: The verification code needed for the PKCE extension.
         :return: An AuthenticationResponse object.
         """
-        
+
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
             "redirect_uri": self._settings.CALLBACK_URL if self._settings.CALLBACK_URL is not None else "",
@@ -52,11 +52,11 @@ class AuthorizationHelpers:
 
     def getAccessTokenUsingRefreshToken(self, refresh_token: str) -> "AuthenticationResponse":
         """Request the access token from the authorization server using a refresh token.
-        
+
         :param refresh_token:
         :return: An AuthenticationResponse object.
         """
-        
+
         Logger.log("d", "Refreshing the access token.")
         data = {
             "client_id": self._settings.CLIENT_ID if self._settings.CLIENT_ID is not None else "",
@@ -73,11 +73,11 @@ class AuthorizationHelpers:
     @staticmethod
     def parseTokenResponse(token_response: requests.models.Response) -> "AuthenticationResponse":
         """Parse the token response from the authorization server into an AuthenticationResponse object.
-        
+
         :param token_response: The JSON string data response from the authorization server.
         :return: An AuthenticationResponse object.
         """
-        
+
         token_data = None
 
         try:
@@ -101,11 +101,11 @@ class AuthorizationHelpers:
 
     def parseJWT(self, access_token: str) -> Optional["UserProfile"]:
         """Calls the authentication API endpoint to get the token data.
-        
+
         :param access_token: The encoded JWT token.
         :return: Dict containing some profile data.
         """
-        
+
         try:
             token_request = requests.get("{}/check-token".format(self._settings.OAUTH_SERVER_URL), headers = {
                 "Authorization": "Bearer {}".format(access_token)
@@ -130,20 +130,20 @@ class AuthorizationHelpers:
     @staticmethod
     def generateVerificationCode(code_length: int = 32) -> str:
         """Generate a verification code of arbitrary length.
-        
+
         :param code_length:: How long should the code be? This should never be lower than 16, but it's probably
         better to leave it at 32
         """
-        
+
         return "".join(random.choice("0123456789ABCDEF") for i in range(code_length))
 
     @staticmethod
     def generateVerificationCodeChallenge(verification_code: str) -> str:
         """Generates a base64 encoded sha512 encrypted version of a given string.
-        
+
         :param verification_code:
         :return: The encrypted code in base64 format.
         """
-        
+
         encoded = sha512(verification_code.encode()).digest()
         return b64encode(encoded, altchars = b"_-").decode()

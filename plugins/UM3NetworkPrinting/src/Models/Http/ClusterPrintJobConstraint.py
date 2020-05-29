@@ -10,7 +10,7 @@ class ClusterPrintJobConstraints(BaseModel):
 
     def __init__(self, require_printer_name: Optional[str] = None, **kwargs) -> None:
         """Creates a new print job constraint.
-        
+
         :param require_printer_name: Unique name of the printer that this job should be printed on.
         Should be one of the unique_name field values in the cluster, e.g. 'ultimakersystem-ccbdd30044ec'
         """

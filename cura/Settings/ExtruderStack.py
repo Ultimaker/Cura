@@ -37,7 +37,7 @@ class ExtruderStack(CuraContainerStack):
     @override(ContainerStack)
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
         """Overridden from ContainerStack
-        
+
         This will set the next stack and ensure that we register this stack as an extruder.
         """
 
@@ -71,7 +71,7 @@ class ExtruderStack(CuraContainerStack):
 
     def getCompatibleMaterialDiameter(self) -> float:
         """Return the filament diameter that the machine requires.
-        
+
         If the machine has no requirement for the diameter, -1 is returned.
         :return: The filament diameter for the printer
         """
@@ -99,12 +99,12 @@ class ExtruderStack(CuraContainerStack):
 
     def getApproximateMaterialDiameter(self) -> float:
         """Return the approximate filament diameter that the machine requires.
-        
+
         The approximate material diameter is the material diameter rounded to
         the nearest millimetre.
-        
+
         If the machine has no requirement for the diameter, -1 is returned.
-        
+
         :return: The approximate filament diameter for the printer
         """
 
@@ -116,12 +116,12 @@ class ExtruderStack(CuraContainerStack):
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
         """Overridden from ContainerStack
-        
+
         It will perform a few extra checks when trying to get properties.
-        
+
         The two extra checks it currently does is to ensure a next stack is set and to bypass
         the extruder when the property is not settable per extruder.
-        
+
         :throws Exceptions.NoGlobalStackError Raised when trying to get a property from an extruder without
         having a next stack set.
         """

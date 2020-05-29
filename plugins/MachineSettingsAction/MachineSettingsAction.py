@@ -25,7 +25,7 @@ catalog = UM.i18n.i18nCatalog("cura")
 
 class MachineSettingsAction(MachineAction):
     """This action allows for certain settings that are "machine only") to be modified.
-    
+
     It automatically detects machine definitions that it knows how to change and attaches itself to those.
     """
     def __init__(self, parent: Optional["QObject"] = None) -> None:
@@ -60,7 +60,7 @@ class MachineSettingsAction(MachineAction):
 
     def _updateHasMaterialsInContainerTree(self) -> None:
         """Triggered when the global container stack changes or when the g-code
-        
+
         flavour setting is changed.
         """
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()

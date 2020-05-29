@@ -20,10 +20,10 @@ class CuraStackBuilder:
     @classmethod
     def createMachine(cls, name: str, definition_id: str) -> Optional[GlobalStack]:
         """Create a new instance of a machine.
-        
+
         :param name: The name of the new machine.
         :param definition_id: The ID of the machine definition to use.
-        
+
         :return: The new global stack or None if an error occurred.
         """
 
@@ -77,7 +77,7 @@ class CuraStackBuilder:
     @classmethod
     def createExtruderStackWithDefaultSetup(cls, global_stack: "GlobalStack", extruder_position: int) -> None:
         """Create a default Extruder Stack
-        
+
         :param global_stack: The global stack this extruder refers to.
         :param extruder_position: The position of the current extruder.
         """
@@ -134,7 +134,7 @@ class CuraStackBuilder:
                             quality_container: "InstanceContainer") -> ExtruderStack:
 
         """Create a new Extruder stack
-        
+
         :param new_stack_id: The ID of the new stack.
         :param extruder_definition: The definition to base the new stack on.
         :param machine_definition_id: The ID of the machine definition to use for the user container.
@@ -142,7 +142,7 @@ class CuraStackBuilder:
         :param variant_container: The variant selected for the current extruder.
         :param material_container: The material selected for the current extruder.
         :param quality_container: The quality selected for the current extruder.
-        
+
         :return: A new Extruder stack instance with the specified parameters.
         """
 
@@ -181,13 +181,13 @@ class CuraStackBuilder:
                           quality_container: "InstanceContainer") -> GlobalStack:
 
         """Create a new Global stack
-        
+
         :param new_stack_id: The ID of the new stack.
         :param definition: The definition to base the new stack on.
         :param variant_container: The variant selected for the current stack.
         :param material_container: The material selected for the current stack.
         :param quality_container: The quality selected for the current stack.
-        
+
         :return: A new Global stack instance with the specified parameters.
         """
 
