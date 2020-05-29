@@ -5,7 +5,7 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.4 as UM
 import Cura 1.1 as Cura
 
 import QtGraphicalEffects 1.0 // For the dropshadow
@@ -29,7 +29,7 @@ Item
     }
 
     // Item to ensure that all of the buttons are nicely centered.
-    Item
+    UM.UnclickableItem
     {
         anchors.horizontalCenter: parent.horizontalCenter
         width: parent.width - 2 * UM.Theme.getSize("wide_margin").width
