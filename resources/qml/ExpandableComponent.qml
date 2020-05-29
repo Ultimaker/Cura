@@ -226,6 +226,14 @@ Item
         border.color: UM.Theme.getColor("lining")
         radius: UM.Theme.getSize("default_radius").width
 
+        MouseArea
+        {
+           acceptedButtons: Qt.AllButtons
+           onClicked: {}
+           onWheel: {}
+           anchors.fill: parent
+        }
+
         function trySetPosition(posNewX, posNewY)
         {
             var margin = UM.Theme.getSize("narrow_margin");
