@@ -294,7 +294,7 @@ class ContainerManager(QObject):
 
         current_quality_changes_name = global_stack.qualityChanges.getName()
         current_quality_type = global_stack.quality.getMetaDataEntry("quality_type")
-        extruder_stacks = list(global_stack.extruders.values())
+        extruder_stacks = global_stack.extruderList
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         machine_definition_id = ContainerTree.getInstance().machines[global_stack.definition.getId()].quality_definition
         for stack in [global_stack] + extruder_stacks:
@@ -335,8 +335,7 @@ class ContainerManager(QObject):
 
         # Go through global and extruder stacks and clear their topmost container (the user settings).
         global_stack = machine_manager.activeMachine
-        extruder_stacks = list(global_stack.extruders.values())
-        for stack in [global_stack] + extruder_stacks:
+        for stack in [global_stack] + global_stack.extruderList:
             container = stack.userChanges
             container.clear()
             send_emits_containers.append(container)
