@@ -24,11 +24,15 @@ class CuraPackageManager(PackageManager):
 
         super().initialize()
 
-    ##  Returns a list of where the package is used
-    #   empty if it is never used.
-    #   It loops through all the package contents and see if some of the ids are used.
-    #   The list consists of 3-tuples: (global_stack, extruder_nr, container_id)
     def getMachinesUsingPackage(self, package_id: str) -> Tuple[List[Tuple[GlobalStack, str, str]], List[Tuple[GlobalStack, str, str]]]:
+        """Returns a list of where the package is used
+
+        It loops through all the package contents and see if some of the ids are used.
+
+        :param package_id: package id to search for
+        :return: empty if it is never used, otherwise a list consisting of 3-tuples
+        """
+
         ids = self.getPackageContainerIds(package_id)
         container_stacks = self._application.getContainerRegistry().findContainerStacks()
         global_stacks = [container_stack for container_stack in container_stacks if isinstance(container_stack, GlobalStack)]

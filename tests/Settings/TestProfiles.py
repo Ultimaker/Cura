@@ -61,9 +61,10 @@ variant_filepaths = collectAllVariants()
 intent_filepaths = collectAllIntents()
 
 
-##  Attempt to load all the quality profiles.
 @pytest.mark.parametrize("file_name", quality_filepaths)
 def test_validateQualityProfiles(file_name):
+    """Attempt to load all the quality profiles."""
+
     try:
         with open(file_name, encoding = "utf-8") as data:
             serialized = data.read()
@@ -114,9 +115,10 @@ def test_validateIntentProfiles(file_name):
         # File can't be read, header sections missing, whatever the case, this shouldn't happen!
         assert False, "Got an exception while reading the file {file_name}: {err}".format(file_name = file_name, err = str(e))
 
-##  Attempt to load all the variant profiles.
 @pytest.mark.parametrize("file_name", variant_filepaths)
 def test_validateVariantProfiles(file_name):
+    """Attempt to load all the variant profiles."""
+
     try:
         with open(file_name, encoding = "utf-8") as data:
             serialized = data.read()

@@ -1,7 +1,7 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, TYPE_CHECKING, cast
+from typing import Optional, TYPE_CHECKING, cast, List
 
 
 from UM.Application import Application
@@ -21,9 +21,14 @@ if TYPE_CHECKING:
     from UM.Scene.Camera import Camera
 
 
-# Make color brighter by normalizing it (maximum factor 2.5 brighter)
-# color_list is a list of 4 elements: [r, g, b, a], each element is a float 0..1
-def prettier_color(color_list):
+def prettier_color(color_list: List[float]) -> List[float]:
+    """Make color brighter by normalizing
+
+    maximum factor 2.5 brighter
+
+    :param color_list: a list of 4 elements: [r, g, b, a], each element is a float 0..1
+    :return: a normalized list of 4 elements: [r, g, b, a], each element is a float 0..1
+    """
     maximum = max(color_list[:3])
     if maximum > 0:
         factor = min(1 / maximum, 2.5)
@@ -32,11 +37,14 @@ def prettier_color(color_list):
     return [min(i * factor, 1.0) for i in color_list]
 
 
-##  A render pass subclass that renders slicable objects with default parameters.
-#   It uses the active camera by default, but it can be overridden to use a different camera.
-#
-#   This is useful to get a preview image of a scene taken from a different location as the active camera.
 class PreviewPass(RenderPass):
+    """A :py:class:`Uranium.UM.View.RenderPass` subclass that renders slicable objects with default parameters.
+
+    It uses the active camera by default, but it can be overridden to use a different camera.
+
+    This is useful to get a preview image of a scene taken from a different location as the active camera.
+    """
+
     def __init__(self, width: int, height: int) -> None:
         super().__init__("preview", width, height, 0)
 

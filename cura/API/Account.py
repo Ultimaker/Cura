@@ -25,23 +25,27 @@ class SyncState:
     ERROR = 2
     IDLE = 3
 
-
-##  The account API provides a version-proof bridge to use Ultimaker Accounts
-#
-#   Usage:
-#       ``from cura.API import CuraAPI
-#       api = CuraAPI()
-#       api.account.login()
-#       api.account.logout()
-#       api.account.userProfile # Who is logged in``
-#
 class Account(QObject):
+    """The account API provides a version-proof bridge to use Ultimaker Accounts
+
+    Usage:
+
+    .. code-block:: python
+
+      from cura.API import CuraAPI
+      api = CuraAPI()
+      api.account.login()
+      api.account.logout()
+      api.account.userProfile    # Who is logged in
+    """
+
     # The interval in which sync services are automatically triggered
     SYNC_INTERVAL = 30.0  # seconds
     Q_ENUMS(SyncState)
 
-    # Signal emitted when user logged in or out.
     loginStateChanged = pyqtSignal(bool)
+    """Signal emitted when user logged in or out"""
+
     accessTokenChanged = pyqtSignal()
     syncRequested = pyqtSignal()
     """Sync services may connect to this signal to receive sync triggers.
@@ -140,9 +144,10 @@ class Account(QObject):
     def _onAccessTokenChanged(self):
         self.accessTokenChanged.emit()
 
-    ## Returns a boolean indicating whether the given authentication is applied against staging or not.
     @property
     def is_staging(self) -> bool:
+        """Indication whether the given authentication is applied against staging or not."""
+
         return "staging" in self._oauth_root
 
     @pyqtProperty(bool, notify=loginStateChanged)
@@ -227,10 +232,10 @@ class Account(QObject):
     def accessToken(self) -> Optional[str]:
         return self._authorization_service.getAccessToken()
 
-    #   Get the profile of the logged in user
-    #   @returns None if no user is logged in, a dict containing user_id, username and profile_image_url
     @pyqtProperty("QVariantMap", notify = loginStateChanged)
     def userProfile(self) -> Optional[Dict[str, Optional[str]]]:
+        """None if no user is logged in otherwise the logged in  user as a dict containing containing user_id, username and profile_image_url """
+
         user_profile = self._authorization_service.getUserProfile()
         if not user_profile:
             return None

@@ -44,14 +44,16 @@ class CuraContainerRegistry(ContainerRegistry):
         # is added, we check to see if an extruder stack needs to be added.
         self.containerAdded.connect(self._onContainerAdded)
 
-    ##  Overridden from ContainerRegistry
-    #
-    #   Adds a container to the registry.
-    #
-    #   This will also try to convert a ContainerStack to either Extruder or
-    #   Global stack based on metadata information.
     @override(ContainerRegistry)
     def addContainer(self, container: ContainerInterface) -> None:
+        """Overridden from ContainerRegistry
+
+        Adds a container to the registry.
+
+        This will also try to convert a ContainerStack to either Extruder or
+        Global stack based on metadata information.
+        """
+
         # Note: Intentional check with type() because we want to ignore subclasses
         if type(container) == ContainerStack:
             container = self._convertContainerStack(cast(ContainerStack, container))
@@ -66,13 +68,15 @@ class CuraContainerRegistry(ContainerRegistry):
 
         super().addContainer(container)
 
-    ##  Create a name that is not empty and unique
-    #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param current_name \type{} Current name of the container, which may be an acceptable option
-    #   \param new_name \type{string} Base name, which may not be unique
-    #   \param fallback_name \type{string} Name to use when (stripped) new_name is empty
-    #   \return \type{string} Name that is unique for the specified type and name/id
     def createUniqueName(self, container_type: str, current_name: str, new_name: str, fallback_name: str) -> str:
+        """Create a name that is not empty and unique
+
+        :param container_type: :type{string} Type of the container (machine, quality, ...)
+        :param current_name: :type{} Current name of the container, which may be an acceptable option
+        :param new_name: :type{string} Base name, which may not be unique
+        :param fallback_name: :type{string} Name to use when (stripped) new_name is empty
+        :return: :type{string} Name that is unique for the specified type and name/id
+        """
         new_name = new_name.strip()
         num_check = re.compile(r"(.*?)\s*#\d+$").match(new_name)
         if num_check:
@@ -89,24 +93,28 @@ class CuraContainerRegistry(ContainerRegistry):
 
         return unique_name
 
-    ##  Check if a container with of a certain type and a certain name or id exists
-    #   Both the id and the name are checked, because they may not be the same and it is better if they are both unique
-    #   \param container_type \type{string} Type of the container (machine, quality, ...)
-    #   \param container_name \type{string} Name to check
     def _containerExists(self, container_type: str, container_name: str):
+        """Check if a container with of a certain type and a certain name or id exists
+
+        Both the id and the name are checked, because they may not be the same and it is better if they are both unique
+        :param container_type: :type{string} Type of the container (machine, quality, ...)
+        :param container_name: :type{string} Name to check
+        """
         container_class = ContainerStack if container_type == "machine" else InstanceContainer
 
         return self.findContainersMetadata(container_type = container_class, id = container_name, type = container_type, ignore_case = True) or \
                 self.findContainersMetadata(container_type = container_class, name = container_name, type = container_type)
 
-    ##  Exports an profile to a file
-    #
-    #   \param container_list \type{list} the containers to export. This is not
-    #   necessarily in any order!
-    #   \param file_name \type{str} the full path and filename to export to.
-    #   \param file_type \type{str} the file type with the format "<description> (*.<extension>)"
-    #   \return True if the export succeeded, false otherwise.
     def exportQualityProfile(self, container_list: List[InstanceContainer], file_name: str, file_type: str) -> bool:
+        """Exports an profile to a file
+
+        :param container_list: :type{list} the containers to export. This is not
+        necessarily in any order!
+        :param file_name: :type{str} the full path and filename to export to.
+        :param file_type: :type{str} the file type with the format "<description> (*.<extension>)"
+        :return: True if the export succeeded, false otherwise.
+        """
+
         # Parse the fileType to deduce what plugin can save the file format.
         # fileType has the format "<description> (*.<extension>)"
         split = file_type.rfind(" (*.")  # Find where the description ends and the extension starts.
@@ -150,11 +158,13 @@ class CuraContainerRegistry(ContainerRegistry):
         m.show()
         return True
 
-    ##  Gets the plugin object matching the criteria
-    #   \param extension
-    #   \param description
-    #   \return The plugin object matching the given extension and description.
     def _findProfileWriter(self, extension: str, description: str) -> Optional[ProfileWriter]:
+        """Gets the plugin object matching the criteria
+
+        :param extension:
+        :param description:
+        :return: The plugin object matching the given extension and description.
+        """
         plugin_registry = PluginRegistry.getInstance()
         for plugin_id, meta_data in self._getIOPlugins("profile_writer"):
             for supported_type in meta_data["profile_writer"]:  # All file types this plugin can supposedly write.
@@ -165,12 +175,14 @@ class CuraContainerRegistry(ContainerRegistry):
                         return cast(ProfileWriter, plugin_registry.getPluginObject(plugin_id))
         return None
 
-    ##  Imports a profile from a file
-    #
-    #   \param file_name The full path and filename of the profile to import.
-    #   \return Dict with a 'status' key containing the string 'ok' or 'error',
-    #       and a 'message' key containing a message for the user.
     def importProfile(self, file_name: str) -> Dict[str, str]:
+        """Imports a profile from a file
+
+        :param file_name: The full path and filename of the profile to import.
+        :return: Dict with a 'status' key containing the string 'ok' or 'error',
+            and a 'message' key containing a message for the user.
+        """
+
         Logger.log("d", "Attempting to import profile %s", file_name)
         if not file_name:
             return { "status": "error", "message": catalog.i18nc("@info:status Don't translate the XML tags <filename>!", "Failed to import profile from <filename>{0}</filename>: {1}", file_name, "Invalid path")}
@@ -336,12 +348,14 @@ class CuraContainerRegistry(ContainerRegistry):
         self._registerSingleExtrusionMachinesExtruderStacks()
         self._connectUpgradedExtruderStacksToMachines()
 
-    ##  Check if the metadata for a container is okay before adding it.
-    #
-    #   This overrides the one from UM.Settings.ContainerRegistry because we
-    #   also require that the setting_version is correct.
     @override(ContainerRegistry)
     def _isMetadataValid(self, metadata: Optional[Dict[str, Any]]) -> bool:
+        """Check if the metadata for a container is okay before adding it.
+
+        This overrides the one from UM.Settings.ContainerRegistry because we
+        also require that the setting_version is correct.
+        """
+
         if metadata is None:
             return False
         if "setting_version" not in metadata:
@@ -353,14 +367,16 @@ class CuraContainerRegistry(ContainerRegistry):
             return False
         return True
 
-    ##  Update an imported profile to match the current machine configuration.
-    #
-    #   \param profile The profile to configure.
-    #   \param id_seed The base ID for the profile. May be changed so it does not conflict with existing containers.
-    #   \param new_name The new name for the profile.
-    #
-    #   \return None if configuring was successful or an error message if an error occurred.
     def _configureProfile(self, profile: InstanceContainer, id_seed: str, new_name: str, machine_definition_id: str) -> Optional[str]:
+        """Update an imported profile to match the current machine configuration.
+
+        :param profile: The profile to configure.
+        :param id_seed: The base ID for the profile. May be changed so it does not conflict with existing containers.
+        :param new_name: The new name for the profile.
+
+        :return: None if configuring was successful or an error message if an error occurred.
+        """
+
         profile.setDirty(True)  # Ensure the profiles are correctly saved
 
         new_id = self.createUniqueName("quality_changes", "", id_seed, catalog.i18nc("@label", "Custom profile"))
@@ -418,9 +434,11 @@ class CuraContainerRegistry(ContainerRegistry):
             for stack in self.findContainerStacks():
                 self.saveContainer(stack)
 
-    ##  Gets a list of profile writer plugins
-    #   \return List of tuples of (plugin_id, meta_data).
     def _getIOPlugins(self, io_type):
+        """Gets a list of profile writer plugins
+
+        :return: List of tuples of (plugin_id, meta_data).
+        """
         plugin_registry = PluginRegistry.getInstance()
         active_plugin_ids = plugin_registry.getActivePlugins()
 
@@ -431,8 +449,9 @@ class CuraContainerRegistry(ContainerRegistry):
                 result.append( (plugin_id, meta_data) )
         return result
 
-    ##  Convert an "old-style" pure ContainerStack to either an Extruder or Global stack.
     def _convertContainerStack(self, container: ContainerStack) -> Union[ExtruderStack.ExtruderStack, GlobalStack.GlobalStack]:
+        """Convert an "old-style" pure ContainerStack to either an Extruder or Global stack."""
+
         assert type(container) == ContainerStack
 
         container_type = container.getMetaDataEntry("type")

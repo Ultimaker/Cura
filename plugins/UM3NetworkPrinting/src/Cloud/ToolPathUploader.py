@@ -10,8 +10,9 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from ..Models.Http.CloudPrintJobResponse import CloudPrintJobResponse
 
 
-## Class responsible for uploading meshes to the cloud in separate requests.
 class ToolPathUploader:
+    """Class responsible for uploading meshes to the cloud in separate requests."""
+
 
     # The maximum amount of times to retry if the server returns one of the RETRY_HTTP_CODES
     MAX_RETRIES = 10
@@ -22,16 +23,19 @@ class ToolPathUploader:
     # The amount of bytes to send per request
     BYTES_PER_REQUEST = 256 * 1024
 
-    ## Creates a mesh upload object.
-    #  \param http: The HttpRequestManager that will handle the HTTP requests.
-    #  \param print_job: The print job response that was returned by the cloud after registering the upload.
-    #  \param data: The mesh bytes to be uploaded.
-    #  \param on_finished: The method to be called when done.
-    #  \param on_progress: The method to be called when the progress changes (receives a percentage 0-100).
-    #  \param on_error: The method to be called when an error occurs.
     def __init__(self, http: HttpRequestManager, print_job: CloudPrintJobResponse, data: bytes,
                  on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]
                  ) -> None:
+        """Creates a mesh upload object.
+
+        :param manager: The network access manager that will handle the HTTP requests.
+        :param print_job: The print job response that was returned by the cloud after registering the upload.
+        :param data: The mesh bytes to be uploaded.
+        :param on_finished: The method to be called when done.
+        :param on_progress: The method to be called when the progress changes (receives a percentage 0-100).
+        :param on_error: The method to be called when an error occurs.
+        """
+
         self._http = http
         self._print_job = print_job
         self._data = data
@@ -44,19 +48,23 @@ class ToolPathUploader:
         self._retries = 0
         self._finished = False
 
-    ## Returns the print job for which this object was created.
     @property
     def printJob(self):
+        """Returns the print job for which this object was created."""
+
         return self._print_job
 
-    ## Determines the bytes that should be uploaded next.
-    #  \return: A tuple with the first and the last byte to upload.
     def _chunkRange(self) -> Tuple[int, int]:
+        """Determines the bytes that should be uploaded next.
+
+        :return: A tuple with the first and the last byte to upload.
+        """
         last_byte = min(len(self._data), self._sent_bytes + self.BYTES_PER_REQUEST)
         return self._sent_bytes, last_byte
 
-    ## Starts uploading the mesh.
     def start(self) -> None:
+        """Starts uploading the mesh."""
+
         if self._finished:
             # reset state.
             self._sent_bytes = 0
@@ -64,13 +72,15 @@ class ToolPathUploader:
             self._finished = False
         self._uploadChunk()
 
-    ## Stops uploading the mesh, marking it as finished.
     def stop(self):
+        """Stops uploading the mesh, marking it as finished."""
+
         Logger.log("i", "Stopped uploading")
         self._finished = True
 
-    ## Uploads a chunk of the mesh to the cloud.
     def _uploadChunk(self) -> None:
+        """Uploads a chunk of the mesh to the cloud."""
+
         if self._finished:
             raise ValueError("The upload is already finished")
 
@@ -93,10 +103,12 @@ class ToolPathUploader:
             upload_progress_callback = self._progressCallback
         )
 
-    ## Handles an update to the upload progress
-    #  \param bytes_sent: The amount of bytes sent in the current request.
-    #  \param bytes_total: The amount of bytes to send in the current request.
     def _progressCallback(self, bytes_sent: int, bytes_total: int) -> None:
+        """Handles an update to the upload progress
+
+        :param bytes_sent: The amount of bytes sent in the current request.
+        :param bytes_total: The amount of bytes to send in the current request.
+        """
         Logger.log("i", "Progress callback %s / %s", bytes_sent, bytes_total)
         if bytes_total:
             total_sent = self._sent_bytes + bytes_sent
@@ -104,13 +116,16 @@ class ToolPathUploader:
 
     ## Handles an error uploading.
     def _errorCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
+        """Handles an error uploading."""
+
         body = bytes(reply.readAll()).decode()
         Logger.log("e", "Received error while uploading: %s", body)
         self.stop()
         self._on_error()
 
-    ## Checks whether a chunk of data was uploaded successfully, starting the next chunk if needed.
     def _finishedCallback(self, reply: QNetworkReply) -> None:
+        """Checks whether a chunk of data was uploaded successfully, starting the next chunk if needed."""
+
         Logger.log("i", "Finished callback %s %s",
                    reply.attribute(QNetworkRequest.HttpStatusCodeAttribute), reply.url().toString())
 
@@ -135,8 +150,9 @@ class ToolPathUploader:
                    [bytes(header).decode() for header in reply.rawHeaderList()], bytes(reply.readAll()).decode())
         self._chunkUploaded()
 
-    ## Handles a chunk of data being uploaded, starting the next chunk if needed.
     def _chunkUploaded(self) -> None:
+        """Handles a chunk of data being uploaded, starting the next chunk if needed."""
+
         # We got a successful response. Let's start the next chunk or report the upload is finished.
         first_byte, last_byte = self._chunkRange()
         self._sent_bytes += last_byte - first_byte

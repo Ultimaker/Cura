@@ -32,8 +32,9 @@ except ImportError:
     import xml.etree.ElementTree as ET
 
 
-##    Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!
 class ThreeMFReader(MeshReader):
+    """Base implementation for reading 3MF files. Has no support for textures. Only loads meshes!"""
+
     def __init__(self) -> None:
         super().__init__()
 
@@ -55,13 +56,17 @@ class ThreeMFReader(MeshReader):
             return Matrix()
 
         split_transformation = transformation.split()
-        ## Transformation is saved as:
-        ## M00 M01 M02 0.0
-        ## M10 M11 M12 0.0
-        ## M20 M21 M22 0.0
-        ## M30 M31 M32 1.0
-        ## We switch the row & cols as that is how everyone else uses matrices!
         temp_mat = Matrix()
+        """Transformation is saved as:
+            M00 M01 M02 0.0
+
+            M10 M11 M12 0.0
+
+            M20 M21 M22 0.0
+
+            M30 M31 M32 1.0
+        We switch the row & cols as that is how everyone else uses matrices!
+        """
         # Rotation & Scale
         temp_mat._data[0, 0] = split_transformation[0]
         temp_mat._data[1, 0] = split_transformation[1]
@@ -80,9 +85,11 @@ class ThreeMFReader(MeshReader):
 
         return temp_mat
 
-    ##  Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
-    #   \returns Scene node.
     def _convertSavitarNodeToUMNode(self, savitar_node: Savitar.SceneNode, file_name: str = "") -> Optional[SceneNode]:
+        """Convenience function that converts a SceneNode object (as obtained from libSavitar) to a scene node.
+
+        :returns: Scene node.
+        """
         try:
             node_name = savitar_node.getName()
             node_id = savitar_node.getId()
@@ -243,15 +250,17 @@ class ThreeMFReader(MeshReader):
 
         return result
 
-    ##  Create a scale vector based on a unit string.
-    #   The core spec defines the following:
-    #   * micron
-    #   * millimeter (default)
-    #   * centimeter
-    #   * inch
-    #   * foot
-    #   * meter
     def _getScaleFromUnit(self, unit: Optional[str]) -> Vector:
+        """Create a scale vector based on a unit string.
+
+        .. The core spec defines the following:
+        * micron
+        * millimeter (default)
+        * centimeter
+        * inch
+        * foot
+        * meter
+        """
         conversion_to_mm = {
             "micron": 0.001,
             "millimeter": 1,

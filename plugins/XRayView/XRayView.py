@@ -23,8 +23,9 @@ from cura.Scene.ConvexHullNode import ConvexHullNode
 from cura import XRayPass
 
 
-## View used to display a see-through version of objects with errors highlighted.
 class XRayView(CuraView):
+    """View used to display a see-through version of objects with errors highlighted."""
+
     def __init__(self):
         super().__init__(parent = None, use_empty_menu_placeholder = True)
 

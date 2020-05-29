@@ -7,8 +7,9 @@ from UM.Message import Message
 I18N_CATALOG = i18nCatalog("cura")
 
 
-## Class responsible for showing a progress message while a mesh is being uploaded to the cloud.
 class PrintJobUploadProgressMessage(Message):
+    """Class responsible for showing a progress message while a mesh is being uploaded to the cloud."""
+
     def __init__(self):
         super().__init__(
             title = I18N_CATALOG.i18nc("@info:status", "Sending Print Job"),
@@ -19,14 +20,17 @@ class PrintJobUploadProgressMessage(Message):
             use_inactivity_timer = False
         )
 
-    ## Shows the progress message.
     def show(self):
+        """Shows the progress message."""
+
         self.setProgress(0)
         super().show()
 
-    ## Updates the percentage of the uploaded.
-    #  \param percentage: The percentage amount (0-100).
     def update(self, percentage: int) -> None:
+        """Updates the percentage of the uploaded.
+
+        :param percentage: The percentage amount (0-100).
+        """
         if not self._visible:
             super().show()
         self.setProgress(percentage)

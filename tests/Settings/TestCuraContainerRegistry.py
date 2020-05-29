@@ -42,8 +42,9 @@ def test_createUniqueName(container_registry):
     assert container_registry.createUniqueName("user", "test", "", "nope") == "nope"
 
 
-##  Tests whether addContainer properly converts to ExtruderStack.
 def test_addContainerExtruderStack(container_registry, definition_container, definition_changes_container):
+    """Tests whether addContainer properly converts to ExtruderStack."""
+
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
@@ -61,8 +62,9 @@ def test_addContainerExtruderStack(container_registry, definition_container, def
     assert type(mock_super_add_container.call_args_list[0][0][0]) == ExtruderStack
 
 
-##  Tests whether addContainer properly converts to GlobalStack.
 def test_addContainerGlobalStack(container_registry, definition_container, definition_changes_container):
+    """Tests whether addContainer properly converts to GlobalStack."""
+
     container_registry.addContainer(definition_container)
     container_registry.addContainer(definition_changes_container)
 
