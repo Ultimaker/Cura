@@ -1,4 +1,4 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from configparser import ConfigParser
@@ -807,7 +807,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     extruder_stack = None
                     intent_category = None  # type: Optional[str]
                     if position is not None:
-                        extruder_stack = global_stack.extruders[position]
+                        extruder_stack = global_stack.extruderList[int(position)]
                         intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
@@ -835,9 +835,9 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 quality_changes_info.extruder_info_dict["0"] = container_info
                 # If the global stack we're "targeting" has never been active, but was updated from Cura 3.4,
                 # it might not have its extruders set properly.
-                if not global_stack.extruders:
+                if len(global_stack.extruderList) == 0:
                     ExtruderManager.getInstance().fixSingleExtrusionMachineExtruderDefinition(global_stack)
-                extruder_stack = global_stack.extruders["0"]
+                extruder_stack = global_stack.extruderList[0]
                 intent_category = quality_changes_intent_category_per_extruder["0"]
 
                 container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
@@ -866,7 +866,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                     continue
 
                 if container_info.container is None:
-                    extruder_stack = global_stack.extruders[position]
+                    extruder_stack = global_stack.extruderList[int(position)]
                     intent_category = quality_changes_intent_category_per_extruder[position]
                     container = self._createNewQualityChanges(quality_changes_quality_type, intent_category, quality_changes_name, global_stack, extruder_stack)
                     container_info.container = container
