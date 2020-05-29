@@ -108,6 +108,12 @@ Item
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
+                property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
+
+                onChildrenHeightChanged:
+                {
+                    addLocalPrinterDropDown.children[1].height = childrenHeight
+                }
             }
         }
     }

@@ -9,6 +9,7 @@ import UM 1.1 as UM
 ScrollView
 {
     clip: true
+
     // Setting this property to false hides the scrollbar both when the scrollbar is not needed (child height < height)
     // and when the scrollbar is not actively being hovered or pressed
     property bool scrollAlwaysVisible: true

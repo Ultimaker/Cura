@@ -87,7 +87,7 @@ Item
         {
             id: scrollView
 
-            height: (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height
+            height: childrenHeight
             width: Math.floor(parent.width * 0.4)
 
             ListView
@@ -197,7 +197,7 @@ Item
         {
             id: verticalLine
             anchors.top: parent.top
-            anchors.bottom: parent.bottom
+            height: childrenHeight - UM.Theme.getSize("default_lining").height
             width: UM.Theme.getSize("default_lining").height
             color: UM.Theme.getColor("lining")
         }
