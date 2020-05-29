@@ -5,10 +5,10 @@ import QtQuick 2.7
 import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.3
 
-import UM 1.3 as UM
+import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-Item
+UM.UnclickableItem
 {
     id: previewMenu
 
