@@ -852,12 +852,12 @@ msgstr "Largeur d'une seule ligne de bas de support."
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width label"
 msgid "Prime Tower Line Width"
-msgstr "Largeur de ligne de la tour primaire"
+msgstr "Largeur de ligne de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_line_width description"
 msgid "Width of a single prime tower line."
-msgstr "Largeur d'une seule ligne de tour primaire."
+msgstr "Largeur d'une seule ligne de tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "initial_layer_line_width_factor label"
@@ -2369,12 +2369,12 @@ msgstr "Compensation de débit sur les lignes de bas de support."
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow label"
 msgid "Prime Tower Flow"
-msgstr "Débit de la tour primaire"
+msgstr "Débit de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_flow description"
 msgid "Flow compensation on prime tower lines."
-msgstr "Compensation de débit sur les lignes de la tour primaire."
+msgstr "Compensation de débit sur les lignes de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "material_flow_layer_0 label"
@@ -2529,12 +2529,12 @@ msgstr "La vitesse à laquelle le bas de support est imprimé. L'impression à u
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower label"
 msgid "Prime Tower Speed"
-msgstr "Vitesse de la tour primaire"
+msgstr "Vitesse de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "speed_prime_tower description"
 msgid "The speed at which the prime tower is printed. Printing the prime tower slower can make it more stable when the adhesion between the different filaments is suboptimal."
-msgstr "La vitesse à laquelle la tour primaire est imprimée. L'impression plus lente de la tour primaire peut la rendre plus stable lorsque l'adhérence entre les différents filaments est sous-optimale."
+msgstr "La vitesse à laquelle la tour d'amorçage est imprimée. L'impression plus lente de la tour d'amorçage peut la rendre plus stable lorsque l'adhérence entre les différents filaments est sous-optimale."
 
 #: fdmprinter.def.json
 msgctxt "speed_travel label"
@@ -2759,12 +2759,12 @@ msgstr "L'accélération selon laquelle les bas de support sont imprimés. Les i
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower label"
 msgid "Prime Tower Acceleration"
-msgstr "Accélération de la tour primaire"
+msgstr "Accélération de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "acceleration_prime_tower description"
 msgid "The acceleration with which the prime tower is printed."
-msgstr "L'accélération selon laquelle la tour primaire est imprimée."
+msgstr "L'accélération selon laquelle la tour d'amorçage est imprimée."
 
 #: fdmprinter.def.json
 msgctxt "acceleration_travel label"
@@ -2949,12 +2949,12 @@ msgstr "Le changement instantané maximal de vitesse selon lequel les bas de sup
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower label"
 msgid "Prime Tower Jerk"
-msgstr "Saccade de la tour primaire"
+msgstr "Saccade de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "jerk_prime_tower description"
 msgid "The maximum instantaneous velocity change with which the prime tower is printed."
-msgstr "Le changement instantané maximal de vitesse selon lequel la tour primaire est imprimée."
+msgstr "Le changement instantané maximal de vitesse selon lequel la tour d'amorçage est imprimée."
 
 #: fdmprinter.def.json
 msgctxt "jerk_travel label"
@@ -3069,7 +3069,7 @@ msgstr "La vitesse à laquelle le filament est rétracté pendant une rétractio
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed label"
 msgid "Retraction Prime Speed"
-msgstr "Vitesse de rétraction primaire"
+msgstr "Vitesse de rétraction d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "retraction_prime_speed description"
@@ -4663,7 +4663,7 @@ msgstr "Paramètres utilisés pour imprimer avec plusieurs extrudeuses."
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable label"
 msgid "Enable Prime Tower"
-msgstr "Activer la tour primaire"
+msgstr "Activer la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_enable description"
@@ -4673,62 +4673,62 @@ msgstr "Imprimer une tour à côté de l'impression qui sert à amorcer le maté
 #: fdmprinter.def.json
 msgctxt "prime_tower_size label"
 msgid "Prime Tower Size"
-msgstr "Taille de la tour primaire"
+msgstr "Taille de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_size description"
 msgid "The width of the prime tower."
-msgstr "La largeur de la tour primaire."
+msgstr "La largeur de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume label"
 msgid "Prime Tower Minimum Volume"
-msgstr "Volume minimum de la tour primaire"
+msgstr "Volume minimum de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_min_volume description"
 msgid "The minimum volume for each layer of the prime tower in order to purge enough material."
-msgstr "Le volume minimum pour chaque touche de la tour primaire afin de purger suffisamment de matériau."
+msgstr "Le volume minimum pour chaque touche de la tour d'amorçage afin de purger suffisamment de matériau."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x label"
 msgid "Prime Tower X Position"
-msgstr "Position X de la tour primaire"
+msgstr "Position X de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_x description"
 msgid "The x coordinate of the position of the prime tower."
-msgstr "Les coordonnées X de la position de la tour primaire."
+msgstr "Les coordonnées X de la position de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y label"
 msgid "Prime Tower Y Position"
-msgstr "Position Y de la tour primaire"
+msgstr "Position Y de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_position_y description"
 msgid "The y coordinate of the position of the prime tower."
-msgstr "Les coordonnées Y de la position de la tour primaire."
+msgstr "Les coordonnées Y de la position de la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled label"
 msgid "Wipe Inactive Nozzle on Prime Tower"
-msgstr "Essuyer le bec d'impression inactif sur la tour primaire"
+msgstr "Essuyer le bec d'impression inactif sur la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_wipe_enabled description"
 msgid "After printing the prime tower with one nozzle, wipe the oozed material from the other nozzle off on the prime tower."
-msgstr "Après l'impression de la tour primaire à l'aide d'une buse, nettoyer le matériau qui suinte de l'autre buse sur la tour primaire."
+msgstr "Après l'impression de la tour d'amorçage à l'aide d'une buse, nettoyer le matériau qui suinte de l'autre buse sur la tour d'amorçage."
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable label"
 msgid "Prime Tower Brim"
-msgstr "Bordure de la tour primaire"
+msgstr "Bordure de la tour d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "prime_tower_brim_enable description"
 msgid "Prime-towers might need the extra adhesion afforded by a brim even if the model doesn't. Presently can't be used with the 'Raft' adhesion-type."
-msgstr "Les tours primaires peuvent avoir besoin de l'adhérence supplémentaire d'une bordure, même si le modèle n'en a pas besoin. Ne peut actuellement pas être utilisé avec le type d'adhérence « Raft » (radeau)."
+msgstr "Les tours d'amorçage peuvent avoir besoin de l'adhérence supplémentaire d'une bordure, même si le modèle n'en a pas besoin. Ne peut actuellement pas être utilisé avec le type d'adhérence « Raft » (radeau)."
 
 #: fdmprinter.def.json
 msgctxt "ooze_shield_enabled label"
@@ -4793,7 +4793,7 @@ msgstr "La vitesse à laquelle le filament est rétracté pendant une rétractio
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed label"
 msgid "Nozzle Switch Prime Speed"
-msgstr "Vitesse primaire de changement de buse"
+msgstr "Vitesse d'amorçage de changement de buse"
 
 #: fdmprinter.def.json
 msgctxt "switch_extruder_prime_speed description"
@@ -6187,7 +6187,7 @@ msgstr "La distance de rétraction du filament afin qu'il ne suinte pas pendant 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount label"
 msgid "Wipe Retraction Extra Prime Amount"
-msgstr "Degré supplémentaire de rétraction d'essuyage primaire"
+msgstr "Degré supplémentaire de rétraction d'essuyage d'amorçage"
 
 #: fdmprinter.def.json
 msgctxt "wipe_retraction_extra_prime_amount description"
@@ -6632,11 +6632,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_circular label"
 #~ msgid "Circular Prime Tower"
-#~ msgstr "Tour primaire circulaire"
+#~ msgstr "Tour d'amorçage circulaire"
 
 #~ msgctxt "prime_tower_circular description"
 #~ msgid "Make the prime tower as a circular shape."
-#~ msgstr "Réaliser la tour primaire en forme circulaire."
+#~ msgstr "Réaliser la tour d'amorçage en forme circulaire."
 
 #~ msgctxt "prime_tower_flow description"
 #~ msgid "Flow compensation: the amount of material extruded is multiplied by this value."
@@ -6772,11 +6772,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_wall_thickness label"
 #~ msgid "Prime Tower Thickness"
-#~ msgstr "Épaisseur de la tour primaire"
+#~ msgstr "Épaisseur de la tour d'amorçage"
 
 #~ msgctxt "prime_tower_wall_thickness description"
 #~ msgid "The thickness of the hollow prime tower. A thickness larger than half the Prime Tower Minimum Volume will result in a dense prime tower."
-#~ msgstr "L'épaisseur de la tour primaire creuse. Une épaisseur supérieure à la moitié du volume minimum de la tour primaire résultera en une tour primaire dense."
+#~ msgstr "L'épaisseur de la tour d'amorçage creuse. Une épaisseur supérieure à la moitié du volume minimum de la tour d'amorçage résultera en une tour d'amorçage dense."
 
 #~ msgctxt "dual_pre_wipe label"
 #~ msgid "Wipe Nozzle After Switch"
@@ -6788,11 +6788,11 @@ msgstr "Matrice de transformation à appliquer au modèle lors de son chargement
 
 #~ msgctxt "prime_tower_purge_volume label"
 #~ msgid "Prime Tower Purge Volume"
-#~ msgstr "Volume de purge de la tour primaire"
+#~ msgstr "Volume de purge de la tour d'amorçage"
 
 #~ msgctxt "prime_tower_purge_volume description"
 #~ msgid "Amount of filament to be purged when wiping on the prime tower. Purging is useful for compensating the filament lost by oozing during inactivity of the nozzle."
-#~ msgstr "Quantité de filament à purger lors de l'essuyage de la tour primaire. La purge est utile pour compenser le filament perdu par la suinte pendant l'inactivité de la buse."
+#~ msgstr "Quantité de filament à purger lors de l'essuyage de la tour d'amorçage. La purge est utile pour compenser le filament perdu par la suinte pendant l'inactivité de la buse."
 
 #~ msgctxt "bridge_wall_max_overhang label"
 #~ msgid "Bridge Wall Max Overhang"
