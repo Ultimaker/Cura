@@ -51,7 +51,7 @@ class ThreeMFWorkspaceWriter(WorkspaceWriter):
                 self._writeContainerToArchive(container, archive)
 
             # Check if the machine has extruders and save all that data as well.
-            for extruder_stack in global_stack.extruders.values():
+            for extruder_stack in global_stack.extruderList:
                 self._writeContainerToArchive(extruder_stack, archive)
                 for container in extruder_stack.getContainers():
                     self._writeContainerToArchive(container, archive)
