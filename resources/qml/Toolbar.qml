@@ -4,10 +4,10 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.3
 
-import UM 1.2 as UM
+import UM 1.4 as UM
 import Cura 1.0 as Cura
 
-Item
+UM.UnclickableItem
 {
     id: base
 
