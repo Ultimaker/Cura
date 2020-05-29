@@ -160,7 +160,7 @@ class GCodeWriter(MeshWriter):
         data = {"global_quality": serialized}
 
         all_setting_keys = flat_global_container.getAllKeys()
-        for extruder in sorted(stack.extruders.values(), key = lambda k: int(k.getMetaDataEntry("position"))):
+        for extruder in stack.extruderList:
             extruder_quality = extruder.qualityChanges
             if extruder_quality.getId() == "empty_quality_changes":
                 # Same story, if quality changes is empty, create a new one
