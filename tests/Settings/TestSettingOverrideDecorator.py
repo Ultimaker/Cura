@@ -24,6 +24,11 @@ def setting_override_decorator():
 
 
 def test_onSettingValueChanged(setting_override_decorator):
+    def mock_getRawProperty(key, property_name, *args, **kwargs):
+        if property_name == "limit_to_extruder":
+            return "-1"
+        return MagicMock(name="rawProperty")
+    container_registry.findContainerStacks().__getitem__().getRawProperty = mock_getRawProperty
     # On creation the needs slicing should be called once (as it being added should trigger a reslice)
     assert application.getBackend().needsSlicing.call_count == 1
     with patch("UM.Application.Application.getInstance", MagicMock(return_value=application)):
