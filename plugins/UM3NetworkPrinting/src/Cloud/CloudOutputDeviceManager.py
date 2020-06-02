@@ -22,7 +22,7 @@ from ..Models.Http.CloudClusterResponse import CloudClusterResponse
 
 class CloudOutputDeviceManager:
     """The cloud output device manager is responsible for using the Ultimaker Cloud APIs to manage remote clusters.
-    
+
     Keeping all cloud related logic in this class instead of the UM3OutputDevicePlugin results in more readable code.
     API spec is available on https://api.ultimaker.com/docs/connect/spec/.
     """
@@ -98,9 +98,10 @@ class CloudOutputDeviceManager:
         """Callback for when the request for getting the clusters is finished."""
 
         new_clusters = []
+        all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
-        for device_id, cluster_data in online_clusters.items():
+        for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
 

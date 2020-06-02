@@ -6,8 +6,10 @@ from UM.Operations.Operation import Operation
 
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
-##  Simple operation to set the extruder a certain object should be printed with.
+
 class SetObjectExtruderOperation(Operation):
+    """Simple operation to set the extruder a certain object should be printed with."""
+
     def __init__(self, node: SceneNode, extruder_id: str) -> None:
         self._node = node
         self._extruder_id = extruder_id

@@ -24,8 +24,9 @@ if MYPY:
 i18n_catalog = i18nCatalog("cura")
 
 
-##  The current processing state of the backend.
 class ConnectionState(IntEnum):
+    """The current processing state of the backend."""
+
     Closed = 0
     Connecting = 1
     Connected = 2
@@ -40,17 +41,19 @@ class ConnectionType(IntEnum):
     CloudConnection = 3
 
 
-##  Printer output device adds extra interface options on top of output device.
-#
-#   The assumption is made the printer is a FDM printer.
-#
-#   Note that a number of settings are marked as "final". This is because decorators
-#   are not inherited by children. To fix this we use the private counter part of those
-#   functions to actually have the implementation.
-#
-#   For all other uses it should be used in the same way as a "regular" OutputDevice.
 @signalemitter
 class PrinterOutputDevice(QObject, OutputDevice):
+    """Printer output device adds extra interface options on top of output device.
+
+    The assumption is made the printer is a FDM printer.
+
+    Note that a number of settings are marked as "final". This is because decorators
+    are not inherited by children. To fix this we use the private counter part of those
+    functions to actually have the implementation.
+
+    For all other uses it should be used in the same way as a "regular" OutputDevice.
+    """
+
 
     printersChanged = pyqtSignal()
     connectionStateChanged = pyqtSignal(str)
@@ -184,26 +187,30 @@ class PrinterOutputDevice(QObject, OutputDevice):
         if self._monitor_item is None:
             self._monitor_item = QtApplication.getInstance().createQmlComponent(self._monitor_view_qml_path, {"OutputDevice": self})
 
-    ##  Attempt to establish connection
     def connect(self) -> None:
+        """Attempt to establish connection"""
+
         self.setConnectionState(ConnectionState.Connecting)
         self._update_timer.start()
 
-    ##  Attempt to close the connection
     def close(self) -> None:
+        """Attempt to close the connection"""
+
         self._update_timer.stop()
         self.setConnectionState(ConnectionState.Closed)
 
-    ##  Ensure that close gets called when object is destroyed
     def __del__(self) -> None:
+        """Ensure that close gets called when object is destroyed"""
+
         self.close()
 
     @pyqtProperty(bool, notify = acceptsCommandsChanged)
     def acceptsCommands(self) -> bool:
         return self._accepts_commands
 
-    ##  Set a flag to signal the UI that the printer is not (yet) ready to receive commands
     def _setAcceptsCommands(self, accepts_commands: bool) -> None:
+        """Set a flag to signal the UI that the printer is not (yet) ready to receive commands"""
+
         if self._accepts_commands != accepts_commands:
             self._accepts_commands = accepts_commands
 
@@ -241,16 +248,20 @@ class PrinterOutputDevice(QObject, OutputDevice):
         # At this point there may be non-updated configurations
         self._updateUniqueConfigurations()
 
-    ##  Set the device firmware name
-    #
-    #   \param name The name of the firmware.
     def _setFirmwareName(self, name: str) -> None:
+        """Set the device firmware name
+
+        :param name: The name of the firmware.
+        """
+
         self._firmware_name = name
 
-    ##  Get the name of device firmware
-    #
-    #   This name can be used to define device type
     def getFirmwareName(self) -> Optional[str]:
+        """Get the name of device firmware
+
+        This name can be used to define device type
+        """
+
         return self._firmware_name
 
     def getFirmwareUpdater(self) -> Optional["FirmwareUpdater"]:

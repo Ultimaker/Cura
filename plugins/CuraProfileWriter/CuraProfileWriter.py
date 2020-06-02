@@ -6,15 +6,18 @@ from UM.Logger import Logger
 from cura.ReaderWriters.ProfileWriter import ProfileWriter
 import zipfile
 
-##  Writes profiles to Cura's own profile format with config files.
 class CuraProfileWriter(ProfileWriter):
-    ##  Writes a profile to the specified file path.
-    #
-    #   \param path \type{string} The file to output to.
-    #   \param profiles \type{Profile} \type{List} The profile(s) to write to that file.
-    #   \return \code True \endcode if the writing was successful, or \code
-    #   False \endcode if it wasn't.
+    """Writes profiles to Cura's own profile format with config files."""
+
     def write(self, path, profiles):
+        """Writes a profile to the specified file path.
+
+        :param path: :type{string} The file to output to.
+        :param profiles: :type{Profile} :type{List} The profile(s) to write to that file.
+        :return: True if the writing was successful, or
+                 False if it wasn't.
+        """
+
         if type(profiles) != list:
             profiles = [profiles]
 

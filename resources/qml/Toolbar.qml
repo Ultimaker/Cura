@@ -129,7 +129,6 @@ UM.UnclickableItem
 
             Repeater
             {
-                id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
                 model: extrudersModel.items.length > 1 ? extrudersModel : 0

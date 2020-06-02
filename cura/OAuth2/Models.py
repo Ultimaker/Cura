@@ -8,8 +8,9 @@ class BaseModel:
         self.__dict__.update(kwargs)
 
 
-##  OAuth OAuth2Settings data template.
 class OAuth2Settings(BaseModel):
+    """OAuth OAuth2Settings data template."""
+
     CALLBACK_PORT = None  # type: Optional[int]
     OAUTH_SERVER_URL = None  # type: Optional[str]
     CLIENT_ID = None  # type: Optional[str]
@@ -20,16 +21,18 @@ class OAuth2Settings(BaseModel):
     AUTH_FAILED_REDIRECT = "https://ultimaker.com"  # type: str
 
 
-##  User profile data template.
 class UserProfile(BaseModel):
+    """User profile data template."""
+
     user_id = None  # type: Optional[str]
     username = None  # type: Optional[str]
     profile_image_url = None  # type: Optional[str]
 
 
-##  Authentication data template.
 class AuthenticationResponse(BaseModel):
-    """Data comes from the token response with success flag and error message added."""
+    """Authentication data template."""
+
+    # Data comes from the token response with success flag and error message added.
     success = True  # type: bool
     token_type = None  # type: Optional[str]
     access_token = None  # type: Optional[str]
@@ -40,22 +43,25 @@ class AuthenticationResponse(BaseModel):
     received_at = None  # type: Optional[str]
 
 
-##  Response status template.
 class ResponseStatus(BaseModel):
+    """Response status template."""
+
     code = 200  # type: int
     message = ""  # type: str
 
 
-##  Response data template.
 class ResponseData(BaseModel):
+    """Response data template."""
+
     status = None  # type: ResponseStatus
     data_stream = None  # type: Optional[bytes]
     redirect_uri = None  # type: Optional[str]
     content_type = "text/html"  # type: str
 
 
-##  Possible HTTP responses.
 HTTP_STATUS = {
+"""Possible HTTP responses."""
+
     "OK": ResponseStatus(code = 200, message = "OK"),
     "NOT_FOUND": ResponseStatus(code = 404, message = "NOT FOUND"),
     "REDIRECT": ResponseStatus(code = 302, message = "REDIRECT")

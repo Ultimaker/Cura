@@ -20,12 +20,14 @@ _renamed_quality_profiles = {
 } # type: Dict[str, str]
 
 
-##  Upgrades configurations from the state they were in at version 4.0 to the
-#   state they should be in at version 4.1.
 class VersionUpgrade40to41(VersionUpgrade):
-    ##  Upgrades instance containers to have the new version
-    #   number.
+    """Upgrades configurations from the state they were in at version 4.0 to the
+    state they should be in at version 4.1.
+    """
+
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades instance containers to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -46,8 +48,9 @@ class VersionUpgrade40to41(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades Preferences to have the new version number.
     def upgradePreferences(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades Preferences to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 
@@ -66,8 +69,9 @@ class VersionUpgrade40to41(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades stacks to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 

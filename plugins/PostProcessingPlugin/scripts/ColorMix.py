@@ -20,7 +20,7 @@
 # Uses -
 # M163 - Set Mix Factor 
 # M164 - Save Mix - saves to T2 as a unique mix
-    
+
 import re #To perform the search and replace.
 from ..Script import Script
 
@@ -127,7 +127,7 @@ class ColorMix(Script):
         firstMix = self.getSettingValueByKey("mix_start")
         secondMix = self.getSettingValueByKey("mix_finish")
         modelOfInterest = self.getSettingValueByKey("object_number")
-        
+
         #get layer height
         layerHeight = 0
         for active_layer in data:
@@ -138,11 +138,11 @@ class ColorMix(Script):
                     break
             if layerHeight != 0:
                 break
-        
+
         #default layerHeight if not found
         if layerHeight == 0:
             layerHeight = .2
-            
+
         #get layers to use
         startLayer = 0
         endLayer = 0

@@ -37,10 +37,10 @@ try:
 except ImportError:
     CuraMarketplaceRoot = DEFAULT_MARKETPLACE_ROOT
 
-# todo Remove license and download dialog, use SyncOrchestrator instead
 
-##  Provides a marketplace for users to download plugins an materials
 class Toolbox(QObject, Extension):
+    """Provides a marketplace for users to download plugins an materials"""
+
     def __init__(self, application: CuraApplication) -> None:
         super().__init__()
 
@@ -135,8 +135,9 @@ class Toolbox(QObject, Extension):
     closeLicenseDialog = pyqtSignal()
     uninstallVariablesChanged = pyqtSignal()
 
-    ##  Go back to the start state (welcome screen or loading if no login required)
     def _restart(self):
+        """Go back to the start state (welcome screen or loading if no login required)"""
+
         # For an Essentials build, login is mandatory
         if not self._application.getCuraAPI().account.isLoggedIn and ApplicationMetadata.IsEnterpriseVersion:
             self.setViewPage("welcome")
@@ -311,10 +312,13 @@ class Toolbox(QObject, Extension):
         self.restartRequiredChanged.emit()
         return package_id
 
-    ##  Check package usage and uninstall
-    #   If the package is in use, you'll get a confirmation dialog to set everything to default
     @pyqtSlot(str)
     def checkPackageUsageAndUninstall(self, package_id: str) -> None:
+        """Check package usage and uninstall
+
+        If the package is in use, you'll get a confirmation dialog to set everything to default
+        """
+
         package_used_materials, package_used_qualities = self._package_manager.getMachinesUsingPackage(package_id)
         if package_used_materials or package_used_qualities:
             # Set up "uninstall variables" for resetMaterialsQualitiesAndUninstall
@@ -352,10 +356,13 @@ class Toolbox(QObject, Extension):
         if self._confirm_reset_dialog is not None:
             self._confirm_reset_dialog.close()
 
-    ##  Uses "uninstall variables" to reset qualities and materials, then uninstall
-    #   It's used as an action on Confirm reset on Uninstall
     @pyqtSlot()
     def resetMaterialsQualitiesAndUninstall(self) -> None:
+        """Uses "uninstall variables" to reset qualities and materials, then uninstall
+
+        It's used as an action on Confirm reset on Uninstall
+        """
+
         application = CuraApplication.getInstance()
         machine_manager = application.getMachineManager()
         container_tree = ContainerTree.getInstance()
@@ -418,8 +425,9 @@ class Toolbox(QObject, Extension):
         self._restart_required = True
         self.restartRequiredChanged.emit()
 
-    ##  Actual update packages that are in self._to_update
     def _update(self) -> None:
+        """Actual update packages that are in self._to_update"""
+
         if self._to_update:
             plugin_id = self._to_update.pop(0)
             remote_package = self.getRemotePackage(plugin_id)
@@ -433,9 +441,10 @@ class Toolbox(QObject, Extension):
         if self._to_update:
             self._application.callLater(self._update)
 
-    ##  Update a plugin by plugin_id
     @pyqtSlot(str)
     def update(self, plugin_id: str) -> None:
+        """Update a plugin by plugin_id"""
+
         self._to_update.append(plugin_id)
         self._application.callLater(self._update)
 
@@ -714,9 +723,10 @@ class Toolbox(QObject, Extension):
             self._active_package = package
             self.activePackageChanged.emit()
 
-    ##  The active package is the package that is currently being downloaded
     @pyqtProperty(QObject, fset = setActivePackage, notify = activePackageChanged)
     def activePackage(self) -> Optional[QObject]:
+        """The active package is the package that is currently being downloaded"""
+
         return self._active_package
 
     def setViewCategory(self, category: str = "plugin") -> None:
@@ -724,7 +734,7 @@ class Toolbox(QObject, Extension):
             self._view_category = category
             self.viewChanged.emit()
 
-    ## Function explicitly defined so that it can be called through the callExtensionsMethod
+    # Function explicitly defined so that it can be called through the callExtensionsMethod
     # which cannot receive arguments.
     def setViewCategoryToMaterials(self) -> None:
         self.setViewCategory("material")
