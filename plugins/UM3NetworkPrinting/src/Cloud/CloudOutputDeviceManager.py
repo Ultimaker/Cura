@@ -88,8 +88,6 @@ class CloudOutputDeviceManager:
         if self._syncing:
             return
 
-        Logger.info("Syncing cloud printer clusters")
-
         self._syncing = True
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.SYNCING)
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
