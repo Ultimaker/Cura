@@ -32,8 +32,9 @@ class NetworkMJPGImage(QQuickPaintedItem):
 
         self.setAntialiasing(True)
 
-    ##  Ensure that close gets called when object is destroyed
     def __del__(self) -> None:
+        """Ensure that close gets called when object is destroyed"""
+
         self.stop()
 
 

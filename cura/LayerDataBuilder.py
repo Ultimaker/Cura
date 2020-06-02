@@ -10,8 +10,9 @@ import numpy
 from typing import Dict, Optional
 
 
-## Builder class for constructing a LayerData object
 class LayerDataBuilder(MeshBuilder):
+    """Builder class for constructing a :py:class:`cura.LayerData.LayerData` object"""
+
     def __init__(self) -> None:
         super().__init__()
         self._layers = {}  # type: Dict[int, Layer]
@@ -42,11 +43,13 @@ class LayerDataBuilder(MeshBuilder):
 
         self._layers[layer].setThickness(thickness)
 
-    ##  Return the layer data as LayerData.
-    #
-    #   \param material_color_map: [r, g, b, a] for each extruder row.
-    #   \param line_type_brightness: compatibility layer view uses line type brightness of 0.5
     def build(self, material_color_map, line_type_brightness = 1.0):
+        """Return the layer data as :py:class:`cura.LayerData.LayerData`.
+
+        :param material_color_map: [r, g, b, a] for each extruder row.
+        :param line_type_brightness: compatibility layer view uses line type brightness of 0.5
+        """
+
         vertex_count = 0
         index_count = 0
         for layer, data in self._layers.items():

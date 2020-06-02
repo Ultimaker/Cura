@@ -438,7 +438,9 @@
         "monitor_shadow": [200, 200, 200, 255],
 
         "monitor_carousel_dot": [216, 216, 216, 255],
-        "monitor_carousel_dot_current": [119, 119, 119, 255]
+        "monitor_carousel_dot_current": [119, 119, 119, 255],
+
+        "cloud_unavailable": [153, 153, 153, 255]
     },
 
     "sizes": {

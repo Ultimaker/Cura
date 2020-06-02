@@ -24,6 +24,7 @@ class BackupsManager:
     def createBackup(self) -> Tuple[Optional[bytes], Optional[Dict[str, str]]]:
         """
         Get a back-up of the current configuration.
+
         :return: A tuple containing a ZipFile (the actual back-up) and a dict containing some metadata (like version).
         """
 
@@ -37,6 +38,7 @@ class BackupsManager:
     def restoreBackup(self, zip_file: bytes, meta_data: Dict[str, str]) -> None:
         """
         Restore a back-up from a given ZipFile.
+
         :param zip_file: A bytes object containing the actual back-up.
         :param meta_data: A dict containing some metadata that is needed to restore the back-up correctly.
         """

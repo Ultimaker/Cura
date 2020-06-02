@@ -27,9 +27,8 @@ if TYPE_CHECKING:
     from .Script import Script
 
 
-##  The post processing plugin is an Extension type plugin that enables pre-written scripts to post process generated
-#   g-code files.
 class PostProcessingPlugin(QObject, Extension):
+    """Extension type plugin that enables pre-written scripts to post process g-code files."""
     def __init__(self, parent = None) -> None:
         QObject.__init__(self, parent)
         Extension.__init__(self)
@@ -69,8 +68,9 @@ class PostProcessingPlugin(QObject, Extension):
         except IndexError:
             return ""
 
-    ##  Execute all post-processing scripts on the gcode.
     def execute(self, output_device) -> None:
+        """Execute all post-processing scripts on the gcode."""
+
         scene = Application.getInstance().getController().getScene()
         # If the scene does not have a gcode, do nothing
         if not hasattr(scene, "gcode_dict"):
@@ -119,9 +119,10 @@ class PostProcessingPlugin(QObject, Extension):
             self.selectedIndexChanged.emit() #Ensure that settings are updated
             self._propertyChanged()
 
-    ##  Remove a script from the active script list by index.
     @pyqtSlot(int)
     def removeScriptByIndex(self, index: int) -> None:
+        """Remove a script from the active script list by index."""
+
         self._script_list.pop(index)
         if len(self._script_list) - 1 < self._selected_script_index:
             self._selected_script_index = len(self._script_list) - 1
@@ -129,10 +130,12 @@ class PostProcessingPlugin(QObject, Extension):
         self.selectedIndexChanged.emit()  # Ensure that settings are updated
         self._propertyChanged()
 
-    ##  Load all scripts from all paths where scripts can be found.
-    #
-    #   This should probably only be done on init.
     def loadAllScripts(self) -> None:
+        """Load all scripts from all paths where scripts can be found.
+
+        This should probably only be done on init.
+        """
+
         if self._loaded_scripts: # Already loaded.
             return
 
@@ -152,10 +155,12 @@ class PostProcessingPlugin(QObject, Extension):
 
             self.loadScripts(path)
 
-    ##  Load all scripts from provided path.
-    #   This should probably only be done on init.
-    #   \param path Path to check for scripts.
     def loadScripts(self, path: str) -> None:
+        """Load all scripts from provided path.
+
+        This should probably only be done on init.
+        :param path: Path to check for scripts.
+        """
 
         if ApplicationMetadata.IsEnterpriseVersion:
             # Delete all __pycache__ not in installation folder, as it may present a security risk.
@@ -173,8 +178,8 @@ class PostProcessingPlugin(QObject, Extension):
             if not is_in_installation_path:
                 TrustBasics.removeCached(path)
 
-        ## Load all scripts in the scripts folders
         scripts = pkgutil.iter_modules(path = [path])
+        """Load all scripts in the scripts folders"""
         for loader, script_name, ispkg in scripts:
             # Iterate over all scripts.
             if script_name not in sys.modules:
@@ -278,9 +283,8 @@ class PostProcessingPlugin(QObject, Extension):
         self.scriptListChanged.emit()
         self._propertyChanged()
 
-    ##  When the global container stack is changed, swap out the list of active
-    #   scripts.
     def _onGlobalContainerStackChanged(self) -> None:
+        """When the global container stack is changed, swap out the list of active scripts."""
         if self._global_container_stack:
             self._global_container_stack.metaDataChanged.disconnect(self._restoreScriptInforFromMetadata)
 
@@ -323,8 +327,12 @@ class PostProcessingPlugin(QObject, Extension):
         # We do want to listen to other events.
         self._global_container_stack.metaDataChanged.connect(self._restoreScriptInforFromMetadata)
 
-    ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self) -> None:
+        """Creates the view used by show popup.
+
+        The view is saved because of the fairly aggressive garbage collection.
+        """
+
         Logger.log("d", "Creating post processing plugin view.")
 
         self.loadAllScripts()
@@ -340,8 +348,9 @@ class PostProcessingPlugin(QObject, Extension):
         # Create the save button component
         CuraApplication.getInstance().addAdditionalComponent("saveButton", self._view.findChild(QObject, "postProcessingSaveAreaButton"))
 
-    ##  Show the (GUI) popup of the post processing plugin.
     def showPopup(self) -> None:
+        """Show the (GUI) popup of the post processing plugin."""
+
         if self._view is None:
             self._createView()
             if self._view is None:
@@ -349,11 +358,13 @@ class PostProcessingPlugin(QObject, Extension):
                 return
         self._view.show()
 
-    ##  Property changed: trigger re-slice
-    #   To do this we use the global container stack propertyChanged.
-    #   Re-slicing is necessary for setting changes in this plugin, because the changes
-    #   are applied only once per "fresh" gcode
     def _propertyChanged(self) -> None:
+        """Property changed: trigger re-slice
+
+        To do this we use the global container stack propertyChanged.
+        Re-slicing is necessary for setting changes in this plugin, because the changes
+        are applied only once per "fresh" gcode
+        """
         global_container_stack = Application.getInstance().getGlobalContainerStack()
         if global_container_stack is not None:
             global_container_stack.propertyChanged.emit("post_processing_plugin", "value")

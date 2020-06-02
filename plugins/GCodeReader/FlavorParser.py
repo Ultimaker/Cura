@@ -28,9 +28,8 @@ PositionOptional = NamedTuple("Position", [("x", Optional[float]), ("y", Optiona
 Position = NamedTuple("Position", [("x", float), ("y", float), ("z", float), ("f", float), ("e", List[float])])
 
 
-##  This parser is intended to interpret the common firmware codes among all the
-#   different flavors
 class FlavorParser:
+    """This parser is intended to interpret the common firmware codes among all the different flavors"""
 
     def __init__(self) -> None:
         CuraApplication.getInstance().hideMessageSignal.connect(self._onHideMessage)
@@ -212,8 +211,9 @@ class FlavorParser:
     # G0 and G1 should be handled exactly the same.
     _gCode1 = _gCode0
 
-    ##  Home the head.
     def _gCode28(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Home the head."""
+
         return self._position(
             params.x if params.x is not None else position.x,
             params.y if params.y is not None else position.y,
@@ -221,21 +221,26 @@ class FlavorParser:
             position.f,
             position.e)
 
-    ##  Set the absolute positioning
     def _gCode90(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the absolute positioning"""
+
         self._is_absolute_positioning = True
         self._is_absolute_extrusion = True
         return position
 
-    ##  Set the relative positioning
     def _gCode91(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Set the relative positioning"""
+
         self._is_absolute_positioning = False
         self._is_absolute_extrusion = False
         return position
 
-    ##  Reset the current position to the values specified.
-    #   For example: G92 X10 will set the X to 10 without any physical motion.
     def _gCode92(self, position: Position, params: PositionOptional, path: List[List[Union[float, int]]]) -> Position:
+        """Reset the current position to the values specified.
+
+        For example: G92 X10 will set the X to 10 without any physical motion.
+        """
+
         if params.e is not None:
             # Sometimes a G92 E0 is introduced in the middle of the GCode so we need to keep those offsets for calculate the line_width
             self._extrusion_length_offset[self._extruder_number] = position.e[self._extruder_number] - params.e
@@ -291,8 +296,9 @@ class FlavorParser:
     _type_keyword = ";TYPE:"
     _layer_keyword = ";LAYER:"
 
-    ##  For showing correct x, y offsets for each extruder
     def _extruderOffsets(self) -> Dict[int, List[float]]:
+        """For showing correct x, y offsets for each extruder"""
+
         result = {}
         for extruder in ExtruderManager.getInstance().getActiveExtruderStacks():
             result[int(extruder.getMetaData().get("position", "0"))] = [
@@ -314,7 +320,7 @@ class FlavorParser:
         if not global_stack:
             return None
 
-        self._filament_diameter = global_stack.extruders[str(self._extruder_number)].getProperty("material_diameter", "value")
+        self._filament_diameter = global_stack.extruderList[self._extruder_number].getProperty("material_diameter", "value")
 
         scene_node = CuraSceneNode()
 

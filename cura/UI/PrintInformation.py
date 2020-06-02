@@ -21,11 +21,13 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-##  A class for processing and the print times per build plate as well as managing the job name
-#
-#   This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
-#   This job name is requested by the JobSpecs qml file.
 class PrintInformation(QObject):
+    """A class for processing and the print times per build plate as well as managing the job name
+
+    This class also mangles the current machine name and the filename of the first loaded mesh into a job name.
+    This job name is requested by the JobSpecs qml file.
+    """
+
 
     UNTITLED_JOB_NAME = "Untitled"
 
@@ -380,10 +382,12 @@ class PrintInformation(QObject):
     def baseName(self):
         return self._base_name
 
-    ##  Created an acronym-like abbreviated machine name from the currently
-    #   active machine name.
-    #   Called each time the global stack is switched.
     def _defineAbbreviatedMachineName(self) -> None:
+        """Created an acronym-like abbreviated machine name from the currently active machine name.
+
+        Called each time the global stack is switched.
+        """
+
         global_container_stack = self._application.getGlobalContainerStack()
         if not global_container_stack:
             self._abbr_machine = ""
@@ -392,8 +396,9 @@ class PrintInformation(QObject):
 
         self._abbr_machine = self._application.getMachineManager().getAbbreviatedMachineName(active_machine_type_name)
 
-    ##  Utility method that strips accents from characters (eg: â -> a)
     def _stripAccents(self, to_strip: str) -> str:
+        """Utility method that strips accents from characters (eg: â -> a)"""
+
         return ''.join(char for char in unicodedata.normalize('NFD', to_strip) if unicodedata.category(char) != 'Mn')
 
     @pyqtSlot(result = "QVariantMap")
@@ -431,6 +436,7 @@ class PrintInformation(QObject):
             return
         self._change_timer.start()
 
-    ##  Listen to scene changes to check if we need to reset the print information
     def _onSceneChanged(self) -> None:
+        """Listen to scene changes to check if we need to reset the print information"""
+
         self.setToZeroPrintInformation(self._active_build_plate)

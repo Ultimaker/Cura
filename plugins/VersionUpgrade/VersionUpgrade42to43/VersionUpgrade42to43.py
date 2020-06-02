@@ -57,9 +57,11 @@ _renamed_settings = {
 }  # type: Dict[str, str]
 
 
-##  Upgrades configurations from the state they were in at version 4.2 to the
-#   state they should be in at version 4.3.
 class VersionUpgrade42to43(VersionUpgrade):
+    """Upgrades configurations from the state they were in at version 4.2 to the
+
+    state they should be in at version 4.3.
+    """
     def upgradePreferences(self, serialized: str, filename: str):
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
@@ -77,16 +79,16 @@ class VersionUpgrade42to43(VersionUpgrade):
                 parser["general"]["visible_settings"] = ";".join(all_setting_keys)
 
         parser["metadata"]["setting_version"] = "9"
-            
+
         result = io.StringIO()
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades instance containers to have the new version
-    #   number.
-    #
-    #   This renames the renamed settings in the containers.
     def upgradeInstanceContainer(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades instance containers to have the new version number.
+
+        This renames the renamed settings in the containers.
+        """
         parser = configparser.ConfigParser(interpolation = None, comment_prefixes = ())
         parser.read_string(serialized)
 
@@ -111,8 +113,9 @@ class VersionUpgrade42to43(VersionUpgrade):
         parser.write(result)
         return [filename], [result.getvalue()]
 
-    ##  Upgrades stacks to have the new version number.
     def upgradeStack(self, serialized: str, filename: str) -> Tuple[List[str], List[str]]:
+        """Upgrades stacks to have the new version number."""
+
         parser = configparser.ConfigParser(interpolation = None)
         parser.read_string(serialized)
 

@@ -95,15 +95,15 @@ class PlatformPhysics:
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
                     if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node or other_node.callDecoration("getBuildPlateNumber") != node.callDecoration("getBuildPlateNumber"):
                         continue
-                    
+
                     # Ignore collisions of a group with it's own children
                     if other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
-                    
+
                     # Ignore collisions within a group
                     if other_node.getParent() and node.getParent() and (other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None):
                         continue
-                    
+
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue

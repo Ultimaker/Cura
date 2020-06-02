@@ -26,10 +26,13 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-##      This Extension runs in the background and sends several bits of information to the Ultimaker servers.
-#       The data is only sent when the user in question gave permission to do so. All data is anonymous and
-#       no model files are being sent (Just a SHA256 hash of the model).
 class SliceInfo(QObject, Extension):
+    """This Extension runs in the background and sends several bits of information to the Ultimaker servers.
+
+    The data is only sent when the user in question gave permission to do so. All data is anonymous and
+    no model files are being sent (Just a SHA256 hash of the model).
+    """
+
     info_url = "https://stats.ultimaker.com/api/cura"
 
     def __init__(self, parent = None):
@@ -54,9 +57,11 @@ class SliceInfo(QObject, Extension):
         if self._more_info_dialog is None:
             self._more_info_dialog = self._createDialog("MoreInfoWindow.qml")
 
-    ##  Perform action based on user input.
-    #   Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
     def messageActionTriggered(self, message_id, action_id):
+        """Perform action based on user input.
+
+        Note that clicking "Disable" won't actually disable the data sending, but rather take the user to preferences where they can disable it.
+        """
         self._application.getPreferences().setValue("info/asked_send_slice_info", True)
         if action_id == "MoreInfo":
             self.showMoreInfoDialog()

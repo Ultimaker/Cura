@@ -33,7 +33,7 @@ def getMetaData() -> Dict:
                 "description": catalog.i18nc("@item:inlistbox", "3MF File")
             }
         ]
-    
+
     return metaData
 
 

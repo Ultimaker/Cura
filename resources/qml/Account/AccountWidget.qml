@@ -108,7 +108,15 @@ Item
             }
         }
 
-        onClicked: popup.opened ? popup.close() : popup.open()
+        onClicked: {
+            if (popup.opened)
+            {
+                popup.close()
+            } else {
+                Cura.API.account.popupOpened()
+                popup.open()
+            }
+        }
     }
 
     Popup
@@ -119,6 +127,7 @@ Item
         x: parent.width - width
 
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
+        onOpened: Cura.API.account.popupOpened()
 
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }

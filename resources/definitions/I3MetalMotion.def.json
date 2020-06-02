@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "I3MetalMotion",
+    "name": "I3 Metal Motion",
     "inherits": "fdmprinter",
     "metadata": {
         "visible": true,

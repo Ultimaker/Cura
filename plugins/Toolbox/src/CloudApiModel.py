@@ -20,9 +20,9 @@ class CloudApiModel:
         cloud_api_version=cloud_api_version,
     )
 
-    ## https://api.ultimaker.com/cura-packages/v1/user/packages/{package_id}
     @classmethod
     def userPackageUrl(cls, package_id: str) -> str:
+        """https://api.ultimaker.com/cura-packages/v1/user/packages/{package_id}"""
 
         return (CloudApiModel.api_url_user_packages + "/{package_id}").format(
             package_id=package_id
