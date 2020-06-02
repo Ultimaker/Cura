@@ -73,7 +73,7 @@ UM.PreferencesPage
         setDefaultTheme(defaultTheme)
 
         UM.Preferences.resetPreference("cura/single_instance")
-        scaleToFitCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
+        singleInstanceCheckbox.checked = boolCheck(UM.Preferences.getValue("cura/single_instance"))
 
         UM.Preferences.resetPreference("physics/automatic_push_free")
         pushFreeCheckbox.checked = boolCheck(UM.Preferences.getValue("physics/automatic_push_free"))
