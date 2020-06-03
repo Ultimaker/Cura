@@ -14,6 +14,7 @@ class TestContainerManager(TestCase):
         self._application = MagicMock()
         self._container_registry = MagicMock()
         self._machine_manager = MagicMock()
+        self._machine_manager.activeMachine.extruderList = [MagicMock(name="Left Extruder Mock"), MagicMock(name="Right Extruder Mock")]
 
         self._mocked_mime = MagicMock()
         self._mocked_mime.preferredSuffix = "omg"
