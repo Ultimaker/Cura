@@ -58,7 +58,7 @@ class USBPrinterOutputDevice(PrinterOutputDevice):
 
         self._baud_rate = baud_rate
 
-        self._all_baud_rates = [115200, 250000, 500000, 230400, 57600, 38400, 19200, 9600]
+        self._all_baud_rates = [115200, 250000, 500000, 230400, 76800, 57600, 38400, 19200, 9600]
 
         # Instead of using a timer, we really need the update to be as a thread, as reading from serial can block.
         self._update_thread = Thread(target = self._update, daemon = True, name = "USBPrinterUpdate")
