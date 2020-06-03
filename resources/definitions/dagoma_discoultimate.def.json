@@ -8,7 +8,7 @@
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "dagoma_discoultimate.stl",
-        "platform_offset": [0, -29.1, 17],
+        "platform_offset": [0, -29.1, 18],
         "has_machine_quality": true,
         "has_materials": true,
         "preferred_material": "chromatik_pla",
