@@ -488,7 +488,11 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
-        return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
+        if self.activeMachine is None:
+            return False
+
+        group_size = int(self.activeMachine.getMetaDataEntry("group_size", "-1"))
+        return group_size > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
