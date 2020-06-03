@@ -300,6 +300,6 @@ class CloudOutputDeviceManager:
         :return: None
         """
         if isinstance(container, GlobalStack):
-            printer_clusters_map = {cluster.name: cluster_id for cluster_id, cluster in self._remote_clusters.items()}
-            if container.name in printer_clusters_map:
-                del self._remote_clusters[printer_clusters_map[container.name]]
+            container_cluster_id = container.getMetaDataEntry(self.META_CLUSTER_ID, None)
+            if container_cluster_id in self._remote_clusters.keys():
+                del self._remote_clusters[container_cluster_id]
