@@ -219,6 +219,16 @@
                     "settable_per_extruder": false,
                     "settable_per_meshgroup": false
                 },
+                "machine_always_write_active_tool":
+                {
+                    "label": "Always Write Active Tool",
+                    "description": "Write active tool after sending temp commands to inactive tool. Required for Dual Extruder printing with Smoothie or other firmware with modal tool commands.",
+                    "default_value": false,
+                    "type": "bool",
+                    "settable_per_mesh": false,
+                    "settable_per_extruder": false,
+                    "settable_per_meshgroup": false
+                },
                 "machine_center_is_zero":
                 {
                     "label": "Is Center Origin",
