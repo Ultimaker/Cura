@@ -1,7 +1,7 @@
 # Copyright (c) 2019 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Set
 
 from PyQt5.QtCore import QTimer
 from PyQt5.QtNetwork import QNetworkReply
@@ -19,6 +19,8 @@ from cura.Settings.GlobalStack import GlobalStack
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
+
+META_REMOVED_FROM_ACCOUNT = "removed_from_account"
 
 
 class CloudOutputDeviceManager:
@@ -41,6 +43,10 @@ class CloudOutputDeviceManager:
     def __init__(self) -> None:
         # Persistent dict containing the remote clusters for the authenticated user.
         self._remote_clusters = {}  # type: Dict[str, CloudOutputDevice]
+
+        # Dictionary containing all the cloud printers loaded in Cura
+        self._um_cloud_printers = {}  # type: Dict[str, GlobalStack]
+
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
@@ -100,23 +106,36 @@ class CloudOutputDeviceManager:
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
         """Callback for when the request for getting the clusters is finished."""
 
+        self._um_cloud_printers = {m.getMetaDataEntry(self.META_CLUSTER_ID): m for m in
+                                   CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
+                                       type = "machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
         new_clusters = []
         all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
+        # Add the new printers in Cura. If a printer was previously added and is rediscovered, set its metadata to
+        # reflect that and mark the printer not removed from the account
         for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
-
+            if device_id in self._um_cloud_printers and self._um_cloud_printers[device_id].getMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False):
+                self._um_cloud_printers[device_id].setMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False)
         self._onDevicesDiscovered(new_clusters)
 
-        removed_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
-        for device_id in removed_device_keys:
+        # Remove the CloudOutput device for offline printers
+        offline_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
+        for device_id in offline_device_keys:
             self._onDiscoveredDeviceRemoved(device_id)
 
-        if new_clusters or removed_device_keys:
-            self.discoveredDevicesChanged.emit()
+        # Handle devices that were previously added in Cura but do not exist in the account anymore (i.e. they were
+        # removed from the account)
+        removed_device_keys = set(self._um_cloud_printers.keys()) - set(all_clusters.keys())
         if removed_device_keys:
+            self._devicesRemovedFromAccount(removed_device_keys)
+
+        if new_clusters or offline_device_keys or removed_device_keys:
+            self.discoveredDevicesChanged.emit()
+        if offline_device_keys:
             # If the removed device was active we should connect to the new active device
             self._connectToActiveMachine()
 
@@ -146,10 +165,13 @@ class CloudOutputDeviceManager:
             if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
                     and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
                 new_devices.append(device)
-
             elif device.getId() not in self._remote_clusters:
                 self._remote_clusters[device.getId()] = device
                 remote_clusters_added = True
+            # If a printer that was removed from the account is re-added, change its metadata to mark it not removed
+            # from the account
+            elif self._um_cloud_printers[device.key].getMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False):
+                self._um_cloud_printers[device.key].setMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False)
 
         # Inform the Cloud printers model about new devices.
         new_devices_list_of_dicts = [{
@@ -206,18 +228,82 @@ class CloudOutputDeviceManager:
         max_disp_devices = 3
         if len(new_devices) > max_disp_devices:
             num_hidden = len(new_devices) - max_disp_devices + 1
-            device_name_list = ["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
-            device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "- and {} others", num_hidden))
+            device_name_list = ["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices[0:num_hidden]]
+            device_name_list.append(self.I18N_CATALOG.i18nc("info:hidden list items", "<li>... and {} others</li>", num_hidden))
             device_names = "\n".join(device_name_list)
         else:
-            device_names = "\n".join(["- {} ({})".format(device.name, device.printerTypeName) for device in new_devices])
+            device_names = "\n".join(["<li>{} ({})</li>".format(device.name, device.printerTypeName) for device in new_devices])
 
         message_text = self.I18N_CATALOG.i18nc(
             "info:status",
-            "Cloud printers added from your account:\n{}",
+            "Cloud printers added from your account:\n<ul>{}</ul>",
             device_names
         )
         message.setText(message_text)
+
+    def _devicesRemovedFromAccount(self, removed_device_ids: Set[str]) -> None:
+        """
+        Removes the CloudOutputDevice from the received device ids and marks the specific printers as "removed from
+        account". In addition, it generates a message to inform the user about the printers that are no longer linked to
+        his/her account. The message is not generated if all the printers have been previously reported as not linked
+        to the account.
+
+        :param removed_device_ids: Set of device ids, whose CloudOutputDevice needs to be removed
+        :return: None
+        """
+
+        if not CuraApplication.getInstance().getCuraAPI().account.isLoggedIn:
+            return
+
+        # Do not report device ids which have been reported previously
+        ignored_device_ids = set()
+        for device_id in removed_device_ids:
+            if self._um_cloud_printers[device_id].getMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False):
+                ignored_device_ids.add(device_id)
+        report_device_ids = removed_device_ids - ignored_device_ids
+        if len(report_device_ids) == 0:
+            return
+
+        # Generate message
+        removed_printers_message = Message(
+                title = self.I18N_CATALOG.i18ncp(
+                        "info:status",
+                        "Cloud connection is not available for a printer",
+                        "Cloud connection is not available for some printers",
+                        len(report_device_ids)
+                ),
+                lifetime = 0
+        )
+        device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in report_device_ids])
+        message_text = self.I18N_CATALOG.i18ncp(
+                "info:status",
+                "The following cloud printer is not linked to your account:\n",
+                "The following cloud printers are not linked to your account:\n",
+                len(report_device_ids)
+        )
+        message_text += self.I18N_CATALOG.i18nc(
+                "info:status",
+                "<ul>{}</ul>\nTo establish a connection, please visit the "
+                "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
+                device_names
+        )
+        removed_printers_message.setText(message_text)
+
+        # Remove the output device from the printers
+        for device_id in removed_device_ids:
+            device = self._um_cloud_printers.get(device_id, None)  # type: Optional[GlobalStack]
+            if not device:
+                continue
+            output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+            if device_id in output_device_manager.getOutputDeviceIds():
+                output_device_manager.removeOutputDevice(device_id)
+            if device_id in self._remote_clusters:
+                del self._remote_clusters[device_id]
+
+            # Update the printer's metadata to mark it as removed from account
+            device.setMetaDataEntry(META_REMOVED_FROM_ACCOUNT, True)
+
+        removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
