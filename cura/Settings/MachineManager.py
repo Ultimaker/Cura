@@ -491,6 +491,11 @@ class MachineManager(QObject):
         return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsLinkedToCurrentAccount(self) -> bool:
+        from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager import META_REMOVED_FROM_ACCOUNT
+        return not self.activeMachine.getMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False)
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
         # A network connection is only available if any output device is actually a network connected device.
         return any(d.connectionType == ConnectionType.NetworkConnection for d in self._printer_output_devices)

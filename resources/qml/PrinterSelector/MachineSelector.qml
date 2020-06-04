@@ -42,7 +42,14 @@ Cura.ExpandablePopup
             {
                 if (Cura.API.account.isLoggedIn)
                 {
-                    return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
+                    if (Cura.MachineManager.activeMachineIsLinkedToCurrentAccount)
+                    {
+                        return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
+                    }
+                    else
+                    {
+                        return catalog.i18nc("@status", "This printer is not linked to your account. Please visit the Ultimaker Digital Factory to establish a connection.")
+                    }
                 }
                 else
                 {
