@@ -246,7 +246,7 @@ Item
             }
             PropertyChanges {
                 target: panelBorder
-                anchors.bottomMargin: -(base.activeY + UM.Theme.getSize("button").height)
+                anchors.bottomMargin: ((base.activeY + UM.Theme.getSize("button").height) > panelBorder.height) ? -(base.activeY + UM.Theme.getSize("button").height) : -panelBorder.height
             }
         }
     ]
