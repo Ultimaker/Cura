@@ -1,22 +1,44 @@
-# Copyright (c) 2019 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
+import os.path
 from UM.View.View import View
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
 from UM.Scene.Selection import Selection
 from UM.Resources import Resources
+from PyQt5.QtGui import QOpenGLContext, QImage
+from PyQt5.QtCore import QSize
+
+import numpy as np
+import time
+
 from UM.Application import Application
-from UM.View.RenderBatch import RenderBatch
+from UM.Logger import Logger
+from UM.Message import Message
 from UM.Math.Color import Color
+from UM.PluginRegistry import PluginRegistry
+from UM.Platform import Platform
+from UM.Event import Event
+
+from UM.View.RenderBatch import RenderBatch
 from UM.View.GL.OpenGL import OpenGL
+
+from UM.i18n import i18nCatalog
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
+from cura import XRayPass
+
 import math
 
-## Standard view for mesh models.
+catalog = i18nCatalog("cura")
+
 
 class SolidView(View):
+    """Standard view for mesh models."""
+
+    _show_xray_warning_preference = "view/show_xray_warning"
+
     def __init__(self):
         super().__init__()
         application = Application.getInstance()
@@ -27,13 +49,31 @@ class SolidView(View):
         self._non_printing_shader = None
         self._support_mesh_shader = None
 
+        self._xray_shader = None
+        self._xray_pass = None
+        self._xray_composite_shader = None
+        self._composite_pass = None
+
         self._extruders_model = None
         self._theme = None
         self._support_angle = 90
 
         self._global_stack = None
 
-        Application.getInstance().engineCreatedSignal.connect(self._onGlobalContainerChanged)
+        self._old_composite_shader = None
+        self._old_layer_bindings = None
+
+        self._next_xray_checking_time = time.time()
+        self._xray_checking_update_time = 1.0 # seconds
+        self._xray_warning_cooldown = 60 * 10 # reshow Model error message every 10 minutes
+        self._xray_warning_message = Message(
+            catalog.i18nc("@info:status", "Your model is not manifold. The highlighted areas indicate either missing or extraneous surfaces."),
+            lifetime = 60 * 5, # leave message for 5 minutes
+            title = catalog.i18nc("@info:title", "Model errors"),
+        )
+        application.getPreferences().addPreference(self._show_xray_warning_preference, True)
+
+        application.engineCreatedSignal.connect(self._onGlobalContainerChanged)
 
     def _onGlobalContainerChanged(self) -> None:
         if self._global_stack:
@@ -91,6 +131,42 @@ class SolidView(View):
             self._support_mesh_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "striped.shader"))
             self._support_mesh_shader.setUniformValue("u_vertical_stripes", True)
             self._support_mesh_shader.setUniformValue("u_width", 5.0)
+
+        if not Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+            self._xray_shader = None
+            self._xray_composite_shader = None
+            if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._old_layer_bindings = None
+                self._old_composite_shader = None
+                self._xray_warning_message.hide()
+        else:
+            if not self._xray_shader:
+                self._xray_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray.shader"))
+
+            if not self._xray_composite_shader:
+                self._xray_composite_shader = OpenGL.getInstance().createShaderProgram(Resources.getPath(Resources.Shaders, "xray_composite.shader"))
+                theme = Application.getInstance().getTheme()
+                self._xray_composite_shader.setUniformValue("u_background_color", Color(*theme.getColor("viewport_background").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_outline_color", Color(*theme.getColor("model_selection_outline").getRgb()))
+                self._xray_composite_shader.setUniformValue("u_flat_error_color_mix", 0.)  # Don't show flat error color in solid-view.
+
+            renderer = self.getRenderer()
+            if not self._composite_pass or not 'xray' in self._composite_pass.getLayerBindings():
+                # Currently the RenderPass constructor requires a size > 0
+                # This should be fixed in RenderPass's constructor.
+                self._xray_pass = XRayPass.XRayPass(1, 1)
+
+                renderer.addRenderPass(self._xray_pass)
+
+                if not self._composite_pass:
+                    self._composite_pass = self.getRenderer().getRenderPass("composite")
+
+                self._old_layer_bindings = self._composite_pass.getLayerBindings()
+                self._composite_pass.setLayerBindings(["default", "selection", "xray"])
+                self._old_composite_shader = self._composite_pass.getCompositeShader()
+                self._composite_pass.setCompositeShader(self._xray_composite_shader)
 
     def beginRendering(self):
         scene = self.getController().getScene()
@@ -175,4 +251,56 @@ class SolidView(View):
                     renderer.queueNode(scene.getRoot(), mesh = node.getBoundingBoxMesh(), mode = RenderBatch.RenderMode.LineLoop)
 
     def endRendering(self):
-        pass
+        # check whether the xray overlay is showing badness
+        if time.time() > self._next_xray_checking_time\
+                and Application.getInstance().getPreferences().getValue(self._show_xray_warning_preference):
+            self._next_xray_checking_time = time.time() + self._xray_checking_update_time
+
+            xray_img = self._xray_pass.getOutput()
+            xray_img = xray_img.convertToFormat(QImage.Format_RGB888)
+
+            # We can't just read the image since the pixels are aligned to internal memory positions.
+            # xray_img.byteCount() != xray_img.width() * xray_img.height() * 3
+            # The byte count is a little higher sometimes. We need to check the data per line, but fast using Numpy.
+            # See https://stackoverflow.com/questions/5810970/get-raw-data-from-qimage for a description of the problem.
+            # We can't use that solution though, since it doesn't perform well in Python.
+            class QImageArrayView:
+                """
+                Class that ducktypes to be a Numpy ndarray.
+                """
+                def __init__(self, qimage):
+                    bits_pointer = qimage.bits()
+                    if bits_pointer is None:  # If this happens before there is a window.
+                        self.__array_interface__ = {
+                            "shape": (0, 0),
+                            "typestr": "|u4",
+                            "data": (0, False),
+                            "strides": (1, 3),
+                            "version": 3
+                        }
+                    else:
+                        self.__array_interface__ = {
+                            "shape": (qimage.height(), qimage.width()),
+                            "typestr": "|u4", # Use 4 bytes per pixel rather than 3, since Numpy doesn't support 3.
+                            "data": (int(bits_pointer), False),
+                            "strides": (qimage.bytesPerLine(), 3),  # This does the magic: For each line, skip the correct number of bytes. Bytes per pixel is always 3 due to QImage.Format.Format_RGB888.
+                            "version": 3
+                        }
+            array = np.asarray(QImageArrayView(xray_img)).view(np.dtype({
+                "r": (np.uint8, 0, "red"),
+                "g": (np.uint8, 1, "green"),
+                "b": (np.uint8, 2, "blue"),
+                "a": (np.uint8, 3, "alpha")  # Never filled since QImage was reformatted to RGB888.
+            }), np.recarray)
+            if np.any(np.mod(array.r, 2)):
+                self._next_xray_checking_time = time.time() + self._xray_warning_cooldown
+                self._xray_warning_message.show()
+                Logger.log("i", "X-Ray overlay found non-manifold pixels.")
+
+    def event(self, event):
+        if event.type == Event.ViewDeactivateEvent:
+            if self._composite_pass and 'xray' in self._composite_pass.getLayerBindings():
+                self.getRenderer().removeRenderPass(self._xray_pass)
+                self._composite_pass.setLayerBindings(self._old_layer_bindings)
+                self._composite_pass.setCompositeShader(self._old_composite_shader)
+                self._xray_warning_message.hide()

@@ -14,9 +14,12 @@ if TYPE_CHECKING:
 
 catalog = i18nCatalog("cura")
 
-##  This handler handles all HTTP requests on the local web server.
-#   It also requests the access token for the 2nd stage of the OAuth flow.
 class AuthorizationRequestHandler(BaseHTTPRequestHandler):
+    """This handler handles all HTTP requests on the local web server.
+
+    It also requests the access token for the 2nd stage of the OAuth flow.
+    """
+
     def __init__(self, request, client_address, server) -> None:
         super().__init__(request, client_address, server)
 
@@ -55,10 +58,13 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             # This will cause the server to shut down, so we do it at the very end of the request handling.
             self.authorization_callback(token_response)
 
-    ##  Handler for the callback URL redirect.
-    #   \param query Dict containing the HTTP query parameters.
-    #   \return HTTP ResponseData containing a success page to show to the user.
     def _handleCallback(self, query: Dict[Any, List]) -> Tuple[ResponseData, Optional[AuthenticationResponse]]:
+        """Handler for the callback URL redirect.
+
+        :param query: Dict containing the HTTP query parameters.
+        :return: HTTP ResponseData containing a success page to show to the user.
+        """
+
         code = self._queryGet(query, "code")
         state = self._queryGet(query, "state")
         if state != self.state:
@@ -95,9 +101,10 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
             self.authorization_helpers.settings.AUTH_FAILED_REDIRECT
         ), token_response
 
-    ##  Handle all other non-existing server calls.
     @staticmethod
     def _handleNotFound() -> ResponseData:
+        """Handle all other non-existing server calls."""
+
         return ResponseData(status = HTTP_STATUS["NOT_FOUND"], content_type = "text/html", data_stream = b"Not found.")
 
     def _sendHeaders(self, status: "ResponseStatus", content_type: str, redirect_uri: str = None) -> None:
@@ -110,7 +117,8 @@ class AuthorizationRequestHandler(BaseHTTPRequestHandler):
     def _sendData(self, data: bytes) -> None:
         self.wfile.write(data)
 
-    ##  Convenience helper for getting values from a pre-parsed query string
     @staticmethod
     def _queryGet(query_data: Dict[Any, List], key: str, default: Optional[str] = None) -> Optional[str]:
+        """Convenience helper for getting values from a pre-parsed query string"""
+
         return query_data.get(key, [default])[0]

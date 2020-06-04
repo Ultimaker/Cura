@@ -10,9 +10,9 @@ WARNING This script has never been tested with several extruders
 from ..Script import Script
 import numpy as np
 from UM.Logger import Logger
-from UM.Application import Application
 import re
 from cura.Settings.ExtruderManager import ExtruderManager
+
 
 def _getValue(line, key, default=None):
     """
@@ -29,6 +29,7 @@ def _getValue(line, key, default=None):
     if number is None:
         return default
     return float(number.group(0))
+
 
 class GCodeStep():
     """
@@ -85,7 +86,7 @@ class GCodeStep():
 
 
 # Execution part of the stretch plugin
-class Stretcher():
+class Stretcher:
     """
     Execution part of the stretch algorithm
     """
@@ -207,7 +208,6 @@ class Stretcher():
             return False
         return True # New sequence
 
-
     def processLayer(self, layer_steps):
         """
         Computes the new coordinates of g-code steps
@@ -290,7 +290,6 @@ class Stretcher():
                 ipos = ipos + 1
             else:
                 self.layergcode = self.layergcode + layer_steps[i].comment + "\n"
-
 
     def workOnSequence(self, orig_seq, modif_seq):
         """

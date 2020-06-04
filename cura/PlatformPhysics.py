@@ -1,9 +1,11 @@
-# Copyright (c) 2015 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import QTimer
+from shapely.errors import TopologicalError  # To capture errors if Shapely messes up.
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Scene.SceneNode import SceneNode
 from UM.Scene.Iterator.BreadthFirstIterator import BreadthFirstIterator
 from UM.Math.Vector import Vector
@@ -93,15 +95,15 @@ class PlatformPhysics:
                     # Ignore root, ourselves and anything that is not a normal SceneNode.
                     if other_node is root or not issubclass(type(other_node), SceneNode) or other_node is node or other_node.callDecoration("getBuildPlateNumber") != node.callDecoration("getBuildPlateNumber"):
                         continue
-                    
+
                     # Ignore collisions of a group with it's own children
                     if other_node in node.getAllChildren() or node in other_node.getAllChildren():
                         continue
-                    
+
                     # Ignore collisions within a group
                     if other_node.getParent() and node.getParent() and (other_node.getParent().callDecoration("isGroup") is not None or node.getParent().callDecoration("isGroup") is not None):
                         continue
-                    
+
                     # Ignore nodes that do not have the right properties set.
                     if not other_node.callDecoration("getConvexHull") or not other_node.getBoundingBox():
                         continue
@@ -136,7 +138,11 @@ class PlatformPhysics:
                             own_convex_hull = node.callDecoration("getConvexHull")
                             other_convex_hull = other_node.callDecoration("getConvexHull")
                             if own_convex_hull and other_convex_hull:
-                                overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
+                                try:
+                                    overlap = own_convex_hull.translate(move_vector.x, move_vector.z).intersectsPolygon(other_convex_hull)
+                                except TopologicalError as e:  # Can happen if the convex hull is degenerate?
+                                    Logger.warning("Got a topological error when calculating convex hull intersection: {err}".format(err = str(e)))
+                                    overlap = False
                                 if overlap:  # Moving ensured that overlap was still there. Try anew!
                                     temp_move_vector = move_vector.set(x = move_vector.x + overlap[0] * self._move_factor,
                                                                        z = move_vector.z + overlap[1] * self._move_factor)
@@ -175,7 +181,7 @@ class PlatformPhysics:
 
         if tool.getPluginId() == "TranslateTool":
             for node in Selection.getAllSelectedObjects():
-                if node.getBoundingBox().bottom < 0:
+                if node.getBoundingBox() and node.getBoundingBox().bottom < 0:
                     if not node.getDecorator(ZOffsetDecorator.ZOffsetDecorator):
                         node.addDecorator(ZOffsetDecorator.ZOffsetDecorator())
 

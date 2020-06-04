@@ -5,9 +5,8 @@
     {
         "type": "machine",
         "author": "Ultimaker",
-        "category": "Other",
         "manufacturer": "Unknown",
-        "setting_version": 11,
+        "setting_version": 15,
         "file_formats": "text/x-gcode;application/x-stl-ascii;application/x-stl-binary;application/x-wavefront-obj;application/x3g",
         "visible": false,
         "has_materials": true,
@@ -75,7 +74,7 @@
                 "material_guid":
                 {
                     "label": "Material GUID",
-                    "description": "GUID of the material. This is set automatically. ",
+                    "description": "GUID of the material. This is set automatically.",
                     "default_value": "",
                     "type": "str",
                     "enabled": false
@@ -297,18 +296,6 @@
                     "description": "The distance from the tip of the nozzle in which heat from the nozzle is transferred to the filament.",
                     "unit": "mm",
                     "default_value": 16,
-                    "type": "float",
-                    "settable_per_mesh": false,
-                    "settable_per_extruder": true,
-                    "settable_per_meshgroup": false
-                },
-                "machine_filament_park_distance":
-                {
-                    "label": "Filament Park Distance",
-                    "description": "The distance from the tip of the nozzle where to park the filament when an extruder is no longer used.",
-                    "unit": "mm",
-                    "default_value": 16,
-                    "value": "machine_heat_zone_length",
                     "type": "float",
                     "settable_per_mesh": false,
                     "settable_per_extruder": true,
@@ -1032,6 +1019,7 @@
                     "description": "The thickness of the walls in the horizontal direction. This value divided by the wall line width defines the number of walls.",
                     "unit": "mm",
                     "default_value": 0.8,
+                    "value": "wall_line_width_0 if magic_spiralize else 0.8",
                     "minimum_value": "0",
                     "minimum_value_warning": "line_width",
                     "maximum_value_warning": "10 * line_width",
@@ -1587,7 +1575,7 @@
                     "type": "float",
                     "unit": "mm",
                     "default_value": 0.35,
-                    "value": "wall_line_width_0 / 2",
+                    "value": "wall_line_width_0 / 2 + (ironing_line_spacing - skin_line_width * (1.0 + ironing_flow / 100) / 2 if ironing_pattern == 'concentric' else skin_line_width * (1.0 - ironing_flow / 100) / 2)",
                     "minimum_value_warning": "0",
                     "maximum_value_warning": "wall_line_width_0",
                     "enabled": "ironing_enabled",
@@ -1773,7 +1761,7 @@
                     "description": "A list of integer line directions to use. Elements from the list are used sequentially as the layers progress and when the end of the list is reached, it starts at the beginning again. The list items are separated by commas and the whole list is contained in square brackets. Default is an empty list which means use the traditional default angles (45 and 135 degrees for the lines and zig zag patterns and 45 degrees for all other patterns).",
                     "type": "[int]",
                     "default_value": "[ ]",
-                    "enabled": "infill_pattern != 'concentric' and infill_pattern != 'cubicsubdiv' and infill_sparse_density > 0",
+                    "enabled": "infill_pattern != 'concentric' and infill_sparse_density > 0",
                     "limit_to_extruder": "infill_extruder_nr",
                     "settable_per_mesh": true
                 },
@@ -3642,7 +3630,7 @@
                 "retraction_enable":
                 {
                     "label": "Enable Retraction",
-                    "description": "Retract the filament when the nozzle is moving over a non-printed area. ",
+                    "description": "Retract the filament when the nozzle is moving over a non-printed area.",
                     "type": "bool",
                     "default_value": true,
                     "settable_per_mesh": false,
@@ -4231,7 +4219,7 @@
                     "default_value": 1,
                     "minimum_value": "0",
                     "minimum_value_warning": "1 if support_pattern == 'concentric' else 0",
-                    "maximum_value_warning": "3",
+                    "maximum_value_warning": "0 if (support_skip_some_zags and support_pattern == 'zigzag') else 3",
                     "type": "int",
                     "value": "1 if support_tree_enable else (1 if (support_pattern == 'grid' or support_pattern == 'triangles' or support_pattern == 'concentric') else 0)",
                     "enabled": "support_enable or support_tree_enable or support_meshes_present",
@@ -4438,7 +4426,7 @@
                 "support_xy_distance_overhang":
                 {
                     "label": "Minimum Support X/Y Distance",
-                    "description": "Distance of the support structure from the overhang in the X/Y directions. ",
+                    "description": "Distance of the support structure from the overhang in the X/Y directions.",
                     "unit": "mm",
                     "type": "float",
                     "minimum_value": "0",
@@ -5893,7 +5881,7 @@
             "label": "Mesh Fixes",
             "type": "category",
             "icon": "category_fixes",
-            "description": "category_fixes",
+            "description": "Make the meshes more suited for 3D printing.",
             "children":
             {
                 "meshfix_union_all":
@@ -6006,7 +5994,7 @@
                     "description": "The maximum deviation allowed when reducing the resolution for the Maximum Resolution setting. If you increase this, the print will be less accurate, but the g-code will be smaller. Maximum Deviation is a limit for Maximum Resolution, so if the two conflict the Maximum Deviation will always be held true.",
                     "type": "float",
                     "unit": "mm",
-                    "default_value": 0.05,
+                    "default_value": 0.025,
                     "minimum_value": "0.001",
                     "minimum_value_warning": "0.01",
                     "maximum_value_warning": "0.3",
@@ -6019,13 +6007,13 @@
             "label": "Special Modes",
             "type": "category",
             "icon": "category_blackmagic",
-            "description": "category_blackmagic",
+            "description": "Non-traditional ways to print your models.",
             "children":
             {
                 "print_sequence":
                 {
                     "label": "Print Sequence",
-                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes. ",
+                    "description": "Whether to print all models one layer at a time or to wait for one model to finish, before moving on to the next. One at a time mode is possible if a) only one extruder is enabled and b) all models are separated in such a way that the whole print head can move in between and all models are lower than the distance between the nozzle and the X/Y axes.",
                     "type": "enum",
                     "options":
                     {
@@ -6192,7 +6180,7 @@
             "label": "Experimental",
             "type": "category",
             "icon": "category_experimental",
-            "description": "experimental!",
+            "description": "Features that haven't completely been fleshed out yet.",
             "children":
             {
                 "support_tree_enable":

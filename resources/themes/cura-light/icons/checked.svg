@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>checked</title>
+    <desc>Created with Sketch.</desc>
+    <g id="checked" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(1.000000, 1.000000)" fill="#000000" fill-rule="nonzero">
+            <path d="M7,0 C3.13400675,0 1.55431223e-15,3.13400675 1.55431223e-15,7 C1.55431223e-15,10.8659933 3.13400675,14 7,14 C10.8659933,14 14,10.8659933 14,7 C14,5.14348457 13.2625021,3.36300718 11.9497474,2.05025253 C10.6369928,0.737497883 8.85651541,0 7,0 Z M7,12.6 C3.9072054,12.6 1.4,10.0927946 1.4,7 C1.4,3.9072054 3.9072054,1.4 7,1.4 C10.0927946,1.4 12.6,3.9072054 12.6,7 C12.6,8.48521234 12.0100017,9.90959428 10.959798,10.959798 C9.90959428,12.0100017 8.48521234,12.6 7,12.6 Z" id="Shape"></path>
+            <polygon id="Path" points="10.01 4.41 6.3 8.12 3.99 5.81 3.01 6.79 6.3 10.08 10.99 5.39"></polygon>
+        </g>
+    </g>
+</svg>

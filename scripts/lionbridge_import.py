@@ -9,14 +9,16 @@ import os.path #To find files from the source and the destination path.
 cura_files = {"cura", "fdmprinter.def.json", "fdmextruder.def.json"}
 uranium_files = {"uranium"}
 
-##  Imports translation files from Lionbridge.
-#
-#   Lionbridge has a bit of a weird export feature. It exports it to the same
-#   file type as what we imported, so that's a .pot file. However this .pot file
-#   only contains the translations, so the header is completely empty. We need
-#   to merge those translations into our existing files so that the header is
-#   preserved.
 def lionbridge_import(source: str) -> None:
+    """Imports translation files from Lionbridge.
+
+    Lionbridge has a bit of a weird export feature. It exports it to the same
+    file type as what we imported, so that's a .pot file. However this .pot file
+    only contains the translations, so the header is completely empty. We need
+    to merge those translations into our existing files so that the header is
+    preserved.
+    """
+
     print("Importing from:", source)
     print("Importing to Cura:", destination_cura())
     print("Importing to Uranium:", destination_uranium())
@@ -43,30 +45,41 @@ def lionbridge_import(source: str) -> None:
             with io.open(destination_file, "w", encoding = "utf8") as f:
                 f.write(result)
 
-##  Gets the destination path to copy the translations for Cura to.
-#   \return Destination path for Cura.
+
 def destination_cura() -> str:
+    """Gets the destination path to copy the translations for Cura to.
+
+    :return: Destination path for Cura.
+    """
     return os.path.abspath(os.path.join(__file__, "..", "..", "resources", "i18n"))
 
-##  Gets the destination path to copy the translations for Uranium to.
-#   \return Destination path for Uranium.
+
 def destination_uranium() -> str:
+    """Gets the destination path to copy the translations for Uranium to.
+
+    :return: Destination path for Uranium.
+    """
     try:
         import UM
     except ImportError:
         relative_path = os.path.join(__file__, "..", "..", "..", "Uranium", "resources", "i18n", "uranium.pot")
-        print(os.path.abspath(relative_path))
-        if os.path.exists(relative_path):
-            return os.path.abspath(relative_path)
+        absolute_path = os.path.abspath(relative_path)
+        if os.path.exists(absolute_path):
+            absolute_path = os.path.abspath(os.path.join(absolute_path, ".."))
+            print("Uranium is at:", absolute_path)
+            return absolute_path
         else:
-            raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder.")
+            raise Exception("Can't find Uranium. Please put UM on the PYTHONPATH or put the Uranium folder next to the Cura folder. Looked for: " + absolute_path)
     return os.path.abspath(os.path.join(UM.__file__, "..", "..", "resources", "i18n"))
 
-##  Merges translations from the source file into the destination file if they
-#   were missing in the destination file.
-#   \param source The contents of the source .po file.
-#   \param destination The contents of the destination .po file.
+
 def merge(source: str, destination: str) -> str:
+    """Merges translations from the source file into the destination file if they
+
+    were missing in the destination file.
+    :param source: The contents of the source .po file.
+    :param destination: The contents of the destination .po file.
+    """
     result_lines = []
     last_destination = {
         "msgctxt": "\"\"\n",
@@ -117,11 +130,14 @@ def merge(source: str, destination: str) -> str:
             result_lines.append(line) #This line itself.
     return "\n".join(result_lines)
 
-##  Finds a translation in the source file.
-#   \param source The contents of the source .po file.
-#   \param msgctxt The ctxt of the translation to find.
-#   \param msgid The id of the translation to find.
+
 def find_translation(source: str, msgctxt: str, msgid: str) -> str:
+    """Finds a translation in the source file.
+
+    :param source: The contents of the source .po file.
+    :param msgctxt: The ctxt of the translation to find.
+    :param msgid: The id of the translation to find.
+    """
     last_source = {
         "msgctxt": "\"\"\n",
         "msgid": "\"\"\n",

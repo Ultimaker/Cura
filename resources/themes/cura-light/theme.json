@@ -369,6 +369,8 @@
         "model_selection_outline": [50, 130, 255, 255],
         "model_non_printing": [122, 122, 122, 255],
 
+        "xray_error_dark": [255,  0,  0, 255],
+        "xray_error_light": [255,  255,  0, 255],
         "xray": [26,  26,  62, 255],
         "xray_error": [255,  0,  0, 255],
 
@@ -436,7 +438,9 @@
         "monitor_shadow": [200, 200, 200, 255],
 
         "monitor_carousel_dot": [216, 216, 216, 255],
-        "monitor_carousel_dot_current": [119, 119, 119, 255]
+        "monitor_carousel_dot_current": [119, 119, 119, 255],
+
+        "cloud_unavailable": [153, 153, 153, 255]
     },
 
     "sizes": {
@@ -571,6 +575,7 @@
 
         "monitor_preheat_temperature_control": [4.5, 2.0],
 
+        "welcome_wizard_window": [46.0, 45],
         "modal_window_minimum": [60.0, 45],
         "license_window_minimum": [45, 45],
         "wizard_progress": [10.0, 0.0],

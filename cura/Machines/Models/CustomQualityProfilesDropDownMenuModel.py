@@ -14,9 +14,8 @@ if TYPE_CHECKING:
     from UM.Settings.Interfaces import ContainerInterface
 
 
-##  This model is used for the custom profile items in the profile drop down
-#   menu.
 class CustomQualityProfilesDropDownMenuModel(QualityProfilesDropDownMenuModel):
+    """This model is used for the custom profile items in the profile drop down menu."""
 
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)

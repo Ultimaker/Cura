@@ -65,6 +65,20 @@ Item
                 {
                     base.goToPage("add_printer_by_ip")
                 }
+
+                onAddCloudPrinterButtonClicked:
+                {
+                    base.goToPage("add_cloud_printers")
+                    if (!Cura.API.account.isLoggedIn)
+                    {
+                        Cura.API.account.login()
+                    }
+                    else
+                    {
+                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
+                    }
+
+                }
             }
         }
     }
@@ -143,8 +157,9 @@ Item
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
                 CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
 
-                // If we have created a machine, go to the last page, which is the "cloud" page.
-                base.goToPage("cloud")
+                // If we have created a machine, end the wizard (since this is the last page)
+                base.endWizard()
+
             }
             else
             {

@@ -129,7 +129,6 @@ Item
 
             Repeater
             {
-                id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
                 model: extrudersModel.items.length > 1 ? extrudersModel : 0
@@ -182,7 +181,7 @@ Item
         MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
             anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+            acceptedButtons: Qt.AllButtons
             onWheel: wheel.accepted = true
         }
 

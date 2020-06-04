@@ -1,10 +1,11 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
-from typing import Optional, TYPE_CHECKING, cast
+from typing import Optional, TYPE_CHECKING, cast, List
 
 
 from UM.Application import Application
+from UM.Logger import Logger
 from UM.Resources import Resources
 
 from UM.View.RenderPass import RenderPass
@@ -20,9 +21,14 @@ if TYPE_CHECKING:
     from UM.Scene.Camera import Camera
 
 
-# Make color brighter by normalizing it (maximum factor 2.5 brighter)
-# color_list is a list of 4 elements: [r, g, b, a], each element is a float 0..1
-def prettier_color(color_list):
+def prettier_color(color_list: List[float]) -> List[float]:
+    """Make color brighter by normalizing
+
+    maximum factor 2.5 brighter
+
+    :param color_list: a list of 4 elements: [r, g, b, a], each element is a float 0..1
+    :return: a normalized list of 4 elements: [r, g, b, a], each element is a float 0..1
+    """
     maximum = max(color_list[:3])
     if maximum > 0:
         factor = min(1 / maximum, 2.5)
@@ -31,11 +37,14 @@ def prettier_color(color_list):
     return [min(i * factor, 1.0) for i in color_list]
 
 
-##  A render pass subclass that renders slicable objects with default parameters.
-#   It uses the active camera by default, but it can be overridden to use a different camera.
-#
-#   This is useful to get a preview image of a scene taken from a different location as the active camera.
 class PreviewPass(RenderPass):
+    """A :py:class:`Uranium.UM.View.RenderPass` subclass that renders slicable objects with default parameters.
+
+    It uses the active camera by default, but it can be overridden to use a different camera.
+
+    This is useful to get a preview image of a scene taken from a different location as the active camera.
+    """
+
     def __init__(self, width: int, height: int) -> None:
         super().__init__("preview", width, height, 0)
 
@@ -61,7 +70,10 @@ class PreviewPass(RenderPass):
                 self._shader.setUniformValue("u_ambientColor", [0.1, 0.1, 0.1, 1.0])
                 self._shader.setUniformValue("u_specularColor", [0.6, 0.6, 0.6, 1.0])
                 self._shader.setUniformValue("u_shininess", 20.0)
+                self._shader.setUniformValue("u_renderError", 0.0)  # We don't want any error markers!.
                 self._shader.setUniformValue("u_faceId", -1)  # Don't render any selected faces in the preview.
+            else:
+                Logger.error("Unable to compile shader program: overhang.shader")
 
         if not self._non_printing_shader:
             if self._non_printing_shader:

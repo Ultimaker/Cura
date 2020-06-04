@@ -11,16 +11,22 @@ from UM.PluginObject import PluginObject
 from UM.PluginRegistry import PluginRegistry
 
 
-##  Machine actions are actions that are added to a specific machine type. Examples of such actions are
-#   updating the firmware, connecting with remote devices or doing bed leveling. A machine action can also have a
-#   qml, which should contain a "Cura.MachineAction" item. When activated, the item will be displayed in a dialog
-#   and this object will be added as "manager" (so all pyqtSlot() functions can be called by calling manager.func())
 class MachineAction(QObject, PluginObject):
+    """Machine actions are actions that are added to a specific machine type.
 
-    ##  Create a new Machine action.
-    #   \param key unique key of the machine action
-    #   \param label Human readable label used to identify the machine action.
+    Examples of such actions are updating the firmware, connecting with remote devices or doing bed leveling. A
+    machine action can also have a qml, which should contain a :py:class:`cura.MachineAction.MachineAction` item.
+    When activated, the item will be displayed in a dialog and this object will be added as "manager" (so all
+    pyqtSlot() functions can be called by calling manager.func())
+    """
+
     def __init__(self, key: str, label: str = "") -> None:
+        """Create a new Machine action.
+
+        :param key: unique key of the machine action
+        :param label: Human readable label used to identify the machine action.
+        """
+
         super().__init__()
         self._key = key
         self._label = label
@@ -34,10 +40,14 @@ class MachineAction(QObject, PluginObject):
     def getKey(self) -> str:
         return self._key
 
-    ## Whether this action needs to ask the user anything.
-    #  If not, we shouldn't present the user with certain screens which otherwise show up.
-    #  Defaults to true to be in line with the old behaviour.
     def needsUserInteraction(self) -> bool:
+        """Whether this action needs to ask the user anything.
+
+         If not, we shouldn't present the user with certain screens which otherwise show up.
+
+        :return: Defaults to true to be in line with the old behaviour.
+        """
+
         return True
 
     @pyqtProperty(str, notify = labelChanged)
@@ -49,17 +59,24 @@ class MachineAction(QObject, PluginObject):
             self._label = label
             self.labelChanged.emit()
 
-    ##  Reset the action to it's default state.
-    #   This should not be re-implemented by child classes, instead re-implement _reset.
-    #   /sa _reset
     @pyqtSlot()
     def reset(self) -> None:
+        """Reset the action to it's default state.
+
+        This should not be re-implemented by child classes, instead re-implement _reset.
+
+        :py:meth:`cura.MachineAction.MachineAction._reset`
+        """
+
         self._finished = False
         self._reset()
 
-    ##  Protected implementation of reset.
-    #   /sa reset()
     def _reset(self) -> None:
+        """Protected implementation of reset.
+
+        See also :py:meth:`cura.MachineAction.MachineAction.reset`
+        """
+
         pass
 
     @pyqtSlot()
@@ -72,8 +89,9 @@ class MachineAction(QObject, PluginObject):
     def finished(self) -> bool:
         return self._finished
 
-    ##  Protected helper to create a view object based on provided QML.
     def _createViewFromQML(self) -> Optional["QObject"]:
+        """Protected helper to create a view object based on provided QML."""
+
         plugin_path = PluginRegistry.getInstance().getPluginPath(self.getPluginId())
         if plugin_path is None:
             Logger.log("e", "Cannot create QML view: cannot find plugin path for plugin [%s]", self.getPluginId())

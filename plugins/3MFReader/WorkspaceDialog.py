@@ -229,9 +229,10 @@ class WorkspaceDialog(QObject):
         if key in self._result:
             self._result[key] = strategy
 
-    ##  Close the backend: otherwise one could end up with "Slicing..."
     @pyqtSlot()
     def closeBackend(self):
+        """Close the backend: otherwise one could end up with "Slicing..."""
+
         Application.getInstance().getBackend().close()
 
     def setMaterialConflict(self, material_conflict):
@@ -283,8 +284,9 @@ class WorkspaceDialog(QObject):
         self.showDialogSignal.emit()
 
     @pyqtSlot()
-    ##  Used to notify the dialog so the lock can be released.
     def notifyClosed(self):
+        """Used to notify the dialog so the lock can be released."""
+
         self._result = {} # The result should be cleared before hide, because after it is released the main thread lock
         self._visible = False
         try:
@@ -319,8 +321,9 @@ class WorkspaceDialog(QObject):
         self._view.hide()
         self.hide()
 
-    ##  Block thread until the dialog is closed.
     def waitForClose(self):
+        """Block thread until the dialog is closed."""
+
         if self._visible:
             if threading.current_thread() != threading.main_thread():
                 self._lock.acquire()

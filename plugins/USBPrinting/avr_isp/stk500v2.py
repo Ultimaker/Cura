@@ -56,7 +56,7 @@ class Stk500v2(ispBase.IspBase):
             self.close()
             raise
         self.serial.timeout = 5
- 
+
     def close(self):
         if self.serial is not None:
             self.serial.close()

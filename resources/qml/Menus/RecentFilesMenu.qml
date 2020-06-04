@@ -24,7 +24,7 @@ Menu
         {
             text:
             {
-                var path = modelData.toString()
+                var path = decodeURIComponent(modelData.toString())
                 return (index + 1) + ". " + path.slice(path.lastIndexOf("/") + 1);
             }
             onTriggered:

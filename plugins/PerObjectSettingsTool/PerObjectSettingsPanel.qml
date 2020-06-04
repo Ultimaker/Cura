@@ -61,7 +61,7 @@ Item
         updateMeshTypeCheckedState(type)
     }
 
-    UM.I18nCatalog { id: catalog; name: "uranium"}
+    UM.I18nCatalog { id: catalog; name: "cura"}
 
     Column
     {

@@ -19,12 +19,20 @@ ToolTip
     property int contentAlignment: Cura.ToolTip.ContentAlignment.AlignRight
 
     property alias tooltipText: tooltip.text
+    property alias arrowSize: backgroundRect.arrowSize
     property var targetPoint: Qt.point(parent.x, y + Math.round(height/2))
 
     id: tooltip
     text: ""
     delay: 500
     font: UM.Theme.getFont("default")
+    visible: opacity != 0.0
+    opacity: 0.0 // initially hidden
+
+    Behavior on opacity
+    {
+        NumberAnimation { duration: 100; }
+    }
 
     // If the text is not set, just set the height to 0 to prevent it from showing
     height: text != "" ? label.contentHeight + 2 * UM.Theme.getSize("thin_margin").width: 0
@@ -59,5 +67,13 @@ ToolTip
         textFormat: Text.RichText
         color: UM.Theme.getColor("tooltip_text")
         renderType: Text.NativeRendering
+    }
+
+    function show() {
+        opacity = 1
+    }
+
+    function hide() {
+        opacity = 0
     }
 }

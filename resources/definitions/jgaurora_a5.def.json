@@ -7,7 +7,7 @@
         "author": "Samuel Pinches",
         "manufacturer": "JGAurora",
         "file_formats": "text/x-gcode",
-        "platform": "jgaurora_a5.stl",
+        "platform": "jgaurora_a5.3mf",
         "platform_offset": [-242, -101, 273],
         "preferred_quality_type": "fast",
         "machine_extruder_trains":
@@ -53,7 +53,7 @@
             "default_value": 0.12
         },
         "wall_thickness": {
-            "default_value": 1.2
+            "value": "1.2"
         },
         "speed_print": {
             "default_value": 40

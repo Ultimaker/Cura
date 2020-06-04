@@ -17,10 +17,12 @@ from cura.Machines.VariantNode import VariantNode
 import UM.FlameProfiler
 
 
-##  This class represents a machine in the container tree.
-#
-#   The subnodes of these nodes are variants.
 class MachineNode(ContainerNode):
+    """This class represents a machine in the container tree.
+
+    The subnodes of these nodes are variants.
+    """
+
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
         self.variants = {}  # type: Dict[str, VariantNode] # Mapping variant names to their nodes.
@@ -47,20 +49,21 @@ class MachineNode(ContainerNode):
 
         self._loadAll()
 
-    ##  Get the available quality groups for this machine.
-    #
-    #   This returns all quality groups, regardless of whether they are
-    #   available to the combination of extruders or not. On the resulting
-    #   quality groups, the is_available property is set to indicate whether the
-    #   quality group can be selected according to the combination of extruders
-    #   in the parameters.
-    #   \param variant_names The names of the variants loaded in each extruder.
-    #   \param material_bases The base file names of the materials loaded in
-    #   each extruder.
-    #   \param extruder_enabled Whether or not the extruders are enabled. This
-    #   allows the function to set the is_available properly.
-    #   \return For each available quality type, a QualityGroup instance.
     def getQualityGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> Dict[str, QualityGroup]:
+        """Get the available quality groups for this machine.
+
+        This returns all quality groups, regardless of whether they are available to the combination of extruders or
+        not. On the resulting quality groups, the is_available property is set to indicate whether the quality group
+        can be selected according to the combination of extruders in the parameters.
+
+        :param variant_names: The names of the variants loaded in each extruder.
+        :param material_bases: The base file names of the materials loaded in each extruder.
+        :param extruder_enabled: Whether or not the extruders are enabled. This allows the function to set the
+        is_available properly.
+
+        :return: For each available quality type, a QualityGroup instance.
+        """
+
         if len(variant_names) != len(material_bases) or len(variant_names) != len(extruder_enabled):
             Logger.log("e", "The number of extruders in the list of variants (" + str(len(variant_names)) + ") is not equal to the number of extruders in the list of materials (" + str(len(material_bases)) + ") or the list of enabled extruders (" + str(len(extruder_enabled)) + ").")
             return {}
@@ -98,28 +101,26 @@ class MachineNode(ContainerNode):
             quality_groups[quality_type].is_available = True
         return quality_groups
 
-    ##  Returns all of the quality changes groups available to this printer.
-    #
-    #   The quality changes groups store which quality type and intent category
-    #   they were made for, but not which material and nozzle. Instead for the
-    #   quality type and intent category, the quality changes will always be
-    #   available but change the quality type and intent category when
-    #   activated.
-    #
-    #   The quality changes group does depend on the printer: Which quality
-    #   definition is used.
-    #
-    #   The quality changes groups that are available do depend on the quality
-    #   types that are available, so it must still be known which extruders are
-    #   enabled and which materials and variants are loaded in them. This allows
-    #   setting the correct is_available flag.
-    #   \param variant_names The names of the variants loaded in each extruder.
-    #   \param material_bases The base file names of the materials loaded in
-    #   each extruder.
-    #   \param extruder_enabled For each extruder whether or not they are
-    #   enabled.
-    #   \return List of all quality changes groups for the printer.
     def getQualityChangesGroups(self, variant_names: List[str], material_bases: List[str], extruder_enabled: List[bool]) -> List[QualityChangesGroup]:
+        """Returns all of the quality changes groups available to this printer.
+
+        The quality changes groups store which quality type and intent category they were made for, but not which
+        material and nozzle. Instead for the quality type and intent category, the quality changes will always be
+        available but change the quality type and intent category when activated.
+
+        The quality changes group does depend on the printer: Which quality definition is used.
+
+        The quality changes groups that are available do depend on the quality types that are available, so it must
+        still be known which extruders are enabled and which materials and variants are loaded in them. This allows
+        setting the correct is_available flag.
+
+        :param variant_names: The names of the variants loaded in each extruder.
+        :param material_bases: The base file names of the materials loaded in each extruder.
+        :param extruder_enabled: For each extruder whether or not they are enabled.
+
+        :return: List of all quality changes groups for the printer.
+        """
+
         machine_quality_changes = ContainerRegistry.getInstance().findContainersMetadata(type = "quality_changes", definition = self.quality_definition)  # All quality changes for each extruder.
 
         groups_by_name = {}  #type: Dict[str, QualityChangesGroup]  # Group quality changes profiles by their display name. The display name must be unique for quality changes. This finds profiles that belong together in a group.
@@ -147,18 +148,19 @@ class MachineNode(ContainerNode):
 
         return list(groups_by_name.values())
 
-    ##  Gets the preferred global quality node, going by the preferred quality
-    #   type.
-    #
-    #   If the preferred global quality is not in there, an arbitrary global
-    #   quality is taken.
-    #   If there are no global qualities, an empty quality is returned.
     def preferredGlobalQuality(self) -> "QualityNode":
+        """Gets the preferred global quality node, going by the preferred quality type.
+
+        If the preferred global quality is not in there, an arbitrary global quality is taken. If there are no global
+        qualities, an empty quality is returned.
+        """
+
         return self.global_qualities.get(self.preferred_quality_type, next(iter(self.global_qualities.values())))
 
-    ##  (Re)loads all variants under this printer.
     @UM.FlameProfiler.profile
     def _loadAll(self) -> None:
+        """(Re)loads all variants under this printer."""
+
         container_registry = ContainerRegistry.getInstance()
         if not self.has_variants:
             self.variants["empty"] = VariantNode("empty_variant", machine = self)
@@ -171,6 +173,10 @@ class MachineNode(ContainerNode):
                 if variant_name not in self.variants:
                     self.variants[variant_name] = VariantNode(variant["id"], machine = self)
                     self.variants[variant_name].materialsChanged.connect(self.materialsChanged)
+                else:
+                    # Force reloading the materials if the variant already exists or else materals won't be loaded
+                    # when the G-Code flavor changes --> CURA-7354
+                    self.variants[variant_name]._loadAll()
             if not self.variants:
                 self.variants["empty"] = VariantNode("empty_variant", machine = self)
 

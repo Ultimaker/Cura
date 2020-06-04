@@ -10,8 +10,14 @@ class PrintJobPreviewImageProvider(QQuickImageProvider):
     def __init__(self):
         super().__init__(QQuickImageProvider.Image)
 
-    ##  Request a new image.
     def requestImage(self, id: str, size: QSize) -> Tuple[QImage, QSize]:
+        """Request a new image.
+
+        :param id: id of the requested image
+        :param size: is not used defaults to QSize(15, 15)
+        :return: an tuple containing the image and size
+        """
+
         # The id will have an uuid and an increment separated by a slash. As we don't care about the value of the
         # increment, we need to strip that first.
         uuid = id[id.find("/") + 1:]

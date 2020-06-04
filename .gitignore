@@ -53,6 +53,8 @@ plugins/GodMode
 plugins/OctoPrintPlugin
 plugins/ProfileFlattener
 plugins/SettingsGuide
+plugins/SettingsGuide2
+plugins/SVGToolpathReader
 plugins/X3GWriter
 
 #Build stuff

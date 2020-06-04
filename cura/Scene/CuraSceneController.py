@@ -102,9 +102,10 @@ class CuraSceneController(QObject):
                     return True
         return False
 
-    ##  Either select or deselect an item
     @pyqtSlot(int)
     def changeSelection(self, index):
+        """Either select or deselect an item"""
+
         modifiers = QApplication.keyboardModifiers()
         ctrl_is_active = modifiers & Qt.ControlModifier
         shift_is_active = modifiers & Qt.ShiftModifier

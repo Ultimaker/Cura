@@ -5,15 +5,48 @@ import QtQuick 2.7
 import QtQuick.Controls 2.3
 
 import UM 1.2 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 Cura.ExpandablePopup
 {
     id: machineSelector
 
     property bool isNetworkPrinter: Cura.MachineManager.activeMachineHasNetworkConnection
-    property bool isCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isConnectedCloudPrinter: Cura.MachineManager.activeMachineHasCloudConnection
+    property bool isCloudRegistered: Cura.MachineManager.activeMachineHasCloudRegistration
     property bool isGroup: Cura.MachineManager.activeMachineIsGroup
+
+    readonly property string connectionStatus: {
+        if (isNetworkPrinter)
+        {
+            return "printer_connected"
+        }
+        else if (isConnectedCloudPrinter && Cura.API.connectionStatus.isInternetReachable)
+        {
+            return "printer_cloud_connected"
+        }
+        else if (isCloudRegistered)
+        {
+            return "printer_cloud_not_available"
+        }
+        else
+        {
+            return ""
+        }
+    }
+
+    readonly property string connectionStatusMessage: {
+        if (connectionStatus == "printer_cloud_not_available")
+        {
+            if(Cura.API.connectionStatus.isInternetReachable){
+                return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection and sign in to connect to the cloud printer.")
+            } else {
+                return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
+            }
+        } else {
+            return ""
+        }
+    }
 
     contentPadding: UM.Theme.getSize("default_lining").width
     contentAlignment: Cura.ExpandablePopup.ContentAlignment.AlignLeft
@@ -44,7 +77,7 @@ Cura.ExpandablePopup
             {
                 return UM.Theme.getIcon("printer_group")
             }
-            else if (isNetworkPrinter || isCloudPrinter)
+            else if (isNetworkPrinter || isCloudRegistered)
             {
                 return UM.Theme.getIcon("printer_single")
             }
@@ -59,6 +92,7 @@ Cura.ExpandablePopup
 
         UM.RecolorImage
         {
+            id: connectionStatusImage
             anchors
             {
                 bottom: parent.bottom
@@ -66,27 +100,14 @@ Cura.ExpandablePopup
                 leftMargin: UM.Theme.getSize("thick_margin").width
             }
 
-            source:
-            {
-                if (isNetworkPrinter)
-                {
-                    return UM.Theme.getIcon("printer_connected")
-                }
-                else if (isCloudPrinter)
-                {
-                    return UM.Theme.getIcon("printer_cloud_connected")
-                }
-                else
-                {
-                    return ""
-                }
-            }
+            source: UM.Theme.getIcon(connectionStatus)
 
             width: UM.Theme.getSize("printer_status_icon").width
             height: UM.Theme.getSize("printer_status_icon").height
 
-            color: UM.Theme.getColor("primary")
-            visible: isNetworkPrinter || isCloudPrinter
+            color: connectionStatus == "printer_cloud_not_available" ? UM.Theme.getColor("cloud_unavailable") : UM.Theme.getColor("primary")
+
+            visible: isNetworkPrinter || isCloudRegistered
 
             // Make a themable circle in the background so we can change it in other themes
             Rectangle
@@ -100,6 +121,38 @@ Cura.ExpandablePopup
                 color: UM.Theme.getColor("main_background")
                 z: parent.z - 1
             }
+
+        }
+
+        MouseArea // Connection status tooltip hover area
+        {
+            id: connectionStatusTooltipHoverArea
+            anchors.fill: parent
+            hoverEnabled: connectionStatusMessage !== ""
+            acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
+
+            onEntered:
+            {
+                machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+                tooltip.show()
+            }
+            onExited: { tooltip.hide() }
+        }
+
+        Cura.ToolTip
+        {
+            id: tooltip
+
+            width: 250 * screenScaleFactor
+            tooltipText: connectionStatusMessage
+            arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
+            x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
+            y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
+            z: popup.z + 1
+            targetPoint: Qt.point(
+                connectionStatusImage.x + Math.round(connectionStatusImage.width / 2),
+                connectionStatusImage.y
+            )
         }
     }
 

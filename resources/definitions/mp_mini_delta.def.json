@@ -1,22 +1,21 @@
 {
-	"version": 2,
+    "version": 2,
     "name": "MP Mini Delta",
-	"inherits": "fdmprinter",
+    "inherits": "fdmprinter",
     "metadata": {
         "author": "MPMD Facebook Group",
         "manufacturer": "Monoprice",
-		"category": "Other",
         "file_formats": "text/x-gcode",
-        "platform": "mp_mini_delta_platform.stl",	
+        "platform": "mp_mini_delta_platform.3mf",
         "supports_usb_connection": true,
         "has_machine_quality": false,
         "visible": true,
-		"platform_offset": [0, 0, 0],
-		"has_materials": true,
-		"has_variants": false,
-		"has_machine_materials": false,
-		"has_variant_materials": false,
-		"preferred_quality_type": "normal",
+        "platform_offset": [0, 0, 0],
+        "has_materials": true,
+        "has_variants": false,
+        "has_machine_materials": false,
+        "has_variant_materials": false,
+        "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {
             "0": "mp_mini_delta_extruder_0"
@@ -24,14 +23,14 @@
     },
 
     "overrides": {
- 		"machine_start_gcode":
-		{
-			"default_value": ";MPMD Basic Calibration Tutorial: \n; https://www.thingiverse.com/thing:3892011 \n; \n; If you want to put calibration values in your \n; Start Gcode, put them here. \n; \n;If on stock firmware, at minimum, consider adding \n;M665 R here since there is a firmware bug.  \n; \n; Calibration part ends here \n; \nG90 ; switch to absolute positioning \nG92 E0 ; reset extrusion distance \nG1 E20 F200 ; purge 20mm of filament to prime nozzle. \nG92 E0 ; reset extrusion distance \nG4 S5 ; Pause for 5 seconds to allow time for removing extruded filament \nG28 ; start from home position \nG1 E-6 F900 ; retract 6mm of filament before starting the bed leveling process \nG92 E0 ; reset extrusion distance \nG4 S5 ; pause for 5 seconds to allow time for removing extruded filament \nG29 P2 Z0.28 ; Auto-level ; ADJUST Z higher or lower to set first layer height. Start with 0.02 adjustments. \nG1 Z30 ; raise Z 30mm to prepare for priming the nozzle \nG1 E5 F200 ; extrude 5mm of filament to help prime the nozzle just prior to the start of the print \nG92 E0 ; reset extrusion distance \nG4 S5 ; pause for 5 seconds to allow time for cleaning the nozzle and build plate if needed "
-		},
-		"machine_end_gcode":
-		{		
-			"default_value": "M107; \nM104 S0; turn off hotend heater \nM140 S0; turn off bed heater \nG91; Switch to use Relative Coordinates \nG1 E-2 F300; retract the filament a bit before lifting the nozzle to release some of the pressure \nG1 Z5 E-5 F4800; move nozzle up a bit and retract filament even more \nG28 X0; return to home positions so the nozzle is out of the way \nM84; turn off stepper motors \nG90; switch to absolute positioning \nM82; absolute extrusion mode"
-		},
+        "machine_start_gcode":
+        {
+            "default_value": ";MPMD Basic Calibration Tutorial: \n; https://www.thingiverse.com/thing:3892011 \n; \n; If you want to put calibration values in your \n; Start Gcode, put them here. \n; \n;If on stock firmware, at minimum, consider adding \n;M665 R here since there is a firmware bug.  \n; \n; Calibration part ends here \n; \nG90 ; switch to absolute positioning \nG92 E0 ; reset extrusion distance \nG1 E20 F200 ; purge 20mm of filament to prime nozzle. \nG92 E0 ; reset extrusion distance \nG4 S5 ; Pause for 5 seconds to allow time for removing extruded filament \nG28 ; start from home position \nG1 E-6 F900 ; retract 6mm of filament before starting the bed leveling process \nG92 E0 ; reset extrusion distance \nG4 S5 ; pause for 5 seconds to allow time for removing extruded filament \nG29 P2 Z0.28 ; Auto-level ; ADJUST Z higher or lower to set first layer height. Start with 0.02 adjustments. \nG1 Z30 ; raise Z 30mm to prepare for priming the nozzle \nG1 E5 F200 ; extrude 5mm of filament to help prime the nozzle just prior to the start of the print \nG92 E0 ; reset extrusion distance \nG4 S5 ; pause for 5 seconds to allow time for cleaning the nozzle and build plate if needed "
+        },
+        "machine_end_gcode":
+        {        
+            "default_value": "M107; \nM104 S0; turn off hotend heater \nM140 S0; turn off bed heater \nG91; Switch to use Relative Coordinates \nG1 E-2 F300; retract the filament a bit before lifting the nozzle to release some of the pressure \nG1 Z5 E-5 F4800; move nozzle up a bit and retract filament even more \nG28 X0; return to home positions so the nozzle is out of the way \nM84; turn off stepper motors \nG90; switch to absolute positioning \nM82; absolute extrusion mode"
+        },
         "machine_width": { "default_value": 110 },
         "machine_depth": { "default_value": 110 },
         "machine_height": { "default_value": 120 },
@@ -39,17 +38,13 @@
         "machine_shape": { "default_value": "elliptic" },
         "machine_center_is_zero": { "default_value": true },
         "machine_nozzle_size": {
-            "default_value": 0.4,
-            "minimum_value": 0.10,
-            "maximum_value": 0.80
+            "default_value": 0.4
         },
         "layer_height": {
-            "default_value": 0.14, 
-            "minimum_value": 0.04
+            "default_value": 0.14
         },
-		"layer_height_0": {
-            "default_value": 0.21,
-            "minimum_value": 0.07
+        "layer_height_0": {
+            "default_value": 0.21
         },
         "material_bed_temperature": { "value": 40 },
         "line_width": { "value": "round(machine_nozzle_size * 0.875, 2)" },
