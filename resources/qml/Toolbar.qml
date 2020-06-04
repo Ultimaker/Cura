@@ -246,7 +246,14 @@ Item
             }
             PropertyChanges {
                 target: panelBorder
-                anchors.bottomMargin: ((base.activeY + UM.Theme.getSize("button").height) > panelBorder.height) ? -(base.activeY + UM.Theme.getSize("button").height) : -panelBorder.height
+                anchors.bottomMargin: {
+                    if (panelBorder.height > (base.activeY + UM.Theme.getSize("button").height)) {
+                        // panel is tall, align the top of the panel with the top of the first tool button
+                        return -panelBorder.height
+                    }
+                    // align the bottom of the panel with the bottom of the selected tool button
+                    return -(base.activeY + UM.Theme.getSize("button").height)
+                }
             }
         }
     ]
