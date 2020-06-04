@@ -22,6 +22,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular references.
+from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
@@ -492,8 +493,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsLinkedToCurrentAccount(self) -> bool:
-        from plugins.UM3NetworkPrinting.src.Cloud.CloudOutputDeviceManager import META_REMOVED_FROM_ACCOUNT
-        return not self.activeMachine.getMetaDataEntry(META_REMOVED_FROM_ACCOUNT, False)
+        return parseBool(self.activeMachine.getMetaDataEntry("linked_to_account", "True"))
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
