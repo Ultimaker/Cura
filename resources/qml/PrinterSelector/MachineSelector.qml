@@ -35,7 +35,7 @@ Cura.ExpandablePopup
         }
     }
 
-    readonly property string connectionStatusMessage: {
+    function getConnectionStatusMessage() {
         if (connectionStatus == "printer_cloud_not_available")
         {
             if(Cura.API.connectionStatus.isInternetReachable)
@@ -139,12 +139,13 @@ Cura.ExpandablePopup
         {
             id: connectionStatusTooltipHoverArea
             anchors.fill: parent
-            hoverEnabled: connectionStatusMessage !== ""
+            hoverEnabled: getConnectionStatusMessage() !== ""
             acceptedButtons: Qt.NoButton // react to hover only, don't steal clicks
 
             onEntered:
             {
                 machineSelector.mouseArea.entered() // we want both this and the outer area to be entered
+                tooltip.tooltipText = getConnectionStatusMessage()
                 tooltip.show()
             }
             onExited: { tooltip.hide() }
@@ -155,7 +156,7 @@ Cura.ExpandablePopup
             id: tooltip
 
             width: 250 * screenScaleFactor
-            tooltipText: connectionStatusMessage
+            tooltipText: getConnectionStatusMessage()
             arrowSize: UM.Theme.getSize("button_tooltip_arrow").width
             x: connectionStatusImage.x - UM.Theme.getSize("narrow_margin").width
             y: connectionStatusImage.y + connectionStatusImage.height + UM.Theme.getSize("narrow_margin").height
