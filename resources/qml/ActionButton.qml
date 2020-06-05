@@ -98,7 +98,7 @@ Button
                 target: buttonText
                 property: "width"
                 value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
+                                             : ((maximumWidth != 0 && parent.contentWidth > maximumWidth) ? maximumWidth : undefined)
             }
         }
 
