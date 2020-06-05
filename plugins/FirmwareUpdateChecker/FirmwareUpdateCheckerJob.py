@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from UM.Application import Application
@@ -114,7 +114,7 @@ class FirmwareUpdateCheckerJob(Job):
                 # notify the user when no new firmware version is available.
                 if (checked_version != "") and (checked_version != current_version):
                     Logger.log("i", "Showing firmware update message for new version: {version}".format(version = current_version))
-                    message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name,
+                    message = FirmwareUpdateCheckerMessage(machine_id, self._machine_name, current_version,
                                                            self._lookups.getRedirectUserUrl())
                     message.actionTriggered.connect(self._callback)
                     message.show()
