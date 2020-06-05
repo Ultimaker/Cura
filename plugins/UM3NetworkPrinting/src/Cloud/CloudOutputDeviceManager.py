@@ -290,6 +290,12 @@ class CloudOutputDeviceManager:
                 device_names
         )
         removed_printers_message.setText(message_text)
+        removed_printers_message.addAction("keep_printer_configurations_action",
+                               name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
+                               icon = "",
+                               description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
+                               button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
+        removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
         # Remove the output device from the printers
         for device_id in removed_device_ids:
@@ -391,3 +397,8 @@ class CloudOutputDeviceManager:
             container_cluster_id = container.getMetaDataEntry(self.META_CLUSTER_ID, None)
             if container_cluster_id in self._remote_clusters.keys():
                 del self._remote_clusters[container_cluster_id]
+
+    @staticmethod
+    def _onRemovedPrintersMessageActionTriggered(removed_printers_message: Message, action: str) -> None:
+        if action == "keep_printer_configurations_action":
+            removed_printers_message.hide()
