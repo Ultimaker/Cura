@@ -16,8 +16,8 @@
             "2": "ThickInk_MK_1_quad_extruder_3",
             "3": "ThickInk_MK_1_quad_extruder_4"
         },
-        "platform": "teste.stl",
-        "platform_offset": [ -345, -105, 0],
+        "platform": "ThickInk_MK_1.stl",
+        "platform_offset": [ -112, -3, 0],
         "first_start_actions": ["MachineSettingsAction"],
         "supported_actions": ["MachineSettingsAction"]
     },
@@ -58,6 +58,6 @@
         },
         "machine_end_gcode": {
             "default_value": "; -- END GCODE --\nM117 cooling down....\nM106 S255\nM140 S5\nM104 T0 S5\nM104 T1 S5\nM104 T2 S5\nM104 T3 S5\n\nG91\nG1 Z1 F900\nG90\n\nG1 X20.0 Y260.0 F6000\nG4 S7\nM84\nG4 S90\nM107\nM42 P12 S0\nM42 P13 S0\nM84\nT0\nM117 Finished.\n; -- end of GCODE --"
-        },
+        }
     }
 }
