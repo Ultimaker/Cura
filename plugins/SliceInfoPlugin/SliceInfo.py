@@ -101,7 +101,7 @@ class SliceInfo(QObject, Extension):
 
         user_modified_setting_keys = set()  # type: Set[str]
 
-        for stack in [global_stack] + list(global_stack.extruders.values()):
+        for stack in [global_stack] + global_stack.extruderList:
             # Get all settings in user_changes and quality_changes
             all_keys = stack.userChanges.getAllKeys() | stack.qualityChanges.getAllKeys()
             user_modified_setting_keys |= all_keys
@@ -152,7 +152,7 @@ class SliceInfo(QObject, Extension):
 
             # add extruder specific data to slice info
             data["extruders"] = []
-            extruders = list(global_stack.extruders.values())
+            extruders = global_stack.extruderList
             extruders = sorted(extruders, key = lambda extruder: extruder.getMetaDataEntry("position"))
 
             for extruder in extruders:
