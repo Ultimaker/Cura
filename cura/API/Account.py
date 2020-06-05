@@ -112,9 +112,6 @@ class Account(QObject):
         :param service_name: A unique name for your service, such as `plugins` or `backups`
         :param state: One of SyncState
         """
-
-        Logger.info("Service {service} enters sync state {state}", service = service_name, state = state)
-
         prev_state = self._sync_state
 
         self._sync_services[service_name] = state
