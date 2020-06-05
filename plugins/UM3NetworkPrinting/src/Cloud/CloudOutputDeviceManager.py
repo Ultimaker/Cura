@@ -260,8 +260,10 @@ class CloudOutputDeviceManager:
         for device_id in removed_device_ids:
             if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(self.META_LINKED_TO_ACCOUNT, "true")):
                 ignored_device_ids.add(device_id)
-        report_device_ids = removed_device_ids - ignored_device_ids
-        if len(report_device_ids) == 0:
+        # Keep the reported_device_ids list in a class variable, so that the message button actions can access it and
+        # take the necessary steps to fulfill their purpose.
+        self.reported_device_ids = removed_device_ids - ignored_device_ids
+        if len(self.reported_device_ids) == 0:
             return
 
         # Generate message
@@ -270,16 +272,16 @@ class CloudOutputDeviceManager:
                         "info:status",
                         "Cloud connection is not available for a printer",
                         "Cloud connection is not available for some printers",
-                        len(report_device_ids)
+                        len(self.reported_device_ids)
                 ),
                 lifetime = 0
         )
-        device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in report_device_ids])
+        device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.I18N_CATALOG.i18ncp(
                 "info:status",
                 "The following cloud printer is not linked to your account:\n",
                 "The following cloud printers are not linked to your account:\n",
-                len(report_device_ids)
+                len(self.reported_device_ids)
         )
         message_text += self.I18N_CATALOG.i18nc(
                 "info:status",
