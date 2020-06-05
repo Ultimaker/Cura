@@ -1,0 +1,82 @@
+{
+    "name": "ThickInk Mark 1",
+    "version": 2,
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "Guilherme Chiang",
+        "manufacturer": "Chiang's Art",
+        "file_formats": "text/x-gcode",
+		"nozzle_offsetting_for_disallowed_areas" : false,
+
+        "machine_extruder_trains":
+        {
+            "0": "ThickInk_MK_1_quad_extruder_1",
+            "1": "ThickInk_MK_1_quad_extruder_2",
+            "2": "ThickInk_MK_1_quad_extruder_3",
+            "3": "ThickInk_MK_1_quad_extruder_4"
+        },
+        "platform": "teste.stl",
+        "platform_offset": [ -345, -105, 0],
+        "first_start_actions": ["MachineSettingsAction"],
+        "supported_actions": ["MachineSettingsAction"]
+    },
+
+    "overrides": {
+        "machine_extruder_count": { "default_value": 4 },
+        "machine_heated_bed": { "default_value": true },
+        "machine_center_is_zero": { "default_value": false },
+		
+        "machine_height": { "default_value": 230 },
+        "machine_depth": { "default_value": 220 },
+        "machine_width": { "default_value": 220 },
+		
+        "machine_gcode_flavor": { "default_value": "RepRap (Marlin/Sprinter)" },
+
+        "prime_tower_enable": { "default_value": false },
+        "prime_tower_size": { "value": 24.0 },
+        "prime_tower_position_x": { "value": "125" },
+        "prime_tower_position_y": { "value": "70" },
+		
+        "machine_head_with_fans_polygon":
+        {
+            "default_value": [
+                [ -75, 60 ],
+                [ -75, -55 ],
+                [ 130, 60 ],
+                [ 130, -55 ]
+            ]
+        },
+		"gantry_height": { "value": "25" },
+		
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+		
+        "machine_start_gcode": {
+            "default_value": "\nM92 E159 ;2288 for V5 extruder\n\nM140 S{material_bed_temperature_layer_0}\nM104 T1 S120\nM104 T2 S120\nM104 T3 S120\n\nG21\nG90\nM42 S255 P13 ;chamber lights\nM42 S255 P12 ;fume extraction\nM204 S300 ;default acceleration\nM205 X10 ;default jerk\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\nG1 Z10 F600\nG1 X70 Y20 F9000;go to wipe point\n\nM190 S{material_bed_temperature_layer_0}\n\nM117 Heating for 50 sec.\nG4 S20\nM117 Heating for 30 sec.\nG4 S20\nM117 Heating for 10 sec.\nM300 S1200 P1000\nG4 S9\n\nM117 purging nozzle....\nT0\nG92 E0;set E\nG1 E10 F100\nG92 E0\nG1 E-1 F600\n\nM117 wiping nozzle....\nG1 X1 Y24 F3000\nG1 X70 F9000\nG1 Z10 F900\n\nM104 T1 S21\nM104 T2 S21\nM104 T3 S21\n\nM117 Printing .....\n"
+        },
+        "machine_end_gcode": {
+            "default_value": "; -- END GCODE --\nM117 cooling down....\nM106 S255\nM140 S5\nM104 T0 S5\nM104 T1 S5\nM104 T2 S5\nM104 T3 S5\n\nG91\nG1 Z1 F900\nG90\n\nG1 X20.0 Y260.0 F6000\nG4 S7\nM84\nG4 S90\nM107\nM42 P12 S0\nM42 P13 S0\nM84\nT0\nM117 Finished.\n; -- end of GCODE --"
+        },
+
+        "optimize_wall_printing_order": { "default_value": true },
+		
+		"infill_pattern": { "default_value": "Cubic" },
+		"gradual_infill_steps": { "default_value": 3 },
+		"gradual_infill_step_height": { "default_value": 4 },
+		
+		"support_angle": { "default_value": 50 },
+		"gradual_support_infill_steps": { "default_value": 3 },
+		"gradual_support_infill_step_height": { "default_value": 3 },
+		"support_infill_rate": { "default_value": 30 },
+		"support_interface_enable": { "default_value": true },
+		"support_roof_enable": { "default_value": true },
+		"support_roof_density": { "default_value": 50 },
+		
+		"meshfix_maximum_resolution": { "default_value": 0.7 },
+		"meshfix_maximum_travel_resolution": { "default_value": 0.7 },
+		"meshfix_maximum_deviation": { "default_value": 0.05 }
+		
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Extruder 3",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "ThickInk Mark 1",
+        "position": "2"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 2,
+            "maximum_value": "3"
+        },
+        "machine_nozzle_offset_x": { "default_value": 35.75 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+		"machine_nozzle_size": { "default_value": 0.4 },
+		
+		"machine_extruder_cooling_fan_number": { "default_value": 1 },
+		
+        "machine_extruder_start_code": {
+          "default_value": "\n;start T2\n\nM104 T2 S{material_print_temperature_layer_0}\nG1 X41 Y215 F9000 ; go to wipe position\nM109 T2 S{material_print_temperature_layer_0}; wait for temp\nG1 E10 F300; prime\nG92 E0\nG1 X21 Y235 F3000; wipe\nG1 X31 F9000\nG1 Y215 F6000; wipe again\n\nM117 printing...\n"         
+        },
+        "machine_extruder_end_code": {
+           "default_value": "\nM104 T2 S{material_standby_temperature}\nG1 X41 Y215 F9000 ; go to wipe position\nM109 T2 R{material_standby_temperature}; wait for temp\nG1 X21 Y235 F3000; wipe\nG1 X31 F9000\nG1 Y215 F6000; wipe again\n\n;end T2\n\n"
+        }
+    }
+}
