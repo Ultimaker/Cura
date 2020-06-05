@@ -242,7 +242,7 @@ Item
                 }
                 Label
                 {
-                    text: catalog.i18nc("@label", "Author")
+                    text: catalog.i18nc("@label", "Profile author")
                     font: UM.Theme.getFont("default")
                     color: UM.Theme.getColor("text")
                     renderType: Text.NativeRendering
