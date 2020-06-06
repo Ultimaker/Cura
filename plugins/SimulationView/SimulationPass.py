@@ -16,6 +16,9 @@ from UM.View.GL.OpenGL import OpenGL
 
 from cura.Settings.ExtruderManager import ExtruderManager
 
+from PyQt5 import QtCore, QtWidgets
+
+from copy import deepcopy
 
 import os.path
 
@@ -96,6 +99,15 @@ class SimulationPass(RenderPass):
         head_position = None  # Indicates the current position of the print head
         nozzle_node = None
 
+        ride_the_nozzle = (self._old_current_path != self._layer_view._current_path_num and
+                            ((QtWidgets.QApplication.queryKeyboardModifiers() & QtCore.Qt.ControlModifier) == QtCore.Qt.ControlModifier))
+        camera_position = None
+        elevation = 1.0 # mm
+        trail_by = 5.0 #mm
+
+        if not ride_the_nozzle and self._scene.getActiveCamera().getName() != "3d":
+            self._scene.setActiveCamera("3d")
+
         for node in DepthFirstIterator(self._scene.getRoot()):
 
             if isinstance(node, ToolHandle):
@@ -130,6 +142,9 @@ class SimulationPass(RenderPass):
                                     continue
                                 # The head position is calculated and translated
                                 head_position = Vector(polygon.data[index+offset][0], polygon.data[index+offset][1], polygon.data[index+offset][2]) + node.getWorldPosition()
+                                if ride_the_nozzle and index+offset > 0:
+                                    prev_position = Vector(polygon.data[index+offset-1][0], polygon.data[index+offset-1][1], polygon.data[index+offset-1][2]) + node.getWorldPosition()
+                                    camera_position = head_position - (head_position - prev_position).normalized() * trail_by
                                 break
                             break
                         if self._layer_view._minimum_layer_num > layer:
@@ -148,6 +163,22 @@ class SimulationPass(RenderPass):
                     if not self._layer_view.isSimulationRunning() and self._old_current_layer != self._layer_view._current_layer_num:
                         self._current_shader = self._layer_shader
                         self._switching_layers = True
+
+                    if ride_the_nozzle and camera_position is not None:
+                        if self._scene.getActiveCamera().getName() != "nozzle_cam":
+                            if self._scene.findCamera("nozzle_cam") is None:
+                                nozzle_cam = deepcopy(self._scene.getActiveCamera())
+                                nozzle_cam.setName("nozzle_cam")
+                                nozzle_cam.setPerspective(True)
+                                self._scene.getRoot().addChild(nozzle_cam)
+                            self._scene.setActiveCamera("nozzle_cam")
+
+                        self._scene.getActiveCamera().setPosition(camera_position + Vector(0.0, elevation, 0.0))
+                        self._scene.getActiveCamera().lookAt(head_position + Vector(0.0, elevation, 0.0));
+
+                        if self._layer_view.getSimulationViewType() == 0:
+                            # don't use shadow shader when rendering in material colour
+                            self._current_shader = self._layer_shader
 
                     layers_batch = RenderBatch(self._current_shader, type = RenderBatch.RenderType.Solid, mode = RenderBatch.RenderMode.Lines, range = (start, end), backface_cull = True)
                     layers_batch.addItem(node.getWorldTransformation(), layer_data)
@@ -176,7 +207,7 @@ class SimulationPass(RenderPass):
         # The nozzle is drawn when once we know the correct position of the head,
         # but the user is not using the layer slider, and the compatibility mode is not enabled
         if not self._switching_layers and not self._compatibility_mode and self._layer_view.getActivity() and nozzle_node is not None:
-            if head_position is not None:
+            if head_position is not None and not ride_the_nozzle:
                 nozzle_node.setVisible(True)
                 nozzle_node.setPosition(head_position)
                 nozzle_batch = RenderBatch(self._nozzle_shader, type = RenderBatch.RenderType.Transparent)
