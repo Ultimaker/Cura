@@ -17,7 +17,7 @@
             "3": "ThickInk_MK_1_quad_extruder_4"
         },
 		
-        "platform": "ThickInk_MK_1.stl",
+        "platform": "ThickInk_MK_1.STL",
         "platform_offset": [ -112, -3, 0],
 		
         "first_start_actions": ["MachineSettingsAction"],
