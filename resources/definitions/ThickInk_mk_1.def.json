@@ -11,13 +11,13 @@
 
         "machine_extruder_trains":
         {
-            "0": "ThickInk_MK_1_quad_extruder_1",
-            "1": "ThickInk_MK_1_quad_extruder_2",
-            "2": "ThickInk_MK_1_quad_extruder_3",
-            "3": "ThickInk_MK_1_quad_extruder_4"
+            "0": "thickink_mk_1_quad_extruder_1",
+            "1": "thickink_mk_1_quad_extruder_2",
+            "2": "thickink_mk_1_quad_extruder_3",
+            "3": "thickink_mk_1_quad_extruder_4"
         },
 		
-        "platform": "ThickInk_MK_1.STL",
+        "platform": "thickink_mk_1.stl",
         "platform_offset": [ -112, -3, 0],
 		
         "first_start_actions": ["MachineSettingsAction"],

@@ -3,7 +3,7 @@
     "name": "Extruder 3",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "ThickInk_mk_1",
+        "machine": "thickink_mk_1",
         "position": "2"
     },
 
