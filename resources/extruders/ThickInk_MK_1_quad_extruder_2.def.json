@@ -20,10 +20,10 @@
         "machine_extruder_cooling_fan_number": { "default_value": 2 },
 
         "machine_extruder_start_code": {
-            "default_value": "\n;start T1\n\nM104 T1 S{material_print_temperature_layer_0}\nG1 X41 Y35 F9000 ; go to wipe position\nM109 T1 S{material_print_temperature_layer_0}; wait for temp\nG1 E10 F300; prime\nG92 E0\nG1 X21 Y15 F3000; wipe\nG1 X34 F9000\nG1 Y35 F6000; wipe again\n\nM117 printing...\n"         
+            "default_value": "\n\n;start T1\n\nM104 S{material_print_temperature_layer_0}; set extruder temp\nG1 X-15 F7000 ; go to wipe position\nM109 S{material_print_temperature_layer_0}; wait for temp\n\n;purge filament\nG1 E26\nG1 E-16 F1200\nG92 E0\nG1 X-5 F5000\nG1 X-15 F5000\n\n"         
         },
         "machine_extruder_end_code": {
-            "default_value": "\nM104 T1 S{material_standby_temperature}\nG1 X41 Y35 F9000 ; go to wipe position\nM109 T1 R{material_standby_temperature}; wait for temp\nG1 X21 Y15 F3000; wipe\nG1 X31 F9000\nG1 Y35 F6000; wipe again\n\n;end T1\n\n"
+            "default_value": "\n\nG1 X-10 F7000 ; go to wipe position\nM104 S{material_standby_temperature}; set extruder temp\nM109 S{material_standby_temperature}; wait for temp\n\n;end T1\n\n"
         }
     }
 }

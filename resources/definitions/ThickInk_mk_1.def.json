@@ -54,12 +54,12 @@
         "machine_gcode_flavor": {
             "default_value": "RepRap (Marlin/Sprinter)"
         },
-
+		
         "machine_start_gcode": {
-            "default_value": "\nM92 E159 ;2288 for V5 extruder\n\nM140 S{material_bed_temperature_layer_0}\nM104 T1 S120\nM104 T2 S120\nM104 T3 S120\n\nG21\nG90\nM42 S255 P13 ;chamber lights\nM42 S255 P12 ;fume extraction\nM204 S300 ;default acceleration\nM205 X10 ;default jerk\n\nM117 Homing Y ......\nG28 Y\nM117 Homing X ......\nG28 X\nM117 Homing Z ......\nG28 Z F100\nG1 Z10 F600\nG1 X70 Y20 F9000;go to wipe point\n\nM190 S{material_bed_temperature_layer_0}\n\nM117 Heating for 50 sec.\nG4 S20\nM117 Heating for 30 sec.\nG4 S20\nM117 Heating for 10 sec.\nM300 S1200 P1000\nG4 S9\n\nM117 purging nozzle....\nT0\nG92 E0;set E\nG1 E10 F100\nG92 E0\nG1 E-1 F600\n\nM117 wiping nozzle....\nG1 X1 Y24 F3000\nG1 X70 F9000\nG1 Z10 F900\n\nM104 T1 S21\nM104 T2 S21\nM104 T3 S21\n\nM117 Printing .....\n"
+            "default_value": "\n\nG21 ; set units to millimeters\nG90 ; use absolute positioning\nM82 ; absolute extrusion mode\n\nG28 ; home all\nG29 ; mesh bed leveling Bilinear\n\n"
         },
         "machine_end_gcode": {
-            "default_value": "; -- END GCODE --\nM117 cooling down....\nM106 S255\nM140 S5\nM104 T0 S5\nM104 T1 S5\nM104 T2 S5\nM104 T3 S5\n\nG91\nG1 Z1 F900\nG90\n\nG1 X20.0 Y260.0 F6000\nG4 S7\nM84\nG4 S90\nM107\nM42 P12 S0\nM42 P13 S0\nM84\nT0\nM117 Finished.\n; -- end of GCODE --"
+            "default_value": "\n\nM104 T0 S0 ; turn off extruder\nM104 T1 S0 ; turn off extruder\nM104 T2 S0 ; turn off extruder\nM104 T3 S0 ; turn off extruder\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\n\nG1 X0 Y220 F7000; home X axis and push Y forward\nM84 ; disable motors\n\n"
         }
     }
 }
