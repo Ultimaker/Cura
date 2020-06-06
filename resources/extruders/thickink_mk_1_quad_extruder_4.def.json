@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "name": "Extruder 4",
+    "inherits": "fdmextruder",
+    "metadata": {
+        "machine": "thickink_mk_1",
+        "position": "3"
+    },
+
+    "overrides": {
+        "extruder_nr": {
+            "default_value": 3,
+            "maximum_value": "3"
+        },
+        "machine_nozzle_offset_x": { "default_value": 53.9 },
+        "machine_nozzle_offset_y": { "default_value": 0.0 },
+        "material_diameter": { "default_value": 1.75 },
+        "machine_nozzle_size": { "default_value": 0.4 },
+
+        "machine_extruder_cooling_fan_number": { "default_value": 1 },
+
+        "machine_extruder_start_code": {
+            "default_value": "\n\n;start T3\n\nM104 S{material_print_temperature_layer_0}; set extruder temp\nG1 X-15 F7000 ; go to wipe position\nM109 S{material_print_temperature_layer_0}; wait for temp\n\n;purge filament\nG1 E26\nG1 E-16 F1200\nG92 E0\nG1 X-5 F5000\nG1 X-15 F5000\n\n"         
+        },
+        "machine_extruder_end_code": {
+            "default_value": "\n\nG1 X-10 F7000 ; go to wipe position\nM104 S{material_standby_temperature}; set extruder temp\nM109 S{material_standby_temperature}; wait for temp\n\n;end T3\n\n"
+        }
+    }
+}
