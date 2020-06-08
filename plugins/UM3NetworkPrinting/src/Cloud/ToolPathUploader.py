@@ -20,9 +20,6 @@ class ToolPathUploader:
     # The HTTP codes that should trigger a retry.
     RETRY_HTTP_CODES = {500, 502, 503, 504}
 
-    # The amount of bytes to send per request
-    BYTES_PER_REQUEST = 256 * 1024
-
     def __init__(self, http: HttpRequestManager, print_job: CloudPrintJobResponse, data: bytes,
                  on_finished: Callable[[], Any], on_progress: Callable[[int], Any], on_error: Callable[[], Any]
                  ) -> None:
@@ -44,7 +41,6 @@ class ToolPathUploader:
         self._on_progress = on_progress
         self._on_error = on_error
 
-        self._sent_bytes = 0
         self._retries = 0
         self._finished = False
 
@@ -54,23 +50,14 @@ class ToolPathUploader:
 
         return self._print_job
 
-    def _chunkRange(self) -> Tuple[int, int]:
-        """Determines the bytes that should be uploaded next.
-
-        :return: A tuple with the first and the last byte to upload.
-        """
-        last_byte = min(len(self._data), self._sent_bytes + self.BYTES_PER_REQUEST)
-        return self._sent_bytes, last_byte
-
     def start(self) -> None:
         """Starts uploading the mesh."""
 
         if self._finished:
             # reset state.
-            self._sent_bytes = 0
             self._retries = 0
             self._finished = False
-        self._uploadChunk()
+        self._upload()
 
     def stop(self):
         """Stops uploading the mesh, marking it as finished."""
@@ -78,26 +65,18 @@ class ToolPathUploader:
         Logger.log("i", "Stopped uploading")
         self._finished = True
 
-    def _uploadChunk(self) -> None:
-        """Uploads a chunk of the mesh to the cloud."""
-
+    def _upload(self) -> None:
+        """
+        Uploads the print job to the cloud printer.
+        """
         if self._finished:
             raise ValueError("The upload is already finished")
 
-        first_byte, last_byte = self._chunkRange()
-        content_range = "bytes {}-{}/{}".format(first_byte, last_byte - 1, len(self._data))
-
-        headers = {
-            "Content-Type": cast(str, self._print_job.content_type),
-            "Content-Range": content_range
-        }  # type: Dict[str, str]
-
-        Logger.log("i", "Uploading %s to %s", content_range, self._print_job.upload_url)
-
+        Logger.log("i", "Uploading print to {upload_url}".format(upload_url = self._print_job.upload_url))
         self._http.put(
             url = cast(str, self._print_job.upload_url),
-            headers_dict = headers,
-            data = self._data[first_byte:last_byte],
+            headers_dict = {"Content-Type": cast(str, self._print_job.content_type)},
+            data = self._data,
             callback = self._finishedCallback,
             error_callback = self._errorCallback,
             upload_progress_callback = self._progressCallback
@@ -111,8 +90,7 @@ class ToolPathUploader:
         """
         Logger.log("i", "Progress callback %s / %s", bytes_sent, bytes_total)
         if bytes_total:
-            total_sent = self._sent_bytes + bytes_sent
-            self._on_progress(int(total_sent / len(self._data) * 100))
+            self._on_progress(int(bytes_sent / len(self._data) * 100))
 
     ## Handles an error uploading.
     def _errorCallback(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
@@ -136,7 +114,7 @@ class ToolPathUploader:
             self._retries += 1
             Logger.log("i", "Retrying %s/%s request %s", self._retries, self.MAX_RETRIES, reply.url().toString())
             try:
-                self._uploadChunk()
+                self._upload()
             except ValueError:  # Asynchronously it could have completed in the meanwhile.
                 pass
             return
@@ -148,16 +126,6 @@ class ToolPathUploader:
 
         Logger.log("d", "status_code: %s, Headers: %s, body: %s", status_code,
                    [bytes(header).decode() for header in reply.rawHeaderList()], bytes(reply.readAll()).decode())
-        self._chunkUploaded()
 
-    def _chunkUploaded(self) -> None:
-        """Handles a chunk of data being uploaded, starting the next chunk if needed."""
-
-        # We got a successful response. Let's start the next chunk or report the upload is finished.
-        first_byte, last_byte = self._chunkRange()
-        self._sent_bytes += last_byte - first_byte
-        if self._sent_bytes >= len(self._data):
-            self.stop()
-            self._on_finished()
-        else:
-            self._uploadChunk()
+        self.stop()
+        self._on_finished()
