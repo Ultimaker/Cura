@@ -149,38 +149,38 @@ class Script:
         :return: A line of g-code with the desired parameters filled in.
         """
 
-        def putValue(self, line: str = "", **kwargs) -> str:
-            #Separate the code and comment
+        #Separate the g-code and comment
+        if ";" in line:
+            comment = line[line.find(";"):]
+            line = line[:line.find(";")]
+        else:
             comment = ""
-            if ";" in line:
-                comment = line[line.find(";"):]
-                line = line[:line.find(";")]  #Strip the comment.
 
-            # Extract the parameters from the original g-code line and add them to kwargs.
-            for part in line.split(" "):
-                if part == "":
-                    continue
-                parameter = part[0]
-                if parameter not in kwargs: #Skip the parameters that are overwritten by the user.
-                    value = part[1:]
-                    kwargs[parameter] = value
+        # Extract the parameters from the original g-code line and add them to kwargs.
+        for part in line.split(" "):
+            if part == "":
+                continue
+            parameter = part[0]
+            if parameter not in kwargs: #Skip the parameters that are overwritten by the user.
+                value = part[1:]
+                kwargs[parameter] = value
 
-            #Construct the new g-code line.
-            new_line = list()
-            #First add these parameters in order.
-            for parameter in ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"]:
-                if parameter in kwargs:
-                    new_line.append(parameter + str(kwargs.pop(parameter)))
-            #Then add the rest of the parameters.
-            for parameter, value in kwargs.items():
-                new_line.append(parameter + str(value))
+        #Start the new g-code line.
+        new_line = list()
+        #First add these parameters in order.
+        for parameter in ["G", "M", "T", "S", "F", "X", "Y", "Z", "E"]:
+            if parameter in kwargs:
+                new_line.append(parameter + str(kwargs.pop(parameter)))
+        #Then add the rest of the parameters.
+        for parameter, value in kwargs.items():
+            new_line.append(parameter + str(value))
 
-            #If there was a comment, put it back in.
-            if comment != "":
-                new_line.append(comment)
+        #If there was a comment, put it back in.
+        if comment != "":
+            new_line.append(comment)
 
-            #Construct the new line.
-            return " ".join(new_line)
+        #Return the new g-code line.
+        return " ".join(new_line)
 
     def execute(self, data: List[str]) -> List[str]:
         """This is called when the script is executed. 
