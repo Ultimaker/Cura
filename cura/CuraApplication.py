@@ -886,8 +886,9 @@ class CuraApplication(QtApplication):
 
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
-        camera_tool.setOrigin(Vector(0, 100, 0))
-        camera_tool.setZoomRange(0.1, 2000)
+        if camera_tool:
+            camera_tool.setOrigin(Vector(0, 100, 0))
+            camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
