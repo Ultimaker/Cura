@@ -1909,7 +1909,6 @@ class CuraApplication(QtApplication):
             return
         selection_pass = cast(SelectionPass, self.getRenderer().getRenderPass("selection"))
         if not selection_pass:  # If you right-click before the rendering has been initialised there might not be a selection pass yet.
-            print("--------------ding! Got the crash.")
             return
         node = self.getController().getScene().findObject(selection_pass.getIdAtPosition(x, y))
         if not node:

@@ -1,4 +1,4 @@
-// Copyright (c) 2018 Ultimaker B.V.
+// Copyright (c) 2020 Ultimaker B.V.
 // Cura is released under the terms of the LGPLv3 or higher.
 
 import QtQuick 2.7
@@ -98,7 +98,7 @@ Button
                 target: buttonText
                 property: "width"
                 value: button.fixedWidthMode ? button.width - button.leftPadding - button.rightPadding
-                                             : ((maximumWidth != 0 && contentWidth > maximumWidth) ? maximumWidth : undefined)
+                                             : ((maximumWidth != 0 && button.contentWidth > maximumWidth) ? maximumWidth : undefined)
             }
         }
 

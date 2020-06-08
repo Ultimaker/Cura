@@ -32,10 +32,7 @@ Item
         var type = currentMeshType
 
         // set checked state of mesh type buttons
-        normalButton.checked = type === normalMeshType
-        supportMeshButton.checked = type === supportMeshType
-        overhangMeshButton.checked = type === infillMeshType || type === cuttingMeshType
-        antiOverhangMeshButton.checked = type === antiOverhangMeshType
+        updateMeshTypeCheckedState(type)
 
         // update active type label
         for (var button in meshTypeButtons.children)
@@ -49,9 +46,19 @@ Item
         visibility_handler.addSkipResetSetting(currentMeshType)
     }
 
+    function updateMeshTypeCheckedState(type)
+    {
+        // set checked state of mesh type buttons
+        normalButton.checked = type === normalMeshType
+        supportMeshButton.checked = type === supportMeshType
+        overlapMeshButton.checked = type === infillMeshType || type === cuttingMeshType
+        antiOverhangMeshButton.checked = type === antiOverhangMeshType
+    }
+
     function setMeshType(type)
     {
         UM.ActiveTool.setProperty("MeshType", type)
+        updateMeshTypeCheckedState(type)
     }
 
     UM.I18nCatalog { id: catalog; name: "cura"}
@@ -95,7 +102,7 @@ Item
 
             Button
             {
-                id: overhangMeshButton
+                id: overlapMeshButton
                 text: catalog.i18nc("@label", "Modify settings for overlaps")
                 iconSource: UM.Theme.getIcon("pos_modify_overlaps");
                 property bool needBorder: true

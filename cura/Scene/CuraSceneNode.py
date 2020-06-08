@@ -38,6 +38,12 @@ class CuraSceneNode(SceneNode):
     def isSelectable(self) -> bool:
         return super().isSelectable() and self.callDecoration("getBuildPlateNumber") == cura.CuraApplication.CuraApplication.getInstance().getMultiBuildPlateModel().activeBuildPlate
 
+    def isSupportMesh(self) -> bool:
+        per_mesh_stack = self.callDecoration("getStack")
+        if not per_mesh_stack:
+            return False
+        return per_mesh_stack.getProperty("support_mesh", "value")
+
     def getPrintingExtruder(self) -> Optional[ExtruderStack]:
         """Get the extruder used to print this node. If there is no active node, then the extruder in position zero is returned
 

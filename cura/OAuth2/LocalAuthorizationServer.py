@@ -96,11 +96,12 @@ class LocalAuthorizationServer:
 
         :return: None
         """
-        if sys.platform == "win32":
-            try:
+        if self._web_server:
+            if sys.platform == "win32":
+                try:
+                    self._web_server.serve_forever()
+                except OSError as e:
+                    Logger.warning(str(e))
+            else:
+                # Leave the default behavior in non-windows platforms
                 self._web_server.serve_forever()
-            except OSError as e:
-                Logger.warning(str(e))
-        else:
-            # Leave the default behavior in non-windows platforms
-            self._web_server.serve_forever()
