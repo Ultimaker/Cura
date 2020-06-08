@@ -62,8 +62,9 @@ class ToolPathUploader:
     def stop(self):
         """Stops uploading the mesh, marking it as finished."""
 
-        Logger.log("i", "Stopped uploading")
-        self._finished = True
+        Logger.log("i", "Finished uploading")
+        self._finished = True  # Signal to any ongoing retries that we should stop retrying.
+        self._on_finished()
 
     def _upload(self) -> None:
         """
@@ -88,7 +89,7 @@ class ToolPathUploader:
         :param bytes_sent: The amount of bytes sent in the current request.
         :param bytes_total: The amount of bytes to send in the current request.
         """
-        Logger.log("i", "Progress callback %s / %s", bytes_sent, bytes_total)
+        Logger.debug("Cloud upload progress %s / %s", bytes_sent, bytes_total)
         if bytes_total:
             self._on_progress(int(bytes_sent / len(self._data) * 100))
 
@@ -128,4 +129,3 @@ class ToolPathUploader:
                    [bytes(header).decode() for header in reply.rawHeaderList()], bytes(reply.readAll()).decode())
 
         self.stop()
-        self._on_finished()
