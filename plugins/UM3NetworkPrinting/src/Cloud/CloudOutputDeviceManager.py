@@ -166,7 +166,7 @@ class CloudOutputDeviceManager:
         # Sort new_devices on online status first, alphabetical second.
         # Since the first device might be activated in case there is no active printer yet,
         # it would be nice to prioritize online devices
-        online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online}
+        online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
         new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
         image_path = os.path.join(
