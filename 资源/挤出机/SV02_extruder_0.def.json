@@ -3,7 +3,7 @@
     "name": "Left Extruder",
     "inherits": "fdmextruder",
     "metadata": {
-        "machine": "sovol-sv02",
+        "machine": "SV02",
         "position": "0"
     },
 
