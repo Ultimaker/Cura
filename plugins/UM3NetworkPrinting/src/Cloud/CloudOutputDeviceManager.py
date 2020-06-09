@@ -273,7 +273,7 @@ class CloudOutputDeviceManager:
                         "Cloud connection is not available for some printers",
                         len(self.reported_device_ids)
                 ),
-                lifetime = 0
+                lifetime = 30
         )
         device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.I18N_CATALOG.i18ncp(
