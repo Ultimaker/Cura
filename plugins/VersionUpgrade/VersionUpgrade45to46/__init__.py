@@ -21,6 +21,15 @@ def getMetaData() -> Dict[str, Any]:
             ("quality_changes", 4000011):    ("quality_changes", 4000013,    upgrade.upgradeInstanceContainer),
             ("quality", 4000011):            ("quality", 4000013,            upgrade.upgradeInstanceContainer),
             ("user", 4000011):               ("user", 4000013,               upgrade.upgradeInstanceContainer),
+
+            # Setting version 12 was also used during the 4.6 beta, but had no changes.
+            ("preferences", 6000012):        ("preferences", 6000013,        upgrade.upgradePreferences),
+            ("machine_stack", 4000012):      ("machine_stack", 4000013,      upgrade.upgradeStack),
+            ("extruder_train", 4000012):     ("extruder_train", 4000013,     upgrade.upgradeStack),
+            ("definition_changes", 4000012): ("definition_changes", 4000013, upgrade.upgradeInstanceContainer),
+            ("quality_changes", 4000012):    ("quality_changes", 4000013,    upgrade.upgradeInstanceContainer),
+            ("quality", 4000012):            ("quality", 4000013,            upgrade.upgradeInstanceContainer),
+            ("user", 4000012):               ("user", 4000013,               upgrade.upgradeInstanceContainer),
         },
         "sources": {
             "preferences": {

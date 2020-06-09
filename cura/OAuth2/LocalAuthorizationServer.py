@@ -1,6 +1,6 @@
 # Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
-
+import sys
 import threading
 from typing import Any, Callable, Optional, TYPE_CHECKING
 
@@ -71,7 +71,7 @@ class LocalAuthorizationServer:
             self._web_server.setState(state)
 
             # Start the server on a new thread.
-            self._web_server_thread = threading.Thread(None, self._web_server.serve_forever, daemon = self._daemon)
+            self._web_server_thread = threading.Thread(None, self._serve_forever, daemon = self._daemon)
             self._web_server_thread.start()
 
     def stop(self) -> None:
@@ -87,3 +87,21 @@ class LocalAuthorizationServer:
                 pass
         self._web_server = None
         self._web_server_thread = None
+
+    def _serve_forever(self) -> None:
+        """
+        If the platform is windows, this function calls the serve_forever function of the _web_server, catching any
+        OSErrors that may occur in the thread, thus making the reported message more log-friendly.
+        If it is any other platform, it just calls the serve_forever function immediately.
+
+        :return: None
+        """
+        if self._web_server:
+            if sys.platform == "win32":
+                try:
+                    self._web_server.serve_forever()
+                except OSError as e:
+                    Logger.warning(str(e))
+            else:
+                # Leave the default behavior in non-windows platforms
+                self._web_server.serve_forever()

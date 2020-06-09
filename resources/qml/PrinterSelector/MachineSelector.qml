@@ -38,12 +38,23 @@ Cura.ExpandablePopup
     readonly property string connectionStatusMessage: {
         if (connectionStatus == "printer_cloud_not_available")
         {
-            if(Cura.API.connectionStatus.isInternetReachable){
-                return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection and sign in to connect to the cloud printer.")
-            } else {
+            if(Cura.API.connectionStatus.isInternetReachable)
+            {
+                if (Cura.API.account.isLoggedIn)
+                {
+                    return catalog.i18nc("@status", "The cloud printer is offline. Please check if the printer is turned on and connected to the internet.")
+                }
+                else
+                {
+                    return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please sign in to connect to the cloud printer.")
+                }
+            } else
+            {
                 return catalog.i18nc("@status", "The cloud connection is currently unavailable. Please check your internet connection.")
             }
-        } else {
+        }
+        else
+        {
             return ""
         }
     }

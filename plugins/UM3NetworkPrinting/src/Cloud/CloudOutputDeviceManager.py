@@ -9,6 +9,7 @@ from PyQt5.QtNetwork import QNetworkReply
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
 from UM.Message import Message
+from UM.Settings.Interfaces import ContainerInterface
 from UM.Signal import Signal
 from cura.API import Account
 from cura.API.Account import SyncState
@@ -48,6 +49,8 @@ class CloudOutputDeviceManager:
         self._running = False
 
         self._syncing = False
+
+        CuraApplication.getInstance().getContainerRegistry().containerRemoved.connect(self._printerRemoved)
 
     def start(self):
         """Starts running the cloud output device manager, thus periodically requesting cloud data."""
@@ -286,3 +289,16 @@ class CloudOutputDeviceManager:
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
         if device.key not in output_device_manager.getOutputDeviceIds():
             output_device_manager.addOutputDevice(device)
+
+    def _printerRemoved(self, container: ContainerInterface) -> None:
+        """
+        Callback connected to the containerRemoved signal. Invoked when a cloud printer is removed from Cura to remove
+        the printer's reference from the _remote_clusters.
+
+        :param container: The ContainerInterface passed to this function whenever the ContainerRemoved signal is emitted
+        :return: None
+        """
+        if isinstance(container, GlobalStack):
+            container_cluster_id = container.getMetaDataEntry(self.META_CLUSTER_ID, None)
+            if container_cluster_id in self._remote_clusters.keys():
+                del self._remote_clusters[container_cluster_id]
