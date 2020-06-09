@@ -4,6 +4,7 @@ import os
 from typing import Dict, List, Optional, Set
 
 from PyQt5.QtNetwork import QNetworkReply
+from PyQt5.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
@@ -293,6 +294,12 @@ class CloudOutputDeviceManager:
                                icon = "",
                                description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
                                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
+        removed_printers_message.addAction("remove_printers_action",
+                               name = self.I18N_CATALOG.i18nc("@action:button", "Remove printers"),
+                               icon = "",
+                               description = "Remove the cloud printer(s) which are not linked to your account.",
+                               button_style = Message.ActionButtonStyle.SECONDARY,
+                               button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
         removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
@@ -397,7 +404,23 @@ class CloudOutputDeviceManager:
             if container_cluster_id in self._remote_clusters.keys():
                 del self._remote_clusters[container_cluster_id]
 
-    @staticmethod
-    def _onRemovedPrintersMessageActionTriggered(removed_printers_message: Message, action: str) -> None:
+    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
         if action == "keep_printer_configurations_action":
+            removed_printers_message.hide()
+        elif action == "remove_printers_action":
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+            remove_printers_ids = {self._um_cloud_printers[i].getId() for i in self.reported_device_ids}
+            all_ids = {m.getId() for m in CuraApplication.getInstance().getContainerRegistry().findContainerStacks(type = "machine")}
+
+            question_title = self.I18N_CATALOG.i18nc("@title:window", "Remove printers?")
+            question_content = self.I18N_CATALOG.i18nc("@label", "You are about to remove {} printer(s) from Cura. This action cannot be undone. \nAre you sure you want to continue?".format(len(remove_printers_ids)))
+            if remove_printers_ids == all_ids:
+                question_content = self.I18N_CATALOG.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone. \nAre you sure you want to continue?")
+            result = QMessageBox.question(None, question_title, question_content)
+            if result == QMessageBox.No:
+                return
+
+            for machine_cloud_id in self.reported_device_ids:
+                machine_manager.setActiveMachine(self._um_cloud_printers[machine_cloud_id].getId())
+                machine_manager.removeMachine(self._um_cloud_printers[machine_cloud_id].getId())
             removed_printers_message.hide()
