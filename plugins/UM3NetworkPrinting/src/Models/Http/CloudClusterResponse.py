@@ -11,7 +11,7 @@ class CloudClusterResponse(BaseModel):
 
     def __init__(self, cluster_id: str, host_guid: str, host_name: str, is_online: bool, status: str,
                  host_internal_ip: Optional[str] = None, host_version: Optional[str] = None,
-                 friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", **kwargs) -> None:
+                 friendly_name: Optional[str] = None, printer_type: str = "ultimaker3", printer_count: int = 1, **kwargs) -> None:
         """Creates a new cluster response object.
 
         :param cluster_id: The secret unique ID, e.g. 'kBEeZWEifXbrXviO8mRYLx45P8k5lHVGs43XKvRniPg='.
@@ -23,6 +23,7 @@ class CloudClusterResponse(BaseModel):
         :param host_internal_ip: The internal IP address of the host printer.
         :param friendly_name: The human readable name of the host printer.
         :param printer_type: The machine type of the host printer.
+        :param printer_count: The amount of printers in the print cluster. 1 for a single printer
         """
 
         self.cluster_id = cluster_id
@@ -34,6 +35,7 @@ class CloudClusterResponse(BaseModel):
         self.host_internal_ip = host_internal_ip
         self.friendly_name = friendly_name
         self.printer_type = printer_type
+        self.printer_count = printer_count
         super().__init__(**kwargs)
 
     # Validates the model, raising an exception if the model is invalid.

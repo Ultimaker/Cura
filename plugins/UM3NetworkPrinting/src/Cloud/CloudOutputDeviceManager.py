@@ -268,6 +268,7 @@ class CloudOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         machine.setMetaDataEntry("group_name", device.name)
+        machine.setMetaDataEntry("group_size", device.clusterSize)
         machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
             "@label ({} is printer name)",
             "{} will be removed until the next account sync. <br> To remove {} permanently, "
