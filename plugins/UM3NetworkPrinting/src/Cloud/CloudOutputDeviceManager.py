@@ -412,7 +412,7 @@ class CloudOutputDeviceManager:
 
     def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
         if action == "keep_printer_configurations_action":
-            self.removed_printers_message.hide()
+            removed_printers_message.hide()
         elif action == "remove_printers_action":
             machine_manager = CuraApplication.getInstance().getMachineManager()
             remove_printers_ids = {self._um_cloud_printers[i].getId() for i in self.reported_device_ids}
@@ -429,4 +429,4 @@ class CloudOutputDeviceManager:
             for machine_cloud_id in self.reported_device_ids:
                 machine_manager.setActiveMachine(self._um_cloud_printers[machine_cloud_id].getId())
                 machine_manager.removeMachine(self._um_cloud_printers[machine_cloud_id].getId())
-            self.removed_printers_message.hide()
+            removed_printers_message.hide()
