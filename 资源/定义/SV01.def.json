@@ -6,9 +6,7 @@
         "visible": true,
         "author": "Sovol",
         "manufacturer": "Sovol 3D",
-        "category": "Other",
         "file_formats": "text/x-gcode",
-        "platform": "",
         "has_variants": false,
         "has_machine_quality": false,
         "preferred_quality_type": "draft",
@@ -18,7 +16,7 @@
     },
 	
     "overrides": {
-        "machine_name": { "default_value": "Sovol-SV01" },
+        "machine_name": { "default_value": "SV01" },
 		"machine_extruder_count": { "default_value": 1 },
 		"machine_width": { "default_value": 280 },
         "machine_depth": { "default_value": 260 },
