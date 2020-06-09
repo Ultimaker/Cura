@@ -38,6 +38,7 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.cura_empty_instance_containers import (empty_definition_changes_container, empty_variant_container,
                                                           empty_material_container, empty_quality_container,
                                                           empty_quality_changes_container, empty_intent_container)
+from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
 
 from .CuraStackBuilder import CuraStackBuilder
 
@@ -493,7 +494,7 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsLinkedToCurrentAccount(self) -> bool:
-        return parseBool(self.activeMachine.getMetaDataEntry("linked_to_account", "True"))
+        return parseBool(self.activeMachine.getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "True"))
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
