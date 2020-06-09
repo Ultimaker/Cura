@@ -51,6 +51,7 @@ class CloudOutputDeviceManager:
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
+        self.removed_printers_message = None  # type: Optional[Message]
 
         # Ensure we don't start twice.
         self._running = False
@@ -120,6 +121,11 @@ class CloudOutputDeviceManager:
             if device_id in self._um_cloud_printers and not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
         self._onDevicesDiscovered(new_clusters)
+
+        # Hide the current removed_printers_message, if there is any
+        if self.removed_printers_message:
+            self.removed_printers_message.actionTriggered.disconnect(self._onRemovedPrintersMessageActionTriggered)
+            self.removed_printers_message.hide()
 
         # Remove the CloudOutput device for offline printers
         offline_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
@@ -266,7 +272,7 @@ class CloudOutputDeviceManager:
             return
 
         # Generate message
-        removed_printers_message = Message(
+        self.removed_printers_message = Message(
                 title = self.I18N_CATALOG.i18ncp(
                         "info:status",
                         "Cloud connection is not available for a printer",
@@ -288,19 +294,19 @@ class CloudOutputDeviceManager:
                 "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
                 device_names
         )
-        removed_printers_message.setText(message_text)
-        removed_printers_message.addAction("keep_printer_configurations_action",
+        self.removed_printers_message.setText(message_text)
+        self.removed_printers_message.addAction("keep_printer_configurations_action",
                                name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
                                icon = "",
                                description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
                                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
-        removed_printers_message.addAction("remove_printers_action",
+        self.removed_printers_message.addAction("remove_printers_action",
                                name = self.I18N_CATALOG.i18nc("@action:button", "Remove printers"),
                                icon = "",
                                description = "Remove the cloud printer(s) which are not linked to your account.",
                                button_style = Message.ActionButtonStyle.SECONDARY,
                                button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
-        removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
+        self.removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
@@ -317,7 +323,7 @@ class CloudOutputDeviceManager:
             # Update the printer's metadata to mark it as not linked to the account
             device.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
-        removed_printers_message.show()
+        self.removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
@@ -406,7 +412,7 @@ class CloudOutputDeviceManager:
 
     def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
         if action == "keep_printer_configurations_action":
-            removed_printers_message.hide()
+            self.removed_printers_message.hide()
         elif action == "remove_printers_action":
             machine_manager = CuraApplication.getInstance().getMachineManager()
             remove_printers_ids = {self._um_cloud_printers[i].getId() for i in self.reported_device_ids}
@@ -423,4 +429,4 @@ class CloudOutputDeviceManager:
             for machine_cloud_id in self.reported_device_ids:
                 machine_manager.setActiveMachine(self._um_cloud_printers[machine_cloud_id].getId())
                 machine_manager.removeMachine(self._um_cloud_printers[machine_cloud_id].getId())
-            removed_printers_message.hide()
+            self.removed_printers_message.hide()
