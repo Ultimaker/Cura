@@ -163,7 +163,11 @@ class CloudOutputDeviceManager:
                 self._connectToActiveMachine()
             return
 
-        new_devices.sort(key = lambda x: x.name.lower())
+        # Sort new_devices on online status first, alphabetical (case-sensitive) second.
+        # Since the first device might be activated in case there is no active printer yet,
+        # it would be nice to prioritize online devices
+        online_cluster_names = {c.friendly_name for c in clusters if c.is_online}
+        new_devices.sort(key = lambda x: "a{}".format(x.name) if x.name in online_cluster_names else "b{}".format(x.name))
 
         image_path = os.path.join(
             CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
