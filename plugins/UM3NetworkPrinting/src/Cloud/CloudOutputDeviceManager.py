@@ -3,7 +3,6 @@
 import os
 from typing import Dict, List, Optional, Set
 
-from PyQt5.QtCore import QTimer
 from PyQt5.QtNetwork import QNetworkReply
 
 from UM import i18nCatalog
@@ -17,6 +16,7 @@ from cura.API.Account import SyncState
 from cura.CuraApplication import CuraApplication
 from cura.Settings.CuraStackBuilder import CuraStackBuilder
 from cura.Settings.GlobalStack import GlobalStack
+from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
 from .CloudApiClient import CloudApiClient
 from .CloudOutputDevice import CloudOutputDevice
 from ..Models.Http.CloudClusterResponse import CloudClusterResponse
@@ -31,8 +31,8 @@ class CloudOutputDeviceManager:
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
     META_NETWORK_KEY = "um_network_key"
+
     SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
-    META_LINKED_TO_ACCOUNT = "linked_to_account"
 
     # The translation catalog for this device.
     I18N_CATALOG = i18nCatalog("cura")
@@ -116,8 +116,8 @@ class CloudOutputDeviceManager:
         for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
-            if device_id in self._um_cloud_printers and not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(self.META_LINKED_TO_ACCOUNT, "true")):
-                self._um_cloud_printers[device_id].setMetaDataEntry(self.META_LINKED_TO_ACCOUNT, True)
+            if device_id in self._um_cloud_printers and not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
+                self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
         self._onDevicesDiscovered(new_clusters)
 
         # Remove the CloudOutput device for offline printers
@@ -168,8 +168,8 @@ class CloudOutputDeviceManager:
                 remote_clusters_added = True
             # If a printer that was removed from the account is re-added, change its metadata to mark it not removed
             # from the account
-            elif not parseBool(self._um_cloud_printers[device.key].getMetaDataEntry(self.META_LINKED_TO_ACCOUNT, "true")):
-                self._um_cloud_printers[device.key].setMetaDataEntry(self.META_LINKED_TO_ACCOUNT, True)
+            elif not parseBool(self._um_cloud_printers[device.key].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
+                self._um_cloud_printers[device.key].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
 
         # Inform the Cloud printers model about new devices.
         new_devices_list_of_dicts = [{
@@ -256,12 +256,12 @@ class CloudOutputDeviceManager:
         # Do not report device ids which have been previously marked as non-linked to the account
         ignored_device_ids = set()
         for device_id in removed_device_ids:
-            if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(self.META_LINKED_TO_ACCOUNT, "true")):
+            if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 ignored_device_ids.add(device_id)
         # Keep the reported_device_ids list in a class variable, so that the message button actions can access it and
         # take the necessary steps to fulfill their purpose.
         self.reported_device_ids = removed_device_ids - ignored_device_ids
-        if len(self.reported_device_ids) == 0:
+        if not self.reported_device_ids:
             return
 
         # Generate message
@@ -295,19 +295,20 @@ class CloudOutputDeviceManager:
                                button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
         removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
+        output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
+
         # Remove the output device from the printers
         for device_id in removed_device_ids:
             device = self._um_cloud_printers.get(device_id, None)  # type: Optional[GlobalStack]
             if not device:
                 continue
-            output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
             if device_id in output_device_manager.getOutputDeviceIds():
                 output_device_manager.removeOutputDevice(device_id)
             if device_id in self._remote_clusters:
                 del self._remote_clusters[device_id]
 
             # Update the printer's metadata to mark it as not linked to the account
-            device.setMetaDataEntry(self.META_LINKED_TO_ACCOUNT, False)
+            device.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
         removed_printers_message.show()
 
