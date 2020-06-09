@@ -648,7 +648,7 @@ class CuraApplication(QtApplication):
         return self._global_container_stack
 
     @override(Application)
-    def setGlobalContainerStack(self, stack: Optional[GlobalStack]) -> None:
+    def setGlobalContainerStack(self, stack: Optional["GlobalStack"]) -> None:
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
 
