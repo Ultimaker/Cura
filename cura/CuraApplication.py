@@ -207,6 +207,7 @@ class CuraApplication(QtApplication):
         self._first_start_machine_actions_model = None
         self._welcome_pages_model = WelcomePagesModel(self, parent = self)
         self._add_printer_pages_model = AddPrinterPagesModel(self, parent = self)
+        self._add_printer_pages_model_without_cancel = AddPrinterPagesModel(self, parent = self)
         self._whats_new_pages_model = WhatsNewPagesModel(self, parent = self)
         self._text_manager = TextManager(parent = self)
 
@@ -647,7 +648,7 @@ class CuraApplication(QtApplication):
         return self._global_container_stack
 
     @override(Application)
-    def setGlobalContainerStack(self, stack: "GlobalStack") -> None:
+    def setGlobalContainerStack(self, stack: Optional[GlobalStack]) -> None:
         self._setLoadingHint(self._i18n_catalog.i18nc("@info:progress", "Initializing Active Machine..."))
         super().setGlobalContainerStack(stack)
 
@@ -812,6 +813,7 @@ class CuraApplication(QtApplication):
         self._output_device_manager.start()
         self._welcome_pages_model.initialize()
         self._add_printer_pages_model.initialize()
+        self._add_printer_pages_model_without_cancel.initialize(cancellable = False)
         self._whats_new_pages_model.initialize()
 
         # Detect in which mode to run and execute that mode
@@ -849,6 +851,7 @@ class CuraApplication(QtApplication):
             self.callLater(self._openFile, file_name)
 
     initializationFinished = pyqtSignal()
+    showAddPrintersUncancellableDialog = pyqtSignal()  # Used to show the add printers dialog with a greyed background
 
     def runWithoutGUI(self):
         """Run Cura without GUI elements and interaction (server mode)."""
@@ -938,6 +941,10 @@ class CuraApplication(QtApplication):
     @pyqtSlot(result = QObject)
     def getAddPrinterPagesModel(self, *args) -> "AddPrinterPagesModel":
         return self._add_printer_pages_model
+
+    @pyqtSlot(result = QObject)
+    def getAddPrinterPagesModelWithoutCancel(self, *args) -> "AddPrinterPagesModel":
+        return self._add_printer_pages_model_without_cancel
 
     @pyqtSlot(result = QObject)
     def getWhatsNewPagesModel(self, *args) -> "WhatsNewPagesModel":
@@ -1939,6 +1946,11 @@ class CuraApplication(QtApplication):
     def shouldShowWelcomeDialog(self) -> bool:
         # Only show the complete flow if there is no printer yet.
         return self._machine_manager.activeMachine is None
+
+    @pyqtSlot(result = bool)
+    def shouldShowAddPrintersUncancellableDialog(self) -> bool:
+        # If there is no printer and the user is logged in, show only the add printers flow in the welcome dialog.
+        return self._machine_manager.activeMachine is None and self.getCuraAPI().account.isLoggedIn
 
     @pyqtSlot(result = bool)
     def shouldShowWhatsNewDialog(self) -> bool:

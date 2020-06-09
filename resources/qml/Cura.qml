@@ -86,6 +86,21 @@ UM.MainWindow
 
     Connections
     {
+        // This connection is used when there is no ActiveMachine and the user is logged in
+        target: CuraApplication
+        onShowAddPrintersUncancellableDialog:
+        {
+            Cura.Actions.parent = backgroundItem
+
+            // Reuse the welcome dialog item to show "Add a printer" only.
+            welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
+            welcomeDialogItem.progressBarVisible = false
+            welcomeDialogItem.visible = true
+        }
+    }
+
+    Connections
+    {
         target: CuraApplication
         onInitializationFinished:
         {
@@ -114,6 +129,15 @@ UM.MainWindow
             if (CuraApplication.shouldShowWhatsNewDialog())
             {
                 welcomeDialogItem.model = CuraApplication.getWhatsNewPagesModel()
+                welcomeDialogItem.progressBarVisible = false
+                welcomeDialogItem.visible = true
+            }
+
+            // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
+            // machine and the user is logged in.
+            if (CuraApplication.shouldShowAddPrintersUncancellableDialog())
+            {
+                welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
                 welcomeDialogItem.progressBarVisible = false
                 welcomeDialogItem.visible = true
             }
