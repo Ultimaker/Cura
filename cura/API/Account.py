@@ -10,7 +10,7 @@ from UM.Message import Message
 from UM.i18n import i18nCatalog
 from cura.OAuth2.AuthorizationService import AuthorizationService
 from cura.OAuth2.Models import OAuth2Settings
-from cura.UltimakerCloud import UltimakerCloudAuthentication
+from cura.UltimakerCloud import UltimakerCloudConstants
 
 if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
@@ -69,7 +69,7 @@ class Account(QObject):
         self._last_sync_str = "-"
 
         self._callback_port = 32118
-        self._oauth_root = UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
+        self._oauth_root = UltimakerCloudConstants.CuraCloudAccountAPIRoot
 
         self._oauth_settings = OAuth2Settings(
             OAUTH_SERVER_URL= self._oauth_root,

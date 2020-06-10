@@ -106,7 +106,7 @@ from cura.UI.RecommendedMode import RecommendedMode
 from cura.UI.TextManager import TextManager
 from cura.UI.WelcomePagesModel import WelcomePagesModel
 from cura.UI.WhatsNewPagesModel import WhatsNewPagesModel
-from cura.UltimakerCloud import UltimakerCloudAuthentication
+from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.Utils.NetworkingUtil import NetworkingUtil
 from . import BuildVolume
 from . import CameraAnimation
@@ -255,11 +255,11 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, constant=True)
     def ultimakerCloudApiRootUrl(self) -> str:
-        return UltimakerCloudAuthentication.CuraCloudAPIRoot
+        return UltimakerCloudConstants.CuraCloudAPIRoot
 
     @pyqtProperty(str, constant = True)
     def ultimakerCloudAccountRootUrl(self) -> str:
-        return UltimakerCloudAuthentication.CuraCloudAccountAPIRoot
+        return UltimakerCloudConstants.CuraCloudAccountAPIRoot
 
     def addCommandLineOptions(self):
         """Adds command line options to the command line parser.

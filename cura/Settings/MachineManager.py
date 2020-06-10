@@ -22,6 +22,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular references.
+from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
@@ -37,6 +38,7 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.cura_empty_instance_containers import (empty_definition_changes_container, empty_variant_container,
                                                           empty_material_container, empty_quality_container,
                                                           empty_quality_changes_container, empty_intent_container)
+from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
 
 from .CuraStackBuilder import CuraStackBuilder
 
@@ -493,6 +495,10 @@ class MachineManager(QObject):
 
         group_size = int(self.activeMachine.getMetaDataEntry("group_size", "-1"))
         return group_size > 1
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsLinkedToCurrentAccount(self) -> bool:
+        return parseBool(self.activeMachine.getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "True"))
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
