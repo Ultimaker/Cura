@@ -96,7 +96,7 @@ Item
             id: configurationList
             spacing: UM.Theme.getSize("narrow_margin").height
             width: container.width - ((height > container.maximumHeight) ? container.ScrollBar.vertical.background.width : 0) //Make room for scroll bar if there is any.
-            height: childrenRect.height
+            height: contentHeight
             interactive: false  // let the ScrollView process scroll events.
 
             section.property: "modelData.printerType"

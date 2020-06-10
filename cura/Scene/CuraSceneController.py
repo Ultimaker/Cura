@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication
 from UM.Scene.Camera import Camera
 from cura.UI.ObjectsModel import ObjectsModel
 from cura.Machines.Models.MultiBuildPlateModel import MultiBuildPlateModel
+from cura.Scene.CuraSceneNode import CuraSceneNode
 
 from UM.Application import Application
 from UM.Scene.Iterator.DepthFirstIterator import DepthFirstIterator
@@ -43,6 +44,26 @@ class CuraSceneController(QObject):
         self._change_timer.start()
 
     def updateMaxBuildPlate(self, *args):
+        global_stack = Application.getInstance().getGlobalContainerStack()
+        if global_stack:
+            scene_has_support_meshes = self._sceneHasSupportMeshes()  # TODO: see if this can be cached
+
+            if scene_has_support_meshes != global_stack.getProperty("support_meshes_present", "value"):
+                # Adjust the setting without having the setting value in an InstanceContainer
+                setting_definitions = global_stack.definition.findDefinitions(key="support_meshes_present")
+                if setting_definitions:
+                    # Recreate the setting definition because the default_value is readonly
+                    definition_dict = setting_definitions[0].serialize_to_dict()
+                    definition_dict["enabled"] = False  # The enabled property has a value that would need to be evaluated
+                    definition_dict["default_value"] = scene_has_support_meshes
+                    relations = setting_definitions[0].relations  # Relations are wiped when deserializing from a dict
+                    setting_definitions[0].deserialize(definition_dict)
+
+                    # Restore relations and notify them that the setting has changed
+                    for relation in relations:
+                        setting_definitions[0].relations.append(relation)
+                        global_stack.propertyChanged.emit(relation.target.key, "enabled")
+
         max_build_plate = self._calcMaxBuildPlate()
         changed = False
         if max_build_plate != self._max_build_plate:
@@ -71,6 +92,15 @@ class CuraSceneController(QObject):
                     build_plate_number = 0
                 max_build_plate = max(build_plate_number, max_build_plate)
         return max_build_plate
+
+    def _sceneHasSupportMeshes(self):
+        root = Application.getInstance().getController().getScene().getRoot()
+        for node in root.getAllChildren():
+            if isinstance(node, CuraSceneNode):
+                per_mesh_stack = node.callDecoration("getStack")
+                if per_mesh_stack and per_mesh_stack.getProperty("support_mesh", "value"):
+                    return True
+        return False
 
     @pyqtSlot(int)
     def changeSelection(self, index):

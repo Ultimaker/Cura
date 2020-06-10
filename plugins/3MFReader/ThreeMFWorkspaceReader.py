@@ -466,10 +466,10 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
                 extruder_info.intent_info = instance_container_info_dict[intent_id]
 
             if not machine_conflict and containers_found_dict["machine"]:
-                if position not in global_stack.extruders:
+                if int(position) >= len(global_stack.extrurderList):
                     continue
 
-                existing_extruder_stack = global_stack.extruders[position]
+                existing_extruder_stack = global_stack.extruderList[int(position)]
                 # check if there are any changes at all in any of the container stacks.
                 id_list = self._getContainerIdListFromSerialized(serialized)
                 for index, container_id in enumerate(id_list):

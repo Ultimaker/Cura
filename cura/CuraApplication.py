@@ -886,8 +886,9 @@ class CuraApplication(QtApplication):
 
         # Initialize camera tool
         camera_tool = controller.getTool("CameraTool")
-        camera_tool.setOrigin(Vector(0, 100, 0))
-        camera_tool.setZoomRange(0.1, 2000)
+        if camera_tool:
+            camera_tool.setOrigin(Vector(0, 100, 0))
+            camera_tool.setZoomRange(0.1, 2000)
 
         # Initialize camera animations
         self._camera_animation = CameraAnimation.CameraAnimation()
@@ -1909,7 +1910,6 @@ class CuraApplication(QtApplication):
             return
         selection_pass = cast(SelectionPass, self.getRenderer().getRenderPass("selection"))
         if not selection_pass:  # If you right-click before the rendering has been initialised there might not be a selection pass yet.
-            print("--------------ding! Got the crash.")
             return
         node = self.getController().getScene().findObject(selection_pass.getIdAtPosition(x, y))
         if not node:

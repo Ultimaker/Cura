@@ -4,6 +4,7 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.3
 import QtQuick.Controls.Styles 1.4
+import QtQuick.Layouts 1.3
 
 import UM 1.2 as UM
 import Cura 1.0 as Cura
@@ -37,70 +38,68 @@ Cura.ExpandablePopup
     headerItem: Item
     {
         // Horizontal list that shows the extruders and their materials
-        ListView
+        RowLayout
         {
-            id: extrudersList
-
-            orientation: ListView.Horizontal
             anchors.fill: parent
-            model: extrudersModel
-            visible: Cura.MachineManager.activeMachine.hasMaterials
-
-            delegate: Item
+            Repeater
             {
-                height: parent.height
-                width: Math.round(ListView.view.width / extrudersModel.count)
-
-                // Extruder icon. Shows extruder index and has the same color as the active material.
-                Cura.ExtruderIcon
+                model: extrudersModel
+                delegate: Item
                 {
-                    id: extruderIcon
-                    materialColor: model.color
-                    extruderEnabled: model.enabled
-                    height: parent.height
-                    width: height
-                }
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
 
-                // Label for the brand of the material
-                Label
-                {
-                    id: typeAndBrandNameLabel
-
-                    text: model.material_brand + " " + model.material
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("default")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
-
-                    anchors
+                    // Extruder icon. Shows extruder index and has the same color as the active material.
+                    Cura.ExtruderIcon
                     {
-                        top: extruderIcon.top
-                        left: extruderIcon.right
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        right: parent.right
-                        rightMargin: UM.Theme.getSize("default_margin").width
+                        id: extruderIcon
+                        materialColor: model.color
+                        extruderEnabled: model.enabled
+                        height: parent.height
+                        width: height
                     }
-                }
-                // Label that shows the name of the variant
-                Label
-                {
-                    id: variantLabel
 
-                    visible: Cura.MachineManager.activeMachine.hasVariants
-
-                    text: model.variant
-                    elide: Text.ElideRight
-                    font: UM.Theme.getFont("default_bold")
-                    color: UM.Theme.getColor("text")
-                    renderType: Text.NativeRendering
-
-                    anchors
+                    // Label for the brand of the material
+                    Label
                     {
-                        left: extruderIcon.right
-                        leftMargin: UM.Theme.getSize("default_margin").width
-                        top: typeAndBrandNameLabel.bottom
-                        right: parent.right
-                        rightMargin:  UM.Theme.getSize("default_margin").width
+                        id: typeAndBrandNameLabel
+
+                        text: model.material_brand + " " + model.material
+                        elide: Text.ElideRight
+                        font: UM.Theme.getFont("default")
+                        color: UM.Theme.getColor("text")
+                        renderType: Text.NativeRendering
+
+                        anchors
+                        {
+                            top: extruderIcon.top
+                            left: extruderIcon.right
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            right: parent.right
+                            rightMargin: UM.Theme.getSize("default_margin").width
+                        }
+                    }
+                    // Label that shows the name of the variant
+                    Label
+                    {
+                        id: variantLabel
+
+                        visible: Cura.MachineManager.activeMachine.hasVariants
+
+                        text: model.variant
+                        elide: Text.ElideRight
+                        font: UM.Theme.getFont("default_bold")
+                        color: UM.Theme.getColor("text")
+                        renderType: Text.NativeRendering
+
+                        anchors
+                        {
+                            left: extruderIcon.right
+                            leftMargin: UM.Theme.getSize("default_margin").width
+                            top: typeAndBrandNameLabel.bottom
+                            right: parent.right
+                            rightMargin:  UM.Theme.getSize("default_margin").width
+                        }
                     }
                 }
             }

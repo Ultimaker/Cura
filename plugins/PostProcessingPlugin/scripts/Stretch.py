@@ -289,6 +289,13 @@ class Stretcher:
                 self.layergcode = self.layergcode + sout + "\n"
                 ipos = ipos + 1
             else:
+                # The command is intended to be passed through unmodified via
+                # the comment field. In the case of an extruder only move, though,
+                # the extruder and potentially the feed rate are modified.
+                # We need to update self.outpos accordingly so that subsequent calls
+                # to stepToGcode() knows about the extruder and feed rate change.
+                self.outpos.step_e = layer_steps[i].step_e
+                self.outpos.step_f = layer_steps[i].step_f
                 self.layergcode = self.layergcode + layer_steps[i].comment + "\n"
 
     def workOnSequence(self, orig_seq, modif_seq):

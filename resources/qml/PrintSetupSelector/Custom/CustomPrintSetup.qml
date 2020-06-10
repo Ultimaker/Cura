@@ -73,8 +73,6 @@ Item
             height: textLabel.contentHeight + 2 * UM.Theme.getSize("narrow_margin").height
             hoverEnabled: true
 
-            baselineOffset: null // If we don't do this, there is a binding loop. WHich is a bit weird, since we override the contentItem anyway...
-
             contentItem: RowLayout
             {
                 spacing: 0
