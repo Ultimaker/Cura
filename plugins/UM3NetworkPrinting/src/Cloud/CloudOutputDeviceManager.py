@@ -192,7 +192,11 @@ class CloudOutputDeviceManager:
                 self._connectToActiveMachine()
             return
 
-        new_devices.sort(key = lambda x: x.name.lower())
+        # Sort new_devices on online status first, alphabetical second.
+        # Since the first device might be activated in case there is no active printer yet,
+        # it would be nice to prioritize online devices
+        online_cluster_names = {c.friendly_name.lower() for c in clusters if c.is_online and not c.friendly_name is None}
+        new_devices.sort(key = lambda x: ("a{}" if x.name.lower() in online_cluster_names else "b{}").format(x.name.lower()))
 
         image_path = os.path.join(
             CuraApplication.getInstance().getPluginRegistry().getPluginPath("UM3NetworkPrinting") or "",
@@ -376,6 +380,7 @@ class CloudOutputDeviceManager:
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
         machine.setMetaDataEntry("group_name", device.name)
+        machine.setMetaDataEntry("group_size", device.clusterSize)
         machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
             "@label ({} is printer name)",
             "{} will be removed until the next account sync. <br> To remove {} permanently, "

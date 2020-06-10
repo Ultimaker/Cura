@@ -2,6 +2,7 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from http.server import HTTPServer
+from socketserver import ThreadingMixIn
 from typing import Callable, Any, TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -9,7 +10,7 @@ if TYPE_CHECKING:
     from cura.OAuth2.AuthorizationHelpers import AuthorizationHelpers
 
 
-class AuthorizationRequestServer(HTTPServer):
+class AuthorizationRequestServer(ThreadingMixIn, HTTPServer):
     """The authorization request callback handler server.
 
     This subclass is needed to be able to pass some data to the request handler. This cannot be done on the request
