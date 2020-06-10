@@ -46,7 +46,7 @@ Cura.ExpandablePopup
                 model: extrudersModel
                 delegate: Item
                 {
-                    Layout.fillWidth: true
+                    Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
