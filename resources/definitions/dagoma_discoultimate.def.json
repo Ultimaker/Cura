@@ -1,82 +1,34 @@
 {
     "name": "Dagoma DiscoUltimate",
     "version": 2,
-    "inherits": "fdmprinter",
+    "inherits": "dagoma_disco",
     "metadata": {
         "visible": true,
         "author": "Dagoma",
         "manufacturer": "Dagoma",
         "file_formats": "text/x-gcode",
         "platform": "dagoma_discoultimate.3mf",
-        "platform_offset": [0, -58.5, -11],
+        "platform_offset": [0, -29.1, 18],
         "has_machine_quality": true,
         "has_materials": true,
         "preferred_material": "chromatik_pla",
         "machine_extruder_trains":
         {
-            "0": "dagoma_discoultimate_extruder_0",
-            "1": "dagoma_discoultimate_extruder_1"
+            "0": "dagoma_discoultimate_extruder"
         }
     },
     "overrides": {
+        "machine_name": {
+            "default_value": "Dagoma DiscoUltimate"
+        },
         "machine_extruder_count": {
-            "default_value": 2
-        },
-        "machine_extruders_share_heater": {
-            "default_value": true
-        },
-        "machine_width": {
-            "default_value": 205
-        },
-        "machine_height": {
-            "default_value": 205
-        },
-        "machine_depth": {
-            "default_value": 205
-        },
-        "machine_center_is_zero": {
-            "default_value": false
-        },
-        "machine_head_with_fans_polygon": {
-            "default_value": [
-                [-17, -70],
-                [-17, 40],
-                [17, 40],
-                [17, -70]
-            ]
-        },
-        "gantry_height": {
-            "value": "10"
+            "default_value": 1
         },
         "machine_start_gcode": {
-            "default_value": ";Gcode by Cura\nG90\nM106 S255\nG28 X Y\nG1 X50\nM109 R90\nG28\nM104 S{material_print_temperature_layer_0}\nG29\nM107\nG1 X100 Y20 F3000\nG1 Z0.5\nM109 S{material_print_temperature_layer_0}\nM82\nG92 E0\nG1 F200 E10\nG92 E0\nG1 Z3\nG1 F6000\n"
+            "default_value": ";Begin Start Gcode for Dagoma DiscoUltimate\n;Sliced: {date} {time}\n;Initial extruder: {initial_extruder_nr}\n\nG90 ;Absolute positioning\nM106 S255 ;Fan on full\nG28 X Y ;Home stop X Y\nG1 X100 ;Centre back during cooldown in case of oozing\nM109 R{material_standby_temperature} ;Cooldown in case too hot\nG28 ;Centre\nG29 ;Auto-level\nM104 S{material_print_temperature_layer_0} ;Pre-heat\nM107 ;Fan off\nG0 X100 Y5 Z0.5 ;Front centre for degunk\nM109 S{material_print_temperature_layer_0} ;Wait for initial temp\nM83 ;E Relative\nG1 E10 F200 ;Degunk\nG1 E-3 F5000 ;Retract\nG0 Z3 ;Withdraw\nM82 ;E absolute\nG92 E0 ;E reset\nG1 F6000 ;Set feedrate\n\n;Finish Start Gcode for Dagoma DiscoUltimate\n"
         },
         "machine_end_gcode": {
-            "default_value": "\nM104 S0\nM106 S255\nM140 S0\nG91\nG1 E-1 F300\nG1 Z+3 F3000\nG90\nG28 X Y\nM107\nM84\n"
-        },
-        "default_material_print_temperature": {
-            "default_value": 205
-        },
-        "speed_print": {
-            "default_value": 60
-        },
-        "retraction_amount": {
-            "default_value": 3.5
-        },
-        "retraction_speed": {
-            "default_value": 50
-        },
-        "adhesion_type": {
-            "default_value": "skirt"
-        },
-        "skirt_line_count": {
-            "default_value": 2
-        },
-        "layer_height_0": {
-            "default_value": 0.26
-        },
-        "top_bottom_thickness": {
-            "default_value": 1
+            "default_value": ";Begin End Gcode for Dagoma DiscoUltimate\n\nM106 S255 ;Fan on full\nM104 S0 ;Cool hotend\nM140 S0 ;Cool heated bed\nG91 ;Relative positioning\nG1 E-3 F5000 ;Retract filament to stop oozing\nG0 Z+3 ;Withdraw\nG90 ;Absolute positioning\nG28 X Y ;Home\nM109 R{material_standby_temperature} ;Wait until head has cooled to standby temp\nM107 ;Fan off\nM18 ;Stepper motors off\n\n;Finish End Gcode for Dagoma DiscoUltimate\n"
         }
     }
 }
