@@ -38,7 +38,7 @@ Cura.ExpandablePopup
     headerItem: Item
     {
         // Horizontal list that shows the extruders and their materials
-        Row
+        RowLayout
         {
             anchors.fill: parent
             Repeater
@@ -46,8 +46,8 @@ Cura.ExpandablePopup
                 model: extrudersModel
                 delegate: Item
                 {
-                    width: Math.round(parent.width / extrudersModel.count)
-                    height: parent.height
+                    Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
+                    Layout.fillHeight: true
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
                     Cura.ExtruderIcon
