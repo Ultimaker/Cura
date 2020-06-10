@@ -1948,11 +1948,6 @@ class CuraApplication(QtApplication):
         return self._machine_manager.activeMachine is None
 
     @pyqtSlot(result = bool)
-    def shouldShowAddPrintersUncancellableDialog(self) -> bool:
-        # If there is no printer and the user is logged in, show only the add printers flow in the welcome dialog.
-        return self._machine_manager.activeMachine is None and self.getCuraAPI().account.isLoggedIn
-
-    @pyqtSlot(result = bool)
     def shouldShowWhatsNewDialog(self) -> bool:
         has_active_machine = self._machine_manager.activeMachine is not None
         has_app_just_upgraded = self.hasJustUpdatedFromOldVersion()

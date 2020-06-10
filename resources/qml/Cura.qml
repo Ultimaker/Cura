@@ -135,7 +135,7 @@ UM.MainWindow
 
             // Reuse the welcome dialog item to show the "Add printers" dialog. Triggered when there is no active
             // machine and the user is logged in.
-            if (CuraApplication.shouldShowAddPrintersUncancellableDialog())
+            if (!Cura.MachineManager.activeMachine && Cura.API.account.isLoggedIn)
             {
                 welcomeDialogItem.model = CuraApplication.getAddPrinterPagesModelWithoutCancel()
                 welcomeDialogItem.progressBarVisible = false
