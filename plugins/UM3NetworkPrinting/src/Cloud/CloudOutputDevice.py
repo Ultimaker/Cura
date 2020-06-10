@@ -74,6 +74,7 @@ class CloudOutputDevice(UltimakerNetworkedPrinterOutputDevice):
             b"name": cluster.friendly_name.encode() if cluster.friendly_name else b"",
             b"firmware_version": cluster.host_version.encode() if cluster.host_version else b"",
             b"printer_type": cluster.printer_type.encode() if cluster.printer_type else b"",
+            # cloud devices are always clusters of at least one
             b"cluster_size": str(cluster.printer_count).encode() if cluster.printer_count else b"1"
         }
 
