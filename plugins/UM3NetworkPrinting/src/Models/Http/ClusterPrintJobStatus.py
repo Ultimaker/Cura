@@ -125,9 +125,6 @@ class ClusterPrintJobStatus(BaseModel):
         model.updateOwner(self.owner)
         model.updateState(self.status)
         model.setCompatibleMachineFamilies(self.compatible_machine_families)
-        model.updateTimeTotal(self.time_total)
-        model.updateTimeElapsed(self.time_elapsed)
-        model.updateOwner(self.owner)
 
         status_set_by_impediment = False
         for impediment in self.impediments_to_printing:

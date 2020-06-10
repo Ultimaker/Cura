@@ -488,7 +488,11 @@ class MachineManager(QObject):
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineIsGroup(self) -> bool:
-        return bool(self._printer_output_devices) and len(self._printer_output_devices[0].printers) > 1
+        if self.activeMachine is None:
+            return False
+
+        group_size = int(self.activeMachine.getMetaDataEntry("group_size", "-1"))
+        return group_size > 1
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
@@ -720,6 +724,8 @@ class MachineManager(QObject):
         containers = CuraContainerRegistry.getInstance().findInstanceContainersMetadata(type = "user", machine = machine_id)
         for container in containers:
             CuraContainerRegistry.getInstance().removeContainer(container["id"])
+        machine_stack = CuraContainerRegistry.getInstance().findContainerStacks(type = "machine", name = machine_id)[0]
+        CuraContainerRegistry.getInstance().removeContainer(machine_stack.definitionChanges.getId())
         CuraContainerRegistry.getInstance().removeContainer(machine_id)
 
         # If the printer that is being removed is a network printer, the hidden printers have to be also removed
