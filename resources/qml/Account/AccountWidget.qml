@@ -131,7 +131,7 @@ Item
 
         opacity: opened ? 1 : 0
         Behavior on opacity { NumberAnimation { duration: 100 } }
-
+        padding: UM.Theme.getSize("wide_margin").height
         contentItem: AccountDetails
         {}
 
