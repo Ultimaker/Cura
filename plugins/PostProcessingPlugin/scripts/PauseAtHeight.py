@@ -204,10 +204,11 @@ class PauseAtHeight(Script):
         """Get the X and Y values for a layer (will be used to get X and Y of the layer after the pause)."""
         lines = layer.split("\n")
         for line in lines:
-            if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
-                x = self.getValue(line, "X")
-                y = self.getValue(line, "Y")
-                return x, y
+            if not line.startswith("M205"):
+                if self.getValue(line, "X") is not None and self.getValue(line, "Y") is not None:
+                    x = self.getValue(line, "X")
+                    y = self.getValue(line, "Y")
+                    return x, y
         return 0, 0
 
     def execute(self, data: List[str]) -> List[str]:
