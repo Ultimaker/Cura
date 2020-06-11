@@ -82,7 +82,6 @@ class LocalAuthorizationServer:
         if self._web_server:
             try:
                 self._web_server.shutdown()
-                self._web_server.server_close()
             except OSError:
                 # OS error can happen if the socket was already closed. We really don't care about that case.
                 pass
