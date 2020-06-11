@@ -13,6 +13,11 @@ Row // sync state icon + message
     anchors.horizontalCenter: parent.horizontalCenter
     spacing: UM.Theme.getSize("narrow_margin").height
 
+    SystemPalette
+    {
+        id: palette
+    }
+
     UM.RecolorImage
     {
         id: icon

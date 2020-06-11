@@ -11,11 +11,6 @@ Column
 {
     spacing: UM.Theme.getSize("default_margin").height
 
-    SystemPalette
-    {
-        id: palette
-    }
-
     Label
     {
         id: title
