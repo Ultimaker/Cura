@@ -103,6 +103,11 @@ class Account(QObject):
         self._authorization_service.accessTokenChanged.connect(self._onAccessTokenChanged)
         self._authorization_service.loadAuthDataFromPreferences()
 
+
+    @pyqtProperty(int, notify=syncStateChanged)
+    def syncState(self):
+        return self._sync_state
+
     def setSyncState(self, service_name: str, state: int) -> None:
         """ Can be used to register sync services and update account sync states
 
