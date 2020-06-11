@@ -133,12 +133,7 @@ Item
         Behavior on opacity { NumberAnimation { duration: 100 } }
 
         contentItem: AccountDetails
-        {
-            id: panel
-            profile: Cura.API.account.userProfile
-            loggedIn: Cura.API.account.isLoggedIn
-            profileImage: Cura.API.account.profileImageUrl
-        }
+        {}
 
         background: UM.PointingRectangle
         {

@@ -9,9 +9,10 @@ import Cura 1.1 as Cura
 
 Column
 {
-    property var profile: null
-    property var loggedIn: false
-    property var profileImage: ""
+    property var profile: Cura.API.account.userProfile
+    property bool loggedIn: Cura.API.account.isLoggedIn
+    property var profileImage: Cura.API.account.profileImageUrl
+
 
     padding: UM.Theme.getSize("wide_margin").height
     spacing: UM.Theme.getSize("wide_margin").height
