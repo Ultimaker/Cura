@@ -290,8 +290,14 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
     @pyqtSlot(str)
-    def setActiveMachine(self, stack_id: str) -> None:
+    def setActiveMachine(self, stack_id: Optional[str]) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
+
+        if not stack_id:
+            self._application.setGlobalContainerStack(None)
+            self.globalContainerChanged.emit()
+            self._application.showAddPrintersUncancellableDialog.emit()
+            return
 
         container_registry = CuraContainerRegistry.getInstance()
         containers = container_registry.findContainerStacks(id = stack_id)
@@ -721,6 +727,8 @@ class MachineManager(QObject):
             other_machine_stacks = [s for s in machine_stacks if s["id"] != machine_id]
             if other_machine_stacks:
                 self.setActiveMachine(other_machine_stacks[0]["id"])
+            else:
+                self.setActiveMachine(None)
 
         metadatas = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)
         if not metadatas:
