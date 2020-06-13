@@ -8,7 +8,7 @@
         "manufacturer": "BeamUp",
         "file_formats": "text/x-gcode",
         "platform": "beamup_l.stl",
-        "platform_offset": [0, -5, -10],
+        "platform_offset": [0, -5, 0],
         "has_machine_quality": true,
         "has_materials": true,
         "machine_extruder_trains":
