@@ -1,0 +1,58 @@
+{
+    "version": 2,
+    "name": "BeamUp L",
+    "inherits": "fdmprinter",
+    "metadata": {
+        "visible": true,
+        "author": "BeamUp",
+        "manufacturer": "BeamUp",
+        "file_formats": "text/x-gcode",
+        "platform": "beamup_l.stl",
+        "platform_offset": [0, -5, -10],
+        "has_machine_quality": true,
+        "has_materials": true,
+        "machine_extruder_trains":
+        {
+            "0": "beamup_l_extruder_0"
+        }
+    },
+
+    "overrides": {
+        "machine_name": { 
+            "default_value": "BeamUp L" 
+        },
+        "machine_width": {
+            "default_value": 320
+        },
+        "machine_depth": {
+            "default_value": 320
+        },
+        "machine_height": {
+            "default_value": 300
+        },
+        "machine_heated_bed": {
+            "default_value": false
+        },
+        "machine_center_is_zero": {
+            "default_value": false
+        },
+        "machine_nozzle_heat_up_speed": {
+            "default_value": 2
+        },
+        "machine_nozzle_cool_down_speed": {
+            "default_value": 2
+        },
+        "gantry_height": {
+            "value": "0"
+        },
+        "machine_gcode_flavor": {
+            "default_value": "RepRap (Marlin/Sprinter)"
+        },
+        "machine_start_gcode": {
+            "default_value": "G28 ; home\nG29 ; level\nM80 ; led\nG1 Z15.0 F6000\nT0\nG92 E0.0000\nG1 E-1.4500 F1800\nG1 X50 Y0 Z0.300 F6000\nM300 S3000 P300\nG1 E1.0000 F1800\nG92 E0.0000\nG1 X250 Y0 E15 F662"
+        },
+        "machine_end_gcode": {
+            "default_value": "G28 ; home\nM104 S0 ; turn off\n M140 S0 ; turn off\nM84 ; disable motors\nM107 ; fan off"
+        }
+    }
+}
