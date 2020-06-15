@@ -264,7 +264,7 @@ class CuraApplication(QtApplication):
 
     @pyqtProperty(str, constant=True)
     def ultimakerDigitalFactoryUrl(self) -> str:
-        return UltimakerCloudAuthentication.CuraDigitalFactoryURL
+        return UltimakerCloudConstants.CuraDigitalFactoryURL
 
     def addCommandLineOptions(self):
         """Adds command line options to the command line parser.

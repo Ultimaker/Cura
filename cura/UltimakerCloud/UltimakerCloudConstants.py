@@ -35,7 +35,7 @@ except ImportError:
     CuraCloudAccountAPIRoot = DEFAULT_CLOUD_ACCOUNT_API_ROOT
 
 try:
-    from cura.CuraVersion import CuraDigitalFactoryURL
+    from cura.CuraVersion import CuraDigitalFactoryURL # type: ignore
     if CuraDigitalFactoryURL == "":
         CuraDigitalFactoryURL = DEFAULT_DIGITAL_FACTORY_URL
 except ImportError:
