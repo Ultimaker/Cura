@@ -465,7 +465,7 @@ class XmlMaterialProfile(InstanceContainer):
         return "materials"
 
     @classmethod
-    def getVersionFromSerialized(cls, serialized: str) -> Optional[int]:
+    def getVersionFromSerialized(cls, serialized: str) -> int:
         data = ET.fromstring(serialized)
 
         version = XmlMaterialProfile.Version

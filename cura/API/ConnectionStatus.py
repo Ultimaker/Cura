@@ -4,14 +4,14 @@ from PyQt5.QtCore import QObject, pyqtSignal, QTimer, pyqtProperty
 from PyQt5.QtNetwork import QNetworkReply
 
 from UM.TaskManagement.HttpRequestManager import HttpRequestManager
-from cura.UltimakerCloud import UltimakerCloudAuthentication
+from cura.UltimakerCloud import UltimakerCloudConstants
 
 
 class ConnectionStatus(QObject):
     """Status info for some web services"""
 
     UPDATE_INTERVAL = 10.0  # seconds
-    ULTIMAKER_CLOUD_STATUS_URL = UltimakerCloudAuthentication.CuraCloudAPIRoot + "/connect/v1/"
+    ULTIMAKER_CLOUD_STATUS_URL = UltimakerCloudConstants.CuraCloudAPIRoot + "/connect/v1/"
 
     __instance = None  # type: Optional[ConnectionStatus]
 

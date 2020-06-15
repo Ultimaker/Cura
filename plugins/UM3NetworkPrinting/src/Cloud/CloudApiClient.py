@@ -13,7 +13,7 @@ from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 from UM.TaskManagement.HttpRequestScope import JsonDecoratorScope
 from cura.API import Account
 from cura.CuraApplication import CuraApplication
-from cura.UltimakerCloud import UltimakerCloudAuthentication
+from cura.UltimakerCloud import UltimakerCloudConstants
 from cura.UltimakerCloud.UltimakerCloudScope import UltimakerCloudScope
 from .ToolPathUploader import ToolPathUploader
 from ..Models.BaseModel import BaseModel
@@ -35,7 +35,7 @@ class CloudApiClient:
     """
 
     # The cloud URL to use for this remote cluster.
-    ROOT_PATH = UltimakerCloudAuthentication.CuraCloudAPIRoot
+    ROOT_PATH = UltimakerCloudConstants.CuraCloudAPIRoot
     CLUSTER_API_ROOT = "{}/connect/v1".format(ROOT_PATH)
     CURA_API_ROOT = "{}/cura/v1".format(ROOT_PATH)
 

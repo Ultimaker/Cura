@@ -22,6 +22,7 @@ from UM.Settings.SettingFunction import SettingFunction
 from UM.Signal import postponeSignals, CompressTechnique
 
 import cura.CuraApplication  # Imported like this to prevent circular references.
+from UM.Util import parseBool
 
 from cura.Machines.ContainerNode import ContainerNode
 from cura.Machines.ContainerTree import ContainerTree
@@ -37,6 +38,7 @@ from cura.Settings.ExtruderStack import ExtruderStack
 from cura.Settings.cura_empty_instance_containers import (empty_definition_changes_container, empty_variant_container,
                                                           empty_material_container, empty_quality_container,
                                                           empty_quality_changes_container, empty_intent_container)
+from cura.UltimakerCloud.UltimakerCloudConstants import META_UM_LINKED_TO_ACCOUNT
 
 from .CuraStackBuilder import CuraStackBuilder
 
@@ -288,8 +290,14 @@ class MachineManager(QObject):
             self.activeStackValueChanged.emit()
 
     @pyqtSlot(str)
-    def setActiveMachine(self, stack_id: str) -> None:
+    def setActiveMachine(self, stack_id: Optional[str]) -> None:
         self.blurSettings.emit()  # Ensure no-one has focus.
+
+        if not stack_id:
+            self._application.setGlobalContainerStack(None)
+            self.globalContainerChanged.emit()
+            self._application.showAddPrintersUncancellableDialog.emit()
+            return
 
         container_registry = CuraContainerRegistry.getInstance()
         containers = container_registry.findContainerStacks(id = stack_id)
@@ -493,6 +501,10 @@ class MachineManager(QObject):
 
         group_size = int(self.activeMachine.getMetaDataEntry("group_size", "-1"))
         return group_size > 1
+
+    @pyqtProperty(bool, notify = printerConnectedStatusChanged)
+    def activeMachineIsLinkedToCurrentAccount(self) -> bool:
+        return parseBool(self.activeMachine.getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "True"))
 
     @pyqtProperty(bool, notify = printerConnectedStatusChanged)
     def activeMachineHasNetworkConnection(self) -> bool:
@@ -715,6 +727,8 @@ class MachineManager(QObject):
             other_machine_stacks = [s for s in machine_stacks if s["id"] != machine_id]
             if other_machine_stacks:
                 self.setActiveMachine(other_machine_stacks[0]["id"])
+            else:
+                self.setActiveMachine(None)
 
         metadatas = CuraContainerRegistry.getInstance().findContainerStacksMetadata(id = machine_id)
         if not metadatas:

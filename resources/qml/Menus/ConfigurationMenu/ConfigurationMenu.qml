@@ -33,7 +33,7 @@ Cura.ExpandablePopup
     }
 
     contentPadding: UM.Theme.getSize("default_lining").width
-    enabled: Cura.MachineManager.activeMachine.hasMaterials || Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates; //Only let it drop down if there is any configuration that you could change.
+    enabled: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasMaterials || Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates : false; //Only let it drop down if there is any configuration that you could change.
 
     headerItem: Item
     {
@@ -46,7 +46,7 @@ Cura.ExpandablePopup
                 model: extrudersModel
                 delegate: Item
                 {
-                    Layout.fillWidth: true
+                    Layout.preferredWidth: Math.round(parent.width / extrudersModel.count)
                     Layout.fillHeight: true
 
                     // Extruder icon. Shows extruder index and has the same color as the active material.
@@ -84,7 +84,7 @@ Cura.ExpandablePopup
                     {
                         id: variantLabel
 
-                        visible: Cura.MachineManager.activeMachine.hasVariants
+                        visible: Cura.MachineManager.activeMachine ? Cura.MachineManager.activeMachine.hasVariants : false
 
                         text: model.variant
                         elide: Text.ElideRight
@@ -114,7 +114,7 @@ Cura.ExpandablePopup
             color: UM.Theme.getColor("text")
             renderType: Text.NativeRendering
 
-            visible: !Cura.MachineManager.activeMachine.hasMaterials && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates)
+            visible: Cura.MachineManager.activeMachine ? !Cura.MachineManager.activeMachine.hasMaterials && (Cura.MachineManager.activeMachine.hasVariants || Cura.MachineManager.activeMachine.hasVariantBuildplates) : false
 
             anchors
             {
