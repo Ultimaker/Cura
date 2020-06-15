@@ -8,7 +8,6 @@
         "manufacturer": "TinyBoy",
         "file_formats": "text/x-gcode",
         "platform": "tinyboy_ra20.obj",
-        "platform_texture": "tinyboy2.png",
         "platform_offset": [ 8, -73.3, -8 ],
         "has_materials": false,
         "has_machine_quality": true,
