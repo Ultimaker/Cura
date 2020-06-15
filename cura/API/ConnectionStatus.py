@@ -2,11 +2,16 @@ from typing import Optional
 
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty
 
-from UM.Logger import Logger
+from UM.TaskManagement.HttpRequestManager import HttpRequestManager
 
 
 class ConnectionStatus(QObject):
-    """Status info for some web services"""
+    """Provides an estimation of whether internet is reachable
+
+    Estimation is updated with every request through HttpRequestManager.
+    Acts as a proxy to HttpRequestManager.internetReachableChanged without
+    exposing the HttpRequestManager in its entirety.
+    """
 
     __instance = None  # type: Optional[ConnectionStatus]
 
@@ -21,16 +26,16 @@ class ConnectionStatus(QObject):
     def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
-        self._is_internet_reachable = True  # type: bool
+        manager = HttpRequestManager.getInstance()
+        self._is_internet_reachable = manager.isInternetReachable  # type: bool
+        manager.internetReachableChanged.connect(self._onInternetReachableChanged)
 
     @pyqtProperty(bool, notify = internetReachableChanged)
     def isInternetReachable(self) -> bool:
         return self._is_internet_reachable
 
-    def setOnlineStatus(self, new_status: bool) -> None:
-        old_status = self._is_internet_reachable
-        self._is_internet_reachable = new_status
-        if old_status != new_status:
-            Logger.debug(
-                "Connection status has been set to {}".format("online" if self._is_internet_reachable else "offline"))
+    def _onInternetReachableChanged(self, reachable: bool):
+        if reachable != self._is_internet_reachable:
+            self._is_internet_reachable = reachable
             self.internetReachableChanged.emit()
+
