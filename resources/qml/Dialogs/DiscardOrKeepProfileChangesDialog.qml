@@ -14,8 +14,8 @@ UM.Dialog
     id: base
     title: catalog.i18nc("@title:window", "Discard or Keep changes")
 
-    width: UM.Theme.getSize("popup_dialog").width
-    height: UM.Theme.getSize("popup_dialog").height
+    minimumWidth: UM.Theme.getSize("popup_dialog").width
+    minimumHeight: UM.Theme.getSize("popup_dialog").height
     property var changesModel: Cura.UserChangesModel{ id: userChangesModel}
     onVisibilityChanged:
     {
