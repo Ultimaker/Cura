@@ -18,16 +18,16 @@ class ConnectionStatus(QObject):
             cls.__instance = cls(*args, **kwargs)
         return cls.__instance
 
-    def __init__(self, parent: Optional["QObject"] = None):
+    def __init__(self, parent: Optional["QObject"] = None) -> None:
         super().__init__(parent)
 
-        self._is_internet_reachable: bool = True
+        self._is_internet_reachable = True  # type: bool
 
     @pyqtProperty(bool, notify = internetReachableChanged)
     def isInternetReachable(self) -> bool:
         return self._is_internet_reachable
 
-    def setOnlineStatus(self, new_status: bool):
+    def setOnlineStatus(self, new_status: bool) -> None:
         old_status = self._is_internet_reachable
         self._is_internet_reachable = new_status
         if old_status != new_status:
