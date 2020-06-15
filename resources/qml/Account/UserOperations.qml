@@ -10,11 +10,17 @@ import Cura 1.1 as Cura
 Column
 {
     spacing: UM.Theme.getSize("narrow_margin").height
+    topPadding: UM.Theme.getSize("default_margin").height
+    bottomPadding: UM.Theme.getSize("default_margin").height
+    width: childrenRect.width
 
     Item
     {
+        id: accountInfo
         width: childrenRect.width
         height: childrenRect.height
+        anchors.left: parent.left
+        anchors.leftMargin: UM.Theme.getSize("default_margin").width
         AvatarImage
         {
             id: avatar
@@ -30,6 +36,8 @@ Column
             anchors.left: avatar.right
             anchors.leftMargin: UM.Theme.getSize("default_margin").width
             spacing: UM.Theme.getSize("narrow_margin").height
+            width: childrenRect.width
+            height: childrenRect.height
             Label
             {
                 id: username

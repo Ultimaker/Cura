@@ -11,7 +11,6 @@ Row // Sync state icon + message
     id: syncRow
     width: childrenRect.width
     height: childrenRect.height
-    anchors.horizontalCenter: parent.horizontalCenter
     spacing: UM.Theme.getSize("narrow_margin").height
 
     states: [
@@ -48,7 +47,6 @@ Row // Sync state icon + message
     {
         id: palette
     }
-
 
     UM.RecolorImage
     {
@@ -91,6 +89,7 @@ Row // Sync state icon + message
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            width: contentWidth + UM.Theme.getSize("default_margin").height
             height: contentHeight
             verticalAlignment: Text.AlignVCenter
             visible: !Cura.API.account.manualSyncEnabled
@@ -105,6 +104,7 @@ Row // Sync state icon + message
             renderType: Text.NativeRendering
             verticalAlignment: Text.AlignVCenter
             height: contentHeight
+            width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.manualSyncEnabled
 
             MouseArea
