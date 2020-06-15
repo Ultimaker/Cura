@@ -80,6 +80,8 @@ UM.Dialog
                     property var extruder_name: userChangesModel.getItem(styleData.row).extruder
                     anchors.left: parent.left
                     anchors.leftMargin: UM.Theme.getSize("default_margin").width
+                    anchors.right: parent.right
+                    elide: Text.ElideRight
                     font: UM.Theme.getFont("system")
                     text:
                     {
