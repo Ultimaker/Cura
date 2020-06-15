@@ -104,8 +104,10 @@ class CloudOutputDeviceManager:
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
-        """Callback for when the request for getting the clusters is finished."""
+        """Callback for when the request for getting the clusters is successful and finished."""
 
+        # Remote clusters were successfully retrieved, which means that the computer is online
+        CuraApplication.getInstance().getCuraAPI().connectionStatus.setOnlineStatus(True)
         self._um_cloud_printers = {m.getMetaDataEntry(self.META_CLUSTER_ID): m for m in
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
                                        type = "machine") if m.getMetaDataEntry(self.META_CLUSTER_ID, None)}
@@ -150,6 +152,9 @@ class CloudOutputDeviceManager:
     def _onGetRemoteClusterFailed(self, reply: QNetworkReply, error: QNetworkReply.NetworkError) -> None:
         self._syncing = False
         self._account.setSyncState(self.SYNC_SERVICE_NAME, SyncState.ERROR)
+        # If getting the remote clusters fails, then the cloud printers are unreachable, so we need to inform the
+        # connection status
+        CuraApplication.getInstance().getCuraAPI().connectionStatus.setOnlineStatus(False)
 
     def _onDevicesDiscovered(self, clusters: List[CloudClusterResponse]) -> None:
         """**Synchronously** create machines for discovered devices
