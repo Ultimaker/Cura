@@ -9,62 +9,88 @@ import Cura 1.1 as Cura
 
 Column
 {
-    spacing: UM.Theme.getSize("default_margin").height
+    spacing: UM.Theme.getSize("narrow_margin").height
 
-    Label
+    Item
     {
-        id: title
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        renderType: Text.NativeRendering
-        text: catalog.i18nc("@label The argument is a username.", "Hi %1").arg(profile.username)
-        font: UM.Theme.getFont("large_bold")
-        color: UM.Theme.getColor("text")
+        width: childrenRect.width
+        height: childrenRect.height
+        AvatarImage
+        {
+            id: avatar
+
+            width: UM.Theme.getSize("main_window_header").height
+            height: UM.Theme.getSize("main_window_header").height
+
+            source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
+            outlineColor: "transparent"
+        }
+        Column
+        {
+            anchors.left: avatar.right
+            anchors.leftMargin: UM.Theme.getSize("default_margin").width
+            spacing: UM.Theme.getSize("narrow_margin").height
+            Label
+            {
+                id: username
+                renderType: Text.NativeRendering
+                text: profile.username
+                font: UM.Theme.getFont("large_bold")
+                color: UM.Theme.getColor("text")
+            }
+
+            SyncState
+            {
+                id: syncRow
+            }
+            Label
+            {
+                id: lastSyncLabel
+                renderType: Text.NativeRendering
+                text: catalog.i18nc("@label The argument is a timestamp", "Last update: %1").arg(Cura.API.account.lastSyncDateTime)
+                font: UM.Theme.getFont("default")
+                color: UM.Theme.getColor("text_medium")
+            }
+        }
     }
 
-    SyncState
+    Rectangle
     {
-        id: syncRow
+        width: parent.width
+        color: UM.Theme.getColor("lining")
+        height: UM.Theme.getSize("default_lining").height
     }
-
-    Label
+    Cura.TertiaryButton
     {
-        id: lastSyncLabel
-        anchors.horizontalCenter: parent.horizontalCenter
-        horizontalAlignment: Text.AlignHCenter
-        renderType: Text.NativeRendering
-        text: catalog.i18nc("@label The argument is a timestamp", "Last update: %1").arg(Cura.API.account.lastSyncDateTime)
-        font: UM.Theme.getFont("default")
-        color: UM.Theme.getColor("text_medium")
-    }
-
-    Cura.SecondaryButton
-    {
-        id: accountButton
-        anchors.horizontalCenter: parent.horizontalCenter
+        id: cloudButton
         width: UM.Theme.getSize("account_button").width
         height: UM.Theme.getSize("account_button").height
-        text: catalog.i18nc("@button", "Ultimaker account")
+        text: catalog.i18nc("@button", "Ultimaker Digital Factory")
+        onClicked: Qt.openUrlExternally(CuraApplication.ultimakerDigitalFactoryUrl)
+        fixedWidthMode: false
+    }
+
+    Cura.TertiaryButton
+    {
+        id: accountButton
+        width: UM.Theme.getSize("account_button").width
+        height: UM.Theme.getSize("account_button").height
+        text: catalog.i18nc("@button", "Ultimaker Account")
         onClicked: Qt.openUrlExternally(CuraApplication.ultimakerCloudAccountRootUrl)
         fixedWidthMode: false
     }
 
-    Label
+    Rectangle
+    {
+        width: parent.width
+        color: UM.Theme.getColor("lining")
+        height: UM.Theme.getSize("default_lining").height
+    }
+
+    Cura.TertiaryButton
     {
         id: signOutButton
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: catalog.i18nc("@button", "Sign out")
-        color: UM.Theme.getColor("secondary_button_text")
-        font: UM.Theme.getFont("medium")
-        renderType: Text.NativeRendering
-
-        MouseArea
-        {
-            anchors.fill: parent
-            onClicked: Cura.API.account.logout()
-            hoverEnabled: true
-            onEntered: signOutButton.font.underline = true
-            onExited: signOutButton.font.underline = false
-        }
+        onClicked: Cura.API.account.logout()
+        text: catalog.i18nc("@button", "Sign Out")
     }
 }

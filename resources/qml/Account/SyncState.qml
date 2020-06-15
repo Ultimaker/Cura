@@ -91,6 +91,8 @@ Row // Sync state icon + message
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            height: contentHeight
+            verticalAlignment: Text.AlignVCenter
             visible: !Cura.API.account.manualSyncEnabled
         }
 
@@ -101,6 +103,8 @@ Row // Sync state icon + message
             color: UM.Theme.getColor("secondary_button_text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            height: contentHeight
             visible: Cura.API.account.manualSyncEnabled
 
             MouseArea
