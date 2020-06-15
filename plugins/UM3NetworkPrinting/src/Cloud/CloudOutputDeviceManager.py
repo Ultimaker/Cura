@@ -31,6 +31,7 @@ class CloudOutputDeviceManager:
     """
 
     META_CLUSTER_ID = "um_cloud_cluster_id"
+    META_HOST_GUID = "host_guid"
     META_NETWORK_KEY = "um_network_key"
 
     SYNC_SERVICE_NAME = "CloudOutputDeviceManager"
@@ -113,13 +114,18 @@ class CloudOutputDeviceManager:
         all_clusters = {c.cluster_id: c for c in clusters}  # type: Dict[str, CloudClusterResponse]
         online_clusters = {c.cluster_id: c for c in clusters if c.is_online}  # type: Dict[str, CloudClusterResponse]
 
-        # Add the new printers in Cura. If a printer was previously added and is rediscovered, set its metadata to
-        # reflect that and mark the printer not removed from the account
+        # Add the new printers in Cura.
         for device_id, cluster_data in all_clusters.items():
             if device_id not in self._remote_clusters:
                 new_clusters.append(cluster_data)
-            if device_id in self._um_cloud_printers and not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
-                self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
+            if device_id in self._um_cloud_printers:
+                # Existing cloud printers may not have the host_guid meta-data entry. If that's the case, add it.
+                if not self._um_cloud_printers[device_id].getMetaDataEntry(self.META_HOST_GUID, None):
+                    self._um_cloud_printers[device_id].setMetaDataEntry(self.META_HOST_GUID, cluster_data.host_guid)
+                # If a printer was previously not linked to the account and is rediscovered, mark the printer as linked
+                # to the current account
+                if not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
+                    self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
         self._onDevicesDiscovered(new_clusters)
 
         # Hide the current removed_printers_message, if there is any
@@ -161,11 +167,21 @@ class CloudOutputDeviceManager:
         """
         new_devices = []
         remote_clusters_added = False
+        host_guid_map = {machine.getMetaDataEntry(self.META_HOST_GUID): device_cluster_id
+                         for device_cluster_id, machine in self._um_cloud_printers.items()
+                         if machine.getMetaDataEntry(self.META_HOST_GUID)}
+        machine_manager = CuraApplication.getInstance().getMachineManager()
+
         for cluster_data in clusters:
             device = CloudOutputDevice(self._api, cluster_data)
-            # Create a machine if we don't already have it. Do not make it the active machine.
-            machine_manager = CuraApplication.getInstance().getMachineManager()
+            if cluster_data.host_guid in host_guid_map:
+                machine = machine_manager.getMachine(device.printerType, {self.META_HOST_GUID: cluster_data.host_guid})
+                # Update the META_CLUSTER_ID of the machine in case it has been changed (e.g. if the printer was
+                # removed and re-added to the account).
+                if machine and machine.getMetaDataEntry(self.META_CLUSTER_ID) != device.key:
+                    machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
 
+            # Create a machine if we don't already have it. Do not make it the active machine.
             # We only need to add it if it wasn't already added by "local" network or by cloud.
             if machine_manager.getMachine(device.printerType, {self.META_CLUSTER_ID: device.key}) is None \
                     and machine_manager.getMachine(device.printerType, {self.META_NETWORK_KEY: cluster_data.host_name + "*"}) is None:  # The host name is part of the network key.
@@ -378,6 +394,7 @@ class CloudOutputDeviceManager:
     def _setOutputDeviceMetadata(self, device: CloudOutputDevice, machine: GlobalStack):
         machine.setName(device.name)
         machine.setMetaDataEntry(self.META_CLUSTER_ID, device.key)
+        machine.setMetaDataEntry(self.META_HOST_GUID, device.clusterData.host_guid)
         machine.setMetaDataEntry("group_name", device.name)
         machine.setMetaDataEntry("group_size", device.clusterSize)
         machine.setMetaDataEntry("removal_warning", self.I18N_CATALOG.i18nc(
