@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "TinyBoy E10_J10_L10_M10",
+    "name": "TinyBoy E10/J10/L10/M10",
     "inherits": "fdmprinter",
     "metadata": { 
         "visible": true,

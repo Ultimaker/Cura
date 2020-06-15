@@ -1,6 +1,6 @@
 {
     "version": 2,
-    "name": "TinyBoy E16_L16_M16",
+    "name": "TinyBoy E16/L16/M16",
     "inherits": "fdmprinter",
     "metadata": { 
         "visible": true,
