@@ -55,7 +55,7 @@ Row // Sync state icon + message
         height: width
 
         source: Cura.API.account.manualSyncEnabled ? UM.Theme.getIcon("update") : UM.Theme.getIcon("checked")
-        color: palette.text
+        color: UM.Theme.getColor("account_sync_state_icon")
 
         RotationAnimator
         {
