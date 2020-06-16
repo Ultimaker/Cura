@@ -7,6 +7,8 @@ from enum import IntEnum
 from threading import Thread
 from typing import Union
 
+from UM.Logger import Logger
+
 MYPY = False
 if MYPY:
     from cura.PrinterOutput.PrinterOutputDevice import PrinterOutputDevice
@@ -38,8 +40,10 @@ class FirmwareUpdater(QObject):
             return
 
         self._setFirmwareUpdateState(FirmwareUpdateState.updating)
-
-        self._update_firmware_thread.start()
+        try:
+            self._update_firmware_thread.start()
+        except RuntimeError:
+            Logger.warning("Could not start the update thread, since it's still running!")
 
     def _updateFirmware(self) -> None:
         raise NotImplementedError("_updateFirmware needs to be implemented")
