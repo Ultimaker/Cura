@@ -11,13 +11,13 @@ if TYPE_CHECKING:
     from cura.CuraApplication import CuraApplication
 
 
-#
-# This model holds all first-start machine actions for the currently active machine. It has 2 roles:
-#   - title   : the title/name of the action
-#   - content : the QObject of the QML content of the action
-#   - action  : the MachineAction object itself
-#
 class FirstStartMachineActionsModel(ListModel):
+    """This model holds all first-start machine actions for the currently active machine. It has 2 roles:
+
+        - title   : the title/name of the action
+        - content : the QObject of the QML content of the action
+        - action  : the MachineAction object itself
+    """
 
     TitleRole = Qt.UserRole + 1
     ContentRole = Qt.UserRole + 2
@@ -73,9 +73,10 @@ class FirstStartMachineActionsModel(ListModel):
         self._current_action_index += 1
         self.currentActionIndexChanged.emit()
 
-    # Resets the current action index to 0 so the wizard panel can show actions from the beginning.
     @pyqtSlot()
     def reset(self) -> None:
+        """Resets the current action index to 0 so the wizard panel can show actions from the beginning."""
+
         self._current_action_index = 0
         self.currentActionIndexChanged.emit()
 

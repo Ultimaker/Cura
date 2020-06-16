@@ -8,14 +8,12 @@
         "main_background": [39, 44, 48, 255],
         "message_background": [39, 44, 48, 255],
         "wide_lining": [31, 36, 39, 255],
-        "thick_lining": [255, 255, 255, 30],
+        "thick_lining": [255, 255, 255, 60],
         "lining": [64, 69, 72, 255],
         "viewport_overlay": [30, 36, 39, 255],
 
         "primary": [12, 169, 227, 255],
-        "primary_hover": [48, 182, 231, 255],
         "primary_text": [255, 255, 255, 204],
-        "border": [127, 127, 127, 255],
         "secondary": [95, 95, 95, 255],
 
         "icon": [204, 204, 204, 255],
@@ -25,7 +23,6 @@
         "toolbar_button_active_hover": [95, 95, 95, 255],
 
         "main_window_header_button_text_inactive": [128, 128, 128, 255],
-        "main_window_header_button_text_hovered": [255, 255, 255, 255],
 
         "machine_selector_bar": [39, 44, 48, 255],
         "machine_selector_active": [39, 44, 48, 255],
@@ -38,7 +35,6 @@
         "text_hover": [255, 255, 255, 204],
         "text_pressed": [255, 255, 255, 204],
         "text_subtext": [255, 255, 255, 172],
-        "text_emphasis": [255, 255, 255, 255],
         "text_scene": [255, 255, 255, 162],
         "text_scene_hover": [255, 255, 255, 204],
 
@@ -52,9 +48,6 @@
         "button_active": [67, 72, 75, 255],
         "button_active_hover": [67, 72, 75, 255],
         "button_text": [255, 255, 255, 197],
-        "button_text_hover": [255, 255, 255, 255],
-        "button_text_active": [255, 255, 255, 255],
-        "button_text_active_hover": [255, 255, 255, 255],
         "button_disabled": [39, 44, 48, 255],
         "button_disabled_text": [255, 255, 255, 101],
 
@@ -64,8 +57,6 @@
         "small_button_active_hover": [67, 72, 75, 255],
         "small_button_text": [255, 255, 255, 197],
         "small_button_text_hover": [255, 255, 255, 255],
-        "small_button_text_active": [255, 255, 255, 255],
-        "small_button_text_active_hover": [255, 255, 255, 255],
 
         "button_tooltip": [39, 44, 48, 255],
         "button_tooltip_border": [39, 44, 48, 255],
@@ -145,7 +136,6 @@
         "slider_groove_fill": [245, 245, 245, 255],
         "slider_handle": [255, 255, 255, 255],
         "slider_handle_active": [68, 192, 255, 255],
-        "slider_text_background": [255, 255, 255, 255],
 
         "checkbox": [43, 48, 52, 255],
         "checkbox_hover": [43, 48, 52, 255],
@@ -161,56 +151,19 @@
 
         "tool_button_border": [255, 255, 255, 38],
 
-        "status_offline": [0, 0, 0, 255],
-        "status_ready": [0, 205, 0, 255],
-        "status_busy": [12, 169, 227, 255],
-        "status_paused": [255, 140, 0, 255],
-        "status_stopped": [236, 82, 80, 255],
-        "status_unknown": [127, 127, 127, 255],
-
-        "disabled_axis": [127, 127, 127, 255],
-        "x_axis": [255, 0, 0, 255],
         "y_axis": [96, 96, 255, 255],
-        "z_axis": [0, 255, 0, 255],
-        "all_axis": [255, 255, 255, 255],
 
         "viewport_background": [31, 36, 39, 255],
         "volume_outline": [12, 169, 227, 128],
         "buildplate": [169, 169, 169, 255],
-        "buildplate_grid": [129, 131, 134, 255],
         "buildplate_grid_minor": [154, 154, 155, 255],
 
-        "convex_hull": [35, 35, 35, 127],
         "disallowed_area": [0, 0, 0, 52],
-        "error_area": [255, 0, 0, 127],
 
-        "model_default": [255, 201, 36, 255],
-        "model_overhang": [255, 0, 0, 255],
-        "model_unslicable": [122, 122, 122, 255],
-        "model_unslicable_alt": [172, 172, 127, 255],
         "model_selection_outline": [12, 169, 227, 255],
-
-        "xray": [26,  26,  62, 255],
-        "xray_error": [255,  0,  0, 255],
-
-        "layerview_ghost": [31, 31, 31, 95],
-        "layerview_none": [255, 255, 255, 255],
-        "layerview_inset_0": [255, 0, 0, 255],
-        "layerview_inset_x": [0, 255, 0, 255],
-        "layerview_skin": [255, 255, 0, 255],
-        "layerview_support": [0, 255, 255, 255],
-        "layerview_skirt": [0, 255, 255, 255],
-        "layerview_infill": [255, 127, 0, 255],
-        "layerview_support_infill": [0, 255, 255, 255],
-        "layerview_move_combing": [0, 0, 255, 255],
-        "layerview_move_retraction": [128, 127, 255, 255],
-        "layerview_support_interface": [63, 127, 255, 255],
-        "layerview_prime_tower": [0, 255, 255, 255],
-        "layerview_nozzle": [181, 166, 66, 50],
 
         "material_compatibility_warning": [255, 255, 255, 255],
 
-        "quality_slider_unavailable": [179, 179, 179, 255],
         "quality_slider_available": [255, 255, 255, 255],
 
         "toolbox_header_button_text_active": [255, 255, 255, 255],
@@ -236,18 +189,15 @@
         "monitor_stage_background": [30, 36, 39, 255],
         "monitor_stage_background_fade": [30, 36, 39, 102],
 
-        "monitor_progress_bar_fill": [50, 130, 255, 255],
         "monitor_progress_bar_deactive": [102, 102, 102, 255],
         "monitor_progress_bar_empty": [67, 67, 67, 255],
 
-        "monitor_tooltip": [25, 25, 25, 255],
         "monitor_tooltip_text": [229, 229, 229, 255],
         "monitor_context_menu": [67, 67, 67, 255],
         "monitor_context_menu_hover": [30, 102, 215, 255],
 
         "monitor_skeleton_loading": [102, 102, 102, 255],
         "monitor_placeholder_image": [102, 102, 102, 255],
-        "monitor_image_overlay": [0, 0, 0, 255],
         "monitor_shadow": [4, 10, 13, 255],
 
         "monitor_carousel_dot": [119, 119, 119, 255],

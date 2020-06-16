@@ -22,7 +22,7 @@
             "0": "tizyx_evy_dual_extruder_0",
             "1": "tizyx_evy_dual_extruder_1"
         },
-        "platform": "tizyx_k25_platform.stl",
+        "platform": "tizyx_k25_platform.3mf",
         "platform_offset": [0, -4, 0],
         "first_start_actions": ["MachineSettingsAction"],
         "supported_actions": ["MachineSettingsAction"]

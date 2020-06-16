@@ -5,8 +5,8 @@ from UM.Application import Application
 from cura.Stages.CuraStage import CuraStage
 
 
-##  Stage for monitoring a 3D printing while it's printing.
 class MonitorStage(CuraStage):
+    """Stage for monitoring a 3D printing while it's printing."""
 
     def __init__(self, parent = None):
         super().__init__(parent)

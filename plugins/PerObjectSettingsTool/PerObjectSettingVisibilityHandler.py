@@ -1,10 +1,11 @@
-# Copyright (c) 2016 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import pyqtProperty
 from UM.FlameProfiler import pyqtSlot
 
 from UM.Application import Application
+from UM.PluginRegistry import PluginRegistry
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.SettingInstance import SettingInstance
 from UM.Logger import Logger
@@ -14,15 +15,19 @@ from cura.Settings.ExtruderManager import ExtruderManager #To get global-inherit
 from cura.Settings.SettingOverrideDecorator import SettingOverrideDecorator
 
 
-##  The per object setting visibility handler ensures that only setting
-#   definitions that have a matching instance Container are returned as visible.
 class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHandler.SettingVisibilityHandler):
+    """The per object setting visibility handler ensures that only setting
+
+    definitions that have a matching instance Container are returned as visible.
+    """
     def __init__(self, parent = None, *args, **kwargs):
         super().__init__(parent = parent, *args, **kwargs)
 
         self._selected_object_id = None
         self._node = None
         self._stack = None
+
+        PluginRegistry.getInstance().getPluginObject("PerObjectSettingsTool").visibility_handler = self
 
         # this is a set of settings that will be skipped if the user chooses to reset.
         self._skip_reset_setting_set = set()
@@ -68,7 +73,7 @@ class PerObjectSettingVisibilityHandler(UM.Settings.Models.SettingVisibilityHand
 
         # Add all instances that are not added, but are in visibility list
         for item in visible:
-            if not settings.getInstance(item): # Setting was not added already.
+            if settings.getInstance(item) is None:  # Setting was not added already.
                 definition = self._stack.getSettingDefinition(item)
                 if definition:
                     new_instance = SettingInstance(definition, settings)

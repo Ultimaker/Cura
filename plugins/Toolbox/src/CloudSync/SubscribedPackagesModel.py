@@ -2,9 +2,12 @@
 # Cura is released under the terms of the LGPLv3 or higher.
 
 from PyQt5.QtCore import Qt, pyqtProperty, pyqtSlot
+
+from UM.PackageManager import PackageManager
 from UM.Qt.ListModel import ListModel
+from UM.Version import Version
+
 from cura import ApplicationMetadata
-from UM.Logger import Logger
 from typing import List, Dict, Any
 
 
@@ -37,27 +40,18 @@ class SubscribedPackagesModel(ListModel):
                 return True
         return False
 
-        # Sets the "is_compatible" to True for the given package, in memory
-
-    @pyqtSlot()
-    def dismissPackage(self, package_id: str) -> None:
-        package = self.find(key="package_id", value=package_id)
-        if package != -1:
-            self.setProperty(package, property="is_dismissed", value=True)
-            Logger.debug("Package {} has been dismissed".format(package_id))
-
-    def setMetadata(self, data: List[Dict[str, List[Any]]]) -> None:
-        self._metadata = data
-
     def addDiscrepancies(self, discrepancy: List[str]) -> None:
         self._discrepancies = discrepancy
 
-    def getCompatiblePackages(self):
-        return [x for x in self._items if x["is_compatible"]]
+    def getCompatiblePackages(self) -> List[Dict[str, Any]]:
+        return [package for package in self._items if package["is_compatible"]]
 
-    def initialize(self) -> None:
+    def getIncompatiblePackages(self) -> List[str]:
+        return [package["package_id"] for package in self._items if not package["is_compatible"]]
+
+    def initialize(self, package_manager: PackageManager, subscribed_packages_payload: List[Dict[str, Any]]) -> None:
         self._items.clear()
-        for item in self._metadata:
+        for item in subscribed_packages_payload:
             if item["package_id"] not in self._discrepancies:
                 continue
             package = {
@@ -68,15 +62,13 @@ class SubscribedPackagesModel(ListModel):
                 "md5_hash": item["md5_hash"],
                 "is_dismissed": False,
             }
-            if self._sdk_version not in item["sdk_versions"]:
-                package.update({"is_compatible": False})
-            else:
-                package.update({"is_compatible": True})
+
+            compatible = any(package_manager.isPackageCompatible(Version(version)) for version in item["sdk_versions"])
+            package.update({"is_compatible": compatible})
+
             try:
                 package.update({"icon_url": item["icon_url"]})
             except KeyError:  # There is no 'icon_url" in the response payload for this package
                 package.update({"icon_url": ""})
             self._items.append(package)
         self.setItems(self._items)
-
-

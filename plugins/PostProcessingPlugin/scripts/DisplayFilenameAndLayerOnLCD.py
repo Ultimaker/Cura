@@ -56,7 +56,7 @@ class DisplayFilenameAndLayerOnLCD(Script):
                 }
             }
         }"""
-    
+
     def execute(self, data):
         max_layer = 0
         if self.getSettingValueByKey("name") != "":
@@ -72,22 +72,29 @@ class DisplayFilenameAndLayerOnLCD(Script):
             lcd_text = "M117 Printing " + name + " - Layer "
         i = self.getSettingValueByKey("startNum")
         for layer in data:
-            display_text = lcd_text + str(i) + " " + name
+            display_text = lcd_text + str(i)
             layer_index = data.index(layer)
             lines = layer.split("\n")
             for line in lines:
                 if line.startswith(";LAYER_COUNT:"):
                     max_layer = line
                     max_layer = max_layer.split(":")[1]
+                    if self.getSettingValueByKey("startNum") == 0:
+                        max_layer = str(int(max_layer) - 1)
                 if line.startswith(";LAYER:"):
                     if self.getSettingValueByKey("maxlayer"):
                         display_text = display_text + " of " + max_layer
+                        if not self.getSettingValueByKey("scroll"):
+                            display_text = display_text + " " + name
                     else:
-                        display_text = display_text + "!"
+                        if not self.getSettingValueByKey("scroll"):
+                            display_text = display_text + " " + name + "!"
+                        else:
+                            display_text = display_text + "!"
                     line_index = lines.index(line)
                     lines.insert(line_index + 1, display_text)
                     i += 1
             final_lines = "\n".join(lines)
             data[layer_index] = final_lines
-            
+
         return data

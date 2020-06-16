@@ -7,7 +7,7 @@
         "author": "typeamachines",
         "manufacturer": "typeamachines",
         "file_formats": "text/x-gcode",
-        "platform": "tam_series1.stl",
+        "platform": "tam_series1.3mf",
         "platform_offset": [-580.0, -6.23, 253.5],
         "has_materials": false,
         "machine_extruder_trains":
@@ -21,7 +21,7 @@
         "layer_height": { "default_value": 0.2 },
         "layer_height_0": { "default_value": 0.3 },
         "infill_sparse_density": { "default_value": 5 },
-        "wall_thickness": { "default_value": 1 },
+        "wall_thickness": { "value": "1" },
         "top_bottom_thickness": { "default_value": 1 },
 
         "infill_pattern": { "value": "'tetrahedral'" },

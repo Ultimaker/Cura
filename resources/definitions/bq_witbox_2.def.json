@@ -7,7 +7,7 @@
         "author": "BQ",
         "manufacturer": "BQ",
         "file_formats": "text/x-gcode",
-        "platform": "bq_witbox_platform.stl",
+        "platform": "bq_witbox_platform.3mf",
         "platform_offset": [0, -145, -38],
         "machine_extruder_trains":
         {
@@ -48,7 +48,7 @@
             "default_value": 0.2
         },
         "wall_thickness": {
-            "default_value": 1.2
+            "value": "1.2"
         },
         "top_bottom_thickness": {
             "default_value": 1.2

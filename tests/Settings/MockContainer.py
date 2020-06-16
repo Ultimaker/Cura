@@ -5,18 +5,21 @@ import UM.PluginObject
 from UM.Signal import Signal
 
 
-##  Fake container class to add to the container registry.
-#
-#   This allows us to test the container registry without testing the container
-#   class. If something is wrong in the container class it won't influence this
-#   test.
-
 class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
-    ##  Initialise a new definition container.
-    #
-    #   The container will have the specified ID and all metadata in the
-    #   provided dictionary.
+    """Fake container class to add to the container registry.
+
+    This allows us to test the container registry without testing the container
+    class. If something is wrong in the container class it won't influence this
+    test.
+    """
+
     def __init__(self, metadata = None):
+        """Initialise a new definition container.
+
+        The container will have the specified ID and all metadata in the
+        provided dictionary.
+        """
+
         super().__init__()
         if metadata is None:
             self._metadata = {}
@@ -24,55 +27,69 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
             self._metadata = metadata
         self._plugin_id = "MockContainerPlugin"
 
-    ##  Gets the ID that was provided at initialisation.
-    #
-    #   \return The ID of the container.
     def getId(self):
+        """Gets the ID that was provided at initialisation.
+
+        :return: The ID of the container.
+        """
+
         return self._metadata["id"]
 
-    ##  Gets all metadata of this container.
-    #
-    #   This returns the metadata dictionary that was provided in the
-    #   constructor of this mock container.
-    #
-    #   \return The metadata for this container.
     def getMetaData(self):
+        """Gets all metadata of this container.
+
+        This returns the metadata dictionary that was provided in the
+        constructor of this mock container.
+
+        :return: The metadata for this container.
+        """
+
         return self._metadata
 
-    ##  Gets a metadata entry from the metadata dictionary.
-    #
-    #   \param key The key of the metadata entry.
-    #   \return The value of the metadata entry, or None if there is no such
-    #   entry.
     def getMetaDataEntry(self, entry, default = None):
+        """Gets a metadata entry from the metadata dictionary.
+
+        :param key: The key of the metadata entry.
+        :return: The value of the metadata entry, or None if there is no such
+        entry.
+        """
+
         if entry in self._metadata:
             return self._metadata[entry]
         return default
 
-    ##  Gets a human-readable name for this container.
-    #   \return The name from the metadata, or "MockContainer" if there was no
-    #   name provided.
     def getName(self):
+        """Gets a human-readable name for this container.
+
+        :return: The name from the metadata, or "MockContainer" if there was no
+        name provided.
+        """
         return self._metadata.get("name", "MockContainer")
 
-    ##  Get whether a container stack is enabled or not.
-    #   \return Always returns True.
     @property
     def isEnabled(self):
+        """Get whether a container stack is enabled or not.
+
+        :return: Always returns True.
+        """
         return True
 
-    ##  Get whether the container item is stored on a read only location in the filesystem.
-    #
-    #   \return Always returns False
     def isReadOnly(self):
+        """Get whether the container item is stored on a read only location in the filesystem.
+
+        :return: Always returns False
+        """
+
         return False
 
-    ##  Mock get path
     def getPath(self):
+        """Mock get path"""
+
         return "/path/to/the/light/side"
 
-    ##  Mock set path
     def setPath(self, path):
+        """Mock set path"""
+
         pass
 
     def getAllKeys(self):
@@ -91,31 +108,38 @@ class MockContainer(ContainerInterface, UM.PluginObject.PluginObject):
 
         return None
 
-    ##  Get the value of a container item.
-    #
-    #   Since this mock container cannot contain any items, it always returns
-    #   None.
-    #
-    #   \return Always returns None.
     def getValue(self, key):
+        """Get the value of a container item.
+
+        Since this mock container cannot contain any items, it always returns None.
+
+        :return: Always returns None.
+        """
+
         pass
 
-    ##  Get whether the container item has a specific property.
-    #
-    #   This method is not implemented in the mock container.
     def hasProperty(self, key, property_name):
+        """Get whether the container item has a specific property.
+
+        This method is not implemented in the mock container.
+        """
+
         return key in self.items
 
-    ##  Serializes the container to a string representation.
-    #
-    #   This method is not implemented in the mock container.
     def serialize(self, ignored_metadata_keys = None):
+        """Serializes the container to a string representation.
+
+        This method is not implemented in the mock container.
+        """
+
         raise NotImplementedError()
 
-    ##  Deserializes the container from a string representation.
-    #
-    #   This method is not implemented in the mock container.
     def deserialize(self, serialized, file_name: Optional[str] = None):
+        """Deserializes the container from a string representation.
+
+        This method is not implemented in the mock container.
+        """
+
         raise NotImplementedError()
 
     @classmethod

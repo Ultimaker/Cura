@@ -26,10 +26,9 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 
-#
-# This the QML model for the quality management page.
-#
 class QualityManagementModel(ListModel):
+    """This the QML model for the quality management page."""
+
     NameRole = Qt.UserRole + 1
     IsReadOnlyRole = Qt.UserRole + 2
     QualityGroupRole = Qt.UserRole + 3
@@ -74,11 +73,13 @@ class QualityManagementModel(ListModel):
     def _onChange(self) -> None:
         self._update_timer.start()
 
-    ##  Deletes a custom profile. It will be gone forever.
-    #   \param quality_changes_group The quality changes group representing the
-    #   profile to delete.
     @pyqtSlot(QObject)
     def removeQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup") -> None:
+        """Deletes a custom profile. It will be gone forever.
+
+        :param quality_changes_group: The quality changes group representing the profile to delete.
+        """
+
         Logger.log("i", "Removing quality changes group {group_name}".format(group_name = quality_changes_group.name))
         removed_quality_changes_ids = set()
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
@@ -95,16 +96,19 @@ class QualityManagementModel(ListModel):
             if extruder_stack.qualityChanges.getId() in removed_quality_changes_ids:
                 extruder_stack.qualityChanges = empty_quality_changes_container
 
-    ##  Rename a custom profile.
-    #
-    #   Because the names must be unique, the new name may not actually become
-    #   the name that was given. The actual name is returned by this function.
-    #   \param quality_changes_group The custom profile that must be renamed.
-    #   \param new_name The desired name for the profile.
-    #   \return The actual new name of the profile, after making the name
-    #   unique.
     @pyqtSlot(QObject, str, result = str)
     def renameQualityChangesGroup(self, quality_changes_group: "QualityChangesGroup", new_name: str) -> str:
+        """Rename a custom profile.
+
+        Because the names must be unique, the new name may not actually become the name that was given. The actual
+        name is returned by this function.
+
+        :param quality_changes_group: The custom profile that must be renamed.
+        :param new_name: The desired name for the profile.
+
+        :return: The actual new name of the profile, after making the name unique.
+        """
+
         Logger.log("i", "Renaming QualityChangesGroup {old_name} to {new_name}.".format(old_name = quality_changes_group.name, new_name = new_name))
         if new_name == quality_changes_group.name:
             Logger.log("i", "QualityChangesGroup name {name} unchanged.".format(name = quality_changes_group.name))
@@ -138,13 +142,16 @@ class QualityManagementModel(ListModel):
 
         return new_name
 
-    ##  Duplicates a given quality profile OR quality changes profile.
-    #   \param new_name The desired name of the new profile. This will be made
-    #   unique, so it might end up with a different name.
-    #   \param quality_model_item The item of this model to duplicate, as
-    #   dictionary. See the descriptions of the roles of this list model.
     @pyqtSlot(str, "QVariantMap")
     def duplicateQualityChanges(self, new_name: str, quality_model_item: Dict[str, Any]) -> None:
+        """Duplicates a given quality profile OR quality changes profile.
+
+        :param new_name: The desired name of the new profile. This will be made unique, so it might end up with a
+        different name.
+        :param quality_model_item: The item of this model to duplicate, as dictionary. See the descriptions of the
+        roles of this list model.
+        """
+
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if not global_stack:
             Logger.log("i", "No active global stack, cannot duplicate quality (changes) profile.")
@@ -170,18 +177,18 @@ class QualityManagementModel(ListModel):
                 new_id = container_registry.uniqueName(container.getId())
                 container_registry.addContainer(container.duplicate(new_id, new_name))
 
-    ##  Create quality changes containers from the user containers in the active
-    #   stacks.
-    #
-    #   This will go through the global and extruder stacks and create
-    #   quality_changes containers from the user containers in each stack. These
-    #   then replace the quality_changes containers in the stack and clear the
-    #   user settings.
-    #   \param base_name The new name for the quality changes profile. The final
-    #   name of the profile might be different from this, because it needs to be
-    #   made unique.
     @pyqtSlot(str)
     def createQualityChanges(self, base_name: str) -> None:
+        """Create quality changes containers from the user containers in the active stacks.
+
+        This will go through the global and extruder stacks and create quality_changes containers from the user
+        containers in each stack. These then replace the quality_changes containers in the stack and clear the user
+        settings.
+
+        :param base_name: The new name for the quality changes profile. The final name of the profile might be
+        different from this, because it needs to be made unique.
+        """
+
         machine_manager = cura.CuraApplication.CuraApplication.getInstance().getMachineManager()
 
         global_stack = machine_manager.activeMachine
@@ -201,7 +208,7 @@ class QualityManagementModel(ListModel):
 
         # Go through the active stacks and create quality_changes containers from the user containers.
         container_manager = ContainerManager.getInstance()
-        stack_list = [global_stack] + list(global_stack.extruders.values())
+        stack_list = [global_stack] + global_stack.extruderList
         for stack in stack_list:
             quality_container = stack.quality
             quality_changes_container = stack.qualityChanges
@@ -220,14 +227,16 @@ class QualityManagementModel(ListModel):
 
             container_registry.addContainer(new_changes)
 
-    ##  Create a quality changes container with the given set-up.
-    #   \param quality_type The quality type of the new container.
-    #   \param intent_category The intent category of the new container.
-    #   \param new_name The name of the container. This name must be unique.
-    #   \param machine The global stack to create the profile for.
-    #   \param extruder_stack The extruder stack to create the profile for. If
-    #   not provided, only a global container will be created.
     def _createQualityChanges(self, quality_type: str, intent_category: Optional[str], new_name: str, machine: "GlobalStack", extruder_stack: Optional["ExtruderStack"]) -> "InstanceContainer":
+        """Create a quality changes container with the given set-up.
+
+        :param quality_type: The quality type of the new container.
+        :param intent_category: The intent category of the new container.
+        :param new_name: The name of the container. This name must be unique.
+        :param machine: The global stack to create the profile for.
+        :param extruder_stack: The extruder stack to create the profile for. If not provided, only a global container will be created.
+        """
+
         container_registry = cura.CuraApplication.CuraApplication.getInstance().getContainerRegistry()
         base_id = machine.definition.getId() if extruder_stack is None else extruder_stack.getId()
         new_id = base_id + "_" + new_name
@@ -253,11 +262,13 @@ class QualityManagementModel(ListModel):
         quality_changes.setMetaDataEntry("setting_version", cura.CuraApplication.CuraApplication.getInstance().SettingVersion)
         return quality_changes
 
-    ##  Triggered when any container changed.
-    #
-    #   This filters the updates to the container manager: When it applies to
-    #   the list of quality changes, we need to update our list.
     def _qualityChangesListChanged(self, container: "ContainerInterface") -> None:
+        """Triggered when any container changed.
+
+        This filters the updates to the container manager: When it applies to the list of quality changes, we need to
+        update our list.
+        """
+
         if container.getMetaDataEntry("type") == "quality_changes":
             self._update()
 
@@ -366,18 +377,19 @@ class QualityManagementModel(ListModel):
 
         self.setItems(item_list)
 
-    # TODO: Duplicated code here from InstanceContainersModel. Refactor and remove this later.
-    #
-    ##  Gets a list of the possible file filters that the plugins have
-    #   registered they can read or write. The convenience meta-filters
-    #   "All Supported Types" and "All Files" are added when listing
-    #   readers, but not when listing writers.
-    #
-    #   \param io_type \type{str} name of the needed IO type
-    #   \return A list of strings indicating file name filters for a file
-    #   dialog.
     @pyqtSlot(str, result = "QVariantList")
     def getFileNameFilters(self, io_type):
+        """Gets a list of the possible file filters that the plugins have registered they can read or write.
+
+        The convenience meta-filters "All Supported Types" and "All Files" are added when listing readers,
+        but not when listing writers.
+
+        :param io_type: name of the needed IO type
+        :return: A list of strings indicating file name filters for a file dialog.
+
+         TODO: Duplicated code here from InstanceContainersModel. Refactor and remove this later.
+        """
+
         from UM.i18n import i18nCatalog
         catalog = i18nCatalog("uranium")
         #TODO: This function should be in UM.Resources!
@@ -394,9 +406,11 @@ class QualityManagementModel(ListModel):
             filters.append(catalog.i18nc("@item:inlistbox", "All Files (*)"))  # Also allow arbitrary files, if the user so prefers.
         return filters
 
-    ##  Gets a list of profile reader or writer plugins
-    #   \return List of tuples of (plugin_id, meta_data).
     def _getIOPlugins(self, io_type):
+        """Gets a list of profile reader or writer plugins
+
+        :return: List of tuples of (plugin_id, meta_data).
+        """
         from UM.PluginRegistry import PluginRegistry
         pr = PluginRegistry.getInstance()
         active_plugin_ids = pr.getActivePlugins()

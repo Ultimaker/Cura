@@ -12,8 +12,12 @@ from UM.Qt.ListModel import ListModel
 from .ConfigsModel import ConfigsModel
 
 
-##  Model that holds Cura packages. By setting the filter property the instances held by this model can be changed.
 class PackagesModel(ListModel):
+    """Model that holds Cura packages.
+
+    By setting the filter property the instances held by this model can be changed.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -67,16 +71,21 @@ class PackagesModel(ListModel):
 
             links_dict = {}
             if "data" in package:
+                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
+                # to process.
+                link_list = package["data"]["links"] if "links" in package["data"] else []
+                links_dict = {d["title"]: d["url"] for d in link_list}
+
+                # This code never gets executed because the API response does not contain "supported_configs" in it
+                # It is so because 2y ago when this was created - it did contain it. But it was a prototype only
+                # and never got to production. As agreed with the team, it'll stay here for now, in case we decide to rework and use it
+                # The response payload has been changed. Please see:
+                # https://github.com/Ultimaker/Cura/compare/CURA-7072-temp?expand=1
                 if "supported_configs" in package["data"]:
                     if len(package["data"]["supported_configs"]) > 0:
                         has_configs = True
                         configs_model = ConfigsModel()
                         configs_model.setConfigs(package["data"]["supported_configs"])
-
-                # Links is a list of dictionaries with "title" and "url". Convert this list into a dict so it's easier
-                # to process.
-                link_list = package["data"]["links"] if "links" in package["data"] else []
-                links_dict = {d["title"]: d["url"] for d in link_list}
 
             if "author_id" not in package["author"] or "display_name" not in package["author"]:
                 package["author"]["author_id"] = ""
@@ -126,9 +135,11 @@ class PackagesModel(ListModel):
         filtered_items.sort(key = lambda k: k["name"])
         self.setItems(filtered_items)
 
-    ##  Set the filter of this model based on a string.
-    #   \param filter_dict \type{Dict} Dictionary to do the filtering by.
     def setFilter(self, filter_dict: Dict[str, str]) -> None:
+        """Set the filter of this model based on a string.
+
+        :param filter_dict: Dictionary to do the filtering by.
+        """
         if filter_dict != self._filter:
             self._filter = filter_dict
             self._update()

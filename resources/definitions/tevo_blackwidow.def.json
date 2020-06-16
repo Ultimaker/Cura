@@ -9,7 +9,7 @@
         "file_formats": "text/x-gcode",
         "has_materials": false,
         "has_machine_quality": true,
-        "platform": "tevo_blackwidow.stl",
+        "platform": "tevo_blackwidow.3mf",
         "preferred_quality_type": "normal",
         "machine_extruder_trains":
         {

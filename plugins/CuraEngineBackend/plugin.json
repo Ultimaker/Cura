@@ -2,7 +2,7 @@
     "name": "CuraEngine Backend",
     "author": "Ultimaker B.V.",
     "description": "Provides the link to the CuraEngine slicing backend.",
-    "api": "7.0",
+    "api": "7.2.0",
     "version": "1.0.1",
     "i18n-catalog": "cura"
 }

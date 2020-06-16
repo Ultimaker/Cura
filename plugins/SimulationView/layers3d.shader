@@ -11,7 +11,7 @@ vertex41core =
     uniform lowp float u_max_thickness;
     uniform lowp float u_min_thickness;
     uniform lowp int u_layer_view_type;
-    uniform lowp vec4 u_extruder_opacity;  // currently only for max 4 extruders, others always visible
+    uniform lowp mat4 u_extruder_opacity;  // currently only for max 16 extruders, others always visible
 
     uniform highp mat4 u_normalMatrix;
 
@@ -31,7 +31,7 @@ vertex41core =
     out highp vec3 v_normal;
     out lowp vec2 v_line_dim;
     out highp int v_extruder;
-    out highp vec4 v_extruder_opacity;
+    out highp mat4 v_extruder_opacity;
     out float v_line_type;
 
     out lowp vec4 f_color;
@@ -80,7 +80,7 @@ vertex41core =
             case 1:  // "Line type"
                 v_color = a_color;
                 break;
-            case 2:  // "Feedrate"
+            case 2:  // "Speed", or technically 'Feedrate'
                 v_color = feedrateGradientColor(a_feedrate, u_min_feedrate, u_max_feedrate);
                 break;
             case 3:  // "Layer thickness"
@@ -121,7 +121,7 @@ geometry41core =
     in vec3 v_normal[];
     in vec2 v_line_dim[];
     in int v_extruder[];
-    in vec4 v_extruder_opacity[];
+    in mat4 v_extruder_opacity[];
     in float v_line_type[];
 
     out vec4 f_color;
@@ -152,7 +152,7 @@ geometry41core =
         float size_x;
         float size_y;
 
-        if ((v_extruder_opacity[0][v_extruder[0]] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
+        if ((v_extruder_opacity[0][int(mod(v_extruder[0], 4))][v_extruder[0] / 4] == 0.0) && (v_line_type[0] != 8) && (v_line_type[0] != 9)) {
             return;
         }
         // See LayerPolygon; 8 is MoveCombingType, 9 is RetractionType
@@ -304,7 +304,7 @@ fragment41core =
 [defaults]
 u_active_extruder = 0.0
 u_layer_view_type = 0
-u_extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+u_extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
 
 u_specularColor = [0.4, 0.4, 0.4, 1.0]
 u_ambientColor = [0.3, 0.3, 0.3, 0.0]

@@ -7,7 +7,6 @@
         "visible": true,
         "author": "Patrick Glatt",
         "manufacturer": "Anycubic",
-        "category": "Other",
         "file_formats": "text/x-gcode",
         "icon": "icon_ultimaker2",
         "platform": "anycubic_chiron_platform.obj",

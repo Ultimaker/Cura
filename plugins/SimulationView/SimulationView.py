@@ -1,4 +1,4 @@
-# Copyright (c) 2018 Ultimaker B.V.
+# Copyright (c) 2020 Ultimaker B.V.
 # Cura is released under the terms of the LGPLv3 or higher.
 
 import sys
@@ -12,6 +12,7 @@ from UM.Event import Event, KeyEvent
 from UM.Job import Job
 from UM.Logger import Logger
 from UM.Math.Color import Color
+from UM.Math.Matrix import Matrix
 from UM.Mesh.MeshBuilder import MeshBuilder
 from UM.Message import Message
 from UM.Platform import Platform
@@ -48,13 +49,16 @@ if TYPE_CHECKING:
 catalog = i18nCatalog("cura")
 
 
-## The preview layer view. It is used to display g-code paths.
 class SimulationView(CuraView):
+    """The preview layer view. It is used to display g-code paths."""
+
     # Must match SimulationViewMenuComponent.qml
     LAYER_VIEW_TYPE_MATERIAL_TYPE = 0
     LAYER_VIEW_TYPE_LINE_TYPE = 1
     LAYER_VIEW_TYPE_FEEDRATE = 2
     LAYER_VIEW_TYPE_THICKNESS = 3
+
+    _no_layers_warning_preference = "view/no_layers_warning"
 
     def __init__(self, parent = None) -> None:
         super().__init__(parent)
@@ -71,8 +75,6 @@ class SimulationView(CuraView):
         self._max_paths = 0
         self._current_path_num = 0
         self._minimum_path_num = 0
-        self.start_elements_index = 0
-        self.end_elements_index = 0
         self.currentLayerNumChanged.connect(self._onCurrentLayerNumChanged)
 
         self._busy = False
@@ -116,8 +118,12 @@ class SimulationView(CuraView):
         self._only_show_top_layers = bool(Application.getInstance().getPreferences().getValue("view/only_show_top_layers"))
         self._compatibility_mode = self._evaluateCompatibilityMode()
 
-        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled"),
+        self._wireprint_warning_message = Message(catalog.i18nc("@info:status", "Cura does not accurately display layers when Wire Printing is enabled."),
                                                   title = catalog.i18nc("@info:title", "Simulation View"))
+        self._slice_first_warning_message = Message(catalog.i18nc("@info:status", "Nothing is shown because you need to slice first."), title = catalog.i18nc("@info:title", "No layers to show"),
+                                                    option_text = catalog.i18nc("@info:option_text", "Do not show this message again"), option_state = False)
+        self._slice_first_warning_message.optionToggled.connect(self._onDontAskMeAgain)
+        CuraApplication.getInstance().getPreferences().addPreference(self._no_layers_warning_preference, True)
 
         QtApplication.getInstance().engineCreatedSignal.connect(self._onEngineCreated)
 
@@ -135,7 +141,7 @@ class SimulationView(CuraView):
     def _resetSettings(self) -> None:
         self._layer_view_type = 0  # type: int # 0 is material color, 1 is color by linetype, 2 is speed, 3 is layer thickness
         self._extruder_count = 0
-        self._extruder_opacity = [1.0, 1.0, 1.0, 1.0]
+        self._extruder_opacity = [[1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]]
         self._show_travel_moves = False
         self._show_helpers = True
         self._show_skin = True
@@ -149,6 +155,7 @@ class SimulationView(CuraView):
         if self._activity == activity:
             return
         self._activity = activity
+        self._updateSliceWarningVisibility()
         self.activityChanged.emit()
 
     def getSimulationPass(self) -> SimulationPass:
@@ -245,7 +252,6 @@ class SimulationView(CuraView):
                 self._minimum_layer_num = self._current_layer_num
 
             self._startUpdateTopLayers()
-            self.recalculateStartEndElements()
 
             self.currentLayerNumChanged.emit()
 
@@ -260,7 +266,7 @@ class SimulationView(CuraView):
                 self._current_layer_num = self._minimum_layer_num
 
             self._startUpdateTopLayers()
-            self.recalculateStartEndElements()
+
             self.currentLayerNumChanged.emit()
 
     def setPath(self, value: int) -> None:
@@ -274,7 +280,6 @@ class SimulationView(CuraView):
                 self._minimum_path_num = self._current_path_num
 
             self._startUpdateTopLayers()
-            self.recalculateStartEndElements()
             self.currentPathNumChanged.emit()
 
     def setMinimumPath(self, value: int) -> None:
@@ -291,29 +296,36 @@ class SimulationView(CuraView):
 
             self.currentPathNumChanged.emit()
 
-    ##  Set the layer view type
-    #
-    #   \param layer_view_type integer as in SimulationView.qml and this class
     def setSimulationViewType(self, layer_view_type: int) -> None:
+        """Set the layer view type
+
+        :param layer_view_type: integer as in SimulationView.qml and this class
+        """
+
         if layer_view_type != self._layer_view_type:
             self._layer_view_type = layer_view_type
             self.currentLayerNumChanged.emit()
 
-    ##  Return the layer view type, integer as in SimulationView.qml and this class
     def getSimulationViewType(self) -> int:
+        """Return the layer view type, integer as in SimulationView.qml and this class"""
+
         return self._layer_view_type
 
-    ##  Set the extruder opacity
-    #
-    #   \param extruder_nr 0..3
-    #   \param opacity 0.0 .. 1.0
     def setExtruderOpacity(self, extruder_nr: int, opacity: float) -> None:
-        if 0 <= extruder_nr <= 3:
-            self._extruder_opacity[extruder_nr] = opacity
+        """Set the extruder opacity
+
+        :param extruder_nr: 0..15
+        :param opacity: 0.0 .. 1.0
+        """
+
+        if 0 <= extruder_nr <= 15:
+            self._extruder_opacity[extruder_nr // 4][extruder_nr % 4] = opacity
             self.currentLayerNumChanged.emit()
 
-    def getExtruderOpacities(self)-> List[float]:
-        return self._extruder_opacity
+    def getExtruderOpacities(self) -> Matrix:
+        # NOTE: Extruder opacities are stored in a matrix for (minor) performance reasons (w.r.t. OpenGL/shaders).
+        # If more than 16 extruders are called for, this should be converted to a sampler1d.
+        return Matrix(self._extruder_opacity)
 
     def setShowTravelMoves(self, show):
         self._show_travel_moves = show
@@ -362,24 +374,6 @@ class SimulationView(CuraView):
             return 0.0 # If it's still max-float, there are no measurements. Use 0 then.
         return self._min_thickness
 
-    def recalculateStartEndElements(self):
-        self.start_elements_index = 0
-        self.end_elements_index = 0
-        scene = self.getController().getScene()
-        for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
-            layer_data = node.callDecoration("getLayerData")
-            if not layer_data:
-                continue
-
-            # Found a the layer data!
-            element_counts = layer_data.getElementCounts()
-            for layer in sorted(element_counts.keys()):
-                if layer == self._current_layer_num:
-                    break
-                if self._minimum_layer_num > layer:
-                    self.start_elements_index += element_counts[layer]
-                self.end_elements_index += element_counts[layer]
-
     def getMaxThickness(self) -> float:
         return self._max_thickness
 
@@ -387,8 +381,8 @@ class SimulationView(CuraView):
         scene = self.getController().getScene()
 
         self._old_max_layers = self._max_layers
-        ## Recalculate num max layers
         new_max_layers = -1
+        """Recalculate num max layers"""
         for node in DepthFirstIterator(scene.getRoot()):  # type: ignore
             layer_data = node.callDecoration("getLayerData")
             if not layer_data:
@@ -464,9 +458,11 @@ class SimulationView(CuraView):
     busyChanged = Signal()
     activityChanged = Signal()
 
-    ##  Hackish way to ensure the proxy is already created, which ensures that the layerview.qml is already created
-    #   as this caused some issues.
     def getProxy(self, engine, script_engine):
+        """Hackish way to ensure the proxy is already created
+
+        which ensures that the layerview.qml is already created as this caused some issues.
+        """
         if self._proxy is None:
             self._proxy = SimulationViewProxy(self)
         return self._proxy
@@ -543,11 +539,13 @@ class SimulationView(CuraView):
             self._composite_pass.getLayerBindings().append("simulationview")
             self._old_composite_shader = self._composite_pass.getCompositeShader()
             self._composite_pass.setCompositeShader(self._simulationview_composite_shader)
+            self._updateSliceWarningVisibility()
 
         elif event.type == Event.ViewDeactivateEvent:
             self._controller.getScene().getRoot().childrenChanged.disconnect(self._onSceneChanged)
             Application.getInstance().getPreferences().preferenceChanged.disconnect(self._onPreferencesChanged)
             self._wireprint_warning_message.hide()
+            self._slice_first_warning_message.hide()
             Application.getInstance().globalContainerStackChanged.disconnect(self._onGlobalStackChanged)
             if self._global_container_stack:
                 self._global_container_stack.propertyChanged.disconnect(self._onPropertyChanged)
@@ -599,7 +597,6 @@ class SimulationView(CuraView):
     def _startUpdateTopLayers(self) -> None:
         if not self._compatibility_mode:
             return
-        self.recalculateStartEndElements()
         if self._top_layers_job:
             self._top_layers_job.finished.disconnect(self._updateCurrentLayerMesh)
             self._top_layers_job.cancel()
@@ -661,6 +658,16 @@ class SimulationView(CuraView):
 
         self._updateWithPreferences()
 
+    def _updateSliceWarningVisibility(self):
+        if not self.getActivity()\
+                and not CuraApplication.getInstance().getPreferences().getValue("general/auto_slice")\
+                and CuraApplication.getInstance().getPreferences().getValue(self._no_layers_warning_preference):
+            self._slice_first_warning_message.show()
+        else:
+            self._slice_first_warning_message.hide()
+
+    def _onDontAskMeAgain(self, checked: bool) -> None:
+        CuraApplication.getInstance().getPreferences().setValue(self._no_layers_warning_preference, not checked)
 
 class _CreateTopLayersJob(Job):
     def __init__(self, scene: "Scene", layer_number: int, solid_layers: int) -> None:

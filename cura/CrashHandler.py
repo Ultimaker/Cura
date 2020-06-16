@@ -10,7 +10,7 @@ import os.path
 import uuid
 import json
 import locale
-from typing import cast
+from typing import cast, Any
 
 try:
     from sentry_sdk.hub import Hub
@@ -32,6 +32,8 @@ from UM.Resources import Resources
 from cura import ApplicationMetadata
 
 catalog = i18nCatalog("cura")
+home_dir = os.path.expanduser("~")
+
 
 MYPY = False
 if MYPY:
@@ -83,6 +85,21 @@ class CrashHandler:
         self.dialog = QDialog()
         self._createDialog()
 
+    @staticmethod
+    def pruneSensitiveData(obj: Any) -> Any:
+        if isinstance(obj, str):
+            return obj.replace("\\\\", "\\").replace(home_dir, "<user_home>")
+        if isinstance(obj, list):
+            return [CrashHandler.pruneSensitiveData(item) for item in obj]
+        if isinstance(obj, dict):
+            return {k: CrashHandler.pruneSensitiveData(v) for k, v in obj.items()}
+
+        return obj
+
+    @staticmethod
+    def sentryBeforeSend(event, hint):
+        return CrashHandler.pruneSensitiveData(event)
+
     def _createEarlyCrashDialog(self):
         dialog = QDialog()
         dialog.setMinimumWidth(500)
@@ -133,8 +150,9 @@ class CrashHandler:
             self._sendCrashReport()
         os._exit(1)
 
-    ##  Backup the current resource directories and create clean ones.
     def _backupAndStartClean(self):
+        """Backup the current resource directories and create clean ones."""
+
         Resources.factoryReset()
         self.early_crash_dialog.close()
 
@@ -145,8 +163,9 @@ class CrashHandler:
     def _showDetailedReport(self):
         self.dialog.exec_()
 
-    ##  Creates a modal dialog.
     def _createDialog(self):
+        """Creates a modal dialog."""
+
         self.dialog.setMinimumWidth(640)
         self.dialog.setMinimumHeight(640)
         self.dialog.setWindowTitle(catalog.i18nc("@title:window", "Crash Report"))
@@ -161,7 +180,6 @@ class CrashHandler:
         layout.addWidget(self._informationWidget())
         layout.addWidget(self._exceptionInfoWidget())
         layout.addWidget(self._logInfoWidget())
-        layout.addWidget(self._userDescriptionWidget())
         layout.addWidget(self._buttonsWidget())
 
     def _close(self):
@@ -219,7 +237,7 @@ class CrashHandler:
                 scope.set_tag("locale_os", self.data["locale_os"])
                 scope.set_tag("locale_cura", self.cura_locale)
                 scope.set_tag("is_enterprise", ApplicationMetadata.IsEnterpriseVersion)
-    
+
                 scope.set_user({"id": str(uuid.getnode())})
 
         return group
@@ -374,21 +392,6 @@ class CrashHandler:
 
         return group
 
-    def _userDescriptionWidget(self):
-        group = QGroupBox()
-        group.setTitle(catalog.i18nc("@title:groupbox", "User description" +
-                                     " (Note: Developers may not speak your language, please use English if possible)"))
-        layout = QVBoxLayout()
-
-        # When sending the report, the user comments will be collected
-        self.user_description_text_area = QTextEdit()
-        self.user_description_text_area.setFocus(True)
-
-        layout.addWidget(self.user_description_text_area)
-        group.setLayout(layout)
-
-        return group
-
     def _buttonsWidget(self):
         buttons = QDialogButtonBox()
         buttons.addButton(QDialogButtonBox.Close)
@@ -403,9 +406,6 @@ class CrashHandler:
         return buttons
 
     def _sendCrashReport(self):
-        # Before sending data, the user comments are stored
-        self.data["user_info"] = self.user_description_text_area.toPlainText()
-
         if with_sentry_sdk:
             try:
                 hub = Hub.current

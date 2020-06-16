@@ -98,8 +98,9 @@ class IntentModel(ListModel):
         new_items = sorted(new_items, key = lambda x: x["layer_height"])
         self.setItems(new_items)
 
-    ##  Get the active materials for all extruders. No duplicates will be returned
     def _getActiveMaterials(self) -> Set["MaterialNode"]:
+        """Get the active materials for all extruders. No duplicates will be returned"""
+
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
         if global_stack is None:
             return set()
@@ -114,7 +115,10 @@ class IntentModel(ListModel):
                 Logger.log("w", "Could not find the variant %s", active_variant_name)
                 continue
             active_variant_node = machine_node.variants[active_variant_name]
-            active_material_node = active_variant_node.materials[extruder.material.getMetaDataEntry("base_file")]
+            active_material_node = active_variant_node.materials.get(extruder.material.getMetaDataEntry("base_file"))
+            if active_material_node is None:
+                Logger.log("w", "Could not find the material %s", extruder.material.getMetaDataEntry("base_file"))
+                continue
             nodes.add(active_material_node)
 
         return nodes

@@ -20,7 +20,7 @@ ScrollView
     background: Rectangle  // Border
     {
         color: UM.Theme.getColor("main_background")
-        border.color: UM.Theme.getColor("lining")
+        border.color: UM.Theme.getColor("thick_lining")
         border.width: UM.Theme.getSize("default_lining").width
     }
 

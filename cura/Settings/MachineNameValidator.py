@@ -10,10 +10,13 @@ from UM.Resources import Resources
 from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.Settings.InstanceContainer import InstanceContainer
 
-##  Are machine names valid?
-#
-#   Performs checks based on the length of the name.
+
 class MachineNameValidator(QObject):
+    """Are machine names valid?
+
+    Performs checks based on the length of the name.
+    """
+
     def __init__(self, parent = None):
         super().__init__(parent)
 
@@ -32,12 +35,13 @@ class MachineNameValidator(QObject):
 
     validationChanged = pyqtSignal()
 
-    ##  Check if a specified machine name is allowed.
-    #
-    #   \param name The machine name to check.
-    #   \return ``QValidator.Invalid`` if it's disallowed, or
-    #   ``QValidator.Acceptable`` if it's allowed.
     def validate(self, name):
+        """Check if a specified machine name is allowed.
+
+        :param name: The machine name to check.
+        :return: ``QValidator.Invalid`` if it's disallowed, or ``QValidator.Acceptable`` if it's allowed.
+        """
+
         #Check for file name length of the current settings container (which is the longest file we're saving with the name).
         try:
             filename_max_length = os.statvfs(Resources.getDataStoragePath()).f_namemax
@@ -50,9 +54,10 @@ class MachineNameValidator(QObject):
 
         return QValidator.Acceptable #All checks succeeded.
 
-    ##  Updates the validation state of a machine name text field.
     @pyqtSlot(str)
     def updateValidation(self, new_name):
+        """Updates the validation state of a machine name text field."""
+
         is_valid = self.validate(new_name)
         if is_valid == QValidator.Acceptable:
             self.validation_regex = "^.*$" #Matches anything.

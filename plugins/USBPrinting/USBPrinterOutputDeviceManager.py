@@ -20,9 +20,10 @@ from . import USBPrinterOutputDevice
 i18n_catalog = i18nCatalog("cura")
 
 
-##  Manager class that ensures that an USBPrinterOutput device is created for every connected USB printer.
 @signalemitter
 class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
+    """Manager class that ensures that an USBPrinterOutput device is created for every connected USB printer."""
+
     addUSBOutputDeviceSignal = Signal()
     progressChanged = pyqtSignal()
 
@@ -50,7 +51,7 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
 
     # The method updates/reset the USB settings for all connected USB devices
     def updateUSBPrinterOutputDevices(self):
-        for key, device in self._usb_output_devices.items():
+        for device in self._usb_output_devices.values():
             if isinstance(device, USBPrinterOutputDevice.USBPrinterOutputDevice):
                 device.resetDeviceSettings()
 
@@ -85,8 +86,9 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             self._addRemovePorts(port_list)
             time.sleep(5)
 
-    ##  Helper to identify serial ports (and scan for them)
     def _addRemovePorts(self, serial_ports):
+        """Helper to identify serial ports (and scan for them)"""
+
         # First, find and add all new or changed keys
         for serial_port in list(serial_ports):
             if serial_port not in self._serial_port_list:
@@ -98,16 +100,19 @@ class USBPrinterOutputDeviceManager(QObject, OutputDevicePlugin):
             if port not in self._serial_port_list:
                 device.close()
 
-    ##  Because the model needs to be created in the same thread as the QMLEngine, we use a signal.
     def addOutputDevice(self, serial_port):
+        """Because the model needs to be created in the same thread as the QMLEngine, we use a signal."""
+
         device = USBPrinterOutputDevice.USBPrinterOutputDevice(serial_port)
         device.connectionStateChanged.connect(self._onConnectionStateChanged)
         self._usb_output_devices[serial_port] = device
         device.connect()
 
-    ##  Create a list of serial ports on the system.
-    #   \param only_list_usb If true, only usb ports are listed
     def getSerialPortList(self, only_list_usb = False):
+        """Create a list of serial ports on the system.
+
+        :param only_list_usb: If true, only usb ports are listed
+        """
         base_list = []
         for port in serial.tools.list_ports.comports():
             if not isinstance(port, tuple):

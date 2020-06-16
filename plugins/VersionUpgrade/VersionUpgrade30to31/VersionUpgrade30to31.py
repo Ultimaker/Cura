@@ -62,24 +62,6 @@ _RENAMED_DEFINITION_DICT = {
 
 
 class VersionUpgrade30to31(VersionUpgrade):
-    ##  Gets the version number from a CFG file in Uranium's 3.0 format.
-    #
-    #   Since the format may change, this is implemented for the 3.0 format only
-    #   and needs to be included in the version upgrade system rather than
-    #   globally in Uranium.
-    #
-    #   \param serialised The serialised form of a CFG file.
-    #   \return The version number stored in the CFG file.
-    #   \raises ValueError The format of the version number in the file is
-    #   incorrect.
-    #   \raises KeyError The format of the file is incorrect.
-    def getCfgVersion(self, serialised: str) -> int:
-        parser = configparser.ConfigParser(interpolation = None)
-        parser.read_string(serialised)
-        format_version = int(parser.get("general", "version")) #Explicitly give an exception when this fails. That means that the file format is not recognised.
-        setting_version = int(parser.get("metadata", "setting_version", fallback = "0"))
-        return format_version * 1000000 + setting_version
-
     ##  Upgrades a preferences file from version 3.0 to 3.1.
     #
     #   \param serialised The serialised form of a preferences file.

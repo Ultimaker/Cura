@@ -38,7 +38,7 @@ Item
 
         Label //Extruder name.
         {
-            text: Cura.MachineManager.activeMachine.extruders[position].name !== "" ? Cura.MachineManager.activeMachine.extruders[position].name : catalog.i18nc("@label", "Extruder")
+            text: Cura.MachineManager.activeMachine.extruderList[position].name !== "" ? Cura.MachineManager.activeMachine.extruderList[position].name : catalog.i18nc("@label", "Extruder")
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("default")
             anchors.left: parent.left
@@ -209,15 +209,15 @@ Item
                 anchors.verticalCenter: parent.verticalCenter
                 renderType: Text.NativeRendering
 
-                Component.onCompleted:
+                text:
                 {
                     if (!extruderTemperature.properties.value)
                     {
-                        text = "";
+                        return "";
                     }
                     else
                     {
-                        text = extruderTemperature.properties.value;
+                        return extruderTemperature.properties.value;
                     }
                 }
             }

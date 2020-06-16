@@ -5,7 +5,6 @@ import copy
 import io
 import json #To parse the product-to-id mapping file.
 import os.path #To find the product-to-id mapping.
-import sys
 from typing import Any, Dict, List, Optional, Tuple, cast, Set, Union
 import xml.etree.ElementTree as ET
 
@@ -18,7 +17,6 @@ from UM.Settings.ContainerRegistry import ContainerRegistry
 from UM.ConfigurationErrorMessage import ConfigurationErrorMessage
 
 from cura.CuraApplication import CuraApplication
-from cura.Machines.ContainerTree import ContainerTree
 from cura.Machines.VariantType import VariantType
 
 try:
@@ -27,8 +25,9 @@ except (ImportError, SystemError):
     import XmlMaterialValidator  # type: ignore  # This fixes the tests not being able to import.
 
 
-##  Handles serializing and deserializing material containers from an XML file
 class XmlMaterialProfile(InstanceContainer):
+    """Handles serializing and deserializing material containers from an XML file"""
+
     CurrentFdmMaterialVersion = "1.3"
     Version = 1
 
@@ -36,17 +35,18 @@ class XmlMaterialProfile(InstanceContainer):
         super().__init__(container_id, *args, **kwargs)
         self._inherited_files = []
 
-    ##  Translates the version number in the XML files to the setting_version
-    #   metadata entry.
-    #
-    #   Since the two may increment independently we need a way to say which
-    #   versions of the XML specification are compatible with our setting data
-    #   version numbers.
-    #
-    #   \param xml_version: The version number found in an XML file.
-    #   \return The corresponding setting_version.
     @staticmethod
     def xmlVersionToSettingVersion(xml_version: str) -> int:
+        """Translates the version number in the XML files to the setting_version metadata entry.
+
+        Since the two may increment independently we need a way to say which
+        versions of the XML specification are compatible with our setting data
+        version numbers.
+
+        :param xml_version: The version number found in an XML file.
+        :return: The corresponding setting_version.
+        """
+
         if xml_version == "1.3":
             return CuraApplication.SettingVersion
         return 0  # Older than 1.3.
@@ -54,15 +54,17 @@ class XmlMaterialProfile(InstanceContainer):
     def getInheritedFiles(self):
         return self._inherited_files
 
-    ##  Overridden from InstanceContainer
-    #   set the meta data for all machine / variant combinations
-    #
-    #   The "apply_to_all" flag indicates whether this piece of metadata should be applied to all material containers
-    #   or just this specific container.
-    #   For example, when you change the material name, you want to apply it to all its derived containers, but for
-    #   some specific settings, they should only be applied to a machine/variant-specific container.
-    #
     def setMetaDataEntry(self, key, value, apply_to_all = True):
+        """set the meta data for all machine / variant combinations
+
+        The "apply_to_all" flag indicates whether this piece of metadata should be applied to all material containers
+        or just this specific container.
+        For example, when you change the material name, you want to apply it to all its derived containers, but for
+        some specific settings, they should only be applied to a machine/variant-specific container.
+
+        Overridden from InstanceContainer
+        """
+
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
             Logger.log("w", "Can't change metadata {key} of material {material_id} because it's read-only.".format(key = key, material_id = self.getId()))
@@ -91,10 +93,13 @@ class XmlMaterialProfile(InstanceContainer):
             for k, v in new_setting_values_dict.items():
                 self.setProperty(k, "value", v)
 
-    ##  Overridden from InstanceContainer, similar to setMetaDataEntry.
-    #   without this function the setName would only set the name of the specific nozzle / material / machine combination container
-    #   The function is a bit tricky. It will not set the name of all containers if it has the correct name itself.
     def setName(self, new_name):
+        """Overridden from InstanceContainer, similar to setMetaDataEntry.
+
+        without this function the setName would only set the name of the specific nozzle / material / machine combination container
+        The function is a bit tricky. It will not set the name of all containers if it has the correct name itself.
+        """
+
         registry = ContainerRegistry.getInstance()
         if registry.isReadOnly(self.getId()):
             return
@@ -112,8 +117,9 @@ class XmlMaterialProfile(InstanceContainer):
         for container in containers:
             container.setName(new_name)
 
-    ##  Overridden from InstanceContainer, to set dirty to base file as well.
     def setDirty(self, dirty):
+        """Overridden from InstanceContainer, to set dirty to base file as well."""
+
         super().setDirty(dirty)
         base_file = self.getMetaDataEntry("base_file", None)
         registry = ContainerRegistry.getInstance()
@@ -122,10 +128,12 @@ class XmlMaterialProfile(InstanceContainer):
             if containers:
                 containers[0].setDirty(dirty)
 
-    ##  Overridden from InstanceContainer
-    # base file: common settings + supported machines
-    # machine / variant combination: only changes for itself.
     def serialize(self, ignored_metadata_keys: Optional[Set[str]] = None):
+        """Overridden from InstanceContainer
+
+        base file: common settings + supported machines
+        machine / variant combination: only changes for itself.
+        """
         registry = ContainerRegistry.getInstance()
 
         base_file = self.getMetaDataEntry("base_file", "")
@@ -457,7 +465,7 @@ class XmlMaterialProfile(InstanceContainer):
         return "materials"
 
     @classmethod
-    def getVersionFromSerialized(cls, serialized: str) -> Optional[int]:
+    def getVersionFromSerialized(cls, serialized: str) -> int:
         data = ET.fromstring(serialized)
 
         version = XmlMaterialProfile.Version
@@ -469,8 +477,9 @@ class XmlMaterialProfile(InstanceContainer):
 
         return version * 1000000 + setting_version
 
-    ##  Overridden from InstanceContainer
     def deserialize(self, serialized, file_name = None):
+        """Overridden from InstanceContainer"""
+
         containers_to_add = []
         # update the serialized data first
         from UM.Settings.Interfaces import ContainerInterface
@@ -1063,12 +1072,13 @@ class XmlMaterialProfile(InstanceContainer):
         id_list = list(id_list)
         return id_list
 
-    ##  Gets a mapping from product names in the XML files to their definition
-    #   IDs.
-    #
-    #   This loads the mapping from a file.
     @classmethod
     def getProductIdMap(cls) -> Dict[str, List[str]]:
+        """Gets a mapping from product names in the XML files to their definition IDs.
+
+        This loads the mapping from a file.
+        """
+
         plugin_path = cast(str, PluginRegistry.getInstance().getPluginPath("XmlMaterialProfile"))
         product_to_id_file = os.path.join(plugin_path, "product_to_id.json")
         with open(product_to_id_file, encoding = "utf-8") as f:
@@ -1078,13 +1088,15 @@ class XmlMaterialProfile(InstanceContainer):
         #However it is not always loaded with that default; this mapping is also used in serialize() without that default.
         return product_to_id_map
 
-    ##  Parse the value of the "material compatible" property.
     @staticmethod
     def _parseCompatibleValue(value: str):
+        """Parse the value of the "material compatible" property."""
+
         return value in {"yes", "unknown"}
 
-    ##  Small string representation for debugging.
     def __str__(self):
+        """Small string representation for debugging."""
+
         return "<XmlMaterialProfile '{my_id}' ('{name}') from base file '{base_file}'>".format(my_id = self.getId(), name = self.getName(), base_file = self.getMetaDataEntry("base_file"))
 
     _metadata_tags_that_have_cura_namespace = {"pva_compatible", "breakaway_compatible"}
@@ -1134,8 +1146,10 @@ class XmlMaterialProfile(InstanceContainer):
         "cura": "http://www.ultimaker.com/cura"
     }
 
-##  Helper function for pretty-printing XML because ETree is stupid
+
 def _indent(elem, level = 0):
+    """Helper function for pretty-printing XML because ETree is stupid"""
+
     i = "\n" + level * "  "
     if len(elem):
         if not elem.text or not elem.text.strip():

@@ -65,6 +65,20 @@ Item
                 {
                     base.goToPage("add_printer_by_ip")
                 }
+
+                onAddCloudPrinterButtonClicked:
+                {
+                    base.goToPage("add_cloud_printers")
+                    if (!Cura.API.account.isLoggedIn)
+                    {
+                        Cura.API.account.login()
+                    }
+                    else
+                    {
+                        Qt.openUrlExternally("https://mycloud.ultimaker.com/")
+                    }
+
+                }
             }
         }
     }
@@ -94,6 +108,12 @@ Item
             AddLocalPrinterScrollView
             {
                 id: localPrinterView
+                property int childrenHeight: backButton.y - addLocalPrinterDropDown.y - UM.Theme.getSize("expandable_component_content_header").height - UM.Theme.getSize("default_margin").height
+
+                onChildrenHeightChanged:
+                {
+                    addLocalPrinterDropDown.children[1].height = childrenHeight
+                }
             }
         }
     }
@@ -143,17 +163,19 @@ Item
                 const networkPrinterItem = addNetworkPrinterDropDown.contentItem.currentItem
                 CuraApplication.getDiscoveredPrintersModel().createMachineFromDiscoveredPrinter(networkPrinterItem)
 
-                // If we have created a machine, go to the last page, which is the "cloud" page.
-                base.goToPage("cloud")
+                // If we have created a machine, end the wizard (since this is the last page)
+                base.endWizard()
+
             }
             else
             {
                 // Create a local printer
                 const localPrinterItem = addLocalPrinterDropDown.contentItem.currentItem
                 const printerName = addLocalPrinterDropDown.contentItem.printerName
-                Cura.MachineManager.addMachine(localPrinterItem.id, printerName)
-
-                base.showNextPage()
+                if(Cura.MachineManager.addMachine(localPrinterItem.id, printerName))
+                {
+                    base.showNextPage()
+                }
             }
         }
     }

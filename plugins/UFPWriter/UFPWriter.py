@@ -1,4 +1,4 @@
-#Copyright (c) 2019 Ultimaker B.V.
+#Copyright (c) 2020 Ultimaker B.V.
 #Cura is released under the terms of the LGPLv3 or higher.
 
 from typing import cast
@@ -97,7 +97,7 @@ class UFPWriter(MeshWriter):
             Logger.log("w", "The material extension: %s was already added", material_extension)
 
         added_materials = []
-        for extruder_stack in global_stack.extruders.values():
+        for extruder_stack in global_stack.extruderList:
             material = extruder_stack.material
             try:
                 material_file_name = material.getMetaData()["base_file"] + ".xml.fdm_material"
@@ -131,5 +131,11 @@ class UFPWriter(MeshWriter):
 
             added_materials.append(material_file_name)
 
-        archive.close()
+        try:
+            archive.close()
+        except OSError as e:
+            error_msg = catalog.i18nc("@info:error", "Can't write to UFP file:") + " " + str(e)
+            self.setInformation(error_msg)
+            Logger.error(error_msg)
+            return False
         return True

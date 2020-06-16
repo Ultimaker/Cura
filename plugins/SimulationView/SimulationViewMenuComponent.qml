@@ -112,7 +112,7 @@ Cura.ExpandableComponent
                 type_id: 1
             })
             layerViewTypes.append({
-                text: catalog.i18nc("@label:listbox", "Feedrate"),
+                text: catalog.i18nc("@label:listbox", "Speed"),
                 type_id: 2
             })
             layerViewTypes.append({

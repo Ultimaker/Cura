@@ -7,7 +7,7 @@
         "author": "Jaime van Kessel & Paul Bussiere",
         "manufacturer": "Folger Tech",
         "file_formats": "text/x-gcode",
-        "platform": "FT-5_build_plate.stl",
+        "platform": "FT-5_build_plate.3mf",
         "machine_extruder_trains":
         {
             "0": "folgertech_FT-5_extruder_0"

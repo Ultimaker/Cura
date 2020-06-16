@@ -18,8 +18,8 @@ catalog = i18nCatalog("cura")
 
 
 class ModelChecker(QObject, Extension):
-    ##  Signal that gets emitted when anything changed that we need to check.
     onChanged = pyqtSignal()
+    """Signal that gets emitted when anything changed that we need to check."""
 
     def __init__(self):
         super().__init__()
@@ -47,11 +47,13 @@ class ModelChecker(QObject, Extension):
         if not isinstance(args[0], Camera):
             self._change_timer.start()
 
-    ##  Called when plug-ins are initialized.
-    #
-    #   This makes sure that we listen to changes of the material and that the
-    #   button is created that indicates warnings with the current set-up.
     def _pluginsInitialized(self):
+        """Called when plug-ins are initialized.
+
+        This makes sure that we listen to changes of the material and that the
+        button is created that indicates warnings with the current set-up.
+        """
+
         Application.getInstance().getMachineManager().rootMaterialChanged.connect(self.onChanged)
         self._createView()
 
@@ -73,18 +75,20 @@ class ModelChecker(QObject, Extension):
         # Check node material shrinkage and bounding box size
         for node in self.sliceableNodes():
             node_extruder_position = node.callDecoration("getActiveExtruderPosition")
+            if node_extruder_position is None:
+                continue
 
             # This function can be triggered in the middle of a machine change, so do not proceed if the machine change
             # has not done yet.
             try:
-                extruder = global_container_stack.extruderList[int(node_extruder_position)]
+                global_container_stack.extruderList[int(node_extruder_position)]
             except IndexError:
                 Application.getInstance().callLater(lambda: self.onChanged.emit())
                 return False
 
             if material_shrinkage[node_extruder_position] > shrinkage_threshold:
                 bbox = node.getBoundingBox()
-                if bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z:
+                if bbox is not None and (bbox.width >= warning_size_xy or bbox.depth >= warning_size_xy or bbox.height >= warning_size_z):
                     warning_nodes.append(node)
 
         self._caution_message.setText(catalog.i18nc(
@@ -104,8 +108,12 @@ class ModelChecker(QObject, Extension):
             if node.callDecoration("isSliceable"):
                 yield node
 
-    ##  Creates the view used by show popup. The view is saved because of the fairly aggressive garbage collection.
     def _createView(self):
+        """Creates the view used by show popup.
+
+        The view is saved because of the fairly aggressive garbage collection.
+        """
+
         Logger.log("d", "Creating model checker view.")
 
         # Create the plugin dialog component

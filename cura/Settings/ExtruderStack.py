@@ -22,10 +22,9 @@ if TYPE_CHECKING:
     from cura.Settings.GlobalStack import GlobalStack
 
 
-##  Represents an Extruder and its related containers.
-#
-#
 class ExtruderStack(CuraContainerStack):
+    """Represents an Extruder and its related containers."""
+
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
@@ -35,17 +34,16 @@ class ExtruderStack(CuraContainerStack):
 
     enabledChanged = pyqtSignal()
 
-    ##  Overridden from ContainerStack
-    #
-    #   This will set the next stack and ensure that we register this stack as an extruder.
     @override(ContainerStack)
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
+        """Overridden from ContainerStack
+
+        This will set the next stack and ensure that we register this stack as an extruder.
+        """
+
         super().setNextStack(stack)
         stack.addExtruder(self)
         self.setMetaDataEntry("machine", stack.id)
-
-        # For backward compatibility: Register the extruder with the Extruder Manager
-        ExtruderManager.getInstance().registerExtruder(self, stack.id)
 
     @override(ContainerStack)
     def getNextStack(self) -> Optional["GlobalStack"]:
@@ -71,11 +69,13 @@ class ExtruderStack(CuraContainerStack):
 
     compatibleMaterialDiameterChanged = pyqtSignal()
 
-    ##  Return the filament diameter that the machine requires.
-    #
-    #   If the machine has no requirement for the diameter, -1 is returned.
-    #   \return The filament diameter for the printer
     def getCompatibleMaterialDiameter(self) -> float:
+        """Return the filament diameter that the machine requires.
+
+        If the machine has no requirement for the diameter, -1 is returned.
+        :return: The filament diameter for the printer
+        """
+
         context = PropertyEvaluationContext(self)
         context.context["evaluate_from_container_index"] = _ContainerIndexes.Variant
 
@@ -97,31 +97,35 @@ class ExtruderStack(CuraContainerStack):
 
     approximateMaterialDiameterChanged = pyqtSignal()
 
-    ##  Return the approximate filament diameter that the machine requires.
-    #
-    #   The approximate material diameter is the material diameter rounded to
-    #   the nearest millimetre.
-    #
-    #   If the machine has no requirement for the diameter, -1 is returned.
-    #
-    #   \return The approximate filament diameter for the printer
     def getApproximateMaterialDiameter(self) -> float:
+        """Return the approximate filament diameter that the machine requires.
+
+        The approximate material diameter is the material diameter rounded to
+        the nearest millimetre.
+
+        If the machine has no requirement for the diameter, -1 is returned.
+
+        :return: The approximate filament diameter for the printer
+        """
+
         return round(self.getCompatibleMaterialDiameter())
 
     approximateMaterialDiameter = pyqtProperty(float, fget = getApproximateMaterialDiameter,
                                                notify = approximateMaterialDiameterChanged)
 
-    ##  Overridden from ContainerStack
-    #
-    #   It will perform a few extra checks when trying to get properties.
-    #
-    #   The two extra checks it currently does is to ensure a next stack is set and to bypass
-    #   the extruder when the property is not settable per extruder.
-    #
-    #   \throws Exceptions.NoGlobalStackError Raised when trying to get a property from an extruder without
-    #                                         having a next stack set.
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
+        """Overridden from ContainerStack
+
+        It will perform a few extra checks when trying to get properties.
+
+        The two extra checks it currently does is to ensure a next stack is set and to bypass
+        the extruder when the property is not settable per extruder.
+
+        :throws Exceptions.NoGlobalStackError Raised when trying to get a property from an extruder without
+        having a next stack set.
+        """
+
         if not self._next_stack:
             raise Exceptions.NoGlobalStackError("Extruder {id} is missing the next stack!".format(id = self.id))
 

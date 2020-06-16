@@ -133,7 +133,10 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(name = "refreshBackups")
     def refreshBackups(self) -> None:
-        self._backups = self._drive_api_service.getBackups()
+        self._drive_api_service.getBackups(self._backupsChangedCallback)
+
+    def _backupsChangedCallback(self, backups: List[Dict[str, Any]]) -> None:
+        self._backups = backups
         self.backupsChanged.emit()
 
     @pyqtProperty(bool, notify = restoringStateChanged)
@@ -158,5 +161,8 @@ class DrivePluginExtension(QObject, Extension):
 
     @pyqtSlot(str, name = "deleteBackup")
     def deleteBackup(self, backup_id: str) -> None:
-        self._drive_api_service.deleteBackup(backup_id)
-        self.refreshBackups()
+        self._drive_api_service.deleteBackup(backup_id, self._backupDeletedCallback)
+
+    def _backupDeletedCallback(self, success: bool):
+        if success:
+            self.refreshBackups()

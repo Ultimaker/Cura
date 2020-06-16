@@ -1,5 +1,6 @@
 # Copyright (c) 2015 Ultimaker B.V.
 # Uranium is released under the terms of the LGPLv3 or higher.
+from typing import Optional
 
 from UM.Mesh.MeshWriter import MeshWriter
 from UM.Math.Vector import Vector
@@ -40,7 +41,7 @@ class ThreeMFWriter(MeshWriter):
         }
 
         self._unit_matrix_string = self._convertMatrixToString(Matrix())
-        self._archive = None
+        self._archive = None  # type: Optional[zipfile.ZipFile]
         self._store_archive = False
 
     def _convertMatrixToString(self, matrix):
@@ -59,15 +60,19 @@ class ThreeMFWriter(MeshWriter):
         result += str(matrix._data[2, 3])
         return result
 
-    ##  Should we store the archive
-    #   Note that if this is true, the archive will not be closed.
-    #   The object that set this parameter is then responsible for closing it correctly!
     def setStoreArchive(self, store_archive):
+        """Should we store the archive
+
+        Note that if this is true, the archive will not be closed.
+        The object that set this parameter is then responsible for closing it correctly!
+        """
         self._store_archive = store_archive
 
-    ##  Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
-    #   \returns Uranium Scene node.
     def _convertUMNodeToSavitarNode(self, um_node, transformation = Matrix()):
+        """Convenience function that converts an Uranium SceneNode object to a SavitarSceneNode
+
+        :returns: Uranium Scene node.
+        """
         if not isinstance(um_node, SceneNode):
             return None
 
@@ -76,6 +81,7 @@ class ThreeMFWriter(MeshWriter):
             return
 
         savitar_node = Savitar.SceneNode()
+        savitar_node.setName(um_node.getName())
 
         node_matrix = um_node.getLocalTransformation()
 

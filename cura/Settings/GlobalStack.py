@@ -29,9 +29,9 @@ if TYPE_CHECKING:
     from cura.Settings.ExtruderStack import ExtruderStack
 
 
-##  Represents the Global or Machine stack and its related containers.
-#
 class GlobalStack(CuraContainerStack):
+    """Represents the Global or Machine stack and its related containers."""
+
     def __init__(self, container_id: str) -> None:
         super().__init__(container_id)
 
@@ -58,12 +58,14 @@ class GlobalStack(CuraContainerStack):
     extrudersChanged = pyqtSignal()
     configuredConnectionTypesChanged = pyqtSignal()
 
-    ##  Get the list of extruders of this stack.
-    #
-    #   \return The extruders registered with this stack.
     @pyqtProperty("QVariantMap", notify = extrudersChanged)
     @deprecated("Please use extruderList instead.", "4.4")
     def extruders(self) -> Dict[str, "ExtruderStack"]:
+        """Get the list of extruders of this stack.
+
+        :return: The extruders registered with this stack.
+        """
+
         return self._extruders
 
     @pyqtProperty("QVariantList", notify = extrudersChanged)
@@ -86,16 +88,18 @@ class GlobalStack(CuraContainerStack):
     def getLoadingPriority(cls) -> int:
         return 2
 
-    ##  The configured connection types can be used to find out if the global
-    #   stack is configured to be connected with a printer, without having to
-    #   know all the details as to how this is exactly done (and without
-    #   actually setting the stack to be active).
-    #
-    #   This data can then in turn also be used when the global stack is active;
-    #   If we can't get a network connection, but it is configured to have one,
-    #   we can display a different icon to indicate the difference.
     @pyqtProperty("QVariantList", notify=configuredConnectionTypesChanged)
     def configuredConnectionTypes(self) -> List[int]:
+        """The configured connection types can be used to find out if the global
+
+        stack is configured to be connected with a printer, without having to
+        know all the details as to how this is exactly done (and without
+        actually setting the stack to be active).
+
+        This data can then in turn also be used when the global stack is active;
+        If we can't get a network connection, but it is configured to have one,
+        we can display a different icon to indicate the difference.
+        """
         # Requesting it from the metadata actually gets them as strings (as that's what you get from serializing).
         # But we do want them returned as a list of ints (so the rest of the code can directly compare)
         connection_types = self.getMetaDataEntry("connection_type", "").split(",")
@@ -122,16 +126,18 @@ class GlobalStack(CuraContainerStack):
                                                          ConnectionType.CloudConnection.value]
         return has_remote_connection
 
-    ##  \sa configuredConnectionTypes
     def addConfiguredConnectionType(self, connection_type: int) -> None:
+        """:sa configuredConnectionTypes"""
+
         configured_connection_types = self.configuredConnectionTypes
         if connection_type not in configured_connection_types:
             # Store the values as a string.
             configured_connection_types.append(connection_type)
             self.setMetaDataEntry("connection_type", ",".join([str(c_type) for c_type in configured_connection_types]))
 
-    ##  \sa configuredConnectionTypes
     def removeConfiguredConnectionType(self, connection_type: int) -> None:
+        """:sa configuredConnectionTypes"""
+
         configured_connection_types = self.configuredConnectionTypes
         if connection_type in configured_connection_types:
             # Store the values as a string.
@@ -163,13 +169,15 @@ class GlobalStack(CuraContainerStack):
     def preferred_output_file_formats(self) -> str:
         return self.getMetaDataEntry("file_formats")
 
-    ##  Add an extruder to the list of extruders of this stack.
-    #
-    #   \param extruder The extruder to add.
-    #
-    #   \throws Exceptions.TooManyExtrudersError Raised when trying to add an extruder while we
-    #                                            already have the maximum number of extruders.
     def addExtruder(self, extruder: ContainerStack) -> None:
+        """Add an extruder to the list of extruders of this stack.
+
+        :param extruder: The extruder to add.
+
+        :raise Exceptions.TooManyExtrudersError: Raised when trying to add an extruder while we
+            already have the maximum number of extruders.
+        """
+
         position = extruder.getMetaDataEntry("position")
         if position is None:
             Logger.log("w", "No position defined for extruder {extruder}, cannot add it to stack {stack}", extruder = extruder.id, stack = self.id)
@@ -183,19 +191,21 @@ class GlobalStack(CuraContainerStack):
         self.extrudersChanged.emit()
         Logger.log("i", "Extruder[%s] added to [%s] at position [%s]", extruder.id, self.id, position)
 
-    ##  Overridden from ContainerStack
-    #
-    #   This will return the value of the specified property for the specified setting,
-    #   unless the property is "value" and that setting has a "resolve" function set.
-    #   When a resolve is set, it will instead try and execute the resolve first and
-    #   then fall back to the normal "value" property.
-    #
-    #   \param key The setting key to get the property of.
-    #   \param property_name The property to get the value of.
-    #
-    #   \return The value of the property for the specified setting, or None if not found.
     @override(ContainerStack)
     def getProperty(self, key: str, property_name: str, context: Optional[PropertyEvaluationContext] = None) -> Any:
+        """Overridden from ContainerStack
+
+        This will return the value of the specified property for the specified setting,
+        unless the property is "value" and that setting has a "resolve" function set.
+        When a resolve is set, it will instead try and execute the resolve first and
+        then fall back to the normal "value" property.
+
+        :param key: The setting key to get the property of.
+        :param property_name: The property to get the value of.
+
+        :return: The value of the property for the specified setting, or None if not found.
+        """
+
         if not self.definition.findDefinitions(key = key):
             return None
 
@@ -235,11 +245,13 @@ class GlobalStack(CuraContainerStack):
         context.popContainer()
         return result
 
-    ##  Overridden from ContainerStack
-    #
-    #   This will simply raise an exception since the Global stack cannot have a next stack.
     @override(ContainerStack)
     def setNextStack(self, stack: CuraContainerStack, connect_signals: bool = True) -> None:
+        """Overridden from ContainerStack
+
+        This will simply raise an exception since the Global stack cannot have a next stack.
+        """
+
         raise Exceptions.InvalidOperationError("Global stack cannot have a next stack!")
 
     # protected:
@@ -267,9 +279,11 @@ class GlobalStack(CuraContainerStack):
 
         return True
 
-    ##  Perform some sanity checks on the global stack
-    #   Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
     def isValid(self) -> bool:
+        """Perform some sanity checks on the global stack
+
+        Sanity check for extruders; they must have positions 0 and up to machine_extruder_count - 1
+        """
         container_registry = ContainerRegistry.getInstance()
         extruder_trains = container_registry.findContainerStacks(type = "extruder_train", machine = self.getId())
 
@@ -299,9 +313,10 @@ class GlobalStack(CuraContainerStack):
     def hasVariantBuildplates(self) -> bool:
         return parseBool(self.getMetaDataEntry("has_variant_buildplates", False))
 
-    ##  Get default firmware file name if one is specified in the firmware
     @pyqtSlot(result = str)
     def getDefaultFirmwareName(self) -> str:
+        """Get default firmware file name if one is specified in the firmware"""
+
         machine_has_heated_bed = self.getProperty("machine_heated_bed", "value")
 
         baudrate = 250000

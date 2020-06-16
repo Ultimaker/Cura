@@ -96,6 +96,8 @@ Item
                             {
                                 UM.Controller.setActiveTool(model.id);
                             }
+
+                            base.state = (index < toolsModel.count/2) ? "anchorAtTop" : "anchorAtBottom";
                         }
                     }
                 }
@@ -129,7 +131,6 @@ Item
 
             Repeater
             {
-                id: extruders
                 width: childrenRect.width
                 height: childrenRect.height
                 model: extrudersModel.items.length > 1 ? extrudersModel : 0
@@ -182,7 +183,7 @@ Item
         MouseArea //Catch all mouse events (so scene doesnt handle them)
         {
             anchors.fill: parent
-            acceptedButtons: Qt.NoButton
+            acceptedButtons: Qt.AllButtons
             onWheel: wheel.accepted = true
         }
 
@@ -202,8 +203,9 @@ Item
     // dragging a tool handle.
     Rectangle
     {
-        x: -base.x + base.mouseX + UM.Theme.getSize("default_margin").width
-        y: -base.y + base.mouseY + UM.Theme.getSize("default_margin").height
+        id: toolInfo
+        x: visible ? -base.x + base.mouseX + UM.Theme.getSize("default_margin").width: 0
+        y: visible ? -base.y + base.mouseY + UM.Theme.getSize("default_margin").height: 0
 
         width: toolHint.width + UM.Theme.getSize("default_margin").width
         height: toolHint.height;
@@ -219,4 +221,40 @@ Item
 
         visible: toolHint.text != ""
     }
+
+    states: [
+        State {
+            name: "anchorAtTop"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: base.top
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.topMargin: base.activeY
+            }
+        },
+        State {
+            name: "anchorAtBottom"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: undefined
+                anchors.bottom: base.top
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.bottomMargin: {
+                    if (panelBorder.height > (base.activeY + UM.Theme.getSize("button").height)) {
+                        // panel is tall, align the top of the panel with the top of the first tool button
+                        return -panelBorder.height
+                    }
+                    // align the bottom of the panel with the bottom of the selected tool button
+                    return -(base.activeY + UM.Theme.getSize("button").height)
+                }
+            }
+        }
+    ]
 }
