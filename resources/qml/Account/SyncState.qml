@@ -43,11 +43,6 @@ Row // Sync state icon + message
         }
     ]
 
-    SystemPalette
-    {
-        id: palette
-    }
-
     UM.RecolorImage
     {
         id: icon
