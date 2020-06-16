@@ -31,6 +31,25 @@ Column
             source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
             outlineColor: "transparent"
         }
+        Rectangle
+        {
+            id: initialCircle
+            width: avatar.width
+            height: avatar.height
+            radius: width
+            color: UM.Theme.getColor("action_button_disabled")
+            Label
+            {
+                id: initialLabel
+                anchors.centerIn: parent
+                text: profile["username"].charAt(0).toUpperCase()
+                font: UM.Theme.getFont("large_bold")
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
+                renderType: Text.NativeRendering
+            }
+        }
+
         Column
         {
             anchors.left: avatar.right
