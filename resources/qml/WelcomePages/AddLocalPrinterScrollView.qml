@@ -5,7 +5,7 @@ import QtQuick 2.10
 import QtQuick.Controls 2.3
 
 import UM 1.3 as UM
-import Cura 1.0 as Cura
+import Cura 1.1 as Cura
 
 
 //
@@ -28,8 +28,6 @@ Item
         "Ultimaker B.V.": -2,
         "Custom": -1
     }
-
-    property int maxItemCountAtOnce: 10  // show at max 10 items at once, otherwise you need to scroll.
 
     // User-editable printer name
     property alias printerName: printerNameTextField.text
@@ -54,12 +52,27 @@ Item
         }
     }
 
+    function getMachineName()
+    {
+        return machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).name : "";
+    }
+
+    function getMachineMetaDataEntry(key)
+    {
+        var metadata = machineList.model.getItem(machineList.currentIndex) != undefined ? machineList.model.getItem(machineList.currentIndex).metadata : undefined;
+        if (metadata)
+        {
+            return metadata[key];
+        }
+        return undefined;
+    }
+
     Component.onCompleted:
     {
         updateCurrentItemUponSectionChange()
     }
 
-    Item
+    Row
     {
         id: localPrinterSelectionItem
         anchors.left: parent.left
@@ -68,19 +81,12 @@ Item
         height: childrenRect.height
 
         // ScrollView + ListView for selecting a local printer to add
-        ScrollView
+        Cura.ScrollView
         {
             id: scrollView
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
 
-            height: (maxItemCountAtOnce * UM.Theme.getSize("action_button").height) - UM.Theme.getSize("default_margin").height
-
-            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-            ScrollBar.vertical.policy: ScrollBar.AsNeeded
-
-            clip: true
+            height: childrenHeight
+            width: Math.floor(parent.width * 0.4)
 
             ListView
             {
@@ -183,52 +189,94 @@ Item
                 }
             }
         }
-    }
 
-    // Horizontal line
-    Rectangle
-    {
-        id: horizontalLine
-        anchors.top: localPrinterSelectionItem.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: UM.Theme.getSize("default_lining").height
-        color: UM.Theme.getColor("lining")
-    }
-
-    // User-editable printer name row
-    Row
-    {
-        anchors.top: horizontalLine.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.topMargin: UM.Theme.getSize("default_lining").height
-        anchors.leftMargin: UM.Theme.getSize("default_margin").width
-
-        spacing: UM.Theme.getSize("default_margin").width
-
-        Label
+        // Vertical line
+        Rectangle
         {
-            text: catalog.i18nc("@label", "Printer name")
-            anchors.verticalCenter: parent.verticalCenter
-            font: UM.Theme.getFont("medium")
-            color: UM.Theme.getColor("text")
-            verticalAlignment: Text.AlignVCenter
-            renderType: Text.NativeRendering
+            id: verticalLine
+            anchors.top: parent.top
+            height: childrenHeight - UM.Theme.getSize("default_lining").height
+            width: UM.Theme.getSize("default_lining").height
+            color: UM.Theme.getColor("lining")
         }
 
-        Cura.TextField
+        // User-editable printer name row
+        Column
         {
-            id: printerNameTextField
-            anchors.verticalCenter: parent.verticalCenter
-            width: (parent.width / 2) | 0
-            placeholderText: catalog.i18nc("@text", "Please give your printer a name")
-            maximumLength: 40
-            validator: RegExpValidator
+            width: Math.floor(parent.width * 0.6)
+
+            spacing: UM.Theme.getSize("default_margin").width
+            padding: UM.Theme.getSize("default_margin").width
+
+            Label
             {
-                regExp: printerNameTextField.machineNameValidator.machineNameRegex
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: base.getMachineName()
+                color: UM.Theme.getColor("primary_button")
+                font: UM.Theme.getFont("huge")
+                elide: Text.ElideRight
             }
-            property var machineNameValidator: Cura.MachineNameValidator { }
+            Grid
+            {
+                width: parent.width
+                columns: 2
+                rowSpacing: UM.Theme.getSize("default_lining").height
+                columnSpacing: UM.Theme.getSize("default_margin").width
+
+                verticalItemAlignment: Grid.AlignVCenter
+
+                Label
+                {
+                    text: catalog.i18nc("@label", "Manufacturer")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                }
+                Label
+                {
+                    text: base.getMachineMetaDataEntry("manufacturer")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                }
+                Label
+                {
+                    text: catalog.i18nc("@label", "Profile author")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                }
+                Label
+                {
+                    text: base.getMachineMetaDataEntry("author")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                }
+
+                Label
+                {
+                    text: catalog.i18nc("@label", "Printer name")
+                    font: UM.Theme.getFont("default")
+                    color: UM.Theme.getColor("text")
+                    renderType: Text.NativeRendering
+                }
+
+                Cura.TextField
+                {
+                    id: printerNameTextField
+                    placeholderText: catalog.i18nc("@text", "Please give your printer a name")
+                    maximumLength: 40
+                    validator: RegExpValidator
+                    {
+                        regExp: printerNameTextField.machineNameValidator.machineNameRegex
+                    }
+                    property var machineNameValidator: Cura.MachineNameValidator { }
+                }
+            }
         }
+
+
     }
 }
