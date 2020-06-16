@@ -104,7 +104,7 @@ class CloudOutputDeviceManager:
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
-        """Callback for when the request for getting the clusters is finished."""
+        """Callback for when the request for getting the clusters is successful and finished."""
 
         self._um_cloud_printers = {m.getMetaDataEntry(self.META_CLUSTER_ID): m for m in
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
