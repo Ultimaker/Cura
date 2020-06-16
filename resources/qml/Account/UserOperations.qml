@@ -24,12 +24,13 @@ Column
         AvatarImage
         {
             id: avatar
+            anchors.verticalCenter: parent.verticalCenter
 
             width: UM.Theme.getSize("main_window_header").height
             height: UM.Theme.getSize("main_window_header").height
 
             source: profile["profile_image_url"] ? profile["profile_image_url"] : ""
-            outlineColor: "transparent"
+            outlineColor: UM.Theme.getColor("main_background")
         }
         Rectangle
         {
@@ -37,13 +38,16 @@ Column
             width: avatar.width
             height: avatar.height
             radius: width
+            anchors.verticalCenter: parent.verticalCenter
             color: UM.Theme.getColor("action_button_disabled")
+            visible: !avatar.hasAvatar
             Label
             {
                 id: initialLabel
                 anchors.centerIn: parent
                 text: profile["username"].charAt(0).toUpperCase()
                 font: UM.Theme.getFont("large_bold")
+                color: UM.Theme.getColor("text")
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
                 renderType: Text.NativeRendering
