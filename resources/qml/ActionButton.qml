@@ -33,6 +33,8 @@ Button
     property alias shadowEnabled: shadow.visible
     property alias busy: busyIndicator.visible
 
+    property bool underlineTextOnHover: false
+
     property alias toolTipContentAlignment: tooltip.contentAlignment
 
     // This property is used to indicate whether the button has a fixed width or the width would depend on the contents
@@ -48,6 +50,14 @@ Button
     rightPadding: UM.Theme.getSize("default_margin").width
     height: UM.Theme.getSize("action_button").height
     hoverEnabled: true
+
+    onHoveredChanged:
+    {
+        if(underlineTextOnHover)
+        {
+            buttonText.font.underline = hovered
+        }
+    }
 
     contentItem: Row
     {

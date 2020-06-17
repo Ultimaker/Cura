@@ -4,14 +4,44 @@ import QtQuick.Controls 2.3
 import UM 1.4 as UM
 import Cura 1.1 as Cura
 
-Row // sync state icon + message
+Row // Sync state icon + message
 {
+    property var syncState: Cura.API.account.syncState
 
     id: syncRow
     width: childrenRect.width
     height: childrenRect.height
-    anchors.horizontalCenter: parent.horizontalCenter
     spacing: UM.Theme.getSize("narrow_margin").height
+
+    states: [
+        State
+        {
+            name: "idle"
+            when: syncState == Cura.AccountSyncState.IDLE
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("update")}
+        },
+        State
+        {
+            name: "syncing"
+            when: syncState == Cura.AccountSyncState.SYNCING
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("update") }
+            PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Checking...")}
+        },
+        State
+        {
+            name: "up_to_date"
+            when: syncState == Cura.AccountSyncState.SUCCESS
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("checked") }
+            PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Account synced")}
+        },
+        State
+        {
+            name: "error"
+            when: syncState == Cura.AccountSyncState.ERROR
+            PropertyChanges { target: icon; source: UM.Theme.getIcon("warning_light") }
+            PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Something went wrong...")}
+        }
+    ]
 
     UM.RecolorImage
     {
@@ -20,7 +50,7 @@ Row // sync state icon + message
         height: width
 
         source: Cura.API.account.manualSyncEnabled ? UM.Theme.getIcon("update") : UM.Theme.getIcon("checked")
-        color: palette.text
+        color: UM.Theme.getColor("account_sync_state_icon")
 
         RotationAnimator
         {
@@ -30,7 +60,7 @@ Row // sync state icon + message
             to: 360
             duration: 1000
             loops: Animation.Infinite
-            running: true
+            running: syncState == Cura.AccountSyncState.SYNCING
 
             // reset rotation when stopped
             onRunningChanged: {
@@ -50,10 +80,13 @@ Row // sync state icon + message
         Label
         {
             id: stateLabel
-            text: catalog.i18nc("@state", catalog.i18nc("@label", "You are in sync with your account"))
+            text: catalog.i18nc("@state", catalog.i18nc("@label", "Account synced"))
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            width: contentWidth + UM.Theme.getSize("default_margin").height
+            height: contentHeight
+            verticalAlignment: Text.AlignVCenter
             visible: !Cura.API.account.manualSyncEnabled
         }
 
@@ -64,8 +97,10 @@ Row // sync state icon + message
             color: UM.Theme.getColor("secondary_button_text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
+            verticalAlignment: Text.AlignVCenter
+            height: contentHeight
+            width: contentWidth + UM.Theme.getSize("default_margin").height
             visible: Cura.API.account.manualSyncEnabled
-            height: visible ? accountSyncButton.intrinsicHeight : 0
 
             MouseArea
             {
@@ -77,33 +112,4 @@ Row // sync state icon + message
             }
         }
     }
-
-    signal syncStateChanged(string newState)
-
-    onSyncStateChanged: {
-        if(newState == Cura.AccountSyncState.IDLE){
-            icon.source = UM.Theme.getIcon("update")
-        } else if(newState == Cura.AccountSyncState.SYNCING){
-            icon.source = UM.Theme.getIcon("update")
-            stateLabel.text = catalog.i18nc("@label", "Checking...")
-        } else if (newState == Cura.AccountSyncState.SUCCESS) {
-            icon.source = UM.Theme.getIcon("checked")
-            stateLabel.text = catalog.i18nc("@label", "You are in sync with your account")
-        } else if (newState == Cura.AccountSyncState.ERROR) {
-            icon.source = UM.Theme.getIcon("warning_light")
-            stateLabel.text = catalog.i18nc("@label", "Something went wrong...")
-        } else {
-            print("Error: unexpected sync state: " + newState)
-        }
-
-        if(newState == Cura.AccountSyncState.SYNCING){
-            updateAnimator.running = true
-        } else {
-            updateAnimator.running = false
-        }
-    }
-
-    Component.onCompleted: Cura.API.account.syncStateChanged.connect(syncStateChanged)
-
-
 }
