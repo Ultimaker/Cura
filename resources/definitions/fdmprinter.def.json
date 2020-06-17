@@ -4474,6 +4474,19 @@
                     "enabled": "support_enable or support_meshes_present",
                     "settable_per_mesh": true
                 },
+                "support_bottom_stair_step_min_slope":
+                {
+                    "label": "Support Stair Step Minimum Slope Angle",
+                    "description": "The minimum slope of the area for stair-stepping to take effect. Low values should make support easier to remove on shallower slopes, but really low values may result in some very counter-intuitive results on other parts of the model.",
+                    "unit": "°",
+                    "type": "float",
+                    "default_value": 10.0,
+                    "limit_to_extruder": "support_bottom_extruder_nr if support_bottom_enable else support_infill_extruder_nr",
+                    "minimum_value": "0.01",
+                    "maximum_value": "89.99",
+                    "enabled": "support_enable or support_meshes_present",
+                    "settable_per_mesh": true
+                },
                 "support_join_distance":
                 {
                     "label": "Support Join Distance",
