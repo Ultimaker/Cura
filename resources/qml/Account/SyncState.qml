@@ -32,7 +32,7 @@ Row // Sync state icon + message
             name: "up_to_date"
             when: syncState == Cura.AccountSyncState.SUCCESS
             PropertyChanges { target: icon; source: UM.Theme.getIcon("checked") }
-            PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "You are in sync with your account")}
+            PropertyChanges { target: stateLabel; text: catalog.i18nc("@label", "Account synced")}
         },
         State
         {
@@ -80,7 +80,7 @@ Row // Sync state icon + message
         Label
         {
             id: stateLabel
-            text: catalog.i18nc("@state", catalog.i18nc("@label", "You are in sync with your account"))
+            text: catalog.i18nc("@state", catalog.i18nc("@label", "Account synced"))
             color: UM.Theme.getColor("text")
             font: UM.Theme.getFont("medium")
             renderType: Text.NativeRendering
