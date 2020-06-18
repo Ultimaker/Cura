@@ -368,15 +368,20 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         machine_name = self._getMachineNameFromSerializedStack(serialized)
         self._machine_info.metadata_dict = self._getMetaDataDictFromSerializedStack(serialized)
 
+        # Check if the definition has been changed (this usually happens due to an upgrade)
+        id_list = self._getContainerIdListFromSerialized(serialized)
+        if id_list[7] != machine_definition_id:
+            machine_definition_id = id_list[7]
+
         stacks = self._container_registry.findContainerStacks(name = machine_name, type = "machine")
         self._is_same_machine_type = True
         existing_global_stack = None
+
         if stacks:
             global_stack = stacks[0]
             existing_global_stack = global_stack
             containers_found_dict["machine"] = True
             # Check if there are any changes at all in any of the container stacks.
-            id_list = self._getContainerIdListFromSerialized(serialized)
             for index, container_id in enumerate(id_list):
                 # take into account the old empty container IDs
                 container_id = self._old_empty_profile_id_dict.get(container_id, container_id)
@@ -661,6 +666,7 @@ class ThreeMFWorkspaceReader(WorkspaceReader):
         definition_container_files = [name for name in cura_file_names if name.endswith(self._definition_container_suffix)]
         for definition_container_file in definition_container_files:
             container_id = self._stripFileToId(definition_container_file)
+
             definitions = self._container_registry.findDefinitionContainersMetadata(id = container_id)
             if not definitions:
                 definition_container = DefinitionContainer(container_id)

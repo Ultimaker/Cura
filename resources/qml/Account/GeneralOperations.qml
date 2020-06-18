@@ -10,7 +10,7 @@ import Cura 1.1 as Cura
 Column
 {
     spacing: UM.Theme.getSize("default_margin").width
-
+    padding: UM.Theme.getSize("default_margin").width
     Image
     {
         id: machinesImage

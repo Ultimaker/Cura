@@ -96,6 +96,8 @@ Item
                             {
                                 UM.Controller.setActiveTool(model.id);
                             }
+
+                            base.state = (index < toolsModel.count/2) ? "anchorAtTop" : "anchorAtBottom";
                         }
                     }
                 }
@@ -219,4 +221,40 @@ Item
 
         visible: toolHint.text != ""
     }
+
+    states: [
+        State {
+            name: "anchorAtTop"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: base.top
+                anchors.bottom: undefined
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.topMargin: base.activeY
+            }
+        },
+        State {
+            name: "anchorAtBottom"
+
+            AnchorChanges {
+                target: panelBorder
+                anchors.top: undefined
+                anchors.bottom: base.top
+            }
+            PropertyChanges {
+                target: panelBorder
+                anchors.bottomMargin: {
+                    if (panelBorder.height > (base.activeY + UM.Theme.getSize("button").height)) {
+                        // panel is tall, align the top of the panel with the top of the first tool button
+                        return -panelBorder.height
+                    }
+                    // align the bottom of the panel with the bottom of the selected tool button
+                    return -(base.activeY + UM.Theme.getSize("button").height)
+                }
+            }
+        }
+    ]
 }

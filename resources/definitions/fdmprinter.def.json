@@ -5702,7 +5702,7 @@
                     "minimum_value": "0",
                     "maximum_value": "min(0.5 * machine_width, 0.5 * machine_depth)",
                     "minimum_value_warning": "max(extruderValues('prime_tower_line_width')) * 2",
-                    "maximum_value_warning": "20",
+                    "maximum_value_warning": "42",
                     "settable_per_mesh": false,
                     "settable_per_extruder": false
                 },
@@ -6049,8 +6049,8 @@
                 },
                 "infill_mesh_order":
                 {
-                    "label": "Infill Mesh Order",
-                    "description": "Determines which infill mesh is inside the infill of another infill mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
+                    "label": "Mesh Processing Rank",
+                    "description": "Determines the priority of this mesh when considering overlapping volumes. Areas where multiple meshes reside will be won by the lower rank mesh. An infill mesh with a higher order will modify the infill of infill meshes with lower order and normal meshes.",
                     "default_value": 0,
                     "value": "1 if infill_mesh else 0",
                     "minimum_value_warning": "1",

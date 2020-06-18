@@ -4,6 +4,7 @@ import os
 from typing import Dict, List, Optional, Set
 
 from PyQt5.QtNetwork import QNetworkReply
+from PyQt5.QtWidgets import QMessageBox
 
 from UM import i18nCatalog
 from UM.Logger import Logger  # To log errors talking to the API.
@@ -50,6 +51,7 @@ class CloudOutputDeviceManager:
         self._account = CuraApplication.getInstance().getCuraAPI().account  # type: Account
         self._api = CloudApiClient(CuraApplication.getInstance(), on_error = lambda error: Logger.log("e", str(error)))
         self._account.loginStateChanged.connect(self._onLoginStateChanged)
+        self._removed_printers_message = None  # type: Optional[Message]
 
         # Ensure we don't start twice.
         self._running = False
@@ -102,7 +104,7 @@ class CloudOutputDeviceManager:
         self._api.getClusters(self._onGetRemoteClustersFinished, self._onGetRemoteClusterFailed)
 
     def _onGetRemoteClustersFinished(self, clusters: List[CloudClusterResponse]) -> None:
-        """Callback for when the request for getting the clusters is finished."""
+        """Callback for when the request for getting the clusters is successful and finished."""
 
         self._um_cloud_printers = {m.getMetaDataEntry(self.META_CLUSTER_ID): m for m in
                                    CuraApplication.getInstance().getContainerRegistry().findContainerStacks(
@@ -119,6 +121,11 @@ class CloudOutputDeviceManager:
             if device_id in self._um_cloud_printers and not parseBool(self._um_cloud_printers[device_id].getMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, "true")):
                 self._um_cloud_printers[device_id].setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, True)
         self._onDevicesDiscovered(new_clusters)
+
+        # Hide the current removed_printers_message, if there is any
+        if self._removed_printers_message:
+            self._removed_printers_message.actionTriggered.disconnect(self._onRemovedPrintersMessageActionTriggered)
+            self._removed_printers_message.hide()
 
         # Remove the CloudOutput device for offline printers
         offline_device_keys = set(self._remote_clusters.keys()) - set(online_clusters.keys())
@@ -269,14 +276,13 @@ class CloudOutputDeviceManager:
             return
 
         # Generate message
-        removed_printers_message = Message(
+        self._removed_printers_message = Message(
                 title = self.I18N_CATALOG.i18ncp(
                         "info:status",
                         "Cloud connection is not available for a printer",
                         "Cloud connection is not available for some printers",
                         len(self.reported_device_ids)
-                ),
-                lifetime = 0
+                )
         )
         device_names = "\n".join(["<li>{} ({})</li>".format(self._um_cloud_printers[device].name, self._um_cloud_printers[device].definition.name) for device in self.reported_device_ids])
         message_text = self.I18N_CATALOG.i18ncp(
@@ -291,13 +297,19 @@ class CloudOutputDeviceManager:
                 "<a href='https://mycloud.ultimaker.com/'>Ultimaker Digital Factory</a>.",
                 device_names
         )
-        removed_printers_message.setText(message_text)
-        removed_printers_message.addAction("keep_printer_configurations_action",
-                               name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
-                               icon = "",
-                               description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
-                               button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
-        removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
+        self._removed_printers_message.setText(message_text)
+        self._removed_printers_message.addAction("keep_printer_configurations_action",
+                                                 name = self.I18N_CATALOG.i18nc("@action:button", "Keep printer configurations"),
+                                                 icon = "",
+                                                 description = "Keep the configuration of the cloud printer(s) synced with Cura which are not linked to your account.",
+                                                 button_align = Message.ActionButtonAlignment.ALIGN_RIGHT)
+        self._removed_printers_message.addAction("remove_printers_action",
+                                                 name = self.I18N_CATALOG.i18nc("@action:button", "Remove printers"),
+                                                 icon = "",
+                                                 description = "Remove the cloud printer(s) which are not linked to your account.",
+                                                 button_style = Message.ActionButtonStyle.SECONDARY,
+                                                 button_align = Message.ActionButtonAlignment.ALIGN_LEFT)
+        self._removed_printers_message.actionTriggered.connect(self._onRemovedPrintersMessageActionTriggered)
 
         output_device_manager = CuraApplication.getInstance().getOutputDeviceManager()
 
@@ -314,7 +326,7 @@ class CloudOutputDeviceManager:
             # Update the printer's metadata to mark it as not linked to the account
             device.setMetaDataEntry(META_UM_LINKED_TO_ACCOUNT, False)
 
-        removed_printers_message.show()
+        self._removed_printers_message.show()
 
     def _onDiscoveredDeviceRemoved(self, device_id: str) -> None:
         device = self._remote_clusters.pop(device_id, None)  # type: Optional[CloudOutputDevice]
@@ -402,7 +414,23 @@ class CloudOutputDeviceManager:
             if container_cluster_id in self._remote_clusters.keys():
                 del self._remote_clusters[container_cluster_id]
 
-    @staticmethod
-    def _onRemovedPrintersMessageActionTriggered(removed_printers_message: Message, action: str) -> None:
+    def _onRemovedPrintersMessageActionTriggered(self, removed_printers_message: Message, action: str) -> None:
         if action == "keep_printer_configurations_action":
+            removed_printers_message.hide()
+        elif action == "remove_printers_action":
+            machine_manager = CuraApplication.getInstance().getMachineManager()
+            remove_printers_ids = {self._um_cloud_printers[i].getId() for i in self.reported_device_ids}
+            all_ids = {m.getId() for m in CuraApplication.getInstance().getContainerRegistry().findContainerStacks(type = "machine")}
+
+            question_title = self.I18N_CATALOG.i18nc("@title:window", "Remove printers?")
+            question_content = self.I18N_CATALOG.i18nc("@label", "You are about to remove {} printer(s) from Cura. This action cannot be undone. \nAre you sure you want to continue?".format(len(remove_printers_ids)))
+            if remove_printers_ids == all_ids:
+                question_content = self.I18N_CATALOG.i18nc("@label", "You are about to remove all printers from Cura. This action cannot be undone. \nAre you sure you want to continue?")
+            result = QMessageBox.question(None, question_title, question_content)
+            if result == QMessageBox.No:
+                return
+
+            for machine_cloud_id in self.reported_device_ids:
+                machine_manager.setActiveMachine(self._um_cloud_printers[machine_cloud_id].getId())
+                machine_manager.removeMachine(self._um_cloud_printers[machine_cloud_id].getId())
             removed_printers_message.hide()

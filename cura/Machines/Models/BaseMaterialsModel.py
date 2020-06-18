@@ -154,7 +154,7 @@ class BaseMaterialsModel(ListModel):
 
         # Update the available materials (ContainerNode) for the current active machine and extruder setup.
         global_stack = cura.CuraApplication.CuraApplication.getInstance().getGlobalContainerStack()
-        if not global_stack.hasMaterials:
+        if not global_stack or not global_stack.hasMaterials:
             return  # There are no materials for this machine, so nothing to do.
         extruder_list = global_stack.extruderList
         if self._extruder_position > len(extruder_list):
